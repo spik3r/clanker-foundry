@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { margin: auto; max-width: 860px; padding: 2rem; line-height: 1.5; }
+    section { border: 1px solid #8886; border-radius: .75rem; margin: 1rem 0; padding: 1rem; }
+    h1, h2, h3 { line-height: 1.2; }
+    .goal { font-size: 1.1rem; }
+    .task { display: flex; gap: .6rem; margin: .55rem 0; }
+    .task.done span { opacity: .55; text-decoration: line-through; }
+    .subtasks { margin-left: 1.8rem; }
+    details { margin: .35rem 0 .35rem 1.8rem; }
+    textarea { box-sizing: border-box; min-height: 9rem; padding: .7rem; width: 100%; }
+    button { cursor: pointer; padding: .45rem .7rem; }
+    @media print { button { display: none; } }
+  </style>
+</head>
+<body>
+  <header><p>PLAN &amp; CHECKLIST</p><h1 id="title"></h1><p class="goal" id="goal"></p></header>
+  <p><strong id="progress"></strong> <button id="print">Print / Save as PDF</button></p>
+  <section id="questions-section"><h2>Before you start</h2><ul id="questions"></ul></section>
+  <section id="considerations-section"><h2>Considerations</h2><ul id="considerations"></ul></section>
+  <main id="phases"></main>
+  <section><h2>Notes, decisions, and answers</h2><textarea id="notes"></textarea></section>
+
+  <script>
+/* Edit only this object. The code below renders and saves the checklist.
+   Schema: { title, goal, upfrontQuestions, considerations,
+   phases: [{ name, summary, tasks: [{ text, questions?, subtasks? }]}] } */
+const PLAN = {
+  title: "Plan title",
+  goal: "A short outcome-focused goal.",
+  upfrontQuestions: [],
+  considerations: [],
+  phases: []
+};
+
+const key = `braindump-plan:${PLAN.title || "untitled"}`;
+const state = JSON.parse(localStorage.getItem(key) || '{"checks":{},"notes":""}');
+const boxes = [];
+const make = (tag, text) => { const node = document.createElement(tag); if (text) node.textContent = text; return node; };
+const addList = (id, items, section) => {
+  if (!items.length) { section.hidden = true; return; }
+  const list = document.querySelector(id); items.forEach(item => list.append(make("li", item)));
+};
+const idFor = parts => `task:${parts.join("|")}`;
+const addQuestions = (parent, questions) => {
+  if (!questions?.length) return;
+  const details = make("details"); details.append(make("summary", "Questions to resolve"));
+  const list = make("ul"); questions.forEach(question => list.append(make("li", question)));
+  details.append(list); parent.append(details);
+};
+const addTask = (parent, text, id, questions, isSubtask = false) => {
+  const row = make("label"); row.className = `task${isSubtask ? " subtask" : ""}`;
+  const checkbox = document.createElement("input"); checkbox.type = "checkbox"; checkbox.checked = Boolean(state.checks[id]);
+  const label = make("span", text); row.append(checkbox, label); parent.append(row);
+  checkbox.addEventListener("change", () => { state.checks[id] = checkbox.checked; save(); refresh(); });
+  boxes.push({ checkbox, row }); addQuestions(parent, questions);
+};
+const save = () => localStorage.setItem(key, JSON.stringify(state));
+const refresh = () => {
+  const done = boxes.filter(({ checkbox }) => checkbox.checked).length;
+  boxes.forEach(({ checkbox, row }) => row.classList.toggle("done", checkbox.checked));
+  document.querySelector("#progress").textContent = `${done} / ${boxes.length} done`;
+};
+
+document.title = PLAN.title || "Plan";
+document.querySelector("#title").textContent = PLAN.title || "Plan";
+document.querySelector("#goal").textContent = PLAN.goal || "";
+addList("#questions", PLAN.upfrontQuestions || [], document.querySelector("#questions-section"));
+addList("#considerations", PLAN.considerations || [], document.querySelector("#considerations-section"));
+PLAN.phases.forEach((phase, phaseIndex) => {
+  const section = make("section"); section.append(make("h2", phase.name || `Phase ${phaseIndex + 1}`));
+  if (phase.summary) section.append(make("p", phase.summary));
+  phase.tasks.forEach((task, taskIndex) => {
+    const id = idFor([phase.name, task.text]); addTask(section, task.text, id, task.questions);
+    if (task.subtasks?.length) {
+      const group = make("div"); group.className = "subtasks";
+      task.subtasks.forEach((subtask, subtaskIndex) => {
+        const item = typeof subtask === "string" ? { text: subtask } : subtask;
+        addTask(group, item.text, idFor([phase.name, task.text, item.text]), item.questions, true);
+      });
+      section.append(group);
+    }
+  });
+  document.querySelector("#phases").append(section);
+});
+const notes = document.querySelector("#notes"); notes.value = state.notes || "";
+notes.addEventListener("input", () => { state.notes = notes.value; save(); });
+document.querySelector("#print").addEventListener("click", () => window.print());
+refresh();
+  </script>
+</body>
+</html>
