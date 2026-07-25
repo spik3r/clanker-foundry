@@ -90,6 +90,10 @@ temporary clone.
    `~/.claude/agents`; stowed the canonical global instructions; and run the existing
    wiring for Codex, Claude Code, opencode, and Gemini CLI.
 
+   The subagent profiles use portable model tiers. Resolve their current client-specific
+   model through `scripts/agent-model.sh <claude|codex> <agent-name>`; see the
+   [subagent model mapping](agents/README.md#model-selection).
+
 The script creates missing target directories and uses `stow --restow`, so it is safe
 to run again after pulling updates. It may stop if an existing non-Stow file conflicts
 with a target; inspect and resolve the conflict rather than using Stow's `--adopt`
