@@ -8,6 +8,7 @@ plus the templates, workflows, and checklists that support it.
 | Path | Contents |
 |---|---|
 | `skills/` | The skill pack (see below) |
+| `agents/` | Ready-to-launch subagent profiles: explorer-researcher, architect-planner, builder-developer, reviewer-verifier |
 | `templates/` | Fill-in starting points: `prompts/`, `architecture-review/`, `adr/`, `pr/`, `project/` |
 | `workflows/` | Repeatable procedures, e.g. `bug-investigation.md` |
 | `checklists/` | Verification lists: `security.md`, `code-review.md` |
@@ -33,6 +34,7 @@ on modes, behaviour, output, and example invocations.
 | [`checkpoint`](skills/checkpoint/README.md) | Create, refresh, or resume durable handoffs (`checkpoints/`) across sessions and agents | Writes documentation only |
 | [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
+| [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
 
 ## Suggested usage
 
@@ -51,6 +53,9 @@ Use checkpoint to write a handoff before I switch models.
 ```
 
 `templates/prompts/` holds fill-in-the-blank versions of the most common requests.
+For reusable subagent profiles, see [agents/](agents/README.md):
+explorer-researcher, architect-planner, builder-developer, and independent
+reviewer-verifier.
 
 ## Installation
 
@@ -80,9 +85,10 @@ temporary clone.
    ```
 
 4. Start a new agent session. The script has symlinked this pack into
-   `~/.agents/skills` for Codex and `~/.claude/skills` for Claude Code, stowed the
-   canonical global instructions, and run the existing wiring for Codex, Claude Code,
-   opencode, and Gemini CLI.
+   `~/.agents/skills` for Codex and `~/.claude/skills` for Claude Code; installed the
+   reusable [subagent profiles](agents/README.md) into `~/.agents/agents` and
+   `~/.claude/agents`; stowed the canonical global instructions; and run the existing
+   wiring for Codex, Claude Code, opencode, and Gemini CLI.
 
 The script creates missing target directories and uses `stow --restow`, so it is safe
 to run again after pulling updates. It may stop if an existing non-Stow file conflicts
@@ -105,6 +111,12 @@ ln -s "$PWD/skills/engineer" "$HOME/.agents/skills/engineer"
 
 # Remove that symlink later. `unlink` will not remove a directory.
 unlink "$HOME/.agents/skills/engineer"
+
+# Add one Claude Code subagent profile.
+ln -s "$PWD/agents/explorer-researcher.md" "$HOME/.claude/agents/explorer-researcher.md"
+
+# Remove that profile later.
+unlink "$HOME/.claude/agents/explorer-researcher.md"
 ```
 
 Do not manually replace a link managed by Stow; use `scripts/stow.sh` after changing

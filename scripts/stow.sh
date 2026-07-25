@@ -20,6 +20,8 @@ stow_package() {
 
 stow_package "$HOME/.agents/skills" skills
 stow_package "$HOME/.claude/skills" skills
+stow_package "$HOME/.agents/agents" agents
+stow_package "$HOME/.claude/agents" agents
 stow_package "${XDG_CONFIG_HOME:-$HOME/.config}/agents" global-agents
 
 "$repo_dir/global-agents/wire-global-agents.sh"
