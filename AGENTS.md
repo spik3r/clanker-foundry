@@ -19,6 +19,10 @@ carefully and checking every link and path resolves.
   use it, and how it behaves, for humans picking skills). Install by symlinking a
   skill directory into `~/.agents/skills/` (Codex), `~/.claude/skills/` (Claude
   Code), or a repo's `.agents/skills/`.
+- `agents/` — reusable subagent profiles for the explorer-researcher,
+  architect-planner, builder-developer, and reviewer-verifier pipeline. Stow links
+  them into `~/.agents/agents/` and `~/.claude/agents/`; Claude Code recognises the
+  latter as its personal agent directory.
 - `templates/` — fill-in-the-blank starting points:
   - `templates/prompts/` — prompt templates for common agent requests
   - `templates/architecture-review/` — report structure for architecture reviews
@@ -55,7 +59,7 @@ Division of responsibility:
 
 - standing facts and rules belong in `AGENTS.md` files;
 - repeatable procedures belong in `workflows/` and `skills/`;
-- reusable output shapes belong in `templates/`;
+- reusable output shapes belong in `templates/`; reusable agent roles belong in `agents/`;
 - verification lists belong in `checklists/`.
 
 Review and investigation skills default to read-only. Do not add edit behaviour to
