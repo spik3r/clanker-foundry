@@ -162,14 +162,23 @@ See [useful external skills](docs/external-skills.md) for the official OpenAI cu
 
 ## Validation
 
-The folders follow the Agent Skills open format:
+Run the validator after any change:
+
+```bash
+scripts/validate.sh
+```
+
+It checks that the folders follow the Agent Skills open format:
 
 - directory name matches the `name`;
 - names use lowercase letters and hyphens;
 - each `SKILL.md` contains `name` and `description` frontmatter;
-- all skills remain well below the recommended 500-line limit.
+- all skills remain well below the recommended 500-line limit;
+- each skill ships a `README.md`, agent-profile tiers resolve in `model-map.conf`, and
+  every relative Markdown link resolves on disk.
 
-You can also validate them with the `skills-ref` validator when installed:
+CI runs the same script on every push and pull request. When the `skills-ref` validator
+is installed, both the script and CI additionally run it per skill:
 
 ```bash
 skills-ref validate ./skills/engineer

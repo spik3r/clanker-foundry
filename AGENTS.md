@@ -82,11 +82,13 @@ symlink — never a duplicate of this file's content.
 
 ## Validation
 
-After changing a skill:
+Run `scripts/validate.sh` after any change. It enforces the conventions above:
+skill name matches directory, `name`/`description` frontmatter present, lowercase-hyphen
+names, `SKILL.md` under 500 lines, a `README.md` per skill, agent-profile tiers that
+resolve in `model-map.conf`, and every relative Markdown link resolving on disk. It also
+runs `skills-ref validate` when that tool is installed. CI runs the same script on every
+push and pull request (`.github/workflows/validate.yml`).
 
-- confirm the frontmatter still parses and `name` still matches the directory;
-- check every path referenced from `README.md`, this file, and the skills resolves;
-- if `skills-ref` is installed, run `skills-ref validate ./skills/<name>`.
-
-After moving or renaming anything, grep the repo for the old path — README install
-snippets, skill cross-references, and template links go stale silently.
+The script catches the usual silent breakage — after moving or renaming anything, it
+reports README install snippets, skill cross-references, and template links that went
+stale.

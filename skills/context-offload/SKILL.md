@@ -1,6 +1,6 @@
 ---
 name: context-offload
-description: Create, refresh, or resume a compact `context.md` handoff for the current task. Use when a session is becoming large, before changing models or agents, before pausing overnight, or when the user asks to compact, summarize, checkpoint, offload, or resume context. Preserve only verified task state and the next action; do not use it as a durable decision log.
+description: Create, refresh, or resume a compact single-file `context.md` handoff for one active task. Use when a session is becoming large, before changing models or agents, before pausing overnight, or when the user asks to compact, summarize, offload, or resume context for the current task. Preserve only verified task state and the next action. For a durable multi-file handoff with a decision log and assumption register that persists across sessions, use the checkpoint skill instead.
 ---
 
 # Context Offload
@@ -15,7 +15,7 @@ without rereading the conversation.
 - context is becoming difficult to navigate;
 - switching models, agents, or work sessions;
 - pausing work or resuming a prior task;
-- the user asks to compact, summarize, checkpoint, or offload context.
+- the user asks to compact, summarize, or offload context for one active task.
 
 ## Do not use when
 
