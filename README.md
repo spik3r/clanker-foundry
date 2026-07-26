@@ -87,8 +87,9 @@ temporary clone.
 4. Start a new agent session. The script has symlinked this pack into
    `~/.agents/skills` for Codex and `~/.claude/skills` for Claude Code; installed the
    reusable [subagent profiles](agents/README.md) into `~/.agents/agents` and
-   `~/.claude/agents`; stowed the canonical global instructions; and run the existing
-   wiring for Codex, Claude Code, opencode, and Gemini CLI.
+   `~/.claude/agents`; seeded the canonical global instructions file from the example
+   if it was absent, leaving any existing file untouched; and run the existing wiring
+   for Codex, Claude Code, opencode, and Gemini CLI.
 
    The subagent profiles use portable model tiers. Resolve their current client-specific
    model through `scripts/agent-model.sh <claude|codex> <agent-name>`; see the
