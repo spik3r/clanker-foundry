@@ -25,7 +25,18 @@ esac
   exit 2
 }
 
-tier="$(sed -n 's/^Suggested model tier: `\([^`]*\)`$/\1/p' "$profile")"
+tier="$(awk '
+  /^Suggested model tier: / {
+    tier = $0
+    sub(/^Suggested model tier: /, "", tier)
+    tick = sprintf("%c", 96)
+    if (tier ~ "^" tick "[^" tick "]+" tick "$") {
+      gsub(tick, "", tier)
+      print tier
+      exit
+    }
+  }
+' "$profile")"
 [[ -n "$tier" ]] || {
   printf 'No model tier in %s\n' "$profile" >&2
   exit 1

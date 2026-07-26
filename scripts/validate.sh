@@ -5,7 +5,7 @@
 set -uo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$repo_dir"
+cd "$repo_dir" || exit 1
 
 failures="$(mktemp)"
 trap 'rm -f "$failures"' EXIT
@@ -61,6 +61,21 @@ done
 info "== Agent profiles =="
 valid_tiers="fast balanced flagship"
 map_file="agents/model-map.conf"
+model_tier() {
+  awk '
+    /^Suggested model tier: / {
+      tier = $0
+      sub(/^Suggested model tier: /, "", tier)
+      tick = sprintf("%c", 96)
+      if (tier ~ "^" tick "[^" tick "]+" tick "$") {
+        gsub(tick, "", tier)
+        print tier
+        exit
+      }
+    }
+  ' "$1"
+}
+
 for profile in agents/*.md; do
   [ -f "$profile" ] || continue
   base="$(basename "$profile")"
@@ -69,7 +84,7 @@ for profile in agents/*.md; do
   [ -n "$(frontmatter_field "$profile" name)" ]        || err "$base: no 'name' frontmatter"
   [ -n "$(frontmatter_field "$profile" description)" ] || err "$base: no 'description' frontmatter"
 
-  tier="$(sed -n 's/^Suggested model tier: `\([^`]*\)`$/\1/p' "$profile")"
+  tier="$(model_tier "$profile")"
   if [ -z "$tier" ]; then
     err "$base: no 'Suggested model tier' line"
     continue
