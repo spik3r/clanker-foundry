@@ -35,6 +35,7 @@ on modes, behaviour, output, and example invocations.
 | [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
 | [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
+| [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents through research, planning, building and independent review | Delegates only when the task benefits from orchestration |
 
 ## Suggested usage
 
@@ -50,9 +51,13 @@ Use performance-investigation to diagnose the slow portfolio endpoint.
 Use safe-refactor to split this service without changing behaviour.
 Use adr to record our decision to use managed identity.
 Use checkpoint to write a handoff before I switch models.
+Use orchestrator to coordinate this feature across research, planning, implementation and review.
 ```
 
 `templates/prompts/` holds fill-in-the-blank versions of the most common requests.
+It includes an [`explain-code`](templates/prompts/explain-code.md) prompt for tracing
+unfamiliar code without editing it. [`workflows/feature-delivery.md`](workflows/feature-delivery.md)
+shows how to run the four agent profiles as a feature delivery pipeline.
 For reusable subagent profiles, see [agents/](agents/README.md):
 explorer-researcher, architect-planner, builder-developer, and independent
 reviewer-verifier.
@@ -142,6 +147,7 @@ Consider keeping these global but invoke them manually when needed:
 
 - `architecture-review`
 - `performance-investigation`
+- `orchestrator`
 
 Keep stack-specific workflows, commands and architecture rules in project-level skills or `AGENTS.md`.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrator"
+  short_description: "Coordinate scoped subagents for complex work"
+  default_prompt: "Use $orchestrator to decompose, delegate, independently review, and synthesize this task."
