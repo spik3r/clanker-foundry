@@ -34,7 +34,8 @@ carefully and checking every link and path resolves.
 - `checklists/` — verification lists (`security.md`, `code-review.md`) meant to be
   walked item by item, with evidence, not skimmed.
 - `docs/` — framework and external-skill guidance.
-- `scripts/stow.sh` — GNU Stow installation script for the pack and global instructions.
+- `scripts/stow.sh` — GNU Stow installation script for skills, agents, workflows,
+  templates, checklists, and global instructions.
 - `global-agents/` — the machine-wide global `AGENTS.md` example, a setup guide, and
   `wire-global-agents.sh` to point Codex, Claude Code, opencode, and Gemini CLI at
   one canonical file.

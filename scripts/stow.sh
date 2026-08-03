@@ -18,10 +18,18 @@ stow_package() {
   stow --no-folding --dir "$repo_dir" --target "$target" --restow "$package"
 }
 
-stow_package "$HOME/.agents/skills" skills
-stow_package "$HOME/.claude/skills" skills
-stow_package "$HOME/.agents/agents" agents
-stow_package "$HOME/.claude/agents" agents
+stow_shared_asset() {
+  local package="$1"
+
+  stow_package "$HOME/.agents/$package" "$package"
+  stow_package "$HOME/.claude/$package" "$package"
+}
+
+# Install every reusable runtime asset for both clients. Repository documentation,
+# setup scripts, and global instruction wiring remain repo-local.
+for package in skills agents workflows templates checklists; do
+  stow_shared_asset "$package"
+done
 
 # Global instructions are a real, user-owned file, not a Stow symlink, so
 # machine-local edits survive and only AGENTS.md lands in the config directory

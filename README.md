@@ -13,7 +13,7 @@ plus the templates, workflows, and checklists that support it.
 | `workflows/` | Repeatable procedures, e.g. `bug-investigation.md` |
 | `checklists/` | Verification lists: `security.md`, `code-review.md` |
 | `docs/` | Framework and external-skill guidance |
-| `scripts/stow.sh` | Stows skills and global instructions into supported agent locations |
+| `scripts/stow.sh` | Stows skills, subagents, workflows, templates, checklists, and global instructions |
 | `global-agents/` | Machine-wide global `AGENTS.md` example and setup guide |
 | `AGENTS.md` | Repo instructions and conventions — the source of truth for agents (`CLAUDE.md` and `GEMINI.md` point at it) |
 
@@ -89,27 +89,27 @@ temporary clone.
    scripts/stow.sh
    ```
 
-4. Start a new agent session. The script has symlinked this pack into
-   `~/.agents/skills` for Codex and `~/.claude/skills` for Claude Code; installed the
-   reusable [subagent profiles](agents/README.md) into `~/.agents/agents` and
-   `~/.claude/agents`; seeded the canonical global instructions file from the example
-   if it was absent, leaving any existing file untouched; and run the existing wiring
-   for Codex, Claude Code, opencode, and Gemini CLI.
+4. Start a new agent session. For both `~/.agents/` and `~/.claude/`, the script has
+   installed `skills/`, `agents/`, `workflows/`, `templates/`, and `checklists/` as
+   symlinks to this repository. It has also seeded the canonical global instructions
+   file from the example if it was absent, leaving any existing file untouched, and
+   run the wiring for Codex, Claude Code, opencode, and Gemini CLI.
 
    The subagent profiles use portable model tiers. Resolve their current client-specific
    model through `scripts/agent-model.sh <claude|codex> <agent-name>`; see the
    [subagent model mapping](agents/README.md#model-selection).
 
 The script creates missing target directories and uses `stow --restow`, so it is safe
-to run again after pulling updates. It may stop if an existing non-Stow file conflicts
-with a target; inspect and resolve the conflict rather than using Stow's `--adopt`
-option blindly.
+to run again after pulling updates. Repository-only `docs/` and `scripts/` are not
+installed. The script may stop if an existing non-Stow file conflicts with a target;
+inspect and resolve the conflict rather than using Stow's `--adopt` option blindly.
 
 ### Project-scoped use
 
-The Stow script installs personal skills. For a skill that belongs only to one project,
-use that project's supported skill directory (`.agents/skills/` or `.claude/skills/`)
-and keep it under that project's version control.
+The Stow script installs personal agent assets. For an asset that belongs only to one
+project, use the matching project directory, such as `.agents/skills/`,
+`.agents/workflows/`, or the equivalent `.claude/` path, and keep it under that
+project's version control.
 
 ### One-off manual link
 
