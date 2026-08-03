@@ -31,19 +31,27 @@ for package in skills agents workflows templates checklists; do
   stow_shared_asset "$package"
 done
 
-# Global instructions are a real, user-owned file, not a Stow symlink, so
-# machine-local edits survive and only AGENTS.md lands in the config directory
-# (not this package's README or wiring script). Seed it from the example on the
-# first run; never overwrite an existing file. wire-global-agents.sh then points
-# each tool at it.
-canon="${XDG_CONFIG_HOME:-$HOME/.config}/agents/AGENTS.md"
-if [ -e "$canon" ]; then
-  printf 'Global instructions already present at %s; leaving as-is.\n' "$canon"
-else
-  mkdir -p "$(dirname "$canon")"
-  cp "$repo_dir/global-agents/AGENTS.md" "$canon"
-  printf 'Seeded global instructions at %s from the example.\n' "$canon"
+# Stow the tracked global instructions as the canonical user-level file. Migrate
+# the old copied file only when it still matches the repository; never hide local
+# edits. The package ignore file keeps its README and wiring script repo-local.
+global_target="${XDG_CONFIG_HOME:-$HOME/.config}/agents"
+canon="$global_target/AGENTS.md"
+if [ -e "$canon" ] && [ ! -L "$canon" ]; then
+  if ! cmp -s "$repo_dir/global-agents/AGENTS.md" "$canon"; then
+    printf 'Cannot stow global instructions: %s contains local changes.\n' "$canon" >&2
+    printf '%s\n' 'Merge those changes into global-agents/AGENTS.md, then move the existing file and rerun.' >&2
+    exit 1
+  fi
+
+  backup="$canon.pre-stow"
+  if [ -e "$backup" ] || [ -L "$backup" ]; then
+    printf 'Cannot migrate global instructions: backup already exists at %s.\n' "$backup" >&2
+    exit 1
+  fi
+  mv "$canon" "$backup"
+  printf 'Moved the matching legacy copy to %s.\n' "$backup"
 fi
 
+stow_package "$global_target" global-agents
 "$repo_dir/global-agents/wire-global-agents.sh"
 printf '%s\n' 'Stowing completed.'

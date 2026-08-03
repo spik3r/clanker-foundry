@@ -14,7 +14,7 @@ plus the templates, workflows, and checklists that support it.
 | `checklists/` | Verification lists: `security.md`, `code-review.md` |
 | `docs/` | Framework and external-skill guidance |
 | `scripts/stow.sh` | Stows skills, subagents, workflows, templates, checklists, and global instructions |
-| `global-agents/` | Machine-wide global `AGENTS.md` example and setup guide |
+| `global-agents/` | Tracked machine-wide `AGENTS.md`, setup guide, and tool wiring |
 | `AGENTS.md` | Repo instructions and conventions — the source of truth for agents (`CLAUDE.md` and `GEMINI.md` point at it) |
 
 ## Included skills
@@ -91,9 +91,9 @@ temporary clone.
 
 4. Start a new agent session. For both `~/.agents/` and `~/.claude/`, the script has
    installed `skills/`, `agents/`, `workflows/`, `templates/`, and `checklists/` as
-   symlinks to this repository. It has also seeded the canonical global instructions
-   file from the example if it was absent, leaving any existing file untouched, and
-   run the wiring for Codex, Claude Code, opencode, and Gemini CLI.
+   symlinks to this repository. It has also stowed the tracked global instructions to
+   `~/.config/agents/AGENTS.md` and wired Codex, Claude Code, opencode, and Gemini CLI
+   to that canonical link.
 
    The subagent profiles use portable model tiers. Resolve their current client-specific
    model through `scripts/agent-model.sh <claude|codex> <agent-name>`; see the
@@ -103,6 +103,11 @@ The script creates missing target directories and uses `stow --restow`, so it is
 to run again after pulling updates. Repository-only `docs/` and `scripts/` are not
 installed. The script may stop if an existing non-Stow file conflicts with a target;
 inspect and resolve the conflict rather than using Stow's `--adopt` option blindly.
+
+Older installs may have a copied `~/.config/agents/AGENTS.md`. If it matches the tracked
+file, the script moves it to `AGENTS.md.pre-stow` before creating the link. If it differs,
+the script stops so you can merge those local changes into `global-agents/AGENTS.md`.
+Commit and pull changes to the tracked file to share them across machines.
 
 ### Project-scoped use
 
@@ -151,7 +156,8 @@ Consider keeping these global but invoke them manually when needed:
 
 Keep stack-specific workflows, commands and architecture rules in project-level skills or `AGENTS.md`.
 
-For a machine-wide behaviour base shared by every project, see `global-agents/`.
+For a machine-wide behaviour base shared by every project, see
+[`global-agents/`](global-agents/README.md).
 
 ## External skills
 

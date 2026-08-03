@@ -6,7 +6,7 @@ Gemini CLI, and any other agent start from the same rails. Projects add their ow
 
 This directory holds:
 
-- `AGENTS.md` — the example global base, ready to install
+- `AGENTS.md` — the tracked global base and source of truth
 - `wire-global-agents.sh` — wires each tool to the canonical copy
 - this README — why, where, and how to verify
 
@@ -38,8 +38,7 @@ files, closest wins), but the user-level path differs per tool:
 | GitLab Duo | `$XDG_CONFIG_HOME/gitlab/duo/AGENTS.md` |
 | Cursor | `.cursor/rules/` (project-level only) |
 
-So keep **one canonical file** and point every tool at it. Store it at the proposed
-XDG path, aligned with where the convention is heading:
+Stow the tracked file to the proposed XDG path, then point every tool at that link:
 
 ```text
 $XDG_CONFIG_HOME/agents/AGENTS.md    # usually ~/.config/agents/AGENTS.md
@@ -67,10 +66,10 @@ lean on the global base for everything generic. See
 
 ## Setup, start to finish
 
-1. Copy `AGENTS.md` from this directory to `~/.config/agents/AGENTS.md` — the
-   canonical copy. Edit it to taste before wiring; every tool inherits it.
-2. Run `./wire-global-agents.sh` to symlink Codex, opencode, and Gemini to it and add
-   the Claude import.
+1. From the repository root, run `scripts/stow.sh`. It links this directory's
+   `AGENTS.md` to `~/.config/agents/AGENTS.md`, then wires each tool to that link.
+2. Edit `global-agents/AGENTS.md`, commit the change, and pull it on other machines.
+   The links pick up the change without another copy step.
 3. In each project, keep a short `AGENTS.md` for stack, commands, and conventions; it
    overrides the global base where they differ.
 4. Verify each tool picked it up — see below.
@@ -105,6 +104,6 @@ produce (e.g. the writing rules).
 
 ## Updating
 
-Edit the canonical file only. Symlinks pick changes up immediately; Claude's import
-reads the file fresh each session. Never edit the per-tool copies — that is how drift
-starts.
+Edit the tracked `global-agents/AGENTS.md` file only. Symlinks pick changes up
+immediately; Claude's import reads it fresh each session. Commit and pull that file to
+share changes. Never edit the per-tool links.

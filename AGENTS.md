@@ -36,7 +36,7 @@ carefully and checking every link and path resolves.
 - `docs/` — framework and external-skill guidance.
 - `scripts/stow.sh` — GNU Stow installation script for skills, agents, workflows,
   templates, checklists, and global instructions.
-- `global-agents/` — the machine-wide global `AGENTS.md` example, a setup guide, and
+- `global-agents/` — the tracked machine-wide global `AGENTS.md`, a setup guide, and
   `wire-global-agents.sh` to point Codex, Claude Code, opencode, and Gemini CLI at
   one canonical file.
 - `CLAUDE.md`, `GEMINI.md` — pointers to this file. See "One source of truth" below.
