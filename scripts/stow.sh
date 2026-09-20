@@ -4,6 +4,10 @@ set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+# Check every wiring target before Stow creates any links. This keeps a later
+# wiring conflict from leaving a partially installed pack.
+"$repo_dir/global-agents/wire-global-agents.sh" --check
+
 if ! command -v stow >/dev/null 2>&1; then
   printf '%s\n' 'GNU Stow is required. Install it, then run scripts/stow.sh.' >&2
   exit 1

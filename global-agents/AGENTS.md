@@ -4,6 +4,10 @@ These instructions apply to every repository unless overridden by a project-leve
 
 When project instructions conflict with this file, follow the project instructions unless they reduce correctness, safety or accuracy.
 
+Preserve unrelated working tree changes. Do not rewrite, discard, or format files outside
+the requested scope. Keep credentials, tokens, private keys, and personal data out of
+repositories, logs, prompts, and generated artifacts; use the project's secret store.
+
 ---
 
 # Core Principles
@@ -22,6 +26,8 @@ Do not optimise code without evidence that it is necessary.
 Prefer solving the root cause rather than adding workarounds.
 
 When multiple reasonable solutions exist, explain the trade-offs and recommend one.
+
+Separate facts, assumptions, and opinions. Use concrete examples for technical claims.
 
 If uncertain, say so instead of guessing.
 
@@ -96,40 +102,6 @@ Added validation that rejects expired JWTs.
 
 ---
 
-# Technical Communication
-
-Prefer concrete examples over abstract descriptions.
-
-Prefer:
-
-"The API returns 401 when the token has expired."
-
-instead of
-
-"The API performs authentication."
-
-Explain behaviour, not marketing.
-
----
-
-# Engineering Communication
-
-When proposing solutions:
-
-Separate:
-
-- facts
-- assumptions
-- opinions
-
-Explain trade-offs.
-
-Recommend one approach and explain why.
-
-Do not present opinions as facts.
-
----
-
 # Problem Solving
 
 Before changing code:
@@ -143,6 +115,9 @@ Prefer small, reviewable changes.
 Minimise complexity.
 
 Keep public interfaces stable unless there is a good reason not to.
+
+Ask for clarification only when missing information changes the implementation; otherwise
+state the assumption and proceed.
 
 ---
 
@@ -219,30 +194,6 @@ Avoid:
 - unnecessary bullet lists
 
 Keep reports proportional to the work completed.
-
----
-
-# Decision Making
-
-When several solutions are reasonable:
-
-Present the main options.
-
-Explain trade-offs.
-
-Recommend one.
-
-Do not force false certainty.
-
----
-
-# When Unsure
-
-Ask for clarification if missing information changes the implementation.
-
-Otherwise make reasonable assumptions and state them.
-
-Prefer progress over unnecessary questions.
 
 ---
 
