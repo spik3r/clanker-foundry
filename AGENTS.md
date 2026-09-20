@@ -8,9 +8,9 @@ Edit this file; never edit the pointers.
 
 A personal library of agent assets: skills in the open Agent Skills `SKILL.md` format,
 plus the templates, workflows, and checklists those skills draw on, plus a global
-`AGENTS.md` base and the wiring to share it across tools. There is no build, no test
-suite, and no runtime code. Changes are documentation; validation is reading
-carefully and checking every link and path resolves.
+`AGENTS.md` base and the wiring to share it across tools. There is no application
+runtime. Changes are documentation, shell setup, and validation; check every link,
+path, and script before delivery.
 
 ## Layout
 
@@ -85,11 +85,7 @@ symlink — never a duplicate of this file's content.
 
 Run `scripts/validate.sh` after any change. It enforces the conventions above:
 skill name matches directory, `name`/`description` frontmatter present, lowercase-hyphen
-names, `SKILL.md` under 500 lines, a `README.md` per skill, agent-profile tiers that
-resolve in `model-map.conf`, and every relative Markdown link resolving on disk. It also
-runs `skills-ref validate` when that tool is installed. CI runs the same script on every
-push and pull request (`.github/workflows/validate.yml`).
-
-The script catches the usual silent breakage — after moving or renaming anything, it
-reports README install snippets, skill cross-references, and template links that went
-stale.
+names, `SKILL.md` under 500 lines, a `README.md` per skill, nonempty model mappings,
+shell syntax, pointer files, and every relative Markdown link in tracked or unignored
+untracked Markdown. It also runs `skills-ref validate` when that tool is installed. CI
+runs the validator and installer regression tests on every push and pull request.

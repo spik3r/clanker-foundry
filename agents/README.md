@@ -33,7 +33,9 @@ The profiles themselves do not force a host model. Claude Code therefore inherit
 normal session model when it loads a profile; select the resolved model in the launch
 or orchestration surface. Codex orchestration likewise selects the resolved model when
 it starts the subagent. Edit `model-map.conf` to match the model aliases available to
-your account.
+your account. For a machine-only change, create untracked `model-map.local.conf`; it
+overrides matching shared entries and stays out of Git and Stow. Run
+`scripts/agent-model.sh` to inspect the selected value.
 
 Pass a concise task brief when launching a profile: outcome, scope, repository or
 sources, constraints, and the preceding stage's handoff. The profiles define each

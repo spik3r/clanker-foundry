@@ -79,8 +79,10 @@ of the script; the rest is only needed where that tool is used.
 
 ## Verifying it loaded
 
-**Codex** — `codex --print-instructions` dumps the fully merged text (global + repo +
-cwd) to stdout, so you see exactly what the model got.
+**Codex** — start a new session in the project after installation. Check the global
+link with `ls -l "${CODEX_HOME:-$HOME/.codex}/AGENTS.md"`, then ask Codex to report
+which instruction files it loaded. The CLI has no supported `--print-instructions`
+option; see the [official AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
 
 **Claude Code** — run `/memory` inside a session: it lists the loaded memory files,
 their paths, and load order. Because the base comes in by `@` import, it shows up as
@@ -107,3 +109,33 @@ produce (e.g. the writing rules).
 Edit the tracked `global-agents/AGENTS.md` file only. Symlinks pick changes up
 immediately; Claude's import reads it fresh each session. Commit and pull that file to
 share changes. Never edit the per-tool links.
+
+## Pinning a project baseline
+
+Teams that need a reviewable, versioned baseline can add this repository as a Git
+submodule under `.agent-baseline` at an explicitly reviewed commit:
+
+```bash
+git submodule add <repository-url> .agent-baseline
+git -C .agent-baseline checkout <reviewed-commit>
+git add .gitmodules .agent-baseline
+```
+
+Keep the project root `AGENTS.md` short. Tell agents to read
+`.agent-baseline/global-agents/AGENTS.md`, then add stack-specific rules. Clone and CI
+must initialize submodules, including existing clones:
+
+```bash
+git submodule update --init --recursive
+```
+
+Update only after review:
+
+```bash
+git -C .agent-baseline fetch origin
+git -C .agent-baseline checkout <new-reviewed-commit>
+git add .agent-baseline
+```
+
+Missing `.agent-baseline` is a setup error. This keeps one baseline copy at an explicit
+revision while project instructions remain local.

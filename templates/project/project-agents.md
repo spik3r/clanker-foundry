@@ -11,6 +11,9 @@ Delete this guidance section after copying.
 
 # <Project name>
 
+If this project pins `.agent-baseline`, read `.agent-baseline/global-agents/AGENTS.md`
+before applying local rules. A missing pinned baseline is a setup error.
+
 <One sentence: what this repo is.>
 
 ## Stack

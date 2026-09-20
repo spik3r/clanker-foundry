@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install GNU Stow
+        run: sudo apt-get update && sudo apt-get install -y stow
       - name: Run pack validator
         run: bash scripts/validate.sh
+      - name: Run installer regression tests
+        run: bash tests/test-install.sh
 
   # Advisory: surfaces shell issues without blocking merges.
   shellcheck:
@@ -23,4 +27,4 @@ jobs:
       - name: Install shellcheck
         run: sudo apt-get update && sudo apt-get install -y shellcheck
       - name: Check scripts
-        run: shellcheck scripts/*.sh global-agents/*.sh
+        run: shellcheck scripts/*.sh global-agents/*.sh tests/*.sh
