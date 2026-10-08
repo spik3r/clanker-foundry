@@ -33,6 +33,7 @@ on modes, behaviour, output, and example invocations.
 | [`adr`](skills/adr/README.md) | Create or update an Architecture Decision Record | Writes documentation only |
 | [`checkpoint`](skills/checkpoint/README.md) | Create, refresh, or resume durable handoffs (`checkpoints/`) across sessions and agents | Writes documentation only |
 | [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
+| [`project-memory`](skills/project-memory/README.md) | Record resumable task state and verify fresh completion evidence for committed changes | Records local implementation evidence; keeps ownership in canonical task records |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
 | [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
 | [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents through research, planning, building and independent review | Delegates only when the task benefits from orchestration |

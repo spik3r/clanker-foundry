@@ -83,9 +83,23 @@ symlink — never a duplicate of this file's content.
 
 ## Validation
 
+For repository changes, read [Project Memory](skills/project-memory/SKILL.md).
+Record a start before editing, run the relevant checks, stage only the intended
+paths, and record completion with the observed validation results. Commit the
+ledger with the change. Checkpoints preserve interrupted work without declaring
+it complete. This local evidence does not replace task ownership or claims.
+
 Run `scripts/validate.sh` after any change. It enforces the conventions above:
 skill name matches directory, `name`/`description` frontmatter present, lowercase-hyphen
 names, `SKILL.md` under 500 lines, a `README.md` per skill, nonempty model mappings,
 shell syntax, pointer files, and every relative Markdown link in tracked or unignored
 untracked Markdown. It also runs `skills-ref validate` when that tool is installed. CI
 runs the validator and installer regression tests on every push and pull request.
+
+Run `node --test tests/project-memory.test.mjs` when changing the lifecycle helper.
+The separate `project-memory` CI job runs these regressions on pushes, pull
+requests and manual runs. On pull requests it also validates the full committed
+diff against the PR base; locally, use `node
+skills/project-memory/scripts/project-memory.mjs validate --base origin/main`
+after committing. A workflow check blocks merges only if the repository owner
+configures it as a required status. This change does not configure that rule.
