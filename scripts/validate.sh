@@ -13,6 +13,19 @@ trap 'rm -f "$failures"' EXIT
 err()  { printf 'FAIL  %s\n' "$1" >&2; echo x >> "$failures"; }
 info() { printf '%s\n' "$1"; }
 
+check_model_map() {
+  local file="$1"
+  [ -f "$file" ] || { err "$file: missing"; return; }
+  awk -F= '
+    /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
+    NF != 2 || $1 !~ /^(claude|codex)\.(fast|balanced|flagship)$/ || $2 ~ /^[[:space:]]*$/ {
+      print NR
+    }
+  ' "$file" | while IFS= read -r line; do
+    err "$file:$line: invalid or empty model mapping"
+  done
+}
+
 # Read a single-line frontmatter field from a file's leading `---` block.
 frontmatter_field() {
   local file="$1" key="$2"
@@ -61,6 +74,10 @@ done
 info "== Agent profiles =="
 valid_tiers="fast balanced flagship"
 map_file="agents/model-map.conf"
+check_model_map "$map_file"
+if [ -e agents/model-map.local.conf ]; then
+  check_model_map agents/model-map.local.conf
+fi
 model_tier() {
   awk '
     /^Suggested model tier: / {
@@ -99,10 +116,26 @@ for profile in agents/*.md; do
   done
 done
 
+# Tool-specific root pointers must remain thin links to the one source of truth.
+[ "$(cat CLAUDE.md)" = '@AGENTS.md' ] \
+  || err "CLAUDE.md: expected exactly '@AGENTS.md'"
+grep -q 'Read `AGENTS.md`' GEMINI.md \
+  || err "GEMINI.md: missing AGENTS.md pointer"
+
+# ---------------------------------------------------------------------------
+info "== Shell syntax =="
+for shell_file in scripts/*.sh global-agents/*.sh tests/*.sh; do
+  bash -n "$shell_file" || err "$shell_file: shell syntax check failed"
+done
+
 # ---------------------------------------------------------------------------
 info "== Relative links =="
-# Extract [text](target) links, skip external/anchor/mail, resolve the rest on disk.
-list_md() { git ls-files '*.md' 2>/dev/null || find . -name '*.md' -not -path './.git/*'; }
+# Extract Markdown links, skip external/anchor/mail, resolve the rest on disk.
+# Inline-code paths and reference-style links are outside this check's scope.
+list_md() {
+  git ls-files --cached --others --exclude-standard -- '*.md' 2>/dev/null \
+    || find . -type f -name '*.md' -not -path './.git/*'
+}
 while IFS= read -r md; do
   [ -f "$md" ] || continue
   dir="$(dirname "$md")"

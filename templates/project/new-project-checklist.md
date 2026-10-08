@@ -7,6 +7,7 @@ Work top to bottom. Skip items with a recorded reason, not silently.
 - [ ] Repo created with a licence and `.gitignore` for the stack
 - [ ] `README.md` from `templates/project/project-readme.md`
 - [ ] `AGENTS.md` from `templates/project/project-agents.md`
+- [ ] If sharing a baseline, follow the pinned submodule recipe in [`global-agents/README.md`](../../global-agents/README.md)
 - [ ] Tool-specific pointer files if the team uses them: `CLAUDE.md`, `GEMINI.md` (both point at `AGENTS.md` — one source of truth)
 - [ ] Dependency pinning chosen (lockfile committed)
 

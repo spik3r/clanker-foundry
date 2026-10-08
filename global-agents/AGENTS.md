@@ -4,6 +4,10 @@ These instructions apply to every repository unless overridden by a project-leve
 
 When project instructions conflict with this file, follow the project instructions unless they reduce correctness, safety or accuracy.
 
+Preserve unrelated working tree changes. Do not rewrite, discard, or format files outside
+the requested scope. Keep credentials, tokens, private keys, and personal data out of
+repositories, logs, prompts, and generated artifacts; use the project's secret store.
+
 ---
 
 # Core Principles

@@ -10,3 +10,6 @@
 # Editor directories
 .idea/
 .vscode/
+
+# Optional per-machine model aliases. Keep local overrides out of Git and Stow.
+agents/model-map.local.conf

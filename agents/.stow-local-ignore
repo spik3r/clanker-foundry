@@ -1,2 +1,3 @@
 ^README\.md$
 ^model-map\.conf$
+^model-map\.local\.conf$

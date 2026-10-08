@@ -187,8 +187,10 @@ It checks that the folders follow the Agent Skills open format:
 - names use lowercase letters and hyphens;
 - each `SKILL.md` contains `name` and `description` frontmatter;
 - all skills remain well below the recommended 500-line limit;
-- each skill ships a `README.md`, agent-profile tiers resolve in `model-map.conf`, and
-  every relative Markdown link resolves on disk.
+- each skill ships a `README.md`, model mappings are nonempty, shell scripts parse, and
+  every relative Markdown link in tracked or unignored untracked Markdown resolves on disk.
+  Inline links are checked; anchors, reference-style links, and paths in inline code are
+  outside this check.
 
 CI runs the same script on every push and pull request. When the `skills-ref` validator
 is installed, both the script and CI additionally run it per skill:
@@ -196,3 +198,15 @@ is installed, both the script and CI additionally run it per skill:
 ```bash
 skills-ref validate ./skills/engineer
 ```
+
+Installer regression tests run with:
+
+```bash
+bash tests/test-install.sh
+```
+
+## Pin a project baseline
+
+For team repositories, pin a reviewed baseline with the [submodule recipe in the global
+agent guide](global-agents/README.md#pinning-a-project-baseline). A missing pinned
+baseline is a setup error. Never commit secrets or local model overrides.
