@@ -18,6 +18,27 @@ jobs:
       - name: Run installer regression tests
         run: bash tests/test-install.sh
 
+  # Read-only evidence check. Required-status configuration is a separate owner decision.
+  project-memory:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Test Project Memory lifecycle rules
+        run: node --test tests/project-memory.test.mjs
+      - name: Verify committed pull-request lifecycle evidence
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: node skills/project-memory/scripts/project-memory.mjs validate --base "$BASE_SHA"
+
   # Advisory: surfaces shell issues without blocking merges.
   shellcheck:
     runs-on: ubuntu-latest
