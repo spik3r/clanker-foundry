@@ -14,6 +14,28 @@ jobs:
       - name: Run pack validator
         run: bash scripts/validate.sh
 
+  project-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify Project Memory lifecycle evidence
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          base="$PR_BASE_SHA"
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            base="$PUSH_BASE_SHA"
+          fi
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            base="HEAD^"
+          fi
+          node skills/project-memory/scripts/project-memory.mjs validate --base "$base"
+
   # Advisory: surfaces shell issues without blocking merges.
   shellcheck:
     runs-on: ubuntu-latest
