@@ -1,95 +1,161 @@
 ---
 name: project-memory
-description: Use when starting, resuming, handing off or finishing repository changes that need durable task context. Record local implementation evidence and validate committed changes; read-only lookups do not need events. Central task records remain authoritative for ownership.
+description: Use when starting, resuming, handing off or completing repository changes. Link a reviewed canonical task claim to immutable implementation events and validate fresh committed evidence. Read-only lookups do not need events; task records remain authoritative for ownership.
 ---
 
 # Project Memory
 
-Keep enough repository-local evidence to resume work: intent, paths, validation,
-result and next action. Link the canonical task when one exists. Do not copy its
-ownership or claims into a second ledger. Check that task and existing PRs before
-starting overlapping work.
+Keep repository-local implementation history: intent, exact paths, declared
+checks, results and the next action. A canonical task owns identity, ownership
+and claims. This helper does not acquire a lock, authorize work or change a claim.
+Read the real task and check overlapping work before editing.
 
-Never record credentials, tokens, private conversations, personal account data,
-raw trading data, or raw logs. Record concise technical facts and validation
-commands/results. An event is a declaration, not proof that a test actually ran.
+A pinned snapshot records the task reviewed at that revision. Its hash checks
+stored bytes, not external truth or current ownership. Independently compare its
+repository, revision, task and claim with the actual canonical source.
 
-## Start and resume
+Never import confidential records into a public repository. Do not record
+credentials, private conversations, personal account data or raw logs. Import
+only the reviewed task, not a whole backlog. Summaries and validation strings are
+inert declarations; the helper cannot prove that a command ran.
+
+## Prerequisites and source contract
+
+Use Node 24 and Git 2.43 or later. The helper uses only local files and Git
+objects. It never fetches tasks, code or updates. Every Git process denies all
+transports and replacement objects. Missing objects fail; newer Git also
+suppresses lazy-fetch subprocesses. See [the format contract](FORMAT.md).
+
+A source can be a separate task repository or the code repository itself. It
+must contain a committed, public-safe Markdown record at
+`tasks/TASK-ID-description.md`, with simple frontmatter and a nonempty claim:
+
+```markdown
+---
+id: CF-101
+status: in-progress
+owner: Implementation owner
+repositories: [example/application]
+---
+
+# Implement the reviewed change
+
+## Implementation claim
+
+Owner, exact scope, intended result and any exclusions agreed in the task.
+```
+
+Task IDs have an uppercase project prefix and a bounded alphanumeric slug, such
+as `CF-101` or `CF-project-memory-evidence`. The filename and frontmatter ID must
+agree. Duplicate canonical IDs across all statuses, including closed tasks,
+block registration. Explicit noncanonical redirects must name an existing exact
+canonical record. A prose mention of another task is not its identity.
+
+## Register and start
 
 Examples assume this skill is installed at `skills/project-memory`. For a global
-installation, use the installed script's full path while inside the target repo.
-All `--files` values are repository-root-relative file paths.
+installation, use the installed script's full path inside the target repository.
+All `--files` values identify exact repository-root-relative files.
 
-1. Inspect Git, the canonical task and current memory:
+1. Read the current canonical task, coordinate a bounded claim and commit that
+   claim in its source repository before implementation.
+2. Register the reviewed local source revision:
+   `node skills/project-memory/scripts/project-memory.mjs register --id CF-101 --source-repo ../task-source --ref REVIEWED-COMMIT --record tasks/CF-101-description.md --source-repository example/tasks`
+3. Independently verify the printed revision, source snapshot and claim. A
+   declared repository identity is not proof of remote authenticity.
+4. Inspect existing work:
    `node skills/project-memory/scripts/project-memory.mjs status`
-2. Start one coherent task before editing:
-   `node skills/project-memory/scripts/project-memory.mjs start --id TASK-ID --summary "Intended change" --next "Implement and validate" --files path/to/file`
-   Add `--task https://...` for the canonical task's verified URL.
-3. For interrupted work, use its latest `next` field and inspect Git before
-   resuming. An active task does not need another start. To record a handoff or
-   change its scope, use `checkpoint` with `--id`, `--summary`, `--next` and,
-   when scope changes, `--files` containing the full new scope.
+5. Record a genuine start before editing:
+   `node skills/project-memory/scripts/project-memory.mjs start --id CF-101 --repository example/application --files path/to/file --summary "Intended change" --next "Implement and validate"`
 
-`status --stale-days 7` marks old active tasks for review. It does not abandon
-them or block unrelated work. Only the canonical owner can decide a claim's
-status. `abandon --id TASK-ID --summary "Why work stopped" --next "Owner action"`
-closes local implementation work without providing change coverage or altering
-the central task. A later `start` opens a new cycle after complete or abandon.
+`--source-repo` is a local Git checkout path. `--source-repository` is its
+`owner/repository` identity. The source identity may be inferred from a recognized
+GitHub `origin`; an explicit mismatch is rejected. The code identity similarly
+uses `--repository` or its recognized `origin`. There is no private or global
+repository default. For validation the source identity is always explicit.
+`--backlog` and `--backlog-repository` remain aliases; do not pass both aliases.
 
-## Finish and commit
+Start selects the sole registered source and claim. If several exist, choose
+`--source PINNED-COMMIT` and `--claim "Exact claim heading"`. No latest-source
+file is authoritative. The branch comes from Git; detached starts require
+`--branch IMPLEMENTATION-BRANCH`. Add `--pr VERIFIED-PR-URL` when known.
+Before a PR exists, that field is null.
 
-1. Run the relevant checks against the final code and tests.
-2. Stage only this task's explicit changed paths, including deletions. Preserve
-   other workers' staged changes; do not use an unscoped `git add -A`.
+## Resume, complete and commit
+
+An active task uses `resume` or `checkpoint`, with `--id`, `--summary` and `--next`.
+To change scope, include `--files` with the full new scope. Task/source/claim,
+code repository and origin branch cannot change during a run. A PR link may be
+added once; it cannot then be swapped.
+
+1. Run relevant checks against the final code, tests and documentation.
+2. Stage only the task's explicit changed paths, including deletions. Preserve
+   other workers' staged changes.
 3. Record completion:
-   `node skills/project-memory/scripts/project-memory.mjs complete --id TASK-ID --summary "Result" --validation "Command and observed result" --next "Review PR"`
-   The command reuses the active scope unless `--files` gives a narrower final
-   file list. Expand scope with a checkpoint before completing it.
-4. Stage `.project-memory/tasks.jsonl` and commit it with the code and tests.
-5. Validate the committed PR diff:
-   `node skills/project-memory/scripts/project-memory.mjs validate --base origin/main`
+   `node skills/project-memory/scripts/project-memory.mjs complete --id CF-101 --summary "Observed result" --validation "Commands and observed results" --next "Review PR"`
+4. Stage the new source/event files printed by the helper and commit them with
+   the implementation. Do not edit existing metadata files.
+5. Check the full committed diff:
+   `node skills/project-memory/scripts/project-memory.mjs validate --base origin/main --repository example/application --source-repository example/tasks`
 
-Completion snapshots staged Git blobs and file modes. It rejects unstaged edits
-in the listed paths. This handles line-ending normalization, symlinks and modes
-without storing file contents. Deleted paths use a null snapshot. Include both
-old and new paths for a rename. If code or tests change after completion, start a
-new cycle, rerun the checks, stage the final paths and complete again.
+Completion fingerprints staged Git blobs and modes. Unstaged or untracked
+intended files are refused. Deleted paths have null fingerprints. Include both
+sides of renames, the old file and every changed child for file-to-directory
+changes, and removed children plus the new file for the reverse. Directories do
+not cover children. Valid UTF-8 paths stay literal; unsupported bytes fail closed.
+Gitlink changes remain visible even when Git is configured to ignore submodules.
 
-File-to-directory changes need the former file path plus every changed child;
-directory-to-file changes need the removed children plus the new file path.
-Directories themselves do not cover their children. Repository paths must use
-valid UTF-8; other filename bytes fail closed rather than being replaced.
+If content changes after completion, start a new run, rerun checks, stage final
+content and complete again. Fresh coverage is based on the actual merge-base and
+committed HEAD, not a timestamp or an older completion of the same path.
 
-The exact ledger path is exempt from file fingerprints, so appending the event
-and committing everything together has no self-reference. Other files under
-`.project-memory/` are ordinary changed paths and still need coverage.
+`abandon --id CF-101 --summary "Why work stopped" --next "Owner action"` closes
+local work without coverage or changing the canonical claim. Starting after
+completion or abandonment creates a new run linked to the previous head.
 
-## Validation contract
+## Conflicts and interruptions
 
-- Read the committed HEAD and its merge base with `--base`; working-tree ledger
-  edits cannot satisfy a committed change.
-- Preserve the merge-base ledger bytes as an exact prefix. Append events; do
-  not rewrite or reorder history. During a rebase, keep the target ledger
-  intact and append the branch's new events, retaining each task's order.
-- Validate event fields, task-local time/order, scope and legal transitions.
-  Start or checkpoint is active. Only a final completion supplies coverage;
-  abandon and unfinished cycles do not.
-- Each changed non-ledger file needs a newly appended final completion whose
-  recorded blob and mode still match HEAD. Historical completed tasks cannot
-  cover later edits. A current completion can finish a historical open start.
-- Another task can supersede an older result on the same path, but at least
-  one fresh final completion must match the actual committed file.
+Each event is immutable under
+`.project-memory/tasks/TASK-ID/RUN-UUID/EVENT-UUID.json`. Each source snapshot is
+immutable under `.project-memory/tasks/TASK-ID/sources/COMMIT.json`. UUIDs and
+causal links are generated automatically. There is no shared mutable index,
+latest file, append file or ownership lock.
 
-CI checks declarations and committed content, not truthfulness or actual wall
-clock edit order. It does not prove that a start preceded a human's edits, that
-declared tests ran, or that code is secure. Review and ordinary tests still
-apply. The job prevents merging only when repository rules require its success;
-adding a workflow does not create a branch-protection rule.
+Status reports every task frontier. Multiple heads are unresolved, including a
+completion plus an active or abandoned head. Review the work and actual claim,
+then explicitly reconcile:
 
-## Existing ledgers
+`node skills/project-memory/scripts/project-memory.mjs reconcile --id CF-101 --repository example/application --files current/path --summary "How the competing work was reconciled" --next "Revalidate final content"`
 
-Existing unversioned start/complete records may remain unchanged in the base
-history. All newly appended records use version 1. No history is invented or
-backfilled. If legacy scope included the ledger itself, record a checkpoint
-with the real project paths before completing. History that already violates
-event order needs an explicit reviewed migration, not automatic rewriting.
+Reconciliation starts a new run linked to every current head. It preserves all
+history and supplies no coverage until completion. Its scope may omit reverted
+or dropped paths; old fingerprints are never unioned into new coverage. Missing
+parents, cycles, cross-task links and malformed records fail rather than choosing
+a timestamp winner.
+
+`status --stale-days 7` flags old active work for review without abandoning it or
+releasing its claim. One ordinary active task does not lock unrelated work.
+
+## Validation, CI and adoption
+
+Validation preserves all merge-base source/event files and legacy ledger bytes
+and modes. Only a task's single frontier can supply coverage, through a newly
+added completion that matches HEAD. Unknown files under `.project-memory/` are
+ordinary project files and still require coverage.
+
+Pass the actual PR base and code/source identities in CI. `--branch` reports the
+integration context; historical event branches remain origin provenance after
+renames or merges. Never suppress failures, guess a fallback base, weaken other
+checks or change protection settings as part of adoption. A workflow becomes a
+merge requirement only when repository rules require its status.
+
+Existing `.project-memory/tasks.jsonl`, including v1 and unversioned rows, remains
+byte-preserved read-only history. Status labels it as providing no v2 coverage.
+Do not append, rewrite, delete, backfill or silently migrate it. Re-register a
+reviewed task and make a genuine new v2 start for new implementation work.
+
+For a new source in the code repository, commit the reviewed task record first,
+register that pinned local commit, and record a real start before implementation.
+A separately prepared local helper can bootstrap adoption. Retain the source
+commit and chronology; do not backdate events or present a local proposal as an
+already published task. This bootstrap itself does not authorize publication.

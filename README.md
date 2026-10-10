@@ -33,10 +33,12 @@ on modes, behaviour, output, and example invocations.
 | [`adr`](skills/adr/README.md) | Create or update an Architecture Decision Record | Writes documentation only |
 | [`checkpoint`](skills/checkpoint/README.md) | Create, refresh, or resume durable handoffs (`checkpoints/`) across sessions and agents | Writes documentation only |
 | [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
-| [`project-memory`](skills/project-memory/README.md) | Record resumable task state and verify fresh completion evidence for committed changes | Records local implementation evidence; keeps ownership in canonical task records |
+| [`project-memory`](skills/project-memory/README.md) | Record immutable v2 task/run history and verify fresh committed-change evidence | Records local implementation evidence; keeps ownership in canonical task records |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
 | [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
-| [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents through research, planning, building and independent review | Delegates only when the task benefits from orchestration |
+| [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents, current plans, ownership, and independent review | Delegates only when the task benefits from orchestration |
+| [`ui-verification`](skills/ui-verification/README.md) | Verify visible browser behaviour and relevant repeated or interrupted flows | Verifies within the approved environment; reports browser checks separately from fallbacks |
+| [`persistent-iteration`](skills/persistent-iteration/README.md) | Continue bounded work or monitoring until the requested outcome or time boundary | Continues only within authorised scope |
 
 ## Suggested usage
 
@@ -53,6 +55,8 @@ Use safe-refactor to split this service without changing behaviour.
 Use adr to record our decision to use managed identity.
 Use checkpoint to write a handoff before I switch models.
 Use orchestrator to coordinate this feature across research, planning, implementation and review.
+Use ui-verification to check the changed browser flows and narrow-screen layout.
+Use persistent-iteration to watch this check run until it finishes.
 ```
 
 `templates/prompts/` holds fill-in-the-blank versions of the most common requests.
@@ -154,6 +158,8 @@ Consider keeping these global but invoke them manually when needed:
 - `architecture-review`
 - `performance-investigation`
 - `orchestrator`
+- `ui-verification`
+- `persistent-iteration`
 
 Keep stack-specific workflows, commands and architecture rules in project-level skills or `AGENTS.md`.
 
@@ -205,6 +211,20 @@ Installer regression tests run with:
 ```bash
 bash tests/test-install.sh
 ```
+
+## Project-memory v2
+
+The [Project Memory workflow](skills/project-memory/SKILL.md) now uses immutable
+per-task/per-run events and reviewed pinned source records. Task and repository
+identities are explicit; normal operation and validation do not fetch data or code.
+The [format and compatibility contract](skills/project-memory/FORMAT.md) describes
+fresh completion coverage, causal conflicts and offline validation.
+
+Existing v1 or unversioned JSONL history stays byte-preserved and read-only. It
+cannot satisfy fresh v2 coverage; there is no automatic migration or invented
+history. Review the documented source/claim setup before starting new work. Only
+register source records safe to copy into the target repository, especially when
+that repository is public. No private backlog access is required for generic use.
 
 ## Pin a project baseline
 

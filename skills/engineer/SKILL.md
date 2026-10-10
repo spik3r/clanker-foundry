@@ -24,12 +24,16 @@ When the user names a mode, follow it. Do not silently turn a review or validati
 Before editing:
 
 1. Read `AGENTS.md`, `CLAUDE.md`, repository documentation, and nearby instructions.
-2. Inspect the working tree and current branch.
+2. Inspect the current branch, staged and unstaged diffs, and untracked files. Record
+   which existing changes must remain untouched.
 3. Identify the requested outcome, constraints, and non-goals.
 4. Find the relevant entry points, call sites, tests, and existing patterns.
 5. Separate facts from assumptions.
 
-Do not overwrite unrelated user changes. Do not revert files merely because they differ from `main`.
+Do not overwrite unrelated user changes. Do not revert files merely because they differ
+from the comparison base. If an independent change needs a clean tree, use an isolated
+worktree from a verified base rather than stashing or resetting shared work. Do not use
+Git's shared stash while other agents may be working.
 
 ## 2. Investigate
 
@@ -80,7 +84,16 @@ Select checks from repository evidence, not habit. Run the narrowest relevant ch
 5. build or package validation;
 6. direct behavioural verification when feasible.
 
-Do not claim a check passed unless its command completed successfully. Record commands and meaningful results. If a check cannot run, state why and what remains unverified.
+Do not claim a check passed unless its command completed successfully. Record commands,
+meaningful results, and the revision or working-tree state tested. Inspect aggregate
+results for failed or skipped stages; a successful wrapper is not proof every check ran.
+If a check cannot run, state why and what remains unverified. After later edits, conflict
+resolution, or regenerated artifacts, rerun the checks whose evidence became stale.
+
+For visible UI changes, exercise the changed behaviour in a browser when available.
+Check affected loading, empty, error, repeated, and interrupted flows, plus relevant
+viewport and keyboard behaviour. A build, unit test, or HTTP response does not establish
+that the UI renders and works. Report browser verification separately from fallbacks.
 
 ## 6. Review the result
 
@@ -92,6 +105,12 @@ Before reporting:
 - remove dead code, debug output, and temporary files;
 - confirm tests prove the intended behaviour rather than only executing code;
 - consider regression, security, and operational risks.
+
+When a commit or publication is authorised, stage only the intended paths or hunks and
+inspect the complete staged diff, including changes staged before this task. Run
+`git diff --check` and `git diff --cached --check`; inspect the resulting commit before
+pushing. Do not include another worker's changes merely because they share a path.
+A request to implement a change does not by itself authorise publishing or merging it.
 
 ## 7. Report
 

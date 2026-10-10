@@ -17,6 +17,31 @@ Act as an independent reviewer. Default to read-only.
 
 Do not edit files, reformat code, commit, push, or amend history unless the user explicitly asks after the review.
 
+## Worker and pull-request safeguards
+
+For a PR, branch, or worker change:
+
+- Record the current base and head revisions. Inspect the complete effective diff
+  against the intended base, not only the PR summary or an old patch. Check for stale
+  stacked commits, already-landed fixes, duplicate work, and unrelated file changes.
+- Where the project uses claims, verify the live task record and compare the diff with
+  the claimed write set and acceptance checks. A copied record is evidence of past
+  context, not proof of current ownership or permission.
+- Inspect deleted tests, weakened assertions, skipped checks, and changed test discovery.
+  Green CI does not excuse removing the coverage that would expose a regression.
+- Verify generated artifacts according to current repository policy. Do not prescribe
+  committing ignored build output, manually resolving generated files, or rebuilding
+  a branch without authorisation. Report the smallest source-level fix needed.
+- Check required status results for the exact current head, including pending, failed,
+  skipped, and unavailable checks. Separate local results from remote CI. A prior
+  commit's green checks or a successful wrapper does not prove this revision passed.
+- Re-review affected behaviour after a rebase, conflict resolution, or later edits.
+  If the work is superseded, report that finding rather than merging an empty duplicate.
+
+A merge recommendation is not permission to merge, rewrite a branch, delete it, or
+bypass branch protection. Stay read-only and report blockers; make changes only under
+separate authorisation.
+
 ## Understand intent
 
 State the intended behaviour in one or two sentences.

@@ -1,0 +1,50 @@
+{
+  "formatVersion": 2,
+  "eventId": "2c1634ca-b727-4328-babf-e80720193e4f",
+  "runId": "038d7799-2db8-4cdf-9043-d98ad1c12657",
+  "kind": "start",
+  "parents": [
+    "1249d7f0-0cb1-49d5-a85d-a55fe0f9b0ba"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-001",
+    "path": "tasks/CF-001-foundry-v2-foundation.md",
+    "revision": "fc6df49917e4a11b52c22c5b5575294b84819afe",
+    "blob": "e061f5f17e39adb6c419b1938761182508fd765d",
+    "claim": {
+      "heading": "Local implementation claim",
+      "digest": "739f726fbbf2516743ff4ceb15483d1b6d5ecb77c8ff66f8362b00daa4fd4014"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-v2-foundation",
+  "pullRequest": null,
+  "at": "2026-10-10T00:09:04.380Z",
+  "summary": "Integrate the reviewed local v2 candidate with the independently verified published public-safe source",
+  "next": "Rerun exact final checks after strict-type guards, record truthful fresh completion, then publish the approved draft PR",
+  "files": [
+    "skills/project-memory/SKILL.md",
+    "skills/project-memory/README.md",
+    "skills/project-memory/FORMAT.md",
+    "skills/project-memory/scripts/project-memory.mjs",
+    "skills/project-memory/scripts/lib/state.mjs",
+    "skills/project-memory/scripts/lib/git.mjs",
+    "tests/project-memory.test.mjs",
+    "tests/project-memory-workflow.test.mjs",
+    ".github/workflows/validate.yml",
+    "skills/ui-verification/SKILL.md",
+    "skills/ui-verification/README.md",
+    "skills/persistent-iteration/SKILL.md",
+    "skills/persistent-iteration/README.md",
+    "global-agents/AGENTS.md",
+    "skills/engineer/SKILL.md",
+    "skills/orchestrator/SKILL.md",
+    "skills/orchestrator/templates/plan.md",
+    "skills/review-change/SKILL.md",
+    "AGENTS.md",
+    "README.md",
+    "tasks/CF-001-foundry-v2-foundation.md"
+  ]
+}
