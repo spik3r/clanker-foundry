@@ -119,6 +119,8 @@ done
 # Tool-specific root pointers must remain thin links to the one source of truth.
 [ "$(cat CLAUDE.md)" = '@AGENTS.md' ] \
   || err "CLAUDE.md: expected exactly '@AGENTS.md'"
+# Match literal Markdown backticks, not shell command substitution.
+# shellcheck disable=SC2016
 grep -q 'Read `AGENTS.md`' GEMINI.md \
   || err "GEMINI.md: missing AGENTS.md pointer"
 

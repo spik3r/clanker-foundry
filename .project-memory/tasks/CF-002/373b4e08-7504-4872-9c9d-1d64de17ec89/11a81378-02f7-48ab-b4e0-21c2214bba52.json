@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "11a81378-02f7-48ab-b4e0-21c2214bba52",
+  "runId": "373b4e08-7504-4872-9c9d-1d64de17ec89",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-002",
+    "path": "tasks/CF-002-literal-pointer-shellcheck.md",
+    "revision": "52eb428482430f88d72524034195d45c80e96039",
+    "blob": "098571786eb74ede9e44241eae6c172c99f1405c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ed94bb34b8aa2f87523dae49b0e9fe02b107a6ad395fb912d1c41df15b0bcef2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-v2-foundation",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/7",
+  "at": "2026-10-10T00:38:24.415Z",
+  "summary": "Preserve literal Markdown pointer match while documenting the command-local SC2016 exception",
+  "next": "Add targeted comment, verify behavior, independently review and publish to the existing draft",
+  "files": [
+    "scripts/validate.sh,tasks/CF-002-literal-pointer-shellcheck.md"
+  ]
+}
