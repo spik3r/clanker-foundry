@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "52eb428482430f88d72524034195d45c80e96039",
+  "id": "CF-002",
+  "path": "tasks/CF-002-literal-pointer-shellcheck.md",
+  "blob": "098571786eb74ede9e44241eae6c172c99f1405c",
+  "record": "---\nid: CF-002\ncategory: tooling\nstatus: in-progress\nowner: Foundry implementation\nrepositories: [spik3r/clanker-foundry]\ndepends_on: [CF-001]\n---\n\n# Preserve literal pointer validation without a false ShellCheck warning\n\n## Implementation claim\n\nOwner: Foundry implementation. The repository owner approved correcting SC2016\nin the pack validator and publishing the reviewed fix to existing draft PR7.\n\nScope: scripts/validate.sh, this task record, and its immutable v2 source/event\nmetadata. The backticks in the GEMINI.md pointer are Markdown characters and must\nremain literal. Make the smallest targeted correction with an explanation; do not\nenable command substitution, broadly suppress diagnostics, alter workflows or\nchange unrelated validation behavior. No merge, release or consumer rollout.\n\n## Acceptance and validation\n\n- Keep the existing pointer match and failure behavior.\n- Document any intentional line-scoped ShellCheck exception.\n- Check positive and negative pointer fixtures and prove backticks do not execute.\n- Run shell syntax, pack validation, whitespace and existing memory regressions.\n- Independently review the diff, publish to the existing draft and verify fresh\n  CI, including the ShellCheck job and installer regressions.\n- Record actual results and any local tool availability limits without treating\n  unrun checks as passed.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-002-literal-pointer-shellcheck.md",
+        "id": "CF-002",
+        "blob": "098571786eb74ede9e44241eae6c172c99f1405c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

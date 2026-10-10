@@ -1,0 +1,137 @@
+{
+  "formatVersion": 2,
+  "eventId": "a1e5497b-a853-4cbf-874e-0f80cb730960",
+  "runId": "038d7799-2db8-4cdf-9043-d98ad1c12657",
+  "kind": "complete",
+  "parents": [
+    "2c1634ca-b727-4328-babf-e80720193e4f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-001",
+    "path": "tasks/CF-001-foundry-v2-foundation.md",
+    "revision": "fc6df49917e4a11b52c22c5b5575294b84819afe",
+    "blob": "e061f5f17e39adb6c419b1938761182508fd765d",
+    "claim": {
+      "heading": "Local implementation claim",
+      "digest": "739f726fbbf2516743ff4ceb15483d1b6d5ecb77c8ff66f8362b00daa4fd4014"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-v2-foundation",
+  "pullRequest": null,
+  "at": "2026-10-10T00:12:24.660Z",
+  "summary": "Verified final generic v2 and reusable skills against the published public-safe source and independent review",
+  "next": "Publish the approved draft PR, verify its exact-head CI including installer tests, and retain pending checks honestly; no merge",
+  "files": [
+    "skills/project-memory/SKILL.md",
+    "skills/project-memory/README.md",
+    "skills/project-memory/FORMAT.md",
+    "skills/project-memory/scripts/project-memory.mjs",
+    "skills/project-memory/scripts/lib/state.mjs",
+    "skills/project-memory/scripts/lib/git.mjs",
+    "tests/project-memory.test.mjs",
+    "tests/project-memory-workflow.test.mjs",
+    ".github/workflows/validate.yml",
+    "skills/ui-verification/SKILL.md",
+    "skills/ui-verification/README.md",
+    "skills/persistent-iteration/SKILL.md",
+    "skills/persistent-iteration/README.md",
+    "global-agents/AGENTS.md",
+    "skills/engineer/SKILL.md",
+    "skills/orchestrator/SKILL.md",
+    "skills/orchestrator/templates/plan.md",
+    "skills/review-change/SKILL.md",
+    "AGENTS.md",
+    "README.md",
+    "tasks/CF-001-foundry-v2-foundation.md"
+  ],
+  "validation": "Final frozen source: 143/143 tests (133 lifecycle + 10 workflow), no failures/skips; parent and independent reviewer reruns passed. Pack validator, five JS syntax checks, whitespace and targeted public-data review passed. This supersedes preliminary 135/137-case observations before final strict-type guards. Source fc6df499 independently verified on GitHub and reproduced locally. Existing legacy bytes preserved. Local installer regression blocked by missing GNU Stow; optional skills-ref absent. Source-only remote baseline CI passed, not final-code CI.",
+  "snapshot": {
+    "skills/project-memory/SKILL.md": {
+      "blob": "f416fb2026f7e889be5e9db8752fb6d1dc35c7a0",
+      "mode": "100644"
+    },
+    "skills/project-memory/README.md": {
+      "blob": "b2c34796a8558cb21f60d4a91866d62f31e44c20",
+      "mode": "100644"
+    },
+    "skills/project-memory/FORMAT.md": {
+      "blob": "cbdffc547ccf2a899d41b708df8931c3ee662efc",
+      "mode": "100644"
+    },
+    "skills/project-memory/scripts/project-memory.mjs": {
+      "blob": "d71fc38ef168a1f136ec07fef6fb5a428b56ef55",
+      "mode": "100644"
+    },
+    "skills/project-memory/scripts/lib/state.mjs": {
+      "blob": "1b6384ec8cfd28fd6ee8e7d50809423f4e3c0210",
+      "mode": "100644"
+    },
+    "skills/project-memory/scripts/lib/git.mjs": {
+      "blob": "5c71393b0c7e123bd0667789f133828c0ab89fb5",
+      "mode": "100644"
+    },
+    "tests/project-memory.test.mjs": {
+      "blob": "2c6163b00c8606dcfb6de46ac72e4bb27e6456ba",
+      "mode": "100644"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "8edc92d6cde2a292017eb85e56970467c076d437",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "4fb36125415e008ecef433c5405d70d63209b33b",
+      "mode": "100644"
+    },
+    "skills/ui-verification/SKILL.md": {
+      "blob": "a384403fd27cbb31f19d43879e8b8f4ec33729ac",
+      "mode": "100644"
+    },
+    "skills/ui-verification/README.md": {
+      "blob": "95bcb71498512a29ef0987c4f77b2b3d4b0b61f2",
+      "mode": "100644"
+    },
+    "skills/persistent-iteration/SKILL.md": {
+      "blob": "c614546dbd12837311ab500ed90fb28dcad3af64",
+      "mode": "100644"
+    },
+    "skills/persistent-iteration/README.md": {
+      "blob": "b19d0764bbaaa67983063b08c05a6324123937f1",
+      "mode": "100644"
+    },
+    "global-agents/AGENTS.md": {
+      "blob": "fa560a827759bc421f87323e568838e1f8b23869",
+      "mode": "100644"
+    },
+    "skills/engineer/SKILL.md": {
+      "blob": "7fc977c27fe9e6cb7b7d278ccc5fbfd4fdff7ea2",
+      "mode": "100644"
+    },
+    "skills/orchestrator/SKILL.md": {
+      "blob": "09afb374d7aabbb84409e79582c30aa725e4f424",
+      "mode": "100644"
+    },
+    "skills/orchestrator/templates/plan.md": {
+      "blob": "5c9dc75d978a80d071adda9f481b6a33f489c56a",
+      "mode": "100644"
+    },
+    "skills/review-change/SKILL.md": {
+      "blob": "03734230bef93614f3910aa9200623474a0ad4b2",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "0670b2d20665744d2a1a0117ed2be054a940bbce",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "e711e16ce705d3b02e28665aedceb3e3ad92ffea",
+      "mode": "100644"
+    },
+    "tasks/CF-001-foundry-v2-foundation.md": {
+      "blob": "e061f5f17e39adb6c419b1938761182508fd765d",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "formatVersion": 2,
+  "eventId": "feebc0d5-35f7-45ca-bb2d-21860a1d5f62",
+  "runId": "03df1b72-0d40-4149-a86b-b75d0e593085",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-001",
+    "path": "tasks/CF-001-foundry-v2-foundation.md",
+    "revision": "c893bfa88a101790de1299b1ea655e0100d399d5",
+    "blob": "e061f5f17e39adb6c419b1938761182508fd765d",
+    "claim": {
+      "heading": "Local implementation claim",
+      "digest": "739f726fbbf2516743ff4ceb15483d1b6d5ecb77c8ff66f8362b00daa4fd4014"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-v2-foundation",
+  "pullRequest": null,
+  "at": "2026-10-10T00:01:04.688Z",
+  "summary": "Prepare the requested generic v2 lifecycle helper and reusable skills under the local producer claim",
+  "next": "Implement, test and independently review the scoped local candidate; public publication remains separately pending",
+  "files": [
+    "skills/project-memory/SKILL.md",
+    "skills/project-memory/README.md",
+    "skills/project-memory/FORMAT.md",
+    "skills/project-memory/scripts/project-memory.mjs",
+    "skills/project-memory/scripts/lib/state.mjs",
+    "skills/project-memory/scripts/lib/git.mjs",
+    "tests/project-memory.test.mjs",
+    "tests/project-memory-workflow.test.mjs",
+    ".github/workflows/validate.yml",
+    "skills/ui-verification/SKILL.md",
+    "skills/ui-verification/README.md",
+    "skills/persistent-iteration/SKILL.md",
+    "skills/persistent-iteration/README.md",
+    "global-agents/AGENTS.md",
+    "skills/engineer/SKILL.md",
+    "skills/orchestrator/SKILL.md",
+    "skills/orchestrator/templates/plan.md",
+    "skills/review-change/SKILL.md",
+    "AGENTS.md",
+    "README.md",
+    "tasks/CF-001-foundry-v2-foundation.md"
+  ]
+}

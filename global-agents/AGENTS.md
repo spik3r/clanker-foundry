@@ -205,6 +205,24 @@ PR descriptions should explain:
 
 A reviewer should understand the change in one read.
 
+## Shared checkout safeguards
+
+- Inspect the branch, staged diff, unstaged diff, and untracked files before editing.
+  Preserve work outside the requested scope, including files already staged by others.
+- For an independent change in a dirty checkout, prefer a separate worktree from a
+  verified base. Do not stash, reset, clean, or move another person's work to make room.
+  Git's stash is shared across worktrees; do not use it when other agents may be active.
+- Stage named paths, then inspect the complete staged diff. Do not use `git add .` or
+  `git add -A` in a shared checkout. A named path can still contain another worker's
+  edits; stage only the intended hunks or coordinate before proceeding.
+- Before committing, run `git diff --check` and `git diff --cached --check`. Before
+  pushing, inspect the commit's file list and diff against the intended base.
+- Follow the project's current ownership and claim records. Check active work and open
+  pull requests before starting a competing lane; a saved snapshot is not a live claim.
+- A request to inspect, edit, commit, publish, merge, or deploy grants only its stated
+  scope. Do not assume one action authorises the next. Do not bypass required checks
+  or branch protection to turn an unverified result into a completed task.
+
 ---
 
 # Progress Reports

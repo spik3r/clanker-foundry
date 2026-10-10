@@ -32,12 +32,15 @@ jobs:
         with:
           node-version: '24'
       - name: Test Project Memory lifecycle rules
-        run: node --test tests/project-memory.test.mjs
+        run: node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs
       - name: Verify committed pull-request lifecycle evidence
         if: github.event_name == 'pull_request'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: node skills/project-memory/scripts/project-memory.mjs validate --base "$BASE_SHA"
+          CODE_REPOSITORY: ${{ github.repository }}
+          TASK_SOURCE_REPOSITORY: ${{ github.repository }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: node skills/project-memory/scripts/project-memory.mjs validate --base "$BASE_SHA" --repository "$CODE_REPOSITORY" --source-repository "$TASK_SOURCE_REPOSITORY" --branch "$PR_HEAD_REF"
 
   # Advisory: surfaces shell issues without blocking merges.
   shellcheck:
