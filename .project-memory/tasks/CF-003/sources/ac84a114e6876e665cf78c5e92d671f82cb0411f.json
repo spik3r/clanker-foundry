@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ac84a114e6876e665cf78c5e92d671f82cb0411f",
+  "id": "CF-003",
+  "path": "tasks/CF-003-cloudflare-security-audit-reference.md",
+  "blob": "8b568872373e3a2ef03008eec93f57f146fb3284",
+  "record": "---\nid: CF-003\ncategory: docs\nstatus: in-progress\nowner: Foundry implementation\nrepositories: [spik3r/clanker-foundry]\ndepends_on: [CF-001]\n---\n\n# Document the Cloudflare security-audit skill as an external reference\n\n## Implementation claim\n\nOwner: Foundry implementation. The repository owner asked for the public\n`cloudflare/security-audit-skill` to be listed as an external reference skill with\ninstallation, usage and tips.\n\nScope: docs/external-skills.md, one new guide under docs/, the README external\nskills pointer, this task record, and its immutable v2 source/event metadata.\nReference only: do not vendor or copy upstream files, do not add a skill under\nskills/, and do not change validators, workflows or installers. No merge, release\nor consumer rollout.\n\n## Acceptance and validation\n\n- Install commands, modes and requirements match the upstream README and SKILL.md\n  as read on the date of writing; state that upstream may change.\n- Tips distinguish upstream facts from this repo's suggestions.\n- Run scripts/validate.sh and the existing memory regressions.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-003-cloudflare-security-audit-reference.md",
+        "id": "CF-003",
+        "blob": "8b568872373e3a2ef03008eec93f57f146fb3284",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

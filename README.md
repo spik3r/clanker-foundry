@@ -170,7 +170,9 @@ For a machine-wide behaviour base shared by every project, see
 
 See [useful external skills](docs/external-skills.md) for the official OpenAI curated
 `security-threat-model`, Caveman, and complementary skills from
-[mattpocock/skills](https://github.com/mattpocock/skills).
+[mattpocock/skills](https://github.com/mattpocock/skills). The Cloudflare
+`security-audit` skill has its own [guide](docs/cloudflare-security-audit.md)
+covering installation, usage and tips.
 
 ## Design notes
 
