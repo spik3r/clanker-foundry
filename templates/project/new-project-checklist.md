@@ -23,6 +23,14 @@ Work top to bottom. Skip items with a recorded reason, not silently.
 - [ ] Branch protection on the default branch
 - [ ] ADR directory created (`docs/adr/`) with ADR-000 recording the initial stack choice (`templates/adr/adr-template.md`)
 
+## Work continuity (when needed)
+
+- [ ] Canonical task store and tracking threshold chosen; keep an existing tracker
+- [ ] States, stable IDs, shared claims and ownership transfer documented
+- [ ] Handoff convention chosen, with separate paths for concurrent tasks
+- [ ] Task closeout requires acceptance and integration evidence
+- [ ] Optional evidence tooling chosen explicitly; see the [task workflow guide](../../docs/task-workflows.md)
+
 ## Security baseline
 
 - [ ] Secrets never enter the repo; secret store chosen and documented

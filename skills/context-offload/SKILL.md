@@ -34,10 +34,13 @@ Documentation-only edit mode. Use **create or refresh** to replace stale
    working tree, branch, relevant files, and active validation or services.
 2. Treat the repository as the source of truth. Separate facts and evidence from
    assumptions, unknowns, risks, and blockers.
-3. Replace stale `context.md` at the repository root. Include the current goal,
+3. Use the project's handoff path; otherwise replace `context.md` at the repository
+   root for one active effort. Use separate task paths for concurrent efforts rather
+   than overwriting another task's handoff. Include the current goal,
    state to preserve, completed evidence, validation, and the first next action.
 4. In resume mode, compare recorded branch, files, and validation state with the
-   repository. Correct stale claims before acting.
+   repository. Verify any linked task and live ownership at the canonical source;
+   a checkpoint does not claim or transfer work. Correct stale claims before acting.
 
 ## Validation
 
@@ -48,7 +51,7 @@ outcomes rather than command transcripts. State anything not run or no longer cu
 
 Return:
 
-- **Summary** — mode and `context.md` path;
+- **Summary** — mode and actual handoff path;
 - **Evidence** — verified task and repository state;
 - **Validation** — current and stale results;
 - **Risks** — assumptions, unknowns, and blockers;
@@ -75,6 +78,7 @@ Workspace: /absolute/path
 
 ## Current goal
 
+- Canonical task reference (if tracked):
 - Newest request:
 - Desired outcome:
 

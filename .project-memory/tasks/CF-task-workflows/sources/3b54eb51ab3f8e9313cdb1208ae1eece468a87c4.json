@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "3b54eb51ab3f8e9313cdb1208ae1eece468a87c4",
+  "id": "CF-task-workflows",
+  "path": "tasks/CF-task-workflows-adoption.md",
+  "blob": "19463e6dbae7618d52d91ce2febb187a5c3786a8",
+  "record": "---\nid: CF-task-workflows\ncategory: workflow\nstatus: in-progress\nowner: Foundry task workflow implementation\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Add reusable task, backlog and ownership workflows\n\n## Implementation claim\n\nOwner: Foundry task workflow implementation, branch codex/task-coordination-workflows.\nThe user approved adding generic task tracking, coordination and handoff guidance\nfor people adopting the pack in their projects. Reuse existing Project Memory and\nhandoff conventions; do not import another project's tasks or operating rules.\n\nWrite scope: skills/task-management/**, skills/agent-coordination/**,\nskills/backlog-maintenance/**, docs/task-workflows.md, README.md,\ntemplates/project/project-agents.md, templates/project/new-project-checklist.md,\nskills/context-offload/SKILL.md, skills/checkpoint/SKILL.md,\nskills/orchestrator/templates/handoff.md, workflows/feature-delivery.md,\nand this task record. Immutable Project Memory metadata accompanies the work.\nNo lifecycle helper, CI, global instructions, external tracker or deployment edits.\n\n## Acceptance\n\n- A person can adopt task tracking in an existing project without scaffolding an app.\n- Each skill works alone and follows the project's existing task store.\n- Task identity, ownership, handoffs, validation and closeout have clear homes.\n- Concurrent claims are verified at the shared source; local notes do not lock work.\n- Project Memory stays an optional evidence layer for consumers, with its source\n  format and limits stated when relevant.\n\n## Validation\n\nRun pack validation, installer regressions, Project Memory committed-diff validation,\nand whitespace checks. Review a solo file-backed task, an external issue tracker,\nan overlapping claim, and an interrupted handoff against the written procedures.\n\n## Integration\n\nDeliver a local reviewed change. Publication and merge require their own authority.\nRecord actual results and unresolved work here.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-task-workflows-adoption.md",
+        "id": "CF-task-workflows",
+        "blob": "19463e6dbae7618d52d91ce2febb187a5c3786a8",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

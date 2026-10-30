@@ -5,6 +5,11 @@ A repeatable path from a feature request to a reviewed change. Use
 one agent can follow the same phases for a small change. Stay in each phase until it
 produces its output. Building from an unclear plan makes errors expensive.
 
+For tracked work, link the canonical task throughout these phases. Before editing,
+check the live claim and open PRs; agree a bounded write scope where work overlaps.
+The [task workflow guide](../docs/task-workflows.md) explains adoption without changing
+your tracker or requiring multiple agents.
+
 ## Phase 1 — Explore
 
 Output: distilled findings that state what exists, where it lives, and what constrains
@@ -56,3 +61,8 @@ Output: a short account of the change, validation, open issues, and next action.
 - Use the [`pull request template`](../templates/pr/pull_request_template.md) when opening
   a PR.
 - Record a lasting design decision with [`adr`](../skills/adr/README.md) when needed.
+
+For tracked work, record the checked revision, actual validation results, integration
+evidence and remaining gates in the canonical task. Release or agree transfer of
+the finished claim; a worker report or merged component alone does not close an
+integrated outcome. If pausing, leave a task-linked handoff with the first next action.
