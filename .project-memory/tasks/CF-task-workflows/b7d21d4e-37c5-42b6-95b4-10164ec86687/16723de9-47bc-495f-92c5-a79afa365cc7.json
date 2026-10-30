@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "16723de9-47bc-495f-92c5-a79afa365cc7",
+  "runId": "b7d21d4e-37c5-42b6-95b4-10164ec86687",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-task-workflows",
+    "path": "tasks/CF-task-workflows-adoption.md",
+    "revision": "3b54eb51ab3f8e9313cdb1208ae1eece468a87c4",
+    "blob": "19463e6dbae7618d52d91ce2febb187a5c3786a8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0ecb104bfd87ee5bc235fc4015f4ba1c69b1b3ef951345c93d393a697a7a70ba"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/task-coordination-workflows",
+  "pullRequest": null,
+  "at": "2026-10-30T02:19:55.314Z",
+  "summary": "Add portable task ownership, backlog upkeep and handoff guidance",
+  "next": "Write focused skills and adoption guide, then validate",
+  "files": [
+    "skills/task-management/SKILL.md,skills/task-management/README.md,skills/task-management/templates/task.md,skills/agent-coordination/SKILL.md,skills/agent-coordination/README.md,skills/backlog-maintenance/SKILL.md,skills/backlog-maintenance/README.md,docs/task-workflows.md,README.md,templates/project/project-agents.md,templates/project/new-project-checklist.md,skills/context-offload/SKILL.md,skills/checkpoint/SKILL.md,skills/orchestrator/templates/handoff.md,workflows/feature-delivery.md,tasks/CF-task-workflows-adoption.md"
+  ]
+}

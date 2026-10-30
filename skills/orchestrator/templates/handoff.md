@@ -2,6 +2,12 @@
 
 **Role:** <explorer-researcher | architect-planner | builder-developer | reviewer-verifier>
 **Task:** <one bounded job>
+**Canonical task:** <stable reference, or untracked>
+**Ownership:** <live claim reference; transfer pending or accepted>
+**Workspace:** <path, verified base and branch>
+**Write scope:** <exact writable paths; read-only if applicable>
+**Allowed actions:** <edits, checks and any expressly authorised external actions>
+**Integration owner:** <who checks and integrates the result>
 
 ## Outcome
 
@@ -20,6 +26,8 @@
 ## Return contract
 
 - Return a short, distilled artifact rather than a transcript.
-- Cite evidence and state validation performed.
+- Cite changed paths and checked revision; state validation performed and limits.
+- Identify running processes, blockers and the first next action.
+- Keep lifecycle and ownership in the canonical task; this brief is not a claim.
 - Do not expand scope.
 - If blocked, state what is missing and stop.

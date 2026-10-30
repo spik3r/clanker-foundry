@@ -20,6 +20,12 @@ checkpoints/
 └── assumptions.md
 ```
 
+For concurrent efforts, use separate task directories such as
+`checkpoints/APP-001/` so workers cannot overwrite one shared `current.md`. Apply
+the paths and resume prompt below within that selected directory. Link the
+canonical task from the current objective when work is tracked. Task status and
+ownership stay in that record; checkpoint notes are resume context.
+
 Templates for all three live alongside this skill in [`templates/`](templates/):
 [`current.md`](templates/current.md), [`decisions.md`](templates/decisions.md),
 and [`assumptions.md`](templates/assumptions.md). Copy the relevant template into the
@@ -52,7 +58,9 @@ Use when the user asks to resume, continue, restore context, or pick up previous
 1. Read `checkpoints/current.md`.
 2. Read relevant unresolved items in `decisions.md` and `assumptions.md`.
 3. Verify that the repository still matches the recorded branch, files, and validation state.
-4. Inspect `git status --short` and relevant recent changes.
+4. Inspect `git status --short` and relevant recent changes. Verify the linked task
+   and live claim at its canonical source before resuming edits; a saved snapshot
+   does not transfer ownership.
 5. Identify stale or contradictory checkpoint content.
 6. Summarise the current objective, first next action, and any mismatch.
 7. Continue only within the user's requested scope.

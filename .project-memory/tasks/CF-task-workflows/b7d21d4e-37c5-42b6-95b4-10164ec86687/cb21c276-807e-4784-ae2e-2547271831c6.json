@@ -1,0 +1,112 @@
+{
+  "formatVersion": 2,
+  "eventId": "cb21c276-807e-4784-ae2e-2547271831c6",
+  "runId": "b7d21d4e-37c5-42b6-95b4-10164ec86687",
+  "kind": "complete",
+  "parents": [
+    "2d969562-7238-45c9-9e42-6c184f6ac6f0"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-task-workflows",
+    "path": "tasks/CF-task-workflows-adoption.md",
+    "revision": "3b54eb51ab3f8e9313cdb1208ae1eece468a87c4",
+    "blob": "19463e6dbae7618d52d91ce2febb187a5c3786a8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0ecb104bfd87ee5bc235fc4015f4ba1c69b1b3ef951345c93d393a697a7a70ba"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/task-coordination-workflows",
+  "pullRequest": null,
+  "at": "2026-10-30T02:24:25.096Z",
+  "summary": "Add portable task lifecycle, shared claims, backlog upkeep and task-linked handoffs; local review ready",
+  "next": "Validate committed diff, then owner review of local branch; publication not performed",
+  "files": [
+    "skills/task-management/SKILL.md",
+    "skills/task-management/README.md",
+    "skills/task-management/templates/task.md",
+    "skills/agent-coordination/SKILL.md",
+    "skills/agent-coordination/README.md",
+    "skills/backlog-maintenance/SKILL.md",
+    "skills/backlog-maintenance/README.md",
+    "docs/task-workflows.md",
+    "README.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "skills/context-offload/SKILL.md",
+    "skills/checkpoint/SKILL.md",
+    "skills/orchestrator/templates/handoff.md",
+    "workflows/feature-delivery.md",
+    "tasks/CF-task-workflows-adoption.md"
+  ],
+  "validation": "bash scripts/validate.sh passed; bash tests/test-install.sh passed; git diff --check and git diff --cached --check passed; manual review of solo tasks, external trackers, overlap and interrupted handoffs; skills-ref absent and quick_validate unavailable because PyYAML missing",
+  "snapshot": {
+    "skills/task-management/SKILL.md": {
+      "blob": "05453cdf5d6a454b370ccccab6daf803570c3297",
+      "mode": "100644"
+    },
+    "skills/task-management/README.md": {
+      "blob": "d8fc45875f0fb25384e612d71a003c1b4ce1e4e7",
+      "mode": "100644"
+    },
+    "skills/task-management/templates/task.md": {
+      "blob": "41e440577b860e440cb3c7a42f7a3161ae511a25",
+      "mode": "100644"
+    },
+    "skills/agent-coordination/SKILL.md": {
+      "blob": "527dca25c9bc9862bfc075a18c79f8276b5f3643",
+      "mode": "100644"
+    },
+    "skills/agent-coordination/README.md": {
+      "blob": "b548798ff918182c8413467cb06d89d8a83a6ed7",
+      "mode": "100644"
+    },
+    "skills/backlog-maintenance/SKILL.md": {
+      "blob": "1bb1e048dd5f142028a925026922966a0f1364a7",
+      "mode": "100644"
+    },
+    "skills/backlog-maintenance/README.md": {
+      "blob": "022362b66f4246697e268edd2e657d6970edf2bf",
+      "mode": "100644"
+    },
+    "docs/task-workflows.md": {
+      "blob": "eb3e0b8db9648f3b243729322216fc80dbf7584a",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "7eeae046b106d2b8bc823372ac95a3f1a6212f0e",
+      "mode": "100644"
+    },
+    "templates/project/project-agents.md": {
+      "blob": "6c86448d626020130b702a7266846f76c16ab407",
+      "mode": "100644"
+    },
+    "templates/project/new-project-checklist.md": {
+      "blob": "566fdf1604ad5fe3d432dacae441cd08b3ff8389",
+      "mode": "100644"
+    },
+    "skills/context-offload/SKILL.md": {
+      "blob": "cfdf343e433a9701141fc6134449cf9f7a157021",
+      "mode": "100644"
+    },
+    "skills/checkpoint/SKILL.md": {
+      "blob": "2877d2432abc54f805c130dc13a1d911b0a8c65b",
+      "mode": "100644"
+    },
+    "skills/orchestrator/templates/handoff.md": {
+      "blob": "2bf497e1248de60f4f7de4b9e46e2ed4ec0a0b2c",
+      "mode": "100644"
+    },
+    "workflows/feature-delivery.md": {
+      "blob": "b4b560dbf33ba002bcc4a971386421259c8eb577",
+      "mode": "100644"
+    },
+    "tasks/CF-task-workflows-adoption.md": {
+      "blob": "76de63d44a4c7d9f0b9cab6e73f39e40965dd1eb",
+      "mode": "100644"
+    }
+  }
+}

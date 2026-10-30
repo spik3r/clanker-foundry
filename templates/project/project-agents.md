@@ -48,6 +48,20 @@ services running, say how to start them.
 - <branching / commit conventions>
 - ADRs live in <path>; use one for decisions that are hard to reverse.
 
+## Tasks and handoffs (optional)
+
+- Canonical task store: <existing tracker URL or task directory; use one authority>
+- Lifecycle and claim process: <states, shared claim mechanism, transfer convention>
+- Tracking threshold: <which work needs a task; exemptions for tiny solo changes>
+- Handoffs: <context file or checkpoint directory; separate paths for concurrent tasks>
+- Before resuming, verify repository state and the live task claim.
+- Close tasks with acceptance, validation and required integration evidence.
+- Project Memory: <not adopted, or installed source/lifecycle instructions>
+
+Keep task status and ownership in the canonical record; link from handoffs and PRs.
+Remove this section if the project does not need tracked work. See the pack's
+[task workflow guide](../../docs/task-workflows.md) for adoption choices.
+
 ## Boundaries
 
 - Do not edit: <generated code, vendored deps, migrations already applied>

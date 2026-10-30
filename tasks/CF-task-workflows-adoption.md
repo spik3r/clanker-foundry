@@ -1,7 +1,7 @@
 ---
 id: CF-task-workflows
 category: workflow
-status: in-progress
+status: review
 owner: Foundry task workflow implementation
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -43,3 +43,28 @@ an overlapping claim, and an interrupted handoff against the written procedures.
 
 Deliver a local reviewed change. Publication and merge require their own authority.
 Record actual results and unresolved work here.
+
+## Local result
+
+Added three standalone skills, a task template and an adoption guide. Linked task
+references and live ownership checks into handoffs, delivery and optional project
+instructions. Existing trackers remain authoritative; Project Memory remains an
+optional consumer choice with a documented Markdown source requirement.
+
+Validation: `bash scripts/validate.sh` passed, including relative links and skill
+conventions. `bash tests/test-install.sh` passed. `git diff --check` passed.
+Reviewed the written procedures for solo file-backed work, an external issue
+tracker, competing claims and interrupted task handoffs. This was a manual review,
+not a test with an independent agent or live external tracker.
+
+The optional `skills-ref` tool is absent. The skill-creator `quick_validate.py`
+could not run because the available Python lacks PyYAML. No helper, installer or
+CI logic changed. Project Memory committed-diff validation runs after commit.
+
+The first local start event used a comma-separated file list, which the helper
+treated as one path. A subsequent resume records the exact paths and preserves
+that mistake in the immutable history.
+
+Implementation editing is finished. Next: owner review of the local branch and
+decision on publication. The claim reserves no additional implementation work;
+no shared reservation or external tracker update has been published.

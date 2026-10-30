@@ -33,6 +33,9 @@ on modes, behaviour, output, and example invocations.
 | [`adr`](skills/adr/README.md) | Create or update an Architecture Decision Record | Writes documentation only |
 | [`checkpoint`](skills/checkpoint/README.md) | Create, refresh, or resume durable handoffs (`checkpoints/`) across sessions and agents | Writes documentation only |
 | [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
+| [`task-management`](skills/task-management/README.md) | Scope, track and close work in the existing task store | Writes task records within the requested scope |
+| [`agent-coordination`](skills/agent-coordination/README.md) | Check shared claims, avoid overlap and transfer bounded work | Coordinates ownership; does not launch workers |
+| [`backlog-maintenance`](skills/backlog-maintenance/README.md) | Reconcile stale, duplicate or completed tasks with evidence | Reviews stay read-only; upkeep edits the agreed records |
 | [`project-memory`](skills/project-memory/README.md) | Record immutable v2 task/run history and verify fresh committed-change evidence | Records local implementation evidence; keeps ownership in canonical task records |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
 | [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
@@ -66,6 +69,14 @@ shows how to run the four agent profiles as a feature delivery pipeline.
 For reusable subagent profiles, see [agents/](agents/README.md):
 explorer-researcher, architect-planner, builder-developer, and independent
 reviewer-verifier.
+
+## Tasks and handoffs in your project
+
+Use the [task workflow guide](docs/task-workflows.md) to adopt task tracking, ownership
+and session handoffs in an existing or new project. Keep your current tracker, or
+start with task files in the code repository. The guide explains which record owns
+which state, how concurrent claims work, and when optional Project Memory adds value.
+No app template or separate backlog repository is required.
 
 ## Installation
 
