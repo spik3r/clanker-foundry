@@ -1,7 +1,7 @@
 ---
 id: CF-deterministic-orchestration
 category: architecture
-status: in-progress
+status: review
 owner: Foundry orchestration planning
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -51,6 +51,33 @@ be repeated for this documentation-only change.
 ## Integration and next action
 
 Integration owner: repository owner. No runtime has been selected or approved for
-implementation by this task. Next: write and review the plan, record observed
-checks, and deliver the local planning branch for review. Existing claims and
-records remain unchanged.
+implementation by this task. Existing claims and records remain unchanged.
+
+## Local planning result
+
+Fast-forwarded the clean worktree from `a25e642` to origin/main `7a03b09`, then
+created the plan against the merged task workflows. The plan keeps standalone
+skills and existing Markdown sources, defines opt-in authority cutover, typed
+contracts and guarded execution, and gives seven bounded implementation phases.
+Only this planning task, the design document and new immutable evidence changed.
+
+Independent read-only design review found two ambiguities: competing nonterminal
+executions for one task, and active attempts retaining access after blocking.
+The plan now forbids the former and fences/retires blocked attempts while retaining
+resources until cleanup is confirmed. Follow-up review found both resolved.
+The lead also checked the merged task/coordination workflows and migration rules.
+These are document reviews, not tests of an implemented runtime.
+
+Observed checks: `bash scripts/validate.sh` passed, including relative Markdown
+links; `git diff --check` passed. Optional `skills-ref` is not installed.
+The host runs Node `v26.0.0`; the apparent `node@24` installation resolves to that
+same binary, so the skill's Node 24 prerequisite has not been met locally. Helper
+commands ran on Node 26; no Node 24 compatibility result is claimed. No helper or
+CI code changed; lifecycle and installer suites were not rerun for this
+documentation-only change. Staged whitespace and committed-diff checks run during
+final recording.
+
+Planning edits are finished; the claim reserves no runtime implementation work.
+Next: owner review of phase 0 choices, especially runtime location, host topology,
+task authority, capability enforcement and retry budgets. Publication, task-store
+migration, merge and deployment have not been performed.
