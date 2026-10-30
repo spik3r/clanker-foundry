@@ -1,0 +1,24 @@
+name: orchestration
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned runtime dependencies
+        run: npm ci --prefix runtime --ignore-scripts --no-fund --no-audit
+      - name: Test deterministic orchestration pilot
+        run: npm test --prefix runtime

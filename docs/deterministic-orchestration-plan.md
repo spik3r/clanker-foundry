@@ -3,7 +3,27 @@
 Date: 2026-10-30. Reviewed base: `7a03b095eff59e76b98354673aec5d538ef76233`
 (`origin/main`, including task-workflow adoption PR #8). Previous review: `a25e642`.
 Planning task: [CF-deterministic-orchestration](../tasks/CF-deterministic-orchestration-plan.md).
-Status: proposed design; no runtime, schema implementation or migration is included.
+Status: architecture reference with an opt-in read-only pilot now implemented.
+The original planning change contained no runtime; the later implementation is
+described in [runtime/README.md](../runtime/README.md) and
+[ADR 0001](adr/0001-deterministic-runtime.md). No existing task store was migrated.
+
+## Implementation status
+
+The owner authorized implementation after reviewing this plan. The pilot adds
+strict schemas, a pure evaluator, SQLite transactions/reservations, immutable
+artifacts, receipts/history/replay, durable outbox recovery, fake and injected
+text-only workers, reviewed snapshot proposals and generated views. A CLI demo
+exercises four simulated stages and explicit approvals; it makes no live provider
+call. Focused tests cover supported behavior; task records hold actual results.
+
+Phases 0-4 have a local implementation. Phase 5 supplies a provider-neutral
+text callback seam rather than a bundled vendor client or writable host adapter.
+Phase 6 supplies explicit snapshot intake/export and retains manual Project Memory
+preflight; no automatic bridge, live namespace cutover or consumer rollout occurred.
+Unattended writes, live provider validation and deployment remain outside the
+read-only pilot. The later phase table describes the broader target, not a claim
+that every integration has been enabled.
 
 ## Recommendation and changes to the previous proposal
 
@@ -325,12 +345,14 @@ transfer claims; which host can enforce capabilities; retry/rework budgets; what
 integration or deployment evidence each task requires. These do not prevent
 reviewing this plan but can change implementation scope.
 
-The previous baseline run reported pack validation passing and 142/143 lifecycle
-tests passing, with an `EPERM` creating an invalid UTF-8 filename fixture. That is
-historical evidence, not validation of this updated branch. This planning change
-does not modify helper/CI code or establish runtime correctness. Current observed
-documentation checks are recorded in the planning task and its completion event.
+The original planning run reported 142/143 lifecycle tests passing, with an
+`EPERM` creating an invalid UTF-8 filename fixture. The implementation run reproduced
+that same fixture limitation on Node 24. New runtime tests, installer checks and
+independent adversarial review are recorded in the linked implementation tasks;
+they do not establish live provider or unattended-writer correctness. The existing
+lifecycle helper and its CI workflow remain unchanged; runtime tests have a
+separate CI workflow.
 
-Next action: owner review of phase 0 decisions, then claim only the agreed first
-implementation slice. This document neither enables a scheduler nor authorizes
-publication, tracker migration, merge or deployment.
+Next action: owner review of the local pilot and its remaining provider/host,
+evidence-bridge and cutover decisions. Publication, tracker migration, unattended
+writes, merge and deployment require their own scope and authorization.

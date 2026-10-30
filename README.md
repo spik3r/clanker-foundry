@@ -13,6 +13,7 @@ plus the templates, workflows, and checklists that support it.
 | `workflows/` | Repeatable procedures, e.g. `bug-investigation.md` |
 | `checklists/` | Verification lists: `security.md`, `code-review.md` |
 | `docs/` | Framework and external-skill guidance |
+| `runtime/` | Optional single-host deterministic orchestration pilot with supervised read-only workers |
 | `scripts/stow.sh` | Stows skills, subagents, workflows, templates, checklists, and global instructions |
 | `global-agents/` | Tracked machine-wide `AGENTS.md`, setup guide, and tool wiring |
 | `AGENTS.md` | Repo instructions and conventions — the source of truth for agents (`CLAUDE.md` and `GEMINI.md` point at it) |

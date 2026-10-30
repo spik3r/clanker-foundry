@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "0f971e28c8b11d7eff41969d62a8051b39592526",
+  "id": "CF-orchestration-core",
+  "path": "tasks/CF-orchestration-core-implementation.md",
+  "blob": "e77ebc0c4b9dfd8cb7ff9cc21b39c4ac5fcd1c4d",
+  "record": "---\nid: CF-orchestration-core\nstatus: in-progress\nowner: Foundry runtime implementation\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Implement pure guarded execution transitions\n\n## Implementation claim\n\nThe user authorized orchestrated implementation using Luna or appropriate\nsubagents. Owner and integration lead: Foundry runtime implementation on branch\n`codex/deterministic-orchestration-plan`, base `d879f1f`. This bounded local\nclaim is not a published shared reservation. The checkout was clean and the\nconnected open-PR search returned no open PRs before implementation.\n\nExact write scope:\n- `runtime/src/state.mjs`\n- `runtime/test/state.test.mjs`\n- This task record and new immutable Project Memory source/event files.\n\nWorkers own disjoint implementation paths; the lead owns task/evidence records,\ndependency setup, integration and local commits. No worker may stage, commit,\npublish, deploy, change an existing task owner or rewrite memory history.\n\n## Acceptance and dependencies\n\nFollow the saved deterministic orchestration plan. Use an opt-in single-host\nNode/SQLite pilot in this repository, versioned schemas, strict admission,\ndeterministic transitions, fenced attempts, transactional reservations/receipts,\nand restart-safe outbox dispatch. Contracts precede core/store integration;\nthe pilot depends on their tested APIs. Preserve standalone skills, canonical\nMarkdown task inputs and offline Project Memory behavior. Live task migration,\nautomatic writable workers, publication, merge and deployment are excluded.\n\n## Validation and next action\n\nRun focused runtime tests, pack validation, installer regressions when available,\nwhitespace checks, independent review and committed evidence validation. Do not\nclaim live provider execution from simulated tests. Record actual Node version;\nthe current host provides Node 26 rather than the documented Node 24 prerequisite.\nNext: register pinned source and record a genuine start before implementation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-core-implementation.md",
+        "id": "CF-orchestration-core",
+        "blob": "e77ebc0c4b9dfd8cb7ff9cc21b39c4ac5fcd1c4d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@clanker-foundry/orchestration-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "demo": "node src/cli.mjs demo"
+  },
+  "dependencies": { "ajv": "8.20.0" }
+}

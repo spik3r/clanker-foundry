@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "34f2e2d7-353e-460e-9ce5-ff9e11543dec",
+  "runId": "483b907e-5d88-4317-b0e4-38dedc5ad701",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-store",
+    "path": "tasks/CF-orchestration-store-implementation.md",
+    "revision": "0f971e28c8b11d7eff41969d62a8051b39592526",
+    "blob": "9f6c871da704682f73db9a161807d6132b22410b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e97459051b114b343ba3ab720c3d19dbaf845c4210d31d5f039ca1249062af3d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T03:06:50.255Z",
+  "summary": "Implement bounded opt-in runtime slice under orchestrated ownership",
+  "next": "Implement, test and independently review before staged completion",
+  "files": [
+    "runtime/src/store.mjs",
+    "runtime/test/store.test.mjs",
+    "tasks/CF-orchestration-store-implementation.md"
+  ]
+}
