@@ -375,6 +375,7 @@ export function createIsolatedAdapter({ workerId, invoke, workspace, inputPaths 
       let dockerInvocationStarted = false;
       try {
         const files = await workspace.readFiles(inputPaths);
+        if (record.controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked during input preparation');
         const request = freeze(structuredClone({ task: spec,
           attempt: { attempt_id: attempt.attempt_id, stage_id: attempt.stage_id, worker_id: attempt.worker_id, input_revisions: attempt.input_revisions },
           plan_identity: { schema_version: 1, execution_id: workspace.execution_id, spec_digest: digest(spec),
@@ -384,7 +385,10 @@ export function createIsolatedAdapter({ workerId, invoke, workspace, inputPaths 
             write_scope: 'Use exactly plan_identity.write_scope; do not invent IDs or revisions.',
             before_digests: workspace.base_digests },
           files, inputSubjects }));
-        record.invocation = Promise.resolve().then(() => invoke(request, { signal: record.controller.signal }));
+        record.invocation = Promise.resolve().then(() => {
+          if (record.controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before provider invocation');
+          return invoke(request, { signal: record.controller.signal });
+        });
         const output = await record.invocation;
         if (record.controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before workspace execution');
         if (typeof output !== 'string' || Buffer.byteLength(output, 'utf8') > MAX_PLAN_BYTES) fail('INVALID_WORKSPACE_PLAN', 'Worker must return a bounded JSON file plan');

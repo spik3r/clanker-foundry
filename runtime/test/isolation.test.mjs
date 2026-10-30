@@ -62,3 +62,39 @@ test('isolated adapter rejects oversized plan artifacts before the Docker host r
   await assert.rejects(adapter.runAttempt({ attempt: state.attempt, spec: state.spec }), { code: 'INVALID_WORKSPACE_PLAN' });
   assert.equal(state.applied.length, 0);
 });
+
+test('cancellation during input reads prevents provider dispatch and confirms cleanup only after settlement', async () => {
+  const state = fixture();
+  const reads = Promise.withResolvers();
+  state.workspace.readFiles = () => reads.promise;
+  let invocations = 0;
+  const adapter = createIsolatedAdapter({ workerId: state.attempt.worker_id, workspace: state.workspace,
+    invoke: async () => { invocations += 1; return canonical(state.plan); } });
+  const running = adapter.runAttempt({ attempt: state.attempt, spec: state.spec });
+  const rejected = assert.rejects(running, { code: 'ATTEMPT_ABORTED' });
+  const revoke = () => adapter.revokeCapabilities({ attempt_id: state.attempt.attempt_id,
+    fencing_token: state.attempt.fencing_token, attempt: state.attempt });
+  assert.deepEqual(await revoke(), { stopped: false });
+  reads.resolve([]);
+  await rejected;
+  assert.equal(invocations, 0);
+  assert.equal(state.applied.length, 0);
+  assert.deepEqual(await revoke(), { stopped: true });
+});
+
+test('cancellation before the queued provider callback prevents invocation', async () => {
+  const state = fixture();
+  let invocations = 0;
+  const adapter = createIsolatedAdapter({ workerId: state.attempt.worker_id, workspace: state.workspace,
+    invoke: async () => { invocations += 1; return canonical(state.plan); } });
+  const running = adapter.runAttempt({ attempt: state.attempt, spec: state.spec });
+  const rejected = assert.rejects(running, { code: 'ATTEMPT_ABORTED' });
+  // readFiles has resolved; its continuation queues invoke after this microtask.
+  const revoked = new Promise((resolve, reject) => queueMicrotask(() => {
+    adapter.revokeCapabilities({ attempt_id: state.attempt.attempt_id,
+      fencing_token: state.attempt.fencing_token, attempt: state.attempt }).then(resolve, reject);
+  }));
+  await Promise.all([rejected, revoked]);
+  assert.equal(invocations, 0);
+  assert.equal(state.applied.length, 0);
+});

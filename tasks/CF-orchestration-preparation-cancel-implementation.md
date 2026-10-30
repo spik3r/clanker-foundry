@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-preparation-cancel
-status: in-progress
+status: review
 owner: Foundry cancellation fix
 repositories: [spik3r/clanker-foundry]
 ---
@@ -29,8 +29,16 @@ Do not change Docker configuration, credentials, namespace authority or promotio
 
 ## Validation and next action
 
-Run Node 24 focused and complete runtime tests, the existing Project Memory suites,
-pack/installer/whitespace checks and committed evidence validation. Have the
-independent readiness reviewer recheck the race. Next: register the pinned claim,
-record a genuine start, implement and validate. Push only after review and required
-checks pass; no merge or deployment is authorized.
+Added abort checks after workspace reads and inside the queued provider callback.
+Delayed-read and queued-callback regressions prove zero provider invocations and
+zero Docker plan applications after cancellation. Cleanup stays unconfirmed while
+reads are pending and becomes confirmed once preparation has stopped.
+
+Node v24.22.2 passed all 308 runtime and Project Memory/workflow tests, without
+skips. Pack, installer and whitespace checks passed; optional skills-ref is not
+installed. The independent reviewer reran four isolated-adapter tests and the
+original delayed-read reproduction, reporting no remaining readiness blockers.
+No live provider or Docker call was needed for these cancellation guards.
+Next: validate the committed full-diff evidence and push the reviewed branch only
+if all gates pass. The user authorized that conditional push; no merge or
+deployment is included.
