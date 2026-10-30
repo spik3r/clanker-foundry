@@ -343,8 +343,20 @@ for (const path of ['café.txt', 'space name.txt', 'line\nbreak.txt', '[literal]
 }
 test('invalid UTF-8 filename cannot become a replacement-character deletion', (t) => {
   const f = cliFixture(t); f.start('CF-101', ['\ufffd.txt']);
-  writeFileSync(Buffer.concat([Buffer.from(f.cwd + '/'), Buffer.from([0xff]), Buffer.from('.txt')]), 'uncovered');
-  f.git('add', '-A'); f.complete(); f.commit();
+  const completed = f.complete(); f.commit();
+  assert.deepEqual(f.readEvent(completed).snapshot['\ufffd.txt'], { blob: null, mode: null });
+  // Some filesystems reject these bytes; Git trees must still reject their lossy decoding.
+  const blob = f.git('rev-parse', `${f.base}:file.txt`);
+  const indexInfo = Buffer.concat([
+    Buffer.from(`100644 ${blob} 0\t`), Buffer.from([0xff]), Buffer.from('.txt\0'),
+  ]);
+  const updated = spawnSync('git', ['update-index', '-z', '--index-info'], {
+    cwd: f.cwd, env: ENV, input: indexInfo, encoding: 'utf8',
+  });
+  assert.equal(updated.status, 0, updated.stderr);
+  const tree = f.git('write-tree');
+  const commit = f.git('commit-tree', tree, '-p', f.git('rev-parse', 'HEAD'), '-m', 'synthetic invalid UTF-8 path');
+  f.git('update-ref', 'HEAD', commit);
   f.reject(/non-UTF-8/, 'validate', '--base', f.base, '--repository', REPO);
 });
 test('rename needs old and new path evidence, with an explicit deletion snapshot', (t) => {

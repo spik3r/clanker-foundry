@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "b4b3017a-6948-47c0-a3de-8c7d55bb2093",
+  "runId": "1e6e0484-9b6b-4aff-8fa6-ad740c2394b4",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-preparation-cancel",
+    "path": "tasks/CF-orchestration-preparation-cancel-implementation.md",
+    "revision": "f77a9e27ec2a9e9e549a28706ad64d6c8e0ca7aa",
+    "blob": "5d6e466971d687df763bb42cb8627eb23bd4c784",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f38aae0a354b3833069444a0fe50af9f8fd9a4bb019848224018bfaa6a718aed"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T10:35:25.799Z",
+  "summary": "Prevent provider dispatch after cancellation during workspace preparation",
+  "next": "Implement and review cancellation regressions before conditional branch push",
+  "files": [
+    "runtime/src/isolation.mjs",
+    "runtime/test/isolation.test.mjs",
+    "tasks/CF-orchestration-preparation-cancel-implementation.md"
+  ]
+}

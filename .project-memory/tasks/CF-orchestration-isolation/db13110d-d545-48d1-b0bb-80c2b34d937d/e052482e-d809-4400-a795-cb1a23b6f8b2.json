@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "e052482e-d809-4400-a795-cb1a23b6f8b2",
+  "runId": "db13110d-d545-48d1-b0bb-80c2b34d937d",
+  "kind": "complete",
+  "parents": [
+    "5be7008d-e17e-4790-bec4-f57d5d589b13"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-isolation",
+    "path": "tasks/CF-orchestration-isolation-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "0de73708e55aecacab3e37304f995432ea8ab631",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "53e1cf873aa60ce6eab71437aad392c667b651f77acfe4ef154f2453e230a8dc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:49:04.325Z",
+  "summary": "Implement and review the scoped managed-execution boundary with verified local integration",
+  "next": "Owner review local branch; configure actual shared authority identity and pinned activation decision before live CF-AUTO dispatch; run committed full-diff evidence validation",
+  "files": [
+    "runtime/src/isolation.mjs",
+    "runtime/src/workspace.mjs",
+    "runtime/contracts/workspace.schema.json",
+    "runtime/test/isolation.test.mjs",
+    "runtime/test/workspace.test.mjs",
+    "runtime/test/isolation-live.mjs",
+    "tasks/CF-orchestration-isolation-implementation.md"
+  ],
+  "validation": "Node v24.22.2: runtime suite 154/154 and existing Project Memory/workflow suites 143/143, no skips; bash scripts/validate.sh PASS (optional skills-ref absent); bash tests/test-install.sh PASS; git diff --check and cached --check PASS; signed-in Codex text smoke PASS; actual Docker isolation/probe/two-operation/promotion smoke PASS. Fresh-context review found no remaining material findings. Direct Responses live call not run: API key absent. No persistent namespace activation, publication, merge or deployment.",
+  "snapshot": {
+    "runtime/src/isolation.mjs": {
+      "blob": "b021a43cab900c94b43ab223f3c2c8a57096df63",
+      "mode": "100644"
+    },
+    "runtime/src/workspace.mjs": {
+      "blob": "ab651ed60bb175b0c93bd45a51f58badc01e424b",
+      "mode": "100644"
+    },
+    "runtime/contracts/workspace.schema.json": {
+      "blob": "34d052404017dbe3884eef8b8d140d1f48cb5616",
+      "mode": "100644"
+    },
+    "runtime/test/isolation.test.mjs": {
+      "blob": "1e13805aba664250cfcd18cd515153f2009c1f4f",
+      "mode": "100644"
+    },
+    "runtime/test/workspace.test.mjs": {
+      "blob": "5481fc680bb28fc2206c64e147f344e787636941",
+      "mode": "100644"
+    },
+    "runtime/test/isolation-live.mjs": {
+      "blob": "6530882f8938e0dcae28c9dddf0cbf2dcc2e5b88",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-isolation-implementation.md": {
+      "blob": "e218634e4808b81a24ef3017d765c069ed00d00c",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "0902598f-4fa5-4aa6-8bea-386a7508b198",
+  "runId": "7803a952-ea06-4bb7-b6ef-5e10027ff30e",
+  "kind": "complete",
+  "parents": [
+    "fcedb68a-65c0-4860-894f-0d5a6cf16e68"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-missing-inputs",
+    "path": "tasks/CF-orchestration-missing-inputs-implementation.md",
+    "revision": "fea4fde24c00bf5d343dca9b424543a0f6b12c6e",
+    "blob": "6e241f76c1fa74ecdbeb0a8847d83a15b0e9e82d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0e36a62de7452101707e1e0498a323ebea6c1097e31907683ee0469086942ded"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T09:54:30.904Z",
+  "summary": "Reject missing immutable subjects and unsupported input revisions before dispatch",
+  "next": "Review local commit and run committed full-diff evidence validation against origin/main",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-orchestration-missing-inputs-implementation.md"
+  ],
+  "validation": "Node v24.22.2: full runtime suite 163/163 PASS, no skips; missing manifest/reopen/restoration/replay, dispatch fairness, Git SHA-1/SHA-256 and missing dependency-record regressions PASS; independent review five focused tests PASS with no material findings; scripts/validate.sh PASS (optional skills-ref unavailable); working/staged whitespace PASS. No live provider, Docker, activation, publication, merge or deployment.",
+  "snapshot": {
+    "runtime/src/runner.mjs": {
+      "blob": "72a53c3eb1f1d1c0c44dd6bede2abbfb0e7e5812",
+      "mode": "100644"
+    },
+    "runtime/test/store.test.mjs": {
+      "blob": "55ff0d1eec306befa99b5bd4b50eb5445cddb2dd",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "e0e959ae90db2a2e2a1faa50739851ff8bc47d22",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-missing-inputs-implementation.md": {
+      "blob": "87b8f466e6ed80f06bfdcb1d97f41d68e78bfdb9",
+      "mode": "100644"
+    }
+  }
+}

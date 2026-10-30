@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "d160fb48-fdff-412e-983a-e73d0170b48e",
+  "runId": "290d8e03-7490-4f86-996d-628147a913fa",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-limit-fixes",
+    "path": "tasks/CF-orchestration-limit-fixes-implementation.md",
+    "revision": "11a4d98e7bb7a9375d44e702c6801d28c03bcbf4",
+    "blob": "942a8f43f81648fc26d409f8c724fac4013c9d9f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0e8775b922dfa166954a912f0f27bd361e7950825233bbc4889ec9b0b406cf31"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T08:31:45.286Z",
+  "summary": "Align dependency dispatch and attempt history with admitted limits",
+  "next": "Add regression coverage, implement bounded fixes, verify replay and full runtime",
+  "files": [
+    "runtime/src/contract.mjs",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/state.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/test/contract.test.mjs",
+    "runtime/test/state.test.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "tasks/CF-orchestration-limit-fixes-implementation.md"
+  ]
+}

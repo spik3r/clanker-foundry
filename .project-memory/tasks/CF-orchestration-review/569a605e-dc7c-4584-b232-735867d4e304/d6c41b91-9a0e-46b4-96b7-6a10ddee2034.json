@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "d6c41b91-9a0e-46b4-96b7-6a10ddee2034",
+  "runId": "569a605e-dc7c-4584-b232-735867d4e304",
+  "kind": "checkpoint",
+  "parents": [
+    "9708cce1-d448-4f8f-a9e6-7c1b8f5e3277"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-review",
+    "path": "tasks/CF-orchestration-review-followup.md",
+    "revision": "ace3f51bea8f2201022b39b54ee4e9cc471c3855",
+    "blob": "b6864645128186b391721f22c798a88ea044378a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fda49c658a14b2afb4dd8893c7dd5d600f95c531ba564266a919bee3eea4e521"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T03:59:26.141Z",
+  "summary": "Fresh review reproduced false cleanup confirmation and stalled recovered launch; extend exact fix scope before edits",
+  "next": "Fix fake adapter ownership, recovered launch state and portable fixture; review any remaining confirmed bounds defects",
+  "files": [
+    "tests/project-memory.test.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/src/store.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-review.md",
+    "tasks/CF-orchestration-review-followup.md"
+  ]
+}

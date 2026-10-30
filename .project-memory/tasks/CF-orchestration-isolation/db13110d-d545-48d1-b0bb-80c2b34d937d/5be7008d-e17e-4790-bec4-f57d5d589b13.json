@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "5be7008d-e17e-4790-bec4-f57d5d589b13",
+  "runId": "db13110d-d545-48d1-b0bb-80c2b34d937d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-isolation",
+    "path": "tasks/CF-orchestration-isolation-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "0de73708e55aecacab3e37304f995432ea8ab631",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "53e1cf873aa60ce6eab71437aad392c667b651f77acfe4ef154f2453e230a8dc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:25:30.790Z",
+  "summary": "Implement and verify the remaining managed-execution integration boundary",
+  "next": "Build scoped integration, validate real external capabilities, and independently review",
+  "files": [
+    "runtime/src/isolation.mjs",
+    "runtime/src/workspace.mjs",
+    "runtime/contracts/workspace.schema.json",
+    "runtime/test/isolation.test.mjs",
+    "runtime/test/workspace.test.mjs",
+    "runtime/test/isolation-live.mjs",
+    "tasks/CF-orchestration-isolation-implementation.md"
+  ]
+}

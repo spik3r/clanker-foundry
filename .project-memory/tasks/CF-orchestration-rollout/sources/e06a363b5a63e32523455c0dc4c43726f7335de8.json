@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+  "id": "CF-orchestration-rollout",
+  "path": "tasks/CF-orchestration-rollout-implementation.md",
+  "blob": "b868bbd1ed0bdf0e15b82d3aaf627bc3c5704bb7",
+  "record": "---\nid: CF-orchestration-rollout\nstatus: in-progress\nowner: Foundry managed execution\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Integrate verified hosts, evidence gates and namespace activation\n\n## Implementation claim\n\nThe user requested continuing orchestration and finishing the outstanding provider,\nwritable-host, evidence-bridge and namespace-cutover work. Owner/integration lead:\nFoundry managed execution, branch `codex/deterministic-orchestration-plan`, base\n`aa89562`. The checkout was clean and the connected open-PR search returned no\nopen PRs. This is a bounded local claim, not a published shared reservation.\n\nExact implementation scope:\n- `runtime/src/contract.mjs`\n- `runtime/contracts/v1.schema.json`\n- `runtime/src/state.mjs`\n- `runtime/src/runner.mjs`\n- `runtime/src/cli.mjs`\n- `runtime/test/state.test.mjs`\n- `runtime/test/runner.test.mjs`\n- `runtime/test/cli.test.mjs`\n- `runtime/package.json`\n- `runtime/README.md`\n- `AGENTS.md`\n- `README.md`\n- `docs/deterministic-orchestration-plan.md`\n- `docs/deterministic-orchestration-review.md`\n- `docs/deterministic-orchestration-rollout.md`\n- `docs/adr/0002-managed-execution.md`\n- `runtime/config/namespace-cf-auto.json`\n- `.github/workflows/orchestration.yml`\n- This task record and new immutable Project Memory source/event files.\n\nBuilders use disjoint paths; the lead owns lifecycle records, integration and\nlocal commits. Preserve existing tasks, active claims and all immutable evidence.\nLive verification uses only invented public-safe payloads and owned temporary\nworkspaces. Credentials remain in the existing provider login or host environment;\nnever copy them into repository files, logs or model inputs. No publication,\nmerge, external deployment or silent transfer of existing CF claims is included.\n\n## Acceptance and dependencies\n\nImplement the corresponding remaining architecture boundary with strict validation,\nrevision/identity checks, deterministic failure/recovery and regression tests.\nReuse the current single-host runtime and offline Project Memory helper.\nManaged writes require verified isolation and exact authorized scope; provider\nand coordinator credentials stay outside the writable host. Evidence starts\nmust precede edits; completion requires actual staged fingerprints and checks.\nNamespace activation needs a recorded reviewed source and drained prior authority;\nnew namespaces preserve historical CF records. Missing external requirements fail\nclosed and are reported rather than counted as successful live validation.\n\n## Validation and next action\n\nRun focused Node 24 tests, relevant full runtime/lifecycle suites, pack and\ninstaller checks, whitespace and committed-diff evidence validation. Independently\nreview the final implementation. Record actual live-provider and host-isolation\nobservations separately from fake transport tests. Next: register this pinned\nsource, record a genuine start, then implement the assigned slice.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-rollout-implementation.md",
+        "id": "CF-orchestration-rollout",
+        "blob": "b868bbd1ed0bdf0e15b82d3aaf627bc3c5704bb7",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

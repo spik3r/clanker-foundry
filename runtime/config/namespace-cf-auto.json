@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "decision_id": "cf-auto-shadow-template",
+  "namespace_id": "cf-auto",
+  "task_prefix": "CF-AUTO-",
+  "repository": "spik3r/clanker-foundry",
+  "source_repository": "spik3r/clanker-foundry",
+  "accountable_owner": "operator",
+  "authority_instance_id": "00000000-0000-4000-8000-000000000000",
+  "expected_generation": 0,
+  "mode": "SHADOW",
+  "require_evidence": true,
+  "allow_writes": true,
+  "prior_authority_drained": true,
+  "claim_disposition": "new_namespace",
+  "previous_authority": "No existing CF task or claim transfers; new CF-AUTO tasks only",
+  "reason": "Template for the approved forward-only namespace. Replace the database identity and owner, review and commit the exact decision before recording it."
+}

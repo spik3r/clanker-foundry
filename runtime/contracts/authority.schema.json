@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clanker-foundry.invalid/runtime/contracts/authority.schema.json",
+  "title": "Local namespace authority records",
+  "$defs": {
+    "AuthoritySourcePin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$", "maxLength": 128 },
+        "revision": { "type": "string", "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$" },
+        "path": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "blob": { "type": "string", "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$" }
+      },
+      "required": ["repository", "revision", "path", "blob"]
+    },
+    "NamespaceDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": 1 },
+        "decision_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$" },
+        "namespace_id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$" },
+        "task_prefix": { "type": "string", "pattern": "^[A-Z][A-Z0-9]{0,15}-(?:[A-Za-z0-9]+-)*$", "maxLength": 64 },
+        "repository": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$", "maxLength": 128 },
+        "source_repository": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$", "maxLength": 128 },
+        "accountable_owner": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$" },
+        "authority_instance_id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+        "expected_generation": { "type": "integer", "minimum": 0, "maximum": 2147483646 },
+        "mode": { "enum": ["SHADOW", "MANAGED", "DRAINING", "MANUAL"] },
+        "require_evidence": { "type": "boolean" },
+        "allow_writes": { "type": "boolean" },
+        "prior_authority_drained": { "type": "boolean" },
+        "claim_disposition": { "enum": ["new_namespace", "drained"] },
+        "previous_authority": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 2048 }
+      },
+      "required": ["schema_version", "decision_id", "namespace_id", "task_prefix", "repository", "source_repository", "accountable_owner", "authority_instance_id", "expected_generation", "mode", "require_evidence", "allow_writes", "prior_authority_drained", "claim_disposition", "previous_authority", "reason"]
+    }
+  }
+}

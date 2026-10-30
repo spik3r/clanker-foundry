@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "11a4d98e7bb7a9375d44e702c6801d28c03bcbf4",
+  "id": "CF-orchestration-limit-fixes",
+  "path": "tasks/CF-orchestration-limit-fixes-implementation.md",
+  "blob": "942a8f43f81648fc26d409f8c724fac4013c9d9f",
+  "record": "---\nid: CF-orchestration-limit-fixes\nstatus: in-progress\nowner: Foundry limit fixes\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Align admitted workflow limits with execution\n\n## Implementation claim\n\nThe user authorized fixing the two reproduced fresh-review findings on branch\n`codex/deterministic-orchestration-plan`, starting at `001f9aa`. The checkout,\nstaged diff and untracked paths were clean. The connected open-PR search returned\nPR 5 about Project Memory CI; this bounded runtime fix does not change that helper\nor its CI lane. Existing task records are under review; this follow-up owns only\nthe following exact paths and its new immutable Project Memory source/events:\n\n- `runtime/src/contract.mjs`\n- `runtime/contracts/v1.schema.json`\n- `runtime/src/state.mjs`\n- `runtime/src/runner.mjs`\n- `runtime/src/adapters.mjs`\n- `runtime/test/contract.test.mjs`\n- `runtime/test/state.test.mjs`\n- `runtime/test/runner.test.mjs`\n- `runtime/test/adapters.test.mjs`\n- `runtime/test/store.test.mjs`\n- `runtime/README.md`\n- `docs/deterministic-orchestration-rollout.md`\n- `tasks/CF-orchestration-limit-fixes-implementation.md`\n\nSupport the existing dependency contract through the runner and text adapter.\nResolve and bound immutable inputs before claiming or acknowledging a launch.\nAlign history capacity with the full admitted stage/retry/rework envelope, retain\nexisting event replay, and make capacity exhaustion explicit for extra manual\nrecovery cycles. Preserve old sources, events, claims and unrelated work. No live\nprovider call, namespace activation, publication, merge or deployment is included.\n\n## Validation and next action\n\nAdd regressions for 65 dependencies, maximum subject counts, byte-limit failure\nbefore dispatch, and workflows crossing the old 128-attempt history cap. Verify\nexisting replay and actor/cleanup protections. Run Node 24 runtime tests, pack\nvalidation, whitespace checks and the committed full-diff evidence gate. Next:\nregister this reviewed source and record a genuine start before implementation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-limit-fixes-implementation.md",
+        "id": "CF-orchestration-limit-fixes",
+        "blob": "942a8f43f81648fc26d409f8c724fac4013c9d9f",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

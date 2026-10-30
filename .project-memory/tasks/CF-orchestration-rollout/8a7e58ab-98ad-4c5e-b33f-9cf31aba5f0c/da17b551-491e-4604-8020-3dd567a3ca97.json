@@ -1,0 +1,127 @@
+{
+  "formatVersion": 2,
+  "eventId": "da17b551-491e-4604-8020-3dd567a3ca97",
+  "runId": "8a7e58ab-98ad-4c5e-b33f-9cf31aba5f0c",
+  "kind": "complete",
+  "parents": [
+    "48a03bd8-2156-4fdc-9168-4a4062af5c48"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-rollout",
+    "path": "tasks/CF-orchestration-rollout-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "b868bbd1ed0bdf0e15b82d3aaf627bc3c5704bb7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "af520decb2e11a2e73af61cda082c7c647ca2774e4249ac57cc9053fc1cc1e1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:49:04.470Z",
+  "summary": "Implement and review the scoped managed-execution boundary with verified local integration",
+  "next": "Owner review local branch; configure actual shared authority identity and pinned activation decision before live CF-AUTO dispatch; run committed full-diff evidence validation",
+  "files": [
+    "runtime/src/contract.mjs",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/state.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/src/cli.mjs",
+    "runtime/test/state.test.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/test/cli.test.mjs",
+    "runtime/package.json",
+    "runtime/README.md",
+    "AGENTS.md",
+    "README.md",
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-review.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "docs/adr/0002-managed-execution.md",
+    "runtime/config/namespace-cf-auto.json",
+    ".github/workflows/orchestration.yml",
+    "tasks/CF-orchestration-rollout-implementation.md"
+  ],
+  "validation": "Node v24.22.2: runtime suite 154/154 and existing Project Memory/workflow suites 143/143, no skips; bash scripts/validate.sh PASS (optional skills-ref absent); bash tests/test-install.sh PASS; git diff --check and cached --check PASS; signed-in Codex text smoke PASS; actual Docker isolation/probe/two-operation/promotion smoke PASS. Fresh-context review found no remaining material findings. Direct Responses live call not run: API key absent. No persistent namespace activation, publication, merge or deployment.",
+  "snapshot": {
+    "runtime/src/contract.mjs": {
+      "blob": "3cd55a90f0e544db29694307686c46e1197de0d4",
+      "mode": "100644"
+    },
+    "runtime/contracts/v1.schema.json": {
+      "blob": "8b2f711b127fc25d6fb9b568a27cfd894ce3b177",
+      "mode": "100644"
+    },
+    "runtime/src/state.mjs": {
+      "blob": "b8884f473c3a359d13d11b69dd8770bba957464e",
+      "mode": "100644"
+    },
+    "runtime/src/runner.mjs": {
+      "blob": "f46130c13d306551cdade49e9008d5a4a25fcd0f",
+      "mode": "100644"
+    },
+    "runtime/src/cli.mjs": {
+      "blob": "453550486772b87b436656f859a31e902ef70f20",
+      "mode": "100644"
+    },
+    "runtime/test/state.test.mjs": {
+      "blob": "a7647ee2213904359b0ddcab85808b757c5f9851",
+      "mode": "100644"
+    },
+    "runtime/test/runner.test.mjs": {
+      "blob": "27faf29e0dfc056cdaf42a6fc5371f0bd4e02ff8",
+      "mode": "100644"
+    },
+    "runtime/test/cli.test.mjs": {
+      "blob": "c6e9c8a820e4e7284a7cfbb625ed20af4d5136c3",
+      "mode": "100644"
+    },
+    "runtime/package.json": {
+      "blob": "133b0dfd4b1025b19fdc2bf9a4b078ced4a57b5c",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "fb2c42260b0fa94e2f0bc126c25acaa773de2057",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "c28ff18ffb08f45ac1abec5fa7646d74ffee1130",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "a968d19df327446c63cea419af105dfae328105e",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-plan.md": {
+      "blob": "153c2ca8c7c65026767e1b9e8f7e772094b30835",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-review.md": {
+      "blob": "8c67fa9284f18c4828aa1b0dffd975160a454e58",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-rollout.md": {
+      "blob": "f44ae4eec9bec1c0abf474b82c2b368bfa761118",
+      "mode": "100644"
+    },
+    "docs/adr/0002-managed-execution.md": {
+      "blob": "0436d16ed85c913996be4fb6961a6d80adaff517",
+      "mode": "100644"
+    },
+    "runtime/config/namespace-cf-auto.json": {
+      "blob": "2e78b3d1869f429774866be5852866f1438211d8",
+      "mode": "100644"
+    },
+    ".github/workflows/orchestration.yml": {
+      "blob": "5f089551c5d22aa3bfaeb5b0ae788547d45bd99b",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-rollout-implementation.md": {
+      "blob": "6b8e349a0c2b7af0de81b2f48677c2f706f93500",
+      "mode": "100644"
+    }
+  }
+}

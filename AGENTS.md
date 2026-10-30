@@ -8,9 +8,9 @@ Edit this file; never edit the pointers.
 
 A personal library of agent assets: skills in the open Agent Skills `SKILL.md` format,
 plus the templates, workflows, and checklists those skills draw on, plus a global
-`AGENTS.md` base and the wiring to share it across tools. There is no application
-runtime. Changes are documentation, shell setup, and validation; check every link,
-path, and script before delivery.
+`AGENTS.md` base and the wiring to share it across tools. An optional single-host
+read-only orchestration pilot lives in `runtime/`; it is not required to use the
+skills. Check links, paths, scripts and relevant runtime behavior before delivery.
 
 ## Layout
 
@@ -34,6 +34,8 @@ path, and script before delivery.
 - `checklists/` — verification lists (`security.md`, `code-review.md`) meant to be
   walked item by item, with evidence, not skimmed.
 - `docs/` — framework and external-skill guidance.
+- `runtime/` — opt-in typed execution, transactional coordination and supervised
+  read-only workers; see its README for authority and host limits.
 - `tasks/` — public-safe Foundry producer proposals and bounded claims. Do not copy
   confidential task sources from other repositories into this public pack.
 - `scripts/stow.sh` — GNU Stow installation script for skills, agents, workflows,
@@ -101,6 +103,12 @@ shell syntax, pointer files, and every relative Markdown link in tracked or unig
 untracked Markdown. It also runs `skills-ref validate` when that tool is installed. CI
 runs the validator and installer regression tests on every push and pull request.
 
+For runtime changes, use Node 24 or later, install pinned dependencies with
+`npm ci --prefix runtime --ignore-scripts`, and run `npm test --prefix runtime`.
+Keep runtime databases and local credentials out of Git. The separate
+`orchestration` CI workflow runs its tests on Node 24; it grants no runtime task
+ownership or authority to publish, merge or deploy.
+
 Run `node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs`
 when changing the lifecycle helper or its CI integration.
 The separate `project-memory` CI job runs these regressions on pushes, pull
@@ -110,3 +118,12 @@ skills/project-memory/scripts/project-memory.mjs validate --base origin/main
 --repository spik3r/clanker-foundry --source-repository spik3r/clanker-foundry`
 after committing. A workflow check blocks merges only if the repository owner
 configures it as a required status. This change does not configure that rule.
+
+## Managed orchestration scope
+
+New `CF-AUTO-` tasks may use the optional runtime after an owner-reviewed, Git-pinned
+namespace decision is recorded for one shared private authority database. Existing
+`CF` tasks and claims remain under their current workflow. Agents must not assign
+or hand off managed work outside that authority. Read the
+[rollout guide](docs/deterministic-orchestration-rollout.md) before enabling dispatch.
+A copied database, generated Markdown view or source snapshot does not acquire a claim.

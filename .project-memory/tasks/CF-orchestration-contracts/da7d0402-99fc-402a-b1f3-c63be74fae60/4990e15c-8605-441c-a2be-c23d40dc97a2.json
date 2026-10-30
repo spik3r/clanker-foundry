@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "4990e15c-8605-441c-a2be-c23d40dc97a2",
+  "runId": "da7d0402-99fc-402a-b1f3-c63be74fae60",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-contracts",
+    "path": "tasks/CF-orchestration-contracts-implementation.md",
+    "revision": "0f971e28c8b11d7eff41969d62a8051b39592526",
+    "blob": "c28143acd566326f3ee059cc5cf669c4ce60b8ad",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d214265a9b3f9e1aa1a5f97cdab04ea61772dd3b1bbe23b1737f3bb2f4bd36c3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T03:06:49.824Z",
+  "summary": "Implement bounded opt-in runtime slice under orchestrated ownership",
+  "next": "Implement, test and independently review before staged completion",
+  "files": [
+    "runtime/package.json",
+    "runtime/package-lock.json",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/contract.mjs",
+    "runtime/test/contract.test.mjs",
+    "runtime/test/fixtures.mjs",
+    "docs/adr/0001-deterministic-runtime.md",
+    ".gitignore",
+    "tasks/CF-orchestration-contracts-implementation.md"
+  ]
+}

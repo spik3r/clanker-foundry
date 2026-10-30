@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f77a9e27ec2a9e9e549a28706ad64d6c8e0ca7aa",
+  "id": "CF-orchestration-preparation-cancel",
+  "path": "tasks/CF-orchestration-preparation-cancel-implementation.md",
+  "blob": "5d6e466971d687df763bb42cb8627eb23bd4c784",
+  "record": "---\nid: CF-orchestration-preparation-cancel\nstatus: in-progress\nowner: Foundry cancellation fix\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Stop cancelled attempts before provider invocation\n\n## Implementation claim\n\nThe user requested a fresh readiness review and conditional branch push. The\nreview found a cancellation race while the isolated adapter awaits workspace\nreads. This bounded fix is required before pushing. Base `c8b0224`, branch\n`codex/deterministic-orchestration-plan`; staged, unstaged and untracked paths\nwere clean. Remote main was refreshed and is already included. Existing ownership\nrecords and immutable evidence remain unchanged. Exact scope:\n\n- `runtime/src/isolation.mjs`\n- `runtime/test/isolation.test.mjs`\n- `tasks/CF-orchestration-preparation-cancel-implementation.md`\n- New immutable Project Memory source and event files for this task.\n\nReject a revoked attempt after input reads and immediately before its queued\nprovider call. Preserve unconfirmed cleanup while preparation remains pending;\nafter it settles without invocation, allow genuine cleanup confirmation. Add\nregressions for delayed reads and cancellation between preparation and invocation.\nDo not change Docker configuration, credentials, namespace authority or promotion.\n\n## Validation and next action\n\nRun Node 24 focused and complete runtime tests, the existing Project Memory suites,\npack/installer/whitespace checks and committed evidence validation. Have the\nindependent readiness reviewer recheck the race. Next: register the pinned claim,\nrecord a genuine start, implement and validate. Push only after review and required\nchecks pass; no merge or deployment is authorized.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-preparation-cancel-implementation.md",
+        "id": "CF-orchestration-preparation-cancel",
+        "blob": "5d6e466971d687df763bb42cb8627eb23bd4c784",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
