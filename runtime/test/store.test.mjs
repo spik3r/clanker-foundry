@@ -627,3 +627,112 @@ test('oversized immutable inputs stay unclaimed and unacknowledged with no unkno
   assert.equal(f.store.get('later-ready').resources_held, false);
   assert.deepEqual(f.store.get('oversized-inputs'), before);
 });
+
+test('a missing dependency manifest blocks dispatch across reopen and recovers after restoration', async (t) => {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  const { createTextModelAdapter, FakeAdapter } = await import('../src/adapters.mjs');
+  const f = fixture(t);
+  const dependency = completedInput(f, 'required-upstream', 'required evidence');
+  await settleCompletedInputs(f.store);
+  const subjectDigest = f.store.get('required-upstream').accepted_subject_digest;
+  // A mandatory subject must not disappear when its digest also names the Git base.
+  const downstream = spec('CF-missing-dependent');
+  downstream.repository.revision = subjectDigest;
+  downstream.dependencies = [dependency];
+  f.store.execute(command('ADMIT', 'missing-dependent', 0, { spec: downstream }), owner);
+  const assignment = assign('missing-dependent'); assignment.payload.input_revisions = [subjectDigest];
+  f.store.execute(assignment, owner);
+  const original = f.store.getSubject(subjectDigest);
+  const before = f.store.get('missing-dependent');
+  f.store.close();
+  const raw = new DatabaseSync(f.path);
+  raw.prepare('DELETE FROM subjects WHERE digest=?').run(subjectDigest);
+  raw.close();
+  f.store = f.open();
+  let invocations = 0;
+  const adapter = createTextModelAdapter({ workerId: 'worker-1', invoke: async ({ inputSubjects }) => {
+    invocations += 1;
+    assert.equal(inputSubjects.length, 1);
+    assert.equal(inputSubjects[0].subject_digest, subjectDigest);
+    assert.equal(inputSubjects[0].artifacts[0].content, 'required evidence');
+    return 'reviewed required evidence';
+  } });
+  for (let round = 0; round < 2; round += 1) {
+    const rejected = await drainOutbox({ store: f.store, adapter, dispatcherId: `missing-${round}`, now: at, limit: 1 });
+    assert.equal(rejected.skipped[0].code, 'SUBJECT_NOT_FOUND');
+    assert.equal(rejected.unknown.length, 0);
+    assert.equal(rejected.delivered.length, 0);
+    assert.deepEqual(f.store.get('missing-dependent'), before);
+    const launch = f.store.pendingEffects().find((row) => row.effect.execution_id === 'missing-dependent');
+    assert.equal(launch.status, 'PENDING');
+    assert.equal(launch.dispatcher_id, null);
+  }
+  assert.equal(invocations, 0);
+  assignedDependent(f, 'missing-later-ready', []);
+  const later = await drainOutbox({ store: f.store, adapter: new FakeAdapter(), dispatcherId: 'later-missing', now: at, limit: 1 });
+  assert.equal(later.delivered.length, 1);
+  assert.equal(f.store.get('missing-later-ready').state, 'VALIDATING');
+  const restored = new DatabaseSync(f.path);
+  restored.prepare('INSERT INTO subjects(digest,manifest) VALUES(?,?)').run(subjectDigest, canonical(original));
+  restored.close();
+  const delivered = await drainOutbox({ store: f.store, adapter, dispatcherId: 'restored-input', now: at, limit: 1 });
+  assert.equal(delivered.unknown.length, 0);
+  assert.equal(invocations, 1);
+  assert.equal(f.store.get('missing-dependent').state, 'VALIDATING');
+  assert.equal(f.store.replay().executions.length, 3);
+});
+
+test('explicit inputs require subjects except for the exact pinned SHA-1 or SHA-256 Git base', async (t) => {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  const { createTextModelAdapter } = await import('../src/adapters.mjs');
+  for (const [label, base, revisions, expected] of [
+    ['missing-subject', 'a'.repeat(40), ['b'.repeat(64)], 'SUBJECT_NOT_FOUND'],
+    ['unknown-git-base', 'a'.repeat(40), ['b'.repeat(40)], 'UNSUPPORTED_INPUT_REVISION'],
+    ['abbreviated-base', 'a'.repeat(40), ['a'.repeat(7)], 'UNSUPPORTED_INPUT_REVISION'],
+    ['short-pinned-base', 'a'.repeat(7), ['a'.repeat(7)], 'UNSUPPORTED_INPUT_REVISION'],
+    ['sha1-base', 'a'.repeat(40), ['a'.repeat(40)], null],
+    ['sha256-base', 'a'.repeat(64), ['a'.repeat(64)], null],
+  ]) {
+    const f = fixture(t);
+    const value = spec(`CF-${label}`); value.repository.revision = base;
+    f.store.execute(command('ADMIT', label, 0, { spec: value }), owner);
+    const assignment = assign(label); assignment.payload.input_revisions = revisions;
+    f.store.execute(assignment, owner);
+    const before = f.store.get(label);
+    let invocations = 0;
+    const adapter = createTextModelAdapter({ workerId: 'worker-1', invoke: async ({ inputSubjects, attempt }) => {
+      invocations += 1; assert.deepEqual(inputSubjects, []); assert.deepEqual(attempt.input_revisions, revisions); return 'checked base';
+    } });
+    const result = await drainOutbox({ store: f.store, adapter, dispatcherId: label, now: at });
+    assert.equal(result.unknown.length, 0);
+    if (expected) {
+      assert.equal(invocations, 0); assert.equal(result.skipped[0].code, expected);
+      assert.deepEqual(f.store.get(label), before);
+      assert.equal(f.store.pendingEffects()[0].status, 'PENDING');
+    } else {
+      assert.equal(invocations, 1); assert.equal(f.store.get(label).state, 'VALIDATING');
+    }
+  }
+});
+
+test('a missing completed dependency execution cannot become an empty input list', async (t) => {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  const f = fixture(t);
+  const dependency = completedInput(f, 'lost-upstream', 'required bytes');
+  await settleCompletedInputs(f.store);
+  assignedDependent(f, 'lost-dependent', [dependency]);
+  const before = f.store.get('lost-dependent');
+  // Simulate an incomplete restore in this owned fixture, not a supported mutation.
+  const raw = new DatabaseSync(f.path);
+  raw.exec('PRAGMA foreign_keys=OFF');
+  raw.prepare('DELETE FROM executions WHERE execution_id=?').run('lost-upstream');
+  raw.close();
+  let invocations = 0;
+  const result = await drainOutbox({ store: f.store, dispatcherId: 'lost-output', now: at,
+    adapter: { async runAttempt() { invocations += 1; } } });
+  assert.equal(result.skipped[0].code, 'DEPENDENCY_OUTPUT_NOT_FOUND');
+  assert.equal(result.unknown.length, 0);
+  assert.equal(invocations, 0);
+  assert.deepEqual(f.store.get('lost-dependent'), before);
+  assert.equal(f.store.pendingEffects().find((row) => row.effect.execution_id === 'lost-dependent').status, 'PENDING');
+});

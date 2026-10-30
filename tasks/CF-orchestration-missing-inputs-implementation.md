@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-missing-inputs
-status: in-progress
+status: review
 owner: Foundry input fixes
 repositories: [spik3r/clanker-foundry]
 ---
@@ -30,9 +30,17 @@ activate namespaces, rewrite other claims, publish, merge or deploy.
 
 ## Validation and next action
 
-Add actual SQLite regressions for missing dependency manifests after reopening,
-no invocation or acknowledgement, later-work fairness and successful recovery
-after restoring the manifest. Cover explicit missing inputs and pinned SHA-1 and
-SHA-256 Git bases. Run Node 24 runtime tests, pack/whitespace checks and the
-committed evidence gate. Next: register this pinned source and record a genuine
-start before implementation.
+Implemented mandatory dependency, candidate and explicit subject resolution.
+Actual SQLite regressions cover missing manifests across reopen, no launch or
+acknowledgement, later-work fairness, restored-manifest recovery and replay.
+Mandatory subjects retain precedence when their digest equals the pinned Git base.
+Explicit unknown subjects, other Git revisions and abbreviated pinned values reject;
+full SHA-1 and SHA-256 pinned bases remain valid. A missing completed dependency
+record also rejects. Corruption tests alter only owned temporary databases.
+
+Node v24.22.2 passed all 163 runtime tests, without skips. Pack and whitespace
+validation passed; optional skills-ref is unavailable. Independent review passed
+five focused tests and found no remaining material findings. Next: record staged
+completion fingerprints, commit locally and validate
+the committed full diff against origin/main. No live provider, Docker, namespace
+activation, publication, merge or deployment is included.

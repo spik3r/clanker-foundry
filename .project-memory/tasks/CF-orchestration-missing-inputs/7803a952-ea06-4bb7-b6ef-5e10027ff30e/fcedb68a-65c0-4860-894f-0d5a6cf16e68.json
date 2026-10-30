@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "fcedb68a-65c0-4860-894f-0d5a6cf16e68",
+  "runId": "7803a952-ea06-4bb7-b6ef-5e10027ff30e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-missing-inputs",
+    "path": "tasks/CF-orchestration-missing-inputs-implementation.md",
+    "revision": "fea4fde24c00bf5d343dca9b424543a0f6b12c6e",
+    "blob": "6e241f76c1fa74ecdbeb0a8847d83a15b0e9e82d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0e36a62de7452101707e1e0498a323ebea6c1097e31907683ee0469086942ded"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T09:50:33.534Z",
+  "summary": "Reject missing required subjects before dispatch and distinguish pinned Git bases",
+  "next": "Implement missing-input regressions, run runtime checks and independent review",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-orchestration-missing-inputs-implementation.md"
+  ]
+}

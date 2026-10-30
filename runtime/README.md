@@ -222,3 +222,14 @@ history is preserved and replay uses the same event format. Extra owner-directed
 block/resolve cycles can consume history outside that automatic budget; assignment
 then rejects with `ATTEMPT_HISTORY_EXHAUSTED` before changing state or dispatching.
 The owner must close that execution and admit a reviewed replacement specification.
+
+Required dependency and accepted-candidate manifests must exist in durable storage.
+Explicit `input_revisions` may name the exact full pinned repository revision or
+an existing immutable subject digest. The pinned base can be a SHA-1 or SHA-256
+Git object ID; it is passed as a revision, not inferred to be a subject. A required
+dependency or candidate still requires its manifest even if its digest equals the
+pinned Git revision. Missing subjects reject preflight with `SUBJECT_NOT_FOUND`.
+Other Git revisions and abbreviations are unsupported and reject with
+`UNSUPPORTED_INPUT_REVISION`; use a reviewed task pinned to that base instead.
+The runner preserves pending work for inspection or restoration, invokes no worker,
+and continues scanning later eligible effects.

@@ -50,25 +50,33 @@ function workerContext(attempt) {
 }
 
 function resolveInputSubjects(store, execution, attempt) {
-  const requested = [...new Set([
-    ...attempt.input_revisions,
-    ...(execution.accepted_subject_digest ? [execution.accepted_subject_digest] : []),
-  ])];
   const subjects = [];
   const dependencyOutputs = store.dependencyOutputs?.(execution.execution_id) ?? [];
-  const dependencyDigests = dependencyOutputs.map((output) => output.subject_digest).filter(Boolean);
-  for (const subjectDigest of dependencyDigests) requested.push(subjectDigest);
-  const uniqueDigests = [...new Set(requested.filter((item) => /^[a-f0-9]{64}$/.test(item)))];
+  if (execution.spec.dependencies.some((dependency) => !dependencyOutputs.some((output) =>
+    output.task_id === dependency.task_id && output.spec_digest === dependency.spec_digest))) {
+    fail('DEPENDENCY_OUTPUT_NOT_FOUND', 'A required completed dependency output is missing');
+  }
+  const dependencyDigests = dependencyOutputs.map((output) => output.subject_digest);
+  const mandatory = new Set(dependencyDigests);
+  if (execution.accepted_subject_digest) mandatory.add(execution.accepted_subject_digest);
+  const required = new Set();
+  for (const revision of attempt.input_revisions) {
+    // Only the exact pinned base denotes Git input. Mandatory subjects take
+    // precedence even if their digest equals a SHA-256 repository object ID.
+    const pinnedBase = revision === execution.spec.repository.revision && /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/.test(revision);
+    if (!pinnedBase || mandatory.has(revision)) required.add(revision);
+  }
+  if (execution.accepted_subject_digest) required.add(execution.accepted_subject_digest);
+  for (const subjectDigest of dependencyDigests) required.add(subjectDigest);
+  const uniqueDigests = [...required];
   if (uniqueDigests.length > RUNTIME_LIMITS.inputSubjects) fail('INPUT_TOO_LARGE', 'Attempt references too many immutable subjects');
   let totalBytes = 0;
   for (const subjectDigest of uniqueDigests) {
-    const manifest = store.getSubject?.(subjectDigest);
-    if (!manifest) {
-      if (subjectDigest === execution.accepted_subject_digest) {
-        fail('SUBJECT_NOT_FOUND', 'Accepted review subject is missing from durable artifact storage');
-      }
-      continue;
+    if (typeof subjectDigest !== 'string' || !/^[a-f0-9]{64}$/.test(subjectDigest)) {
+      fail('UNSUPPORTED_INPUT_REVISION', 'Inputs must name the full pinned Git base or an immutable subject digest');
     }
+    const manifest = store.getSubject?.(subjectDigest);
+    if (!manifest) fail('SUBJECT_NOT_FOUND', 'Required input subject is missing from durable artifact storage');
     const artifacts = manifest.map((artifact) => {
       const content = store.getArtifact?.(artifact.digest);
       if (typeof content !== 'string') fail('ARTIFACT_NOT_FOUND', 'Input subject artifact is missing from durable storage');
