@@ -347,7 +347,10 @@ reviewing this plan but can change implementation scope.
 
 The original planning run reported 142/143 lifecycle tests passing, with an
 `EPERM` creating an invalid UTF-8 filename fixture. The implementation run reproduced
-that same fixture limitation on Node 24. New runtime tests, installer checks and
+that same fixture limitation on Node 24. The
+[fresh-context follow-up review](deterministic-orchestration-review.md) corrected
+the fixture using Git tree/index bytes, retaining its rejection assertion; all
+143 lifecycle tests now pass locally. New runtime tests, installer checks and
 independent adversarial review are recorded in the linked implementation tasks;
 they do not establish live provider or unattended-writer correctness. The existing
 lifecycle helper and its CI workflow remain unchanged; runtime tests have a

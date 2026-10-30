@@ -187,13 +187,57 @@ test('fake adapter returns a deterministic result tied to read input bytes and r
     readFiles: async () => [{ path: 'input.txt', content: 'abc', digest: createHash('sha256').update('abc').digest('hex') }],
   });
   const first = await adapter.runAttempt({ attempt, spec: taskSpec });
-  const second = await adapter.runAttempt({ attempt, spec: taskSpec });
-  assert.deepEqual(first, second);
+  const secondAttempt = { ...attempt, attempt_id: 'attempt-2' };
+  const second = await adapter.runAttempt({ attempt: secondAttempt, spec: taskSpec });
+  assert.equal(first.artifacts[0].digest, second.artifacts[0].digest);
+  assert.equal(first.subject_digest, second.subject_digest);
   assert.notEqual(first.artifacts[0].digest, createHash('sha256').update('fake').digest('hex'));
-  assert.deepEqual(await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token }), {
+  assert.deepEqual(await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token, attempt }), {
     stopped: true,
     reason: 'Fake attempt stopped',
   });
   assert.equal(adapter.activeAttempts.has(attempt.attempt_id), false);
+  assert.equal((await adapter.revokeCapabilities({
+    attempt_id: secondAttempt.attempt_id,
+    fencing_token: secondAttempt.fencing_token,
+    attempt: secondAttempt,
+  })).stopped, true);
   assert.equal(await adapter.getArtifact(first.artifacts[0].digest), 'fake\ninput.txt:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
+});
+
+test('fake adapter confirms revocation only for the exact attempt it owns', async () => {
+  const fresh = new FakeAdapter();
+  const unknown = await fresh.revokeCapabilities({ attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token, attempt });
+  assert.equal(unknown.stopped, false);
+  assert.equal(fresh.calls.length, 0);
+
+  const adapter = new FakeAdapter();
+  await adapter.runAttempt({ attempt, spec: taskSpec });
+  await assert.rejects(adapter.runAttempt({ attempt, spec: taskSpec }), { code: 'DUPLICATE_ATTEMPT' });
+
+  const wrongWorkerAttempt = { ...attempt, worker_id: 'other-worker' };
+  assert.equal((await adapter.revokeCapabilities({
+    attempt_id: attempt.attempt_id,
+    fencing_token: attempt.fencing_token,
+    attempt: wrongWorkerAttempt,
+  })).stopped, false);
+  assert.equal((await adapter.revokeCapabilities({
+    attempt_id: attempt.attempt_id,
+    fencing_token: attempt.fencing_token + 1,
+    attempt,
+  })).stopped, false);
+  assert.equal(adapter.activeAttempts.has(attempt.attempt_id), true);
+  assert.equal(adapter.calls.filter((call) => call.type === 'revoke').length, 0);
+
+  assert.deepEqual(await adapter.revokeCapabilities({
+    attempt_id: attempt.attempt_id,
+    fencing_token: attempt.fencing_token,
+    attempt,
+  }), { stopped: true, reason: 'Fake attempt stopped' });
+  assert.equal(adapter.activeAttempts.has(attempt.attempt_id), false);
+  assert.equal((await adapter.revokeCapabilities({
+    attempt_id: attempt.attempt_id,
+    fencing_token: attempt.fencing_token,
+    attempt,
+  })).stopped, false);
 });

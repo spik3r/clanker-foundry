@@ -7,7 +7,7 @@ import { spawn } from 'node:child_process';
 import { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { openStore } from '../src/store.mjs';
-import { digest } from '../src/contract.mjs';
+import { canonical, digest, parseJSON } from '../src/contract.mjs';
 import { taskSpec } from './fixtures.mjs';
 
 const owner = { actor_id: 'operator', role: 'owner' };
@@ -287,6 +287,92 @@ test('replay detects a corrupted accepted outcome rather than trusting snapshots
   corrupted.retry_count = 1;
   raw.prepare('UPDATE executions SET body=? WHERE execution_id=?').run(JSON.stringify(corrupted), 'tampered'); raw.close();
   assert.throws(() => f.store.replay(), code('REPLAY_MISMATCH'));
+});
+
+test('parsed multi-resource specs survive persistence, assignment and replay', (t) => {
+  const f = fixture(t);
+  const input = spec('CF-multiple-resources');
+  input.shared_resources = [
+    { resource_id: 'one', mode: 'exclusive' }, { resource_id: 'two', mode: 'exclusive' },
+  ];
+  const parsed = parseJSON(JSON.stringify(input));
+  f.store.execute(command('ADMIT', 'multi-resource', 0, { spec: parsed }), owner);
+  f.store.close(); const reopened = f.open();
+  assert.equal(reopened.execute(assign('multi-resource'), owner).execution.state, 'ASSIGNED');
+  assert.equal(reopened.get('multi-resource').spec.shared_resources.length, 2);
+  assert.equal(reopened.replay().executions.length, 1);
+});
+
+test('replay accepts a combined database response larger than the external wire limit', (t) => {
+  const f = fixture(t);
+  for (let index = 0; index < 200; index += 1) {
+    const input = { ...spec(`CF-large-replay-${index}`), outcome: 'x'.repeat(4096) };
+    f.store.execute(command('ADMIT', `large-replay-${index}`, 0, { spec: input }), owner);
+  }
+  const response = f.store.replay();
+  assert.equal(response.executions.length, 200);
+  assert.equal(response.events.length, 200);
+  const serialized = JSON.stringify(response);
+  assert.ok(Buffer.byteLength(serialized, 'utf8') > 1_048_576);
+  assert.throws(() => parseJSON(serialized), code('JSON_TOO_LARGE'));
+});
+
+test('legal small commands can grow a stored aggregate beyond 1MiB without breaking recovery', (t) => {
+  const ids = Array.from({ length: 256 }, (_, index) => `check-${index}-`.padEnd(128, 'x'));
+  const f = fixture(t, { worker_ids: ['worker-1', 'reviewer-1'] });
+  const input = spec('CF-growing-aggregate');
+  input.outcome = '😀'.repeat(4096);
+  input.acceptance_checks = ids;
+  input.shared_resources = Array.from({ length: 256 }, (_, index) => ({
+    resource_id: `resource-${index}`.padEnd(128, 'x'), mode: 'shared',
+  }));
+  input.workflow.stages = Array.from({ length: 16 }, (_, index) => ({ id: `stage-${index}`,
+    role: index === 0 ? 'builder-developer' : [1, 15].includes(index) ? 'reviewer-verifier' : 'explorer-researcher',
+    required_checks: index === 0 ? [] : ids, requires_approval: false,
+  }));
+  const send = (kind, payload, actor = owner) => {
+    const value = command(kind, 'growing', f.store.get('growing')?.revision ?? 0, payload);
+    assert.ok(Buffer.byteLength(canonical(value), 'utf8') < 1_048_576);
+    return f.store.execute(value, actor);
+  };
+  send('ADMIT', { spec: input });
+  f.store.execute(assign('growing'), owner);
+  send('ACKNOWLEDGE', { attempt_id: 'attempt-growing', fencing_token: 1 }, worker);
+  const content = 'stored output';
+  const artifactDigest = createHash('sha256').update(content, 'utf8').digest('hex');
+  f.store.putArtifact({ digest: artifactDigest, content });
+  const artifacts = [{ path: 'output.txt', digest: artifactDigest, repository_revision: input.repository.revision }];
+  const subject = digest(artifacts);
+  send('SUBMIT', { result: {
+    schema_version: 1, attempt_id: 'attempt-growing', fencing_token: 1, spec_digest: digest(input),
+    kind: 'SUCCEEDED', subject_digest: subject, artifacts,
+  } }, worker);
+  send('ACCEPT_STAGE', { subject_digest: subject });
+  send('CLEANUP_CONFIRMED', { attempt_id: 'attempt-growing', fencing_token: 1 });
+  const reviewer = { actor_id: 'reviewer-1', role: 'worker' };
+  const assigned = send('ASSIGN', { attempt_id: 'large-review', worker_id: reviewer.actor_id,
+    lease_deadline: '2026-10-30T00:01:00.000Z', workspace: 'read-only',
+    capabilities: ['read'], input_revisions: [subject] });
+  const fencingToken = assigned.execution.attempt.fencing_token;
+  send('ACKNOWLEDGE', { attempt_id: 'large-review', fencing_token: fencingToken }, reviewer);
+  const submit = command('SUBMIT', 'growing', f.store.get('growing').revision, { result: {
+    schema_version: 1, attempt_id: 'large-review', fencing_token: fencingToken,
+    spec_digest: digest(input), kind: 'CHANGES_REQUIRED', subject_digest: subject,
+    findings: Array.from({ length: 256 }, (_, index) => ({ code: `finding-${index}`, message: 'x'.repeat(2048) })),
+  } });
+  assert.ok(Buffer.byteLength(canonical(submit), 'utf8') < 1_048_576);
+  const receipt = f.store.execute(submit, reviewer);
+  assert.ok(Buffer.byteLength(canonical(receipt.execution), 'utf8') > 1_048_576);
+  f.store.close(); const reopened = f.open();
+  assert.deepEqual(reopened.execute(submit, reviewer), receipt);
+  assert.equal(reopened.get('growing').result.findings.length, 256);
+  assert.equal(reopened.history('growing').length, 9);
+  assert.equal(reopened.replay().executions.length, 1);
+  const oversized = structuredClone(submit);
+  oversized.command_id = 'over-wire-limit';
+  oversized.payload.result.findings = oversized.payload.result.findings.map((item) => ({ ...item, message: '😀'.repeat(2048) }));
+  assert.throws(() => reopened.execute(oversized, reviewer), code('JSON_TOO_LARGE'));
+  assert.equal(reopened.list().length, 1);
 });
 
 test('artifact bytes persist immutably with raw UTF-8 digests across restart', (t) => {

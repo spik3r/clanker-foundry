@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ace3f51bea8f2201022b39b54ee4e9cc471c3855",
+  "id": "CF-orchestration-review",
+  "path": "tasks/CF-orchestration-review-followup.md",
+  "blob": "b6864645128186b391721f22c798a88ea044378a",
+  "record": "---\nid: CF-orchestration-review\nstatus: in-progress\nowner: Foundry review follow-up\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Review the orchestration pilot with fresh context and fix findings\n\n## Implementation claim\n\nThe user requested a fresh-context review of the whole implementation, fixes for\nactionable findings or outstanding work, and a summary. Owner/integration lead:\nFoundry review follow-up on `codex/deterministic-orchestration-plan`, reviewed\nimplementation base `220afbf`. A clean checkout and the connected open-PR search\nshowed no competing local changes or open PRs before this claim. This is a local\nclaim, not a published shared reservation.\n\nBounded write scope, only where a reproduced review finding requires it:\n- `runtime/src/contract.mjs`, `runtime/src/state.mjs`, `runtime/src/store.mjs`\n- `runtime/src/runner.mjs`, `runtime/src/adapters.mjs`\n- `runtime/src/import-export.mjs`, `runtime/src/cli.mjs`\n- `runtime/contracts/v1.schema.json`\n- `runtime/package.json`, `runtime/package-lock.json`\n- `runtime/test/contract.test.mjs`, `runtime/test/state.test.mjs`\n- `runtime/test/store.test.mjs`, `runtime/test/runner.test.mjs`\n- `runtime/test/adapters.test.mjs`, `runtime/test/import-export.test.mjs`\n- `runtime/test/cli.test.mjs`, `runtime/test/fixtures.mjs`\n- `runtime/README.md`, `.github/workflows/orchestration.yml`\n- `docs/adr/0001-deterministic-runtime.md`\n- `docs/deterministic-orchestration-plan.md`\n- `docs/deterministic-orchestration-review.md`\n- `tests/project-memory.test.mjs`, only the invalid UTF-8 filename fixture\n- This task record and new immutable source/event metadata.\n\nIndependent reviewers remain read-only. The lead implements fixes and owns\nevidence, integration and local commits. Preserve unrelated work and existing\nmemory records. Do not add live provider calls, unattended writable workers,\nexternal tracker migration, publication, merge or deployment.\n\n## Acceptance\n\n- A reviewer without conversation history checks source, schemas, tests, docs,\n  CI, model/plan coverage and outstanding work against the actual branch.\n- Fix reproduced correctness/recovery/validation issues and add relevant regressions.\n- Resolve the known platform-dependent fixture without skipping its rejection check.\n- Distinguish defects from planned integrations requiring credentials/host decisions.\n- Record actual checks, remaining limits and a concrete follow-up summary.\n\n## Validation and next action\n\nUse Node 24 for runtime and lifecycle tests. Run focused regressions, then the\nruntime suite and both Project Memory suites, pack validation, installer checks,\nwhitespace and committed-diff evidence validation. Re-review affected behavior.\nNext: pin this task, record a genuine start, collect fresh findings and implement\nonly supported corrections before final review and local commit.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-review-followup.md",
+        "id": "CF-orchestration-review",
+        "blob": "b6864645128186b391721f22c798a88ea044378a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

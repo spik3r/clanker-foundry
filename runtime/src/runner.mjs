@@ -89,25 +89,31 @@ function resolveInputSubjects(store, execution, attempt) {
 async function submitAttempt({ store, adapter, effect, claim, now }) {
   const { attempt } = effect.payload;
   let execution = store.get(effect.execution_id);
-  if (!isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['ASSIGNED'])) {
+  if (!isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['ASSIGNED', 'EXECUTING'])) {
     return { status: 'DELIVERED', receipt: { status: 'SUPPRESSED_STALE' } };
   }
   if (adapter?.workerId && adapter.workerId !== attempt.worker_id) {
     fail('WORKER_IDENTITY_MISMATCH', 'Adapter identity does not match the assigned worker');
   }
+  if (!adapter || typeof adapter.runAttempt !== 'function') {
+    return { status: 'UNKNOWN', receipt: { status: 'NO_SUPERVISED_ADAPTER' } };
+  }
   const ackAt = timestamp(now);
+  if (Date.parse(ackAt) >= Date.parse(execution.attempt.lease_deadline)) {
+    return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_EXPIRED' } };
+  }
   const ack = commandFor(effect, 'acknowledge', execution, ackAt, 'ACKNOWLEDGE', {
     attempt_id: attempt.attempt_id,
     fencing_token: attempt.fencing_token,
   });
-  store.execute(ack, workerContext(execution.attempt));
+  if (execution.state === 'ASSIGNED') store.execute(ack, workerContext(execution.attempt));
+  else if (claim.resume_after_ack !== true) {
+    return { status: 'UNKNOWN', receipt: { status: 'RECOVERY_NOT_CONFIRMED' } };
+  }
 
   execution = store.get(effect.execution_id);
   if (!isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['EXECUTING'])) {
     return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_CHANGED_AFTER_ACK' } };
-  }
-  if (!adapter || typeof adapter.runAttempt !== 'function') {
-    return { status: 'UNKNOWN', receipt: { status: 'NO_SUPERVISED_ADAPTER' } };
   }
   const result = await adapter.runAttempt({
     attempt: structuredClone(execution.attempt),
@@ -185,9 +191,9 @@ async function runChecks({ store, effect, checks, now }) {
     const verdict = typeof output === 'string' ? output : output?.verdict;
     const evidenceRef = typeof output === 'object' && typeof output.evidence_ref === 'string'
       ? output.evidence_ref
-      : `check:${check.check_id}:${check.check_version}`;
+      : `check-${digest({ check_id: check.check_id, check_version: check.check_version })}`;
     if (!['PASS', 'FAIL', 'INCONCLUSIVE'].includes(verdict)) fail('INVALID_CHECK_RESULT', `Check ${checkId} returned an invalid verdict`);
-    if (evidenceRef.length < 1 || evidenceRef.length > 256) fail('INVALID_CHECK_RESULT', `Check ${checkId} returned an invalid evidence reference`);
+    if (evidenceRef.length < 1 || evidenceRef.length > 128) fail('INVALID_CHECK_RESULT', `Check ${checkId} returned an invalid evidence reference`);
 
     const at = timestamp(now);
     const evidence = {

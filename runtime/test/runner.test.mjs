@@ -20,11 +20,11 @@ const check = {
 };
 let caseNumber = 0;
 
-async function setup(t, { leaseMs = 60_000, stages } = {}) {
+async function setup(t, { leaseMs = 60_000, stages, configuredCheck = check } = {}) {
   const directory = await mkdtemp(path.join(await realpath(os.tmpdir()), 'foundry-runner-'));
   const store = openStore(path.join(directory, 'runtime.sqlite'), {
     worker_ids: [workerId, 'reviewer-1'],
-    trusted_checks: [{ check_id: check.check_id, check_version: check.check_version, runner_id: check.runner_id }],
+    trusted_checks: [{ check_id: configuredCheck.check_id, check_version: configuredCheck.check_version, runner_id: configuredCheck.runner_id }],
   });
   t.after(() => {
     store.close();
@@ -35,8 +35,9 @@ async function setup(t, { leaseMs = 60_000, stages } = {}) {
   spec.task_id = `CF-runner-${caseNumber}`;
   spec.spec_revision = 1;
   spec.lease_ms = leaseMs;
+  spec.acceptance_checks = [configuredCheck.check_id];
   spec.workflow.stages = stages ?? [{
-    id: 'explore', role: 'explorer-researcher', required_checks: [check.check_id], requires_approval: false,
+    id: 'explore', role: 'explorer-researcher', required_checks: [configuredCheck.check_id], requires_approval: false,
   }];
   const executionId = `exec-${spec.task_id}`;
   store.execute({
@@ -125,7 +126,9 @@ test('cancellation suppresses a stale launch before the adapter is called', asyn
   const summary = await drainOutbox({ store, adapter, dispatcherId: 'dispatcher-cancel', now: at });
   assert.equal(adapter.calls.some((call) => call.type === 'run'), false);
   assert.equal(store.get(executionId).state, 'CANCELLED');
-  assert.ok(summary.delivered.length >= 1);
+  assert.ok(summary.skipped.some((item) => item.status === 'DELIVERED'));
+  assert.ok(summary.unknown.some((item) => item.receipt?.status === 'STOP_NOT_CONFIRMED'));
+  assert.equal(store.get(executionId).cleanup_pending, true);
 });
 
 test('schema-invalid worker results become unknown and are not submitted', async (t) => {
@@ -262,9 +265,10 @@ test('wrong or fresh adapter cannot confirm revocation of another attempt', asyn
 
 test('old unknown effects do not starve later cleanup when the dispatch limit is one', async (t) => {
   const { store, executionId } = await setup(t);
+  const adapter = new FakeAdapter();
   const failed = await drainOutbox({
     store,
-    adapter: { async runAttempt() { throw new Error('outcome unavailable'); } },
+    adapter: { async runAttempt(input) { await adapter.runAttempt(input); throw new Error('outcome unavailable'); } },
     dispatcherId: 'dispatcher-starvation',
     now: at,
   });
@@ -281,7 +285,7 @@ test('old unknown effects do not starve later cleanup when the dispatch limit is
   }, owner);
   const cleanup = await drainOutbox({
     store,
-    adapter: new FakeAdapter(),
+    adapter,
     dispatcherId: 'dispatcher-starvation-cleanup',
     now: '2026-10-30T00:00:04.000Z',
     limit: 1,
@@ -291,4 +295,69 @@ test('old unknown effects do not starve later cleanup when the dispatch limit is
   execution = store.get(executionId);
   assert.equal(execution.cleanup_pending, false);
   assert.equal(execution.resources_held, false);
+});
+
+test('missing adapters leave assignment unacknowledged until confirmed recovery', async (t) => {
+  const { store, executionId } = await setup(t);
+  const first = await drainOutbox({ store, adapter: null, dispatcherId: 'absent-config', now: at });
+  assert.equal(store.get(executionId).state, 'ASSIGNED');
+  const effectId = first.unknown[0].effect_id;
+  store.reconcileEffect({ effectId, outcome: 'PENDING', receipt: { no_invocation: true } }, owner);
+  const adapter = new FakeAdapter();
+  await drainOutbox({ store, adapter, dispatcherId: 'fixed-config', now: at });
+  assert.equal(adapter.calls.filter((item) => item.type === 'run').length, 1);
+  assert.equal(store.get(executionId).state, 'VALIDATING');
+});
+
+test('owner-confirmed absence resumes an acknowledged launch once without a second ACK', async (t) => {
+  const { store, executionId } = await setup(t);
+  const first = await drainOutbox({ store, adapter: { async runAttempt() {
+    throw Object.assign(new Error('provider configuration failed before invocation'), { code: 'NOT_INVOKED' });
+  } }, dispatcherId: 'before-invocation', now: at });
+  assert.equal(store.get(executionId).state, 'EXECUTING');
+  const effectId = first.unknown[0].effect_id;
+  assert.throws(() => store.reconcileEffect({ effectId, outcome: 'PENDING', receipt: {} }, { actor_id: workerId, role: 'worker' }), { code: 'UNAUTHORIZED' });
+  store.reconcileEffect({ effectId, outcome: 'PENDING', receipt: { provider_confirmed_no_invocation: true } }, owner);
+  const adapter = new FakeAdapter();
+  const second = await drainOutbox({ store, adapter, dispatcherId: 'resumed-launch', now: at });
+  assert.equal(second.delivered.length, 1);
+  assert.equal(adapter.calls.filter((item) => item.type === 'run').length, 1);
+  assert.equal(store.get(executionId).state, 'VALIDATING');
+  assert.equal(store.events(executionId).filter((item) => item.kind === 'ACKNOWLEDGE').length, 1);
+  await drainOutbox({ store, adapter, checks: [check], dispatcherId: 'resumed-launch', now: at });
+  assert.equal(adapter.calls.filter((item) => item.type === 'run').length, 1);
+});
+
+test('long legal check identities generate bounded stable evidence references', async (t) => {
+  const configuredCheck = { check_id: 'c'.repeat(128), check_version: 'v'.repeat(128),
+    runner_id: 'long-check-runner', async run() { return 'PASS'; } };
+  const { store, executionId } = await setup(t, { configuredCheck });
+  await drainOutbox({ store, adapter: new FakeAdapter(), dispatcherId: 'long-check', now: at });
+  const checked = await drainOutbox({ store, checks: [configuredCheck], dispatcherId: 'long-check', now: at });
+  assert.equal(checked.unknown.length, 0);
+  const [evidence] = store.get(executionId).validations;
+  assert.equal(evidence.verdict, 'PASS');
+  assert.ok(evidence.evidence_ref.length <= 128);
+  assert.equal(evidence.evidence_ref, `check-${digest({ check_id: configuredCheck.check_id, check_version: configuredCheck.check_version })}`);
+});
+
+test('a fresh fake adapter cannot release a live text invocation', async (t) => {
+  const { store, executionId } = await setup(t);
+  let finish;
+  let started;
+  const ready = new Promise((resolve) => { started = resolve; });
+  const text = createTextModelAdapter({ workerId, invoke: async () => {
+    started(); return new Promise((resolve) => { finish = resolve; });
+  } });
+  const running = drainOutbox({ store, adapter: text, dispatcherId: 'live-text', now: at });
+  await ready;
+  store.execute({ schema_version: 1, command_id: 'cancel-live-text', execution_id: executionId,
+    expected_revision: store.get(executionId).revision, at,
+    kind: 'CANCEL', payload: { code: 'owner-cancelled' } }, owner);
+  const cleanup = await drainOutbox({ store, adapter: new FakeAdapter(), dispatcherId: 'fresh-fake', now: at });
+  assert.equal(cleanup.unknown.some((item) => item.receipt?.status === 'STOP_NOT_CONFIRMED'), true);
+  assert.equal(store.get(executionId).cleanup_pending, true);
+  assert.equal(store.get(executionId).resources_held, true);
+  finish('settled after cancellation');
+  await running;
 });

@@ -385,28 +385,43 @@ export class FakeAdapter {
   }
 
   async runAttempt({ attempt, spec }) {
+    if (this.activeAttempts.has(attempt.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Fake adapter already owns this attempt ID');
+    const ownedAttempt = {
+      worker_id: attempt.worker_id,
+      fencing_token: attempt.fencing_token,
+      status: 'running',
+    };
+    this.activeAttempts.set(attempt.attempt_id, ownedAttempt);
     const releaseCapacity = await this.capacity.acquire();
     let retained = false;
     try {
-    const files = await this.readFiles(this.inputPaths);
-    // Include stable input digests so test results are tied to the bytes actually read.
-    const inputSummary = files.map(({ path: filePath, digest: fileDigest }) => `${filePath}:${fileDigest}`).join('\n');
-    const text = inputSummary ? `${this.output}\n${inputSummary}` : this.output;
-    if (Buffer.byteLength(text, 'utf8') > 1024 * 1024) fail('OUTPUT_TOO_LARGE', 'Fake output exceeds the 1MiB artifact limit');
-    const result = artifactResult({ attempt, spec, text });
-    retainArtifact(this.artifacts, result.artifacts[0].digest, text);
-    retained = true;
-    this.activeAttempts.set(attempt.attempt_id, attempt.fencing_token);
-    this.calls.push({ type: 'run', attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token });
-    return result;
+      const files = await this.readFiles(this.inputPaths);
+      // Include stable input digests so test results are tied to the bytes actually read.
+      const inputSummary = files.map(({ path: filePath, digest: fileDigest }) => `${filePath}:${fileDigest}`).join('\n');
+      const text = inputSummary ? `${this.output}\n${inputSummary}` : this.output;
+      if (Buffer.byteLength(text, 'utf8') > 1024 * 1024) fail('OUTPUT_TOO_LARGE', 'Fake output exceeds the 1MiB artifact limit');
+      const result = artifactResult({ attempt, spec, text });
+      retainArtifact(this.artifacts, result.artifacts[0].digest, text);
+      retained = true;
+      ownedAttempt.status = 'settled';
+      this.calls.push({ type: 'run', attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token });
+      return result;
     } finally {
-      if (!retained) releaseCapacity();
+      if (!retained) {
+        this.activeAttempts.delete(attempt.attempt_id);
+        releaseCapacity();
+      }
     }
   }
 
-  async revokeCapabilities({ attempt_id, fencing_token }) {
+  async revokeCapabilities({ attempt_id, fencing_token, attempt } = {}) {
     const current = this.activeAttempts.get(attempt_id);
-    if (current !== undefined && current !== fencing_token) return { stopped: false, reason: 'Fencing token mismatch' };
+    if (!current || current.status !== 'settled' || !attempt || attempt.attempt_id !== attempt_id
+      || attempt.worker_id !== current.worker_id
+      || attempt.fencing_token !== current.fencing_token
+      || fencing_token !== current.fencing_token) {
+      return { stopped: false, reason: 'This adapter cannot prove ownership of the attempt' };
+    }
     this.activeAttempts.delete(attempt_id);
     this.calls.push({ type: 'revoke', attempt_id, fencing_token });
     return { stopped: true, reason: 'Fake attempt stopped' };

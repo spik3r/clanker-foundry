@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-review
-status: in-progress
+status: review
 owner: Foundry review follow-up
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -53,5 +53,35 @@ external tracker migration, publication, merge or deployment.
 Use Node 24 for runtime and lifecycle tests. Run focused regressions, then the
 runtime suite and both Project Memory suites, pack validation, installer checks,
 whitespace and committed-diff evidence validation. Re-review affected behavior.
-Next: pin this task, record a genuine start, collect fresh findings and implement
-only supported corrections before final review and local commit.
+The task was pinned and a genuine start recorded before edits. Checkpoints extend
+the exact implementation scope before each additional affected component.
+
+## Local result and validation
+
+A fresh-context Sol reviewer found seven reproducible runtime defects. Corrected
+prototype-sensitive validation, fake-worker cleanup ownership, acknowledged-launch
+recovery, combined replay size, growing stored-record size, effective check bounds
+and generated evidence references. Added regression tests for each. A bounded Luna
+builder fixed fake ownership; the lead integrated the remaining corrections.
+The independent reviewer rechecked every reproduction and eight recovery scenarios.
+See the [review report](../docs/deterministic-orchestration-review.md).
+
+The previously failing invalid UTF-8 filename fixture now constructs a Git tree
+without an invalid host filename. Its rejection and deletion assertions remain;
+no tests were skipped and production Project Memory code is unchanged.
+
+Observed final checks on Node v24.22.2:
+
+- Combined runtime and lifecycle suites: 227/227 passed, no skips (84 runtime,
+  143 Project Memory/workflow tests).
+- Pack validation and installer regressions passed.
+- Dependency audit: zero known vulnerabilities in the pinned runtime dependencies.
+- Unstaged whitespace check passed; staged and committed-evidence checks run in
+  the required local completion sequence.
+- Optional `skills-ref` is unavailable. Remote CI has not run on this local branch.
+
+Editing is finished; this claim reserves no additional work. Next: commit the
+reviewed fixes and immutable completion evidence locally, verify committed
+coverage, and deliver the summary. Live provider integration, writable-host
+isolation, optional evidence automation and an approved namespace cutover remain
+separate decisions; none was silently enabled by this review.

@@ -1,0 +1,44 @@
+{
+  "formatVersion": 2,
+  "eventId": "ecaa1a98-3b2b-4cdc-a886-d08258a2f1f3",
+  "runId": "569a605e-dc7c-4584-b232-735867d4e304",
+  "kind": "checkpoint",
+  "parents": [
+    "88973fe5-b879-48e0-a2fc-3e526c777dda"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-review",
+    "path": "tasks/CF-orchestration-review-followup.md",
+    "revision": "ace3f51bea8f2201022b39b54ee4e9cc471c3855",
+    "blob": "b6864645128186b391721f22c798a88ea044378a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fda49c658a14b2afb4dd8893c7dd5d600f95c531ba564266a919bee3eea4e521"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T04:03:36.718Z",
+  "summary": "Fresh review confirmed six issues; add exact state-model limit correction to the active scope",
+  "next": "Implement all six regressions and recheck them independently",
+  "files": [
+    "tests/project-memory.test.mjs",
+    "runtime/src/contract.mjs",
+    "runtime/test/contract.test.mjs",
+    "runtime/src/state.mjs",
+    "runtime/test/state.test.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/src/store.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-review.md",
+    "tasks/CF-orchestration-review-followup.md"
+  ]
+}

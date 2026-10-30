@@ -88,3 +88,35 @@ test('parseJSON parses valid JSON with a null-prototype object', () => {
   assert.equal(Object.getPrototypeOf(value), null);
   assert.deepEqual(value.items, [1, true, null]);
 });
+
+test('object-array uniqueness works after parsing and preserves the original records', () => {
+  const spec = structuredClone(taskSpec);
+  spec.shared_resources = [
+    { resource_id: 'a', mode: 'shared' }, { resource_id: 'b', mode: 'shared' },
+  ];
+  spec.dependencies = [
+    { task_id: 'CF-a', spec_digest: 'a'.repeat(64) },
+    { task_id: 'CF-b', spec_digest: 'b'.repeat(64) },
+  ];
+  const parsed = parseJSON(JSON.stringify(spec));
+  const before = canonical(parsed);
+  assert.equal(validate('TaskSpec', parsed), parsed);
+  assert.equal(Object.getPrototypeOf(parsed), null);
+  assert.equal(canonical(parsed), before);
+  parsed.shared_resources.push(parsed.shared_resources[0]);
+  assert.throws(() => validate('TaskSpec', parsed), { code: 'INVALID_CONTRACT' });
+});
+
+test('validation does not execute accessors or leak prototype-comparison exceptions', () => {
+  let calls = 0;
+  const bad = { ...taskSpec };
+  Object.defineProperty(bad, 'spec_revision', { enumerable: true, get() { calls += 1; return 1; } });
+  assert.throws(() => validate('TaskSpec', bad), { code: 'UNSUPPORTED_VALUE' });
+  assert.equal(calls, 0);
+  const input = structuredClone(taskSpec);
+  input.shared_resources = [
+    { resource_id: 'a', mode: 'shared', valueOf: 1 },
+    { resource_id: 'b', mode: 'shared', valueOf: 1 },
+  ];
+  assert.throws(() => validate('TaskSpec', input), { code: 'INVALID_CONTRACT' });
+});

@@ -101,6 +101,19 @@ test('maximum-length accepted command IDs produce bounded stable effect IDs', ()
   validate('Effect', first.effects[0]);
 });
 
+test('admission bounds the effective check union before a worker can start', () => {
+  const spec = specFor(['explorer-researcher']);
+  spec.workflow.stages[0].required_checks = Array.from({ length: 256 }, (_, index) => `check-${index}`);
+  spec.acceptance_checks = ['extra-acceptance-check'];
+  rejectsCode(() => harness(spec), 'CHECK_LIMIT_EXCEEDED');
+  spec.acceptance_checks = ['check-0'];
+  const h = harness(spec);
+  assign(h); acknowledge(h);
+  const result = succeeded(h);
+  assert.equal(result.effects[0].payload.check_ids.length, 256);
+  validate('Effect', result.effects[0]);
+});
+
 test('ordered stages require independent validation and approval, then confirmed cleanup', () => {
   const h = harness(specFor(['explorer-researcher', 'architect-planner', 'builder-developer', 'reviewer-verifier']));
   for (let index = 0; index < 4; index += 1) {

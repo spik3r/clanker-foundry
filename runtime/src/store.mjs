@@ -9,6 +9,12 @@ const DATABASE_VERSION = 1;
 const APPLICATION_ID = 0x43464f52;
 const ROLES = new Set(['owner', 'coordinator', 'scheduler', 'worker', 'validator', 'approver']);
 
+function parseStored(text) {
+  // Validated aggregates and receipts grow across commands. Their serialized
+  // size is independent of the 1MiB limit for a new external wire request.
+  return parseJSON(text, { maxBytes: Math.max(1, Buffer.byteLength(text, 'utf8')) });
+}
+
 function reject(code, message) {
   const error = new Error(message);
   error.code = code;
@@ -142,12 +148,12 @@ export function openStore(databasePath, options = {}) {
   };
   const get = (id) => {
     const row = db.prepare('SELECT body FROM executions WHERE execution_id=?').get(id);
-    return row ? parseJSON(row.body) : null;
+    return row ? parseStored(row.body) : null;
   };
   const specFor = (dependency) => {
     const row = db.prepare('SELECT body FROM specs WHERE task_id=? AND digest=?').get(dependency.task_id, dependency.spec_digest);
     if (!row) return null;
-    const spec = parseJSON(row.body);
+    const spec = parseStored(row.body);
     if (digest(spec) !== dependency.spec_digest) reject('SPEC_DIGEST_MISMATCH', 'Stored dependency spec does not match its immutable digest');
     return spec;
   };
@@ -174,7 +180,7 @@ export function openStore(databasePath, options = {}) {
   const selectedDependencyOutputs = (spec) => spec.dependencies.flatMap((dependency) => {
     const row = db.prepare("SELECT execution_id,body FROM executions WHERE task_id=? AND spec_digest=? AND state='COMPLETED' ORDER BY admission_sequence,execution_id LIMIT 1").get(dependency.task_id, dependency.spec_digest);
     if (!row) return [];
-    const execution = parseJSON(row.body);
+    const execution = parseStored(row.body);
     if (!execution.accepted_subject_digest) reject('INVALID_DEPENDENCY_OUTPUT', 'Completed dependency has no accepted output');
     return [{ ...dependency, execution_id: row.execution_id, subject_digest: execution.accepted_subject_digest }];
   });
@@ -202,7 +208,7 @@ export function openStore(databasePath, options = {}) {
     if (typeof subjectDigest !== 'string' || !/^[a-f0-9]{64}$/.test(subjectDigest)) reject('INVALID_ARTIFACT', 'Subject identity must be a SHA-256 digest');
     const row = db.prepare('SELECT manifest FROM subjects WHERE digest=?').get(subjectDigest);
     if (!row) return null;
-    const manifest = parseJSON(row.manifest);
+    const manifest = parseStored(row.manifest);
     if (digest(manifest) !== subjectDigest) reject('SUBJECT_CORRUPTED', 'Stored subject manifest does not match its digest');
     for (const artifact of manifest) if (getArtifact(artifact.digest) === null) reject('ARTIFACT_NOT_FOUND', 'Stored subject references missing artifact bytes');
     return manifest;
@@ -219,28 +225,38 @@ export function openStore(databasePath, options = {}) {
     if (!row) reject('EFFECT_NOT_FOUND', 'No effect has that identity');
     return row;
   };
-  const effectView = (row) => ({ effect: parseJSON(row.body), status: row.status, dispatcher_id: row.dispatcher_id, claim_token: row.claim_token, lease_deadline: row.lease_deadline, receipt: row.outcome_receipt === null ? null : parseJSON(row.outcome_receipt) });
+  const effectView = (row) => ({ effect: parseStored(row.body), status: row.status, dispatcher_id: row.dispatcher_id, claim_token: row.claim_token, lease_deadline: row.lease_deadline, receipt: row.outcome_receipt === null ? null : parseStored(row.outcome_receipt) });
+  const acknowledgedRecovery = (row, execution, intent) => {
+    if (intent.kind !== 'LAUNCH_ATTEMPT' || execution.state !== 'EXECUTING' || !row.outcome_receipt) return false;
+    const proof = parseStored(row.outcome_receipt).reconciliation;
+    return proof?.decision === 'CONFIRMED_ABSENT'
+      && proof.actor_id === execution.spec.accountable_owner
+      && proof.attempt_id === intent.payload.attempt.attempt_id
+      && proof.fencing_token === execution.fence;
+  };
 
   const history = (executionId) => {
     const query = 'SELECT events.command,events.context,receipts.body FROM events JOIN receipts ON receipts.command_id=events.event_id';
     const rows = executionId === undefined
       ? db.prepare(`${query} ORDER BY events.global_sequence`).all()
       : db.prepare(`${query} WHERE events.execution_id=? ORDER BY events.revision`).all(executionId);
-    return rows.map((row) => ({ command: parseJSON(row.command), context: parseJSON(row.context), ...parseJSON(row.body) }));
+    return rows.map((row) => ({ command: parseStored(row.command), context: parseStored(row.context), ...parseStored(row.body) }));
   };
 
   return {
     execute(command, authContext) {
       const actor = identity(authContext);
       // Canonicalization rejects JS values that JSON/schema validation cannot represent.
-      const commandDigest = digest(command);
+      const wire = canonical(command);
+      if (Buffer.byteLength(wire, 'utf8') > 1_048_576) reject('JSON_TOO_LARGE', 'Command exceeds the 1MiB external wire limit');
+      const commandDigest = createHash('sha256').update(wire, 'utf8').digest('hex');
       validate('Command', command);
       return transaction(() => {
         const priorReceipt = db.prepare('SELECT * FROM receipts WHERE command_id=?').get(command.command_id);
         if (priorReceipt) {
           if (priorReceipt.actor_id !== actor.actor_id || priorReceipt.role !== actor.role) reject('UNAUTHORIZED', 'Command receipt belongs to another principal');
           if (priorReceipt.command_digest !== commandDigest) reject('COMMAND_ID_REUSED', 'Command ID was already used with another payload');
-          return parseJSON(priorReceipt.body);
+          return parseStored(priorReceipt.body);
         }
         const previous = get(command.execution_id);
         if ((previous?.revision ?? 0) !== command.expected_revision) reject('REVISION_CONFLICT', 'Expected revision does not match committed state');
@@ -255,7 +271,7 @@ export function openStore(databasePath, options = {}) {
           const active = db.prepare("SELECT execution_id FROM executions WHERE task_id=? AND state NOT IN ('COMPLETED','FAILED','CANCELLED')").get(spec.task_id);
           if (active) reject('TASK_ALREADY_ACTIVE', 'Task already has a nonterminal execution');
           const retained = db.prepare('SELECT body FROM executions WHERE task_id=?').all(spec.task_id).some((row) => {
-            const prior = parseJSON(row.body);
+            const prior = parseStored(row.body);
             return prior.cleanup_pending || prior.resources_held;
           });
           if (retained) reject('CLEANUP_REQUIRED', 'Prior execution must confirm cleanup before task resubmission');
@@ -297,7 +313,7 @@ export function openStore(databasePath, options = {}) {
         for (const effect of effects) db.prepare("INSERT INTO outbox(effect_id,execution_id,body,status) VALUES(?,?,?,'PENDING')").run(effect.effect_id, execution.execution_id, canonical(effect));
         const receipt = { command_id: command.command_id, execution, event, effects };
         db.prepare('INSERT INTO receipts VALUES(?,?,?,?,?)').run(command.command_id, commandDigest, actor.actor_id, actor.role, canonical(receipt));
-        return parseJSON(canonical(receipt));
+        return parseStored(canonical(receipt));
       });
     },
     get,
@@ -338,25 +354,28 @@ export function openStore(databasePath, options = {}) {
         reconstructed.set(record.command.execution_id, result.execution);
         events.push(result.event); effects.push(...result.effects);
       }
-      const persisted = db.prepare('SELECT body FROM executions ORDER BY admission_sequence,execution_id').all().map((row) => parseJSON(row.body));
+      const persisted = db.prepare('SELECT body FROM executions ORDER BY admission_sequence,execution_id').all().map((row) => parseStored(row.body));
       if (digest(persisted) !== digest([...reconstructed.values()])) reject('REPLAY_MISMATCH', 'Replayed state does not match persisted execution state');
       const recordedAttempts = db.prepare('SELECT * FROM attempts').all();
       const sortedRecords = (items) => items.map(canonical).sort();
       if (digest(sortedRecords(recordedAttempts)) !== digest(sortedRecords([...attempts.values()]))) reject('REPLAY_MISMATCH', 'Replayed attempt identities do not match their permanent registry');
-      const persistedEvents = db.prepare('SELECT body FROM events ORDER BY global_sequence').all().map((row) => parseJSON(row.body));
+      const persistedEvents = db.prepare('SELECT body FROM events ORDER BY global_sequence').all().map((row) => parseStored(row.body));
       if (digest(persistedEvents) !== digest(events)) reject('REPLAY_MISMATCH', 'Replayed events do not match durable events');
       const expectedReservations = [...reconstructed.values()].filter((execution) => execution.resources_held).flatMap((execution) => requestedResources(execution.spec).map((resource) => ({ execution_id: execution.execution_id, ...resource })));
       const actualReservations = db.prepare('SELECT * FROM reservations').all();
       const sortReservations = (items) => items.map(canonical).sort();
       if (digest(sortReservations(expectedReservations)) !== digest(sortReservations(actualReservations))) reject('REPLAY_MISMATCH', 'Replayed resource reservations do not match durable reservations');
-      const persistedEffects = db.prepare('SELECT body FROM outbox ORDER BY sequence').all().map((row) => parseJSON(row.body));
+      const persistedEffects = db.prepare('SELECT body FROM outbox ORDER BY sequence').all().map((row) => parseStored(row.body));
       if (digest(persistedEffects) !== digest(effects)) reject('REPLAY_MISMATCH', 'Replayed effects do not match durable outbox intents');
-      return parseJSON(canonical({ executions: [...reconstructed.values()], events, effects }));
+      // These records were validated individually; a growing database response is
+      // not an external JSON request subject to the parser's 1MiB wire limit.
+      const response = canonical({ executions: [...reconstructed.values()], events, effects });
+      return parseStored(response);
     }); },
-    list() { return db.prepare('SELECT body FROM executions ORDER BY admission_sequence,execution_id').all().map((row) => parseJSON(row.body)); },
+    list() { return db.prepare('SELECT body FROM executions ORDER BY admission_sequence,execution_id').all().map((row) => parseStored(row.body)); },
     events(executionId) {
       const rows = executionId === undefined ? db.prepare('SELECT body FROM events ORDER BY global_sequence').all() : db.prepare('SELECT body FROM events WHERE execution_id=? ORDER BY revision').all(executionId);
-      return rows.map((row) => parseJSON(row.body));
+      return rows.map((row) => parseStored(row.body));
     },
     pendingEffects() { return db.prepare("SELECT * FROM outbox WHERE status<>'DELIVERED' ORDER BY sequence").all().map(effectView); },
     claimEffect({ effectId, dispatcherId, now, leaseMs }) {
@@ -373,18 +392,19 @@ export function openStore(databasePath, options = {}) {
           }
           reject('EFFECT_ALREADY_CLAIMED', 'Effect already has a live dispatcher claim');
         }
-        const intent = parseJSON(row.body);
+        const intent = parseStored(row.body);
         const execution = get(row.execution_id);
         const attempt = intent.kind === 'LAUNCH_ATTEMPT' ? intent.payload.attempt : intent.payload;
+        const resumeAfterAck = acknowledgedRecovery(row, execution, intent);
         if (intent.kind !== 'REVOKE_CAPABILITIES' && (execution.cleanup_pending ||
             execution.attempt?.attempt_id !== attempt.attempt_id || execution.fence !== attempt.fencing_token ||
-            (intent.kind === 'LAUNCH_ATTEMPT' ? execution.state !== 'ASSIGNED' : execution.state !== 'VALIDATING'))) {
+            (intent.kind === 'LAUNCH_ATTEMPT' ? execution.state !== 'ASSIGNED' && !resumeAfterAck : execution.state !== 'VALIDATING'))) {
           db.prepare("UPDATE outbox SET status='DELIVERED',outcome_receipt=? WHERE effect_id=?").run(canonical({ skipped: 'STALE_ATTEMPT' }), effectId);
           return effectView(effectRow(effectId));
         }
         const token = randomUUID();
         db.prepare("UPDATE outbox SET status='CLAIMED',dispatcher_id=?,claim_token=?,lease_deadline=? WHERE effect_id=?").run(dispatcherId, token, new Date(at + leaseMs).toISOString(), effectId);
-        return effectView(effectRow(effectId));
+        return { ...effectView(effectRow(effectId)), resume_after_ack: resumeAfterAck };
       });
     },
     acknowledgeEffect({ effectId, dispatcherId, claimToken, outcome, receipt }) {
@@ -411,7 +431,20 @@ export function openStore(databasePath, options = {}) {
         if (actor.role !== 'owner' || actor.actor_id !== execution.spec.accountable_owner) reject('UNAUTHORIZED', 'Only the accountable owner may reconcile an unknown effect');
         if (row.status !== 'UNKNOWN') reject('EFFECT_OUTCOME_CONFLICT', 'Only unknown effects need reconciliation');
         // PENDING means the owner confirmed the effect never occurred, not a blind retry.
-        db.prepare('UPDATE outbox SET status=?,dispatcher_id=NULL,claim_token=NULL,lease_deadline=NULL,outcome_receipt=? WHERE effect_id=?').run(outcome, serialized, effectId);
+        const intent = parseStored(row.body);
+        const reconciledReceipt = canonical({
+          reconciliation: {
+            decision: outcome === 'PENDING' ? 'CONFIRMED_ABSENT' : 'CONFIRMED_DELIVERED',
+            actor_id: actor.actor_id,
+            ...(intent.kind === 'LAUNCH_ATTEMPT' ? {
+              attempt_id: intent.payload.attempt.attempt_id,
+              fencing_token: intent.payload.attempt.fencing_token,
+            } : {}),
+          },
+          evidence: receipt,
+        });
+        if (Buffer.byteLength(reconciledReceipt, 'utf8') > 65_536) reject('INVALID_ARGUMENT', 'Reconciliation receipt exceeds 64KiB');
+        db.prepare('UPDATE outbox SET status=?,dispatcher_id=NULL,claim_token=NULL,lease_deadline=NULL,outcome_receipt=? WHERE effect_id=?').run(outcome, reconciledReceipt, effectId);
         return effectView(effectRow(effectId));
       });
     },

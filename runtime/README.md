@@ -48,6 +48,7 @@ Task acceptance checks run against the last non-reviewer candidate stage (or the
 final report for a standalone review). Stage-specific checks validate that stage's
 own output. A workflow containing a builder must end with independent review;
 passing checks on a review report cannot substitute for checking the candidate.
+Admission rejects any stage whose combined stage/task check set exceeds 256.
 
 ## Modules and wire contract
 
@@ -102,7 +103,9 @@ Reviewers receive the actual accepted candidate bytes rather than a digest alone
 
 `history()` includes accepted commands and their recorded evaluation context.
 `replay()` verifies transitions, events, outputs and final state without sending
-effects. Restore the entire database consistently; test recovery before using it
+effects. Stored aggregates, receipts and combined replay responses may grow beyond
+the external JSON input limit; each new wire request remains limited to 1 MiB.
+Restore the entire database consistently; test recovery before using it
 for any work that matters. A local event log is not a backup or external claim.
 
 ## Workers and validation
@@ -142,10 +145,20 @@ eligible effects for another task.
 
 Only the accountable owner may call `reconcileEffect` after checking the actual
 outcome. `DELIVERED` confirms it occurred; `PENDING` confirms it never occurred.
-Neither is a blind retry. Revocation must match the assigned adapter/attempt and
+Neither is a blind retry. A missing adapter is rejected before acknowledgement.
+If acknowledgement was already committed but invocation did not occur, an
+explicit owner-confirmed absence receipt permits that same live attempt to resume
+without a second acknowledgement. Cancellation, fencing and lease expiry still
+prevent it from launching. Revocation must match the assigned adapter/attempt and
 confirm termination. If the host cannot prove that an invocation stopped, keep
 the reservation and resolve the uncertainty manually. A fencing token rejects
 late messages but cannot stop an external process by itself.
+
+This ownership rule also applies to fake workers: a fresh fake adapter cannot
+confirm that another adapter stopped. If an attempt never launched, the owner
+must verify that absence and issue the explicit cleanup command; creating a fake
+adapter is not proof. Generated check evidence references use bounded digests;
+custom references must match the wire contract's 128-character identifier limit.
 
 ## Task intake and CLI
 

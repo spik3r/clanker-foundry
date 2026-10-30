@@ -35,7 +35,16 @@ export function validate(type, value) {
   if (!validator) {
     throw contractError('UNKNOWN_CONTRACT', `Unknown contract type: ${type}`);
   }
-  if (!validator(value)) {
+  // Ajv's object-array equality assumes Object.prototype methods. Keep the public
+  // parser's null-prototype objects, but validate a safe JSON-normalized copy.
+  const input = JSON.parse(canonical(value));
+  let valid;
+  try {
+    valid = validator(input);
+  } catch {
+    throw contractError('INVALID_CONTRACT', `${type} contains unsupported comparison data`);
+  }
+  if (!valid) {
     const details = (validator.errors ?? []).map((item) => ({
       path: item.instancePath,
       keyword: item.keyword,

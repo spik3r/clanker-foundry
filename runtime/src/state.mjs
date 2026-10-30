@@ -26,6 +26,12 @@ function admitSpec(spec) {
   const stages = spec.workflow.stages;
   requireGuard(!stages.some((stage) => stage.role === 'builder-developer') || stages.at(-1).role === 'reviewer-verifier', 'REVIEW_REQUIRED');
   requireGuard(!spec.dependencies.some((dependency) => dependency.task_id === spec.task_id), 'DEPENDENCY_CYCLE');
+  const candidate = spec.workflow.stages.findLastIndex((stage) => stage.role !== 'reviewer-verifier');
+  const acceptanceStage = candidate < 0 ? spec.workflow.stages.length - 1 : candidate;
+  for (const [index, stage] of spec.workflow.stages.entries()) {
+    const effective = new Set([...stage.required_checks, ...(index === acceptanceStage ? spec.acceptance_checks : [])]);
+    requireGuard(effective.size <= 256, 'CHECK_LIMIT_EXCEEDED');
+  }
 }
 
 /** Evaluate one authenticated, ordered command without reading external state. */
