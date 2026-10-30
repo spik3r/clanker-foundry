@@ -149,3 +149,28 @@ passed. A fresh-context reviewer rechecked the fixes and found no remaining
 material defect. The optional `skills-ref` tool is not installed; the pack validator
 reported that optional check as skipped. Committed evidence validation is recorded
 in the immutable completion records and checked after committing.
+
+## Follow-up: admitted limits and dispatch preflight
+
+A subsequent fresh review reproduced two gaps despite the earlier passing tests:
+65 dependency outputs exceeded the runner's 64-subject limit after acknowledgement,
+and a legal long rework workflow exhausted the 128-entry attempt history before
+using its configured budget.
+
+The follow-up supports the full admitted subject envelope through both runner and
+text adapter and checks immutable inputs before claiming or acknowledging a launch.
+The 1 MiB content bound remains. A deterministic input rejection leaves a pending
+effect with an explicit skipped-dispatch error, rather than an unknown launch.
+
+History capacity now covers the schema's maximum automatic attempt envelope of
+356. A regression exercises all 16 stages, 20 reworks and 20 execution retries,
+then replays the complete transcript. Extra manual recovery beyond this capacity
+has an explicit rejection. No old event, source or task claim is rewritten.
+
+Follow-up validation under Node v24.22.2 passed all 160 runtime tests, with no
+skips. Pack validation passed (optional skills-ref unavailable). Independent review
+found and rechecked a fairness regression: preflight rejections must not consume
+the dispatch limit and starve later work. Its actual SQLite regression now proves
+later launch and cleanup proceed with a limit of one. The final review reported no
+remaining material findings. Live provider and Docker checks were not repeated for
+these coordinator-only changes.

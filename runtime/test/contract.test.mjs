@@ -120,3 +120,14 @@ test('validation does not execute accessors or leak prototype-comparison excepti
   ];
   assert.throws(() => validate('TaskSpec', input), { code: 'INVALID_CONTRACT' });
 });
+
+test('runtime collection limits cover the full schema input and retry envelope', async () => {
+  const { default: schema } = await import('../contracts/v1.schema.json', { with: { type: 'json' } });
+  const { RUNTIME_LIMITS } = await import('../src/contract.mjs');
+  const spec = schema.$defs.TaskSpec.properties;
+  const attempts = spec.workflow.properties.stages.maxItems
+    * (1 + spec.retry_policy.properties.rework_retries.maximum)
+    + spec.retry_policy.properties.execution_retries.maximum;
+  assert.equal(RUNTIME_LIMITS.workerHistory, attempts);
+  assert.equal(RUNTIME_LIMITS.inputSubjects, 513);
+});

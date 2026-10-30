@@ -241,3 +241,22 @@ test('fake adapter confirms revocation only for the exact attempt it owns', asyn
     attempt,
   })).stopped, false);
 });
+
+test('text adapter accepts the full combined immutable subject envelope', async () => {
+  const { RUNTIME_LIMITS } = await import('../src/contract.mjs');
+  const text = 'small input';
+  const hash = createHash('sha256').update(text).digest('hex');
+  const inputSubjects = Array.from({ length: RUNTIME_LIMITS.inputSubjects }, (_, index) => {
+    const manifest = [{ path: `input-${index}.txt`, digest: hash, repository_revision: taskSpec.repository.revision }];
+    return { subject_digest: digest(manifest), artifacts: [{ ...manifest[0], content: text }] };
+  });
+  let received = 0;
+  const adapter = createTextModelAdapter({ workerId: 'worker-1', invoke: async (request) => {
+    received = request.inputSubjects.length; return 'reviewed';
+  } });
+  const result = await adapter.runAttempt({ attempt, spec: taskSpec, inputSubjects });
+  assert.equal(received, 513);
+  adapter.releaseArtifact(result.artifacts[0].digest);
+  await assert.rejects(adapter.runAttempt({ attempt: { ...attempt, attempt_id: 'too-many-subjects' },
+    spec: taskSpec, inputSubjects: [...inputSubjects, inputSubjects[0]] }), { code: 'INVALID_INPUT' });
+});

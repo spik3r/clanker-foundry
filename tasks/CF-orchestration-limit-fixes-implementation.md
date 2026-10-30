@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-limit-fixes
-status: in-progress
+status: review
 owner: Foundry limit fixes
 repositories: [spik3r/clanker-foundry]
 ---
@@ -39,8 +39,16 @@ provider call, namespace activation, publication, merge or deployment is include
 
 ## Validation and next action
 
-Add regressions for 65 dependencies, maximum subject counts, byte-limit failure
-before dispatch, and workflows crossing the old 128-attempt history cap. Verify
-existing replay and actor/cleanup protections. Run Node 24 runtime tests, pack
-validation, whitespace checks and the committed full-diff evidence gate. Next:
-register this reviewed source and record a genuine start before implementation.
+Implemented shared input limits, preclaim input checks and history capacity for
+all admitted automatic retries/reworks. The full maximum workflow completes and
+replays 356 attempts. Actual SQLite regressions deliver 65 and 256 dependencies,
+retain oversized work without acknowledgement or uncertainty, and let later work
+and cleanup proceed with a dispatch limit of one.
+
+Node v24.22.2 passed all 160 runtime tests with no skips. Pack validation and
+whitespace checks passed; optional skills-ref is not installed. Independent review
+rechecked the fixes and its fairness follow-up, passing 49 runner/store tests and
+reporting no remaining material findings. No live provider or Docker rerun was
+needed for these coordinator-only changes. Next: local owner review; record staged
+completion fingerprints and validate the committed full diff against origin/main.
+No publication, namespace activation, merge or deployment is included.

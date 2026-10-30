@@ -4,7 +4,7 @@ import { lstat, open, realpath } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import path from 'node:path';
 import { promisify } from 'node:util';
-import { digest } from './contract.mjs';
+import { digest, RUNTIME_LIMITS } from './contract.mjs';
 
 const DEFAULT_OUTPUT_LIMIT = 32 * 1024;
 const DEFAULT_INPUT_LIMIT = 1024 * 1024;
@@ -274,7 +274,7 @@ export function createTextModelAdapter({
       let releaseCapacity;
       let retained = false;
       try {
-        if (!Array.isArray(inputSubjects) || inputSubjects.length > DEFAULT_FILE_LIMIT) fail('INVALID_INPUT', 'Input subjects must be a bounded array');
+        if (!Array.isArray(inputSubjects) || inputSubjects.length > RUNTIME_LIMITS.inputSubjects) fail('INVALID_INPUT', 'Input subjects must be a bounded array');
         const files = inputPaths.length
           ? await (async () => {
             await workspace.verifyBaseRevision(spec.repository.revision);

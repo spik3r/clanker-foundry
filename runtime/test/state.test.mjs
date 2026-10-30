@@ -393,3 +393,56 @@ test('writable workflow requires managed authority and per-attempt isolation', (
     assert.throws(() => evaluate(null, bad, managed));
   }
 });
+
+test('maximum stage, execution retry and rework budgets fit retained attempt history', () => {
+  const spec = specFor([...Array(15).fill('builder-developer'), 'reviewer-verifier']);
+  spec.acceptance_checks = [];
+  spec.workflow.stages.forEach((stage) => { stage.required_checks = []; stage.requires_approval = false; });
+  spec.retry_policy = { execution_retries: 20, rework_retries: 20, retry_delay_ms: 0 };
+  const h = harness(spec);
+  for (let retry = 0; retry < 20; retry += 1) {
+    assign(h, 'builder'); acknowledge(h);
+    h.send('RETRYABLE_ERROR', { code: 'temporary', retry_at: instant });
+    cleanup(h); h.send('RETRY_TIMER');
+  }
+  for (let round = 0; round <= 20; round += 1) {
+    for (let stage = 0; stage < 16; stage += 1) {
+      const reviewer = stage === 15;
+      assign(h, reviewer ? 'reviewer' : 'builder'); acknowledge(h);
+      if (reviewer && round < 20) {
+        h.send('SUBMIT', { result: { schema_version: 1, attempt_id: h.execution.attempt.attempt_id,
+          fencing_token: h.execution.fence, spec_digest: h.execution.spec_digest, kind: 'CHANGES_REQUIRED',
+          subject_digest: h.execution.accepted_subject_digest, findings: [{ code: 'revision', message: 'Revise candidate' }] } }, worker('reviewer'));
+        h.send('REQUEST_CHANGES', { reason: 'review-findings' });
+      } else { succeeded(h); accept(h); }
+      cleanup(h);
+    }
+  }
+  assert.equal(h.execution.state, 'COMPLETED');
+  assert.equal(h.execution.worker_history.length, 356);
+  assert.equal(h.execution.retry_count, 20);
+  assert.equal(h.execution.rework_count, 20);
+  assert.equal(h.execution.resources_held, false);
+  let replay = null;
+  for (const entry of h.transcript) {
+    const answer = evaluate(replay, entry.command, entry.context);
+    assert.deepEqual(answer, entry.answer);
+    replay = answer.execution;
+  }
+  assert.deepEqual(replay, h.execution);
+});
+
+test('extra manual recovery at full history capacity fails explicitly without mutation', () => {
+  const h = harness(specFor(['explorer-researcher']));
+  const current = structuredClone(h.execution);
+  current.worker_history = Array.from({ length: 356 }, (_, index) => ({
+    stage_id: 'stage-0', role: 'explorer-researcher', worker_id: 'worker-1', attempt_id: `old-${index}`,
+  }));
+  const before = canonical(current);
+  assert.throws(() => evaluate(current, { schema_version: 1, command_id: 'beyond-capacity',
+    execution_id: current.execution_id, expected_revision: current.revision, at: instant, kind: 'ASSIGN', payload: {
+      attempt_id: 'new-extra-attempt', worker_id: 'worker-1', input_revisions: [], workspace: 'private',
+      capabilities: ['read'], lease_deadline: later(60_000),
+    } }, owner), { code: 'ATTEMPT_HISTORY_EXHAUSTED' });
+  assert.equal(canonical(current), before);
+});

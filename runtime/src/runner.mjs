@@ -1,4 +1,4 @@
-import { digest, validate } from './contract.mjs';
+import { digest, validate, RUNTIME_LIMITS } from './contract.mjs';
 
 const EFFECT_LEASE_MS = 30_000;
 
@@ -59,7 +59,7 @@ function resolveInputSubjects(store, execution, attempt) {
   const dependencyDigests = dependencyOutputs.map((output) => output.subject_digest).filter(Boolean);
   for (const subjectDigest of dependencyDigests) requested.push(subjectDigest);
   const uniqueDigests = [...new Set(requested.filter((item) => /^[a-f0-9]{64}$/.test(item)))];
-  if (uniqueDigests.length > 64) fail('INPUT_TOO_LARGE', 'Attempt references too many immutable subjects');
+  if (uniqueDigests.length > RUNTIME_LIMITS.inputSubjects) fail('INPUT_TOO_LARGE', 'Attempt references too many immutable subjects');
   let totalBytes = 0;
   for (const subjectDigest of uniqueDigests) {
     const manifest = store.getSubject?.(subjectDigest);
@@ -86,7 +86,7 @@ function resolveInputSubjects(store, execution, attempt) {
   return subjects;
 }
 
-async function submitAttempt({ store, adapter, effect, claim, now }) {
+async function submitAttempt({ store, adapter, effect, claim, now, inputSubjects }) {
   const { attempt } = effect.payload;
   let execution = store.get(effect.execution_id);
   if (!isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['ASSIGNED', 'EXECUTING'])) {
@@ -120,7 +120,7 @@ async function submitAttempt({ store, adapter, effect, claim, now }) {
   const result = await adapter.runAttempt({
     attempt: structuredClone(execution.attempt),
     spec: structuredClone(execution.spec),
-    inputSubjects: resolveInputSubjects(store, execution, execution.attempt),
+    inputSubjects,
   });
   validate('WorkerResult', result);
   if (result.attempt_id !== attempt.attempt_id
@@ -270,7 +270,7 @@ export async function drainOutbox({
 
   const summary = { delivered: [], unknown: [], skipped: [] };
   const allEffects = store.pendingEffects();
-  const candidates = allEffects.filter((item) => item.status === 'PENDING').slice(0, limit);
+  const candidates = allEffects.filter((item) => item.status === 'PENDING');
   for (const item of allEffects) {
     if (item.status === 'UNKNOWN') {
       summary.unknown.push({ effect_id: item.effect.effect_id, status: 'UNKNOWN', receipt: item.receipt });
@@ -293,14 +293,26 @@ export async function drainOutbox({
       summary.skipped.push({ effect_id: pending.effect.effect_id, code: error.code ?? 'CLAIM_FAILED' });
     }
   }
+  let dispatched = 0;
   for (const pending of candidates) {
+    if (dispatched >= limit) break;
     if (!['LAUNCH_ATTEMPT', 'RUN_CHECKS', 'REVOKE_CAPABILITIES'].includes(pending.effect.kind)) {
       summary.skipped.push({ effect_id: pending.effect.effect_id, status: 'UNSUPPORTED_EFFECT' });
       continue;
     }
     const at = timestamp(now);
     let claim;
+    let inputSubjects;
     try {
+      if (pending.effect.kind === 'LAUNCH_ATTEMPT') {
+        const execution = store.get(pending.effect.execution_id);
+        const { attempt } = pending.effect.payload;
+        if (isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['ASSIGNED', 'EXECUTING'])) {
+          // Resolve immutable bytes before claiming delivery or acknowledging work.
+          // A deterministic input rejection leaves the launch pending, not unknown.
+          inputSubjects = resolveInputSubjects(store, execution, attempt);
+        }
+      }
       claim = store.claimEffect({ effectId: pending.effect.effect_id, dispatcherId, now: at, leaseMs: EFFECT_LEASE_MS });
     } catch (error) {
       summary.skipped.push({ effect_id: pending.effect.effect_id, code: error.code ?? 'CLAIM_FAILED' });
@@ -311,13 +323,14 @@ export async function drainOutbox({
       (claim.status === 'UNKNOWN' ? summary.unknown : summary.skipped).push(item);
       continue;
     }
+    dispatched += 1;
     let outcome = 'UNKNOWN';
     let receipt;
     try {
       const effect = claim.effect;
       validate('Effect', effect);
       let result;
-      if (effect.kind === 'LAUNCH_ATTEMPT') result = await submitAttempt({ store, adapter, effect, claim, now });
+      if (effect.kind === 'LAUNCH_ATTEMPT') result = await submitAttempt({ store, adapter, effect, claim, now, inputSubjects });
       else if (effect.kind === 'RUN_CHECKS') result = await runChecks({ store, effect, checks, now });
       else if (effect.kind === 'REVOKE_CAPABILITIES') result = await revokeCapabilities({ store, adapter, effect, now });
       else fail('UNSUPPORTED_EFFECT', `Unsupported effect kind: ${effect.kind}`);

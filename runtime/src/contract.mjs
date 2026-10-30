@@ -5,6 +5,13 @@ import authoritySchema from '../contracts/authority.schema.json' with { type: 'j
 import evidenceSchema from '../contracts/evidence.schema.json' with { type: 'json' };
 import workspaceSchema from '../contracts/workspace.schema.json' with { type: 'json' };
 
+// Include distinct dependency outputs, explicit inputs and the accepted candidate.
+export const RUNTIME_LIMITS = Object.freeze({
+  inputSubjects: schema.$defs.TaskSpec.properties.dependencies.maxItems
+    + schema.$defs.ExecutionAttempt.properties.input_revisions.maxItems + 1,
+  workerHistory: schema.$defs.TaskExecution.properties.worker_history.maxItems,
+});
+
 const ajv = new Ajv2020({
   allErrors: true,
   strict: true,

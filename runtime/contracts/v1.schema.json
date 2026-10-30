@@ -640,7 +640,7 @@
         },
         "worker_history": {
           "type": "array",
-          "maxItems": 128,
+          "maxItems": 356,
           "items": {
             "type": "object",
             "properties": {

@@ -522,3 +522,108 @@ test('separate processes cannot assign one attempt identity to different executi
   assert.equal(f.store.pendingEffects().length, 1); assert.equal(f.store.events().length, 3);
   assert.equal(f.store.replay().effects.length, 1);
 });
+
+function completedInput(f, id, content) {
+  const value = spec(`CF-${id}`);
+  value.acceptance_checks = [];
+  value.workflow.stages[0].required_checks = [];
+  value.workflow.stages[0].requires_approval = false;
+  const send = (kind, payload, actor = owner) => f.store.execute(command(kind, id, f.store.get(id)?.revision ?? 0, payload), actor);
+  send('ADMIT', { spec: value });
+  f.store.execute(assign(id), owner);
+  send('ACKNOWLEDGE', { attempt_id: `attempt-${id}`, fencing_token: 1 }, worker);
+  const hash = createHash('sha256').update(content).digest('hex');
+  f.store.putArtifact({ digest: hash, content });
+  const artifacts = [{ path: `${id}.txt`, digest: hash, repository_revision: value.repository.revision }];
+  send('SUBMIT', { result: { schema_version: 1, attempt_id: `attempt-${id}`, fencing_token: 1,
+    spec_digest: digest(value), kind: 'SUCCEEDED', artifacts, subject_digest: digest(artifacts) } }, worker);
+  send('ACCEPT_STAGE', { subject_digest: digest(artifacts) });
+  send('CLEANUP_CONFIRMED', { attempt_id: `attempt-${id}`, fencing_token: 1 });
+  return { task_id: value.task_id, spec_digest: digest(value) };
+}
+
+function assignedDependent(f, id, dependencies) {
+  const value = spec(`CF-${id}`);
+  value.dependencies = dependencies;
+  value.acceptance_checks = [];
+  value.workflow.stages[0].required_checks = [];
+  value.workflow.stages[0].requires_approval = false;
+  f.store.execute(command('ADMIT', id, 0, { spec: value }), owner);
+  f.store.execute(assign(id), owner);
+}
+
+async function settleCompletedInputs(store) {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  while (store.pendingEffects().some((effect) => effect.status === 'PENDING')) {
+    const answer = await drainOutbox({ store, dispatcherId: 'dependency-cleanup', now: at, limit: 256 });
+    assert.equal(answer.unknown.length, 0);
+    assert.ok(answer.delivered.length > 0);
+  }
+}
+
+test('65 and 256 distinct completed dependencies reach the text worker and replay', async (t) => {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  const { createTextModelAdapter } = await import('../src/adapters.mjs');
+  const f = fixture(t);
+  const dependencies = Array.from({ length: 256 }, (_, index) => completedInput(f, `many-${index}`, `input-${index}`));
+  await settleCompletedInputs(f.store);
+  for (const count of [65, 256]) {
+    const id = `dependent-${count}`;
+    assignedDependent(f, id, dependencies.slice(0, count));
+    let invocations = 0;
+    const adapter = createTextModelAdapter({ workerId: 'worker-1', invoke: async ({ inputSubjects }) => {
+      invocations += 1;
+      assert.equal(inputSubjects.length, count);
+      assert.equal(new Set(inputSubjects.map((subject) => subject.subject_digest)).size, count);
+      assert.equal(inputSubjects[count - 1].artifacts[0].content, `input-${count - 1}`);
+      return 'reviewed dependency outputs';
+    } });
+    const answer = await drainOutbox({ store: f.store, adapter, dispatcherId: `dispatch-${count}`, now: at });
+    assert.equal(answer.unknown.length, 0);
+    assert.equal(invocations, 1);
+    assert.equal(f.store.get(id).state, 'VALIDATING');
+    f.store.execute(command('ACCEPT_STAGE', id, f.store.get(id).revision, { subject_digest: f.store.get(id).result.subject_digest }), owner);
+    await drainOutbox({ store: f.store, adapter, dispatcherId: `cleanup-${count}`, now: at });
+    assert.equal(f.store.get(id).cleanup_pending, false);
+  }
+  assert.equal(f.store.replay().executions.length, 258);
+});
+
+test('oversized immutable inputs stay unclaimed and unacknowledged with no unknown launch', async (t) => {
+  const { drainOutbox } = await import('../src/runner.mjs');
+  const f = fixture(t);
+  const dependencies = [completedInput(f, 'large-a', 'a'.repeat(600_000)), completedInput(f, 'large-b', 'b'.repeat(600_000))];
+  await settleCompletedInputs(f.store);
+  assignedDependent(f, 'oversized-inputs', dependencies);
+  const before = f.store.get('oversized-inputs');
+  let invocations = 0;
+  for (const round of [1, 2]) {
+    const answer = await drainOutbox({ store: f.store, dispatcherId: `oversized-${round}`, now: at,
+      adapter: { async runAttempt() { invocations += 1; } } });
+    assert.equal(answer.unknown.length, 0);
+    assert.equal(answer.skipped[0].code, 'INPUT_TOO_LARGE');
+    assert.deepEqual(f.store.get('oversized-inputs'), before);
+    const launch = f.store.pendingEffects().find((effect) => effect.effect.execution_id === 'oversized-inputs');
+    assert.equal(launch.status, 'PENDING');
+    assert.equal(launch.dispatcher_id, null);
+  }
+  assert.equal(invocations, 0);
+  assert.equal(before.state, 'ASSIGNED');
+  // A rejected oldest input must not monopolize a bounded dispatch drain.
+  const { FakeAdapter } = await import('../src/adapters.mjs');
+  assignedDependent(f, 'later-ready', []);
+  const adapter = new FakeAdapter();
+  const later = await drainOutbox({ store: f.store, adapter, dispatcherId: 'later-ready', now: at, limit: 1 });
+  assert.equal(later.delivered.length, 1);
+  assert.equal(later.unknown.length, 0);
+  assert.equal(f.store.get('later-ready').state, 'VALIDATING');
+  f.store.execute(command('ACCEPT_STAGE', 'later-ready', f.store.get('later-ready').revision,
+    { subject_digest: f.store.get('later-ready').result.subject_digest }), owner);
+  for (let round = 0; round < 2; round += 1) {
+    const cleanup = await drainOutbox({ store: f.store, adapter, dispatcherId: `later-cleanup-${round}`, now: at, limit: 1 });
+    assert.equal(cleanup.unknown.length, 0);
+  }
+  assert.equal(f.store.get('later-ready').cleanup_pending, false);
+  assert.equal(f.store.get('later-ready').resources_held, false);
+  assert.deepEqual(f.store.get('oversized-inputs'), before);
+});

@@ -198,3 +198,27 @@ claims, starts, commits, publication or deployment. The embedding host supplies
 trusted fresh guards; reopening without them fails closed for managed dispatch.
 See the [architecture plan](../docs/deterministic-orchestration-plan.md) and
 [runtime decision](../docs/adr/0001-deterministic-runtime.md) for scope and limits.
+
+## Execution limits
+
+Task specifications allow 256 dependencies and assignments allow 256 explicit
+input revisions. The runner and text adapter accept their combined maximum of 513
+immutable subjects, including the accepted candidate. Subject inputs share the
+existing 1 MiB content limit; per-subject artifacts and workspace input files
+remain capped at 64. Provider-specific request limits still apply.
+
+The runner resolves immutable subject bytes before claiming a launch or
+acknowledging the attempt. A missing or oversized required input leaves the effect
+`PENDING`, with a skipped-dispatch error. An unacknowledged attempt stays
+`ASSIGNED`; an explicitly resumed attempt keeps its prior state. No new work was
+launched, so the runner does not record an unknown outcome. Repeated drains do not
+invoke the worker. Drains continue past rejected inputs; the dispatch limit counts
+claimed effects so later work and cleanup can proceed. The owner can inspect the
+error, cancel or replace the task.
+
+Attempt history retains 356 entries: 16 stages across the initial pass plus 20
+reworks, with 20 additional execution retries across the whole execution. Existing
+history is preserved and replay uses the same event format. Extra owner-directed
+block/resolve cycles can consume history outside that automatic budget; assignment
+then rejects with `ATTEMPT_HISTORY_EXHAUSTED` before changing state or dispatching.
+The owner must close that execution and admit a reviewed replacement specification.

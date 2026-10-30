@@ -1,4 +1,4 @@
-import { canonical, digest, validate } from './contract.mjs';
+import { canonical, digest, validate, RUNTIME_LIMITS } from './contract.mjs';
 
 export const EVALUATOR_VERSION = 1;
 export const TERMINAL_STATES = Object.freeze(['COMPLETED', 'FAILED', 'CANCELLED']);
@@ -116,6 +116,7 @@ export function evaluate(current, command, context = {}) {
     switch (kind) {
       case 'ASSIGN': {
         authorized(scheduled); state('PENDING');
+        requireGuard(execution.worker_history.length < RUNTIME_LIMITS.workerHistory, 'ATTEMPT_HISTORY_EXHAUSTED');
         requireGuard(!execution.cleanup_pending && !execution.resources_held && execution.attempt === null, 'CLEANUP_REQUIRED');
         requireGuard(context.dependencies_satisfied === true, 'DEPENDENCIES_NOT_SATISFIED');
         requireGuard(context.resources_available === true, 'RESOURCE_CONFLICT');
