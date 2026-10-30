@@ -464,6 +464,8 @@ test('registry configuration rejects coercion, unknown fields, duplicates and ma
     { trusted_checks: [{ check_id: 'check', check_version: 'v1' }] },
     { trusted_checks: [{ check_id: 'check', check_version: 'v1', runner_id: 'runner', extra: true }] },
     { trusted_checks: [{ check_id: 'check', check_version: 1, runner_id: 'runner' }] },
+    { evidence_guard: true }, { isolation_guard: {} },
+    Object.create({ inherited: true }),
   ]) assert.throws(() => openStore(f.path, options), code('INVALID_CONFIGURATION'));
   const configuration = { worker_ids: ['worker-1'] };
   const frozenStore = openStore(f.path, configuration);
@@ -472,6 +474,22 @@ test('registry configuration rejects coercion, unknown fields, duplicates and ma
     frozenStore.execute(command('ADMIT', 'policy-freeze', 0, { spec: spec() }), owner);
     assert.equal(frozenStore.execute(assign('policy-freeze'), owner).execution.state, 'ASSIGNED');
   } finally { frozenStore.close(); }
+});
+
+test('trusted guard callbacks stay outside cloned registry data and cannot be supplied through accessors', (t) => {
+  const f = fixture(t);
+  const callback = () => true;
+  const guarded = openStore(f.path, { worker_ids: ['worker-1'], evidence_guard: callback, isolation_guard: callback });
+  try {
+    guarded.execute(command('ADMIT', 'guard-config', 0, { spec: spec('CF-guard-config') }), owner);
+    guarded.execute(assign('guard-config'), owner);
+    assert.equal(guarded.verifyDispatch('guard-config', 'attempt-guard-config'), true);
+    assert.throws(() => guarded.verifyDispatch('guard-config', 'another-attempt'), code('STALE_ATTEMPT'));
+  } finally { guarded.close(); }
+  let reads = 0;
+  const configuration = Object.defineProperty({}, 'evidence_guard', { enumerable: true, get() { reads += 1; return callback; } });
+  assert.throws(() => openStore(f.path, configuration), code('INVALID_CONFIGURATION'));
+  assert.equal(reads, 0);
 });
 
 test('attempt identity cannot cross executions or be reused after cleanup and restart', (t) => {

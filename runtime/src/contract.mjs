@@ -1,6 +1,9 @@
 import { createHash } from 'node:crypto';
 import Ajv2020 from 'ajv/dist/2020.js';
 import schema from '../contracts/v1.schema.json' with { type: 'json' };
+import authoritySchema from '../contracts/authority.schema.json' with { type: 'json' };
+import evidenceSchema from '../contracts/evidence.schema.json' with { type: 'json' };
+import workspaceSchema from '../contracts/workspace.schema.json' with { type: 'json' };
 
 const ajv = new Ajv2020({
   allErrors: true,
@@ -11,14 +14,17 @@ const ajv = new Ajv2020({
   removeAdditional: false,
 });
 
-ajv.addSchema(schema);
+const schemas = [schema, authoritySchema, evidenceSchema];
+for (const contract of schemas) ajv.addSchema(contract);
+ajv.addSchema(workspaceSchema);
 
 const validators = new Map(
-  Object.keys(schema.$defs).map((type) => [
+  schemas.flatMap((contract) => Object.keys(contract.$defs).map((type) => [
     type,
-    ajv.compile({ $ref: `${schema.$id}#/$defs/${type}` }),
-  ]),
+    ajv.compile({ $ref: `${contract.$id}#/$defs/${type}` }),
+  ])),
 );
+validators.set('WorkspacePlan', ajv.compile({ $ref: workspaceSchema.$id }));
 
 const forbiddenKeys = new Set(['__proto__', 'constructor', 'prototype']);
 

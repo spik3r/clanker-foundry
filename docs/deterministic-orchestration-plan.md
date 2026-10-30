@@ -359,3 +359,10 @@ separate CI workflow.
 Next action: owner review of the local pilot and its remaining provider/host,
 evidence-bridge and cutover decisions. Publication, tracker migration, unattended
 writes, merge and deployment require their own scope and authorization.
+
+## Managed integration follow-through
+
+The [managed execution decision](adr/0002-managed-execution.md) and
+[rollout guide](deterministic-orchestration-rollout.md) extend the read-only pilot
+with provider transport, host isolation, evidence binding and explicit namespace
+authority. The selected scope is new `CF-AUTO-` tasks; no existing `CF` claim moves.

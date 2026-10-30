@@ -69,3 +69,17 @@ test('demo refuses a nonempty authority without dispatching its real pending wor
   assert.equal(store.pendingEffects()[0].status, 'PENDING');
   store.close();
 });
+
+test('CLI exposes stable database identity and absent namespace without activating authority', (t) => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'foundry-cli-authority-')));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const db = join(root, 'authority.sqlite');
+  const first = run('authority-id', db);
+  assert.equal(first.status, 0, first.stderr);
+  const identity = JSON.parse(first.stdout);
+  assert.match(identity.authority_instance_id, /^[a-f0-9-]{36}$/);
+  assert.deepEqual(JSON.parse(run('authority-id', db).stdout), identity);
+  const status = run('authority-status', db, 'cf-auto');
+  assert.equal(status.status, 0, status.stderr);
+  assert.equal(JSON.parse(status.stdout), null);
+});

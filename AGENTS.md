@@ -118,3 +118,12 @@ skills/project-memory/scripts/project-memory.mjs validate --base origin/main
 --repository spik3r/clanker-foundry --source-repository spik3r/clanker-foundry`
 after committing. A workflow check blocks merges only if the repository owner
 configures it as a required status. This change does not configure that rule.
+
+## Managed orchestration scope
+
+New `CF-AUTO-` tasks may use the optional runtime after an owner-reviewed, Git-pinned
+namespace decision is recorded for one shared private authority database. Existing
+`CF` tasks and claims remain under their current workflow. Agents must not assign
+or hand off managed work outside that authority. Read the
+[rollout guide](docs/deterministic-orchestration-rollout.md) before enabling dispatch.
+A copied database, generated Markdown view or source snapshot does not acquire a claim.

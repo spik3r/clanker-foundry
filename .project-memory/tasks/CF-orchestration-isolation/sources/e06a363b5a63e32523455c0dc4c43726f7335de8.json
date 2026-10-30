@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+  "id": "CF-orchestration-isolation",
+  "path": "tasks/CF-orchestration-isolation-implementation.md",
+  "blob": "0de73708e55aecacab3e37304f995432ea8ab631",
+  "record": "---\nid: CF-orchestration-isolation\nstatus: in-progress\nowner: Foundry managed execution\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Constrain writable work to isolated attempt workspaces\n\n## Implementation claim\n\nThe user requested continuing orchestration and finishing the outstanding provider,\nwritable-host, evidence-bridge and namespace-cutover work. Owner/integration lead:\nFoundry managed execution, branch `codex/deterministic-orchestration-plan`, base\n`aa89562`. The checkout was clean and the connected open-PR search returned no\nopen PRs. This is a bounded local claim, not a published shared reservation.\n\nExact implementation scope:\n- `runtime/src/isolation.mjs`\n- `runtime/src/workspace.mjs`\n- `runtime/contracts/workspace.schema.json`\n- `runtime/test/isolation.test.mjs`\n- `runtime/test/workspace.test.mjs`\n- `runtime/test/isolation-live.mjs`\n- This task record and new immutable Project Memory source/event files.\n\nBuilders use disjoint paths; the lead owns lifecycle records, integration and\nlocal commits. Preserve existing tasks, active claims and all immutable evidence.\nLive verification uses only invented public-safe payloads and owned temporary\nworkspaces. Credentials remain in the existing provider login or host environment;\nnever copy them into repository files, logs or model inputs. No publication,\nmerge, external deployment or silent transfer of existing CF claims is included.\n\n## Acceptance and dependencies\n\nImplement the corresponding remaining architecture boundary with strict validation,\nrevision/identity checks, deterministic failure/recovery and regression tests.\nReuse the current single-host runtime and offline Project Memory helper.\nManaged writes require verified isolation and exact authorized scope; provider\nand coordinator credentials stay outside the writable host. Evidence starts\nmust precede edits; completion requires actual staged fingerprints and checks.\nNamespace activation needs a recorded reviewed source and drained prior authority;\nnew namespaces preserve historical CF records. Missing external requirements fail\nclosed and are reported rather than counted as successful live validation.\n\n## Validation and next action\n\nRun focused Node 24 tests, relevant full runtime/lifecycle suites, pack and\ninstaller checks, whitespace and committed-diff evidence validation. Independently\nreview the final implementation. Record actual live-provider and host-isolation\nobservations separately from fake transport tests. Next: register this pinned\nsource, record a genuine start, then implement the assigned slice.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-isolation-implementation.md",
+        "id": "CF-orchestration-isolation",
+        "blob": "0de73708e55aecacab3e37304f995432ea8ab631",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

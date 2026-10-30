@@ -66,3 +66,10 @@ an unattended writable worker. Remote CI has not run for this unpublished branch
 These are explicit integration or operator decisions beyond the local read-only
 pilot, not completion claims for unbuilt features. Publication, merge and deployment
 have not been requested by this follow-up.
+
+## Follow-through
+
+The remaining integration items above are addressed by the subsequent
+[managed execution rollout](deterministic-orchestration-rollout.md). That report
+separates live checks, local tests and operator setup. This earlier review records
+the read-only baseline and does not supply evidence for the later changes.

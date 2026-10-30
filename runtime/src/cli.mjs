@@ -18,6 +18,10 @@ const usage = `Usage:
   node runtime/src/cli.mjs export DATABASE EXECUTION_ID
   node runtime/src/cli.mjs replay DATABASE
   node runtime/src/cli.mjs import REVIEW_INPUT_FILE
+  node runtime/src/cli.mjs authority-id DATABASE
+  node runtime/src/cli.mjs authority-status DATABASE NAMESPACE_ID
+  node runtime/src/cli.mjs authority-record DATABASE REQUEST_FILE ACTOR
+  node runtime/src/cli.mjs authority-admission DATABASE REQUEST_FILE ACTOR
 
 Local trusted-operator interface. Import emits a proposal; it never acquires a claim.
 Demo uses fake workers only. No command publishes, merges, deploys or migrates tasks.`;
@@ -125,6 +129,26 @@ export async function main(argv = process.argv.slice(2)) {
     return { valid: true, type: args[0] };
   }
   if (action === 'import' && args.length === 1) return importReviewedTask(readWire(args[0]));
+  if (action === 'authority-id' && args.length === 1) {
+    const store = openStore(args[0]);
+    try { return { authority_instance_id: store.instanceId() }; }
+    finally { store.close(); }
+  }
+  if (action === 'authority-status' && args.length === 2) {
+    const store = openStore(args[0]);
+    try { return store.namespaceStatus(args[1]); }
+    finally { store.close(); }
+  }
+  if (['authority-record', 'authority-admission'].includes(action) && args.length === 3) {
+    const store = openStore(args[0]);
+    try {
+      const request = readWire(args[1]);
+      const auth = { actor_id: args[2], role: 'owner' };
+      return action === 'authority-record'
+        ? store.recordNamespaceDecision(request, auth)
+        : store.registerAdmission(request, auth);
+    } finally { store.close(); }
+  }
   if (action === 'command' && args.length === 5) {
     const store = openStore(args[0], readWire(args[1]));
     try { return store.execute(readWire(args[2]), { actor_id: args[3], role: args[4] }); }

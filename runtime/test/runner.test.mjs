@@ -361,3 +361,22 @@ test('a fresh fake adapter cannot release a live text invocation', async (t) => 
   finish('settled after cancellation');
   await running;
 });
+
+test('runner rechecks trusted dispatch guards after acknowledgement before invoking a worker', async (t) => {
+  const { store, executionId } = await setup(t);
+  const original = store.verifyDispatch;
+  let checks = 0;
+  let invocations = 0;
+  const guarded = Object.create(store);
+  guarded.verifyDispatch = (...args) => {
+    checks += 1;
+    if (checks === 2) throw Object.assign(new Error('Changed after acknowledgement'), { code: 'NAMESPACE_NOT_MANAGED' });
+    return original(...args);
+  };
+  const summary = await drainOutbox({ store: guarded, adapter: { async runAttempt() { invocations += 1; } }, dispatcherId: 'guard-change', now: at });
+  assert.equal(checks, 2);
+  assert.equal(invocations, 0);
+  assert.equal(summary.unknown.length, 1);
+  assert.equal(store.get(executionId).state, 'EXECUTING');
+  assert.equal(store.get(executionId).resources_held, true);
+});

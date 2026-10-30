@@ -98,6 +98,7 @@ async function submitAttempt({ store, adapter, effect, claim, now }) {
   if (!adapter || typeof adapter.runAttempt !== 'function') {
     return { status: 'UNKNOWN', receipt: { status: 'NO_SUPERVISED_ADAPTER' } };
   }
+  store.verifyDispatch?.(effect.execution_id, attempt.attempt_id);
   const ackAt = timestamp(now);
   if (Date.parse(ackAt) >= Date.parse(execution.attempt.lease_deadline)) {
     return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_EXPIRED' } };
@@ -115,6 +116,7 @@ async function submitAttempt({ store, adapter, effect, claim, now }) {
   if (!isCurrentAttempt(execution, attempt.attempt_id, attempt.fencing_token, ['EXECUTING'])) {
     return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_CHANGED_AFTER_ACK' } };
   }
+  store.verifyDispatch?.(effect.execution_id, attempt.attempt_id);
   const result = await adapter.runAttempt({
     attempt: structuredClone(execution.attempt),
     spec: structuredClone(execution.spec),

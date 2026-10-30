@@ -236,7 +236,10 @@
           "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
         },
         "integration_policy": {
-          "const": "read_only"
+          "enum": [
+            "read_only",
+            "isolated_write"
+          ]
         }
       },
       "required": [
@@ -500,7 +503,10 @@
               "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
             },
             "integration_policy": {
-              "const": "read_only"
+              "enum": [
+                "read_only",
+                "isolated_write"
+              ]
             }
           },
           "required": [
@@ -819,7 +825,8 @@
           "items": {
             "enum": [
               "read",
-              "analyze"
+              "analyze",
+              "write"
             ]
           },
           "maxItems": 8
@@ -971,7 +978,8 @@
                   "items": {
                     "enum": [
                       "read",
-                      "analyze"
+                      "analyze",
+                      "write"
                     ]
                   },
                   "maxItems": 256,

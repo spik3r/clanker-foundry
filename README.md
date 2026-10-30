@@ -243,3 +243,8 @@ that repository is public. No private backlog access is required for generic use
 For team repositories, pin a reviewed baseline with the [submodule recipe in the global
 agent guide](global-agents/README.md#pinning-a-project-baseline). A missing pinned
 baseline is a setup error. Never commit secrets or local model overrides.
+
+The optional [managed orchestration runtime](runtime/README.md) adds typed tasks,
+explicit authority for new `CF-AUTO-` tasks, isolated file candidates and a Project
+Memory evidence bridge. See the [rollout guide](docs/deterministic-orchestration-rollout.md)
+for setup and verified limits. Existing task claims do not transfer.

@@ -4,8 +4,9 @@ import { closeSync, constants, lstatSync, openSync } from 'node:fs';
 import { dirname, isAbsolute, join, parse, resolve } from 'node:path';
 import { canonical, digest, parseJSON, validate } from './contract.mjs';
 import { evaluate } from './state.mjs';
+import { validateEvidenceBinding, validateNamespaceDecision, verifyLocalPin, verifyReviewedAdmission } from './authority.mjs';
 
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
 const APPLICATION_ID = 0x43464f52;
 const ROLES = new Set(['owner', 'coordinator', 'scheduler', 'worker', 'validator', 'approver']);
 
@@ -70,13 +71,22 @@ function requiredText(value, name) {
 }
 
 function registryPolicy(options) {
-  canonical(options);
   const keys = ['trusted_checks', 'approver_ids', 'worker_ids'];
-  if (options === null || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).some((key) => !keys.includes(key))) {
-    reject('INVALID_CONFIGURATION', 'Store configuration accepts only trusted_checks, approver_ids and worker_ids');
+  const guards = ['evidence_guard', 'isolation_guard'];
+  if (options === null || typeof options !== 'object' || Array.isArray(options) || ![Object.prototype, null].includes(Object.getPrototypeOf(options)) || Object.keys(options).some((key) => ![...keys, ...guards].includes(key))) {
+    reject('INVALID_CONFIGURATION', 'Store configuration accepts registries and trusted evidence/isolation guards');
   }
+  const values = {};
+  for (const key of Reflect.ownKeys(options)) {
+    const descriptor = Object.getOwnPropertyDescriptor(options, key);
+    if (typeof key !== 'string' || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) reject('INVALID_CONFIGURATION', 'Configuration accepts data properties only');
+    if (guards.includes(key)) {
+      if (typeof descriptor.value !== 'function') reject('INVALID_CONFIGURATION', 'Trusted guards must be functions');
+    } else values[key] = descriptor.value;
+  }
+  canonical(values);
   const text = (value) => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/.test(value);
-  const policy = structuredClone({ trusted_checks: [], approver_ids: [], worker_ids: [], ...options });
+  const policy = structuredClone({ trusted_checks: [], approver_ids: [], worker_ids: [], ...values });
   for (const key of keys) {
     const registry = policy[key];
     if (!Array.isArray(registry) || registry.length > 256) reject('INVALID_CONFIGURATION', 'Registries must be arrays of at most 256 entries');
@@ -90,6 +100,7 @@ function registryPolicy(options) {
     if (new Set(registry.map(canonical)).size !== registry.length) reject('INVALID_CONFIGURATION', 'Registries cannot contain duplicate entries');
     Object.freeze(registry);
   }
+  for (const key of guards) if (Object.hasOwn(options, key)) policy[key] = options[key];
   return Object.freeze(policy);
 }
 
@@ -107,7 +118,7 @@ export function openStore(databasePath, options = {}) {
     db.exec('PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON; PRAGMA trusted_schema=OFF;');
     const version = db.prepare('PRAGMA user_version').get().user_version;
     const application = db.prepare('PRAGMA application_id').get().application_id;
-    if (version !== 0 && (version !== DATABASE_VERSION || application !== APPLICATION_ID)) {
+    if (version !== 0 && (![1, DATABASE_VERSION].includes(version) || application !== APPLICATION_ID)) {
       reject('UNSUPPORTED_DATABASE', 'Database version or application identity is unsupported');
     }
     if (version === 0) {
@@ -132,12 +143,27 @@ export function openStore(databasePath, options = {}) {
             CREATE TABLE outbox (sequence INTEGER PRIMARY KEY AUTOINCREMENT, effect_id TEXT NOT NULL UNIQUE, execution_id TEXT NOT NULL REFERENCES executions(execution_id), body TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('PENDING','CLAIMED','UNKNOWN','DELIVERED')), dispatcher_id TEXT, claim_token TEXT, lease_deadline TEXT, outcome_receipt TEXT);
             PRAGMA application_id=${APPLICATION_ID}; PRAGMA user_version=${DATABASE_VERSION};
           `);
-        } else if (lockedVersion !== DATABASE_VERSION || db.prepare('PRAGMA application_id').get().application_id !== APPLICATION_ID) {
+        } else if (![1, DATABASE_VERSION].includes(lockedVersion) || db.prepare('PRAGMA application_id').get().application_id !== APPLICATION_ID) {
           reject('UNSUPPORTED_DATABASE', 'Database version changed while opening');
         }
         db.exec('COMMIT');
       } catch (error) { db.exec('ROLLBACK'); throw error; }
     }
+    db.exec('BEGIN IMMEDIATE');
+    try {
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS authority_instance (singleton INTEGER PRIMARY KEY CHECK(singleton=1), instance_id TEXT NOT NULL UNIQUE);
+        CREATE TABLE IF NOT EXISTS namespaces (namespace_id TEXT PRIMARY KEY, generation INTEGER NOT NULL, body TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS namespace_decisions (decision_id TEXT PRIMARY KEY, namespace_id TEXT NOT NULL, generation INTEGER NOT NULL, digest TEXT NOT NULL, body TEXT NOT NULL, UNIQUE(namespace_id,generation));
+        CREATE TABLE IF NOT EXISTS admissions (spec_digest TEXT PRIMARY KEY, namespace_id TEXT NOT NULL REFERENCES namespaces(namespace_id), generation INTEGER NOT NULL, body TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS admission_sources (spec_digest TEXT PRIMARY KEY REFERENCES admissions(spec_digest), digest TEXT NOT NULL, body TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS execution_authority (execution_id TEXT PRIMARY KEY REFERENCES executions(execution_id), namespace_id TEXT NOT NULL REFERENCES namespaces(namespace_id), admission_digest TEXT NOT NULL, body TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS evidence_bindings (execution_id TEXT PRIMARY KEY REFERENCES executions(execution_id), digest TEXT NOT NULL, body TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS isolation_proofs (digest TEXT PRIMARY KEY, execution_id TEXT NOT NULL REFERENCES executions(execution_id), body TEXT NOT NULL);
+      `);
+      db.prepare('INSERT OR IGNORE INTO authority_instance(singleton,instance_id) VALUES(1,?)').run(randomUUID());
+      db.exec(`PRAGMA user_version=${DATABASE_VERSION}; COMMIT;`);
+    } catch (error) { db.exec('ROLLBACK'); throw error; }
     db.exec('PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;');
   } catch (error) { db.close(); throw error; }
 
@@ -145,6 +171,30 @@ export function openStore(databasePath, options = {}) {
     db.exec('BEGIN IMMEDIATE');
     try { const result = operation(); db.exec('COMMIT'); return result; }
     catch (error) { db.exec('ROLLBACK'); throw error; }
+  };
+  const instanceId = db.prepare('SELECT instance_id FROM authority_instance WHERE singleton=1').get().instance_id;
+  const namespaceStatus = (id) => {
+    const row = db.prepare('SELECT body FROM namespaces WHERE namespace_id=?').get(id);
+    if (!row) return null;
+    const current = parseStored(row.body);
+    const historical = db.prepare('SELECT digest,body FROM namespace_decisions WHERE decision_id=?').get(current.decision.decision_id);
+    if (!historical || historical.digest !== current.decision_digest || digest(parseStored(historical.body)) !== historical.digest) reject('AUTHORITY_CORRUPTED', 'Namespace decision is missing or changed');
+    const record = parseStored(historical.body);
+    if (current.decision.namespace_id !== id || canonical(record.decision) !== canonical(current.decision) ||
+        canonical(record.source) !== canonical(current.source) || record.generation !== current.generation) reject('AUTHORITY_CORRUPTED', 'Current namespace disagrees with its immutable decision');
+    return current;
+  };
+  const namespaceFor = (taskId) => {
+    const matching = db.prepare('SELECT namespace_id FROM namespaces').all().map((row) => namespaceStatus(row.namespace_id)).filter((record) => taskId.startsWith(record.decision.task_prefix));
+    if (matching.length > 1) reject('NAMESPACE_OVERLAP', 'A task cannot match multiple authorities');
+    return matching[0] ?? null;
+  };
+  const evidenceBinding = (executionId) => {
+    const row = db.prepare('SELECT digest,body FROM evidence_bindings WHERE execution_id=?').get(executionId);
+    if (!row) return null;
+    const binding = parseStored(row.body);
+    if (digest(binding) !== row.digest) reject('EVIDENCE_BINDING_CORRUPTED', 'Evidence binding digest changed');
+    return binding;
   };
   const get = (id) => {
     const row = db.prepare('SELECT body FROM executions WHERE execution_id=?').get(id);
@@ -243,7 +293,164 @@ export function openStore(databasePath, options = {}) {
     return rows.map((row) => ({ command: parseStored(row.command), context: parseStored(row.context), ...parseStored(row.body) }));
   };
 
+  const authorityContext = (spec, executionId, admitting = false) => {
+    const namespace = namespaceFor(spec.task_id);
+    if (!namespace) {
+      if (spec.integration_policy === 'isolated_write' || spec.write_scope.length > 0) reject('NAMESPACE_REQUIRED', 'Repository writes require a managed namespace');
+      return { namespace: null, context: {} };
+    }
+    const decision = namespace.decision;
+    if (decision.mode !== 'MANAGED') reject('NAMESPACE_NOT_MANAGED', 'Namespace does not permit admission or dispatch');
+    if (decision.repository !== spec.repository.repository_id || decision.accountable_owner !== spec.accountable_owner) reject('NAMESPACE_IDENTITY_MISMATCH', 'Specification disagrees with namespace authority');
+    let binding;
+    if (admitting) {
+      const row = db.prepare('SELECT body FROM admissions WHERE spec_digest=?').get(digest(spec));
+      if (!row) reject('REVIEWED_ADMISSION_REQUIRED', 'Register the exact reviewed source and specification before admission');
+      binding = parseStored(row.body);
+      if (binding.namespace_id !== decision.namespace_id || binding.generation !== namespace.generation || binding.spec_digest !== digest(spec)) reject('STALE_ADMISSION', 'Admission review belongs to another namespace generation');
+    } else {
+      const row = db.prepare('SELECT admission_digest,body FROM execution_authority WHERE execution_id=?').get(executionId);
+      if (!row) reject('EXPLICIT_MIGRATION_REQUIRED', 'Existing executions do not acquire namespace authority implicitly');
+      binding = parseStored(row.body);
+      if (digest(binding) !== row.admission_digest || binding.namespace_id !== decision.namespace_id || binding.spec_digest !== digest(spec)) reject('AUTHORITY_CORRUPTED', 'Execution authority disagrees with its specification');
+    }
+    if ((spec.integration_policy === 'isolated_write' || spec.write_scope.length > 0) && !decision.allow_writes) reject('NAMESPACE_WRITES_DISABLED', 'Namespace has not enabled isolated repository writes');
+    const sourceRow = db.prepare('SELECT digest,body FROM admission_sources WHERE spec_digest=?').get(binding.spec_digest);
+    if (!sourceRow || sourceRow.digest !== binding.source_digest || digest(parseStored(sourceRow.body)) !== sourceRow.digest) reject('AUTHORITY_CORRUPTED', 'Reviewed local source binding is missing or changed');
+    const reviewed = parseStored(sourceRow.body);
+    verifyReviewedAdmission({ spec, source: reviewed.source, source_root: reviewed.source_root, reviewed_by: decision.accountable_owner, namespace: decision });
+    return { namespace, binding, context: { namespace_managed: true, can_write: decision.allow_writes,
+      authority_namespace: decision.namespace_id, authority_generation: binding.generation,
+      authority_decision_digest: binding.decision_digest, admission_digest: digest(binding) } };
+  };
+  const guardEvidence = (execution, namespace) => {
+    const binding = evidenceBinding(execution.execution_id);
+    if (!binding) {
+      if (namespace?.decision.require_evidence || execution.spec.integration_policy === 'isolated_write') reject('EVIDENCE_REQUIRED', 'A genuine source and start must be bound before dispatch');
+      return {};
+    }
+    validateEvidenceBinding(binding, execution);
+    if (typeof policy.evidence_guard !== 'function') reject('EVIDENCE_GUARD_REQUIRED', 'Fresh evidence verification is required for a bound execution');
+    if (policy.evidence_guard(structuredClone(binding), structuredClone(execution)) !== true) reject('EVIDENCE_GUARD_FAILED', 'Evidence verifier did not confirm the current bound frontier');
+    return { evidence_binding_digest: digest(binding) };
+  };
+  const guardIsolation = (execution, attemptPayload) => {
+    if (execution.spec.integration_policy !== 'isolated_write') return {};
+    if (typeof policy.isolation_guard !== 'function') reject('ISOLATION_REQUIRED', 'A trusted host must verify the exact isolated attempt');
+    const proof = policy.isolation_guard(structuredClone(execution), structuredClone(attemptPayload));
+    canonical(proof);
+    const fields = ['verified', 'execution_id', 'spec_digest', 'attempt_id', 'workspace', 'repository_revision', 'write_scope'];
+    if (!proof || Array.isArray(proof) || Object.keys(proof).length !== fields.length || !fields.every((field) => Object.hasOwn(proof, field)) ||
+        proof.verified !== true || proof.execution_id !== execution.execution_id || proof.spec_digest !== execution.spec_digest ||
+        proof.attempt_id !== attemptPayload.attempt_id || proof.workspace !== attemptPayload.workspace ||
+        proof.repository_revision !== execution.spec.repository.revision || !Array.isArray(proof.write_scope) ||
+        canonical([...proof.write_scope].sort()) !== canonical([...execution.spec.write_scope].sort())) {
+      reject('ISOLATION_PROOF_MISMATCH', 'Host proof must match this execution, attempt, workspace, revision and exact write scope');
+    }
+    const proofDigest = digest(proof);
+    db.prepare('INSERT OR IGNORE INTO isolation_proofs(digest,execution_id,body) VALUES(?,?,?)').run(proofDigest, execution.execution_id, canonical(proof));
+    return { isolation_verified: true, isolation_proof_digest: proofDigest };
+  };
+
   return {
+    instanceId() { return instanceId; },
+    namespaceStatus,
+    recordNamespaceDecision({ decision, source, source_root }, authContext) {
+      const actor = identity(authContext);
+      validateNamespaceDecision(decision);
+      validate('AuthoritySourcePin', source);
+      if (actor.role !== 'owner' || actor.actor_id !== decision.accountable_owner) reject('UNAUTHORIZED', 'Only the accountable owner may change namespace authority');
+      if (decision.authority_instance_id !== instanceId) reject('AUTHORITY_INSTANCE_MISMATCH', 'Decision names another authority database');
+      if (source.repository !== decision.source_repository) reject('SOURCE_REPOSITORY_MISMATCH', 'Decision source must belong to the declared source repository');
+      verifyLocalPin({ root: source_root, source, expectedValue: decision });
+      return transaction(() => {
+        const prior = db.prepare('SELECT digest,body FROM namespace_decisions WHERE decision_id=?').get(decision.decision_id);
+        const record = { decision, source, generation: decision.expected_generation + 1, actor_id: actor.actor_id };
+        const recordDigest = digest(record);
+        if (prior) {
+          if (prior.digest !== recordDigest) reject('DECISION_ID_REUSED', 'Decision identity already has different content');
+          return parseStored(canonical({ decision, source, generation: record.generation, decision_digest: prior.digest }));
+        }
+        const current = namespaceStatus(decision.namespace_id);
+        if ((current?.generation ?? 0) !== decision.expected_generation) reject('GENERATION_CONFLICT', 'Expected namespace generation does not match current authority');
+        const overlapping = db.prepare('SELECT namespace_id FROM namespaces WHERE namespace_id<>?').all(decision.namespace_id).map((row) => namespaceStatus(row.namespace_id)).some((other) => decision.task_prefix.startsWith(other.decision.task_prefix) || other.decision.task_prefix.startsWith(decision.task_prefix));
+        if (overlapping) reject('NAMESPACE_OVERLAP', 'Namespace prefixes must remain disjoint');
+        if (current) {
+          const immutable = ['namespace_id', 'task_prefix', 'repository', 'source_repository', 'accountable_owner', 'authority_instance_id', 'require_evidence', 'allow_writes'];
+          if (immutable.some((field) => canonical(current.decision[field]) !== canonical(decision[field]))) reject('NAMESPACE_IMMUTABLE', 'Namespace identity and capability policy cannot change');
+          const allowed = { SHADOW: ['MANAGED', 'MANUAL'], MANAGED: ['DRAINING'], DRAINING: ['MANAGED', 'MANUAL'], MANUAL: ['SHADOW'] };
+          if (!allowed[current.decision.mode].includes(decision.mode)) reject('ILLEGAL_AUTHORITY_TRANSITION', 'Authority must activate explicitly and drain before returning to manual');
+        } else if (!['SHADOW', 'MANUAL'].includes(decision.mode)) reject('ILLEGAL_AUTHORITY_TRANSITION', 'A namespace must first be recorded without managed dispatch');
+        const executions = db.prepare('SELECT body FROM executions').all().map((row) => parseStored(row.body)).filter((execution) => execution.spec.task_id.startsWith(decision.task_prefix));
+        if (decision.mode === 'MANAGED') {
+          if (!decision.prior_authority_drained) reject('PRIOR_AUTHORITY_NOT_DRAINED', 'Previous authority must be explicitly confirmed drained');
+          if (executions.some((execution) => !db.prepare('SELECT 1 FROM execution_authority WHERE execution_id=?').get(execution.execution_id))) reject('EXPLICIT_MIGRATION_REQUIRED', 'Existing executions cannot transfer into a namespace silently');
+        }
+        if (current?.decision.mode === 'DRAINING' && decision.mode === 'MANUAL') {
+          if (executions.some((execution) => !['COMPLETED', 'FAILED', 'CANCELLED'].includes(execution.state) || execution.cleanup_pending || execution.resources_held)) reject('NAMESPACE_NOT_DRAINED', 'Resolve executions and retained cleanup before manual authority resumes');
+          const unsettled = db.prepare("SELECT execution_id FROM outbox WHERE status<>'DELIVERED'").all();
+          if (unsettled.some((row) => executions.some((execution) => execution.execution_id === row.execution_id))) reject('NAMESPACE_NOT_DRAINED', 'Resolve all pending and unknown effect outcomes before manual authority resumes');
+        }
+        db.prepare('INSERT INTO namespace_decisions(decision_id,namespace_id,generation,digest,body) VALUES(?,?,?,?,?)').run(decision.decision_id, decision.namespace_id, record.generation, recordDigest, canonical(record));
+        const state = { decision, source, generation: record.generation, decision_digest: recordDigest };
+        db.prepare('INSERT INTO namespaces(namespace_id,generation,body) VALUES(?,?,?) ON CONFLICT(namespace_id) DO UPDATE SET generation=excluded.generation,body=excluded.body').run(decision.namespace_id, record.generation, canonical(state));
+        return parseStored(canonical(state));
+      });
+    },
+    registerAdmission({ namespace_id, generation, spec, source, source_root, reviewed_by }, authContext) {
+      const actor = identity(authContext);
+      validate('TaskSpec', spec);
+      return transaction(() => {
+        const namespace = namespaceStatus(namespace_id);
+        if (!namespace || namespace.generation !== generation) reject('GENERATION_CONFLICT', 'Admission must use the current namespace generation');
+        if (namespace.decision.mode !== 'MANAGED') reject('NAMESPACE_NOT_MANAGED', 'Admission requires an active managed namespace');
+        if (actor.role !== 'owner' || actor.actor_id !== namespace.decision.accountable_owner || reviewed_by !== actor.actor_id) reject('UNAUTHORIZED', 'Only the accountable owner may register a reviewed admission');
+        const proposal = verifyReviewedAdmission({ spec, source, source_root, reviewed_by, namespace: namespace.decision });
+        const sourceBinding = { source, source_root };
+        const binding = { namespace_id, generation, decision_digest: namespace.decision_digest, spec_digest: digest(spec), source_digest: digest(sourceBinding), proposal };
+        const old = db.prepare('SELECT body FROM admissions WHERE spec_digest=?').get(binding.spec_digest);
+        if (old && canonical(parseStored(old.body)) !== canonical(binding)) reject('ADMISSION_IMMUTABLE', 'A reviewed specification admission cannot change');
+        db.prepare('INSERT OR IGNORE INTO admissions(spec_digest,namespace_id,generation,body) VALUES(?,?,?,?)').run(binding.spec_digest, namespace_id, generation, canonical(binding));
+        db.prepare('INSERT OR IGNORE INTO admission_sources(spec_digest,digest,body) VALUES(?,?,?)').run(binding.spec_digest, digest(sourceBinding), canonical(sourceBinding));
+        return parseStored(canonical(binding));
+      });
+    },
+    evidenceBinding,
+    verifyDispatch(executionId, attemptId) {
+      return transaction(() => {
+        const execution = get(executionId);
+        if (!execution || !['ASSIGNED', 'EXECUTING'].includes(execution.state) || execution.cleanup_pending ||
+            execution.attempt?.attempt_id !== attemptId || execution.attempt.fencing_token !== execution.fence) reject('STALE_ATTEMPT', 'Dispatch must name the exact live assigned attempt');
+        const authority = authorityContext(execution.spec, executionId);
+        guardEvidence(execution, authority.namespace);
+        guardIsolation(execution, execution.attempt);
+        return true;
+      });
+    },
+    bindEvidence({ execution_id, expected_revision, binding }, authContext) {
+      const actor = identity(authContext);
+      return transaction(() => {
+        const execution = get(execution_id);
+        if (!execution) reject('EXECUTION_NOT_FOUND', 'No execution has that identity');
+        if (actor.role !== 'owner' || actor.actor_id !== execution.spec.accountable_owner) reject('UNAUTHORIZED', 'Only the accountable owner may bind evidence');
+        if (execution.revision !== expected_revision) reject('REVISION_CONFLICT', 'Evidence preparation must use the current execution revision');
+        validateEvidenceBinding(binding, execution);
+        const prior = evidenceBinding(execution_id);
+        if (prior) {
+          if (canonical(prior) !== canonical(binding)) reject('EVIDENCE_BINDING_IMMUTABLE', 'An execution cannot switch evidence runs or sources');
+          return prior;
+        }
+        if (execution.worker_history.length !== 0 || execution.state !== 'PENDING') reject('EVIDENCE_TOO_LATE', 'Bind a genuine source and start before the first assignment');
+        const admission = db.prepare('SELECT body FROM execution_authority WHERE execution_id=?').get(execution_id);
+        if (admission) {
+          const source = parseStored(admission.body).proposal.source;
+          if (binding.source_repository !== source.repository || binding.source_revision !== source.revision || binding.source_path !== source.path ||
+              binding.source_blob !== source.blob || binding.claim_heading !== source.claim.heading || binding.claim_digest !== source.claim.digest) reject('EVIDENCE_SOURCE_MISMATCH', 'Evidence must use the exact admitted source and claim');
+        }
+        db.prepare('INSERT INTO evidence_bindings(execution_id,digest,body) VALUES(?,?,?)').run(execution_id, digest(binding), canonical(binding));
+        return parseStored(canonical(binding));
+      });
+    },
     execute(command, authContext) {
       const actor = identity(authContext);
       // Canonicalization rejects JS values that JSON/schema validation cannot represent.
@@ -262,7 +469,11 @@ export function openStore(databasePath, options = {}) {
         if ((previous?.revision ?? 0) !== command.expected_revision) reject('REVISION_CONFLICT', 'Expected revision does not match committed state');
         const spec = command.kind === 'ADMIT' ? command.payload.spec : previous?.spec;
         if (!spec) reject('EXECUTION_NOT_FOUND', 'No execution has that identity');
+        const authority = ['ADMIT', 'ASSIGN'].includes(command.kind) ? authorityContext(spec, command.execution_id, command.kind === 'ADMIT') : { context: {} };
         const context = { ...actor, trusted_checks: policy.trusted_checks, approver_ids: policy.approver_ids,
+          ...authority.context,
+          ...(command.kind === 'ASSIGN' ? guardEvidence(previous, authority.namespace) : {}),
+          ...(command.kind === 'ASSIGN' ? guardIsolation(previous, command.payload) : {}),
           references_valid: command.kind === 'ADMIT' ? referencesValid(spec) : true,
           dependencies_satisfied: dependenciesSatisfied(spec), dependency_outputs: selectedDependencyOutputs(spec),
           resources_available: resourcesAvailable(command.execution_id, spec),
@@ -296,6 +507,7 @@ export function openStore(databasePath, options = {}) {
         if (!previous) {
           db.prepare('INSERT OR IGNORE INTO specs(digest,task_id,spec_revision,body) VALUES(?,?,?,?)').run(execution.spec_digest, execution.spec.task_id, execution.spec.spec_revision, canonical(execution.spec));
           db.prepare('INSERT INTO executions(execution_id,task_id,spec_digest,state,revision,body) VALUES(?,?,?,?,?,?)').run(execution.execution_id, execution.spec.task_id, execution.spec_digest, execution.state, execution.revision, canonical(execution));
+          if (authority.binding) db.prepare('INSERT INTO execution_authority(execution_id,namespace_id,admission_digest,body) VALUES(?,?,?,?)').run(execution.execution_id, authority.binding.namespace_id, digest(authority.binding), canonical(authority.binding));
         } else {
           if (execution.spec_digest !== previous.spec_digest || digest(execution.spec) !== previous.spec_digest) reject('SPEC_IMMUTABLE', 'Execution cannot change its admitted spec');
           db.prepare('UPDATE executions SET state=?,revision=?,body=? WHERE execution_id=?').run(execution.state, execution.revision, canonical(execution), execution.execution_id);
@@ -340,6 +552,23 @@ export function openStore(databasePath, options = {}) {
       const reconstructed = new Map();
       const events = []; const effects = []; const attempts = new Map();
       for (const record of history()) {
+        if (record.context.admission_digest) {
+          const row = db.prepare('SELECT admission_digest,body FROM execution_authority WHERE execution_id=?').get(record.command.execution_id);
+          if (!row || row.admission_digest !== record.context.admission_digest || digest(parseStored(row.body)) !== row.admission_digest) reject('REPLAY_MISMATCH', 'Historical admission binding is missing or changed');
+          const binding = parseStored(row.body);
+          const source = db.prepare('SELECT digest,body FROM admission_sources WHERE spec_digest=?').get(binding.spec_digest);
+          if (!source || source.digest !== binding.source_digest || digest(parseStored(source.body)) !== source.digest) reject('REPLAY_MISMATCH', 'Historical reviewed source binding is missing or changed');
+          const decision = db.prepare('SELECT digest,body FROM namespace_decisions WHERE namespace_id=? AND generation=?').get(binding.namespace_id, binding.generation);
+          if (!decision || decision.digest !== binding.decision_digest || digest(parseStored(decision.body)) !== decision.digest) reject('REPLAY_MISMATCH', 'Historical namespace decision is missing or changed');
+        }
+        if (record.context.evidence_binding_digest) {
+          const binding = evidenceBinding(record.command.execution_id);
+          if (!binding || digest(binding) !== record.context.evidence_binding_digest) reject('REPLAY_MISMATCH', 'Historical evidence binding is missing or changed');
+        }
+        if (record.context.isolation_proof_digest) {
+          const proof = db.prepare('SELECT execution_id,body FROM isolation_proofs WHERE digest=?').get(record.context.isolation_proof_digest);
+          if (!proof || proof.execution_id !== record.command.execution_id || digest(parseStored(proof.body)) !== record.context.isolation_proof_digest) reject('REPLAY_MISMATCH', 'Historical isolation proof is missing or changed');
+        }
         verifyResultArtifacts(record.command);
         if (record.command.kind === 'SUBMIT' && record.command.payload.result.kind === 'SUCCEEDED' && getSubject(record.command.payload.result.subject_digest) === null) reject('SUBJECT_NOT_FOUND', 'Accepted output subject is missing');
         const result = evaluate(reconstructed.get(record.command.execution_id) ?? null, record.command, record.context);
@@ -401,6 +630,11 @@ export function openStore(databasePath, options = {}) {
             (intent.kind === 'LAUNCH_ATTEMPT' ? execution.state !== 'ASSIGNED' && !resumeAfterAck : execution.state !== 'VALIDATING'))) {
           db.prepare("UPDATE outbox SET status='DELIVERED',outcome_receipt=? WHERE effect_id=?").run(canonical({ skipped: 'STALE_ATTEMPT' }), effectId);
           return effectView(effectRow(effectId));
+        }
+        if (intent.kind === 'LAUNCH_ATTEMPT') {
+          const authority = authorityContext(execution.spec, execution.execution_id);
+          guardEvidence(execution, authority.namespace);
+          guardIsolation(execution, intent.payload.attempt);
         }
         const token = randomUUID();
         db.prepare("UPDATE outbox SET status='CLAIMED',dispatcher_id=?,claim_token=?,lease_deadline=? WHERE effect_id=?").run(dispatcherId, token, new Date(at + leaseMs).toISOString(), effectId);

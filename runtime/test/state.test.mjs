@@ -371,3 +371,25 @@ test('generated accepted/rejected command sequences replay identical states, eve
     assert.deepEqual(replay, h.execution);
   }
 });
+
+test('writable workflow requires managed authority and per-attempt isolation', () => {
+  const spec = specFor(['builder-developer', 'reviewer-verifier']);
+  spec.integration_policy = 'isolated_write';
+  spec.workflow.workflow_id = 'isolated-write-v1';
+  spec.write_scope = ['src/example.txt'];
+  const admit = { schema_version: 1, execution_id: 'write-1', command_id: 'admit-write', expected_revision: 0, at: instant, kind: 'ADMIT', payload: { spec } };
+  assert.throws(() => evaluate(null, admit, owner), { code: 'MANAGED_AUTHORITY_REQUIRED' });
+  const managed = { ...owner, namespace_managed: true, can_write: true };
+  const pending = evaluate(null, admit, managed).execution;
+  const assignment = { ...admit, command_id: 'assign-write', expected_revision: pending.revision, kind: 'ASSIGN', payload: {
+    attempt_id: 'write-attempt', worker_id: 'builder', workspace: 'private-candidate', input_revisions: [spec.repository.revision], capabilities: ['read', 'write'], lease_deadline: later(60_000),
+  } };
+  assert.throws(() => evaluate(pending, assignment, managed), { code: 'ISOLATION_REQUIRED' });
+  assert.equal(evaluate(pending, assignment, { ...managed, isolation_verified: true }).execution.state, 'ASSIGNED');
+  const overlap = structuredClone(admit); overlap.payload.spec.write_scope = ['new', 'new/child.txt'];
+  assert.throws(() => evaluate(null, overlap, managed), { code: 'INVALID_WRITE_SCOPE' });
+  for (const path of ['src/*', '.git/config', 'src/../secret', '.project-memory/event.json', './file']) {
+    const bad = structuredClone(admit); bad.payload.spec.write_scope = [path];
+    assert.throws(() => evaluate(null, bad, managed));
+  }
+});

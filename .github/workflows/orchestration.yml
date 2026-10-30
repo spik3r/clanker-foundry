@@ -20,5 +20,9 @@ jobs:
           node-version: '24'
       - name: Install pinned runtime dependencies
         run: npm ci --prefix runtime --ignore-scripts --no-fund --no-audit
-      - name: Test deterministic orchestration pilot
+      - name: Test deterministic orchestration runtime
         run: npm test --prefix runtime
+      - name: Load pinned isolation image
+        run: docker pull node@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+      - name: Verify actual Docker isolation with invented files
+        run: node runtime/test/isolation-live.mjs

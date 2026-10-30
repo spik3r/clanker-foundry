@@ -1,8 +1,10 @@
-# Deterministic orchestration pilot
+# Deterministic orchestration runtime
 
 An opt-in local runtime for typed tasks, guarded state transitions and durable
 worker dispatch. Existing skills and manual task workflows work without it.
-This is a single-host read-only pilot, not an unattended code-writing service.
+Managed execution adds explicit namespace authority, an evidence bridge and isolated
+text-file candidates. See the [rollout guide](../docs/deterministic-orchestration-rollout.md)
+for setup, live verification and operating limits.
 
 ## Run
 
@@ -32,11 +34,13 @@ accepts an authenticated context from its embedding process; it does not impleme
 a network authentication service. Supplying a role to the CLI is an operator
 action, not proof of remote identity. Do not expose this API to untrusted users.
 
-The pilot admits only `read-only-v1` workflows with empty write scope and
-`integration_policy: read_only`. Tasks must state finite retry/rework budgets,
+Legacy operation admits `read-only-v1` with empty write scope. Managed namespaces
+can admit `isolated-write-v1` with `integration_policy: isolated_write`, exact file
+scope, genuine evidence and a verified host. Tasks must state finite retry/rework budgets,
 lease and validation durations, ordered stages, acceptance checks and accountable
-owner. Admission reserves no work in an external tracker. Current project tasks
-and their claims are unchanged until an explicit cutover outside this pilot.
+owner. Admission reserves no work in an external tracker. New `CF-AUTO-` tasks are the selected cutover scope. Existing `CF` task records
+and claims retain their current authority. Recording a pinned managed decision
+is required before dispatch in that namespace.
 
 Workers acknowledge and submit results for their current attempt. They cannot
 assign workers, expand scope, change task ownership or accept their own stages.
@@ -62,7 +66,14 @@ Admission rejects any stage whose combined stage/task check set exceeds 256.
 - [Runner](src/runner.mjs): executes typed effect intents through trusted adapters
   and registered checks. It never approves or accepts stages automatically.
 - [Adapters](src/adapters.mjs): fake worker, allowlisted workspace reader and
-  injected text-only model callback. No bundled live provider client is included.
+  injected text-only model callback.
+- [Providers](src/providers.mjs): bounded Responses API and supervised Codex CLI
+  transports; credentials remain outside task data.
+- [Authority](src/authority.mjs): actual local Git pin checks and reviewed admission.
+- [Evidence bridge](src/project-memory.mjs): genuine source/start binding, completion
+  intent recovery and a fresh committed completion gate.
+- [Workspace](src/workspace.mjs) and [Docker host](src/isolation.mjs): exact file
+  plans, isolated candidates and separately authorized promotion.
 - [Import/export](src/import-export.mjs): reviewed Project Memory snapshots become
   proposals; generated Markdown remains an inert view.
 
@@ -121,8 +132,9 @@ including accepted predecessor outputs. The adapter hashes and retains returned
 text; the runner persists it before submission. The callback is trusted host code,
 not an isolated process. It must use a stateless text API without tools or external
 side effects. Model/provider choice and credentials belong in that embedding
-configuration, outside task records and logs. A live vendor call has not been
-verified by this pilot's fake tests.
+configuration, outside task records and logs. Live checks are separate from unit tests. The signed-in Codex CLI text smoke
+passed locally; the direct API transport has no live verification without an API
+key. CLI integration disables do not constitute a universal no-tools sandbox.
 
 Each adapter instance allows 16 active invocations or undelivered outputs. Further
 invocations wait before calling the model. The runner persists output bytes and
@@ -181,6 +193,8 @@ the operator must review those facts. No backlog text is copied into the proposa
 
 Project Memory remains the repository's separate implementation-evidence process.
 Record the genuine source/start before edits and fresh completion after checks.
-There is no automatic evidence bridge, task migration, publication or deployment.
+The optional bridge automates binding and completion checks without creating
+claims, starts, commits, publication or deployment. The embedding host supplies
+trusted fresh guards; reopening without them fails closed for managed dispatch.
 See the [architecture plan](../docs/deterministic-orchestration-plan.md) and
 [runtime decision](../docs/adr/0001-deterministic-runtime.md) for scope and limits.

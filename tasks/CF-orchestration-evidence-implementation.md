@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-evidence
-status: in-progress
+status: review
 owner: Foundry managed execution
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -43,8 +43,16 @@ closed and are reported rather than counted as successful live validation.
 
 ## Validation and next action
 
-Run focused Node 24 tests, relevant full runtime/lifecycle suites, pack and
-installer checks, whitespace and committed-diff evidence validation. Independently
-review the final implementation. Record actual live-provider and host-isolation
-observations separately from fake transport tests. Next: register this pinned
-source, record a genuine start, then implement the assigned slice.
+Implemented the assigned boundary and reviewed the integrated change. Node
+v24.22.2 passed 154 runtime tests and 143 existing lifecycle/workflow tests, with
+no skips. Pack, installer and whitespace checks passed. The signed-in Codex text
+smoke and actual Docker probe/write/promotion smoke passed using invented inputs.
+The direct Responses transport has no live verification because no API key is
+configured. Fresh-context review found no remaining material defect after fixes.
+
+Next: owner review of the local branch. The new CF-AUTO namespace has an inactive
+configuration template; operating activation requires its actual shared database
+identity and a separately pinned owner decision. No existing CF claim transfers,
+publication, merge or deployment occurred. See the rollout guide for the operating
+steps and limits. Completion records capture staged fingerprints; the committed
+full-diff evidence gate is run after the local commit.

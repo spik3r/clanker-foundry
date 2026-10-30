@@ -19,9 +19,17 @@ function uniqueBy(items, key) {
   return new Set(items.map((item) => item[key])).size === items.length;
 }
 
-function admitSpec(spec) {
-  requireGuard(spec.write_scope.length === 0 && spec.integration_policy === 'read_only', 'UNSUPPORTED_CAPABILITY');
-  requireGuard(spec.workflow.version === 1 && spec.workflow.workflow_id === 'read-only-v1', 'UNSUPPORTED_WORKFLOW');
+function admitSpec(spec, context) {
+  const writable = spec.integration_policy === 'isolated_write';
+  if (writable) {
+    requireGuard(context.namespace_managed === true && context.can_write === true, 'MANAGED_AUTHORITY_REQUIRED');
+    requireGuard(spec.write_scope.length > 0 && spec.write_scope.every((path) =>
+      !path.includes('*') && !path.includes('//') && !path.endsWith('/')
+      && path.split('/').every((part) => part !== '.' && part !== '..' && !['.git', '.codex', '.agents', '.project-memory'].includes(part))), 'INVALID_WRITE_SCOPE');
+    requireGuard(!spec.write_scope.some((path, index) => spec.write_scope.some((other, otherIndex) =>
+      index !== otherIndex && other.startsWith(`${path}/`))), 'INVALID_WRITE_SCOPE');
+  } else requireGuard(spec.write_scope.length === 0, 'UNSUPPORTED_CAPABILITY');
+  requireGuard(spec.workflow.version === 1 && spec.workflow.workflow_id === (writable ? 'isolated-write-v1' : 'read-only-v1'), 'UNSUPPORTED_WORKFLOW');
   requireGuard(uniqueBy(spec.workflow.stages, 'id') && uniqueBy(spec.dependencies, 'task_id') && uniqueBy(spec.shared_resources, 'resource_id'), 'DUPLICATE_ID');
   const stages = spec.workflow.stages;
   requireGuard(!stages.some((stage) => stage.role === 'builder-developer') || stages.at(-1).role === 'reviewer-verifier', 'REVIEW_REQUIRED');
@@ -50,7 +58,7 @@ export function evaluate(current, command, context = {}) {
     requireGuard(command.expected_revision === 0, 'REVISION_CONFLICT');
     const spec = payload.spec;
     requireGuard((context.role === 'owner' && context.actor_id === spec.accountable_owner) || context.role === 'coordinator', 'UNAUTHORIZED');
-    admitSpec(spec);
+    admitSpec(spec, context);
     requireGuard(context.references_valid === true, 'INVALID_REFERENCES');
     execution = {
       schema_version: 1, execution_id: command.execution_id, spec: structuredClone(spec), spec_digest: digest(spec),
@@ -112,7 +120,11 @@ export function evaluate(current, command, context = {}) {
         requireGuard(context.dependencies_satisfied === true, 'DEPENDENCIES_NOT_SATISFIED');
         requireGuard(context.resources_available === true, 'RESOURCE_CONFLICT');
         requireGuard(context.worker_eligible === true, 'WORKER_INELIGIBLE');
-        requireGuard(payload.capabilities.every((capability) => ['read', 'analyze'].includes(capability)), 'UNSUPPORTED_CAPABILITY');
+        if (execution.spec.integration_policy === 'isolated_write') {
+          requireGuard(context.namespace_managed === true && context.can_write === true && context.isolation_verified === true, 'ISOLATION_REQUIRED');
+          requireGuard(payload.capabilities.every((capability) => ['read', 'analyze', 'write'].includes(capability)), 'UNSUPPORTED_CAPABILITY');
+          requireGuard(stage.role === 'builder-developer' || !payload.capabilities.includes('write'), 'UNSUPPORTED_CAPABILITY');
+        } else requireGuard(payload.capabilities.every((capability) => ['read', 'analyze'].includes(capability)), 'UNSUPPORTED_CAPABILITY');
         requireGuard(!execution.worker_history.some((item) => item.attempt_id === payload.attempt_id), 'DUPLICATE_ATTEMPT');
         requireGuard(millis(payload.lease_deadline) > now && millis(payload.lease_deadline) <= now + execution.spec.lease_ms, 'INVALID_LEASE');
         if (stage.role === 'reviewer-verifier') {
