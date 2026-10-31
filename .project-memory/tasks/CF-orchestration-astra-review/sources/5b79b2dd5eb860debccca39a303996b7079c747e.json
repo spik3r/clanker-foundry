@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5b79b2dd5eb860debccca39a303996b7079c747e",
+  "id": "CF-orchestration-astra-review",
+  "path": "tasks/CF-orchestration-astra-review-fixes.md",
+  "blob": "e20e8ee08c70bf4f3c6528ced237e6d05741dbfa",
+  "record": "---\nid: CF-orchestration-astra-review\nstatus: in-progress\nowner: Astra PR review\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Repair cancellation and never-started container cleanup\n\n## Implementation claim\n\nAstra owns this bounded review follow-up for PR 9 on\n`codex/deterministic-orchestration-plan`, reviewed head `61f7b27757b8` and\nmain `7a03b095eff5`. The current PR has no assignee or requested reviewer;\nits prior implementation evidence frontiers are complete and no active\nimplementation claim overlaps these files. The repository owner authorized\nreview, fixing unowned findings, publication and merge after verification.\nThis local claim does not transfer any runtime namespace or existing task.\n\nExact scope:\n- `runtime/src/adapters.mjs`\n- `runtime/test/adapters.test.mjs`\n- `runtime/src/isolation.mjs`\n- `runtime/test/isolation.test.mjs`\n- `tasks/CF-orchestration-astra-review-fixes.md`\n- New immutable Project Memory source and event files for this task.\n\nReject cancellation immediately before an injected text callback is invoked,\nincluding the queued-microtask boundary. Preserve honest cleanup while an\nalready-running callback has not settled. Recognize an inspected, owned Docker\ncontainer that never started as nonrunning and removable; do not treat an\nuninspected or running container as stopped. Add deterministic regressions for\nboth failures and independently recheck the final diff.\n\nNo provider calls, namespace activation, operating database changes, deployment,\ncredential changes, claim migration, history rewriting or branch-protection\nchanges are included. The lead owns staging, lifecycle evidence and commits.\n\n## Validation and next action\n\nBefore publication: run targeted regressions, the complete Node 24 runtime and\nProject Memory suites, the pack validator, whitespace checks and the committed\nfull-diff evidence gate. Run installer and actual isolation checks where the host\nsupports them; otherwise distinguish host limits from final-head CI results.\nRecheck the remote head before pushing and use normal merge controls only after\nreviewing the exact final revision.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-astra-review-fixes.md",
+        "id": "CF-orchestration-astra-review",
+        "blob": "e20e8ee08c70bf4f3c6528ced237e6d05741dbfa",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

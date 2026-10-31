@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "94988478-66d3-422d-af81-097c1177b002",
+  "runId": "c62ea0f0-45dd-475a-be91-bd47fbf66e87",
+  "kind": "complete",
+  "parents": [
+    "261c7bb8-5189-4de2-b5f9-ef19f541f239"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-astra-review",
+    "path": "tasks/CF-orchestration-astra-review-fixes.md",
+    "revision": "5b79b2dd5eb860debccca39a303996b7079c747e",
+    "blob": "e20e8ee08c70bf4f3c6528ced237e6d05741dbfa",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7abb319e6bf2bdf78e581f77626f97b898749cef4c65393c340e1afb31617d70"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/9",
+  "at": "2026-10-31T22:17:40.319Z",
+  "summary": "Reject queued cancelled text calls and clean up verified never-started Docker containers",
+  "next": "Commit and validate full-diff evidence, publish to unchanged reviewed PR branch, then verify exact-head checks and merge normally if ready",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/src/isolation.mjs",
+    "runtime/test/isolation.test.mjs",
+    "tasks/CF-orchestration-astra-review-fixes.md"
+  ],
+  "validation": "Node 24.22.1: 311/311 runtime and Project Memory/workflow tests passed, zero skips; independent 17/17 adapter-isolation tests and adversarial cancellation/capacity/created-state checks passed; pack validator and whitespace passed; npm audit zero known vulnerabilities; fake CLI demo and replay passed. Local installer blocked by missing GNU Stow; no local live Docker/provider run; exact-head CI checked separately.",
+  "snapshot": {
+    "runtime/src/adapters.mjs": {
+      "blob": "89016c934d8cdecde86583f2701376a882ea3d14",
+      "mode": "100644"
+    },
+    "runtime/test/adapters.test.mjs": {
+      "blob": "1b791bdcfae910108d17afbf6ff3bd5d1780c92d",
+      "mode": "100644"
+    },
+    "runtime/src/isolation.mjs": {
+      "blob": "3b332bdda714c3aea1b72ce67683401b358aadb8",
+      "mode": "100644"
+    },
+    "runtime/test/isolation.test.mjs": {
+      "blob": "d536371625b7493d98f37f0562ef2e56da5cf58a",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-astra-review-fixes.md": {
+      "blob": "21a79bd22c29f8fb6b60f4bc301fa1a9bcc8097b",
+      "mode": "100644"
+    }
+  }
+}

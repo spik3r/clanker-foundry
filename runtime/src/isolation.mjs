@@ -303,12 +303,12 @@ export function createDockerIsolationHost({ dockerExecutable = 'docker', imageDi
     } catch (error) { startError = error; }
     let stopped;
     try { stopped = await inspectOwned(entry); } catch { fail('ISOLATION_OUTCOME_UNKNOWN', 'Could not verify whether the Docker attempt stopped'); }
-    if (stopped.State?.Running || !['exited', 'dead'].includes(stopped.State?.Status)) fail('ISOLATION_OUTCOME_UNKNOWN', 'Docker attempt may still be running');
+    if (stopped.State?.Running || !['created', 'exited', 'dead'].includes(stopped.State?.Status)) fail('ISOLATION_OUTCOME_UNKNOWN', 'Docker attempt may still be running');
     await dockerExec(dockerExecutable, ['rm', '-v', container.id]);
     entry.stopped = true;
     attempts.set(plan.attempt_id, entry);
     if (startError) throw startError;
-    if (stopped.State?.ExitCode !== 0) fail('ISOLATION_PLAN_REJECTED', 'Docker rejected the workspace plan');
+    if (stopped.State?.Status === 'created' || stopped.State?.ExitCode !== 0) fail('ISOLATION_PLAN_REJECTED', 'Docker did not complete the workspace plan');
     let result;
     try { result = JSON.parse(output.trim()); } catch { fail('ISOLATION_INVALID_OUTPUT', 'Docker returned invalid workspace evidence'); }
     if (result?.schema_version !== 1 || result.execution_id !== plan.execution_id || result.spec_digest !== plan.spec_digest
@@ -323,7 +323,7 @@ export function createDockerIsolationHost({ dockerExecutable = 'docker', imageDi
     try {
       await dockerExec(dockerExecutable, ['kill', entry.id]).catch(() => {});
       const state = await inspectOwned(entry);
-      if (state.State?.Running || !['exited', 'dead'].includes(state.State?.Status)) return { stopped: false };
+      if (state.State?.Running || !['created', 'exited', 'dead'].includes(state.State?.Status)) return { stopped: false };
       await dockerExec(dockerExecutable, ['rm', '-v', entry.id]);
       entry.stopped = true;
       return { stopped: true, container_id: entry.id };

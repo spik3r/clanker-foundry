@@ -91,15 +91,17 @@ test('text adapter bounds aggregate immutable subject bytes before invocation', 
 
 test('text adapter does not claim revocation until an invocation has settled', async () => {
   let finish;
+  const started = Promise.withResolvers();
   const adapter = createTextModelAdapter({
     workerId: 'text-worker',
     invoke: async (_request, { signal }) => new Promise((resolve) => {
       finish = resolve;
       signal.addEventListener('abort', () => {}, { once: true });
+      started.resolve();
     }),
   });
   const running = adapter.runAttempt({ attempt, spec: taskSpec });
-  await Promise.resolve();
+  await started.promise;
   const pending = await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id });
   assert.equal(pending.stopped, false);
   finish('settled output');
@@ -107,6 +109,23 @@ test('text adapter does not claim revocation until an invocation has settled', a
   assert.equal((await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id })).stopped, true);
   const fresh = createTextModelAdapter({ workerId: 'text-worker', invoke: async () => 'unused' });
   assert.equal((await fresh.revokeCapabilities({ attempt_id: attempt.attempt_id, attempt })).stopped, false);
+});
+
+test('text adapter cancellation before the queued provider callback prevents invocation', async () => {
+  let invocations = 0;
+  const adapter = createTextModelAdapter({
+    workerId: attempt.worker_id,
+    invoke: async () => { invocations += 1; return 'must not run'; },
+  });
+  const running = adapter.runAttempt({ attempt, spec: taskSpec });
+  const rejected = assert.rejects(running, { code: 'ATTEMPT_ABORTED' });
+  // Capacity acquisition has resolved; its continuation queues invoke after this microtask.
+  const revoked = new Promise((resolve, reject) => queueMicrotask(() => {
+    adapter.revokeCapabilities({ attempt_id: attempt.attempt_id, attempt }).then(resolve, reject);
+  }));
+  await Promise.all([rejected, revoked]);
+  assert.equal(invocations, 0);
+  assert.equal((await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id, attempt })).stopped, true);
 });
 
 test('text adapter applies backpressure and keeps undelivered artifacts until release', async () => {

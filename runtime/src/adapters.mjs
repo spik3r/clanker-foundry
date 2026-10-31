@@ -335,7 +335,10 @@ export function createTextModelAdapter({
         releaseCapacity = await capacity.acquire(controller.signal);
         if (controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before invocation');
         ownedAttempt.status = 'invoking';
-        const invocation = Promise.resolve().then(() => invoke(request, { signal: controller.signal }));
+        const invocation = Promise.resolve().then(() => {
+          if (controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before invocation');
+          return invoke(request, { signal: controller.signal });
+        });
         pending.set(attempt.attempt_id, { controller, invocation });
         const output = await invocation;
         if (typeof output !== 'string') fail('INVALID_MODEL_OUTPUT', 'Text invocation must return a string');

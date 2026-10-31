@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-astra-review
-status: in-progress
+status: review
 owner: Astra PR review
 repositories: [spik3r/clanker-foundry]
 ---
@@ -44,3 +44,31 @@ full-diff evidence gate. Run installer and actual isolation checks where the hos
 supports them; otherwise distinguish host limits from final-head CI results.
 Recheck the remote head before pushing and use normal merge controls only after
 reviewing the exact final revision.
+
+## Result and observed checks
+
+Added an abort guard inside the generic text adapter's queued provider callback.
+The regression now cancels in that exact window with zero provider invocations;
+the preexisting active-call test waits for a real invocation before revocation.
+Inspected owned Docker containers in `created` state are now safely removable
+after start failure and during cleanup, but can never count as a successful plan.
+Running or ownership-mismatched containers remain unconfirmed.
+
+Node v24.22.1 passed all 311 runtime and Project Memory/workflow tests, with zero
+skips. Pack validation, whitespace checks and dependency audit passed (zero known
+vulnerabilities). The CLI demo completed all four fake stages and replay. The
+optional skills-ref check is unavailable. Local installer testing stopped at the
+missing GNU Stow prerequisite; actual Docker and live provider checks were not
+rerun on this host. Original-head CI passed installer and actual Docker isolation;
+new exact-head CI is checked separately after publication.
+
+Independent review passed 17 adapter/isolation tests, exercised 32 queued
+cancellations followed by all 16 output-capacity slots, and checked that a client
+exit code of zero cannot accept a never-started container. New regressions fail
+against the original source. No remaining material finding was reproduced.
+
+Implementation editing is complete and this claim reserves no further changes.
+Next: record genuine completion, commit and validate the full committed diff,
+publish only if the remote head still matches the reviewed parent, then verify
+exact-head checks and normally merge PR 9. No operating namespace, existing task
+claim, live provider, deployment or branch protection is changed.
