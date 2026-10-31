@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "38cb2e8bb72587cf71f8a9d05c274b88c8eaa759",
+  "id": "CF-deterministic-orchestration",
+  "path": "tasks/CF-deterministic-orchestration-plan.md",
+  "blob": "44574b74ae6c3195860f0521ddee21c6fc64e362",
+  "record": "---\nid: CF-deterministic-orchestration\ncategory: architecture\nstatus: in-progress\nowner: Foundry orchestration planning\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Plan deterministic task execution after task-workflow adoption\n\n## Implementation claim\n\nOwner: Foundry orchestration planning, branch\n`codex/deterministic-orchestration-plan`. The user requested updating the planning\nworktree from latest origin/main, reviewing the previous recommendation, and\ncreating a plan. The reviewed base is `7a03b09`; the task-workflow adoption\nchanges are now included. This is a local planning claim, not a published shared\nreservation. The checkout was clean and the connected open-PR search returned\nno open pull requests before the claim was prepared.\n\nExact write scope:\n- `docs/deterministic-orchestration-plan.md`\n- `tasks/CF-deterministic-orchestration-plan.md`\n- New immutable Project Memory source and event files for this task.\n\nProduce an evidence-based architecture and phased implementation plan. Preserve\nthe existing task-store authority, standalone skills, Markdown source contract,\nand offline evidence checks. No application code, schema implementation, existing\nskill edits, CI changes, task migration, runtime deployment, publication or merge.\nLocal commits follow the repository's required source/evidence workflow.\n\n## Acceptance\n\n- Review the changes from the previous base `a25e642` to `7a03b09`.\n- Separate current facts, recommendations, assumptions and unresolved decisions.\n- Define typed contracts, transition guards, authority, concurrency, recovery,\n  worker isolation, validation and task-directory admission.\n- Give bounded implementation phases with proposed paths and observable exit gates.\n- State how adoption preserves existing workflows and Project Memory compatibility.\n\n## Validation\n\nRun `bash scripts/validate.sh`, `git diff --check`, and\n`git diff --cached --check`. Review the design against concurrent assignment,\nlate results, crashes, duplicate delivery, approval, validation and migration\nscenarios. Run Project Memory committed-diff validation after local commits.\nNo lifecycle helper or CI change is planned, so their regression suite need not\nbe repeated for this documentation-only change.\n\n## Integration and next action\n\nIntegration owner: repository owner. No runtime has been selected or approved for\nimplementation by this task. Next: write and review the plan, record observed\nchecks, and deliver the local planning branch for review. Existing claims and\nrecords remain unchanged.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-deterministic-orchestration-plan.md",
+        "id": "CF-deterministic-orchestration",
+        "blob": "44574b74ae6c3195860f0521ddee21c6fc64e362",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

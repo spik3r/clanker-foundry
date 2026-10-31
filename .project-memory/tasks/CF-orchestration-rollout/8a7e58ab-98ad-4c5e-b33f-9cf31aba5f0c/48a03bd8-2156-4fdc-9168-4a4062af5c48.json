@@ -1,0 +1,46 @@
+{
+  "formatVersion": 2,
+  "eventId": "48a03bd8-2156-4fdc-9168-4a4062af5c48",
+  "runId": "8a7e58ab-98ad-4c5e-b33f-9cf31aba5f0c",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-rollout",
+    "path": "tasks/CF-orchestration-rollout-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "b868bbd1ed0bdf0e15b82d3aaf627bc3c5704bb7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "af520decb2e11a2e73af61cda082c7c647ca2774e4249ac57cc9053fc1cc1e1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:25:31.124Z",
+  "summary": "Implement and verify the remaining managed-execution integration boundary",
+  "next": "Build scoped integration, validate real external capabilities, and independently review",
+  "files": [
+    "runtime/src/contract.mjs",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/state.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/src/cli.mjs",
+    "runtime/test/state.test.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/test/cli.test.mjs",
+    "runtime/package.json",
+    "runtime/README.md",
+    "AGENTS.md",
+    "README.md",
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-review.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "docs/adr/0002-managed-execution.md",
+    "runtime/config/namespace-cf-auto.json",
+    ".github/workflows/orchestration.yml",
+    "tasks/CF-orchestration-rollout-implementation.md"
+  ]
+}

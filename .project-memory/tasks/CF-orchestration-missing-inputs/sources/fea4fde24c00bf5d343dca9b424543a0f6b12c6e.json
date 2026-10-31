@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "fea4fde24c00bf5d343dca9b424543a0f6b12c6e",
+  "id": "CF-orchestration-missing-inputs",
+  "path": "tasks/CF-orchestration-missing-inputs-implementation.md",
+  "blob": "6e241f76c1fa74ecdbeb0a8847d83a15b0e9e82d",
+  "record": "---\nid: CF-orchestration-missing-inputs\nstatus: in-progress\nowner: Foundry input fixes\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject missing immutable task inputs\n\n## Implementation claim\n\nThe user authorized fixing the fresh-review missing dependency finding. This local\nfollow-up starts at `55022ea` on `codex/deterministic-orchestration-plan`. The branch,\nstaged diff, working diff and untracked paths were clean. Existing review claims\nremain unchanged. The open-PR check identifies a separate Project Memory CI lane;\nthis fix does not change that helper or CI. Exact scope:\n\n- `runtime/src/runner.mjs`\n- `runtime/test/store.test.mjs`\n- `runtime/README.md`\n- `tasks/CF-orchestration-missing-inputs-implementation.md`\n- New immutable source and event files for this task.\n\nRequire every dependency, accepted candidate and explicit subject manifest before\nclaiming or acknowledging dispatch. Treat only the exact full pinned repository\nrevision as a Git base reference, including SHA-256 Git IDs. Reject unsupported\nGit revisions and missing subjects instead of silently dropping them. Keep dispatch\nfairness, bounded inputs, fencing, replay and cleanup behavior intact. Do not\nactivate namespaces, rewrite other claims, publish, merge or deploy.\n\n## Validation and next action\n\nAdd actual SQLite regressions for missing dependency manifests after reopening,\nno invocation or acknowledgement, later-work fairness and successful recovery\nafter restoring the manifest. Cover explicit missing inputs and pinned SHA-1 and\nSHA-256 Git bases. Run Node 24 runtime tests, pack/whitespace checks and the\ncommitted evidence gate. Next: register this pinned source and record a genuine\nstart before implementation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-missing-inputs-implementation.md",
+        "id": "CF-orchestration-missing-inputs",
+        "blob": "6e241f76c1fa74ecdbeb0a8847d83a15b0e9e82d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -13,3 +13,10 @@
 
 # Optional per-machine model aliases. Keep local overrides out of Git and Stow.
 agents/model-map.local.conf
+
+# Opt-in runtime dependencies and local state must stay off Git.
+runtime/node_modules/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite-journal

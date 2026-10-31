@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "8dfba002-a578-48fa-acfd-9a4787387b76",
+  "runId": "932c0560-a700-4c6a-86c1-f8372aa4f42f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-evidence",
+    "path": "tasks/CF-orchestration-evidence-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "1b1e2377380a61ee9fdd7b5b2a48c62b610e9c1f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f84b00ea83aaa16d714508755992fb710850d9443cfdddf79f9405ba6f23f2e9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:25:30.608Z",
+  "summary": "Implement and verify the remaining managed-execution integration boundary",
+  "next": "Build scoped integration, validate real external capabilities, and independently review",
+  "files": [
+    "runtime/src/project-memory.mjs",
+    "runtime/contracts/evidence.schema.json",
+    "runtime/test/project-memory.test.mjs",
+    "tasks/CF-orchestration-evidence-implementation.md"
+  ]
+}

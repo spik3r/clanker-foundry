@@ -1,0 +1,97 @@
+{
+  "formatVersion": 2,
+  "eventId": "6745ba2d-5276-4ff0-bf26-3e88ea7955e0",
+  "runId": "290d8e03-7490-4f86-996d-628147a913fa",
+  "kind": "complete",
+  "parents": [
+    "d160fb48-fdff-412e-983a-e73d0170b48e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-limit-fixes",
+    "path": "tasks/CF-orchestration-limit-fixes-implementation.md",
+    "revision": "11a4d98e7bb7a9375d44e702c6801d28c03bcbf4",
+    "blob": "942a8f43f81648fc26d409f8c724fac4013c9d9f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0e8775b922dfa166954a912f0f27bd361e7950825233bbc4889ec9b0b406cf31"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T08:37:55.663Z",
+  "summary": "Align admitted input and retry limits with runner and history capacity",
+  "next": "Review local committed change; run full committed evidence gate against origin/main",
+  "files": [
+    "runtime/src/contract.mjs",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/state.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/test/contract.test.mjs",
+    "runtime/test/state.test.mjs",
+    "runtime/test/runner.test.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/test/store.test.mjs",
+    "runtime/README.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "tasks/CF-orchestration-limit-fixes-implementation.md"
+  ],
+  "validation": "Node v24.22.2 runtime tests: 160/160 pass, no skips; actual SQLite 65/256 dependency and oversized-input fairness regressions pass; maximum 356-attempt workflow and replay pass; independent review runner/store 49/49 pass with no remaining material findings; scripts/validate.sh PASS (optional skills-ref unavailable); working and staged whitespace checks PASS. No live provider, Docker, namespace activation, publication, merge or deployment.",
+  "snapshot": {
+    "runtime/src/contract.mjs": {
+      "blob": "8a76dd5ddb56df4f3772bf335864e942f43a90ae",
+      "mode": "100644"
+    },
+    "runtime/contracts/v1.schema.json": {
+      "blob": "0762941dc8aa85de61d3c14ce75ddd6a71da49f4",
+      "mode": "100644"
+    },
+    "runtime/src/state.mjs": {
+      "blob": "ca986ca8dfde3071690360bad271b9403097d82f",
+      "mode": "100644"
+    },
+    "runtime/src/runner.mjs": {
+      "blob": "776d8ac026d1c9ba69f383d10c86fc946039066b",
+      "mode": "100644"
+    },
+    "runtime/src/adapters.mjs": {
+      "blob": "bb6c170f0983a57f73b77e1ec8a33f3ddcd87650",
+      "mode": "100644"
+    },
+    "runtime/test/contract.test.mjs": {
+      "blob": "376de1856052c076de6edd754073d0d784fb7e21",
+      "mode": "100644"
+    },
+    "runtime/test/state.test.mjs": {
+      "blob": "80954ca7b0705be1779dbda189f77afb38536f06",
+      "mode": "100644"
+    },
+    "runtime/test/runner.test.mjs": {
+      "blob": "27faf29e0dfc056cdaf42a6fc5371f0bd4e02ff8",
+      "mode": "100644"
+    },
+    "runtime/test/adapters.test.mjs": {
+      "blob": "10418aa0bcf183873cd2892d3798a6c697298493",
+      "mode": "100644"
+    },
+    "runtime/test/store.test.mjs": {
+      "blob": "e0175b772405fcf2c102ec600d12cff0d29fab8c",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "71b6dc3007b582f2130b72964955e77123933c7b",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-rollout.md": {
+      "blob": "8ea5815b2469220e8b3c811a38a8c7f0e2689bae",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-limit-fixes-implementation.md": {
+      "blob": "aba55db8981407c30e0a104fa487adb09cacbd27",
+      "mode": "100644"
+    }
+  }
+}

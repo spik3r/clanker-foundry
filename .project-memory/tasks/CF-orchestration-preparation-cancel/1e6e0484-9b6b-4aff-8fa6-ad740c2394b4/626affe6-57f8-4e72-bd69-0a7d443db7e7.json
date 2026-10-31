@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "626affe6-57f8-4e72-bd69-0a7d443db7e7",
+  "runId": "1e6e0484-9b6b-4aff-8fa6-ad740c2394b4",
+  "kind": "complete",
+  "parents": [
+    "b4b3017a-6948-47c0-a3de-8c7d55bb2093"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-preparation-cancel",
+    "path": "tasks/CF-orchestration-preparation-cancel-implementation.md",
+    "revision": "f77a9e27ec2a9e9e549a28706ad64d6c8e0ca7aa",
+    "blob": "5d6e466971d687df763bb42cb8627eb23bd4c784",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f38aae0a354b3833069444a0fe50af9f8fd9a4bb019848224018bfaa6a718aed"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T10:37:31.472Z",
+  "summary": "Stop cancelled isolated attempts before provider invocation",
+  "next": "Validate committed full-diff evidence then push reviewed branch as authorized; no merge or deployment",
+  "files": [
+    "runtime/src/isolation.mjs",
+    "runtime/test/isolation.test.mjs",
+    "tasks/CF-orchestration-preparation-cancel-implementation.md"
+  ],
+  "validation": "Node v24.22.2 combined runtime and Project Memory/workflow tests: 308/308 PASS, no skips; focused isolation/workspace 13/13 PASS; independent reviewer four isolated-adapter tests and original cancellation repro PASS, zero provider calls, no remaining readiness blockers; pack/installer/whitespace PASS; optional skills-ref unavailable. No live provider or Docker rerun for cancellation guards.",
+  "snapshot": {
+    "runtime/src/isolation.mjs": {
+      "blob": "fccc939cbef56ee9cef01500ec7c94b1b23af49b",
+      "mode": "100644"
+    },
+    "runtime/test/isolation.test.mjs": {
+      "blob": "27cd6f1cdaf209e1da0b87d2fa20c032458d09a7",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-preparation-cancel-implementation.md": {
+      "blob": "0b31143aaad736fb46506e5e5626acb759a5cf10",
+      "mode": "100644"
+    }
+  }
+}

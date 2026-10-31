@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "6cc54436-c147-4f29-9ad5-035e70b17c64",
+  "runId": "165d6bed-600b-47f2-bbde-f44dcd5c28d7",
+  "kind": "complete",
+  "parents": [
+    "66dd8be1-3503-4589-86ad-b00d1b64becb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-provider",
+    "path": "tasks/CF-orchestration-provider-implementation.md",
+    "revision": "e06a363b5a63e32523455c0dc4c43726f7335de8",
+    "blob": "51b9fa5133123c47e89655c662af8a05375fbfd3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "369cd35345413c44b87bd6cb648c5662559f127c86c2a986cbd601029268b1bf"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T05:49:03.927Z",
+  "summary": "Implement and review the scoped managed-execution boundary with verified local integration",
+  "next": "Owner review local branch; configure actual shared authority identity and pinned activation decision before live CF-AUTO dispatch; run committed full-diff evidence validation",
+  "files": [
+    "runtime/src/providers.mjs",
+    "runtime/test/providers.test.mjs",
+    "runtime/test/provider-live.mjs",
+    "tasks/CF-orchestration-provider-implementation.md"
+  ],
+  "validation": "Node v24.22.2: runtime suite 154/154 and existing Project Memory/workflow suites 143/143, no skips; bash scripts/validate.sh PASS (optional skills-ref absent); bash tests/test-install.sh PASS; git diff --check and cached --check PASS; signed-in Codex text smoke PASS; actual Docker isolation/probe/two-operation/promotion smoke PASS. Fresh-context review found no remaining material findings. Direct Responses live call not run: API key absent. No persistent namespace activation, publication, merge or deployment.",
+  "snapshot": {
+    "runtime/src/providers.mjs": {
+      "blob": "c91fd0ddef222ee2d6c972b20a851fc7fec3858b",
+      "mode": "100644"
+    },
+    "runtime/test/providers.test.mjs": {
+      "blob": "3943508ce344c3f8f3926a30040051f3b9fff600",
+      "mode": "100644"
+    },
+    "runtime/test/provider-live.mjs": {
+      "blob": "e3662b4db8c4d40e88a75f0a747ac62fbcfbc037",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-provider-implementation.md": {
+      "blob": "0a6df84d5bbe9ebedaf43dbf76bf5d6f2347b6b3",
+      "mode": "100644"
+    }
+  }
+}

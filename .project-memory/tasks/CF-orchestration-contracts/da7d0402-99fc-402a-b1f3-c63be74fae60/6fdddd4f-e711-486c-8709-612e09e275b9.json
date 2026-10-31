@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "6fdddd4f-e711-486c-8709-612e09e275b9",
+  "runId": "da7d0402-99fc-402a-b1f3-c63be74fae60",
+  "kind": "complete",
+  "parents": [
+    "4990e15c-8605-441c-a2be-c23d40dc97a2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-contracts",
+    "path": "tasks/CF-orchestration-contracts-implementation.md",
+    "revision": "0f971e28c8b11d7eff41969d62a8051b39592526",
+    "blob": "c28143acd566326f3ee059cc5cf669c4ce60b8ad",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d214265a9b3f9e1aa1a5f97cdab04ea61772dd3b1bbe23b1737f3bb2f4bd36c3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/deterministic-orchestration-plan",
+  "pullRequest": null,
+  "at": "2026-10-30T03:36:07.804Z",
+  "summary": "Define strict runtime contracts and pilot decisions; reviewed local read-only pilot implementation",
+  "next": "Validate committed evidence and review local pilot; no publication, task migration, merge or deployment",
+  "files": [
+    "runtime/package.json",
+    "runtime/package-lock.json",
+    "runtime/contracts/v1.schema.json",
+    "runtime/src/contract.mjs",
+    "runtime/test/contract.test.mjs",
+    "runtime/test/fixtures.mjs",
+    "docs/adr/0001-deterministic-runtime.md",
+    ".gitignore",
+    "tasks/CF-orchestration-contracts-implementation.md"
+  ],
+  "validation": "Node v24.22.2: runtime 73/73 tests passed; portable runner/CLI recheck 12/12 passed. Pack validator, installer regressions and whitespace checks passed. Independent staged review: no unresolved P1/P2 findings. Existing Project Memory suite 142/143, same baseline EPERM creating invalid UTF-8 filename fixture before helper logic. Optional skills-ref unavailable. No live provider or unattended writable execution verified.",
+  "snapshot": {
+    "runtime/package.json": {
+      "blob": "c88e2c29a40a4930583eb50db15d0e8cc677ea01",
+      "mode": "100644"
+    },
+    "runtime/package-lock.json": {
+      "blob": "558a2eaf69724ebce1397cb091df083058cda666",
+      "mode": "100644"
+    },
+    "runtime/contracts/v1.schema.json": {
+      "blob": "c40c2bfaebfc54db417d93960593d388e3f57924",
+      "mode": "100644"
+    },
+    "runtime/src/contract.mjs": {
+      "blob": "ca2caeb8bf1ad704ecd5d5875fffbb66dd0da0a2",
+      "mode": "100644"
+    },
+    "runtime/test/contract.test.mjs": {
+      "blob": "16865d9025c531563edcafa401351cd978eef715",
+      "mode": "100644"
+    },
+    "runtime/test/fixtures.mjs": {
+      "blob": "3b6fb5c27544c408e10ec44f1aa1a4f0333d677d",
+      "mode": "100644"
+    },
+    "docs/adr/0001-deterministic-runtime.md": {
+      "blob": "962ee7732f457944dc8e8c7eeea949ab866d83e3",
+      "mode": "100644"
+    },
+    ".gitignore": {
+      "blob": "025badbd72178d23c4ee40f7dc4f9303e27e8332",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-contracts-implementation.md": {
+      "blob": "3e63aff3d243ad07a84d69cdeffbb7d8bae19d64",
+      "mode": "100644"
+    }
+  }
+}
