@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "fda0d0c396c0e95170fad4f7def098077dc96f91",
+  "id": "CF-model-authoring-v1",
+  "path": "tasks/CF-model-authoring-v1-schema.md",
+  "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+  "record": "---\nid: CF-model-authoring-v1\nstatus: in-progress\nowner: Codex authoring contract contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Lifecycle model authoring contract\n\n## Implementation claim\n\nImplement an offline, versioned JSON Schema authoring aid for the existing\n`lifecycle-json/v1` format and `lifecycle/v1` profile, with examples, independently\nspecified syntax and semantic cases, and automated checks against the existing Go\nadapter. Scope: `modeling/lifecycle/authoring/`, a new authoring-only CI workflow,\nthis record, and its new Project Memory evidence. Do not change the model,\ncompiler, generated artifacts, scenario/diff, traceability, patch, diagnostics,\nreview-pack, qualification-exporter, or runtime implementation lanes. The schema\nis an editor aid, not semantic authority or a claim of UML/SysML conformance.\n\nThe parent coordinated this task. Current main, published branches and open PRs\nwere inspected; no competing authoring schema claim was found. This prospective\nlocal record is not itself a shared lock. Recheck before publication.\n\n## Validation\n\nUse pinned schema tooling for tests only, run the existing Go validator on the same\ncases, exercise malformed and semantically invalid examples, validate deterministic\nfiles and document schema limitations, then run repository and lifecycle checks.\nRecord actual outcomes and leave review and merge to the orchestrator. No deployment\nor agent activation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-model-authoring-v1-schema.md",
+        "id": "CF-model-authoring-v1",
+        "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
