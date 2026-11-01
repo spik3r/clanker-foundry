@@ -1,6 +1,6 @@
 ---
 id: CF-model-intakecheck-v1
-status: in-progress
+status: complete
 owner: Byte intake-model integration worker
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-intake-v1, CF-model-authoring-v1]
@@ -110,3 +110,44 @@ Run pinned offline Go full race/vet/modelc checks, relevant schema contract test
 repository validation and full committed-diff Project Memory. Obtain independent
 exact-source review. Publication, merge, deployment and worker activation remain
 separate authorized actions. No held ancestor is included or gate bypassed.
+
+## Implementation and review result
+
+The bridge and command implement the bounded contract above. The independent
+pre-logic vectors remain SHA-256
+1a951b981246cbc395e9e439df381b80a9909df9e1d7bd7e3d9f00da515386b6.
+Independent source review found a real closed-pipe exit mismatch: Go terminated
+on SIGPIPE rather than returning exit 3. The command now ignores that signal and
+reports the write error; a real subprocess regression and a separate binary probe
+both confirmed the fixed exit code and diagnostic. No expected output changed.
+
+Source review and integration checks passed at
+ba5acb2768be6215249097f5907ddadaf052b213, tree
+12f6ef4d594820386c135cc1eb8287e11b69b1bc, against merged main
+8f08ca97e5da4ef5553c552de9fd6f2646cea9fa. The branch retains the original
+claim/start and literal-freeze chronology. Merged acceptance authoring and
+traceability files were imported unchanged; the diff against main is only the
+eight maintained paths above and this task's immutable evidence.
+
+Observed checks:
+- Pinned offline Go 1.27.3 full-module race tests (26 tested packages), vet,
+  modelc validate/check and modeltrace validate/check passed; an independent
+  reviewer also ran these checks on the same integration commit.
+- Six frozen vectors, fourteen independent binary boundary probes, and eight
+  behaviorally killed mutation controls passed. The probes included exact
+  4 MiB request and 1 MiB observation bounds, their +1 refusals, empty versus
+  missing models, strict Unicode/transport and real output failures.
+- Existing authoring-schema tests passed (2); repository validation passed,
+  with optional skills-ref unavailable; unchanged lifecycle-helper tests passed
+  (143). README byte-preserving preparation/extraction ran as written.
+- A separate scratch integration fed the normalized public example artifact
+  into existing acceptance authoring replay: its two frozen cases/two steps
+  matched. The original bridge receipt retained its open question and all
+  non-execution/non-approval statuses. No fixture or manifest was rebound.
+
+Existing traceability gaps remain visible: 12 requirements, 9 linked,
+3 incomplete and 1 unlinked acceptance case. Current generated views match.
+This task does not resolve those gaps, authenticate caller identities, qualify
+the held export/reviewpack stack, or satisfy its visual/completion gates.
+Completion records local implementation and observed checks only. Publication
+and any later merge remain distinct actions under the coordinator's authority.
