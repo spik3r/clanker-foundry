@@ -78,7 +78,9 @@ purity/determinism of arbitrary closures.
 Add an opt-in acceptance BoundReport and version with runnerModelDigest and explicit
 caller-supplied-go-binding identity source, never compiledModelDigest. Bind manifest,
 canonical model, exact suite bytes, suite model and runner before full validation or
-replay. Check-only/stale inputs preserve not-checked/not-run and invoke no callback.
+replay. All-current check-only input fully validates the suite and case IDs and
+computes its scenario digest, reporting valid/not-run. Stale bindings remain
+not-checked/not-run. Both paths invoke zero callbacks.
 Propagate provider failure distinctly; it may occur after execution began. Existing
 Check/Execute and their CLI retain the original default report contract.
 
