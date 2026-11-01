@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "173bd452-d613-4129-a36b-c2bc51c66c1f",
+  "runId": "75c91476-0641-4085-bf09-80651821cb48",
+  "kind": "checkpoint",
+  "parents": [
+    "446d90ab-fba8-4fea-9a54-dc36bc3ab34b"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-process-view-v1",
+    "path": "tasks/CF-lifecycle-process-view-v1-review.md",
+    "revision": "a37ac145d7809c6fb3abf0be5123d66aa3027a63",
+    "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "68faaf642ae370976f24e9188ed85cb37d7df3824129717d108d8c5efc784074"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-process-view",
+  "pullRequest": null,
+  "at": "2026-11-01T21:34:02.316Z",
+  "summary": "Implemented separate bounded JSON/SVG process projection and CLI; frozen independent literals pass, with additional large-model and XML-safety cases",
+  "next": "Complete full validation and independent read-only review; visual browser inspection was denied by URL policy",
+  "files": [
+    "tasks/CF-lifecycle-process-view-v1-review.md",
+    "modeling/lifecycle/processview/process.go",
+    "modeling/lifecycle/processview/svg.go",
+    "modeling/lifecycle/processview/process_external_test.go",
+    "modeling/lifecycle/processview/testdata/model.json",
+    "modeling/lifecycle/processview/testdata/expected.json",
+    "modeling/lifecycle/processview/README.md",
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main_test.go"
+  ]
+}
