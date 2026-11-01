@@ -1,6 +1,6 @@
 ---
 id: CF-pipeline-introduction-v1
-status: review
+status: in-progress
 owner: Astra pipeline introduction
 repositories: [spik3r/clanker-foundry]
 ---
@@ -73,3 +73,21 @@ validator. No installer or hosted-CI pass is claimed. Full committed-diff lifecy
 validation and remote head/CI verification remain separate post-commit checks.
 Publication remains subject to authentication and authority; no merge or activation
 is part of this handoff.
+
+## Requested end-state summary and role image
+
+The owner requested a concise description of the ideal final outcome and reasons
+for this approach, plus an image separating human input, AI work and work done by
+deterministic tools outside AI. Extend this same documentation lane; the exact
+scope now also includes `docs/assets/pipeline-roles.png`. The coordinating agent
+owns image generation and will transfer the exact local image for inspection and
+integration. Do not create a placeholder bitmap or claim the image is present
+before the transfer. Keep the existing diagrams, factual limits and history.
+
+Commit and register this expanded claim, then record a genuine new start before
+editing the guide or integrating the image. The final change must retain the
+separation between the ideal end state and delivered functionality, and explain
+that determinism gives repeatability rather than correctness. Human authorization
+and independently specified checks remain necessary. Verify the supplied image
+visually, its relative link and the final committed evidence. The previous bundle
+is retained; no new publication route, merge or activation is authorized here.
