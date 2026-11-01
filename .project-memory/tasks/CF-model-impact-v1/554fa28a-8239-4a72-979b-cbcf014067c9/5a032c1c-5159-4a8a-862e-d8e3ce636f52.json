@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "5a032c1c-5159-4a8a-862e-d8e3ce636f52",
+  "runId": "554fa28a-8239-4a72-979b-cbcf014067c9",
+  "kind": "checkpoint",
+  "parents": [
+    "d0ea245a-01db-4eeb-a3bf-2445e6626061"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-impact-v1",
+    "path": "tasks/CF-model-impact-v1-review-diff.md",
+    "revision": "ff7870107e504a18b4f40ab9dc50718dc8219e52",
+    "blob": "cb156bc85a2f4ed1220a3f24d31ae36ad9441716",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a3d8a07f1df96a640b88e5c2681600324dce8fb10c6dde07eb5eac189c2f81cb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T06:22:50.057Z",
+  "summary": "Freeze typed comparison/report ABI only; no comparison, execution, decoding or fixture-derived logic implemented",
+  "next": "Transfer exact source/start and types for independent expected changes/causes/binding freeze before comparison implementation",
+  "files": [
+    "modeling/lifecycle/impact/README.md",
+    "modeling/lifecycle/impact/types.go",
+    "modeling/lifecycle/impact/compare.go",
+    "modeling/lifecycle/impact/compare_test.go",
+    "modeling/lifecycle/impact/decode.go",
+    "modeling/lifecycle/impact/decode_test.go",
+    "modeling/lifecycle/cmd/modeldiff/main.go",
+    "modeling/lifecycle/cmd/modeldiff/main_test.go",
+    "modeling/lifecycle/impactacceptance/oracle_test.go",
+    "tasks/CF-model-impact-v1-review-diff.md"
+  ]
+}
