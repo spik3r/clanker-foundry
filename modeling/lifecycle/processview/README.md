@@ -33,18 +33,20 @@ go test ./processview ./cmd/modelprocess
 
 The command reads at most 1 MiB of model source from stdin and accepts exactly
 `json` or `svg`; both projections are built before output and each is capped at
-16 MiB. It refuses either oversize projection without output. The command
+16 MiB; SVG canvas height is capped at 30,000 pixels. It refuses either
+oversize projection without output, rather than emitting a cropped view. The command
 opens no input or output paths. Shell redirection creates the example files.
 Exit 0 emits one complete projection; exit 2 means invalid input, unsupported
 arguments/toolchain or a resource bound, with empty stdout; exit 3 means an output
 write failed or was short, which can leave a partial stream. Keep input and output
 private when the model contains private data.
 
-The JSON projection is `lifecycle-process-view/v1`. It includes the canonical
+The JSON projection is `lifecycle-process-view/v1`. It includes the model ID and canonical
 model digest, normalized states, transitions and guards, ordered effects, and
 explicit semantic boundaries. The SVG displays the same transition and guard
 facts in an inert flow layout. SVG displays control and non-ASCII characters as
-Go-style escapes to preserve XML safety. JSON preserves state labels; its guard
+Go-style escapes to preserve XML safety; literal backslashes are doubled so
+they cannot be confused with escapes. JSON preserves state labels; its guard
 expressions are readable strings with Go-quoted literals, not a source AST. Both
 derive their identity from the validated, normalized model rather than a caller-supplied digest. Equivalent source formatting
 and semantic-set order produce identical output; effect order remains meaningful.

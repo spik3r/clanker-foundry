@@ -28,7 +28,9 @@ func (b *cappedBuffer) Write(p []byte) (int, error) {
 func displayText(s string) string {
 	var b strings.Builder
 	for _, r := range s {
-		if r >= 32 && r <= 126 {
+		if r == '\\' {
+			b.WriteString(`\\`)
+		} else if r >= 32 && r <= 126 {
 			b.WriteRune(r)
 		} else {
 			q := strconv.QuoteToASCII(string(r))
@@ -67,6 +69,7 @@ func renderSVG(d document) ([]byte, error) {
 		}
 	}
 	line("Lifecycle process review / canonical digest: " + d.ModelDigest)
+	line("Model ID: " + d.ModelID)
 	line("Example only; authority none. Not BPMN, execution or approval.")
 	line(d.Semantics.Scope)
 	line(d.Semantics.Guards)
@@ -130,7 +133,7 @@ func renderSVG(d document) ([]byte, error) {
 	for _, g := range d.Guards {
 		line("Guard " + g.ID + " / requirement " + g.Requirement + ": " + g.Expression)
 	}
-	if body.failed {
+	if body.failed || y+20 > MaxCanvasHeight {
 		return nil, ErrInvalid
 	}
 	var out cappedBuffer

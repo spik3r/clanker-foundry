@@ -254,7 +254,7 @@ func TestLargeGuardGlossaryIsComplete(t *testing.T) {
 	requirements := make([]any, 0, 64)
 	guards := make([]any, 0, 64)
 	guardIDs := make([]any, 0, 64)
-	literal := strings.Repeat("<&", 2000)
+	literal := strings.Repeat("<&", 1500)
 	for i := 0; i < 64; i++ {
 		rid := fmt.Sprintf("R%02d", i)
 		gid := fmt.Sprintf("G%02d", i)
@@ -355,5 +355,87 @@ func TestSVGRepresentationsOfControlAndUnicode(t *testing.T) {
 		if !strings.Contains(text.String(), part) {
 			t.Fatalf("missing escaped display text %q", part)
 		}
+	}
+}
+
+func TestDistinctEscapedLabelsAndModelID(t *testing.T) {
+	raw, _ := fixture(t)
+	var m map[string]any
+	if err := json.Unmarshal(raw, &m); err != nil {
+		t.Fatal(err)
+	}
+	states := m["states"].([]any)
+	for _, pair := range []struct{ actual, literal, encoded, escaped string }{
+		{"Ω", `\u03a9`, `\u03a9`, `\\u03a9`},
+		{"a\nb", `a\nb`, `a\nb`, `a\\nb`},
+	} {
+		states[0].(map[string]any)["label"] = pair.actual
+		states[2].(map[string]any)["label"] = pair.literal
+		input, err := json.Marshal(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := processview.Build(input)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var id struct {
+			ModelID string `json:"modelId"`
+		}
+		if err = json.Unmarshal(out.JSON, &id); err != nil || id.ModelID != "Flow" {
+			t.Fatalf("model id: %+v %v", id, err)
+		}
+		dec := xml.NewDecoder(bytes.NewReader(out.SVG))
+		var lines []string
+		for {
+			token, e := dec.Token()
+			if e == io.EOF {
+				break
+			}
+			if e != nil {
+				t.Fatal(e)
+			}
+			if v, ok := token.(xml.CharData); ok {
+				lines = append(lines, string(v))
+			}
+		}
+		visible := strings.Join(lines, " ")
+		for _, want := range []string{"Model ID: Flow", "label: " + pair.encoded, "label: " + pair.escaped} {
+			if !strings.Contains(visible, want) {
+				t.Fatalf("missing distinct SVG text %q", want)
+			}
+		}
+	}
+}
+
+func TestOversizedCanvasIsRefusedWithoutArtifacts(t *testing.T) {
+	raw, _ := fixture(t)
+	var m map[string]any
+	if e := json.Unmarshal(raw, &m); e != nil {
+		t.Fatal(e)
+	}
+	reqs := make([]any, 0, 64)
+	guards := make([]any, 0, 64)
+	ids := make([]any, 0, 64)
+	for i := 0; i < 64; i++ {
+		rid := fmt.Sprintf("R%02d", i)
+		gid := fmt.Sprintf("G%02d", i)
+		reqs = append(reqs, map[string]any{"id": rid, "text": "Requirement"})
+		guards = append(guards, map[string]any{"id": gid, "requirement": rid, "expr": map[string]any{"op": "eq", "args": []any{map[string]any{"ref": "command.actor"}, map[string]any{"string": strings.Repeat("Ω", 2000)}}}})
+		ids = append(ids, gid)
+	}
+	m["requirements"], m["guards"] = reqs, guards
+	ts := m["transitions"].([]any)
+	ts[0].(map[string]any)["guards"] = ids
+	ts[1].(map[string]any)["guards"] = []any{"G00"}
+	var b bytes.Buffer
+	enc := json.NewEncoder(&b)
+	enc.SetEscapeHTML(false)
+	if e := enc.Encode(m); e != nil {
+		t.Fatal(e)
+	}
+	out, e := processview.Build(b.Bytes())
+	if e == nil || len(out.JSON) != 0 || len(out.SVG) != 0 {
+		t.Fatalf("oversized canvas must refuse both outputs: %v", e)
 	}
 }

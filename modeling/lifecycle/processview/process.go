@@ -17,6 +17,7 @@ import (
 const FormatVersion = "lifecycle-process-view/v1"
 const MaxSourceBytes = 1 << 20
 const MaxOutputBytes = 16 << 20
+const MaxCanvasHeight = 30000
 
 var ErrInvalid = errors.New("invalid or oversized process view input")
 
@@ -52,6 +53,7 @@ type document struct {
 	FormatVersion string       `json:"formatVersion"`
 	Mode          string       `json:"mode"`
 	Authority     string       `json:"authority"`
+	ModelID       string       `json:"modelId"`
 	ModelDigest   string       `json:"modelDigest"`
 	Initial       string       `json:"initial"`
 	States        []state      `json:"states"`
@@ -91,7 +93,7 @@ func Build(raw []byte) (Outputs, error) {
 	if e != nil {
 		return Outputs{}, ErrInvalid
 	}
-	d := document{FormatVersion: FormatVersion, Mode: "example-only", Authority: "none", ModelDigest: digest, Initial: m.Initial, States: make([]state, 0, len(m.States)), Transitions: make([]transition, 0, len(m.Transitions)), Guards: make([]guard, 0, len(m.Guards)), Semantics: semantics{
+	d := document{FormatVersion: FormatVersion, Mode: "example-only", Authority: "none", ModelID: m.ID, ModelDigest: digest, Initial: m.Initial, States: make([]state, 0, len(m.States)), Transitions: make([]transition, 0, len(m.Transitions)), Guards: make([]guard, 0, len(m.Guards)), Semantics: semantics{
 		Scope:         "Each lane starts after valid input and a matching state/trigger; invalid input and illegal transitions are outside these lanes.",
 		Guards:        "All declared guards must pass; failure returns the unchanged task and sorted failed guard IDs.",
 		RevisionLimit: "After guards pass, maximum revision refuses without changing the task.",
