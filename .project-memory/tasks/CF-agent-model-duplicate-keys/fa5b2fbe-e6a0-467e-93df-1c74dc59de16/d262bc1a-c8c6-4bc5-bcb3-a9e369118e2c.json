@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "d262bc1a-c8c6-4bc5-bcb3-a9e369118e2c",
+  "runId": "fa5b2fbe-e6a0-467e-93df-1c74dc59de16",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "ae7b408a08e8cd0b2e8bbcbd4e1796860505e9cd",
+    "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2ce43a69e8baa79c5760e19a5fa21f7bbf01f578b6e215c417e1c90c7ec77b42"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/agent-model-ambiguous-selection-661d1d",
+  "pullRequest": null,
+  "at": "2026-11-01T10:19:43.636Z",
+  "summary": "Reject duplicate and malformed model mapping entries before printing a model; add isolated resolver tests",
+  "next": "Implement resolver validation and tests, then validate",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tests/test-install.sh",
+    "agents/README.md"
+  ]
+}
