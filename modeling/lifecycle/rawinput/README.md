@@ -96,9 +96,11 @@ so that case is rejected on the task. A separate case pairs a valid task with
 
 `rawinputacceptance/expected.json` holds 318 literal expected outcomes written by an
 agent that did not read this code or the reducer source, and committed before the
-adapter existed. After the first run two expectations were corrected, because the
+adapter existed. After the first run three corrections were made, because the
 author lacked the model file (`G_owner` on approve) and the contract did not specify
-the transition ID on refusals; the commit history shows both steps.
+the transition ID on refusals: the ID rule for all guard and limit refusals, the
+absent-owner approve case (adds `G_owner`), and the empty-owner approve case (a
+refusal, not a success). The commit history shows both steps.
 `adapter_test.go` checks that rejected input never reaches the reducer, that the
 rejected result shape equals the reducer's own typed-invalid result, and that valid
 requests return the reducer's result unchanged.

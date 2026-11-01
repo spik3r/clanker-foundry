@@ -35,6 +35,9 @@ func TestRejectedInputNeverCallsReducer(t *testing.T) {
 		{"missing review key", goodTask, `{"type":"prepare","actor":"a","expectedRevision":"0"}`},
 		{"task revision overflow", `{"id":"t","state":"Draft","revision":"18446744073709551616","outcome":"o","acceptance":null,"owner":null}`, goodCommand},
 		{"review revision invalid", goodTask, `{"type":"approve","actor":"a","expectedRevision":"0","review":{"taskId":"t","taskRevision":"01","modelDigest":"","taskDigest":"","reviewer":"r","decision":"approved"}}`},
+		{"byte order mark", "\xef\xbb\xbf" + goodTask, goodCommand},
+		{"escaped duplicate command key", goodTask, `{"type":"prepare","\u0074ype":"start","actor":"a","expectedRevision":"0","review":null}`},
+		{"lone surrogate in key", goodTask, `{"\ud800":"x","type":"prepare","actor":"a","expectedRevision":"0","review":null}`},
 		{"lone surrogate", `{"id":"\ud800","state":"Draft","revision":"0","outcome":"o","acceptance":null,"owner":null}`, goodCommand},
 		{"invalid UTF-8", "{\"id\":\"\xff\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"o\",\"acceptance\":null,\"owner\":null}", goodCommand},
 	}
