@@ -1,0 +1,194 @@
+{
+  "changes": [
+    {
+      "kind": "artifact",
+      "id": "model",
+      "change": "modified",
+      "fields": [
+        "observedSha256",
+        "status"
+      ]
+    },
+    {
+      "kind": "artifact",
+      "id": "requirements",
+      "change": "modified",
+      "fields": [
+        "declaredAuthor",
+        "declaredSha256",
+        "status"
+      ]
+    },
+    {
+      "kind": "artifact",
+      "id": "scenarioSuite",
+      "change": "modified",
+      "fields": [
+        "declaredAuthor",
+        "declaredSha256",
+        "observedSha256",
+        "status"
+      ]
+    },
+    {
+      "kind": "decision",
+      "id": "D_add",
+      "change": "added",
+      "fields": []
+    },
+    {
+      "kind": "decision",
+      "id": "D_edit",
+      "change": "modified",
+      "fields": [
+        "rationale",
+        "text"
+      ]
+    },
+    {
+      "kind": "decision",
+      "id": "D_move",
+      "change": "removed",
+      "fields": []
+    },
+    {
+      "kind": "decision",
+      "id": "D_remove",
+      "change": "removed",
+      "fields": []
+    },
+    {
+      "kind": "dependency",
+      "id": "model->requirements",
+      "change": "modified",
+      "fields": [
+        "assertedSha256"
+      ]
+    },
+    {
+      "kind": "dependency",
+      "id": "scenarioSuite->model",
+      "change": "modified",
+      "fields": [
+        "status"
+      ]
+    },
+    {
+      "kind": "dependency",
+      "id": "scenarioSuite->requirements",
+      "change": "modified",
+      "fields": [
+        "assertedSha256",
+        "status"
+      ]
+    },
+    {
+      "kind": "intent",
+      "id": "intent",
+      "change": "modified",
+      "fields": [
+        "text"
+      ]
+    },
+    {
+      "kind": "question",
+      "id": "D_move",
+      "change": "added",
+      "fields": []
+    },
+    {
+      "kind": "question",
+      "id": "Q_add",
+      "change": "added",
+      "fields": []
+    },
+    {
+      "kind": "question",
+      "id": "Q_edit",
+      "change": "modified",
+      "fields": [
+        "text"
+      ]
+    },
+    {
+      "kind": "question",
+      "id": "Q_remove",
+      "change": "removed",
+      "fields": []
+    }
+  ],
+  "beforeGaps": [
+    {
+      "kind": "artifact",
+      "id": "model",
+      "status": "missing-observation"
+    },
+    {
+      "kind": "artifact",
+      "id": "scenarioSuite",
+      "status": "missing-declaration"
+    },
+    {
+      "kind": "dependency",
+      "id": "scenarioSuite->model",
+      "status": "missing-artifact-declaration"
+    },
+    {
+      "kind": "dependency",
+      "id": "scenarioSuite->requirements",
+      "status": "missing-assertion"
+    },
+    {
+      "kind": "question",
+      "id": "Q_edit",
+      "status": "unresolved"
+    },
+    {
+      "kind": "question",
+      "id": "Q_keep",
+      "status": "unresolved"
+    },
+    {
+      "kind": "question",
+      "id": "Q_remove",
+      "status": "unresolved"
+    }
+  ],
+  "afterGaps": [
+    {
+      "kind": "artifact",
+      "id": "model",
+      "status": "digest-mismatch"
+    },
+    {
+      "kind": "artifact",
+      "id": "requirements",
+      "status": "digest-mismatch"
+    },
+    {
+      "kind": "dependency",
+      "id": "scenarioSuite->requirements",
+      "status": "digest-mismatch"
+    },
+    {
+      "kind": "question",
+      "id": "D_move",
+      "status": "unresolved"
+    },
+    {
+      "kind": "question",
+      "id": "Q_add",
+      "status": "unresolved"
+    },
+    {
+      "kind": "question",
+      "id": "Q_edit",
+      "status": "unresolved"
+    },
+    {
+      "kind": "question",
+      "id": "Q_keep",
+      "status": "unresolved"
+    }
+  ]
+}
