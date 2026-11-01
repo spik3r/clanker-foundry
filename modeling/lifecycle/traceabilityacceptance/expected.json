@@ -1,0 +1,594 @@
+{
+  "about": "Hand-written expectations for the requirements trace, frozen before the implementation existed. Derived from traceability/requirements.json, examples/lifecycle.json and the caseId catalog in examples/oracle.json, not from tool output. Issue lists are sorted by requirement, code, target. Gap lists are sorted. A model element is untraced only when no requirement links it directly; a model requirement also counts as traced through a linked guard that declares it.",
+  "example": {
+    "summary": {
+      "requirements": 12,
+      "linked": 9,
+      "incomplete": 3,
+      "modelElements": 42,
+      "untracedModelElements": 0,
+      "acceptanceCases": 25,
+      "pendingAcceptanceCases": 2,
+      "unlinkedAcceptanceCases": 1
+    },
+    "requirements": {
+      "UR-001": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-002": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-003": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-004": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-005": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-006": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-007": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-008": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-009": {
+        "status": "linked",
+        "gaps": []
+      },
+      "UR-010": {
+        "status": "incomplete",
+        "gaps": [
+          "no-executable-acceptance",
+          "no-model-link"
+        ]
+      },
+      "UR-011": {
+        "status": "incomplete",
+        "gaps": [
+          "no-model-link"
+        ]
+      },
+      "UR-012": {
+        "status": "incomplete",
+        "gaps": [
+          "no-acceptance-link"
+        ]
+      }
+    },
+    "modelTrace": {
+      "state:Draft": [
+        "UR-001"
+      ],
+      "state:Ready": [
+        "UR-001"
+      ],
+      "state:InProgress": [
+        "UR-001"
+      ],
+      "state:InReview": [
+        "UR-001"
+      ],
+      "state:Done": [
+        "UR-001",
+        "UR-002"
+      ],
+      "transition:T_prepare": [
+        "UR-001",
+        "UR-004",
+        "UR-012"
+      ],
+      "transition:T_start": [
+        "UR-001",
+        "UR-005",
+        "UR-012"
+      ],
+      "transition:T_requestReview": [
+        "UR-001",
+        "UR-006",
+        "UR-012"
+      ],
+      "transition:T_approve": [
+        "UR-001",
+        "UR-007",
+        "UR-012"
+      ],
+      "transition:T_requestChanges": [
+        "UR-009",
+        "UR-012"
+      ],
+      "guard:G_revision": [
+        "UR-003"
+      ],
+      "guard:G_outcome": [
+        "UR-004"
+      ],
+      "guard:G_acceptance": [
+        "UR-004"
+      ],
+      "guard:G_actor": [
+        "UR-005"
+      ],
+      "guard:G_ownerCompatible": [
+        "UR-005"
+      ],
+      "guard:G_owner": [
+        "UR-006"
+      ],
+      "guard:G_ownerActor": [
+        "UR-006"
+      ],
+      "guard:G_reviewer": [
+        "UR-007"
+      ],
+      "guard:G_independent": [
+        "UR-007"
+      ],
+      "guard:G_reviewActor": [
+        "UR-007"
+      ],
+      "guard:G_approved": [
+        "UR-007"
+      ],
+      "guard:G_reviewTask": [
+        "UR-008"
+      ],
+      "guard:G_reviewRevision": [
+        "UR-008"
+      ],
+      "guard:G_reviewContent": [
+        "UR-008"
+      ],
+      "guard:G_reviewModel": [
+        "UR-008"
+      ],
+      "guard:G_changesRequested": [
+        "UR-009"
+      ],
+      "modelRequirement:R_revision": [
+        "UR-003"
+      ]
+    },
+    "modelRequirementsViaGuard": {
+      "R_revision": [
+        "UR-003"
+      ],
+      "R_outcome": [
+        "UR-004"
+      ],
+      "R_acceptance": [
+        "UR-004"
+      ],
+      "R_actor": [
+        "UR-005"
+      ],
+      "R_ownerCompatible": [
+        "UR-005"
+      ],
+      "R_owner": [
+        "UR-006"
+      ],
+      "R_ownerActor": [
+        "UR-006"
+      ],
+      "R_reviewer": [
+        "UR-007"
+      ],
+      "R_independent": [
+        "UR-007"
+      ],
+      "R_reviewActor": [
+        "UR-007"
+      ],
+      "R_approved": [
+        "UR-007"
+      ],
+      "R_reviewTask": [
+        "UR-008"
+      ],
+      "R_reviewRevision": [
+        "UR-008"
+      ],
+      "R_reviewContent": [
+        "UR-008"
+      ],
+      "R_reviewModel": [
+        "UR-008"
+      ],
+      "R_changesRequested": [
+        "UR-009"
+      ]
+    },
+    "acceptanceTrace": {
+      "sequences-01": [
+        "UR-001"
+      ],
+      "sequences-02": [
+        "UR-009"
+      ],
+      "stale-command": [
+        "UR-003"
+      ],
+      "refusals-02": [
+        "UR-004"
+      ],
+      "refusals-03": [
+        "UR-004"
+      ],
+      "assigned-wrong-actor": [
+        "UR-005"
+      ],
+      "refusals-05": [
+        "UR-006"
+      ],
+      "refusals-06": [
+        "UR-007"
+      ],
+      "refusals-07": [
+        "UR-008"
+      ],
+      "refusals-08": [
+        "UR-008"
+      ],
+      "refusals-09": [
+        "UR-008"
+      ],
+      "refusals-10": [
+        "UR-007"
+      ],
+      "refusals-11": [
+        "UR-007"
+      ],
+      "refusals-12": [
+        "UR-007"
+      ],
+      "refusals-13": [
+        "UR-009"
+      ],
+      "refusals-14": [
+        "UR-001"
+      ],
+      "refusals-15": [
+        "UR-002"
+      ],
+      "refusals-16": [
+        "UR-005"
+      ],
+      "refusals-17": [
+        "UR-006"
+      ],
+      "special-01": [
+        "UR-004"
+      ],
+      "special-02": [],
+      "special-03": [
+        "UR-010"
+      ],
+      "special-04": [
+        "UR-010"
+      ],
+      "start-assigns": [
+        "UR-005"
+      ],
+      "maximum-revision": [
+        "UR-011"
+      ]
+    },
+    "pendingAcceptanceCases": [
+      "special-03",
+      "special-04"
+    ],
+    "unlinkedAcceptanceCases": [
+      "special-02"
+    ],
+    "untracedModelElements": []
+  },
+  "removedGuardLink": {
+    "remove": {
+      "requirement": "UR-007",
+      "kind": "guard",
+      "id": "G_independent"
+    },
+    "untracedModelElements": [
+      "guard:G_independent",
+      "modelRequirement:R_independent"
+    ],
+    "requirementStatus": {
+      "UR-007": {
+        "status": "linked",
+        "gaps": []
+      }
+    },
+    "summary": {
+      "untracedModelElements": 2
+    }
+  },
+  "clearedRequirementLinks": {
+    "clear": "UR-002",
+    "requirementStatus": {
+      "UR-002": {
+        "status": "incomplete",
+        "gaps": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      }
+    },
+    "unlinkedAcceptanceCases": [
+      "refusals-15",
+      "special-02"
+    ],
+    "untracedModelElements": []
+  },
+  "invalid": [
+    {
+      "name": "sanity-valid-single",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": []
+    },
+    {
+      "name": "trailing-data",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]} {}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "unknown-key",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"priority\":1,\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "duplicate-key",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"id\":\"UR-002\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "null-links",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":null,\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "missing-field",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"T\",\"statement\":\"S\",\"modelLinks\":[]}]}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "string-for-array",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":\"refusals-15\"}]}",
+      "issues": [
+        {
+          "code": "malformed-json",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "wrong-version",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v2\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "unsupported-format-version",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "wrong-model",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"OtherModel\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "model-id-mismatch",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "wrong-catalog",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v1\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "catalog-mismatch",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "empty-requirements",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[]}",
+      "issues": [
+        {
+          "code": "no-requirements",
+          "requirement": "",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "bad-id",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"ur-1\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "invalid-requirement-id",
+          "requirement": "ur-1",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "duplicate-id",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]},{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Other statement.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "duplicate-requirement-id",
+          "requirement": "UR-001",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "blank-title",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"  \",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "invalid-title",
+          "requirement": "UR-001",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "blank-statement",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\" \\t\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "invalid-statement",
+          "requirement": "UR-001",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "name": "ambiguous-statement",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-002\",\"title\":\"Title\",\"statement\":\"done  is FINAL. \",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]},{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "ambiguous-statement",
+          "requirement": "UR-002",
+          "target": "UR-001"
+        }
+      ]
+    },
+    {
+      "name": "dangling-model-link",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"guard\",\"id\":\"G_missing\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "dangling-model-link",
+          "requirement": "UR-001",
+          "target": "guard:G_missing"
+        }
+      ]
+    },
+    {
+      "name": "kind-mismatch",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"guard\",\"id\":\"T_start\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "link-kind-mismatch",
+          "requirement": "UR-001",
+          "target": "guard:T_start"
+        }
+      ]
+    },
+    {
+      "name": "unknown-kind",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"activity\",\"id\":\"T_start\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "unknown-link-kind",
+          "requirement": "UR-001",
+          "target": "activity:T_start"
+        }
+      ]
+    },
+    {
+      "name": "duplicate-model-link",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"transition\",\"id\":\"T_start\"},{\"kind\":\"transition\",\"id\":\"T_start\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "duplicate-model-link",
+          "requirement": "UR-001",
+          "target": "transition:T_start"
+        }
+      ]
+    },
+    {
+      "name": "dangling-acceptance-link",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-99\"}]}]}",
+      "issues": [
+        {
+          "code": "dangling-acceptance-link",
+          "requirement": "UR-001",
+          "target": "refusals-99"
+        }
+      ]
+    },
+    {
+      "name": "duplicate-acceptance-link",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Done\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"},{\"caseId\":\"refusals-15\"}]}]}",
+      "issues": [
+        {
+          "code": "duplicate-acceptance-link",
+          "requirement": "UR-001",
+          "target": "refusals-15"
+        }
+      ]
+    },
+    {
+      "name": "issues-collected-and-sorted",
+      "input": "{\"formatVersion\":\"lifecycle-requirements-json/v1\",\"modelId\":\"TaskLifecycleExample\",\"acceptanceCatalog\":\"lifecycle-semantic-oracle-v2\",\"requirements\":[{\"id\":\"UR-002\",\"title\":\"Title\",\"statement\":\"Second.\",\"modelLinks\":[{\"kind\":\"state\",\"id\":\"Nowhere\"}],\"acceptanceLinks\":[{\"caseId\":\"refusals-15\"}]},{\"id\":\"UR-001\",\"title\":\"Title\",\"statement\":\"Done is final.\",\"modelLinks\":[{\"kind\":\"guard\",\"id\":\"T_start\"}],\"acceptanceLinks\":[{\"caseId\":\"nope\"}]}]}",
+      "issues": [
+        {
+          "code": "dangling-acceptance-link",
+          "requirement": "UR-001",
+          "target": "nope"
+        },
+        {
+          "code": "link-kind-mismatch",
+          "requirement": "UR-001",
+          "target": "guard:T_start"
+        },
+        {
+          "code": "dangling-model-link",
+          "requirement": "UR-002",
+          "target": "state:Nowhere"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1033 @@
+{
+  "reportVersion": "lifecycle-requirements-trace/v1",
+  "mode": "example-only",
+  "authority": "none",
+  "notice": "Links are reviewer declarations. They do not show that a requirement is correct, that the model satisfies it, or that a linked case tests it.",
+  "inputs": {
+    "requirementsFormat": "lifecycle-requirements-json/v1",
+    "requirementsDigest": "c951e96de70fc9be968b01395cfc459e562ebd0711e15ec7999543d3bf873bd3",
+    "modelId": "TaskLifecycleExample",
+    "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "acceptanceCatalog": "lifecycle-semantic-oracle-v2",
+    "catalogSha256": "bb886d8a8d63a00f6b6a225c9b4855c306e5cfd0dc45a4f262d410842076acae"
+  },
+  "summary": {
+    "requirements": 12,
+    "linked": 9,
+    "incomplete": 3,
+    "modelElements": 42,
+    "untracedModelElements": 0,
+    "acceptanceCases": 25,
+    "pendingAcceptanceCases": 2,
+    "unlinkedAcceptanceCases": 1
+  },
+  "requirements": [
+    {
+      "id": "UR-001",
+      "title": "Ordered path to done",
+      "statement": "A task reaches Done only by being prepared, started, sent for review and approved, in that order.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "state",
+          "id": "Done",
+          "detail": "Done (terminal)"
+        },
+        {
+          "kind": "state",
+          "id": "Draft",
+          "detail": "Draft"
+        },
+        {
+          "kind": "state",
+          "id": "InProgress",
+          "detail": "In progress"
+        },
+        {
+          "kind": "state",
+          "id": "InReview",
+          "detail": "In review"
+        },
+        {
+          "kind": "state",
+          "id": "Ready",
+          "detail": "Ready"
+        },
+        {
+          "kind": "transition",
+          "id": "T_approve",
+          "detail": "InReview --approve--> Done"
+        },
+        {
+          "kind": "transition",
+          "id": "T_prepare",
+          "detail": "Draft --prepare--> Ready"
+        },
+        {
+          "kind": "transition",
+          "id": "T_requestReview",
+          "detail": "InProgress --requestReview--> InReview"
+        },
+        {
+          "kind": "transition",
+          "id": "T_start",
+          "detail": "Ready --start--> InProgress"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-14",
+          "name": "skip lifecycle",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "sequences-01",
+          "name": "happy path",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-002",
+      "title": "Done is final",
+      "statement": "A task in Done accepts no further lifecycle commands.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "state",
+          "id": "Done",
+          "detail": "Done (terminal)"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-15",
+          "name": "done is terminal",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-003",
+      "title": "Commands use the current revision",
+      "statement": "A command written against an older revision of the task is refused.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "guard",
+          "id": "G_revision",
+          "detail": "declares R_revision"
+        },
+        {
+          "kind": "modelRequirement",
+          "id": "R_revision",
+          "detail": "Command matches the current revision."
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "stale-command",
+          "name": "stale command revision",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-004",
+      "title": "Work is defined before it is prepared",
+      "statement": "Work is prepared only once a nonblank outcome and at least one acceptance criterion are recorded; it does not need an owner yet.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_prepare",
+          "detail": "Draft --prepare--> Ready"
+        },
+        {
+          "kind": "guard",
+          "id": "G_acceptance",
+          "detail": "declares R_acceptance"
+        },
+        {
+          "kind": "guard",
+          "id": "G_outcome",
+          "detail": "declares R_outcome"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-02",
+          "name": "blank outcome",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-03",
+          "name": "empty criteria",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "special-01",
+          "name": "unassigned draft may be prepared",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-005",
+      "title": "Starting names the worker without a takeover",
+      "statement": "Starting work names who is doing it. It assigns that person only if the task has no owner and never takes over another owner's task.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_start",
+          "detail": "Ready --start--> InProgress"
+        },
+        {
+          "kind": "guard",
+          "id": "G_actor",
+          "detail": "declares R_actor"
+        },
+        {
+          "kind": "guard",
+          "id": "G_ownerCompatible",
+          "detail": "declares R_ownerCompatible"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "assigned-wrong-actor",
+          "name": "wrong owner actor",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-16",
+          "name": "blank actor cannot start unassigned task",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "start-assigns",
+          "name": "start assigns named actor on unassigned task",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-006",
+      "title": "The owner requests review",
+      "statement": "Only the task's owner can send it for review.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_requestReview",
+          "detail": "InProgress --requestReview--> InReview"
+        },
+        {
+          "kind": "guard",
+          "id": "G_owner",
+          "detail": "declares R_owner"
+        },
+        {
+          "kind": "guard",
+          "id": "G_ownerActor",
+          "detail": "declares R_ownerActor"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-05",
+          "name": "request review owner actor",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-17",
+          "name": "missing owner cannot submit review",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-007",
+      "title": "Independent, explicit review decision",
+      "statement": "A review decision comes from a named reviewer who is not the owner, is made by that reviewer, and states the decision explicitly.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_approve",
+          "detail": "InReview --approve--> Done"
+        },
+        {
+          "kind": "guard",
+          "id": "G_approved",
+          "detail": "declares R_approved"
+        },
+        {
+          "kind": "guard",
+          "id": "G_independent",
+          "detail": "declares R_independent"
+        },
+        {
+          "kind": "guard",
+          "id": "G_reviewActor",
+          "detail": "declares R_reviewActor"
+        },
+        {
+          "kind": "guard",
+          "id": "G_reviewer",
+          "detail": "declares R_reviewer"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-06",
+          "name": "blank reviewer and actor",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-10",
+          "name": "review actor mismatch",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-11",
+          "name": "owner reviews own task",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-12",
+          "name": "wrong approval decision",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-008",
+      "title": "A review applies to what was reviewed",
+      "statement": "A review counts only for the task, revision, content and model version it was given for.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "guard",
+          "id": "G_reviewContent",
+          "detail": "declares R_reviewContent"
+        },
+        {
+          "kind": "guard",
+          "id": "G_reviewModel",
+          "detail": "declares R_reviewModel"
+        },
+        {
+          "kind": "guard",
+          "id": "G_reviewRevision",
+          "detail": "declares R_reviewRevision"
+        },
+        {
+          "kind": "guard",
+          "id": "G_reviewTask",
+          "detail": "declares R_reviewTask"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-07",
+          "name": "wrong task",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-08",
+          "name": "stale review",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "refusals-09",
+          "name": "wrong digest",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-009",
+      "title": "Rework needs a fresh review",
+      "statement": "A reviewer can send work back for changes; the reworked task needs a fresh review before it can be approved.",
+      "status": "linked",
+      "gaps": [],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_requestChanges",
+          "detail": "InReview --requestChanges--> InProgress"
+        },
+        {
+          "kind": "guard",
+          "id": "G_changesRequested",
+          "detail": "declares R_changesRequested"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "refusals-13",
+          "name": "wrong rework decision",
+          "executionStatus": "executable"
+        },
+        {
+          "caseId": "sequences-02",
+          "name": "rework and approval",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-010",
+      "title": "Malformed input is rejected first",
+      "statement": "Malformed task or command input is rejected before any lifecycle rule is applied.",
+      "status": "incomplete",
+      "gaps": [
+        "no-executable-acceptance",
+        "no-model-link"
+      ],
+      "modelLinks": [],
+      "acceptanceLinks": [
+        {
+          "caseId": "special-03",
+          "name": "invalid task input",
+          "executionStatus": "pending"
+        },
+        {
+          "caseId": "special-04",
+          "name": "invalid command input",
+          "executionStatus": "pending"
+        }
+      ]
+    },
+    {
+      "id": "UR-011",
+      "title": "Revision never wraps around",
+      "statement": "A command that would push the revision past its maximum is refused instead of wrapping around.",
+      "status": "incomplete",
+      "gaps": [
+        "no-model-link"
+      ],
+      "modelLinks": [],
+      "acceptanceLinks": [
+        {
+          "caseId": "maximum-revision",
+          "name": "maximum revision refusal",
+          "executionStatus": "executable"
+        }
+      ]
+    },
+    {
+      "id": "UR-012",
+      "title": "Each accepted command advances the revision once",
+      "statement": "Every accepted command advances the task revision by exactly one.",
+      "status": "incomplete",
+      "gaps": [
+        "no-acceptance-link"
+      ],
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "T_approve",
+          "detail": "InReview --approve--> Done"
+        },
+        {
+          "kind": "transition",
+          "id": "T_prepare",
+          "detail": "Draft --prepare--> Ready"
+        },
+        {
+          "kind": "transition",
+          "id": "T_requestChanges",
+          "detail": "InReview --requestChanges--> InProgress"
+        },
+        {
+          "kind": "transition",
+          "id": "T_requestReview",
+          "detail": "InProgress --requestReview--> InReview"
+        },
+        {
+          "kind": "transition",
+          "id": "T_start",
+          "detail": "Ready --start--> InProgress"
+        }
+      ],
+      "acceptanceLinks": []
+    }
+  ],
+  "modelElements": [
+    {
+      "kind": "state",
+      "id": "Done",
+      "detail": "Done (terminal)",
+      "tracedBy": [
+        "UR-001",
+        "UR-002"
+      ]
+    },
+    {
+      "kind": "state",
+      "id": "Draft",
+      "detail": "Draft",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "kind": "state",
+      "id": "InProgress",
+      "detail": "In progress",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "kind": "state",
+      "id": "InReview",
+      "detail": "In review",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "kind": "state",
+      "id": "Ready",
+      "detail": "Ready",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "kind": "transition",
+      "id": "T_approve",
+      "detail": "InReview --approve--> Done",
+      "tracedBy": [
+        "UR-001",
+        "UR-007",
+        "UR-012"
+      ]
+    },
+    {
+      "kind": "transition",
+      "id": "T_prepare",
+      "detail": "Draft --prepare--> Ready",
+      "tracedBy": [
+        "UR-001",
+        "UR-004",
+        "UR-012"
+      ]
+    },
+    {
+      "kind": "transition",
+      "id": "T_requestChanges",
+      "detail": "InReview --requestChanges--> InProgress",
+      "tracedBy": [
+        "UR-009",
+        "UR-012"
+      ]
+    },
+    {
+      "kind": "transition",
+      "id": "T_requestReview",
+      "detail": "InProgress --requestReview--> InReview",
+      "tracedBy": [
+        "UR-001",
+        "UR-006",
+        "UR-012"
+      ]
+    },
+    {
+      "kind": "transition",
+      "id": "T_start",
+      "detail": "Ready --start--> InProgress",
+      "tracedBy": [
+        "UR-001",
+        "UR-005",
+        "UR-012"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_acceptance",
+      "detail": "declares R_acceptance",
+      "tracedBy": [
+        "UR-004"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_actor",
+      "detail": "declares R_actor",
+      "tracedBy": [
+        "UR-005"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_approved",
+      "detail": "declares R_approved",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_changesRequested",
+      "detail": "declares R_changesRequested",
+      "tracedBy": [
+        "UR-009"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_independent",
+      "detail": "declares R_independent",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_outcome",
+      "detail": "declares R_outcome",
+      "tracedBy": [
+        "UR-004"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_owner",
+      "detail": "declares R_owner",
+      "tracedBy": [
+        "UR-006"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_ownerActor",
+      "detail": "declares R_ownerActor",
+      "tracedBy": [
+        "UR-006"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_ownerCompatible",
+      "detail": "declares R_ownerCompatible",
+      "tracedBy": [
+        "UR-005"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewActor",
+      "detail": "declares R_reviewActor",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewContent",
+      "detail": "declares R_reviewContent",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewModel",
+      "detail": "declares R_reviewModel",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewRevision",
+      "detail": "declares R_reviewRevision",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewTask",
+      "detail": "declares R_reviewTask",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_reviewer",
+      "detail": "declares R_reviewer",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "guard",
+      "id": "G_revision",
+      "detail": "declares R_revision",
+      "tracedBy": [
+        "UR-003"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_acceptance",
+      "detail": "Acceptance criteria are supplied.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-004"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_actor",
+      "detail": "The named starting actor is nonblank.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-005"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_approved",
+      "detail": "Approval is explicit.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_changesRequested",
+      "detail": "Changes are explicitly requested.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-009"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_independent",
+      "detail": "The reviewer differs from the owner.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_outcome",
+      "detail": "An outcome is nonblank.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-004"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_owner",
+      "detail": "An owner is present.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-006"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_ownerActor",
+      "detail": "The owner requests review.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-006"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_ownerCompatible",
+      "detail": "Start assigns only absent ownership or matches the existing owner.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-005"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewActor",
+      "detail": "The acting reviewer matches the review.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewContent",
+      "detail": "Review refers to current task content.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewModel",
+      "detail": "Review refers to the accepted model.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewRevision",
+      "detail": "Review refers to the current revision.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewTask",
+      "detail": "Review refers to this task.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-008"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_reviewer",
+      "detail": "The reviewer is nonblank.",
+      "tracedBy": [],
+      "tracedViaGuard": [
+        "UR-007"
+      ]
+    },
+    {
+      "kind": "modelRequirement",
+      "id": "R_revision",
+      "detail": "Command matches the current revision.",
+      "tracedBy": [
+        "UR-003"
+      ],
+      "tracedViaGuard": [
+        "UR-003"
+      ]
+    }
+  ],
+  "acceptanceCases": [
+    {
+      "caseId": "assigned-wrong-actor",
+      "name": "wrong owner actor",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-005"
+      ]
+    },
+    {
+      "caseId": "maximum-revision",
+      "name": "maximum revision refusal",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-011"
+      ]
+    },
+    {
+      "caseId": "refusals-02",
+      "name": "blank outcome",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-004"
+      ]
+    },
+    {
+      "caseId": "refusals-03",
+      "name": "empty criteria",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-004"
+      ]
+    },
+    {
+      "caseId": "refusals-05",
+      "name": "request review owner actor",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-006"
+      ]
+    },
+    {
+      "caseId": "refusals-06",
+      "name": "blank reviewer and actor",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "caseId": "refusals-07",
+      "name": "wrong task",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "caseId": "refusals-08",
+      "name": "stale review",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "caseId": "refusals-09",
+      "name": "wrong digest",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-008"
+      ]
+    },
+    {
+      "caseId": "refusals-10",
+      "name": "review actor mismatch",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "caseId": "refusals-11",
+      "name": "owner reviews own task",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "caseId": "refusals-12",
+      "name": "wrong approval decision",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-007"
+      ]
+    },
+    {
+      "caseId": "refusals-13",
+      "name": "wrong rework decision",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-009"
+      ]
+    },
+    {
+      "caseId": "refusals-14",
+      "name": "skip lifecycle",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "caseId": "refusals-15",
+      "name": "done is terminal",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-002"
+      ]
+    },
+    {
+      "caseId": "refusals-16",
+      "name": "blank actor cannot start unassigned task",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-005"
+      ]
+    },
+    {
+      "caseId": "refusals-17",
+      "name": "missing owner cannot submit review",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-006"
+      ]
+    },
+    {
+      "caseId": "sequences-01",
+      "name": "happy path",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-001"
+      ]
+    },
+    {
+      "caseId": "sequences-02",
+      "name": "rework and approval",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-009"
+      ]
+    },
+    {
+      "caseId": "special-01",
+      "name": "unassigned draft may be prepared",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-004"
+      ]
+    },
+    {
+      "caseId": "special-02",
+      "name": "multiple failed guards sorted",
+      "executionStatus": "executable",
+      "tracedBy": []
+    },
+    {
+      "caseId": "special-03",
+      "name": "invalid task input",
+      "executionStatus": "pending",
+      "tracedBy": [
+        "UR-010"
+      ]
+    },
+    {
+      "caseId": "special-04",
+      "name": "invalid command input",
+      "executionStatus": "pending",
+      "tracedBy": [
+        "UR-010"
+      ]
+    },
+    {
+      "caseId": "stale-command",
+      "name": "stale command revision",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-003"
+      ]
+    },
+    {
+      "caseId": "start-assigns",
+      "name": "start assigns named actor on unassigned task",
+      "executionStatus": "executable",
+      "tracedBy": [
+        "UR-005"
+      ]
+    }
+  ]
+}

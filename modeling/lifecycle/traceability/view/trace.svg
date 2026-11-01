@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="710" viewBox="0 0 1030 710" role="img" aria-labelledby="title desc">
+<title id="title">Requirements trace: TaskLifecycleExample</title>
+<desc id="desc">Declared links between model elements, requirements and acceptance cases. Example only; links are not evidence of correctness. Not a SysML or UML conformant diagram.</desc>
+<style>text{font-family:monospace;font-size:11px;fill:#1f2328}.h{font-size:13px;font-weight:bold}.n{font-size:10px;fill:#57606a}rect{stroke:#57606a;stroke-width:1}.ok{fill:#dafbe1}.gap{fill:#fff1e5;stroke:#bc4c00;stroke-dasharray:4 2}.el{fill:#ddf4ff}.un{fill:#ffebe9;stroke:#cf222e;stroke-dasharray:4 2}.cs{fill:#f6f8fa}.pend{fill:#f6f8fa;stroke-dasharray:4 2}line{stroke:#8c959f;stroke-width:1}</style>
+<rect x="0" y="0" width="1030" height="710" fill="#ffffff" stroke="none"/>
+<text class="h" x="20" y="24">Requirements trace: TaskLifecycleExample (example only, authority none)</text>
+<text class="h" x="20" y="58">Model elements</text><text class="h" x="390" y="58">Requirements</text><text class="h" x="760" y="58">Acceptance cases</text>
+<line x1="270" y1="87" x2="390" y2="87"/>
+<line x1="270" y1="109" x2="390" y2="87"/>
+<line x1="270" y1="131" x2="390" y2="87"/>
+<line x1="270" y1="153" x2="390" y2="87"/>
+<line x1="270" y1="175" x2="390" y2="87"/>
+<line x1="270" y1="197" x2="390" y2="87"/>
+<line x1="270" y1="219" x2="390" y2="87"/>
+<line x1="270" y1="263" x2="390" y2="87"/>
+<line x1="270" y1="285" x2="390" y2="87"/>
+<line x1="640" y1="87" x2="760" y2="373"/>
+<line x1="640" y1="87" x2="760" y2="461"/>
+<line x1="270" y1="87" x2="390" y2="131"/>
+<line x1="640" y1="131" x2="760" y2="395"/>
+<line x1="270" y1="637" x2="390" y2="175"/>
+<line x1="640" y1="175" x2="760" y2="593"/>
+<line x1="270" y1="219" x2="390" y2="219"/>
+<line x1="270" y1="307" x2="390" y2="219"/>
+<line x1="270" y1="417" x2="390" y2="219"/>
+<line x1="640" y1="219" x2="760" y2="131"/>
+<line x1="640" y1="219" x2="760" y2="153"/>
+<line x1="640" y1="219" x2="760" y2="505"/>
+<line x1="270" y1="285" x2="390" y2="263"/>
+<line x1="270" y1="329" x2="390" y2="263"/>
+<line x1="270" y1="483" x2="390" y2="263"/>
+<line x1="640" y1="263" x2="760" y2="87"/>
+<line x1="640" y1="263" x2="760" y2="417"/>
+<line x1="640" y1="263" x2="760" y2="615"/>
+<line x1="270" y1="263" x2="390" y2="307"/>
+<line x1="270" y1="439" x2="390" y2="307"/>
+<line x1="270" y1="461" x2="390" y2="307"/>
+<line x1="640" y1="307" x2="760" y2="175"/>
+<line x1="640" y1="307" x2="760" y2="439"/>
+<line x1="270" y1="197" x2="390" y2="351"/>
+<line x1="270" y1="351" x2="390" y2="351"/>
+<line x1="270" y1="395" x2="390" y2="351"/>
+<line x1="270" y1="505" x2="390" y2="351"/>
+<line x1="270" y1="615" x2="390" y2="351"/>
+<line x1="640" y1="351" x2="760" y2="197"/>
+<line x1="640" y1="351" x2="760" y2="285"/>
+<line x1="640" y1="351" x2="760" y2="307"/>
+<line x1="640" y1="351" x2="760" y2="329"/>
+<line x1="270" y1="527" x2="390" y2="395"/>
+<line x1="270" y1="549" x2="390" y2="395"/>
+<line x1="270" y1="571" x2="390" y2="395"/>
+<line x1="270" y1="593" x2="390" y2="395"/>
+<line x1="640" y1="395" x2="760" y2="219"/>
+<line x1="640" y1="395" x2="760" y2="241"/>
+<line x1="640" y1="395" x2="760" y2="263"/>
+<line x1="270" y1="241" x2="390" y2="439"/>
+<line x1="270" y1="373" x2="390" y2="439"/>
+<line x1="640" y1="439" x2="760" y2="351"/>
+<line x1="640" y1="439" x2="760" y2="483"/>
+<line x1="640" y1="483" x2="760" y2="549"/>
+<line x1="640" y1="483" x2="760" y2="571"/>
+<line x1="640" y1="527" x2="760" y2="109"/>
+<line x1="270" y1="197" x2="390" y2="571"/>
+<line x1="270" y1="219" x2="390" y2="571"/>
+<line x1="270" y1="241" x2="390" y2="571"/>
+<line x1="270" y1="263" x2="390" y2="571"/>
+<line x1="270" y1="285" x2="390" y2="571"/>
+<rect class="el" x="20" y="78" width="250" height="18"/><text x="24" y="91">[state] Done</text>
+<rect class="el" x="20" y="100" width="250" height="18"/><text x="24" y="113">[state] Draft</text>
+<rect class="el" x="20" y="122" width="250" height="18"/><text x="24" y="135">[state] InProgress</text>
+<rect class="el" x="20" y="144" width="250" height="18"/><text x="24" y="157">[state] InReview</text>
+<rect class="el" x="20" y="166" width="250" height="18"/><text x="24" y="179">[state] Ready</text>
+<rect class="el" x="20" y="188" width="250" height="18"/><text x="24" y="201">[trans] T_approve</text>
+<rect class="el" x="20" y="210" width="250" height="18"/><text x="24" y="223">[trans] T_prepare</text>
+<rect class="el" x="20" y="232" width="250" height="18"/><text x="24" y="245">[trans] T_requestChanges</text>
+<rect class="el" x="20" y="254" width="250" height="18"/><text x="24" y="267">[trans] T_requestReview</text>
+<rect class="el" x="20" y="276" width="250" height="18"/><text x="24" y="289">[trans] T_start</text>
+<rect class="el" x="20" y="298" width="250" height="18"/><text x="24" y="311">[guard] G_acceptance</text>
+<rect class="el" x="20" y="320" width="250" height="18"/><text x="24" y="333">[guard] G_actor</text>
+<rect class="el" x="20" y="342" width="250" height="18"/><text x="24" y="355">[guard] G_approved</text>
+<rect class="el" x="20" y="364" width="250" height="18"/><text x="24" y="377">[guard] G_changesRequested</text>
+<rect class="el" x="20" y="386" width="250" height="18"/><text x="24" y="399">[guard] G_independent</text>
+<rect class="el" x="20" y="408" width="250" height="18"/><text x="24" y="421">[guard] G_outcome</text>
+<rect class="el" x="20" y="430" width="250" height="18"/><text x="24" y="443">[guard] G_owner</text>
+<rect class="el" x="20" y="452" width="250" height="18"/><text x="24" y="465">[guard] G_ownerActor</text>
+<rect class="el" x="20" y="474" width="250" height="18"/><text x="24" y="487">[guard] G_ownerCompatible</text>
+<rect class="el" x="20" y="496" width="250" height="18"/><text x="24" y="509">[guard] G_reviewActor</text>
+<rect class="el" x="20" y="518" width="250" height="18"/><text x="24" y="531">[guard] G_reviewContent</text>
+<rect class="el" x="20" y="540" width="250" height="18"/><text x="24" y="553">[guard] G_reviewModel</text>
+<rect class="el" x="20" y="562" width="250" height="18"/><text x="24" y="575">[guard] G_reviewRevision</text>
+<rect class="el" x="20" y="584" width="250" height="18"/><text x="24" y="597">[guard] G_reviewTask</text>
+<rect class="el" x="20" y="606" width="250" height="18"/><text x="24" y="619">[guard] G_reviewer</text>
+<rect class="el" x="20" y="628" width="250" height="18"/><text x="24" y="641">[guard] G_revision</text>
+<rect class="ok" x="390" y="78" width="250" height="18"/><text x="394" y="91">UR-001 Ordered path to done</text>
+<rect class="ok" x="390" y="122" width="250" height="18"/><text x="394" y="135">UR-002 Done is final</text>
+<rect class="ok" x="390" y="166" width="250" height="18"/><text x="394" y="179">UR-003 Commands use the current rev…</text>
+<rect class="ok" x="390" y="210" width="250" height="18"/><text x="394" y="223">UR-004 Work is defined before it is…</text>
+<rect class="ok" x="390" y="254" width="250" height="18"/><text x="394" y="267">UR-005 Starting names the worker wi…</text>
+<rect class="ok" x="390" y="298" width="250" height="18"/><text x="394" y="311">UR-006 The owner requests review</text>
+<rect class="ok" x="390" y="342" width="250" height="18"/><text x="394" y="355">UR-007 Independent, explicit review…</text>
+<rect class="ok" x="390" y="386" width="250" height="18"/><text x="394" y="399">UR-008 A review applies to what was…</text>
+<rect class="ok" x="390" y="430" width="250" height="18"/><text x="394" y="443">UR-009 Rework needs a fresh review</text>
+<rect class="gap" x="390" y="474" width="250" height="18"/><text x="394" y="487">UR-010 Malformed input is rejected …</text>
+<text class="n" x="394" y="504">no-executable-acceptance, no-model-link</text>
+<rect class="gap" x="390" y="518" width="250" height="18"/><text x="394" y="531">UR-011 Revision never wraps around</text>
+<text class="n" x="394" y="548">no-model-link</text>
+<rect class="gap" x="390" y="562" width="250" height="18"/><text x="394" y="575">UR-012 Each accepted command advanc…</text>
+<text class="n" x="394" y="592">no-acceptance-link</text>
+<rect class="cs" x="760" y="78" width="250" height="18"/><text x="764" y="91">assigned-wrong-actor</text>
+<rect class="cs" x="760" y="100" width="250" height="18"/><text x="764" y="113">maximum-revision</text>
+<rect class="cs" x="760" y="122" width="250" height="18"/><text x="764" y="135">refusals-02</text>
+<rect class="cs" x="760" y="144" width="250" height="18"/><text x="764" y="157">refusals-03</text>
+<rect class="cs" x="760" y="166" width="250" height="18"/><text x="764" y="179">refusals-05</text>
+<rect class="cs" x="760" y="188" width="250" height="18"/><text x="764" y="201">refusals-06</text>
+<rect class="cs" x="760" y="210" width="250" height="18"/><text x="764" y="223">refusals-07</text>
+<rect class="cs" x="760" y="232" width="250" height="18"/><text x="764" y="245">refusals-08</text>
+<rect class="cs" x="760" y="254" width="250" height="18"/><text x="764" y="267">refusals-09</text>
+<rect class="cs" x="760" y="276" width="250" height="18"/><text x="764" y="289">refusals-10</text>
+<rect class="cs" x="760" y="298" width="250" height="18"/><text x="764" y="311">refusals-11</text>
+<rect class="cs" x="760" y="320" width="250" height="18"/><text x="764" y="333">refusals-12</text>
+<rect class="cs" x="760" y="342" width="250" height="18"/><text x="764" y="355">refusals-13</text>
+<rect class="cs" x="760" y="364" width="250" height="18"/><text x="764" y="377">refusals-14</text>
+<rect class="cs" x="760" y="386" width="250" height="18"/><text x="764" y="399">refusals-15</text>
+<rect class="cs" x="760" y="408" width="250" height="18"/><text x="764" y="421">refusals-16</text>
+<rect class="cs" x="760" y="430" width="250" height="18"/><text x="764" y="443">refusals-17</text>
+<rect class="cs" x="760" y="452" width="250" height="18"/><text x="764" y="465">sequences-01</text>
+<rect class="cs" x="760" y="474" width="250" height="18"/><text x="764" y="487">sequences-02</text>
+<rect class="cs" x="760" y="496" width="250" height="18"/><text x="764" y="509">special-01</text>
+<rect class="un" x="760" y="518" width="250" height="18"/><text x="764" y="531">special-02</text>
+<rect class="pend" x="760" y="540" width="250" height="18"/><text x="764" y="553">special-03 (pending)</text>
+<rect class="pend" x="760" y="562" width="250" height="18"/><text x="764" y="575">special-04 (pending)</text>
+<rect class="cs" x="760" y="584" width="250" height="18"/><text x="764" y="597">stale-command</text>
+<rect class="cs" x="760" y="606" width="250" height="18"/><text x="764" y="619">start-assigns</text>
+<text class="n" x="20" y="680">Green: model and executable acceptance links present. Orange dashed: requirement with gaps. Red dashed: not linked. Grey dashed: pending case.</text>
+<text class="n" x="20" y="696">Model requirements are reached through the guards that declare them; see trace.md. Lines are declared links, not verification.</text>
+</svg>
