@@ -1,0 +1,23 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "Flow",
+  "initial": "Draft",
+  "states": [
+    {"id": "Ready", "label": "Ready <&>", "terminal": false},
+    {"id": "Done", "label": "Done", "terminal": true},
+    {"id": "Draft", "label": "Draft", "terminal": false}
+  ],
+  "requirements": [
+    {"id": "Rb", "text": "The actor is the literal reviewer."},
+    {"id": "Ra", "text": "The outcome is present."}
+  ],
+  "guards": [
+    {"id": "Gb", "requirement": "Rb", "expr": {"op": "eq", "args": [{"ref": "command.actor"}, {"string": "<&>"}]}},
+    {"id": "Ga", "requirement": "Ra", "expr": {"op": "nonempty", "args": [{"ref": "task.outcome"}]}}
+  ],
+  "transitions": [
+    {"id": "Tb", "from": "Ready", "trigger": "finish", "to": "Done", "guards": ["Ga"], "effects": [{"op": "assign_owner_if_absent"}, {"op": "set_state"}, {"op": "increment_revision"}]},
+    {"id": "Ta", "from": "Draft", "trigger": "send", "to": "Ready", "guards": ["Gb", "Ga"], "effects": [{"op": "set_state"}, {"op": "increment_revision"}]}
+  ]
+}
