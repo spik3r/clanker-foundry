@@ -1,0 +1,61 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Review a small queue.",
+  "decisions": [
+    {
+      "id": "D_keep",
+      "text": "Keep the original record.",
+      "rationale": "Audit it later."
+    },
+    {
+      "id": "D_remove",
+      "text": "Retain the old decision.",
+      "rationale": "Old scope."
+    },
+    {
+      "id": "D_move",
+      "text": "Decide the owner.",
+      "rationale": "Owner asserted."
+    },
+    {
+      "id": "D_edit",
+      "text": "Hold rejected work.",
+      "rationale": "Avoid silent retries."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_remove",
+      "text": "Can we remove this question?"
+    },
+    {
+      "id": "Q_keep",
+      "text": "Who owns the review?"
+    },
+    {
+      "id": "Q_edit",
+      "text": "Which queue is in scope?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "author": "requirements author"
+    },
+    "model": {
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "author": "model author"
+    },
+    "scenarioSuite": null
+  },
+  "dependencies": {
+    "modelRequirements": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "suiteRequirements": null,
+    "suiteModel": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+  },
+  "observed": {
+    "requirements": "abc",
+    "model": null,
+    "scenarioSuite": null
+  }
+}
