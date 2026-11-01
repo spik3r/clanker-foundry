@@ -1,0 +1,27 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "id": "frozen_authoring_example",
+  "cases": [
+    {
+      "id": "prepare_accepted",
+      "initial": {"id":"sample","state":"Draft","revision":"0","outcome":"Deliver result","acceptance":["Review it"],"owner":null},
+      "steps": [{
+        "id":"prepare_step",
+        "command":{"type":"prepare","actor":"writer","expectedRevision":"0","review":null},
+        "expected":{"ok":true,"transitionId":"T_prepare","task":{"id":"sample","state":"Ready","revision":"1","outcome":"Deliver result","acceptance":["Review it"],"owner":null},"refusals":[]}
+      }]
+    },
+    {
+      "id": "unknown_refused",
+      "initial": {"id":"sample","state":"Draft","revision":"0","outcome":"Deliver result","acceptance":["Review it"],"owner":null},
+      "steps": [{
+        "id":"unknown_step",
+        "command":{"type":"unknownExample","actor":"writer","expectedRevision":"0","review":null},
+        "expected":{"ok":false,"transitionId":"","task":null,"refusals":["INVALID_INPUT"]}
+      }]
+    }
+  ]
+}

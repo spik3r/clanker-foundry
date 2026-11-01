@@ -1,0 +1,18 @@
+{
+  "formatVersion": "lifecycle-acceptance-authoring/v1",
+  "id": "independent_example",
+  "author": "declared example author",
+  "purpose": "Specify two literal outcomes before replay.",
+  "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "suiteSourceSha256": "a7c8ec0a6e7fad9b4bde8915bdabe1682ff881d34c34d52952cad25a0009f39d",
+  "cases": [
+    {
+      "id": "prepare_accepted",
+      "intent": "Preparing a valid draft reaches Ready and increments revision."
+    },
+    {
+      "id": "unknown_refused",
+      "intent": "An unknown command returns INVALID_INPUT without a task."
+    }
+  ]
+}
