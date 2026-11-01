@@ -1,0 +1,41 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Prepare a valid draft with a nonblank actor.",
+  "decisions": [
+    {
+      "id": "D_actor",
+      "text": "Require a nonblank actor.",
+      "rationale": "Illustrate the tutorial behavior revision."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_case_link",
+      "text": "Which independently executed case should be linked in the requirements trace?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "f096c373f5a3c8e8e591b5b39587683f849460cae6ccddbd951482efca7044c3",
+      "author": "Invented unverified author"
+    },
+    "model": {
+      "sha256": "6c6820e6d8544136a5629aa2977aa5319d853a63a5f1363b86766d8204f73499",
+      "author": "Invented unverified author"
+    },
+    "scenarioSuite": {
+      "sha256": "149aeb2ebe4ebbaea661ae944a7b30f083be406d97394189c2049d82b351baaf",
+      "author": "Invented unverified author"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "f096c373f5a3c8e8e591b5b39587683f849460cae6ccddbd951482efca7044c3",
+    "suiteRequirements": "f096c373f5a3c8e8e591b5b39587683f849460cae6ccddbd951482efca7044c3",
+    "suiteModel": "6c6820e6d8544136a5629aa2977aa5319d853a63a5f1363b86766d8204f73499"
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}
