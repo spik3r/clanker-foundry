@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -211,5 +213,77 @@ func TestSemanticAndCompiledBindings(t *testing.T) {
 	r, e = Check(futureManifest, changed, futureSuite, "replay")
 	if e != nil || r.ModelBinding != "current" || r.SuiteModelBinding != "current" || r.RunnerBinding != "stale" || r.SuiteValidation != "not-checked" || r.Replay != "not-run" {
 		t.Fatalf("unsupported runner: %+v %v", r, e)
+	}
+}
+
+// Execute the documented recipe itself, with CRLF artifacts, so text-mode
+// newline translation in a future edit cannot conceal a stale source identity.
+func TestDocumentedRecipePreservesCRLF(t *testing.T) {
+	python, err := exec.LookPath("python3")
+	if err != nil {
+		t.Skip("python3 is needed to exercise the documented Python recipe")
+	}
+	readme, err := os.ReadFile("README.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, after, ok := strings.Cut(string(readme), "python3 -c '")
+	if !ok {
+		t.Fatal("documented Python recipe missing")
+	}
+	script, _, ok := strings.Cut(after, "' | ")
+	if !ok {
+		t.Fatal("documented Python recipe terminator missing")
+	}
+	manifestBytes, modelBytes, suiteBytes, _ := fixture(t)
+	crlf := func(b []byte) []byte { return bytes.ReplaceAll(b, []byte("\n"), []byte("\r\n")) }
+	manifestBytes, modelBytes, suiteBytes = crlf(manifestBytes), crlf(modelBytes), crlf(suiteBytes)
+	temp := t.TempDir()
+	for _, entry := range []struct {
+		path string
+		data []byte
+	}{
+		{"acceptanceauthor/testdata/manifest.json", manifestBytes},
+		{"examples/lifecycle.json", modelBytes},
+		{"acceptanceauthor/testdata/suite.json", suiteBytes},
+	} {
+		path := filepath.Join(temp, entry.path)
+		if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, entry.data, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	cmd := exec.Command(python, "-c", script)
+	cmd.Dir = temp
+	request, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("documented recipe: %v", err)
+	}
+	var got Request
+	if err := json.Unmarshal(request, &got); err != nil {
+		t.Fatal(err)
+	}
+	for _, pair := range []struct {
+		name, got string
+		want      []byte
+	}{
+		{"manifest", got.Manifest, manifestBytes}, {"model", got.Model, modelBytes}, {"suite", got.Suite, suiteBytes},
+	} {
+		if !bytes.Equal([]byte(pair.got), pair.want) {
+			t.Fatalf("%s bytes were changed by documented recipe", pair.name)
+		}
+	}
+	output, err := Execute(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result Report
+	if err := json.Unmarshal(output, &result); err != nil {
+		t.Fatal(err)
+	}
+	if result.ManifestSHA256 != hash(manifestBytes) || result.ModelBinding != "current" || result.SuiteBinding != "stale" || result.SuiteValidation != "not-checked" || result.Replay != "not-run" {
+		t.Fatalf("CRLF identities or freshness not preserved: %+v", result)
 	}
 }
