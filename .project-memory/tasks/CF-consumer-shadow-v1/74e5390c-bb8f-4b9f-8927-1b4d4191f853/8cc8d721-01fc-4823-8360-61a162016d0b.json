@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "8cc8d721-01fc-4823-8360-61a162016d0b",
+  "runId": "74e5390c-bb8f-4b9f-8927-1b4d4191f853",
+  "kind": "complete",
+  "parents": [
+    "385fab6c-dd36-4340-81ec-df1b9c3aefdf"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-consumer-shadow-v1",
+    "path": "tasks/CF-consumer-shadow-v1-surface.md",
+    "revision": "01759c77bed58e72f8f486000f70a69843e7224d",
+    "blob": "29f4ee36a2590b7c8f0b02cae0580f223e63ad71",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7999a629a02f6ec1be5bf6b69cff5a358d4c5d320aba12972e3ea786b279b0bb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/consumer-shadow-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T00:31:47.102Z",
+  "summary": "Added a versioned shadow-only package reusing unchanged Foundry contracts, importer and evaluator",
+  "next": "Commit and validate full-diff lifecycle, publish reviewed draft source, then check exact-head CI; no activation",
+  "files": [
+    "package.json",
+    "package-lock.json",
+    "runtime/src/consumer-shadow-v1.mjs",
+    "runtime/test/consumer-shadow-v1.test.mjs",
+    "docs/consumer-shadow-v1.md",
+    "tasks/CF-consumer-shadow-v1-surface.md"
+  ],
+  "validation": "Node 24.22.1: 319 runtime and Project Memory/workflow tests passed, zero failures/skips; 8 focused consumer tests passed independently, including actual isolated offline tarball install, dependency closure, subpath and import-effect checks; pack validator, syntax, relative links and whitespace passed. GNU Stow unavailable: installer regression blocked; optional skills-ref unavailable. No live provider or Docker run; hosted CI pending.",
+  "snapshot": {
+    "package.json": {
+      "blob": "702b0fc1557fd219f00efb22d3cff4036189624f",
+      "mode": "100644"
+    },
+    "package-lock.json": {
+      "blob": "38daeb10383fccd7aa12528e304625d514ab51b6",
+      "mode": "100644"
+    },
+    "runtime/src/consumer-shadow-v1.mjs": {
+      "blob": "11df4b35a683db42ec437b6b4a2a1f096fa05f58",
+      "mode": "100644"
+    },
+    "runtime/test/consumer-shadow-v1.test.mjs": {
+      "blob": "d502056c734463a9ced5d70fbb57bb0abacdbda5",
+      "mode": "100644"
+    },
+    "docs/consumer-shadow-v1.md": {
+      "blob": "ed47b9aefab843a1b9736e549407e30664e19507",
+      "mode": "100644"
+    },
+    "tasks/CF-consumer-shadow-v1-surface.md": {
+      "blob": "4c00389e35f0dc28b9865753c6a8c31da7d09d30",
+      "mode": "100644"
+    }
+  }
+}
