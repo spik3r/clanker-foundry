@@ -1,0 +1,763 @@
+{
+  "changed": {
+    "formatVersion": "lifecycle-trace-impact/v1",
+    "mode": "example-only",
+    "authority": "none",
+    "before": {
+      "modelDigest": "da1ce3254da96caf00bb9b4e6ae4ad941762cdcbe6907428a8e626baf5f4598c",
+      "requirementsDigest": "6f61a781b0b634493d98b49761711971447b07e6af25c1badf046ed12fa4d175",
+      "catalogSha256": "a2e7747de86e8053e2bb2dd3b7e85c16183f6832d5331bfb285c4cafd6c58dc5"
+    },
+    "after": {
+      "modelDigest": "3a324cdbfcdb3683fd7198958a8d4148225048c066448d35fbd51c7e97f01eb4",
+      "requirementsDigest": "0fdbabf9183e16978c6a6a9e177cb68f449559aea3c64858bd3f5bd71a8408df",
+      "catalogSha256": "4ad320817f1165ad8796c05ccc1606e1335c95f00c79009a885f5d69d474d72a"
+    },
+    "modelChanged": true,
+    "requirementsChanged": true,
+    "catalogSourceChanged": true,
+    "reviewRequired": true,
+    "beforeGaps": [
+      {
+        "id": "UR-001",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-004",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "afterGaps": [
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "id": "UR-001",
+        "change": "modified",
+        "fields": [
+          "gaps"
+        ],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-executable-acceptance"
+        ],
+        "afterGaps": [],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tgo",
+            "cause": "requirement:Rx"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tgo",
+            "cause": "state:Ready"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tgo",
+            "cause": "transition:Tgo"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "guard:Gy"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "requirement:Rx"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "state:Ready"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "transition:Tgo"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "transition:Tgo",
+            "cause": "modified"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "transition:Tgo",
+            "cause": "modified"
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "gaps",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-002",
+        "change": "unchanged",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-acceptance-link"
+        ],
+        "afterGaps": [
+          "no-acceptance-link"
+        ],
+        "reasons": [
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "guard:Gy",
+            "cause": "modified"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "modelRequirement:Rx",
+            "cause": "modified"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "guard:Gy",
+            "cause": "modified"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "modelRequirement:Rx",
+            "cause": "modified"
+          }
+        ]
+      },
+      {
+        "id": "UR-003",
+        "change": "modified",
+        "fields": [
+          "modelLinks",
+          "title"
+        ],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [],
+        "afterGaps": [],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tfinish",
+            "cause": "requirement:Rx"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tfinish",
+            "cause": "state:Ready"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tfinish",
+            "cause": "transition:Tfinish"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "transition:Tfinish",
+            "cause": "modified"
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "modelLinks",
+            "cause": ""
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "title",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-004",
+        "change": "removed",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": false,
+        "beforeGaps": [
+          "no-executable-acceptance"
+        ],
+        "afterGaps": [],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "guard:Gy"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "requirement:Rx"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "state:Ready"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "before",
+            "target": "Tgo",
+            "cause": "transition:Tgo"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "transition:Tgo",
+            "cause": "modified"
+          },
+          {
+            "code": "requirement-removed",
+            "side": "before",
+            "target": "",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-005",
+        "change": "added",
+        "fields": [],
+        "beforePresent": false,
+        "afterPresent": true,
+        "beforeGaps": [],
+        "afterGaps": [],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          },
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "modelRequirement:Rx",
+            "cause": "modified"
+          },
+          {
+            "code": "requirement-added",
+            "side": "after",
+            "target": "",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-007",
+        "change": "modified",
+        "fields": [
+          "acceptanceLinks",
+          "gaps"
+        ],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-acceptance-link",
+          "no-model-link"
+        ],
+        "afterGaps": [
+          "no-model-link"
+        ],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "acceptanceLinks",
+            "cause": ""
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "gaps",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-008",
+        "change": "unchanged",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-acceptance-link"
+        ],
+        "afterGaps": [
+          "no-acceptance-link"
+        ],
+        "reasons": [
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "state:Ready",
+            "cause": "modified"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "before",
+            "target": "state:Ready",
+            "cause": "modified"
+          }
+        ]
+      },
+      {
+        "id": "UR-009",
+        "change": "modified",
+        "fields": [
+          "modelLinks"
+        ],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-acceptance-link"
+        ],
+        "afterGaps": [
+          "no-acceptance-link"
+        ],
+        "reasons": [
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tfinish",
+            "cause": "guard:Gy"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tfinish",
+            "cause": "requirement:Rx"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tfinish",
+            "cause": "state:Ready"
+          },
+          {
+            "code": "linked-transition-changed",
+            "side": "after",
+            "target": "Tfinish",
+            "cause": "transition:Tfinish"
+          },
+          {
+            "code": "model-element-changed",
+            "side": "after",
+            "target": "transition:Tfinish",
+            "cause": "modified"
+          },
+          {
+            "code": "requirement-changed",
+            "side": "both",
+            "target": "modelLinks",
+            "cause": ""
+          }
+        ]
+      }
+    ]
+  },
+  "noOp": {
+    "formatVersion": "lifecycle-trace-impact/v1",
+    "mode": "example-only",
+    "authority": "none",
+    "before": {
+      "modelDigest": "da1ce3254da96caf00bb9b4e6ae4ad941762cdcbe6907428a8e626baf5f4598c",
+      "requirementsDigest": "6f61a781b0b634493d98b49761711971447b07e6af25c1badf046ed12fa4d175",
+      "catalogSha256": "a2e7747de86e8053e2bb2dd3b7e85c16183f6832d5331bfb285c4cafd6c58dc5"
+    },
+    "after": {
+      "modelDigest": "da1ce3254da96caf00bb9b4e6ae4ad941762cdcbe6907428a8e626baf5f4598c",
+      "requirementsDigest": "6f61a781b0b634493d98b49761711971447b07e6af25c1badf046ed12fa4d175",
+      "catalogSha256": "a2e7747de86e8053e2bb2dd3b7e85c16183f6832d5331bfb285c4cafd6c58dc5"
+    },
+    "modelChanged": false,
+    "requirementsChanged": false,
+    "catalogSourceChanged": false,
+    "reviewRequired": false,
+    "beforeGaps": [
+      {
+        "id": "UR-001",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-004",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "afterGaps": [
+      {
+        "id": "UR-001",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-004",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "candidates": []
+  },
+  "catalogFormattingOnly": {
+    "formatVersion": "lifecycle-trace-impact/v1",
+    "mode": "example-only",
+    "authority": "none",
+    "before": {
+      "modelDigest": "da1ce3254da96caf00bb9b4e6ae4ad941762cdcbe6907428a8e626baf5f4598c",
+      "requirementsDigest": "6f61a781b0b634493d98b49761711971447b07e6af25c1badf046ed12fa4d175",
+      "catalogSha256": "a2e7747de86e8053e2bb2dd3b7e85c16183f6832d5331bfb285c4cafd6c58dc5"
+    },
+    "after": {
+      "modelDigest": "da1ce3254da96caf00bb9b4e6ae4ad941762cdcbe6907428a8e626baf5f4598c",
+      "requirementsDigest": "6f61a781b0b634493d98b49761711971447b07e6af25c1badf046ed12fa4d175",
+      "catalogSha256": "2ecf8950ae7edacf09262391ba9a5b97b2280ac2781e10879f14b3e38708fb34"
+    },
+    "modelChanged": false,
+    "requirementsChanged": false,
+    "catalogSourceChanged": true,
+    "reviewRequired": true,
+    "beforeGaps": [
+      {
+        "id": "UR-001",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-004",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "afterGaps": [
+      {
+        "id": "UR-001",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-002",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-004",
+        "codes": [
+          "no-executable-acceptance"
+        ]
+      },
+      {
+        "id": "UR-006",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-007",
+        "codes": [
+          "no-acceptance-link",
+          "no-model-link"
+        ]
+      },
+      {
+        "id": "UR-008",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      },
+      {
+        "id": "UR-009",
+        "codes": [
+          "no-acceptance-link"
+        ]
+      }
+    ],
+    "candidates": [
+      {
+        "id": "UR-001",
+        "change": "unchanged",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-executable-acceptance"
+        ],
+        "afterGaps": [
+          "no-executable-acceptance"
+        ],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-003",
+        "change": "unchanged",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [],
+        "afterGaps": [],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          }
+        ]
+      },
+      {
+        "id": "UR-004",
+        "change": "unchanged",
+        "fields": [],
+        "beforePresent": true,
+        "afterPresent": true,
+        "beforeGaps": [
+          "no-executable-acceptance"
+        ],
+        "afterGaps": [
+          "no-executable-acceptance"
+        ],
+        "reasons": [
+          {
+            "code": "catalog-source-changed",
+            "side": "both",
+            "target": "",
+            "cause": ""
+          }
+        ]
+      }
+    ]
+  }
+}
