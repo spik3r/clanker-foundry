@@ -439,3 +439,54 @@ func TestOversizedCanvasIsRefusedWithoutArtifacts(t *testing.T) {
 		t.Fatalf("oversized canvas must refuse both outputs: %v", e)
 	}
 }
+
+func TestGuardExpressionEscapingIsNotAppliedTwice(t *testing.T) {
+	raw, _ := fixture(t)
+	for _, c := range []struct{ value, want string }{
+		{"Ω", `eq(command.actor, "\u03a9")`},
+		{`\u03a9`, `eq(command.actor, "\\u03a9")`},
+	} {
+		var m map[string]any
+		if err := json.Unmarshal(raw, &m); err != nil {
+			t.Fatal(err)
+		}
+		for _, v := range m["guards"].([]any) {
+			g := v.(map[string]any)
+			if g["id"] == "Gb" {
+				g["expr"].(map[string]any)["args"].([]any)[1] = map[string]any{"string": c.value}
+			}
+		}
+		input, err := json.Marshal(m)
+		if err != nil {
+			t.Fatal(err)
+		}
+		out, err := processview.Build(input)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var p projection
+		if err = json.Unmarshal(out.JSON, &p); err != nil {
+			t.Fatal(err)
+		}
+		if p.Guards[1].Expression != c.want {
+			t.Fatalf("JSON expression %q want %q", p.Guards[1].Expression, c.want)
+		}
+		dec := xml.NewDecoder(bytes.NewReader(out.SVG))
+		var lines []string
+		for {
+			token, e := dec.Token()
+			if e == io.EOF {
+				break
+			}
+			if e != nil {
+				t.Fatal(e)
+			}
+			if v, ok := token.(xml.CharData); ok {
+				lines = append(lines, string(v))
+			}
+		}
+		if !strings.Contains(strings.Join(lines, " "), "Guard Gb / requirement Rb: "+c.want) {
+			t.Fatalf("SVG did not preserve quoted expression %q", c.want)
+		}
+	}
+}

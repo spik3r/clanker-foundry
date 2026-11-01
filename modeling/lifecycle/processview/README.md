@@ -44,10 +44,11 @@ private when the model contains private data.
 The JSON projection is `lifecycle-process-view/v1`. It includes the model ID and canonical
 model digest, normalized states, transitions and guards, ordered effects, and
 explicit semantic boundaries. The SVG displays the same transition and guard
-facts in an inert flow layout. SVG displays control and non-ASCII characters as
-Go-style escapes to preserve XML safety; literal backslashes are doubled so
-they cannot be confused with escapes. JSON preserves state labels; its guard
-expressions are readable strings with Go-quoted literals, not a source AST. Both
+facts in an inert flow layout. SVG displays control and non-ASCII characters in raw labels as Go-style escapes
+to preserve XML safety; literal backslashes in those labels are doubled so they
+cannot be confused with escapes. Guard expressions already use Go-quoted literals
+and are not escaped a second time. JSON preserves state labels; its guard
+expressions are readable strings, not a source AST. Both
 derive their identity from the validated, normalized model rather than a caller-supplied digest. Equivalent source formatting
 and semantic-set order produce identical output; effect order remains meaningful.
 Neither the digest nor a visually complete flow establishes correctness or a real

@@ -45,7 +45,12 @@ func xmlText(s string) string {
 	return b.String()
 }
 func wrapped(s string, n int) []string {
-	s = displayText(s)
+	return wrapASCII(displayText(s), n)
+}
+
+// Guard expressions already use Go-quoted ASCII literals. Escaping them a
+// second time would change their apparent meaning, so only XML-escape them.
+func wrapASCII(s string, n int) []string {
 	if s == "" {
 		return []string{""}
 	}
@@ -64,6 +69,12 @@ func renderSVG(d document) ([]byte, error) {
 	}
 	line := func(s string) {
 		for _, v := range wrapped(s, 160) {
+			label(20, y, v)
+			y += 18
+		}
+	}
+	expressionLine := func(s string) {
+		for _, v := range wrapASCII(s, 160) {
 			label(20, y, v)
 			y += 18
 		}
@@ -131,7 +142,7 @@ func renderSVG(d document) ([]byte, error) {
 	}
 	line("Guard glossary")
 	for _, g := range d.Guards {
-		line("Guard " + g.ID + " / requirement " + g.Requirement + ": " + g.Expression)
+		expressionLine("Guard " + g.ID + " / requirement " + g.Requirement + ": " + g.Expression)
 	}
 	if body.failed || y+20 > MaxCanvasHeight {
 		return nil, ErrInvalid
