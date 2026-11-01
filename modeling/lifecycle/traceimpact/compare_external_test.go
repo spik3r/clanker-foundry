@@ -3,6 +3,8 @@ package traceimpact_test
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"strings"
@@ -288,4 +290,72 @@ func TestRequirementsSourceOnlyFormattingIsIgnored(t *testing.T) {
 		t.Fatal(e)
 	}
 	sameJSON(t, reportJSON(t, r), want["noOp"])
+}
+
+func TestCatalogCaseCountLimit(t *testing.T) {
+	before, _, _ := fixture(t)
+	makeCatalog := func(count int) []byte {
+		entries := make([]any, 0, count)
+		for i := 0; i < count; i++ {
+			entries = append(entries, map[string]any{"caseId": fmt.Sprintf("case-%d", i+1), "name": "Example", "executionStatus": "pending"})
+		}
+		b, e := json.Marshal(map[string]any{"schema": "lifecycle-semantic-oracle-v2", "sequences": entries, "refusals": []any{}, "special": []any{}})
+		if e != nil {
+			t.Fatal(e)
+		}
+		return b
+	}
+	before.Catalog = makeCatalog(traceimpact.MaxCatalogCases)
+	if _, e := traceimpact.Compare(before, before); e != nil {
+		t.Fatalf("limit should be accepted: %v", e)
+	}
+	before.Catalog = makeCatalog(traceimpact.MaxCatalogCases + 1)
+	got, e := traceimpact.Compare(before, before)
+	if e == nil || !reflect.ValueOf(got).IsZero() {
+		t.Fatal("oversized case count did not fail without partial report")
+	}
+}
+
+func TestReasonBudgetRefusesWithoutPartialReport(t *testing.T) {
+	guards := make([]any, 0, 64)
+	transitions := make([]any, 0, 32)
+	ids := make([]any, 0, 64)
+	for i := 0; i < 64; i++ {
+		id := fmt.Sprintf("G%02d", i)
+		ids = append(ids, id)
+		guards = append(guards, map[string]any{"id": id, "requirement": "Rrule", "expr": map[string]any{"op": "nonempty", "args": []any{map[string]any{"ref": "command.actor"}}}})
+	}
+	links := make([]any, 0, 32)
+	for i := 0; i < 32; i++ {
+		id := fmt.Sprintf("T%02d", i)
+		transitions = append(transitions, map[string]any{"id": id, "from": "Draft", "trigger": fmt.Sprintf("cmd%02d", i), "to": "Done", "guards": ids, "effects": []any{map[string]any{"op": "set_state"}, map[string]any{"op": "increment_revision"}}})
+		links = append(links, map[string]any{"kind": "transition", "id": id})
+	}
+	doc := map[string]any{"formatVersion": "lifecycle-json/v1", "profileVersion": "lifecycle/v1", "id": "Flow", "initial": "Draft", "states": []any{map[string]any{"id": "Draft", "label": "Draft", "terminal": false}, map[string]any{"id": "Done", "label": "Done", "terminal": true}}, "requirements": []any{map[string]any{"id": "Rrule", "text": "Rule"}}, "guards": guards, "transitions": transitions}
+	beforeModel, e := json.Marshal(doc)
+	if e != nil {
+		t.Fatal(e)
+	}
+	for _, item := range guards {
+		item.(map[string]any)["expr"].(map[string]any)["args"].([]any)[0] = map[string]any{"ref": "task.outcome"}
+	}
+	afterModel, e := json.Marshal(doc)
+	if e != nil {
+		t.Fatal(e)
+	}
+	requirements := make([]any, 0, 256)
+	for i := 0; i < 256; i++ {
+		requirements = append(requirements, map[string]any{"id": fmt.Sprintf("UR-%03d", i), "title": fmt.Sprintf("Title %d", i), "statement": fmt.Sprintf("Unique intent %d", i), "modelLinks": links, "acceptanceLinks": []any{}})
+	}
+	req, e := json.Marshal(map[string]any{"formatVersion": "lifecycle-requirements-json/v1", "modelId": "Flow", "acceptanceCatalog": "lifecycle-semantic-oracle-v2", "requirements": requirements})
+	if e != nil {
+		t.Fatal(e)
+	}
+	cat := []byte(`{"schema":"lifecycle-semantic-oracle-v2","sequences":[{"caseId":"case-1","name":"Example","executionStatus":"pending"}],"refusals":[],"special":[]}`)
+	before := traceimpact.Snapshot{Model: beforeModel, Catalog: cat, Requirements: req}
+	after := traceimpact.Snapshot{Model: afterModel, Catalog: cat, Requirements: req}
+	got, e := traceimpact.Compare(before, after)
+	if !errors.Is(e, traceimpact.ErrReportLimit) || !reflect.ValueOf(got).IsZero() {
+		t.Fatalf("reason budget produced partial result or wrong error: %v", e)
+	}
 }
