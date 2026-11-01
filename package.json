@@ -1,0 +1,22 @@
+{
+  "name": "@clanker-foundry/orchestration",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Versioned, shadow-only access to the shared Foundry contracts and evaluator",
+  "type": "module",
+  "engines": { "node": ">=24.0.0" },
+  "exports": { "./shadow/v1": "./runtime/src/consumer-shadow-v1.mjs" },
+  "files": [
+    "runtime/src/consumer-shadow-v1.mjs",
+    "runtime/src/contract.mjs",
+    "runtime/src/state.mjs",
+    "runtime/src/import-export.mjs",
+    "runtime/contracts/v1.schema.json",
+    "runtime/contracts/authority.schema.json",
+    "runtime/contracts/evidence.schema.json",
+    "runtime/contracts/workspace.schema.json",
+    "skills/project-memory/scripts/lib/state.mjs",
+    "docs/consumer-shadow-v1.md"
+  ],
+  "dependencies": { "ajv": "8.20.0" }
+}

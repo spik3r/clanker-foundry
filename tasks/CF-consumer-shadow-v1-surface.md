@@ -1,6 +1,6 @@
 ---
 id: CF-consumer-shadow-v1
-status: in-progress
+status: review
 owner: Astra shared consumer surface
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -84,3 +84,40 @@ automatic dispatch, managed writable execution, existing task migration, deploym
 merge or permission/policy change is included. Source draft publication is the
 intended review handoff after verification; runtime/consumer activation remains a
 separate explicitly authorized decision.
+
+## Local implementation and observed validation
+
+The narrow facade exports two JSON-text inspection functions with explicit
+shadow-only/authority-none results. Existing importer and evaluator implementations,
+schemas, helpers and operational modules remain byte-for-byte unchanged. The
+root private package includes their exact pure dependency closure at original
+paths; it exposes no store, runner, provider, CLI or dispatcher.
+
+Cloud Linux Node 24.22.1 passed all 319 runtime and Project Memory/workflow
+regressions, zero failures or skips. All eight new tests passed independently,
+including an actual tarball packed from the producer and installed with npm ci
+into a clean temporary consumer using the pinned dependency cache in offline
+mode. Tests checked actual package inventory, non-symlink installation, unsupported
+subpaths, inert import, bounded parsing and direct shared-engine result/error parity.
+Syntax, pack validator, relative links and whitespace checks passed.
+
+The optional skills-ref tool is unavailable. Installer regression reached the
+missing GNU Stow prerequisite on this cloud host; it is not reported as passing.
+No actual Docker or live provider test was run because this slice changes no
+operational module and exposes neither capability. Hosted CI is separate and
+pending final source publication.
+
+Independent exact-source review found no material facade/packaging defect and
+confirmed the eight tests. Documentation explicitly preserves unknown inventory,
+external/security and scope refusals; simulated PENDING is not conflict-free or
+claimed. Caught errors can contain private input and must remain private.
+
+The guide includes a boundary diagram and staged next modeling slice: versioned
+transition/guard trace manifest, contract/test links, generated diagrams and
+executable replay fixtures. Diagrams remain explanatory until their semantics
+are reviewed and machine-checked; no standards-conformance claim is made.
+
+Implementation edits are finished for review. Next: record genuine completion,
+validate the committed full diff, publish the reviewed draft source and check its
+exact-head CI. The owner must review a pinned consumer adapter separately; no
+consumer adoption, namespace activation, merge or deployment is claimed here.

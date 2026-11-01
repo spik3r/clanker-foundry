@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "385fab6c-dd36-4340-81ec-df1b9c3aefdf",
+  "runId": "74e5390c-bb8f-4b9f-8927-1b4d4191f853",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-consumer-shadow-v1",
+    "path": "tasks/CF-consumer-shadow-v1-surface.md",
+    "revision": "01759c77bed58e72f8f486000f70a69843e7224d",
+    "blob": "29f4ee36a2590b7c8f0b02cae0580f223e63ad71",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7999a629a02f6ec1be5bf6b69cff5a358d4c5d320aba12972e3ea786b279b0bb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/consumer-shadow-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T00:25:05.654Z",
+  "summary": "Expose the existing Foundry pure contracts and transition engine through a bounded shadow-only consumer package",
+  "next": "Implement exact package boundary and invented consumer tests; preserve operational modules and source history",
+  "files": [
+    "package.json",
+    "package-lock.json",
+    "runtime/src/consumer-shadow-v1.mjs",
+    "runtime/test/consumer-shadow-v1.test.mjs",
+    "docs/consumer-shadow-v1.md",
+    "tasks/CF-consumer-shadow-v1-surface.md"
+  ]
+}
