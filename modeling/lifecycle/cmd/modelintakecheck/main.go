@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/intakemodel"
 )
@@ -32,4 +34,9 @@ func run(args []string, input io.Reader, output, diagnostic io.Writer) int {
 	return 0
 }
 
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Report broken stdout pipes through the same exit-3 write-failure contract.
+	// Without this, Go may terminate the process before Write returns its error.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}

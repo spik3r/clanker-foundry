@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -78,5 +79,37 @@ func TestCLIRefusalsAndOutputFailures(t *testing.T) {
 		if code := run(nil, strings.NewReader(requests(t)[0]), badWriter{short}, &diag); code != 3 || diag.String() != "modelintakecheck: output write failed\n" {
 			t.Fatal(code, diag.String())
 		}
+	}
+}
+
+func TestCLIClosedOutputPipe(t *testing.T) {
+	const helper = "FOUNDRY_INTAKECHECK_CLOSED_PIPE_TEST"
+	if os.Getenv(helper) == "1" {
+		os.Args = os.Args[:1]
+		main()
+		return
+	}
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := reader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	defer writer.Close()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cmd := exec.Command(executable, "-test.run=^TestCLIClosedOutputPipe$")
+	cmd.Env = append(os.Environ(), helper+"=1")
+	cmd.Stdin = strings.NewReader(requests(t)[0])
+	cmd.Stdout = writer
+	var diagnostic bytes.Buffer
+	cmd.Stderr = &diagnostic
+	err = cmd.Run()
+	var exit *exec.ExitError
+	if !errors.As(err, &exit) || exit.ExitCode() != 3 || diagnostic.String() != "modelintakecheck: output write failed\n" {
+		t.Fatalf("closed pipe: error=%v diagnostic=%q", err, diagnostic.String())
 	}
 }
