@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"os"
 	"reflect"
@@ -239,5 +240,120 @@ func TestInvalidInputYieldsNoArtifacts(t *testing.T) {
 				t.Fatal("invalid input mutated")
 			}
 		})
+	}
+}
+
+// A bounded, high-content model must remain complete and XML-safe, including
+// long expression literals. The expected values are not derived from the view.
+func TestLargeGuardGlossaryIsComplete(t *testing.T) {
+	raw, _ := fixture(t)
+	var m map[string]any
+	if err := json.Unmarshal(raw, &m); err != nil {
+		t.Fatal(err)
+	}
+	requirements := make([]any, 0, 64)
+	guards := make([]any, 0, 64)
+	guardIDs := make([]any, 0, 64)
+	literal := strings.Repeat("<&", 2000)
+	for i := 0; i < 64; i++ {
+		rid := fmt.Sprintf("R%02d", i)
+		gid := fmt.Sprintf("G%02d", i)
+		requirements = append(requirements, map[string]any{"id": rid, "text": "Example requirement"})
+		guards = append(guards, map[string]any{"id": gid, "requirement": rid, "expr": map[string]any{"op": "eq", "args": []any{map[string]any{"ref": "command.actor"}, map[string]any{"string": literal}}}})
+		guardIDs = append(guardIDs, gid)
+	}
+	m["requirements"], m["guards"] = requirements, guards
+	transitions := m["transitions"].([]any)
+	transitions[0].(map[string]any)["guards"] = guardIDs
+	transitions[1].(map[string]any)["guards"] = []any{"G00"}
+	var input bytes.Buffer
+	enc := json.NewEncoder(&input)
+	enc.SetEscapeHTML(false)
+	if err := enc.Encode(m); err != nil {
+		t.Fatal(err)
+	}
+	raw = input.Bytes()
+	out, err := processview.Build(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(out.JSON) > processview.MaxOutputBytes || len(out.SVG) > processview.MaxOutputBytes {
+		t.Fatal("output exceeds advertised bound")
+	}
+	var got projection
+	if err = json.Unmarshal(out.JSON, &got); err != nil {
+		t.Fatal(err)
+	}
+	if len(got.Guards) != 64 {
+		t.Fatalf("got %d guards", len(got.Guards))
+	}
+	for _, g := range got.Guards {
+		if g.Expression != `eq(command.actor, "`+literal+`")` {
+			t.Fatalf("guard %s was truncated", g.ID)
+		}
+	}
+	d := xml.NewDecoder(bytes.NewReader(out.SVG))
+	for {
+		_, err := d.Token()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			t.Fatalf("invalid large SVG: %v", err)
+		}
+	}
+}
+
+func TestSVGRepresentationsOfControlAndUnicode(t *testing.T) {
+	raw, _ := fixture(t)
+	var m map[string]any
+	if err := json.Unmarshal(raw, &m); err != nil {
+		t.Fatal(err)
+	}
+	states := m["states"].([]any)
+	literal := "Control\x00 line\n Ω <script>"
+	states[0].(map[string]any)["label"] = literal
+	raw, err := json.Marshal(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := processview.Build(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got projection
+	if err = json.Unmarshal(out.JSON, &got); err != nil {
+		t.Fatal(err)
+	}
+	found := false
+	for _, s := range got.States {
+		if s.Label == literal {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("JSON did not preserve state label")
+	}
+	d := xml.NewDecoder(bytes.NewReader(out.SVG))
+	var text strings.Builder
+	for {
+		tok, e := d.Token()
+		if e == io.EOF {
+			break
+		}
+		if e != nil {
+			t.Fatalf("invalid SVG XML: %v", e)
+		}
+		if x, ok := tok.(xml.StartElement); ok && x.Name.Local == "script" {
+			t.Fatal("injected SVG script")
+		}
+		if x, ok := tok.(xml.CharData); ok {
+			text.Write(x)
+		}
+	}
+	for _, part := range []string{`\x00`, `\n`, `\u03a9`, `<script>`} {
+		if !strings.Contains(text.String(), part) {
+			t.Fatalf("missing escaped display text %q", part)
+		}
 	}
 }
