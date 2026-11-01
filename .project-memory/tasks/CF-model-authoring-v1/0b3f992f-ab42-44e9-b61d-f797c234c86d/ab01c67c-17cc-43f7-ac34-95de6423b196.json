@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "ab01c67c-17cc-43f7-ac34-95de6423b196",
+  "runId": "0b3f992f-ab42-44e9-b61d-f797c234c86d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-authoring-v1",
+    "path": "tasks/CF-model-authoring-v1-schema.md",
+    "revision": "fda0d0c396c0e95170fad4f7def098077dc96f91",
+    "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1c40f9798d3683c522e285ac8be0a305300942f06489f7893db21b072435b807"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-authoring-contract",
+  "pullRequest": null,
+  "at": "2026-11-01T20:29:54.510Z",
+  "summary": "Build versioned lifecycle authoring schema, example corpus and drift checks",
+  "next": "Implement and test schema and Go parity cases",
+  "files": [
+    "tasks/CF-model-authoring-v1-schema.md,modeling/lifecycle/authoring/lifecycle-v1.schema.json,modeling/lifecycle/authoring/README.md,modeling/lifecycle/authoring/cases.json,modeling/lifecycle/authoring/schema.test.cjs,modeling/lifecycle/authoring/contract_test.go,.github/workflows/model-authoring-contract.yml"
+  ]
+}
