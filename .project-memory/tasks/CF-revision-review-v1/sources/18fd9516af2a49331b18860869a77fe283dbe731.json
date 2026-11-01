@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "18fd9516af2a49331b18860869a77fe283dbe731",
+  "id": "CF-revision-review-v1",
+  "path": "tasks/CF-revision-review-v1-walkthrough.md",
+  "blob": "05cf54d907df6f6e1efaa4273c7b8688a66160a2",
+  "record": "---\nid: CF-revision-review-v1\nstatus: in-progress\nowner: Codex revision-review contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Revision review walkthrough across merged tools\n\n## Implementation claim\n\nOn `codex/revision-review-workflow` from main `b24962c`, add a separate,\nvalidation-only walkthrough showing how a human compares one invented lifecycle\nrevision using the merged intake, intake-change, strict intake/model, trace-impact\nand frozen acceptance-authoring tools. Reuse the existing tutorial's two models,\nmanifests and literal suites unchanged. Author two new traceable requirements\nsnapshots and exact intake declarations; explicitly show that the trace catalog\nis not the tutorial scenario suite and leave acceptance links as gaps. The old\nsuite must become stale for the candidate; the candidate suite is not run by the\nbaseline compiled runner. Show mismatches and an unchanged unanswered question;\nno change is accepted as review, authorization or approval.\n\nExact scope: new `modeling/lifecycle/revisionreview/README.md`,\n`revision_test.go`, `testdata/requirements-v1.json`,\n`testdata/requirements-v2.json`, `testdata/intake-v1.json`,\n`testdata/intake-v2.json`, `testdata/expected.json`, this record and its own\nProject Memory source/events. Independently state and commit literal expected\noutcomes before test implementation; tests may call only existing Go APIs and\nmust not regenerate declarations or expected results from observed tool output.\nA guide should distinguish claimed hashes, actual observations, semantic model\nidentity and replay status. It may instruct a human to inspect existing commands;\nit adds no aggregate report, renderer, archive, comparison tool or product runner.\n\nCurrent main and open PRs 5 and 20, remote branches, tutorial, intake-impact,\ntrace-impact, intake-model and held workflowacceptance/qualification/reviewpack\nclaims were inspected. This is a new tutorial for merged change-review APIs, not\nan implementation of the held source-closure/evidence-dossier stack. The local\nclaim is not a shared lock; recheck before publication. No activation, deployment,\nformal approval, visual-browser retry, production claim or silent golden update.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-revision-review-v1-walkthrough.md",
+        "id": "CF-revision-review-v1",
+        "blob": "05cf54d907df6f6e1efaa4273c7b8688a66160a2",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
