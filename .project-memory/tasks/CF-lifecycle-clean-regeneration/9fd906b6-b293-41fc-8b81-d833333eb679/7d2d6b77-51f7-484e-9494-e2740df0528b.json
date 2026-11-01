@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "7d2d6b77-51f7-484e-9494-e2740df0528b",
+  "runId": "9fd906b6-b293-41fc-8b81-d833333eb679",
+  "kind": "complete",
+  "parents": [
+    "ed16e8be-ba17-4ca5-8336-e63995972d86"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-clean-regeneration",
+    "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "revision": "329bdeae49a4ee4ca34431c0a1d470648b99c500",
+    "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3c35e49c469f8ef8c29df78ce827fa4981a8ea0b4accf36a637e5b08d956b1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-clean-regeneration",
+  "pullRequest": null,
+  "at": "2026-11-01T22:08:10.555Z",
+  "summary": "Added scratch-module regeneration, byte comparison, per-output drift detection and frozen acceptance checks",
+  "next": "Validate committed full diff and prepare draft for review; no merge or activation",
+  "files": [
+    "tasks/CF-lifecycle-clean-regeneration-test.md,modeling/lifecycle/reproducibility/clean_test.go,modeling/lifecycle/reproducibility/README.md"
+  ],
+  "validation": "Go 1.27.3 offline go test -race -count=1 ./... passed; go vet ./... passed; modelc check and modeltrace check passed; gofmt clean; Ajv schema tests passed after pinned npm ci; bash scripts/validate.sh passed with optional skills-ref unavailable; git diff --check passed",
+  "snapshot": {
+    "tasks/CF-lifecycle-clean-regeneration-test.md,modeling/lifecycle/reproducibility/clean_test.go,modeling/lifecycle/reproducibility/README.md": {
+      "blob": null,
+      "mode": null
+    }
+  }
+}
