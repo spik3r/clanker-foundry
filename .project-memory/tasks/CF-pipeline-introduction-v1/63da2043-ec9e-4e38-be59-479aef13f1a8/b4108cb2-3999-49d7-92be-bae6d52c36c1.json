@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "b4108cb2-3999-49d7-92be-bae6d52c36c1",
+  "runId": "63da2043-ec9e-4e38-be59-479aef13f1a8",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pipeline-introduction-v1",
+    "path": "tasks/CF-pipeline-introduction-v1-friend-guide.md",
+    "revision": "bd1104983c97fb49475001bd7206000158ad03e2",
+    "blob": "5f0da703ede76411478a755af1fbe085e1af2c1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4de2ab9a0c071c1314253a042ba4261ebdf776bac72c6f767eaf24f5bf22b2e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/model-driven-pipeline-introduction",
+  "pullRequest": null,
+  "at": "2026-11-01T21:38:58.265Z",
+  "summary": "Explain the model-driven pipeline with current scope, diagrams and an analogy",
+  "next": "Draft, independently check facts and validate the documentation",
+  "files": [
+    "README.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-pipeline-introduction-v1-friend-guide.md"
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 id: CF-pipeline-introduction-v1
-status: in-progress
+status: review
 owner: Astra pipeline introduction
 repositories: [spik3r/clanker-foundry]
 ---
@@ -47,3 +47,29 @@ available authentication. Recheck actual main and overlap before publication;
 verify the exact remote head and CI separately from local checks. No formal
 approval, merge, deployment, managed dispatch, production integration or change to
 another lane's scope is authorized by this claim.
+
+## Draft and validation result
+
+Added the README entry point and a plain-language guide with pipeline and workshop
+analogy diagrams, a concise lifecycle revision example, an explicit merged-main
+snapshot and standards limitations. Existing README content remains unchanged.
+A separate read-only reviewer checked facts and clarity; its two presentation
+comments were resolved. This is not a formal approval.
+
+At handoff, actual main still resolves to the pinned base. Open process-view PR20
+has disjoint paths; PR5 and all held lanes remain untouched. The guide explicitly
+excludes unmerged capabilities rather than claiming them as delivered.
+
+Observed local results: pack and relative-link validation pass; whitespace checks
+pass; Project Memory regressions pass 143 tests; the full lifecycle Go test suite
+passes with actual Go 1.27.3 and offline module resolution, including the tutorial
+package. Model validation, model artifact check, trace view check and the frozen
+scenario replay pass (four cases, thirteen steps). Both ASCII diagrams were
+inspected; all guide relative links resolve.
+
+Installer regression was attempted but stopped because GNU Stow is unavailable.
+The optional skills-ref validator is also unavailable and was skipped by the pack
+validator. No installer or hosted-CI pass is claimed. Full committed-diff lifecycle
+validation and remote head/CI verification remain separate post-commit checks.
+Publication remains subject to authentication and authority; no merge or activation
+is part of this handoff.
