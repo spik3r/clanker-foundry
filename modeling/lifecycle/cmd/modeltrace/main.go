@@ -4,12 +4,14 @@
 // and owns only traceability/view/trace.{json,md,svg}.
 //
 // Exit codes: 0 success; 1 check found missing or stale views; 2 invalid
-// requirements, unreadable inputs or bad usage; 3 valid but incomplete coverage
-// with validate -complete.
+// requirements, unreadable inputs, a view over the output limit or bad usage;
+// 3 valid but incomplete coverage with validate -complete.
 package main
 
 import (
 	"bytes"
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -23,7 +25,10 @@ const (
 	catalogPath      = "examples/oracle.json"
 	requirementsPath = "traceability/requirements.json"
 	viewDir          = "traceability/view"
-	readLimit        = 4 << 20
+	// readLimit bounds every file read, including views read back by check.
+	// Rendering refuses a view over this size, so generate never writes a
+	// view that check would reject.
+	readLimit = 4 << 20
 )
 
 var outputs = []string{"trace.json", "trace.md", "trace.svg"}
@@ -70,7 +75,13 @@ func render(rep traceability.Report) (map[string][]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return map[string][]byte{"trace.json": j, "trace.md": rep.Markdown(), "trace.svg": rep.SVG()}, nil
+	out := map[string][]byte{"trace.json": j, "trace.md": rep.Markdown(), "trace.svg": rep.SVG()}
+	for _, name := range outputs {
+		if len(out[name]) > readLimit {
+			return nil, fmt.Errorf("%s/%s would be %d bytes, over the %d-byte output limit", viewDir, name, len(out[name]), readLimit)
+		}
+	}
+	return out, nil
 }
 
 func run(args []string, dir string, stdout, stderr io.Writer) int {
@@ -105,6 +116,11 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 		}
 		return 2
 	}
+	want, err := render(rep)
+	if err != nil {
+		fmt.Fprintln(stderr, err)
+		return 2
+	}
 	switch args[0] {
 	case "validate":
 		s := rep.Summary
@@ -130,11 +146,6 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 		}
 		return 0
 	case "check":
-		want, err := render(rep)
-		if err != nil {
-			fmt.Fprintln(stderr, err)
-			return 2
-		}
 		stale := 0
 		for _, name := range outputs {
 			got, err := regular(root, viewDir+"/"+name)
@@ -149,11 +160,6 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stdout, "views up to date")
 		return 0
 	default: // generate
-		want, err := render(rep)
-		if err != nil {
-			fmt.Fprintln(stderr, err)
-			return 2
-		}
 		if err := write(root, want); err != nil {
 			fmt.Fprintln(stderr, err)
 			return 2
@@ -164,7 +170,10 @@ func run(args []string, dir string, stdout, stderr io.Writer) int {
 }
 
 // write refuses a symlinked or non-directory view directory and non-regular
-// existing outputs, then replaces each output through a temporary file.
+// existing outputs. It then creates every temporary file exclusively under a
+// random name, so a planted file or symlink is never opened or followed, and
+// renames them over the outputs. On error it removes only the temporaries it
+// created. It is not atomic across the three files.
 func write(root *os.Root, files map[string][]byte) error {
 	if s, err := root.Lstat(viewDir); err == nil {
 		if !s.IsDir() {
@@ -181,18 +190,42 @@ func write(root *os.Root, files map[string][]byte) error {
 		p := viewDir + "/" + name
 		if s, err := root.Lstat(p); err == nil && !s.Mode().IsRegular() {
 			return errors.New(p + ": not a regular file")
+		} else if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return err
+		}
+	}
+	created := map[string]string{}
+	cleanup := func() {
+		for _, tmp := range created {
+			root.Remove(tmp)
 		}
 	}
 	for _, name := range outputs {
-		p := viewDir + "/" + name
-		tmp := p + ".tmp"
-		if err := root.WriteFile(tmp, files[name], 0o644); err != nil {
+		var r [8]byte
+		if _, err := rand.Read(r[:]); err != nil {
+			cleanup()
 			return err
 		}
-		if err := root.Rename(tmp, p); err != nil {
-			root.Remove(tmp)
+		tmp := viewDir + "/." + name + "." + hex.EncodeToString(r[:]) + ".tmp"
+		f, err := root.OpenFile(tmp, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+		if err != nil {
+			cleanup()
 			return err
 		}
+		created[name] = tmp
+		_, werr := f.Write(files[name])
+		cerr := f.Close()
+		if werr != nil || cerr != nil {
+			cleanup()
+			return errors.Join(werr, cerr)
+		}
+	}
+	for _, name := range outputs {
+		if err := root.Rename(created[name], viewDir+"/"+name); err != nil {
+			cleanup()
+			return err
+		}
+		delete(created, name)
 	}
 	return nil
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -125,5 +126,87 @@ func TestUsage(t *testing.T) {
 		if code, out, _ := exec(t, dir, args...); code != 2 || out != "" {
 			t.Errorf("%v: %d %q", args, code, out)
 		}
+	}
+}
+
+// A planted temporary-name symlink must not redirect generate's writes onto an
+// input or an unrelated file inside the root.
+func TestPlantedTemporarySymlinksAreNotFollowed(t *testing.T) {
+	dir := fixture(t)
+	model := filepath.Join(dir, modelPath)
+	sentinel := filepath.Join(dir, "sentinel.txt")
+	os.WriteFile(sentinel, []byte("unrelated"), 0o644)
+	modelBefore, _ := os.ReadFile(model)
+	os.MkdirAll(filepath.Join(dir, viewDir), 0o755)
+	os.Symlink("../../"+modelPath, filepath.Join(dir, viewDir, "trace.json.tmp"))
+	os.Symlink("../../sentinel.txt", filepath.Join(dir, viewDir, "trace.md.tmp"))
+	if code, _, e := exec(t, dir, "generate"); code != 0 {
+		t.Fatalf("generate: %d %s", code, e)
+	}
+	if b, _ := os.ReadFile(model); !bytes.Equal(b, modelBefore) {
+		t.Fatal("model input overwritten")
+	}
+	if b, _ := os.ReadFile(sentinel); string(b) != "unrelated" {
+		t.Fatal("unrelated file overwritten")
+	}
+	for _, name := range outputs {
+		s, err := os.Lstat(filepath.Join(dir, viewDir, name))
+		if err != nil || !s.Mode().IsRegular() {
+			t.Fatalf("%s is not a regular output", name)
+		}
+	}
+	for _, name := range []string{"trace.json.tmp", "trace.md.tmp"} {
+		if s, err := os.Lstat(filepath.Join(dir, viewDir, name)); err != nil || s.Mode()&os.ModeSymlink == 0 {
+			t.Fatalf("pre-existing %s was replaced or removed", name)
+		}
+	}
+	if code, _, _ := exec(t, dir, "check"); code != 0 {
+		t.Fatalf("check after generate: %d", code)
+	}
+}
+
+// A failed write leaves no temporary files and does not touch final outputs.
+func TestFailedGenerateLeavesNoTemporaries(t *testing.T) {
+	dir := fixture(t)
+	if code, _, _ := exec(t, dir, "generate"); code != 0 {
+		t.Fatal("generate")
+	}
+	before, _ := os.ReadFile(filepath.Join(dir, viewDir, "trace.json"))
+	os.Remove(filepath.Join(dir, viewDir, "trace.svg"))
+	os.Mkdir(filepath.Join(dir, viewDir, "trace.svg"), 0o755) // non-regular output
+	if code, _, _ := exec(t, dir, "generate"); code != 2 {
+		t.Fatalf("generate over a directory output: %d", code)
+	}
+	entries, _ := os.ReadDir(filepath.Join(dir, viewDir))
+	if len(entries) != 3 {
+		t.Fatalf("leftover files: %v", entries)
+	}
+	if after, _ := os.ReadFile(filepath.Join(dir, viewDir, "trace.json")); !bytes.Equal(before, after) {
+		t.Fatal("refused generate changed an output")
+	}
+}
+
+// Inputs that render a view over the output limit are refused by every
+// subcommand before anything is written, so generate never produces views that
+// check then rejects.
+func TestOversizeOutputIsRefusedBeforeWriting(t *testing.T) {
+	dir := fixture(t)
+	name := strings.Repeat("n", 17000)
+	cat := `{"schema":"lifecycle-semantic-oracle-v2","sequences":[{"caseId":"big","name":"` + name + `","executionStatus":"executable"}],"refusals":[],"special":[]}`
+	os.WriteFile(filepath.Join(dir, catalogPath), []byte(cat), 0o644)
+	reqs := []string{}
+	for i := 0; i < 256; i++ {
+		reqs = append(reqs, fmt.Sprintf(`{"id":"UR-%d","title":"T","statement":"S%d","modelLinks":[{"kind":"state","id":"Done"}],"acceptanceLinks":[{"caseId":"big"}]}`, i, i))
+	}
+	doc := `{"formatVersion":"lifecycle-requirements-json/v1","modelId":"TaskLifecycleExample","acceptanceCatalog":"lifecycle-semantic-oracle-v2","requirements":[` + strings.Join(reqs, ",") + `]}`
+	os.WriteFile(filepath.Join(dir, requirementsPath), []byte(doc), 0o644)
+	for _, cmd := range []string{"validate", "generate", "check"} {
+		code, out, errs := exec(t, dir, cmd)
+		if code != 2 || out != "" || !strings.Contains(errs, "output limit") {
+			t.Fatalf("%s: %d %q %q", cmd, code, out, errs)
+		}
+	}
+	if _, err := os.Stat(filepath.Join(dir, viewDir)); !os.IsNotExist(err) {
+		t.Fatal("refused generate created the view directory")
 	}
 }

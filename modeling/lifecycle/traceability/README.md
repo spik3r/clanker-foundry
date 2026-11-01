@@ -37,12 +37,21 @@ and owns only [`trace.json`](view/trace.json), [`trace.md`](view/trace.md) and
 |---|---|
 | 0 | Valid. `validate` lists gaps on stdout; `check` found the views current. |
 | 1 | `check` found a missing or stale view. Nothing is written. |
-| 2 | Invalid requirements, unreadable model or catalog, symlinked input or output, or bad usage. Issues go to stderr; stdout is empty. |
+| 2 | Invalid requirements, unreadable model or catalog, symlinked input or output, a view that would exceed the 4 MiB output limit, or bad usage. Issues go to stderr; stdout is empty. |
 | 3 | `validate -complete` only: valid, but some requirement has a gap, a model element is untraced, or a case is unlinked. |
 
+Every subcommand renders all three views first and refuses with exit 2 if any
+would exceed 4 MiB, the same limit `check` uses to read them back. So
+`generate` never writes views that `check` then rejects, and `validate` does not
+accept inputs that `generate` cannot write.
+
 `generate` refuses a symlinked or non-directory `view/` and non-regular output
-files, then replaces each file through a temporary name. It is a single-writer
-tool for a trusted checkout, like `modelc`.
+files. It creates each temporary file exclusively (`O_EXCL`) under a random
+hidden name in `view/`, so a planted file or symlink is never opened or
+followed, then renames the temporaries over the outputs. On error it removes
+only the temporaries it created. The three renames are not one atomic step. It
+is a single-writer tool for a trusted checkout, like `modelc`; it makes no claim
+against a concurrent hostile writer.
 
 `TestCommittedViewsMatchGeneration` fails when the committed views are stale, so
 the existing `model-lifecycle-go` CI job (`go test ./...`) covers drift without a
