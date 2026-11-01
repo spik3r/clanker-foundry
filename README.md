@@ -11,8 +11,9 @@ use repeatable tools to derive code and views and check them against independent
 written expectations. The model here is a structured design, not the AI itself.
 
 **Start with [the plain-language pipeline guide](docs/model-driven-pipeline.md).**
-It explains the goal, the key concepts, a workshop analogy and two diagrams,
-with a clear boundary between the working lifecycle example and future plans.
+It explains the ideal outcome, reasons for the approach, key concepts and a
+workshop analogy, with diagrams separating human, AI and non-AI tooling roles.
+It keeps the working lifecycle example distinct from future plans.
 Deterministic generation makes results reproducible; it does not make them correct.
 
 For the runnable example, see the [lifecycle demo](modeling/lifecycle/README.md)

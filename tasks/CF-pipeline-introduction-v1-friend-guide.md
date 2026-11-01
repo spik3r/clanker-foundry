@@ -1,6 +1,6 @@
 ---
 id: CF-pipeline-introduction-v1
-status: in-progress
+status: review
 owner: Astra pipeline introduction
 repositories: [spik3r/clanker-foundry]
 ---
@@ -91,3 +91,26 @@ that determinism gives repeatability rather than correctness. Human authorizatio
 and independently specified checks remain necessary. Verify the supplied image
 visually, its relative link and the final committed evidence. The previous bundle
 is retained; no new publication route, merge or activation is authorized here.
+
+## End-state and image revision result
+
+Added the ideal finished experience, reasons for the approach and the roles image
+at `docs/assets/pipeline-roles.png`. The image is marked as a future target. Its
+adjacent caption distinguishes a role overview from a precise execution flow,
+requires independent checks and human authorization before the final outcome,
+and states that AI-drafted cases are not independent evidence by themselves.
+The new claims are aspirations, not measured cost, speed or correctness gains.
+
+The supplied 1672 by 941 PNG was visually inspected and copied without alteration.
+Its SHA-256 is `3de245a969f96bd23965bedd737b296dcca3b075324afbd260ef4cb492e4daa4`.
+A separate read-only reviewer checked the new text and the image with its caption;
+no blocking findings remain. The image should stay with that explanatory caption.
+
+Final local checks were rerun: pack and relative links pass, whitespace passes,
+Project Memory regressions pass 143 tests, all 25 lifecycle Go packages pass,
+model validation and generation/trace checks pass, and scenario replay matches
+all four cases and thirteen steps. Executable code and model artifacts remain
+unchanged. The known missing GNU Stow and optional skills-ref limitations remain;
+no installer or hosted-CI pass is claimed. The earlier full-history bundle is
+preserved byte-for-byte. No further publication attempt or authority expansion
+was made for this revision.

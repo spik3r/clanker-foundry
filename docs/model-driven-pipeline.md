@@ -9,18 +9,40 @@ This is the direction we are building toward, not a claim that Foundry can
 already turn any idea into a finished app. A small task-lifecycle example works
 today. The broader pipeline still needs integration and review.
 
-## Why put a model between a conversation and code?
+## What would the ideal finished experience look like?
+
+A person describes the outcome, constraints and examples of success or failure.
+AI helps turn that brief into explicit requirements and a proposed design, asking
+about gaps rather than silently deciding. People review the meaning. Tools then
+produce the supported code and views and run checks against independently stated
+expectations. People review the evidence and authorize integration or ask for
+changes.
+
+The ideal result is **working software with an understandable, versioned account
+of what it should do, why it behaves that way and what was actually checked**.
+Changing a requirement should reveal which rules, outputs and evidence need
+attention, instead of leaving code, diagrams and old approvals out of step.
+This is the intended end state, not functionality fully delivered today, and not
+a promise to generate every part of an application without engineering work.
+
+## Why try this approach?
 
 A request like "finish a task only after review" leaves questions: who may
 review, what exactly was reviewed, and does that review survive a later edit?
-Asking AI to write code immediately can hide those decisions in the implementation.
-Writing a diagram separately can leave it describing yesterday's behavior.
+Putting an explicit model between the conversation and code is intended to:
 
-Instead, make the decisions visible before building. Keep the accepted rules in
-a structured model, derive the code and explanatory views from that model, and
-retain separate evidence about why the rules are wanted and how they were checked.
-The aim is less repeated interpretation and a clearer review of each change,
-not removing people from decisions.
+- **Expose assumptions early:** review a rule before it is buried in code.
+- **Reduce drift:** derive code and explanatory views from the same accepted rules.
+- **Make changes easier to inspect:** retain versions and show which evidence is
+  stale, rather than treating an earlier pass as valid forever.
+- **Use AI where judgment helps:** exploring and drafting, while fixed programs
+  handle repeatable translation and comparisons.
+- **Make errors easier to challenge:** compare results with independent
+  expectations instead of letting generated code define its own success.
+
+These are reasons to test the approach, not measured claims of lower cost, fewer
+bugs or faster delivery. Modeling also adds work and deliberately limits what the
+current tools can express.
 
 ## The few concepts to know
 
@@ -38,6 +60,27 @@ Internally, the generator uses a **typed intermediate representation (IR)**: the
 model's meaning separated from its file format. JSON is the current input format,
 not the long-term definition of the design language. Any future format adapter
 must preserve the supported meaning or reject what it cannot represent.
+
+## Who does what?
+
+![Human goals and constraints feed AI-assisted clarification and drafting; reviewed models go to non-AI validation, generation and test tools; people review evidence and authorize the next step.](assets/pipeline-roles.png)
+
+The rows summarize responsibilities, not every execution step or approval gate.
+The final reviewed result requires independent checks and human authorization,
+not just generation. This is a future target, not a fully connected service
+available today.
+
+**Human input** supplies goals, constraints, real examples and choices.
+**AI work** helps clarify and draft requirements, models, tests and
+surrounding code; its output remains a proposal. **Work outside AI** uses ordinary
+programs to validate the supported model, generate artifacts, compare test results
+and detect stale evidence. AI may invoke those tools, but does not replace their
+algorithms or decide that a failing check passed.
+
+AI-drafted acceptance cases are proposals, not independent evidence by themselves.
+Their expected results need independent checking against the requirements, not
+copying from the generator's output. Humans remain responsible for reviewing the
+meaning and making the authorization decisions.
 
 ## The end-to-end goal
 
