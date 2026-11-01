@@ -43,13 +43,60 @@ tier="$(awk '
   exit 1
 }
 
+# Read a mapping file as data and print the value for key, if present. The whole
+# file is checked first, so a duplicate or malformed entry fails even when it is
+# not the requested key. Messages name the file and line but never echo values.
+read_map() {
+  LC_ALL=C awk -v key="$1" -v label="$3" '
+    function bad(message) {
+      printf "%s:%d: %s\n", label, NR, message > "/dev/stderr"
+      failed = 1
+      exit 1
+    }
+    /^[[:space:]]*(#|$)/ { next }
+    {
+      eq = index($0, "=")
+      name = substr($0, 1, eq - 1)
+      value = substr($0, eq + 1)
+      if (eq == 0 || name !~ /^[a-z][a-z0-9-]*\.[a-z][a-z0-9-]*$/ ||
+          value !~ /^[[:graph:]]+$/ || index(value, "=")) {
+        bad("expected <client>.<tier>=<model>")
+      }
+      if (name in first_line) {
+        bad("duplicate key " name " (first defined on line " first_line[name] ")")
+      }
+      first_line[name] = NR
+      entries++
+      if (name == key) found = value
+    }
+    END {
+      if (failed) exit 1
+      if (entries == 0) {
+        printf "%s: no model mappings\n", label > "/dev/stderr"
+        exit 1
+      }
+      if (found != "") print found
+    }
+  ' "$2"
+}
+
+key="$client.$tier"
+[[ -f "$map_file" ]] || {
+  printf 'Missing model map: agents/model-map.conf\n' >&2
+  exit 1
+}
+shared_model="$(read_map "$key" "$map_file" agents/model-map.conf)" || exit 1
+
+# A local file that exists must be valid; only a missing key falls back.
 model=""
-if [[ -f "$local_map_file" ]]; then
-  model="$(awk -F= -v key="$client.$tier" '$1 == key { print $2; exit }' "$local_map_file")"
+if [[ -e "$local_map_file" || -L "$local_map_file" ]]; then
+  [[ -f "$local_map_file" ]] || {
+    printf 'Not a regular file: agents/model-map.local.conf\n' >&2
+    exit 1
+  }
+  model="$(read_map "$key" "$local_map_file" agents/model-map.local.conf)" || exit 1
 fi
-if [[ -z "$model" ]]; then
-  model="$(awk -F= -v key="$client.$tier" '$1 == key { print $2; exit }' "$map_file")"
-fi
+[[ -n "$model" ]] || model="$shared_model"
 [[ -n "$model" ]] || {
   printf 'No model mapping for %s.%s\n' "$client" "$tier" >&2
   exit 1
