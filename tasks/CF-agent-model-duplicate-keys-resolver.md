@@ -46,3 +46,17 @@ fix. No merge, approval, deploy, auto-merge or agent launch.
 - Run the new test, installer tests where available, shell syntax, ShellCheck if
   available, pack validation, whitespace checks and committed Project Memory
   validation. Independently review the exact diff before publishing.
+
+## NUL-byte review follow-up
+
+The owner authorized Foundry implementation to take over the outstanding PR 13
+fix after review of head `877119947b5fe93e9b2816065229146287edae5e`.
+BSD awk can truncate a NUL-containing value or hide a NUL-prefixed duplicate or
+malformed record. Reject NUL bytes before awk reads either mapping file, including
+bytes in comments and at EOF. Preserve the existing author changes, defaults,
+override/fallback behavior and every earlier immutable lifecycle record.
+
+Use invented shared/local fixtures and raw output-file checks. Verify the exact
+candidate independently on Linux and native macOS/BSD awk before treating the
+portability finding as resolved. Keep the existing PR draft; no approval, merge
+or deployment is part of this follow-up.

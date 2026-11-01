@@ -44,7 +44,8 @@ reset_maps() {
 # run <client> <agent>: sets status, out and err from one resolver run.
 run() {
   status=0
-  out="$(bash "$fixture/scripts/agent-model.sh" "$@" 2>"$test_root/err")" || status=$?
+  bash "$fixture/scripts/agent-model.sh" "$@" >"$test_root/out" 2>"$test_root/err" || status=$?
+  out="$(cat "$test_root/out")"
   err="$(cat "$test_root/err")"
 }
 
@@ -67,7 +68,7 @@ expect_error() {
   if [[ $status -ne $expected_status ]]; then
     fail "$name: expected exit $expected_status, got $status (stdout '$out')"
   fi
-  if [[ -n "$out" ]]; then
+  if [[ -s "$test_root/out" ]]; then
     fail "$name: stdout must be empty on error, got '$out'"
   fi
   if [[ "$err" != *"$message"* ]]; then
@@ -150,6 +151,45 @@ printf 'claude.fast=invented-local\n' > "$local_map"
 expect_error 'shared duplicate with local override' 1 'agents/model-map.conf:2: duplicate key' claude fixture-fast
 rm -f "$shared" "$local_map"
 expect_error 'missing shared file' 1 'Missing model map: agents/model-map.conf' claude fixture-fast
+
+# Reject NUL bytes before an awk implementation can truncate or hide a record.
+# The fixture bytes are written directly, never held in shell variables. Check
+# comments and EOF too, so a text parser cannot silently skip malformed bytes.
+for location in shared local; do
+  reset_maps
+  printf 'claude.fast=invented-shared\n' > "$shared"
+  target="$shared"
+  label=agents/model-map.conf
+  if [[ "$location" == local ]]; then
+    target="$local_map"
+    label=agents/model-map.local.conf
+  fi
+  while IFS='|' read -r name content line; do
+    printf '%b' "$content" > "$target"
+    expect_error "$location NUL $name" 1 "$label:$line: NUL byte is not allowed" claude fixture-fast
+  done <<'NUL_CASES'
+before value|claude.fast=\000invented-a\n|1
+inside value|claude.fast=invented-\000a\n|1
+after value|claude.fast=invented-a\000\n|1
+before key|\000claude.fast=invented-a\n|1
+inside key|claude.fa\000st=invented-a\n|1
+before duplicate|claude.fast=invented-a\n\000claude.fast=invented-b\n|2
+before malformed record|claude.fast=invented-a\n\000invalid record\n|2
+blank-looking record|claude.fast=invented-a\n\000\n|2
+inside comment|# note\000hidden\nclaude.fast=invented-a\n|1
+trailing comment|claude.fast=invented-a\n# note\000hidden\n|2
+EOF record|claude.fast=invented-a\n\000|2
+EOF value|claude.fast=invented-a\000|1
+after blank lines|\n\nclaude.fast=invented-a\n\000invalid\n|4
+multiple bytes|# note\000hidden\nclaude.fast=invented-a\000\n|1
+NUL_CASES
+done
+
+# A valid local override must not hide malformed bytes in the shared file.
+printf 'claude.fast=invented-shared\n\000invalid\n' > "$shared"
+printf 'claude.fast=invented-local\n' > "$local_map"
+expect_error 'shared NUL with local override' 1 'agents/model-map.conf:2: NUL byte is not allowed' claude fixture-fast
+rm -f "$local_map"
 
 # Comments, indented comments and blank lines are ignored.
 printf '# header\n\n   # indented\n\t\nclaude.fast=invented-a\n\n# trailer\n' > "$shared"

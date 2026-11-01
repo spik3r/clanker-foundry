@@ -47,6 +47,14 @@ tier="$(awk '
 # file is checked first, so a duplicate or malformed entry fails even when it is
 # not the requested key. Messages name the file and line but never echo values.
 read_map() {
+  local prefix nul_line
+  # BSD awk treats NUL as a string terminator, so reject it before parsing.
+  # Bash 3.2 read with an empty delimiter detects the byte without storing it.
+  if LC_ALL=C IFS= read -r -d '' prefix < "$2"; then
+    nul_line="$(printf '%s' "$prefix" | LC_ALL=C wc -l)"
+    printf '%s:%d: NUL byte is not allowed\n' "$3" "$((nul_line + 1))" >&2
+    return 1
+  fi
   LC_ALL=C awk -v key="$1" -v label="$3" '
     function bad(message) {
       printf "%s:%d: %s\n", label, NR, message > "/dev/stderr"

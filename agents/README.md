@@ -45,6 +45,7 @@ and line on stderr when:
 
 - a key appears twice in the same file, even with the same value;
 - a line does not match the format;
+- a NUL byte occurs anywhere, including comments or the end of the file;
 - a file has no mappings, including an empty or comment-only local file.
 
 A key in the local file replaces the shared entry. A key the local file does not

@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "719112e5-38f2-4a20-9a8e-b952ad4f1329",
+  "runId": "fa9ca8d9-6b69-4542-b963-d5e555ba2878",
+  "kind": "complete",
+  "parents": [
+    "47dc4f65-da9b-473c-8167-75f3cbed4bac"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "ae7b408a08e8cd0b2e8bbcbd4e1796860505e9cd",
+    "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2ce43a69e8baa79c5760e19a5fa21f7bbf01f578b6e215c417e1c90c7ec77b42"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/agent-model-ambiguous-selection-661d1d",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/13",
+  "at": "2026-11-01T19:12:56.046Z",
+  "summary": "Reject NUL bytes in both mapping files before awk, preserving prior resolver behavior and author changes; add raw-output regressions and document the owner-authorized follow-up.",
+  "next": "Commit, validate the actual full PR diff against current main, publish normally to the unchanged draft PR 13 branch, and verify exact-head hosted CI; no approval, merge or deployment.",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tests/test-install.sh",
+    "agents/README.md",
+    "tasks/CF-agent-model-duplicate-keys-resolver.md"
+  ],
+  "validation": "Linux Bash 5.2.37/mawk 1.3.4: maintained resolver suite, 512 independent byte-value cases, 12 targeted NUL probes, shell syntax, pack validator and whitespace pass. New suite against unchanged PR baseline fails 37 assertions, including four accepted NUL-comment cases. Independent native macOS reviewer verified exact revised source/test hashes: 75/75 probes, maintained resolver and installer suites, ShellCheck, syntax and pack validation pass; its baseline was 41 pass/34 fail. Linux GNU Stow and ShellCheck are absent; skills-ref optional check skipped locally. All prior lifecycle bytes preserved. Committed validation and hosted CI remain to be checked after this record.",
+  "snapshot": {
+    "scripts/agent-model.sh": {
+      "blob": "fbe0220287efaaefc6dda65b4a778c0c2bfb3c86",
+      "mode": "100755"
+    },
+    "tests/test-agent-model.sh": {
+      "blob": "d3c7828b9363051477c8cbb26c14ba766e5c7401",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "210810eec783c5f72688fa81fbfb15276a426dc4",
+      "mode": "100755"
+    },
+    "agents/README.md": {
+      "blob": "c1dfafbc5b64c15258d8653c13cbf06b62a474ad",
+      "mode": "100644"
+    },
+    "tasks/CF-agent-model-duplicate-keys-resolver.md": {
+      "blob": "44a59b158cdf766971fb1ca183642d14e419446b",
+      "mode": "100644"
+    }
+  }
+}
