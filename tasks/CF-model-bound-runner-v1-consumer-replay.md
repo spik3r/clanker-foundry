@@ -1,6 +1,6 @@
 ---
 id: CF-model-bound-runner-v1
-status: in-progress
+status: review
 owner: Byte model-bound consumer integration
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-scenarios-v1, CF-acceptance-authoring-v1]
@@ -105,3 +105,48 @@ drift, authoring schema, repository validation, Project Memory regressions and f
 committed-diff validation. Check behavioral mutants against frozen expectations.
 Record actual results and any limitations; prepare one draft with full history for
 independent review, not activation or deployment.
+
+## Implementation and independent review
+
+Implemented at `238310af37cfda0d2c599ad992f2f01790f55b05`, tree
+`419c6602ecf0c9e2e407987cce9884728325f58f`. A separate model/scenario reviewer
+read that exact source and found no remaining blocking issue. Its independent
+same-thread closure probe confirms that callback mutation cannot rewrite later
+frozen expectations or the observed pre-invocation source digest. The opt-in
+runner snapshots the complete validated suite before invoking application code.
+This is independent assistant review, not authenticated human approval.
+
+The separate fixture author froze all eight custom inputs at `8490187`; the
+expected inventory remains SHA-256
+`119a37c0298dea6e122c3a4f62b2cb1bddbac24e6fc91feadbc2723360e9550f`.
+Both distinct generated models match seven cases and fourteen steps, including
+review/rework and the intentional changed-actor rule. Two disposable generated
+code mutants compile and fail the frozen oracle behaviorally; restoration passes.
+Four additional scratch runner mutants are behaviorally killed: missing literal
+snapshot, source hashing after callbacks, missing provider protocol checking and
+silent suite rebinding. No frozen expected result was refreshed.
+
+Legacy byte-parity inventory was frozen before implementation at `2635a04`, SHA-256
+`58194fa32fc0d929248892533ca21e8188c6546def68a393cab630f4f9385fa8`.
+The final source passes those hashes and 947 separate baseline-versus-final CLI
+comparisons (596 modelplay, 351 modelacceptance), including exact exits/stdout/stderr.
+Existing compiler, generated files, IR, schema, CLI source and runtime are unchanged.
+
+Actual Go 1.27.3 offline full race tests pass: 36 packages total, 35 with tests and
+modelc with no test files. Full vet, modelc validate/check, modeltrace check,
+authoring schema (two tests), repository validation, 143 Project Memory regressions,
+formatting and whitespace pass. Independent reviewer full-module race/vet and
+external-module replay also pass on the exact implementation source.
+
+The host's default `/tmp/.git` is not a valid repository and caused the pre-existing
+clean-regeneration test's VCS-stamped build to fail. Final full runs use an ignored
+task-local temporary directory instead; no host/security setting or unrelated test
+was changed. The new external-consumer harness itself disables VCS stamping and
+ambient Go configuration. A fresh offline npm install lacked a cached tarball;
+schema tests used already available Ajv 8.20.0 dependencies whose lockfile matched
+exactly, not a claimed fresh install. Optional skills-ref was unavailable.
+
+Local implementation is complete and remains for draft publication and hosted CI.
+This producer seam is not consumer adoption, trusted immutable invocation, real
+review/approval, deployment or worker activation. Held consumer correctness and
+invocation gates and copied-source qualification pins remain unresolved here.
