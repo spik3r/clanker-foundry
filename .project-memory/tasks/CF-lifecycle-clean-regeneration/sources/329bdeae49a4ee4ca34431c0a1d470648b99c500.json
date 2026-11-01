@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "329bdeae49a4ee4ca34431c0a1d470648b99c500",
+  "id": "CF-lifecycle-clean-regeneration",
+  "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+  "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+  "record": "---\nid: CF-lifecycle-clean-regeneration\nstatus: in-progress\nowner: Codex reproducibility contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Verify clean lifecycle regeneration\n\n## Implementation claim\n\nOn `codex/lifecycle-clean-regeneration`, starting from main `9d06274`, add a\nvalidation-only, offline integration test that copies the lifecycle module into a\ndisposable directory, removes the eight committed generator outputs, regenerates\nboth compiler and requirements trace outputs with the pinned Go toolchain, and\ncompares their exact bytes with the originals across two generations. Exercise\nfrozen acceptance and authoring Go tests against the regenerated copy and verify\nthat schema, model, catalog, requirements and expected-result files are unchanged.\nUse fixed explicit output names; detect drift in each output without refreshing\nfrozen expectations. The existing schema CI still checks the schema with Ajv.\n\nScope: new `modeling/lifecycle/reproducibility/` test and README, this record,\nand its own immutable Project Memory files. Existing CI runs `go test ./...`;\nno production runner, generator change, deployment or activation. Exclude PR 20,\nintake, model authoring, held reviewpack/modelintakecheck and tutorial lanes.\nMain, open PRs, published branches and local claims were inspected; a local\nclaim is not a shared lock. Recheck live work before publication.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+        "id": "CF-lifecycle-clean-regeneration",
+        "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
