@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "22c8648e-e647-4c82-a6b6-5a6df0c5eb51",
+  "runId": "958378bc-5c3d-445a-874a-77332df8fba4",
+  "kind": "checkpoint",
+  "parents": [
+    "241986fc-b74a-484a-9160-131e7e94325f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-raw-input-adapter-v1",
+    "path": "tasks/CF-model-raw-input-adapter-v1-go-adapter.md",
+    "revision": "a23217515fde1833803cba20df5fc2bcd0b5ab99",
+    "blob": "368981314e236853a164dca10b3c8b6f31ed3046",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5362361ca0c476873f0df51b08d25ab0786c08751e9c0b8b25791888d32779c8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/exciting-einstein-h5r52a",
+  "pullRequest": null,
+  "at": "2026-11-01T10:18:57.456Z",
+  "summary": "Correct declared scope: the start event's --files was one comma-joined string, not six paths. No implementation edits exist yet.",
+  "next": "Freeze independent expected outcomes, then implement the adapter",
+  "files": [
+    "modeling/lifecycle/rawinput/adapter.go",
+    "modeling/lifecycle/rawinput/adapter_test.go",
+    "modeling/lifecycle/rawinput/README.md",
+    "modeling/lifecycle/rawinputacceptance/oracle_test.go",
+    "modeling/lifecycle/rawinputacceptance/expected.json",
+    "tasks/CF-model-raw-input-adapter-v1-go-adapter.md"
+  ]
+}
