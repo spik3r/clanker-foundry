@@ -1,0 +1,22 @@
+{
+  "formatVersion": "lifecycle-acceptance-authoring/v1",
+  "id": "tutorial_manifest_v2",
+  "author": "Example author (unverified label)",
+  "purpose": "Freeze independently stated lifecycle behaviors for tutorial revision 2.",
+  "modelDigest": "c9bd33388e7595872bfab1f33edf905e232243f21f252bf3672fad4d340df1b8",
+  "suiteSourceSha256": "149aeb2ebe4ebbaea661ae944a7b30f083be406d97394189c2049d82b351baaf",
+  "cases": [
+    {
+      "id": "blank_actor",
+      "intent": "A blank actor is refused and the draft is unchanged."
+    },
+    {
+      "id": "named_actor",
+      "intent": "A named actor can prepare a valid draft."
+    },
+    {
+      "id": "unknown_command",
+      "intent": "An unknown command returns INVALID_INPUT."
+    }
+  ]
+}
