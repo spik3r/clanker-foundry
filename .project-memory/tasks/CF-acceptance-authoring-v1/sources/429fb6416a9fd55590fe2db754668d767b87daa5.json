@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "429fb6416a9fd55590fe2db754668d767b87daa5",
+  "id": "CF-acceptance-authoring-v1",
+  "path": "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+  "blob": "590d45c49a4b485928ce406c56d193844262a579",
+  "record": "---\nid: CF-acceptance-authoring-v1\nstatus: in-progress\nowner: Codex acceptance-authoring contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Frozen independent scenario authoring\n\n## Implementation claim\n\nOn `codex/acceptance-authoring-v1` from main, add a small offline authoring\nmanifest and checker for literal scenario suites. Record a declared author,\npurpose and per-case intended behavior, pin the exact suite source hash and the\nsemantic model digest, compare both against independently supplied current bytes,\nand explicitly detect changed suite/model bindings. Never manufacture or refresh\nexpected results from observed output. Optional replay delegates exclusively to\nthe existing scenario runner and only after all identities and the compiled runner\nbinding match. Unknown or stale artifacts cannot yield a validated or replayed\nclaim. Author labels and hashes do not establish authorship, independence,\nauthentication, execution provenance, review, approval or authority.\n\nExact scope: `modeling/lifecycle/acceptanceauthor/`,\n`modeling/lifecycle/cmd/modelacceptance/`, this task and its own immutable Project\nMemory records only. No changes to PR15 traceability, intake or other worker's\nhandoff, scenario runner, generated code, held modelpatch, workflowacceptance,\nreviewpack, qualification or exporter. Held workflowacceptance is an integration\ntest over frozen candidate artifacts; it is not an authoring manifest or stale\nbinding check. Inspect live claims again before publishing. A local record is not\na shared lock.\n\n## Acceptance\n\nAfter genuine start, freeze independently specified literal behavior and expected\noutcomes before implementing the checker. Demonstrate a successful transition and\nan expected refusal, an intentionally wrong literal expectation, altered suite\nbytes, altered model meaning, invalid input, no stale replay, deterministic output,\nCLI error handling and unchanged source data. The existing scenario runner owns\nexecution and result comparisons. State precisely when stale or incompatible input\nhas not been fully validated. Run pinned Go race/vet/drift and repository checks,\nrecord completion, and prepare one draft for independent review if allowed. No\nmerge, deployment, worker activation or retry of a denied action.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+        "id": "CF-acceptance-authoring-v1",
+        "blob": "590d45c49a4b485928ce406c56d193844262a579",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

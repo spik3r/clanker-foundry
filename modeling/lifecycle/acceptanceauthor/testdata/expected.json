@@ -1,0 +1,28 @@
+{
+  "matchingCheck": {
+    "modelBinding": "current",
+    "suiteBinding": "current",
+    "suiteValidation": "valid",
+    "replay": "not-run"
+  },
+  "matchingReplay": {
+    "replay": "matched",
+    "casesCompleted": 2,
+    "stepsExecuted": 2
+  },
+  "changedModel": {
+    "modelBinding": "stale",
+    "suiteValidation": "not-checked",
+    "replay": "not-run"
+  },
+  "changedSuite": {
+    "suiteBinding": "stale",
+    "suiteValidation": "not-checked",
+    "replay": "not-run"
+  },
+  "wrongExpectation": {
+    "replay": "mismatched",
+    "casesCompleted": 0,
+    "stepsExecuted": 1
+  }
+}
