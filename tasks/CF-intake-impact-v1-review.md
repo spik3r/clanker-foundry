@@ -89,3 +89,28 @@ Run pinned offline full Go race tests, vet, modelc/modeltrace drift, repository
 validation and full committed Project Memory validation. Obtain independent
 source review; prepare one draft PR if permitted. No merge, deploy, activation,
 credential changes or reroute around a denied operation.
+
+## Implementation evidence
+
+The separate-assistant oracle was frozen in `00a5890` before implementation;
+its SHA-256 remains
+`08434f2445f8e79d5ba23f5490d4a77b8dc91adbef69fd975063b831a274e244`.
+Implementation commit `add7ecb6af75bef2fa659c147fff7409227d761a` passed separate
+source review and 633 independently constructed binary probes, including exact
+and plus-one request/observation limits, Unicode/control characters, native
+receipt and content hashes, no-op gaps, invalid transport and failed output.
+All six tested mutants compiled and were killed by the unchanged frozen tests:
+dropped unchanged gaps, conflated source/content identities, removed questions
+called resolved, omitted author changes, stripped receipt LF and omitted observed
+hash changes. This is separate assistant authorship/review, not person-level
+independence or authenticated execution evidence.
+
+Observed implementation checks: pinned offline Go 1.27.3 full race tests (29
+packages), vet, modelc validate/check, modeltrace validate/check, repository
+validation, 143 Project Memory helper regressions and the README commands passed.
+The optional skills-ref tool was unavailable. Existing model trace gaps remain
+12 requirements, 9 linked, 3 incomplete and one unlinked catalog case. Five
+pipeline tests distinguish source bytes from accepted model/requirements meaning
+and stale acceptance bindings without changing any declaration or frozen literal.
+Current-main integration and final full-diff lifecycle verification are recorded
+in the completion event, not inferred from this implementation-only result.
