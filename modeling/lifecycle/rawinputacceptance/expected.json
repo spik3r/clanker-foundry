@@ -250,32 +250,26 @@
    "expect": {
     "kind": "refused",
     "refusals": [
-     "G_independent"
+     "G_independent",
+     "G_owner"
     ],
     "unchanged": true
    },
-   "note": "ASSUMPTION: README says missing operands make ne false, so G_independent fails for an absent owner"
+   "note": "Absent owner: G_independent fails (a missing operand makes ne false) and G_owner fails (owner nonblank; T_approve lists G_owner in examples/lifecycle.json). Corrected after the first run; the frozen text expected only G_independent."
   },
   {
-   "id": "ok-approve-owner-empty",
-   "group": "ok",
+   "id": "refuse-review-owner-empty",
+   "group": "refused-review",
    "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
    "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3e}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
    "expect": {
-    "kind": "ok",
-    "transition": "T_approve",
-    "task": {
-     "id": "task-1",
-     "state": "Done",
-     "revision": "4",
-     "outcome": "Ship outcome",
-     "acceptance": [
-      "Verified"
-     ],
-     "owner": ""
-    }
+    "kind": "refused",
+    "refusals": [
+     "G_owner"
+    ],
+    "unchanged": true
    },
-   "note": "ASSUMPTION: present empty owner differs from reviewer-1, so G_independent passes and no other guard needs an owner"
+   "note": "A present empty owner is not absent, so G_independent passes, but G_owner (owner nonblank) fails; T_approve lists G_owner in examples/lifecycle.json. Corrected after the first run; the frozen text wrongly expected approval (case ok-approve-owner-empty)."
   },
   {
    "id": "ok-approve-unicode-html-digest",

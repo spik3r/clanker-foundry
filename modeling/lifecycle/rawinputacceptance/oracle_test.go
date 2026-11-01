@@ -254,6 +254,23 @@ func inputTask(t *testing.T, raw string) lifecycle.Task {
 	return w.task(t)
 }
 
+// refusedTransition is the transition ID a guard or limit refusal reports. The
+// model (examples/lifecycle.json) names each transition "T_" plus its trigger,
+// and a refusal for an unavailable state/trigger pair names none.
+func refusedTransition(t *testing.T, rawCmd string, refusals []string) string {
+	t.Helper()
+	if len(refusals) == 1 && refusals[0] == "ILLEGAL_TRANSITION" {
+		return ""
+	}
+	var c struct {
+		Type string `json:"type"`
+	}
+	if err := json.Unmarshal([]byte(rawCmd), &c); err != nil || c.Type == "" {
+		t.Fatalf("refused case needs a command type: %v", err)
+	}
+	return "T_" + c.Type
+}
+
 func runCase(t *testing.T, c tcase, prevExpected map[string]lifecycle.Task) {
 	t.Helper()
 	rawTask, rawCmd := expand(t, c.Task), expand(t, c.Command)
@@ -290,7 +307,7 @@ func runCase(t *testing.T, c tcase, prevExpected map[string]lifecycle.Task) {
 			t.Fatal("refused expectation needs unchanged or a task")
 		}
 		wantR := lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: lifecycle.ModelDigest, OK: false,
-			TransitionID: "", Task: &want, Refusals: e.Refusals}
+			TransitionID: refusedTransition(t, rawCmd, e.Refusals), Task: &want, Refusals: e.Refusals}
 		if len(e.Refusals) == 0 {
 			t.Fatal("refused expectation without refusals")
 		}
