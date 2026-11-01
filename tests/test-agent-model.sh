@@ -144,7 +144,11 @@ rm -f "$local_map"
 expect_error 'empty shared file' 1 'agents/model-map.conf: no model mappings' claude fixture-fast
 printf 'claude.fast invented-a\n' > "$shared"
 expect_error 'malformed shared line' 1 'agents/model-map.conf:1: expected' claude fixture-fast
-rm -f "$shared"
+# A valid local override does not hide a broken shared file.
+printf 'claude.fast=invented-a\nclaude.fast=invented-b\n' > "$shared"
+printf 'claude.fast=invented-local\n' > "$local_map"
+expect_error 'shared duplicate with local override' 1 'agents/model-map.conf:2: duplicate key' claude fixture-fast
+rm -f "$shared" "$local_map"
 expect_error 'missing shared file' 1 'Missing model map: agents/model-map.conf' claude fixture-fast
 
 # Comments, indented comments and blank lines are ignored.

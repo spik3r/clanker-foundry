@@ -39,7 +39,7 @@ overrides matching shared entries and stays out of Git and Stow. Run
 
 Both files are read as data, never run as shell. Each nonblank line is either a
 whole-line `#` comment or `<client>.<tier>=<model>`: lowercase key, no spaces, and
-a model value with no spaces or `=`. The resolver checks the shared file and, if
+a model value of printable ASCII with no spaces or `=`. The resolver checks the shared file and, if
 present, the local file before printing anything, and exits nonzero with the file
 and line on stderr when:
 

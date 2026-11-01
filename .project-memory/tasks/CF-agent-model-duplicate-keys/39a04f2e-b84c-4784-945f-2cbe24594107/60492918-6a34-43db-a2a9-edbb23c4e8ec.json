@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "60492918-6a34-43db-a2a9-edbb23c4e8ec",
+  "runId": "39a04f2e-b84c-4784-945f-2cbe24594107",
+  "kind": "complete",
+  "parents": [
+    "56791dca-d03f-4850-acb3-d596c88bf79b"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "ae7b408a08e8cd0b2e8bbcbd4e1796860505e9cd",
+    "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2ce43a69e8baa79c5760e19a5fa21f7bbf01f578b6e215c417e1c90c7ec77b42"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/agent-model-ambiguous-selection-661d1d",
+  "pullRequest": null,
+  "at": "2026-11-01T10:24:59.274Z",
+  "summary": "Full-scope completion including the task record. Applied review nits: README states model values are printable ASCII; test proves a valid local override does not hide a duplicate in the shared file",
+  "next": "Publish draft PR and check CI",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tests/test-install.sh",
+    "agents/README.md",
+    "tasks/CF-agent-model-duplicate-keys-resolver.md"
+  ],
+  "validation": "macOS, bash 3.2.57 and BSD awk: tests/test-agent-model.sh PASS; same suite against origin/main resolver fails 76 checks including order-dependent duplicates (a,b printed invented-a, b,a printed invented-b); tests/test-install.sh exit 0; bash -n OK; shellcheck exit 0 on three scripts; scripts/validate.sh PASS (skills-ref not installed); git diff --check clean. Independent reviewer-verifier: no blocking or should-fix findings. Linux mawk not run locally (Docker daemon down); CI pending",
+  "snapshot": {
+    "scripts/agent-model.sh": {
+      "blob": "6f516e4616e64d8f5cd17af8160e93f91ceaef3d",
+      "mode": "100755"
+    },
+    "tests/test-agent-model.sh": {
+      "blob": "eaa40ab1907e6e35e62b3da46758f4e8a5bef3e3",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "210810eec783c5f72688fa81fbfb15276a426dc4",
+      "mode": "100755"
+    },
+    "agents/README.md": {
+      "blob": "5eb5e076b959f7308eb550f64926a25f2aee90be",
+      "mode": "100644"
+    },
+    "tasks/CF-agent-model-duplicate-keys-resolver.md": {
+      "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+      "mode": "100644"
+    }
+  }
+}
