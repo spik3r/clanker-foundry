@@ -1,0 +1,8 @@
+{
+  "go": "go1.27.3",
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "generatorVersion": "lifecycle-go/v1",
+  "dependencies": "standard library only",
+  "normalOperation": "offline; GOTOOLCHAIN=local; no automatic downloads"
+}

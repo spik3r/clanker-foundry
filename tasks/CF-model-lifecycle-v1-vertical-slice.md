@@ -1,6 +1,6 @@
 ---
 id: CF-model-lifecycle-v1
-status: in-progress
+status: review
 owner: Astra model-first lead
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -154,3 +154,32 @@ independently and aim for one draft PR, not many competing integration PRs.
 Report denied actions exactly and stop them; no permission expansion, worker
 activation, private consumer source/data, registry publication, deployment or
 production replacement is part of this task.
+
+
+## Implemented ABI clarification and local review handoff
+
+The strict JSON guarantees above apply to the model-source adapter. The generated
+runtime accepts typed Go Task/Command values, not raw request JSON; it does not
+claim to detect omitted struct fields. Malformed typed input returns INVALID_INPUT
+with no returned Task and never mutates the supplied value. A valid request refused
+by state, guards or revision limit returns an unchanged deep copy. This clarifies
+"refusal" above rather than adding a request parser. Failed guard IDs are sorted.
+Acceptance entries are individually nonblank UTF-8 strings; ordered duplicates
+are permitted. Absent owner is nil; a present empty owner is a distinct typed value.
+Blank checks use Go strings.TrimSpace. The README defines the exact ABI and bounds.
+
+The implementation is isolated under the claimed module and new validation-only
+workflow. Generated tests assert model identity and structural edge properties;
+they do not claim to solve arbitrary guard satisfiability. Independently authored
+acceptance tests provide positive/negative example paths, explicit catalog coverage
+and mutation sensitivity. Two raw Task/Command JSON catalog cases remain marked
+pending because this demo deliberately has no such transport adapter.
+
+Local validation uses actual Go 1.27.3 Linux/amd64 with offline module resolution.
+The full Go race suite, static checks, deterministic regeneration, check-only
+no-write/symlink/collision tests, model-change demonstration, all 16 selected guard
+bypass mutations and the always-refuse mutation pass. The generated SVG was
+rendered and visually checked. Existing Node/runtime and Project Memory regression
+results and full-diff lifecycle validation are recorded in the completion event.
+Hosted exact-head CI remains a separate post-publication check; no merge,
+production replacement or standards conformance is implied by review status.

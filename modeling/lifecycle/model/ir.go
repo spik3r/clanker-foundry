@@ -180,7 +180,7 @@ func Validate(m Model) error {
 	if len(m.States) < 2 || len(m.States) > 16 || len(m.Guards) < 1 || len(m.Guards) > 64 || len(m.Requirements) < 1 || len(m.Requirements) > 64 || len(m.Transitions) < 1 || len(m.Transitions) > 32 {
 		return invalid("collection bounds")
 	}
-	ids := map[string]bool{}
+	ids := map[string]bool{m.ID: true}
 	add := func(id string) bool {
 		if !Identifier(id) || ids[id] {
 			return false
@@ -338,3 +338,6 @@ func Normalize(m Model) (Model, error) {
 	}
 	return m, nil
 }
+
+// TypeOf checks a bounded expression without a source-format dependency.
+func TypeOf(e Expr) (string, error) { n := 0; return exprType(e, 0, &n) }

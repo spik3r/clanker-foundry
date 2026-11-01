@@ -1,0 +1,572 @@
+{
+  "schema": "lifecycle-semantic-oracle-v2",
+  "digestPlaceholder": "$MODEL_DIGEST",
+  "baseTask": {
+    "id": "task-1",
+    "state": "Draft",
+    "revision": "0",
+    "outcome": "Ship outcome",
+    "acceptance": [
+      "Verified"
+    ],
+    "owner": "owner-1"
+  },
+  "reviewTemplate": {
+    "taskId": "task-1",
+    "taskRevision": "$CURRENT_REVISION",
+    "modelDigest": "$MODEL_DIGEST",
+    "reviewer": "reviewer-1",
+    "decision": "approved",
+    "taskDigest": "$CURRENT_TASK_DIGEST"
+  },
+  "defaults": {
+    "actor": "owner-1",
+    "expectedRevision": "$CURRENT_REVISION"
+  },
+  "sequences": [
+    {
+      "name": "happy path",
+      "steps": [
+        {
+          "type": "prepare",
+          "expectState": "Ready",
+          "expectTransition": "T_prepare"
+        },
+        {
+          "type": "start",
+          "expectState": "InProgress",
+          "expectTransition": "T_start"
+        },
+        {
+          "type": "requestReview",
+          "expectState": "InReview",
+          "expectTransition": "T_requestReview"
+        },
+        {
+          "type": "approve",
+          "actor": "reviewer-1",
+          "review": {},
+          "expectState": "Done",
+          "expectTransition": "T_approve"
+        }
+      ],
+      "caseId": "sequences-01",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "rework and approval",
+      "steps": [
+        {
+          "type": "prepare",
+          "expectState": "Ready",
+          "expectTransition": "T_prepare"
+        },
+        {
+          "type": "start",
+          "expectState": "InProgress",
+          "expectTransition": "T_start"
+        },
+        {
+          "type": "requestReview",
+          "expectState": "InReview",
+          "expectTransition": "T_requestReview"
+        },
+        {
+          "type": "requestChanges",
+          "actor": "reviewer-1",
+          "review": {
+            "decision": "changesRequested"
+          },
+          "expectState": "InProgress",
+          "expectTransition": "T_requestChanges"
+        },
+        {
+          "type": "requestReview",
+          "expectState": "InReview",
+          "expectTransition": "T_requestReview"
+        },
+        {
+          "type": "approve",
+          "actor": "reviewer-1",
+          "review": {},
+          "expectState": "Done",
+          "expectTransition": "T_approve"
+        }
+      ],
+      "caseId": "sequences-02",
+      "executionStatus": "executable"
+    }
+  ],
+  "refusals": [
+    {
+      "name": "stale command revision",
+      "state": "Draft",
+      "type": "prepare",
+      "command": {
+        "expectedRevision": "0"
+      },
+      "revision": "1",
+      "guards": [
+        "G_revision"
+      ],
+      "caseId": "stale-command",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "blank outcome",
+      "state": "Draft",
+      "type": "prepare",
+      "task": {
+        "outcome": " \t\n"
+      },
+      "guards": [
+        "G_outcome"
+      ],
+      "caseId": "refusals-02",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "empty criteria",
+      "state": "Draft",
+      "type": "prepare",
+      "task": {
+        "acceptance": []
+      },
+      "guards": [
+        "G_acceptance"
+      ],
+      "caseId": "refusals-03",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "wrong owner actor",
+      "state": "Ready",
+      "type": "start",
+      "command": {
+        "actor": "other"
+      },
+      "guards": [
+        "G_ownerCompatible"
+      ],
+      "caseId": "assigned-wrong-actor",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "request review owner actor",
+      "state": "InProgress",
+      "type": "requestReview",
+      "command": {
+        "actor": "other"
+      },
+      "guards": [
+        "G_ownerActor"
+      ],
+      "caseId": "refusals-05",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "blank reviewer and actor",
+      "state": "InReview",
+      "type": "approve",
+      "command": {
+        "actor": "",
+        "review": {
+          "reviewer": ""
+        }
+      },
+      "guards": [
+        "G_reviewer"
+      ],
+      "caseId": "refusals-06",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "wrong task",
+      "state": "InReview",
+      "type": "approve",
+      "review": {
+        "taskId": "other"
+      },
+      "guards": [
+        "G_reviewTask"
+      ],
+      "caseId": "refusals-07",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "stale review",
+      "state": "InReview",
+      "type": "approve",
+      "revision": "2",
+      "review": {
+        "taskRevision": "1"
+      },
+      "guards": [
+        "G_reviewRevision"
+      ],
+      "caseId": "refusals-08",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "wrong digest",
+      "state": "InReview",
+      "type": "approve",
+      "review": {
+        "modelDigest": "$OTHER_MODEL_DIGEST"
+      },
+      "guards": [
+        "G_reviewModel"
+      ],
+      "caseId": "refusals-09",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "review actor mismatch",
+      "state": "InReview",
+      "type": "approve",
+      "command": {
+        "actor": "other"
+      },
+      "guards": [
+        "G_reviewActor"
+      ],
+      "caseId": "refusals-10",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "owner reviews own task",
+      "state": "InReview",
+      "type": "approve",
+      "command": {
+        "actor": "owner-1"
+      },
+      "review": {
+        "reviewer": "owner-1"
+      },
+      "guards": [
+        "G_independent"
+      ],
+      "caseId": "refusals-11",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "wrong approval decision",
+      "state": "InReview",
+      "type": "approve",
+      "review": {
+        "decision": "changesRequested"
+      },
+      "guards": [
+        "G_approved"
+      ],
+      "caseId": "refusals-12",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "wrong rework decision",
+      "state": "InReview",
+      "type": "requestChanges",
+      "review": {
+        "decision": "approved"
+      },
+      "guards": [
+        "G_changesRequested"
+      ],
+      "caseId": "refusals-13",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "skip lifecycle",
+      "state": "Draft",
+      "type": "start",
+      "code": "ILLEGAL_TRANSITION",
+      "caseId": "refusals-14",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "done is terminal",
+      "state": "Done",
+      "type": "prepare",
+      "code": "ILLEGAL_TRANSITION",
+      "caseId": "refusals-15",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "blank actor cannot start unassigned task",
+      "state": "Ready",
+      "type": "start",
+      "task": {
+        "owner": null
+      },
+      "command": {
+        "actor": ""
+      },
+      "guards": [
+        "G_actor"
+      ],
+      "caseId": "refusals-16",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "missing owner cannot submit review",
+      "state": "InProgress",
+      "type": "requestReview",
+      "task": {
+        "owner": null
+      },
+      "guardsContain": [
+        "G_owner",
+        "G_ownerActor"
+      ],
+      "caseId": "refusals-17",
+      "executionStatus": "executable"
+    }
+  ],
+  "special": [
+    {
+      "name": "unassigned draft may be prepared",
+      "task": {
+        "owner": null
+      },
+      "type": "prepare",
+      "ok": true,
+      "state": "Ready",
+      "caseId": "special-01",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "multiple failed guards sorted",
+      "state": "Draft",
+      "task": {
+        "outcome": "",
+        "acceptance": []
+      },
+      "type": "prepare",
+      "guards": [
+        "G_acceptance",
+        "G_outcome"
+      ],
+      "caseId": "special-02",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "invalid task input",
+      "rawTask": "not json",
+      "rawCommand": "{}",
+      "ok": false,
+      "task": null,
+      "transition": null,
+      "code": "INVALID_INPUT",
+      "caseId": "special-03",
+      "executionStatus": "pending",
+      "pendingReason": "No task/command JSON adapter exists; this raw JSON case cannot be invoked through the typed API."
+    },
+    {
+      "name": "invalid command input",
+      "rawTask": "{}",
+      "rawCommand": "not json",
+      "ok": false,
+      "task": null,
+      "transition": null,
+      "code": "INVALID_INPUT",
+      "caseId": "special-04",
+      "executionStatus": "pending",
+      "pendingReason": "No task/command JSON adapter exists; this raw JSON case cannot be invoked through the typed API."
+    },
+    {
+      "name": "start assigns named actor on unassigned task",
+      "state": "Ready",
+      "task": {
+        "owner": null
+      },
+      "type": "start",
+      "ok": true,
+      "stateAfter": "InProgress",
+      "ownerAfter": "owner-1",
+      "revisionDelta": 1,
+      "caseId": "start-assigns",
+      "executionStatus": "executable"
+    },
+    {
+      "name": "maximum revision refusal",
+      "caseId": "maximum-revision",
+      "executionStatus": "executable",
+      "revision": "18446744073709551615",
+      "expect": "refused after guards, task unchanged"
+    }
+  ],
+  "commonExpectations": {
+    "mode": "example-only",
+    "authority": "none",
+    "modelDigest": "$MODEL_DIGEST",
+    "success": "ok true; transition is expected transition ID; revision increments exactly once; state changes, and Start also assigns actor to owner when unassigned; other task fields stay unchanged; refusals empty",
+    "validRefusal": "For well-typed guard failure: ok false, task unchanged, all failed guard IDs returned sorted. Invalid input returns INVALID_INPUT with nil task; known illegal pair returns ILLEGAL_TRANSITION.",
+    "immutability": "Adapter snapshots native input task and command, including slices and nested review data, and checks unchanged after each success and refusal; equivalent requests yield deep-equal responses."
+  },
+  "modelChange": {
+    "change": "add G_owner to prepare",
+    "task": {
+      "owner": null
+    },
+    "type": "prepare",
+    "baseline": {
+      "ok": true,
+      "state": "Ready"
+    },
+    "regenerated": {
+      "ok": false,
+      "guardsContain": [
+        "G_owner"
+      ],
+      "unchanged": true
+    },
+    "checks": "generate each variant twice and compare artifact bytes; check decision table, transition and generated tests reflect change; run behavior against each variant"
+  },
+  "mutationExpectations": [
+    "Removing G_revision fails stale command revision",
+    "Removing G_outcome fails blank outcome",
+    "Removing G_acceptance fails empty criteria",
+    "Removing owner assignment fails start assignment; removing owner or actor guards fails missing owner at review submission or wrong owner actor",
+    "Allowing skipped transitions fails skip lifecycle",
+    "Removing G_reviewTask fails wrong task",
+    "Removing G_reviewRevision fails stale review",
+    "Removing G_reviewModel fails wrong digest",
+    "Removing G_reviewActor fails review actor mismatch",
+    "Removing G_independent fails owner reviews own task",
+    "Removing G_approved or G_changesRequested fails corresponding decision case",
+    "Failing to increment revision fails happy path",
+    "Nondeterministic generation fails model change regeneration check"
+  ],
+  "status": "Demo assumptions confirmed for this isolated demonstration; not production policy.",
+  "reviewDefaults": {
+    "actor": "reviewer-1"
+  },
+  "placeholderRules": {
+    "$CURRENT_REVISION": "Integer revision of the input task after all task overrides.",
+    "$MODEL_DIGEST": "Runtime model digest; adapter must provide its format and a distinct valid digest for negative cases.",
+    "$OTHER_MODEL_DIGEST": "A valid digest distinct from MODEL_DIGEST, supplied by the adapter according to the implementation digest format.",
+    "$CURRENT_TASK_DIGEST": "Digest of the current task under the specified canonical TaskDigest contract."
+  },
+  "construction": "Build task from baseTask plus state, revision and task overrides. Build command from defaults, apply reviewDefaults for approve/requestChanges, then apply command overrides. For review commands merge reviewTemplate, case review, and command.review in that order. Resolve placeholders after overrides using adapter-provided digest values; explicit literals are never replaced. Sequence steps use the preceding returned task.",
+  "versionExpectations": {
+    "format": "JSON v1 is the initial model format",
+    "architecture": "JSON v1 is initial transport only; parser and serializer map it to and from typed semantic IR, and shared validation and generators consume the IR. Replay provenance and validation trust boundaries must be explicit.",
+    "versions": "Report format, profile, and generator versions separately; do not conflate them."
+  },
+  "unsettled": [
+    "Other lifecycle and guard details remain provisional."
+  ],
+  "demoAssumptions": [
+    "Ready may be unassigned.",
+    "Start simulates assigning its named actor as owner when Ready is unassigned; otherwise the actor must match the owner. The named owner submits work for review.",
+    "A different named reviewer approves or requests changes; review binds task ID, current InReview revision, and model digest.",
+    "Identities are example data only.",
+    "Well-formed custom guard IDs are allowed; unsupported operators, references and effects are rejected, and IDs are globally unique.",
+    "Each successful transition increments revision exactly once; rejection leaves the task unchanged.",
+    "Assignment is simulated example-only behavior, not a real claim or authorization mechanism.",
+    "Proposed review binding also includes a canonical digest of current task content; canonicalization and ABI remain pending."
+  ],
+  "modelValidation": [
+    {
+      "name": "custom guard identifier",
+      "expect": "A well-formed custom guard ID is permitted, subject to all other model validation."
+    },
+    {
+      "name": "unsupported operator, reference, or effect",
+      "expect": "Reject the model."
+    },
+    {
+      "name": "duplicate ID",
+      "expect": "Reject duplicate IDs globally."
+    }
+  ],
+  "boundaryCases": {
+    "status": "Pending agreed validation and serialization contract; not executable assertions against an implementation yet.",
+    "laterStateInputs": {
+      "cases": [
+        {
+          "state": "InProgress",
+          "missing": "owner"
+        },
+        {
+          "state": "InProgress",
+          "missing": "outcome"
+        },
+        {
+          "state": "InProgress",
+          "missing": "acceptance"
+        },
+        {
+          "state": "InReview",
+          "missing": "owner"
+        },
+        {
+          "state": "InReview",
+          "missing": "outcome"
+        },
+        {
+          "state": "InReview",
+          "missing": "acceptance"
+        }
+      ],
+      "decisionRequired": "Choose and document either input invariants that reject these task snapshots or a replay-derived-state trust boundary that accepts trusted snapshots subject to transition guards. Specify which boundary accepts which inputs; neither choice alone establishes a security property."
+    },
+    "serializationAndVocabulary": [
+      {
+        "case": "unknown state or trigger",
+        "expect": "INVALID_INPUT, nil Task"
+      },
+      {
+        "case": "duplicate, unknown or missing model JSON field",
+        "expect": "strict model parser rejects"
+      },
+      {
+        "case": "task/command JSON fields",
+        "status": "No task/command JSON adapter exists; not exercised."
+      }
+    ],
+    "revisionOverflow": {
+      "expect": "Refuse MaxUint64 after guards and before effects; valid task unchanged",
+      "status": "Go ABI specified; catalog only"
+    },
+    "mutationChecks": "For successful and refused operations, compare native task and command snapshots including nested slices before and after; separately verify response values. For success assert exactly one revision increment and unchanged fields except intended state and simulated Start owner assignment.",
+    "staleTaskContentReview": {
+      "status": "TaskDigest ABI and canonicalization specified; exact refusal ID pending.",
+      "setup": "Construct a valid InReview task and a valid review binding its task ID, revision, model digest, and canonical task-content digest. Change only one acceptance criterion in the task; retain the same ID and revision and retain the original review and all otherwise valid fields.",
+      "expect": "Refuse due to stale task-content digest; leave task and command unchanged. The old digest must be well formed and was valid for the original content.",
+      "scope": "Consistency checking only; this does not authenticate the reviewer or task."
+    }
+  },
+  "goContract": {
+    "revision": "uint64; JSON fixture revisions are decimal strings; MaxUint64 refuses before increment",
+    "review": "bind current task ID, revision, ModelDigest and TaskDigest",
+    "canonicalTaskDigest": "SHA-256 of UTF-8 JSON, fixed key order id,state,revision,outcome,acceptance,owner; revision decimal string; nil acceptance as []; exact owner; Go encoding/json SetEscapeHTML(false), no trailing newline; valid UTF-8 without normalization",
+    "rawJSON": "duplicate/unknown fields and raw malformed JSON pending an adapter contract"
+  },
+  "digestVectors": [
+    {
+      "canonical": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship <&>\",\"acceptance\":[\"café\",\"✓\"],\"owner\":\"owner-1\"}",
+      "sha256": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94"
+    },
+    {
+      "canonical": "{\"id\":\"例\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"雪\",\"acceptance\":[],\"owner\":null}",
+      "sha256": "d5137867f36f4f6f8f51dfbf3ad43924b0f937d409a10b36af4cb860acf7760f"
+    }
+  ],
+  "closedSemanticProfile": {
+    "comparison": "eq and ne compare same-type present operands; missing operand makes both false; a present blank string is not missing.",
+    "guards": "Guard conjunction is unordered; report all failed IDs sorted.",
+    "start": "G_actor requires nonempty actor; G_ownerCompatible requires absent owner or owner equal actor. Assign actor only if owner is absent.",
+    "review": "G_reviewer requires nonempty reviewer; G_reviewActor is eq(reviewer,actor); G_independent is ne(reviewer,owner). Missing operands fail both eq and ne."
+  },
+  "typedInputContract": {
+    "invalidInput": "Unknown state or trigger, invalid UTF-8, size bounds, blank acceptance elements, malformed supplied review digest or decision yield INVALID_INPUT and nil Task.",
+    "wellTypedFailedGuard": "Return unchanged task and all failed guard IDs sorted.",
+    "illegalPair": "Known illegal state/trigger pair yields ILLEGAL_TRANSITION.",
+    "overflow": "Check after guards and before effects.",
+    "acceptance": "Entries are required nonblank valid strings; duplicates allowed.",
+    "json": "No task/command JSON adapter exists; strict duplicate, unknown and missing field checks apply only to the model parser."
+  },
+  "executionStatus": "Catalog/design cases only. Local checker checks selected hand-written semantics; it is not a run of Go tests or an implementation.",
+  "caseExecutionPolicy": "Only cases in sequences, refusals and special marked executable are registered and bound to full independent case literals by TestCatalogExercisedIDs. Pending cases require reasons; model-parser, regeneration, and mutation sections are separate plans."
+}
