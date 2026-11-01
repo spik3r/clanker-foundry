@@ -1,0 +1,167 @@
+{
+  "formatVersion": 2,
+  "eventId": "d62dab9d-bb1d-46d5-9dc1-75c7a67e10b2",
+  "runId": "329854d8-1aa5-48f6-8525-0540c7d4853a",
+  "kind": "complete",
+  "parents": [
+    "0cdca858-d586-42cb-9d4d-0acf5c58ed9d"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-lifecycle-v1",
+    "path": "tasks/CF-model-lifecycle-v1-vertical-slice.md",
+    "revision": "329509113c9661db8cc585a7bf6a07ffd70b8e45",
+    "blob": "657932cbf2b65ec452106f4f4ac37798531ba585",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "130514ac2de147ce8b480eab060ed253a5a382e3ac7156072d238b65b7135d83"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-lifecycle-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T03:24:31.755Z",
+  "summary": "Implemented the isolated Go-first lifecycle model compiler and integrated independently authored views and acceptance oracle; exact staged source tree 532a0d01a4b49140b59e7f0e907af1581ece35f5 passed independent architectural and behavioral review.",
+  "next": "Commit, validate full committed lifecycle diff, publish one authorized draft PR and verify exact-head CI; no merge or production activation.",
+  "files": [
+    "modeling/lifecycle/go.mod",
+    "modeling/lifecycle/README.md",
+    "modeling/lifecycle/toolchain.json",
+    "modeling/lifecycle/model/ir.go",
+    "modeling/lifecycle/model/ir_test.go",
+    "modeling/lifecycle/strictjson/decode.go",
+    "modeling/lifecycle/strictjson/decode_test.go",
+    "modeling/lifecycle/jsonformat/json.go",
+    "modeling/lifecycle/jsonformat/json_test.go",
+    "modeling/lifecycle/canonical/canonical.go",
+    "modeling/lifecycle/canonical/canonical_test.go",
+    "modeling/lifecycle/compiler/generate.go",
+    "modeling/lifecycle/compiler/generate_test.go",
+    "modeling/lifecycle/cmd/modelc/main.go",
+    "modeling/lifecycle/examples/lifecycle.json",
+    "modeling/lifecycle/examples/oracle.json",
+    "modeling/lifecycle/generated/lifecycle.go",
+    "modeling/lifecycle/generated/model_paths_test.go",
+    "modeling/lifecycle/generated/decision.svg",
+    "modeling/lifecycle/generated/decision-table.json",
+    "modeling/lifecycle/generated/trace.json",
+    "modeling/lifecycle/views/render.go",
+    "modeling/lifecycle/views/trace.go",
+    "modeling/lifecycle/views/views_test.go",
+    "modeling/lifecycle/acceptance/oracle_test.go",
+    ".github/workflows/model-lifecycle-go.yml",
+    "tasks/CF-model-lifecycle-v1-vertical-slice.md"
+  ],
+  "validation": "Actual Go1.27.3 Linux amd64 offline: go test -race -count=1 ./..., go vet ./..., modelc validate/check and gofmt passed; 163 passing Go tests/subtests (48 top-level). Independent oracle executed23 catalog cases;2 raw request-JSON cases explicitly pending because no adapter. Durable16 guard-bypass mutants and always-refuse mutant killed; model change propagated behavior and5artifacts; strict parser/IR/canonical, no-write drift/symlink/collision/large-stale tests passed. Generated SVG rendered and inspected. Node24.22.1:176 runtime and143 Project Memory tests passed; runtime package smoke first failed due unavailable home npm cache, then normal pinned npm ci with writable workspace cache and full rerun passed. Pack validator and whitespace passed; optional skills-ref unavailable and installer tests not run locally because GNU Stow absent. Independent exact27file manifest SHA256374050ccde96ff593dd7c5b7dfa5ed40bd3f9880e9e84c42d4fe44d067cc3984 reviewed. Informational local benchmark: example transition2723ns/op1961B/op35allocs; compiler1973971ns/op642904B/op11539allocs, not comparative guarantees. Full committed diff validation and hosted exact-head CI remain subsequent checks.",
+  "snapshot": {
+    "modeling/lifecycle/go.mod": {
+      "blob": "249a21dd19beccd243bff3b291f6306d332e9df9",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/README.md": {
+      "blob": "e91ff564916c33b8bbcad891e1d96732d8ea9a93",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/toolchain.json": {
+      "blob": "2cfbb01b69e717bba1ed9344c4a622c43efaf303",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/model/ir.go": {
+      "blob": "1ebb3f63c4e6508d65e4f7eb55d01c65502e0b1c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/model/ir_test.go": {
+      "blob": "db34f4dfe4fe1c6a87c9339fa7c55907812bf7f5",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/strictjson/decode.go": {
+      "blob": "708d65406e465783d50954f38ba8b37574031d5b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/strictjson/decode_test.go": {
+      "blob": "5b82c95325671c136423a58c99ad8e8e497390a8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/jsonformat/json.go": {
+      "blob": "5ba939c28d1553fe74f006e364f2abc026bf0fc6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/jsonformat/json_test.go": {
+      "blob": "ab2bf408e2ca3dd182cb0ea94b63f92f21efbe18",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/canonical/canonical.go": {
+      "blob": "4de8efb830bca3d477a83f795d3b7ac880d78322",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/canonical/canonical_test.go": {
+      "blob": "7823417536ac98e82f11ac530f5e4144dc19d48f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/compiler/generate.go": {
+      "blob": "bd4861ded7316297e1f8b4587aafbd5b0a3d66c4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/compiler/generate_test.go": {
+      "blob": "f997ed6a9746ec36fc53651eb66539a0fe18dfca",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelc/main.go": {
+      "blob": "7ff174f0dc576643d353625db29c2cd0cf10da5a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/examples/lifecycle.json": {
+      "blob": "ce12028bbfcf71a674d9af2c189658d94da4370d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/examples/oracle.json": {
+      "blob": "86cbfac367ab101ceb5c4ac78a241807d8b576ff",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/generated/lifecycle.go": {
+      "blob": "d45b1d60157c696b5f2687133e21d5a5921bbd69",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/generated/model_paths_test.go": {
+      "blob": "a76d6a941098999006a78e0fcc7019c6592771b0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/generated/decision.svg": {
+      "blob": "30aa05a762bced7e2f4c87d8a87d8d9fa8d522ea",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/generated/decision-table.json": {
+      "blob": "d0d330c48738882f4b076cf94b355d4be356b72c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/generated/trace.json": {
+      "blob": "3ab680ddb8ce30773b11ebe5a9fe3cfe5a148bc3",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/views/render.go": {
+      "blob": "294e2deb0f933b7949fc5ab733e9033a0aa557fb",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/views/trace.go": {
+      "blob": "571e34fb2726bd5f109f4a8fd053fcc4ba899e6f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/views/views_test.go": {
+      "blob": "c214ca29f62ba32189b317783eece86eec51dd62",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/acceptance/oracle_test.go": {
+      "blob": "92e854d0669967f078f0679b9159e7a3654954e7",
+      "mode": "100644"
+    },
+    ".github/workflows/model-lifecycle-go.yml": {
+      "blob": "0086c9052507ce75499aebc5fa721af9dba0ddc7",
+      "mode": "100644"
+    },
+    "tasks/CF-model-lifecycle-v1-vertical-slice.md": {
+      "blob": "28da2ea86fcb9cf1493a9742f076704b5d10b18a",
+      "mode": "100644"
+    }
+  }
+}

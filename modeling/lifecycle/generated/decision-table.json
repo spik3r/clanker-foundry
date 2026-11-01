@@ -1,0 +1,639 @@
+{
+  "schema": "lifecycle-decision-table/v1",
+  "status": "Generated design intent; invented example; authority none; no verified execution or approval evidence.",
+  "identity": {
+    "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "formatVersion": "lifecycle-json/v1",
+    "profileVersion": "lifecycle/v1",
+    "generatorVersion": "lifecycle-go/v1",
+    "toolchainVersion": "go1.27.3"
+  },
+  "guardCombination": "all referenced guards must hold; no first-match priority",
+  "effectOrder": "effects execute in array order atomically",
+  "model": {
+    "Version": 1,
+    "ID": "TaskLifecycleExample",
+    "Initial": "Draft",
+    "States": [
+      {
+        "ID": "Done",
+        "Label": "Done",
+        "Terminal": true
+      },
+      {
+        "ID": "Draft",
+        "Label": "Draft",
+        "Terminal": false
+      },
+      {
+        "ID": "InProgress",
+        "Label": "In progress",
+        "Terminal": false
+      },
+      {
+        "ID": "InReview",
+        "Label": "In review",
+        "Terminal": false
+      },
+      {
+        "ID": "Ready",
+        "Label": "Ready",
+        "Terminal": false
+      }
+    ],
+    "Requirements": [
+      {
+        "ID": "R_acceptance",
+        "Text": "Acceptance criteria are supplied."
+      },
+      {
+        "ID": "R_actor",
+        "Text": "The named starting actor is nonblank."
+      },
+      {
+        "ID": "R_approved",
+        "Text": "Approval is explicit."
+      },
+      {
+        "ID": "R_changesRequested",
+        "Text": "Changes are explicitly requested."
+      },
+      {
+        "ID": "R_independent",
+        "Text": "The reviewer differs from the owner."
+      },
+      {
+        "ID": "R_outcome",
+        "Text": "An outcome is nonblank."
+      },
+      {
+        "ID": "R_owner",
+        "Text": "An owner is present."
+      },
+      {
+        "ID": "R_ownerActor",
+        "Text": "The owner requests review."
+      },
+      {
+        "ID": "R_ownerCompatible",
+        "Text": "Start assigns only absent ownership or matches the existing owner."
+      },
+      {
+        "ID": "R_reviewActor",
+        "Text": "The acting reviewer matches the review."
+      },
+      {
+        "ID": "R_reviewContent",
+        "Text": "Review refers to current task content."
+      },
+      {
+        "ID": "R_reviewModel",
+        "Text": "Review refers to the accepted model."
+      },
+      {
+        "ID": "R_reviewRevision",
+        "Text": "Review refers to the current revision."
+      },
+      {
+        "ID": "R_reviewTask",
+        "Text": "Review refers to this task."
+      },
+      {
+        "ID": "R_reviewer",
+        "Text": "The reviewer is nonblank."
+      },
+      {
+        "ID": "R_revision",
+        "Text": "Command matches the current revision."
+      }
+    ],
+    "Guards": [
+      {
+        "ID": "G_acceptance",
+        "Requirement": "R_acceptance",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "nonempty",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "task.acceptance",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_actor",
+        "Requirement": "R_actor",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "nonempty",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "command.actor",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_approved",
+        "Requirement": "R_approved",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.decision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "string",
+              "Ref": "",
+              "Value": "approved",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_changesRequested",
+        "Requirement": "R_changesRequested",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.decision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "string",
+              "Ref": "",
+              "Value": "changesRequested",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_independent",
+        "Requirement": "R_independent",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "ne",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.reviewer",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "task.owner",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_outcome",
+        "Requirement": "R_outcome",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "nonempty",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "task.outcome",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_owner",
+        "Requirement": "R_owner",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "nonempty",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "task.owner",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_ownerActor",
+        "Requirement": "R_ownerActor",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "task.owner",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "command.actor",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_ownerCompatible",
+        "Requirement": "R_ownerCompatible",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "any",
+          "Args": [
+            {
+              "Kind": "op",
+              "Ref": "",
+              "Value": "",
+              "Op": "eq",
+              "Args": [
+                {
+                  "Kind": "ref",
+                  "Ref": "task.owner",
+                  "Value": "",
+                  "Op": "",
+                  "Args": null
+                },
+                {
+                  "Kind": "ref",
+                  "Ref": "command.actor",
+                  "Value": "",
+                  "Op": "",
+                  "Args": null
+                }
+              ]
+            },
+            {
+              "Kind": "op",
+              "Ref": "",
+              "Value": "",
+              "Op": "absent",
+              "Args": [
+                {
+                  "Kind": "ref",
+                  "Ref": "task.owner",
+                  "Value": "",
+                  "Op": "",
+                  "Args": null
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewActor",
+        "Requirement": "R_reviewActor",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.reviewer",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "command.actor",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewContent",
+        "Requirement": "R_reviewContent",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.taskDigest",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "task.digest",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewModel",
+        "Requirement": "R_reviewModel",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.modelDigest",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "model.digest",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewRevision",
+        "Requirement": "R_reviewRevision",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.taskRevision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "task.revision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewTask",
+        "Requirement": "R_reviewTask",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.taskId",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "task.id",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_reviewer",
+        "Requirement": "R_reviewer",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "nonempty",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "review.reviewer",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      },
+      {
+        "ID": "G_revision",
+        "Requirement": "R_revision",
+        "Expr": {
+          "Kind": "op",
+          "Ref": "",
+          "Value": "",
+          "Op": "eq",
+          "Args": [
+            {
+              "Kind": "ref",
+              "Ref": "task.revision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            },
+            {
+              "Kind": "ref",
+              "Ref": "command.expectedRevision",
+              "Value": "",
+              "Op": "",
+              "Args": null
+            }
+          ]
+        }
+      }
+    ],
+    "Transitions": [
+      {
+        "ID": "T_approve",
+        "From": "InReview",
+        "Trigger": "approve",
+        "To": "Done",
+        "Guards": [
+          "G_acceptance",
+          "G_approved",
+          "G_independent",
+          "G_outcome",
+          "G_owner",
+          "G_reviewActor",
+          "G_reviewContent",
+          "G_reviewModel",
+          "G_reviewRevision",
+          "G_reviewTask",
+          "G_reviewer",
+          "G_revision"
+        ],
+        "Effects": [
+          {
+            "Op": "set_state"
+          },
+          {
+            "Op": "increment_revision"
+          }
+        ]
+      },
+      {
+        "ID": "T_prepare",
+        "From": "Draft",
+        "Trigger": "prepare",
+        "To": "Ready",
+        "Guards": [
+          "G_acceptance",
+          "G_outcome",
+          "G_revision"
+        ],
+        "Effects": [
+          {
+            "Op": "set_state"
+          },
+          {
+            "Op": "increment_revision"
+          }
+        ]
+      },
+      {
+        "ID": "T_requestChanges",
+        "From": "InReview",
+        "Trigger": "requestChanges",
+        "To": "InProgress",
+        "Guards": [
+          "G_acceptance",
+          "G_changesRequested",
+          "G_independent",
+          "G_outcome",
+          "G_owner",
+          "G_reviewActor",
+          "G_reviewContent",
+          "G_reviewModel",
+          "G_reviewRevision",
+          "G_reviewTask",
+          "G_reviewer",
+          "G_revision"
+        ],
+        "Effects": [
+          {
+            "Op": "set_state"
+          },
+          {
+            "Op": "increment_revision"
+          }
+        ]
+      },
+      {
+        "ID": "T_requestReview",
+        "From": "InProgress",
+        "Trigger": "requestReview",
+        "To": "InReview",
+        "Guards": [
+          "G_acceptance",
+          "G_outcome",
+          "G_owner",
+          "G_ownerActor",
+          "G_revision"
+        ],
+        "Effects": [
+          {
+            "Op": "set_state"
+          },
+          {
+            "Op": "increment_revision"
+          }
+        ]
+      },
+      {
+        "ID": "T_start",
+        "From": "Ready",
+        "Trigger": "start",
+        "To": "InProgress",
+        "Guards": [
+          "G_acceptance",
+          "G_actor",
+          "G_outcome",
+          "G_ownerCompatible",
+          "G_revision"
+        ],
+        "Effects": [
+          {
+            "Op": "assign_owner_if_absent"
+          },
+          {
+            "Op": "set_state"
+          },
+          {
+            "Op": "increment_revision"
+          }
+        ]
+      }
+    ]
+  }
+}
