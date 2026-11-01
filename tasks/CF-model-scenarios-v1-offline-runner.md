@@ -1,6 +1,6 @@
 ---
 id: CF-model-scenarios-v1
-status: in-progress
+status: review
 owner: Astra model-first lead
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-lifecycle-v1]
@@ -144,3 +144,34 @@ Run full Go tests/race/vet, modelc drift check, pack/whitespace and genuine life
 validation; review the exact final local source independently. Preserve PR11's
 branch and user-review state. Handoff local progress and limitations; subsequent
 publication requires coordinated sequencing and appropriate authority.
+
+
+## Local implementation handoff
+
+The additive runner and stdin-only CLI are implemented locally. The independently
+frozen fixture contains 4 cases and 13 steps; its unchanged SHA-256 is
+`ef199aa93c9e70887f3da8e72aa4a79dcaf130c4cec72d27b240d6780a3e4b26`.
+The independent acceptance file SHA-256 is
+`894a54216a771a04a356d9379f9aeb7764e0919d664d8340719e8ddb8f56d968`.
+The fixture freeze preceded execution/comparison implementation; a genuine
+local type/DTO checkpoint preceded it, as permitted above. All 13 authored steps
+match without changing their expected data, including expected refusals.
+
+The report encoder also rejects internally contradictory comparison flags,
+ordered differences, case/step counts, group limits and within-case state
+continuity. It does not authenticate execution or prove that a caller supplied
+all expected cases. Original source-byte and semantic-scenario digests remain
+separate; typed Run never invents a source hash.
+
+Boundary tests cover whole-suite zero-call preflight, first-mismatch stop,
+null/empty representations, aliases, concurrent immutable replay, report budgets,
+separate-process reproducibility, fixed diagnostics and short/failed writes.
+Scratch mutations of the actual generated reducer (always-refuse and selected
+actor/content guard bypasses) must fail the frozen independent acceptance
+behaviorally. The original demo compiler/oracle remain unchanged separate gates.
+
+Final observed checks and exact-source independent review are recorded with the
+completion evidence. Review status is LOCAL ONLY: this branch and follow-up task
+have not been pushed or opened as another PR. Publication/merge sequencing remains
+dependent on PR11 review and appropriate further authority. No existing runtime,
+production transport, worker, scheduler or denied publication action is changed.
