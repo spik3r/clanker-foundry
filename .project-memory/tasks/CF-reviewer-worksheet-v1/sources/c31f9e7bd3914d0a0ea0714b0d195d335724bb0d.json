@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "c31f9e7bd3914d0a0ea0714b0d195d335724bb0d",
+  "id": "CF-reviewer-worksheet-v1",
+  "path": "tasks/CF-reviewer-worksheet-v1-review.md",
+  "blob": "60038a18a2a7aa6831a4f37184e14fd295193996",
+  "record": "---\nid: CF-reviewer-worksheet-v1\nstatus: in-progress\nowner: Codex reviewer-workflow contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Human review worksheet for intake and trace\n\n## Implementation claim\n\nOn `codex/reviewer-evidence-linking`, based on main `9d06274`, add a reusable\nhuman-completed worksheet and a worked invented example connecting an intake\ndecision and unresolved question to explicit requirements and acceptance cases.\nThe worksheet records exact source-byte hashes separately from canonical model\nand normalized requirements identities, declared versus observed bindings,\ntrace gaps, unrun checks and explicit unresolved questions. It does not turn\ncorrespondence into evidence of satisfaction or approval. Use the merged intake\nand traceability APIs as the only validators and make no new renderer, bundle,\nintake/model bridge, comparison, execution runner or identity rebinding.\n\nExact scope: new `modeling/lifecycle/reviewer/README.md`, `worksheet.md`,\n`example-intake.json`, `example.md`, `worksheet_test.go`, this record and its\nown immutable Project Memory evidence. Commit independently specified example\nand literal expectations before writing the test. Test the stated identities,\nexisting intake statuses and linked trace cases including pending and unlinked\ngaps; demonstrate that source-byte edits and changed links are detected without\nrewriting examples. Document distinct identities and checks not performed.\n\nInspected current main, open PRs 5, 20, 22 and 23, visible branch and task\nclaims, and held reviewpack scope. Excludes reviewpack/modelintakecheck, PR 20,\nthe guide, Astra intake-change comparison, and other current worker lanes. This\nlocal claim is not a shared lock; recheck before publishing. No deployment,\nactivation, formal approval or browser visual inspection.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-reviewer-worksheet-v1-review.md",
+        "id": "CF-reviewer-worksheet-v1",
+        "blob": "60038a18a2a7aa6831a4f37184e14fd295193996",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
