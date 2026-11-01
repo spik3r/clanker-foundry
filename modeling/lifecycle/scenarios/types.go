@@ -150,7 +150,9 @@ func hexDigest(s string) bool {
 
 // Validate checks the whole suite before execution. It deliberately does not
 // enforce the reducer's business-input limits: fixtures may expect INVALID_INPUT.
-func Validate(s Suite) error {
+func Validate(s Suite) error { return validateFor(s, defaultBinding()) }
+
+func validateFor(s Suite, binding Binding) error {
 	if s.Version != 1 || len(s.Cases) < 1 || len(s.Cases) > MaxCases || !hexDigest(s.ModelDigest) {
 		return ErrInvalidScenario
 	}
@@ -186,7 +188,7 @@ func Validate(s Suite) error {
 	if e != nil || len(raw) > MaxSourceBytes {
 		return ErrInvalidScenario
 	}
-	if s.ProfileVersion != lifecycle.ProfileVersion || s.ModelDigest != lifecycle.ModelDigest {
+	if s.ProfileVersion != binding.ProfileVersion || s.ModelDigest != binding.ModelDigest {
 		return ErrModelBinding
 	}
 	return nil

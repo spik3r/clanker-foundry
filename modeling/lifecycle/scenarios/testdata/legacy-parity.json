@@ -1,0 +1,18 @@
+{
+  "acceptanceCheck-check": "77887699241ce9fc0bba4cfb4752c7e65fab839500ca6a227173bc446807df0d",
+  "acceptanceCheck-replay": "31592d7af5be57b22ecd2aa99f6b1bdd6c4cc4d1b44d1ae1febfc205728825dc",
+  "acceptanceExecute-check": "51958631fae0ff9451b3b9291ec97592f91701800898766962797d08a53edfba",
+  "acceptanceExecute-replay": "a9b974c02037e9d14c819dda4c477599fc5eeaf5478ebdba1f32bec9d773de74",
+  "base": "db052febb9e5c18fd0d0b3701e016e265d3980fc",
+  "decode": "787d3b5dea3a8e2e9c7574459e0bcb0dabaaf3a3b2fcf6cf86b3047cd6d5883c",
+  "digest": "c70c0d5f3a56e706624f3ff8662f41c873ef118b4ab282f8be3eb780c384db9d",
+  "emptyDecode": "invalid scenario fixture",
+  "encode": "c8b0963ee6278c33e00d73146ccb73b9d67befb250e1a48d601d43249a0c4d12",
+  "encodeExecuteReport": "3c14b7613246cfdb2251d1fd7654413f4c2d68cd7eaca7821a454b278188f8c6",
+  "encodeRunReport": "679ec1198e6fc01bcd74e1f65b99aac09d0d37ebf09cbbe6d7b3873dc3fcd83a",
+  "execute": "9a1ca6eca3ba426b755f095eaf0d4226b955c0fd724312967a124b7eaa42cabd",
+  "purpose": "compatibility snapshots, not independent custom-model expected behavior",
+  "run": "29c0c7258e8a62146b3521d569de6c02b677a330a8c6f8615e5daa3e7923da95",
+  "staleValidate": "unsupported scenario model binding",
+  "validate": "valid"
+}
