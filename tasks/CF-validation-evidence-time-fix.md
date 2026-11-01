@@ -1,6 +1,6 @@
 ---
 id: CF-validation-evidence-time
-status: in-progress
+status: review
 owner: Astra validation evidence fix
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -123,7 +123,33 @@ The defect has been reproduced through the public shadow preview and directly
 through the shared evaluator using invented inputs, including a verified
 Node v24.15.0 run. Producer coordination clears the two declared runtime paths.
 The coordinator reviewed this proposal and authorized local implementation.
+The reviewed source was committed and registered, its bytes and sole claim were
+independently verified, and a genuine start preceded evaluator and test edits.
 
-Next: pin this canonical source, register and verify it, record the genuine start,
-then implement and validate only the declared scope. Return the final diff and
-exact local evidence identities for independent review before any publication.
+## Local result and observed validation
+
+Validation evidence now uses the fixed deadline minus the specification's
+validation duration as its SUBMIT-time lower bound. Four new bounded regressions
+cover delayed receipts in both observation orders, intervening approval, exact
+time boundaries, invalid times, unchanged bindings, duplicate refusal, fixed
+deadline and deterministic replay. All four fail at INVALID_EVIDENCE_TIME against
+the unchanged evaluator; the failure outputs are retained outside the repository.
+
+Observed checks on the verified existing Node v24.15.0 executable:
+
+- Focused state, contract, importer and shadow-facade checks: 42 passed.
+- Runtime suite excluding its clean-consumer installation test: 179 passed.
+- Project Memory and workflow suites: 143 passed, with no failures or skips.
+- Repository validator and whitespace checks passed. Optional skills-ref is
+  unavailable; its format check is not claimed as passing.
+
+The clean-consumer test runs npm ci and was deliberately excluded under the
+no-installation constraint. Existing exact dependencies were reused. Provider
+and isolation unit tests use injected or local fake implementations; no live
+provider, actual Docker, browser or operating authority was exercised. No
+maintained setup or test failure required an out-of-scope change.
+
+Implementation editing is finished; this claim reserves no further edits.
+Next: record genuine completion, commit locally, validate the full committed
+diff against the exact reviewed base, and return the patch and evidence identities
+to the coordinator for independent review. Publication remains unauthorized.
