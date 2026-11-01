@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "b40e8ec9-37fc-4b35-bc53-4590a2fec817",
+  "runId": "d25d1043-b887-4819-aa50-8cbcdc02fdda",
+  "kind": "complete",
+  "parents": [
+    "f48d2644-5f6d-440c-bdf7-b98f5a9b13a1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewer-worksheet-v1",
+    "path": "tasks/CF-reviewer-worksheet-v1-review.md",
+    "revision": "c31f9e7bd3914d0a0ea0714b0d195d335724bb0d",
+    "blob": "60038a18a2a7aa6831a4f37184e14fd295193996",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5608afb0f484d929f970df6261b6bee931d4ff3a3a046706f1a69c2dc24e76ad"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/reviewer-evidence-linking",
+  "pullRequest": null,
+  "at": "2026-11-01T22:13:28.797Z",
+  "summary": "Added a human worksheet and frozen invented intake-to-trace example with independent literal checks",
+  "next": "Validate committed diff and prepare draft for independent review; no merge or activation",
+  "files": [
+    "tasks/CF-reviewer-worksheet-v1-review.md",
+    "modeling/lifecycle/reviewer/README.md",
+    "modeling/lifecycle/reviewer/worksheet.md",
+    "modeling/lifecycle/reviewer/example-intake.json",
+    "modeling/lifecycle/reviewer/example.md",
+    "modeling/lifecycle/reviewer/worksheet_test.go"
+  ],
+  "validation": "Go 1.27.3 offline go test -race -count=1 ./... and go vet ./... passed before guide merge; after merge targeted reviewer/intake/trace race tests and vet passed; modelc and modeltrace checks, documented example commands, schema tests and scripts/validate.sh passed; optional skills-ref unavailable; git diff --check passed",
+  "snapshot": {
+    "tasks/CF-reviewer-worksheet-v1-review.md": {
+      "blob": "60038a18a2a7aa6831a4f37184e14fd295193996",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reviewer/README.md": {
+      "blob": "038b67614f3c4afa52190b4709e3b49b2cc0a76e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reviewer/worksheet.md": {
+      "blob": "634f2d519999688d52f36977694ef0c1f5308942",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reviewer/example-intake.json": {
+      "blob": "a801127e5fa10909c298b3318c42dd7a0d514870",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reviewer/example.md": {
+      "blob": "12c69acc346a8b48d30499b0497f0370bfb2d4fb",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reviewer/worksheet_test.go": {
+      "blob": "061ed32cbe1905cf4d24bd3a2613c687076ec600",
+      "mode": "100644"
+    }
+  }
+}
