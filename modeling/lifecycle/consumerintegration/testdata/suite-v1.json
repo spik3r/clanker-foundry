@@ -1,0 +1,525 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+  "id": "consumer_candidate_v1",
+  "cases": [
+    {
+      "id": "happy",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Candidate",
+        "revision": "0",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "happy_submit",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "maker",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_submit",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "1",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "happy_self_review",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "maker",
+            "expectedRevision": "1",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "1",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+              "reviewer": "maker",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "1",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "G_independent"
+            ]
+          }
+        },
+        {
+          "id": "happy_accept",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "auditor",
+            "expectedRevision": "1",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "1",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+              "reviewer": "auditor",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Accepted",
+              "revision": "2",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "happy_terminal",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "maker",
+            "expectedRevision": "2",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Accepted",
+              "revision": "2",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "ILLEGAL_TRANSITION"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "rework",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Candidate",
+        "revision": "10",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": "maker"
+      },
+      "steps": [
+        {
+          "id": "rework_submit",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "maker",
+            "expectedRevision": "10",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_submit",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "11",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "rework_return",
+          "command": {
+            "type": "returnCandidate",
+            "actor": "auditor",
+            "expectedRevision": "11",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "11",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+              "reviewer": "auditor",
+              "decision": "changesRequested"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_return",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Candidate",
+              "revision": "12",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "rework_resubmit",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "maker",
+            "expectedRevision": "12",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_submit",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "13",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "rework_stale_review",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "auditor",
+            "expectedRevision": "13",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "11",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+              "reviewer": "auditor",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "13",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ]
+          }
+        },
+        {
+          "id": "rework_fresh_review",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "auditor",
+            "expectedRevision": "13",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "13",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "471b0c6f113086bc16a50a7428c178bb991b5cc054e4785f655f279bb8d7c3e2",
+              "reviewer": "auditor",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Accepted",
+              "revision": "14",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "actor_rule",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Candidate",
+        "revision": "0",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "actor_guest_submit",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "guest",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_submit",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "1",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "guest"
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "content_binding",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Reviewing",
+        "revision": "7",
+        "outcome": "Review revised candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": "maker"
+      },
+      "steps": [
+        {
+          "id": "content_stale_review",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "auditor",
+            "expectedRevision": "7",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "7",
+              "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+              "taskDigest": "55fb323190668dd5a9daaefd23ca2fb2e00a1da83c6a91f7f8c6136c913ef54f",
+              "reviewer": "auditor",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "7",
+              "outcome": "Review revised candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "G_reviewContent"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "model_binding",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Reviewing",
+        "revision": "3",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": "maker"
+      },
+      "steps": [
+        {
+          "id": "model_foreign_review",
+          "command": {
+            "type": "acceptCandidate",
+            "actor": "auditor",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "candidate_demo",
+              "taskRevision": "3",
+              "modelDigest": "d3918794fe469ee1600f2a8ee67613a3bdd9a34ed22fe18995b75eb71c42ad85",
+              "taskDigest": "84a3eaeee655c0ff079c0fe56b0e265aab357ad264ad45ae40756a487f8620f9",
+              "reviewer": "auditor",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_accept",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Reviewing",
+              "revision": "3",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "G_reviewModel"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown_command",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Candidate",
+        "revision": "0",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "unknown_trigger",
+          "command": {
+            "type": "inventedUnknown",
+            "actor": "maker",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": null,
+            "refusals": [
+              "INVALID_INPUT"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "overflow",
+      "initial": {
+        "id": "candidate_demo",
+        "state": "Candidate",
+        "revision": "18446744073709551615",
+        "outcome": "Review <&> candidate",
+        "acceptance": [
+          "Literal result",
+          "Keep refusal order"
+        ],
+        "owner": "maker"
+      },
+      "steps": [
+        {
+          "id": "overflow_submit",
+          "command": {
+            "type": "submitCandidate",
+            "actor": "maker",
+            "expectedRevision": "18446744073709551615",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_submit",
+            "task": {
+              "id": "candidate_demo",
+              "state": "Candidate",
+              "revision": "18446744073709551615",
+              "outcome": "Review <&> candidate",
+              "acceptance": [
+                "Literal result",
+                "Keep refusal order"
+              ],
+              "owner": "maker"
+            },
+            "refusals": [
+              "REVISION_LIMIT"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
