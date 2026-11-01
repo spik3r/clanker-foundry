@@ -216,8 +216,8 @@ func TestSemanticAndCompiledBindings(t *testing.T) {
 	}
 }
 
-// Execute the documented recipe itself, with CRLF artifacts, so text-mode
-// newline translation in a future edit cannot conceal a stale source identity.
+// Execute the documented recipe with Unicode, CRLF and ASCII-only stdout, so
+// newline translation or locale-dependent output cannot conceal stale bytes.
 func TestDocumentedRecipePreservesCRLF(t *testing.T) {
 	python, err := exec.LookPath("python3")
 	if err != nil {
@@ -236,6 +236,8 @@ func TestDocumentedRecipePreservesCRLF(t *testing.T) {
 		t.Fatal("documented Python recipe terminator missing")
 	}
 	manifestBytes, modelBytes, suiteBytes, _ := fixture(t)
+	manifestBytes = bytes.Replace(manifestBytes, []byte("declared example author"), []byte("declared café author"), 1)
+	suiteBytes = bytes.ReplaceAll(suiteBytes, []byte("Deliver result"), []byte("Deliver café"))
 	crlf := func(b []byte) []byte { return bytes.ReplaceAll(b, []byte("\n"), []byte("\r\n")) }
 	manifestBytes, modelBytes, suiteBytes = crlf(manifestBytes), crlf(modelBytes), crlf(suiteBytes)
 	temp := t.TempDir()
@@ -257,6 +259,7 @@ func TestDocumentedRecipePreservesCRLF(t *testing.T) {
 	}
 	cmd := exec.Command(python, "-c", script)
 	cmd.Dir = temp
+	cmd.Env = append(os.Environ(), "LC_ALL=C", "PYTHONUTF8=0", "PYTHONCOERCECLOCALE=0", "PYTHONIOENCODING=ascii")
 	request, err := cmd.Output()
 	if err != nil {
 		t.Fatalf("documented recipe: %v", err)

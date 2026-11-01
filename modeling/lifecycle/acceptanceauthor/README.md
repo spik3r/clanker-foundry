@@ -25,7 +25,7 @@ base64. This example constructs a request from the local sample files without
 changing them (run from `modeling/lifecycle`):
 
 ```sh
-python3 -c 'import json,pathlib,sys; p=pathlib.Path; print(json.dumps({"formatVersion":"lifecycle-acceptance-authoring-request/v1","mode":"check","manifest":p("acceptanceauthor/testdata/manifest.json").read_bytes().decode("utf-8"),"model":p("examples/lifecycle.json").read_bytes().decode("utf-8"),"suite":p("acceptanceauthor/testdata/suite.json").read_bytes().decode("utf-8")},ensure_ascii=False))' | GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go run ./cmd/modelacceptance
+python3 -c 'import json,pathlib,sys; p=pathlib.Path; print(json.dumps({"formatVersion":"lifecycle-acceptance-authoring-request/v1","mode":"check","manifest":p("acceptanceauthor/testdata/manifest.json").read_bytes().decode("utf-8"),"model":p("examples/lifecycle.json").read_bytes().decode("utf-8"),"suite":p("acceptanceauthor/testdata/suite.json").read_bytes().decode("utf-8")},ensure_ascii=True))' | GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go run ./cmd/modelacceptance
 ```
 
 The source hash covers the exact decoded suite bytes, including whitespace and the
