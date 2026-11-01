@@ -37,6 +37,21 @@ your account. For a machine-only change, create untracked `model-map.local.conf`
 overrides matching shared entries and stays out of Git and Stow. Run
 `scripts/agent-model.sh` to inspect the selected value.
 
+Both files are read as data, never run as shell. Each nonblank line is either a
+whole-line `#` comment or `<client>.<tier>=<model>`: lowercase key, no spaces, and
+a model value of printable ASCII with no spaces or `=`. The resolver checks the shared file and, if
+present, the local file before printing anything, and exits nonzero with the file
+and line on stderr when:
+
+- a key appears twice in the same file, even with the same value;
+- a line does not match the format;
+- a NUL byte occurs anywhere, including comments or the end of the file;
+- a file has no mappings, including an empty or comment-only local file.
+
+A key in the local file replaces the shared entry. A key the local file does not
+define falls back to the shared file. An invalid local file never falls back.
+Run `tests/test-agent-model.sh` to check these rules against invented fixtures.
+
 Pass a concise task brief when launching a profile: outcome, scope, repository or
 sources, constraints, and the preceding stage's handoff. The profiles define each
 agent's role and output; the task brief provides the task-specific facts.

@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "56791dca-d03f-4850-acb3-d596c88bf79b",
+  "runId": "39a04f2e-b84c-4784-945f-2cbe24594107",
+  "kind": "start",
+  "parents": [
+    "92a58caa-98ac-4d18-ad90-e62a30f6bba0"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "ae7b408a08e8cd0b2e8bbcbd4e1796860505e9cd",
+    "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2ce43a69e8baa79c5760e19a5fa21f7bbf01f578b6e215c417e1c90c7ec77b42"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/agent-model-ambiguous-selection-661d1d",
+  "pullRequest": null,
+  "at": "2026-11-01T10:22:55.657Z",
+  "summary": "Previous run omitted the task record from its scope; restart with the full scope over unchanged committed content",
+  "next": "Rerun checks and complete with the full scope",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tests/test-install.sh",
+    "agents/README.md",
+    "tasks/CF-agent-model-duplicate-keys-resolver.md"
+  ]
+}

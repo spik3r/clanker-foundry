@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ae7b408a08e8cd0b2e8bbcbd4e1796860505e9cd",
+  "id": "CF-agent-model-duplicate-keys",
+  "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+  "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+  "record": "---\nid: CF-agent-model-duplicate-keys\ncategory: tooling\nstatus: in-progress\nowner: Foundry implementation\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Reject ambiguous model mappings in the agent model resolver\n\n## Implementation claim\n\nOwner: Foundry implementation. The repository owner asked for a fix to ambiguous\nmodel selection in `scripts/agent-model.sh`, published as a draft PR only. Branch\n`claude/agent-model-ambiguous-selection-661d1d` from main\n`d5e29983bd7e0b49fe05135f6c68fb367a0589c6`.\n\nProblem: with a mapping file holding two `claude.fast` entries the resolver exits 0\nand prints the first value. Reversing the lines changes the printed model.\n\nScope, exact paths:\n- `scripts/agent-model.sh`\n- `tests/test-agent-model.sh` (new, isolated resolver test)\n- `tests/test-install.sh` (one line to run the new test from the CI entrypoint)\n- `agents/README.md` (mapping format documentation)\n- this task record and its new immutable Project Memory source/event files\n\nExclusions: `scripts/validate.sh` belongs to another task. No edits to\n`agents/model-map.conf`, defaults, workflows, installed skills, credentials or any\nlocal override. Disjoint from draft PR12 (`modeling/lifecycle/`), PR5 (Project\nMemory enforcement), active model-tooling work and the held runtime receipt-time\nfix. No merge, approval, deploy, auto-merge or agent launch.\n\n## Acceptance and validation\n\n- Mapping files are parsed as data, never sourced or evaluated as shell.\n- Duplicate keys in either file fail, even when values match.\n- A local entry still overrides the shared entry; a local file that lacks a key\n  still falls back to the shared file.\n- An empty or malformed local file fails instead of falling back.\n- Configuration is validated before any model is written to stdout. Errors go to\n  stderr with a nonzero exit and do not print mapping values.\n- Isolated tests use invented fixtures in a temporary copy, never the real HOME,\n  and never call a model provider.\n- Run the new test, installer tests where available, shell syntax, ShellCheck if\n  available, pack validation, whitespace checks and committed Project Memory\n  validation. Independently review the exact diff before publishing.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+        "id": "CF-agent-model-duplicate-keys",
+        "blob": "bc0b83906bedfaaa05d9f3e38ee51fbf2fbfc0e1",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
