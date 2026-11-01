@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "cbda8a7a-f1cc-4c4f-a17d-dffb1957b8c9",
+  "runId": "d70c5265-7a40-4734-8472-6d717738b63e",
+  "kind": "start",
+  "parents": [
+    "b5322268-4e6f-4a39-84b6-2d8ab1ccd175"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-acceptance-authoring-v1",
+    "path": "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+    "revision": "429fb6416a9fd55590fe2db754668d767b87daa5",
+    "blob": "590d45c49a4b485928ce406c56d193844262a579",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cfbfc946e1731c09981d5448650195a7da536db29b7d681cba9e3520832827fa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/acceptance-authoring-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/18",
+  "at": "2026-11-01T21:08:39.651Z",
+  "summary": "Correct documented artifact reads to preserve CRLF and add a focused regression; retain complete PR coverage",
+  "next": "Implement and validate the exact-byte recipe and fresh full diff",
+  "files": [
+    "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+    "modeling/lifecycle/acceptanceauthor/author.go",
+    "modeling/lifecycle/acceptanceauthor/author_test.go",
+    "modeling/lifecycle/acceptanceauthor/README.md",
+    "modeling/lifecycle/acceptanceauthor/testdata/suite.json",
+    "modeling/lifecycle/acceptanceauthor/testdata/manifest.json",
+    "modeling/lifecycle/acceptanceauthor/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelacceptance/main.go",
+    "modeling/lifecycle/cmd/modelacceptance/main_test.go"
+  ]
+}
