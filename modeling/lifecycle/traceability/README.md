@@ -120,6 +120,15 @@ the expected schema, unique well-formed case IDs and `executable`/`pending`
 statuses, returns a plain error. Those are inputs this tool reads, not ones it
 reviews.
 
+The catalog is read with Go's `encoding/json`, which lets a later duplicate key
+win and matches keys case-insensitively. So the fields the trace consumes
+(`schema`, `sequences`, `refusals`, `special`, and each entry's `caseId`, `name`
+and `executionStatus`) must each appear at most once, spelled exactly. A
+repeated key, an escaped spelling of the same key, or a case- or Unicode-folded
+variant (for example `ExecutionStatus` or `ſequences`) is refused rather than
+allowed to change a case's status. Keys the trace does not read are left to the
+oracle and not checked.
+
 Valid input always produces a report. Gaps are listed per requirement:
 
 - `no-model-link`: no model element is linked.
@@ -179,6 +188,11 @@ elements and cases dashed red, pending cases dashed grey. Model requirements are
 left out of the drawing for space and appear in `trace.md`. The layout is loosely
 modelled on a SysML requirement diagram with `satisfy` and `verify` edges. It is
 not SysML or UML and makes no conformance claim.
+
+Titles accept any valid UTF-8 without control characters, including characters
+XML 1.0 cannot carry, such as U+FFFE and U+FFFF. In the SVG only, each such
+character is drawn as U+FFFD, so the file stays well-formed XML. `trace.json`,
+`trace.md` and the requirements digest keep the exact source text.
 
 ## Extension points
 

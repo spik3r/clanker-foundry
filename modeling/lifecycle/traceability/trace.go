@@ -10,6 +10,7 @@
 package traceability
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -213,6 +214,9 @@ func LoadCatalog(src []byte) ([]Case, error) {
 		return nil, bad("size or encoding")
 	}
 	var doc catalogDocument
+	if err := unambiguous(src, "schema", "sequences", "refusals", "special"); err != nil {
+		return nil, bad(err.Error())
+	}
 	if err := json.Unmarshal(src, &doc); err != nil {
 		return nil, bad("not JSON")
 	}
@@ -224,6 +228,9 @@ func LoadCatalog(src []byte) ([]Case, error) {
 	for _, section := range [][]json.RawMessage{doc.Sequences, doc.Refusals, doc.Special} {
 		for _, raw := range section {
 			var e catalogEntry
+			if err := unambiguous(raw, "caseId", "name", "executionStatus"); err != nil {
+				return nil, bad(err.Error())
+			}
 			if err := json.Unmarshal(raw, &e); err != nil || e.CaseID == nil || e.Name == nil || e.ExecutionStatus == nil {
 				return nil, bad("entry without caseId, name and executionStatus")
 			}
@@ -245,6 +252,43 @@ func LoadCatalog(src []byte) ([]Case, error) {
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].CaseID < out[j].CaseID })
 	return out, nil
+}
+
+// unambiguous checks the top-level keys of one JSON object. Each consumed name
+// must appear at most once, spelled exactly. A second key that decodes to the
+// same name, or any key encoding/json would fold onto it (case or Unicode
+// folding), is refused so that no spelling silently wins. Other keys are not
+// checked: the oracle owns them.
+func unambiguous(src []byte, consumed ...string) error {
+	d := json.NewDecoder(bytes.NewReader(src))
+	if t, err := d.Token(); err != nil || t != json.Delim('{') {
+		return errors.New("not a JSON object")
+	}
+	seen := map[string]bool{}
+	for d.More() {
+		t, err := d.Token()
+		if err != nil {
+			return errors.New("not JSON")
+		}
+		key, _ := t.(string)
+		for _, name := range consumed {
+			if !strings.EqualFold(key, name) {
+				continue
+			}
+			if key != name {
+				return fmt.Errorf("key %q is a case variant of %q", key, name)
+			}
+			if seen[name] {
+				return fmt.Errorf("duplicate key %q", name)
+			}
+			seen[name] = true
+		}
+		var skip json.RawMessage
+		if err := d.Decode(&skip); err != nil {
+			return errors.New("not JSON")
+		}
+	}
+	return nil
 }
 
 func caseID(s string) bool {

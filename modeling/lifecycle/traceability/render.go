@@ -145,7 +145,7 @@ func (r Report) SVG() []byte {
 		boxH   = 18
 	)
 	width := rightX + colW + 20
-	esc := html.EscapeString
+	esc := xmlText
 
 	elY := map[string]int{}
 	elements := []ElementTrace{}
@@ -236,6 +236,22 @@ func (r Report) SVG() []byte {
 	p(`<text class="n" x="%d" y="%d">Model requirements are reached through the guards that declare them; see trace.md. Lines are declared links, not verification.</text>`+"\n", leftX, height-14)
 	p("</svg>\n")
 	return []byte(b.String())
+}
+
+// xmlText escapes text for SVG and replaces each character XML 1.0 cannot
+// carry (controls other than tab, newline and carriage return, surrogates,
+// U+FFFE and U+FFFF) with U+FFFD. This changes only the drawing. The report,
+// Markdown and the requirements digest keep the exact source text.
+func xmlText(s string) string {
+	return html.EscapeString(strings.Map(func(r rune) rune {
+		switch {
+		case r == 0x9 || r == 0xA || r == 0xD:
+			return r
+		case r < 0x20, r == 0xFFFE, r == 0xFFFF, r >= 0xD800 && r <= 0xDFFF:
+			return 0xFFFD
+		}
+		return r
+	}, s))
 }
 
 func abbrev(kind string) string {

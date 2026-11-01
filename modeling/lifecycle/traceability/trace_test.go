@@ -3,8 +3,10 @@ package traceability
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
 	"os"
 	"strings"
@@ -260,3 +262,96 @@ func TestInvalidReportsNothingAndValidHasNoNulls(t *testing.T) {
 		t.Fatal("missing trailing newline")
 	}
 }
+
+// A duplicate or case-variant key on a field the trace reads must not let one
+// spelling silently win. Unconsumed oracle fields are not checked.
+func TestCatalogRejectsAmbiguousConsumedFields(t *testing.T) {
+	m, _, _ := inputs(t)
+	reqs := []byte(fmt.Sprintf(header, req("UR-1", "S", `{"kind":"state","id":"Done"}`, `{"caseId":"a"}`)))
+	wrap := func(entry string) string {
+		return `{"schema":"lifecycle-semantic-oracle-v2","sequences":[` + entry + `],"refusals":[],"special":[]}`
+	}
+	bad := map[string]string{
+		"duplicate status, executable last": wrap(`{"caseId":"a","name":"x","executionStatus":"pending","executionStatus":"executable"}`),
+		"duplicate status, pending last":    wrap(`{"caseId":"a","name":"x","executionStatus":"executable","executionStatus":"pending"}`),
+		"case-variant status":               wrap(`{"caseId":"a","name":"x","executionStatus":"pending","ExecutionStatus":"executable"}`),
+		"escaped equivalent status":         wrap(`{"caseId":"a","name":"x","executionStatus":"pending","execution\u0053tatus":"executable"}`),
+		"folded only status":                wrap(`{"caseId":"a","name":"x","EXECUTIONSTATUS":"executable"}`),
+		"escaped duplicate name":            wrap(`{"caseId":"a","name":"x","executionStatus":"executable","na\u006de":"z"}`),
+		"long-s folded section":             `{"schema":"lifecycle-semantic-oracle-v2","sequences":[],"\u017fequences":[{"caseId":"a","name":"x","executionStatus":"executable"}],"refusals":[],"special":[]}`,
+		"duplicate caseId":                  wrap(`{"caseId":"a","caseId":"b","name":"x","executionStatus":"executable"}`),
+		"duplicate schema":                  `{"schema":"other","schema":"lifecycle-semantic-oracle-v2","sequences":[{"caseId":"a","name":"x","executionStatus":"executable"}],"refusals":[],"special":[]}`,
+		"duplicate section":                 `{"schema":"lifecycle-semantic-oracle-v2","sequences":[],"sequences":[{"caseId":"a","name":"x","executionStatus":"executable"}],"refusals":[],"special":[]}`,
+		"case-variant section":              `{"schema":"lifecycle-semantic-oracle-v2","Sequences":[{"caseId":"a","name":"x","executionStatus":"executable"}],"refusals":[],"special":[]}`,
+	}
+	for name, cat := range bad {
+		var inv *InvalidError
+		if _, err := Build(m, []byte(cat), reqs); err == nil || errors.As(err, &inv) {
+			t.Errorf("%s: accepted or misreported: %v", name, err)
+		}
+	}
+	// Unconsumed fields may repeat; the oracle owns them.
+	ok := wrap(`{"caseId":"a","name":"x","executionStatus":"pending","note":1,"note":2}`)
+	rep, err := Build(m, []byte(ok), reqs)
+	if err != nil {
+		t.Fatalf("unconsumed duplicate rejected: %v", err)
+	}
+	if rep.Requirements[0].Status != StatusIncomplete || fmt.Sprint(rep.Requirements[0].Gaps) != "[no-executable-acceptance]" {
+		t.Fatalf("got %+v", rep.Requirements[0])
+	}
+}
+
+func wellFormedXML(t *testing.T, b []byte) {
+	t.Helper()
+	d := xml.NewDecoder(bytes.NewReader(b))
+	for {
+		if _, err := d.Token(); err == io.EOF {
+			return
+		} else if err != nil {
+			t.Fatalf("svg is not well-formed XML: %v", err)
+		}
+	}
+}
+
+// Accepted text that XML 1.0 cannot carry is shown as U+FFFD in the SVG only.
+// The report data and the requirements digest keep the exact source text.
+func TestSVGStaysWellFormedForAcceptedText(t *testing.T) {
+	m, c, r := inputs(t)
+	rep, err := Build(m, c, r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wellFormedXML(t, rep.SVG())
+	committed, err := os.ReadFile("view/trace.svg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	wellFormedXML(t, committed)
+
+	for _, title := range []string{"bad \uFFFE title", "bad \uFFFF title", "surrogate-free \U0010FFFF ok é 字"} {
+		in := strings.Replace(fmt.Sprintf(header, req("UR-1", "S", `{"kind":"state","id":"Done"}`, `{"caseId":"refusals-15"}`)), `"title":"T"`, `"title":`+strconvQuote(title), 1)
+		rep, err := Build(m, c, []byte(in))
+		if err != nil {
+			t.Fatalf("%q rejected: %v", title, err)
+		}
+		if rep.Requirements[0].Title != title {
+			t.Fatal("report title changed")
+		}
+		svg := rep.SVG()
+		wellFormedXML(t, svg)
+		if strings.ContainsAny(string(svg), "\uFFFE\uFFFF") {
+			t.Fatal("illegal XML character in svg")
+		}
+		j, _ := rep.JSON()
+		if !bytes.Contains(j, []byte(title)) {
+			t.Fatal("report JSON lost the exact title")
+		}
+	}
+	a, _ := Build(m, c, []byte(strings.Replace(fmt.Sprintf(header, req("UR-1", "S", "", "")), `"title":"T"`, `"title":"x\uFFFE"`, 1)))
+	b, _ := Build(m, c, []byte(strings.Replace(fmt.Sprintf(header, req("UR-1", "S", "", "")), `"title":"T"`, `"title":"x\uFFFD"`, 1)))
+	if a.Inputs.RequirementsDigest == b.Inputs.RequirementsDigest {
+		t.Fatal("display replacement leaked into the requirements digest")
+	}
+}
+
+func strconvQuote(s string) string { b, _ := json.Marshal(s); return string(b) }
