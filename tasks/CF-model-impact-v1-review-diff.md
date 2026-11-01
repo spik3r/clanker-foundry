@@ -1,6 +1,6 @@
 ---
 id: CF-model-impact-v1
-status: in-progress
+status: review
 owner: Astra model-first lead
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-lifecycle-v1, CF-model-scenarios-v1]
@@ -133,3 +133,32 @@ pack/whitespace validation, independent exact-source review and genuine completi
 evidence. Record passed, failed and unavailable checks honestly. Preserve previous
 branches and evidence; hand off local results and a verified private durable
 artifact. Publication remains separately gated on parent review/coordination.
+
+## Local review handoff
+
+The additive typed comparison and stdin-only CLI are implemented locally. They
+reuse existing normalized model identity, report field changes and all applicable
+declared-link causes on both sides, and compare asserted binding digests without
+reading, rebinding or executing scenarios. Existing model, compiler, reducer,
+views, runner and frozen original oracles are unchanged.
+
+Independent acceptance literals froze before comparison implementation in a
+14,600-byte source prefix with SHA-256
+`4497a7a693a62ac9f3d431f76660026310c12aa3274a3ae0d8bb3fd2bf753f85`.
+Supplemental independent tests preserve that prefix byte-for-byte; complete test
+SHA-256 is
+`d2f80bc49dff04ecec935db963160f9488f78986e790083d68a453b192c31d60`.
+The unchanged independent assertions pass against the real comparison. Scratch
+mutants omitting requirement propagation or the entire before-side link list are
+killed by behavioral assertion failures, not compiler/setup errors.
+
+The README example edits only an in-memory requirement and reports the changed
+requirement plus five linked transitions in each graph; no source model is
+rewritten. Tests cover exact wire goldens, separate source/semantic identities,
+strict input/resource limits, maximum valid graph/link counts, aliases, concurrent
+immutable comparisons, deterministic process output and read/write failures.
+
+Final exact-source checks and independent review are recorded with completion
+evidence. Review status is LOCAL ONLY and remains dependent on PR11 and the local
+scenario-runner branch. No push, new PR, merge, activation or denied-operation
+retry occurred. A matching digest is not design approval or scenario compatibility.
