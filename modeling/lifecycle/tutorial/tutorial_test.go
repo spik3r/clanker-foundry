@@ -7,11 +7,15 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/acceptanceauthor"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/compiler"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/model"
 )
 
 type task struct {
@@ -181,6 +185,7 @@ func TestTutorialEndToEnd(t *testing.T) {
 	checkReplay(run(accept1, nil, request(manifest1, model1, suite1), 0), true)
 	var direct scenarioReport
 	decode(run(play1, nil, suite1, 0), &direct)
+	run(play1, nil, suite2, 2) // Future suite must not run against the v1 reducer.
 	if !direct.Matched || direct.Steps != 3 {
 		t.Fatalf("initial direct replay: %+v", direct)
 	}
@@ -225,5 +230,117 @@ func TestTutorialEndToEnd(t *testing.T) {
 	now, err := os.ReadFile("suite-v2.json")
 	if err != nil || !bytes.Equal(now, originalSuite) {
 		t.Fatal("source expectation changed")
+	}
+}
+
+// Verify the narrative's exact semantic delta against the format-neutral IR,
+// independently of generated code or the three demonstrated scenarios.
+func TestOnlyModelChangeIsPrepareActorGuard(t *testing.T) {
+	first, err := os.ReadFile("../examples/lifecycle.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := os.ReadFile("model-v2.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	before, err := jsonformat.Decode(first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	after, err := jsonformat.Decode(second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := false
+	for i := range before.Transitions {
+		if before.Transitions[i].ID != "T_prepare" {
+			continue
+		}
+		if found {
+			t.Fatal("duplicate prepare transition")
+		}
+		found = true
+		for _, id := range before.Transitions[i].Guards {
+			if id == "G_actor" {
+				t.Fatal("guard already exists in original model")
+			}
+		}
+		before.Transitions[i].Guards = append(before.Transitions[i].Guards, "G_actor")
+	}
+	if !found {
+		t.Fatal("missing prepare transition")
+	}
+	want, err := model.Normalize(before)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(want, after) {
+		t.Fatal("candidate contains a semantic change beyond adding G_actor to T_prepare")
+	}
+}
+
+// The guide's report checks must still reject mismatches with Python optimization.
+func TestDocumentedReportChecksUnderPythonOptimize(t *testing.T) {
+	python, err := exec.LookPath("python3")
+	if err != nil {
+		t.Skip("python3 is needed to exercise the guide's Python snippets")
+	}
+	readme, err := os.ReadFile("README.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pieces := strings.Split(string(readme), "python3 - \"$TUT_DIR\" <<'PY'\n")
+	if len(pieces) != 4 {
+		t.Fatalf("expected three report checks, found %d", len(pieces)-1)
+	}
+	reports := map[string]string{
+		"intake-v1-report.json":    `{"bindings":[{"status":"matches-declaration"},{"status":"matches-declaration"},{"status":"matches-declaration"}],"links":[{"status":"matches-declaration"},{"status":"matches-declaration"},{"status":"matches-declaration"}]}`,
+		"accept-v1-report.json":    `{"replay":"matched","scenarioReport":{"stepsExecuted":3}}`,
+		"scenario-v1-report.json":  `{"matched":true,"casesCompleted":3,"stepsExecuted":3}`,
+		"intake-stale-report.json": `{"bindings":[{"kind":"model","status":"digest-mismatch"}]}`,
+		"accept-stale-report.json": `{"modelBinding":"stale","suiteValidation":"not-checked","replay":"not-run","scenarioReport":null}`,
+		"intake-v2-report.json":    `{"bindings":[{"status":"matches-declaration"},{"status":"matches-declaration"},{"status":"matches-declaration"}],"links":[{"status":"matches-declaration"},{"status":"matches-declaration"},{"status":"matches-declaration"}]}`,
+		"accept-v2-report.json":    `{"replay":"matched"}`,
+		"scenario-v2-report.json":  `{"matched":true,"stepsExecuted":3,"entries":[{"actual":{"ok":false,"transitionId":"T_prepare","refusals":["G_actor"],"task":{"state":"Draft","revision":"0"}}},{"actual":{"ok":true,"task":{"state":"Ready","revision":"1"}}},{"actual":{"ok":false,"task":null,"refusals":["INVALID_INPUT"]}}]}`,
+	}
+	temp := t.TempDir()
+	write := func(name, data string) {
+		t.Helper()
+		if err := os.WriteFile(filepath.Join(temp, name), []byte(data), 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for name, data := range reports {
+		write(name, data)
+	}
+	cases := []struct{ name, old, new string }{
+		{"intake-v1-report.json", "matches-declaration", "digest-mismatch"},
+		{"accept-stale-report.json", `"replay":"not-run"`, `"replay":"matched"`},
+		{"scenario-v2-report.json", `"revision":"0"`, `"revision":"1"`},
+	}
+	for i, c := range cases {
+		script, _, ok := strings.Cut(pieces[i+1], "\nPY")
+		if !ok {
+			t.Fatal("unterminated report snippet")
+		}
+		run := func() ([]byte, error) {
+			cmd := exec.Command(python, "-c", script, temp)
+			cmd.Env = append(os.Environ(), "PYTHONOPTIMIZE=1")
+			return cmd.CombinedOutput()
+		}
+		if out, err := run(); err != nil {
+			t.Fatalf("valid snippet %d: %v %s", i, err, out)
+		}
+		changed := strings.Replace(reports[c.name], c.old, c.new, 1)
+		if changed == reports[c.name] {
+			t.Fatal("mutation did not apply")
+		}
+		write(c.name, changed)
+		out, err := run()
+		if err == nil || !bytes.Contains(out, []byte("tutorial verification failed")) {
+			t.Fatalf("snippet %d accepted altered report: %s", i, out)
+		}
+		write(c.name, reports[c.name])
 	}
 }

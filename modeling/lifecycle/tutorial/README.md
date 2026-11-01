@@ -27,9 +27,11 @@ Run the code blocks in order in the same Bash session:
 ```bash
 set -euo pipefail
 test "$(go env GOVERSION)" = go1.27.3
-npm ci --prefix runtime --ignore-scripts --no-audit --no-fund
-export TUT_AJV="$PWD/runtime/node_modules/ajv"
 export TUT_DIR="$(mktemp -d "${TMPDIR:-/tmp}/foundry-tutorial.XXXXXX")"
+mkdir "$TUT_DIR/npm"
+cp runtime/package.json runtime/package-lock.json "$TUT_DIR/npm/"
+(cd "$TUT_DIR/npm" && npm ci --ignore-scripts --no-audit --no-fund)
+export TUT_AJV="$TUT_DIR/npm/node_modules/ajv"
 cp -R modeling/lifecycle "$TUT_DIR/lifecycle"
 cd "$TUT_DIR/lifecycle"
 export GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off GOWORK=off GOENV=off
@@ -91,14 +93,22 @@ intake_request tutorial/intake-v1.json tutorial/requirements-v1.md examples/life
 acceptance_request replay tutorial/manifest-v1.json examples/lifecycle.json tutorial/suite-v1.json > "$TUT_DIR/accept-v1-request.json"
 "$TUT_DIR/modelacceptance-v1" < "$TUT_DIR/accept-v1-request.json" > "$TUT_DIR/accept-v1-report.json"
 "$TUT_DIR/modelplay-v1" < tutorial/suite-v1.json > "$TUT_DIR/scenario-v1-report.json"
+# The v1 runner must reject the v2 model binding without running a scenario.
+if "$TUT_DIR/modelplay-v1" < tutorial/suite-v2.json > "$TUT_DIR/future-suite-report.json"; then
+  echo 'Future suite unexpectedly accepted' >&2; exit 1
+else
+  status=$?; test "$status" -eq 2; test ! -s "$TUT_DIR/future-suite-report.json"
+fi
 python3 - "$TUT_DIR" <<'PY'
 import json, pathlib, sys
 p = pathlib.Path(sys.argv[1]); load = lambda n: json.loads((p/n).read_bytes())
+def check(ok):
+    if not ok: raise SystemExit('tutorial verification failed')
 i = load('intake-v1-report.json'); a = load('accept-v1-report.json'); s = load('scenario-v1-report.json')
-assert len(i['bindings']) == 3 and all(x['status'] == 'matches-declaration' for x in i['bindings'])
-assert len(i['links']) == 3 and all(x['status'] == 'matches-declaration' for x in i['links'])
-assert a['replay'] == 'matched' and a['scenarioReport']['stepsExecuted'] == 3
-assert s['matched'] and s['casesCompleted'] == 3 and s['stepsExecuted'] == 3
+check(len(i['bindings']) == 3 and all(x['status'] == 'matches-declaration' for x in i['bindings']))
+check(len(i['links']) == 3 and all(x['status'] == 'matches-declaration' for x in i['links']))
+check(a['replay'] == 'matched' and a['scenarioReport']['stepsExecuted'] == 3)
+check(s['matched'] and s['casesCompleted'] == 3 and s['stepsExecuted'] == 3)
 print('v1: declared bytes match; three literal scenarios replayed and matched')
 PY
 ```
@@ -123,10 +133,12 @@ fi
 python3 - "$TUT_DIR" <<'PY'
 import json, pathlib, sys
 p = pathlib.Path(sys.argv[1]); load = lambda n: json.loads((p/n).read_bytes())
+def check(ok):
+    if not ok: raise SystemExit('tutorial verification failed')
 i = load('intake-stale-report.json'); a = load('accept-stale-report.json')
-assert next(x for x in i['bindings'] if x['kind'] == 'model')['status'] == 'digest-mismatch'
-assert a['modelBinding'] == 'stale' and a['suiteValidation'] == 'not-checked'
-assert a['replay'] == 'not-run' and a['scenarioReport'] is None
+check(next(x for x in i['bindings'] if x['kind'] == 'model')['status'] == 'digest-mismatch')
+check(a['modelBinding'] == 'stale' and a['suiteValidation'] == 'not-checked')
+check(a['replay'] == 'not-run' and a['scenarioReport'] is None)
 print('v1 evidence is stale; no candidate scenario was run')
 PY
 ```
@@ -167,22 +179,25 @@ acceptance_request replay tutorial/manifest-v2.json tutorial/model-v2.json tutor
 python3 - "$TUT_DIR" <<'PY'
 import json, pathlib, sys
 p = pathlib.Path(sys.argv[1]); load = lambda n: json.loads((p/n).read_bytes())
+def check(ok):
+    if not ok: raise SystemExit('tutorial verification failed')
 i = load('intake-v2-report.json'); a = load('accept-v2-report.json'); s = load('scenario-v2-report.json')
-assert len(i['bindings']) == 3 and all(x['status'] == 'matches-declaration' for x in i['bindings'])
-assert len(i['links']) == 3 and all(x['status'] == 'matches-declaration' for x in i['links'])
-assert a['replay'] == 'matched' and s['matched'] and s['stepsExecuted'] == 3
+check(len(i['bindings']) == 3 and all(x['status'] == 'matches-declaration' for x in i['bindings']))
+check(len(i['links']) == 3 and all(x['status'] == 'matches-declaration' for x in i['links']))
+check(a['replay'] == 'matched' and s['matched'] and s['stepsExecuted'] == 3)
 blank, named, unknown = (x['actual'] for x in s['entries'])
-assert not blank['ok'] and blank['transitionId'] == 'T_prepare' and blank['refusals'] == ['G_actor']
-assert blank['task']['state'] == 'Draft' and blank['task']['revision'] == '0'
-assert named['ok'] and named['task']['state'] == 'Ready' and named['task']['revision'] == '1'
-assert not unknown['ok'] and unknown['task'] is None and unknown['refusals'] == ['INVALID_INPUT']
+check(not blank['ok'] and blank['transitionId'] == 'T_prepare' and blank['refusals'] == ['G_actor'])
+check(blank['task']['state'] == 'Draft' and blank['task']['revision'] == '0')
+check(named['ok'] and named['task']['state'] == 'Ready' and named['task']['revision'] == '1')
+check(not unknown['ok'] and unknown['task'] is None and unknown['refusals'] == ['INVALID_INPUT'])
 print('v2: old binding refused; three separately specified scenarios replayed and matched')
 PY
 ```
 
 `go test ./tutorial` independently checks this sequence against fixed expected
 results in another disposable module copy; it requires Go 1.27.3 and does not
-require Node or Python. It exercises real compiler and CLI binaries, not a new
+require Node. A report-snippet regression also runs when Python 3 is available.
+The test exercises real compiler and CLI binaries, not a new
 product runner. It cannot replace a person's review of intended behavior, and a
 passing test does not confer approval. After inspection, remove the disposable
 copy using your normal temporary-file cleanup process.
