@@ -104,7 +104,9 @@ func fromCommand(d commandDTO) (lifecycle.Command, error) {
 }
 
 // Decode rejects the entire malformed fixture; it never invokes the reducer.
-func Decode(raw []byte) (Suite, error) {
+func Decode(raw []byte) (Suite, error) { return decodeFor(raw, defaultBinding()) }
+
+func decodeFor(raw []byte, binding Binding) (Suite, error) {
 	var d suiteDTO
 	if e := strictjson.Decode(raw, &d, MaxSourceBytes, MaxDepth); e != nil {
 		return Suite{}, ErrInvalidScenario
@@ -136,7 +138,7 @@ func Decode(raw []byte) (Suite, error) {
 		}
 		s.Cases[i] = v
 	}
-	if e := Validate(s); e != nil {
+	if e := validateFor(s, binding); e != nil {
 		return Suite{}, e
 	}
 	return s, nil
@@ -188,8 +190,10 @@ func encodeJSON(v any) ([]byte, error) {
 
 // Encode preserves ordered data and nil/empty distinctions, without deriving or
 // changing any expected result. Successful output is decodable by JSON-v1.
-func Encode(s Suite) ([]byte, error) {
-	if e := Validate(s); e != nil {
+func Encode(s Suite) ([]byte, error) { return encodeFor(s, defaultBinding()) }
+
+func encodeFor(s Suite, binding Binding) ([]byte, error) {
+	if e := validateFor(s, binding); e != nil {
 		return nil, e
 	}
 	return encodeJSON(toDTO(s))
@@ -197,8 +201,10 @@ func Encode(s Suite) ([]byte, error) {
 
 // Digest covers semantic scenario data, including every literal expectation.
 // Original JSON formatting and its format-version label are not semantic inputs.
-func Digest(s Suite) (string, error) {
-	if e := Validate(s); e != nil {
+func Digest(s Suite) (string, error) { return digestFor(s, defaultBinding()) }
+
+func digestFor(s Suite, binding Binding) (string, error) {
+	if e := validateFor(s, binding); e != nil {
 		return "", e
 	}
 	d := toDTO(s)

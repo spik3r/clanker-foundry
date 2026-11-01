@@ -15,12 +15,21 @@ type transition func(lifecycle.Task, lifecycle.Command) lifecycle.Result
 // never computed, repaired or refreshed from observed reducer results.
 func Run(s Suite) (Report, error) { return runWith(s, lifecycle.Transition) }
 func runWith(s Suite, apply transition) (Report, error) {
-	if e := Validate(s); e != nil {
+	return runFor(s, apply, defaultBinding(), false)
+}
+
+func runFor(s Suite, apply transition, binding Binding, provider bool) (Report, error) {
+	if e := validateFor(s, binding); e != nil {
 		return Report{}, e
 	}
-	digest, e := Digest(s)
+	digest, e := digestFor(s, binding)
 	if e != nil {
 		return Report{}, e
+	}
+	if provider {
+		// An effectful callback may retain the caller's original Suite in a
+		// closure. Freeze all validated literals before the first invocation.
+		s = copySuite(s)
 	}
 	report := Report{ModelDigest: s.ModelDigest, ScenarioDigest: digest, Matched: true, Entries: []Entry{}}
 	encodedSize := 4096 // Conservative fixed report-envelope allowance.
@@ -29,12 +38,15 @@ func runWith(s Suite, apply transition) (Report, error) {
 		for _, step := range c.Steps {
 			entry := Entry{CaseID: c.ID, StepID: step.ID, Input: copyTask(current), Command: copyCommand(step.Command), Expected: copyExpected(step.Expected)}
 			observed := apply(copyTask(current), copyCommand(step.Command))
+			if provider && !providerResultValid(observed, binding) {
+				return Report{}, ErrProviderProtocol
+			}
 			entry.Actual = copyResult(observed)
 			entry.Differences = compare(entry.Actual, entry.Expected, s.ModelDigest)
 			entry.Matched = len(entry.Differences) == 0
 			// Account for each complete encoded entry before retaining it. Large valid
 			// input reused across many steps cannot accumulate an unbounded report.
-			if !boundedEntry(entry) {
+			if !boundedEntryFor(entry, binding) {
 				return Report{}, ErrReportLimit
 			}
 			raw, e := encodeJSON(entryToDTO(entry))
@@ -97,15 +109,27 @@ func compare(actual lifecycle.Result, want Expected, digest string) []string {
 // typed Run cannot supply that fact. Neither hash authenticates actors or code.
 func Execute(raw []byte) (Report, error) { return executeWith(raw, lifecycle.Transition) }
 func executeWith(raw []byte, apply transition) (Report, error) {
-	s, e := Decode(raw)
+	return executeFor(raw, apply, defaultBinding(), false)
+}
+
+func executeFor(raw []byte, apply transition, binding Binding, provider bool) (Report, error) {
+	s, e := decodeFor(raw, binding)
 	if e != nil {
 		return Report{}, e
 	}
-	report, e := runWith(s, apply)
+	var h [sha256.Size]byte
+	if provider {
+		// Bind the bytes decoded above, not bytes a callback may later mutate
+		// through a caller-owned closure. Concurrent mutation remains unsupported.
+		h = sha256.Sum256(raw)
+	}
+	report, e := runFor(s, apply, binding, provider)
 	if e != nil {
 		return Report{}, e
 	}
-	h := sha256.Sum256(raw)
+	if !provider {
+		h = sha256.Sum256(raw)
+	}
 	v := hex.EncodeToString(h[:])
 	report.SourceDigest = &v
 	return report, nil
@@ -140,7 +164,9 @@ func entryToDTO(e Entry) entryDTO {
 	}
 	return entryDTO{e.CaseID, e.StepID, taskToDTO(e.Input), commandToDTO(e.Command), expectedToDTO(e.Expected), a, e.Matched, copyStrings(e.Differences)}
 }
-func boundedEntry(e Entry) bool {
+func boundedEntry(e Entry) bool { return boundedEntryFor(e, defaultBinding()) }
+
+func boundedEntryFor(e Entry, binding Binding) bool {
 	b := budget{limit: MaxReportBytes}
 	if !model.Identifier(e.CaseID) || !model.Identifier(e.StepID) || !b.task(e.Input) || !b.command(e.Command) || !b.expected(e.Expected) {
 		return false
@@ -161,14 +187,16 @@ func boundedEntry(e Entry) bool {
 			return false
 		}
 	}
-	actualDifferences := compare(e.Actual, e.Expected, lifecycle.ModelDigest)
+	actualDifferences := compare(e.Actual, e.Expected, binding.ModelDigest)
 	return reflect.DeepEqual(e.Differences, actualDifferences) && e.Matched == (len(actualDifferences) == 0)
 }
 
 // EncodeReport returns one complete bounded JSON value plus newline. It never
 // writes output. The caller must check both encoding and I/O errors.
-func EncodeReport(r Report) ([]byte, error) {
-	if r.ModelDigest != lifecycle.ModelDigest || !hexDigest(r.ScenarioDigest) || (r.SourceDigest != nil && !hexDigest(*r.SourceDigest)) || len(r.Entries) < 1 || len(r.Entries) > MaxSteps || r.StepsExecuted != len(r.Entries) || r.CasesCompleted < 0 || r.CasesCompleted > MaxCases || (r.Matched && r.CasesCompleted < 1) {
+func EncodeReport(r Report) ([]byte, error) { return encodeReportFor(r, defaultBinding(), false) }
+
+func encodeReportFor(r Report, binding Binding, provider bool) ([]byte, error) {
+	if r.ModelDigest != binding.ModelDigest || !hexDigest(r.ScenarioDigest) || (r.SourceDigest != nil && !hexDigest(*r.SourceDigest)) || len(r.Entries) < 1 || len(r.Entries) > MaxSteps || r.StepsExecuted != len(r.Entries) || r.CasesCompleted < 0 || r.CasesCompleted > MaxCases || (r.Matched && r.CasesCompleted < 1) {
 		return nil, ErrReportLimit
 	}
 	entries := make([]entryDTO, len(r.Entries))
@@ -178,7 +206,7 @@ func EncodeReport(r Report) ([]byte, error) {
 	lastCase := ""
 	seenIDs := map[string]bool{}
 	for i, e := range r.Entries {
-		if !boundedEntry(e) {
+		if !boundedEntryFor(e, binding) || (provider && !providerResultValid(e.Actual, binding)) {
 			return nil, ErrReportLimit
 		}
 		if e.CaseID == lastCase && i > 0 {
@@ -237,10 +265,15 @@ func EncodeReport(r Report) ([]byte, error) {
 	if !r.Matched && r.Entries[len(r.Entries)-1].Matched {
 		return nil, ErrReportLimit
 	}
+	format, source := ReportVersion, ""
+	if provider {
+		format, source = BoundReportVersion, BindingSource
+	}
 	dto := struct {
 		FormatVersion   string     `json:"formatVersion"`
 		ScenarioVersion string     `json:"scenarioVersion"`
 		ProfileVersion  string     `json:"profileVersion"`
+		IdentitySource  string     `json:"identitySource,omitempty"`
 		Mode            string     `json:"mode"`
 		Authority       string     `json:"authority"`
 		ModelDigest     string     `json:"modelDigest"`
@@ -250,7 +283,7 @@ func EncodeReport(r Report) ([]byte, error) {
 		CasesCompleted  int        `json:"casesCompleted"`
 		StepsExecuted   int        `json:"stepsExecuted"`
 		Entries         []entryDTO `json:"entries"`
-	}{ReportVersion, ScenarioVersion, lifecycle.ProfileVersion, Mode, Authority, r.ModelDigest, r.ScenarioDigest, r.SourceDigest, r.Matched, r.CasesCompleted, r.StepsExecuted, entries}
+	}{format, ScenarioVersion, binding.ProfileVersion, source, Mode, Authority, r.ModelDigest, r.ScenarioDigest, r.SourceDigest, r.Matched, r.CasesCompleted, r.StepsExecuted, entries}
 	raw, e := encodeJSON(dto)
 	if e != nil || len(raw) > MaxReportBytes {
 		return nil, ErrReportLimit

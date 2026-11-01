@@ -60,8 +60,9 @@ ownership evidence.
 `Suite`, `Case`, `Step` and `Expected` in [types.go](types.go) are typed data.
 [decode.go](decode.go) holds separate JSON DTOs. The first wire format is
 `lifecycle-scenarios-json/v1`; scenario semantics are `lifecycle-scenarios/v1`.
-The reducer profile must be `lifecycle/v1`, and the suite's model digest must equal
-the compiled reducer's constant. There is no arbitrary engine/plugin hook.
+The reducer profile must be `lifecycle/v1`, and these package-level APIs require
+the suite's model digest to equal the built-in compiled reducer's constant.
+They remain unchanged; the explicit Go-composition API below is separate.
 
 ```go
 Decode([]byte) (Suite, error)
@@ -72,6 +73,68 @@ Run(Suite) (Report, error)
 Execute([]byte) (Report, error)
 EncodeReport(Report) ([]byte, error)
 ```
+
+### Explicit model-bound Go composition
+
+An external application can use the same fixture pipeline with its separately
+generated lifecycle/v1 reducer without copying Foundry or replacing its example
+package. See the [external consumer proof](../consumerintegration/README.md).
+The existing compiler and all default generated artifacts remain unchanged.
+
+```go
+NewRunner(Binding, func(lifecycle.Task, lifecycle.Command) lifecycle.Result) (Runner, error)
+Runner.ModelBinding() (Binding, error)
+```
+
+`Binding` contains `ProfileVersion` and `ModelDigest`. Construct it in reviewed Go
+code from the custom generated package's constants and provide a field-only typed
+adapter to that package's `Transition`. The existing generated Task/Command/Review/
+Result types are only the transport profile at this boundary; the adapter must
+preserve all fields, nil/empty distinctions, uint64 revisions and refusal order.
+It must not rewrite actual model identity or derive expected results. This is not
+a production command transport or an interpreter for another semantic profile.
+
+The value `Runner` snapshots private configuration and exposes the same
+`Validate`, `Decode`, `Encode`, `Digest`, `Run`, `Execute` and `EncodeReport`
+signatures as the package-level functions. Every method uses that same binding;
+the zero runner and nil callback refuse, never silently select the default.
+There is no JSON-selected callback, registry, dynamic loader or identity setter.
+Do not construct a binding by copying a request's expected model digest.
+
+A supplied binding is a **declaration**, not proof that the callback is the named
+generated reducer. The callback is trusted application code. It can perform I/O,
+mutate a closure, allocate, block or panic; panics propagate. Runner neither
+sandboxes nor cancels it and cannot bound the callback's allocation or roll back
+its effects. Callers must not concurrently mutate input or callback-owned returned
+data. Deterministic replay requires a deterministic callback and stable inputs.
+
+The complete suite is checked and copied before the first call; raw source identity
+is recorded before invocation. A callback retaining the caller's original suite or
+raw bytes therefore cannot rewrite later comparisons or their source identity.
+A stale or malformed suite
+invokes no callback. After each call, the opt-in path bounds the returned structure
+**before cloning it**, and checks actual model digest, mode and authority without
+repair. Invalid envelopes, shapes or result bounds return `ErrProviderProtocol`
+and no report; execution has begun and no subsequent step is called. This error
+does not mean not-run or rollback. Profile is checked at construction because a
+Result has no profile field. Structurally valid frozen-expectation mismatches still
+produce an ordinary fail-fast mismatch report. Legacy `Run` retains its existing
+envelope-mismatch behavior rather than adopting this new error policy.
+
+Aggregate report overflow can also return `ErrReportLimit` after multiple calls.
+An error or absent report alone never proves zero execution. Only the documented
+preflight-refusal paths and acceptance check-only/stale paths promise zero calls.
+
+`Runner.EncodeReport` uses `lifecycle-bound-scenario-report/v1` with
+`identitySource: caller-supplied-go-binding`. It rechecks the configured identity,
+actual envelopes, comparisons, continuity, counts and output bounds. The older
+package encoder and CLI keep their original format and byte behavior. Neither
+report authenticates code or proves execution; callers can fabricate typed data.
+Canonical suite identity and original source-byte identity remain unchanged.
+
+Held copied-source consumers must explicitly requalify their complete closure,
+including the new `runner.go` dependency. This change does not refresh those pins,
+adopt a real consumer repository, or establish task/reviewer/operating authority.
 
 The complete fixture fields are shown in the small JSON file. Every key is
 required, even a nullable key. No unknown/case-variant keys, duplicate decoded

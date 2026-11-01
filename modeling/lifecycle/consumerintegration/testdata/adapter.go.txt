@@ -1,0 +1,376 @@
+package consumer_test
+
+// This file is instantiated only in a temporary external consumer module.
+// Conversion is field-only; all transition semantics stay in the generated reducer.
+import (
+	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"math"
+	"os"
+	"reflect"
+	"strings"
+	"testing"
+
+	custom "__MODEL_IMPORT__"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/acceptanceauthor"
+	transport "github.com/spik3r/clanker-foundry/modeling/lifecycle/generated"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarios"
+)
+
+const revision = "__VERSION__"
+const otherRevision = "__OTHER_VERSION__"
+
+func stringsCopy(s []string) []string {
+	if s == nil {
+		return nil
+	}
+	return append([]string{}, s...)
+}
+func ownerCopy(s *string) *string {
+	if s == nil {
+		return nil
+	}
+	v := *s
+	return &v
+}
+func toTask(t transport.Task) custom.Task {
+	return custom.Task{ID: t.ID, State: custom.State(t.State), Revision: t.Revision, Outcome: t.Outcome, Acceptance: stringsCopy(t.Acceptance), Owner: ownerCopy(t.Owner)}
+}
+func fromTask(t custom.Task) transport.Task {
+	return transport.Task{ID: t.ID, State: transport.State(t.State), Revision: t.Revision, Outcome: t.Outcome, Acceptance: stringsCopy(t.Acceptance), Owner: ownerCopy(t.Owner)}
+}
+func toCommand(c transport.Command) custom.Command {
+	out := custom.Command{Type: c.Type, Actor: c.Actor, ExpectedRevision: c.ExpectedRevision}
+	if c.Review != nil {
+		r := c.Review
+		out.Review = &custom.Review{TaskID: r.TaskID, TaskRevision: r.TaskRevision, ModelDigest: r.ModelDigest, TaskDigest: r.TaskDigest, Reviewer: r.Reviewer, Decision: r.Decision}
+	}
+	return out
+}
+func fromResult(r custom.Result) transport.Result {
+	out := transport.Result{Mode: r.Mode, Authority: r.Authority, ModelDigest: r.ModelDigest, OK: r.OK, TransitionID: r.TransitionID, Refusals: stringsCopy(r.Refusals)}
+	if r.Task != nil {
+		t := fromTask(*r.Task)
+		out.Task = &t
+	}
+	return out
+}
+func apply(t transport.Task, c transport.Command) transport.Result {
+	return fromResult(custom.Transition(toTask(t), toCommand(c)))
+}
+func runner(t *testing.T, calls *int, fn func(transport.Task, transport.Command) transport.Result) scenarios.Runner {
+	t.Helper()
+	r, e := scenarios.NewRunner(scenarios.Binding{ProfileVersion: custom.ProfileVersion, ModelDigest: custom.ModelDigest}, func(task transport.Task, c transport.Command) transport.Result { *calls++; return fn(task, c) })
+	if e != nil {
+		t.Fatal(e)
+	}
+	return r
+}
+func file(t *testing.T, name string) []byte {
+	t.Helper()
+	b, e := os.ReadFile("../fixtures/" + name)
+	if e != nil {
+		t.Fatal(e)
+	}
+	return b
+}
+func sum(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
+func jsonObject(t *testing.T, x any) map[string]json.RawMessage {
+	t.Helper()
+	b, e := json.Marshal(x)
+	if e != nil {
+		t.Fatal(e)
+	}
+	var o map[string]json.RawMessage
+	if e = json.Unmarshal(b, &o); e != nil {
+		t.Fatal(e)
+	}
+	return o
+}
+func field(t *testing.T, o map[string]json.RawMessage, k string) string {
+	t.Helper()
+	var s string
+	if e := json.Unmarshal(o[k], &s); e != nil {
+		t.Fatal(e)
+	}
+	return s
+}
+
+type expectedVersion struct {
+	ModelDigest           string `json:"modelDigest"`
+	ModelSourceSHA256     string `json:"modelSourceSha256"`
+	SuiteSourceSHA256     string `json:"suiteSourceSha256"`
+	ScenarioDigest        string `json:"scenarioDigest"`
+	ManifestSourceSHA256  string `json:"manifestSourceSha256"`
+	CaseCount             int    `json:"caseCount"`
+	StepCount             int    `json:"stepCount"`
+	SuccessfulTransitions int    `json:"successfulTransitions"`
+	RefusedSteps          int    `json:"refusedSteps"`
+}
+
+func expected(t *testing.T) expectedVersion {
+	t.Helper()
+	b := file(t, "expected.json")
+	if sum(b) != "119a37c0298dea6e122c3a4f62b2cb1bddbac24e6fc91feadbc2723360e9550f" {
+		t.Fatal("frozen oracle changed")
+	}
+	var e struct {
+		Versions map[string]expectedVersion `json:"versions"`
+	}
+	if err := json.Unmarshal(b, &e); err != nil {
+		t.Fatal(err)
+	}
+	return e.Versions[revision]
+}
+
+func TestFrozenReplay(t *testing.T) {
+	e := expected(t)
+	suite := file(t, "suite-"+revision+".json")
+	model := file(t, "model-"+revision+".json")
+	manifest := file(t, "manifest-"+revision+".json")
+	if sum(suite) != e.SuiteSourceSHA256 || sum(model) != e.ModelSourceSHA256 || sum(manifest) != e.ManifestSourceSHA256 || custom.ModelDigest != e.ModelDigest {
+		t.Fatal("frozen input identity drift")
+	}
+	calls := 0
+	r := runner(t, &calls, apply)
+	binding, err := r.ModelBinding()
+	if err != nil || binding.ModelDigest != e.ModelDigest || binding.ProfileVersion != "lifecycle/v1" {
+		t.Fatal("binding", binding, err)
+	}
+	report, err := r.Execute(suite)
+	if err != nil {
+		t.Fatal("replay error", err)
+	}
+	if !report.Matched {
+		t.Fatalf("FROZEN_ORACLE_MISMATCH: %+v", report)
+	}
+	if calls != e.StepCount || report.StepsExecuted != e.StepCount || report.CasesCompleted != e.CaseCount || report.ScenarioDigest != e.ScenarioDigest || report.SourceDigest == nil || *report.SourceDigest != e.SuiteSourceSHA256 {
+		t.Fatal("replay inventory or identity differs", report)
+	}
+	ok, refused := 0, 0
+	for _, entry := range report.Entries {
+		if entry.Actual.OK {
+			ok++
+		} else {
+			refused++
+		}
+	}
+	if ok != e.SuccessfulTransitions || refused != e.RefusedSteps {
+		t.Fatal("literal success/refusal inventory", ok, refused)
+	}
+	encoded, err := r.EncodeReport(report)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var wire map[string]json.RawMessage
+	if err = json.Unmarshal(encoded, &wire); err != nil {
+		t.Fatal(err)
+	}
+	if field(t, wire, "formatVersion") != "lifecycle-bound-scenario-report/v1" || field(t, wire, "identitySource") != "caller-supplied-go-binding" {
+		t.Fatal("bound report identity source", string(encoded))
+	}
+	calls = 0
+	ar, err := acceptanceauthor.CheckWithRunner(manifest, model, suite, "replay", r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	a := jsonObject(t, ar)
+	if field(t, a, "replay") != "matched" || calls != e.StepCount || field(t, a, "runnerModelDigest") != e.ModelDigest || field(t, a, "identitySource") != "caller-supplied-go-binding" || field(t, a, "formatVersion") != "lifecycle-bound-acceptance-report/v1" {
+		t.Fatal("bound acceptance", ar, calls)
+	}
+	if _, exists := a["compiledModelDigest"]; exists {
+		t.Fatal("caller binding mislabeled compiled provenance")
+	}
+}
+
+func TestPreflightAndNoImplicitDefault(t *testing.T) {
+	calls := 0
+	r := runner(t, &calls, apply)
+	suite := file(t, "suite-"+revision+".json")
+	model := file(t, "model-"+revision+".json")
+	manifest := file(t, "manifest-"+revision+".json")
+	if _, e := r.Execute(file(t, "suite-"+otherRevision+".json")); !errors.Is(e, scenarios.ErrModelBinding) || calls != 0 {
+		t.Fatal("cross runner reached callback", e, calls)
+	}
+	foreign, e := acceptanceauthor.CheckWithRunner(file(t, "manifest-"+otherRevision+".json"), file(t, "model-"+otherRevision+".json"), file(t, "suite-"+otherRevision+".json"), "replay", r)
+	if e != nil {
+		t.Fatal(e)
+	}
+	f := jsonObject(t, foreign)
+	if calls != 0 || field(t, f, "runnerBinding") != "stale" || field(t, f, "suiteValidation") != "not-checked" || field(t, f, "replay") != "not-run" {
+		t.Fatal("cross acceptance executed", foreign, calls)
+	}
+	checked, e := acceptanceauthor.CheckWithRunner(manifest, model, suite, "check", r)
+	if e != nil {
+		t.Fatal(e)
+	}
+	c := jsonObject(t, checked)
+	if calls != 0 || field(t, c, "suiteValidation") != "valid" || field(t, c, "replay") != "not-run" {
+		t.Fatal("check-only executed", checked, calls)
+	}
+	stale, e := acceptanceauthor.CheckWithRunner(manifest, model, append(bytes.Clone(suite), '\n'), "replay", r)
+	if e != nil {
+		t.Fatal(e)
+	}
+	s := jsonObject(t, stale)
+	if calls != 0 || field(t, s, "suiteBinding") != "stale" || field(t, s, "suiteValidation") != "not-checked" || field(t, s, "replay") != "not-run" {
+		t.Fatal("stale source executed", stale, calls)
+	}
+	typed, e := r.Decode(suite)
+	if e != nil {
+		t.Fatal(e)
+	}
+	last := &typed.Cases[len(typed.Cases)-1]
+	last.Steps[len(last.Steps)-1].Expected.Refusals = nil
+	if _, e = r.Run(typed); e == nil || calls != 0 {
+		t.Fatal("malformed final expectation reached callback", e, calls)
+	}
+	if _, e = scenarios.Decode(suite); !errors.Is(e, scenarios.ErrModelBinding) {
+		t.Fatal("legacy default accepted custom model", e)
+	}
+	legacy, e := acceptanceauthor.Check(manifest, model, suite, "replay")
+	if e != nil || legacy.RunnerBinding != "stale" || legacy.Replay != "not-run" {
+		t.Fatal("legacy acceptance rebound", legacy, e)
+	}
+}
+
+func TestMismatchProtocolAndIdentityLayers(t *testing.T) {
+	calls := 0
+	r := runner(t, &calls, apply)
+	suite := file(t, "suite-"+revision+".json")
+	typed, e := r.Decode(suite)
+	if e != nil {
+		t.Fatal(e)
+	}
+	typed.Cases[0].Steps[0].Expected.Task.Outcome = "Deliberately wrong literal"
+	report, e := r.Run(typed)
+	if e != nil || report.Matched || calls != 1 || report.StepsExecuted != 1 {
+		t.Fatal("ordinary mismatch did not stop", report, e, calls)
+	}
+	calls = 0
+	bad := runner(t, &calls, func(task transport.Task, c transport.Command) transport.Result {
+		out := apply(task, c)
+		out.ModelDigest = strings.Repeat("0", 64)
+		return out
+	})
+	if _, e = bad.Execute(suite); !errors.Is(e, scenarios.ErrProviderProtocol) || calls != 1 {
+		t.Fatal("provider failure mislabeled", e, calls)
+	}
+	calls = 0
+	if _, e = acceptanceauthor.CheckWithRunner(file(t, "manifest-"+revision+".json"), file(t, "model-"+revision+".json"), suite, "replay", bad); !errors.Is(e, scenarios.ErrProviderProtocol) || calls != 1 {
+		t.Fatal("acceptance hid provider failure", e, calls)
+	}
+	typed, e = r.Decode(suite)
+	if e != nil {
+		t.Fatal(e)
+	}
+	encoded, e := r.Encode(typed)
+	if e != nil {
+		t.Fatal(e)
+	}
+	decoded, e := r.Decode(encoded)
+	if e != nil {
+		t.Fatal(e)
+	}
+	d, e := r.Digest(decoded)
+	if e != nil || d != expected(t).ScenarioDigest {
+		t.Fatal("typed roundtrip changed scenario identity", d, e)
+	}
+	formatted := append(bytes.Clone(suite), '\n')
+	calls = 0
+	a, e := r.Execute(formatted)
+	if e != nil || !a.Matched || a.ScenarioDigest != expected(t).ScenarioDigest || a.SourceDigest == nil || *a.SourceDigest == expected(t).SuiteSourceSHA256 {
+		t.Fatal("source/canonical identity conflated", a, e)
+	}
+	// Model source formatting does not alter its canonical acceptance binding.
+	model := append(file(t, "model-"+revision+".json"), '\n')
+	calls = 0
+	ar, e := acceptanceauthor.CheckWithRunner(file(t, "manifest-"+revision+".json"), model, suite, "check", r)
+	if e != nil || field(t, jsonObject(t, ar), "modelBinding") != "current" || calls != 0 {
+		t.Fatal("model formatting changed meaning", ar, e, calls)
+	}
+}
+
+func fields(t *testing.T, v any, want []string) {
+	t.Helper()
+	typ := reflect.TypeOf(v)
+	got := []string{}
+	for i := 0; i < typ.NumField(); i++ {
+		got = append(got, typ.Field(i).Name)
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("adapter field inventory changed for %s: %v", typ, got)
+	}
+}
+func TestAdapterFieldInventoryAndCopies(t *testing.T) {
+	for _, v := range []any{transport.Task{}, custom.Task{}} {
+		fields(t, v, []string{"ID", "State", "Revision", "Outcome", "Acceptance", "Owner"})
+	}
+	for _, v := range []any{transport.Command{}, custom.Command{}} {
+		fields(t, v, []string{"Type", "Actor", "ExpectedRevision", "Review"})
+	}
+	for _, v := range []any{transport.Review{}, custom.Review{}} {
+		fields(t, v, []string{"TaskID", "TaskRevision", "ModelDigest", "TaskDigest", "Reviewer", "Decision"})
+	}
+	for _, v := range []any{transport.Result{}, custom.Result{}} {
+		fields(t, v, []string{"Mode", "Authority", "ModelDigest", "OK", "TransitionID", "Task", "Refusals"})
+	}
+	owner := ""
+	for _, list := range [][]string{nil, {}, {"one", "two"}} {
+		for _, o := range []*string{nil, &owner} {
+			in := transport.Task{ID: "id", State: "invented", Revision: math.MaxUint64, Outcome: "<&>", Acceptance: list, Owner: o}
+			out := toTask(in)
+			back := fromTask(out)
+			if !reflect.DeepEqual(in, back) {
+				t.Fatal("task adapter lost fields", in, back)
+			}
+			if len(out.Acceptance) > 0 {
+				out.Acceptance[0] = "changed"
+				if in.Acceptance[0] != "one" || back.Acceptance[0] != "one" {
+					t.Fatal("task slices alias")
+				}
+			}
+			if out.Owner != nil {
+				*out.Owner = "changed"
+				if *in.Owner != "" || *back.Owner != "" {
+					t.Fatal("owner aliases")
+				}
+			}
+		}
+	}
+	c := transport.Command{Type: "trigger", Actor: "actor", ExpectedRevision: math.MaxUint64, Review: &transport.Review{TaskID: "task", TaskRevision: math.MaxUint64, ModelDigest: "model", TaskDigest: "content", Reviewer: "reviewer", Decision: "decision"}}
+	converted := toCommand(c)
+	if converted.Type != c.Type || converted.Actor != c.Actor || converted.ExpectedRevision != c.ExpectedRevision || converted.Review.TaskID != c.Review.TaskID || converted.Review.TaskRevision != c.Review.TaskRevision || converted.Review.ModelDigest != c.Review.ModelDigest || converted.Review.TaskDigest != c.Review.TaskDigest || converted.Review.Reviewer != c.Review.Reviewer || converted.Review.Decision != c.Review.Decision {
+		t.Fatal("command/review fields dropped")
+	}
+	converted.Review.TaskID = "changed"
+	if c.Review.TaskID != "task" {
+		t.Fatal("review aliases")
+	}
+	if toCommand(transport.Command{}).Review != nil {
+		t.Fatal("nil review changed")
+	}
+	for _, list := range [][]string{nil, {}, {"z", "a"}} {
+		src := custom.Result{Mode: "actual-mode", Authority: "actual-authority", ModelDigest: "actual-digest", OK: true, TransitionID: "actual-transition", Task: &custom.Task{ID: "result", State: "state", Revision: math.MaxUint64, Outcome: "outcome", Acceptance: []string{}, Owner: &owner}, Refusals: list}
+		out := fromResult(src)
+		if out.Mode != src.Mode || out.Authority != src.Authority || out.ModelDigest != src.ModelDigest || out.OK != src.OK || out.TransitionID != src.TransitionID || !reflect.DeepEqual(out.Refusals, src.Refusals) || !reflect.DeepEqual(*out.Task, fromTask(*src.Task)) {
+			t.Fatal("actual result rewritten")
+		}
+		if len(out.Refusals) > 0 {
+			out.Refusals[0] = "changed"
+			if src.Refusals[0] != "z" {
+				t.Fatal("refusals alias")
+			}
+		}
+		out.Task.ID = "changed"
+		if src.Task.ID != "result" {
+			t.Fatal("result task aliases")
+		}
+	}
+	if fromResult(custom.Result{}).Task != nil {
+		t.Fatal("nil result task changed")
+	}
+}
