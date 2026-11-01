@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "198dc78d-141b-4ff5-a5d7-4e707d090c82",
+  "runId": "91ebb06e-29c7-4c76-ad0d-5f9c88f01d31",
+  "kind": "checkpoint",
+  "parents": [
+    "3b42d87a-7eff-450e-a955-79693bf2bb0e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-scenarios-v1",
+    "path": "tasks/CF-model-scenarios-v1-offline-runner.md",
+    "revision": "7e4f615be3cbd09b8d7aa775a4263cb4269e0a36",
+    "blob": "836cb40bbc4ac7fa3ca373111665707e1c3a9fc1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b24dc7e0dd8ac518c482c93cf3712f19fb925012274c7446c1c4ebd1431965e4"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-scenarios-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T05:02:35.620Z",
+  "summary": "Genuine local type and strict fixture DTO checkpoint; no execution or comparison implementation yet",
+  "next": "Transfer exact local claim/start/types privately; freeze independent literal fixtures before implementing Run",
+  "files": [
+    "modeling/lifecycle/scenarios/README.md",
+    "modeling/lifecycle/scenarios/types.go",
+    "modeling/lifecycle/scenarios/types_test.go",
+    "modeling/lifecycle/scenarios/decode.go",
+    "modeling/lifecycle/scenarios/decode_test.go",
+    "modeling/lifecycle/scenarios/run.go",
+    "modeling/lifecycle/scenarios/run_test.go",
+    "modeling/lifecycle/scenarios/testdata/lifecycle-v1.json",
+    "modeling/lifecycle/cmd/modelplay/main.go",
+    "modeling/lifecycle/cmd/modelplay/main_test.go",
+    "modeling/lifecycle/scenarioacceptance/oracle_test.go",
+    "tasks/CF-model-scenarios-v1-offline-runner.md"
+  ]
+}

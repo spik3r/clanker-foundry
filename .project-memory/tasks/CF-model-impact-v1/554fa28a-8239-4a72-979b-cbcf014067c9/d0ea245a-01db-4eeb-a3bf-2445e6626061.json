@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "d0ea245a-01db-4eeb-a3bf-2445e6626061",
+  "runId": "554fa28a-8239-4a72-979b-cbcf014067c9",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-impact-v1",
+    "path": "tasks/CF-model-impact-v1-review-diff.md",
+    "revision": "ff7870107e504a18b4f40ab9dc50718dc8219e52",
+    "blob": "cb156bc85a2f4ed1220a3f24d31ae36ad9441716",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a3d8a07f1df96a640b88e5c2681600324dce8fb10c6dde07eb5eac189c2f81cb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T06:22:29.719Z",
+  "summary": "Implement local read-only semantic-ID model review diff and conservative declared-link/binding comparisons; preserve PR11 and scenario runner",
+  "next": "Checkpoint types and freeze independent acceptance before comparison logic; no publication or activation",
+  "files": [
+    "modeling/lifecycle/impact/README.md",
+    "modeling/lifecycle/impact/types.go",
+    "modeling/lifecycle/impact/compare.go",
+    "modeling/lifecycle/impact/compare_test.go",
+    "modeling/lifecycle/impact/decode.go",
+    "modeling/lifecycle/impact/decode_test.go",
+    "modeling/lifecycle/cmd/modeldiff/main.go",
+    "modeling/lifecycle/cmd/modeldiff/main_test.go",
+    "modeling/lifecycle/impactacceptance/oracle_test.go",
+    "tasks/CF-model-impact-v1-review-diff.md"
+  ]
+}

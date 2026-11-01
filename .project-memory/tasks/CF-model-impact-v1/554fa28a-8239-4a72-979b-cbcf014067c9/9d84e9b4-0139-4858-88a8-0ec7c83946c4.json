@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "9d84e9b4-0139-4858-88a8-0ec7c83946c4",
+  "runId": "554fa28a-8239-4a72-979b-cbcf014067c9",
+  "kind": "complete",
+  "parents": [
+    "5a032c1c-5159-4a8a-862e-d8e3ce636f52"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-impact-v1",
+    "path": "tasks/CF-model-impact-v1-review-diff.md",
+    "revision": "ff7870107e504a18b4f40ab9dc50718dc8219e52",
+    "blob": "cb156bc85a2f4ed1220a3f24d31ae36ad9441716",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a3d8a07f1df96a640b88e5c2681600324dce8fb10c6dde07eb5eac189c2f81cb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T06:32:48.699Z",
+  "summary": "Implemented local semantic-ID model review diff and bounded stdin CLI; exact source tree 6cbb0ad037e3c42f4203d20f075041bc953e9646 passed independent architecture and fresh-cache oracle review, with prior PR11/scenario files unchanged",
+  "next": "Commit and validate exact local lifecycle diff, preserve private durable handoff, await PR11 review and publication coordination; no push, new PR, merge, activation or denied-publication retry",
+  "files": [
+    "modeling/lifecycle/impact/README.md",
+    "modeling/lifecycle/impact/types.go",
+    "modeling/lifecycle/impact/compare.go",
+    "modeling/lifecycle/impact/compare_test.go",
+    "modeling/lifecycle/impact/decode.go",
+    "modeling/lifecycle/impact/decode_test.go",
+    "modeling/lifecycle/cmd/modeldiff/main.go",
+    "modeling/lifecycle/cmd/modeldiff/main_test.go",
+    "modeling/lifecycle/impactacceptance/oracle_test.go",
+    "tasks/CF-model-impact-v1-review-diff.md"
+  ],
+  "validation": "Actual Go 1.27.3 Linux amd64 offline full go test -race -count=1 ./..., go vet ./..., modelc check, gofmt and whitespace pass. Counted full suite:399 passing tests/subtests,97 top-level,zero failures. Independent oracle d2f80bc49dff04ecec935db963160f9488f78986e790083d68a453b192c31d60 passes unchanged, including exact 14600-byte pre-comparison frozen prefix4497a7a693a62ac9f3d431f76660026310c12aa3274a3ae0d8bb3fd2bf753f85; independent fresh-cache acceptance run passes all9 top-level tests on exact staged tree. Requirement-propagation and removed-side omission mutants are killed by assertion failures, not build errors. Coverage includes strict requests, canonical/source identity separation, every cause and both graphs, binding assertions, aliases/concurrency, maximum graph/report budgets, deterministic separate processes, bounded input and failed/short output. Independent reviewer verified10-file manifest SHA25678d86031d62194614220aa4242b5cf50237a041816d4a65e34f0ba8dc566b15d and maximum132cause/64entry report550864bytes under1MiB. Pack validation passes; optional skills-ref unavailable. Existing Node24.22.1 Project Memory regressions143/143 pass. No hosted follow-up CI or publication; full committed lifecycle validation follows.",
+  "snapshot": {
+    "modeling/lifecycle/impact/README.md": {
+      "blob": "d57f62fb5be08d41e75d33b855a17460b7a1ac36",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impact/types.go": {
+      "blob": "5715a201a3896cfc0d377d4def32e5a9f9bb59e0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impact/compare.go": {
+      "blob": "86b186aac81446cb9291a2df239d542dcd48d570",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impact/compare_test.go": {
+      "blob": "cf5ccf884c4a55ad70e30ce6cfc4efbe04fb2429",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impact/decode.go": {
+      "blob": "8125341876878a7e6dfa8aec15d85768ca53886e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impact/decode_test.go": {
+      "blob": "b28946d069d4929af59d0b21ac0b56af7911ee62",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modeldiff/main.go": {
+      "blob": "acdfc07e5f7d491aea5a48e279a25b43c64f9b02",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modeldiff/main_test.go": {
+      "blob": "13aa4963ba56ee0b56a807eaa9f141ef214c57e7",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/impactacceptance/oracle_test.go": {
+      "blob": "6bed99a5da63da7aeae9b0d51262a97e37d81477",
+      "mode": "100644"
+    },
+    "tasks/CF-model-impact-v1-review-diff.md": {
+      "blob": "ed52f460c2490395b8b944fc34175b99f0be422a",
+      "mode": "100644"
+    }
+  }
+}
