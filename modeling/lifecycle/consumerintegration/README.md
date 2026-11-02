@@ -64,9 +64,17 @@ the changed submit-actor rule. The test checks:
   one invocation; acceptance does not hide it as ordinary mismatch or not-run.
 - Formatting changes affect source identity but not normalized scenario/model
   identity. Existing default-bound APIs do not silently adopt the custom model.
-- Adapter field inventories fail if Task, Command, Review or Result gains a field.
-  Direct sentinel tests cover every field, maximum uint64 values, nil versus empty
-  lists/pointers, refusal order, copied ownership and unchanged result envelopes.
+- The optional [adapter conformance helper](../adapterconformance/README.md)
+  checks both generated type families. Independent one-way sentinel expectations
+  cover every field, zero/maximum uint64 values, distinct revisions, nil versus
+  empty lists/pointers, ordered duplicate refusals, copied ownership and unchanged
+  result envelopes. Expected fields never come from an inverse adapter: mutually
+  wrong round-trip conversions must not cancel each other's errors.
+- Nine disposable adapter mutations per model (coupled field swap, field drop,
+  task slice/owner, review, nested result-task slice, refusal, cross-field list
+  and pointer-into-list aliases) must run
+  the conformance test and fail with its marker, not a build error. Each restored
+  adapter must actually pass conformance again.
 - Two mutations in disposable generated code—always refusing, and removing the
   submit-actor refusal—must be rejected by the frozen oracle's actual comparison.
   A build error does not count. The restored reducer must pass again.
@@ -78,3 +86,6 @@ establish real authorship, approval, current deployment or executed-source trust
 Callbacks remain trusted application code: this library does not sandbox, cancel,
 roll back or constrain their effects or allocations. A hostile or incorrect
 adapter can lie; this test checks the adapter supplied here, not arbitrary ones.
+The extracted helper remains optional test code, not runtime admission. Its finite
+probes do not authenticate model or generated-code provenance, and the original
+frozen scenario suites remain the independent behavior expectations.
