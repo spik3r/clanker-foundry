@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "f331c519-10e7-44c6-a65f-2cd71d8d146f",
+  "runId": "b03429bb-80fb-496b-98fd-2bfd74c5e05a",
+  "kind": "complete",
+  "parents": [
+    "5c07d380-fce0-4df1-b974-23cbe85caa94"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-rehearsal-handoff-v1",
+    "path": "tasks/CF-rehearsal-handoff-v1-portable-evidence.md",
+    "revision": "a84f7eb4da6eefba58b6363f8d6c4c424cdd1eee",
+    "blob": "22fcaec82dcb4d11dfeec086477288c404416973",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "99ab2bdd5e71ab049792508542e7d100bf8ada08df4fcb5b261f43c14eb49948"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/rehearsal-handoff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T18:43:58.728Z",
+  "summary": "Opt-in deterministic portable fixed-rehearsal carrier and separate-reference offline verifier complete; report bytes remain opaque and unauthenticated, no-argument receipt remains byte-compatible",
+  "next": "Refresh remote main and claims, publish draft exact history under standing authority, then observe hosted checks; no execution or provenance claim from carrier",
+  "files": [
+    "tasks/CF-rehearsal-handoff-v1-portable-evidence.md",
+    "modeling/lifecycle/rehearsal/run.sh",
+    "modeling/lifecycle/rehearsal/rehearsal_test.go",
+    "modeling/lifecycle/rehearsal/README.md",
+    "modeling/lifecycle/rehearsalhandoff/handoff.go",
+    "modeling/lifecycle/rehearsalhandoff/handoff_test.go",
+    "modeling/lifecycle/rehearsalhandoff/README.md",
+    "modeling/lifecycle/rehearsalhandoff/testdata/report-identities.json",
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main_test.go"
+  ],
+  "validation": "Go 1.27.3 offline serial full-module race 60 packages PASS at 584cbc1; vet, modelc validate/check, modeltrace check, gofmt, bash syntax and repository validator PASS. Independent exact-head review and native CLI/cleanup controls PASS; four compiling behavioral mutants killed. Optional skills-ref absent; installer regression not run because GNU Stow absent. Hosted checks not yet run.",
+  "snapshot": {
+    "tasks/CF-rehearsal-handoff-v1-portable-evidence.md": {
+      "blob": "22fcaec82dcb4d11dfeec086477288c404416973",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsal/run.sh": {
+      "blob": "4e4d8ec961df8cee920a10fde89f57ff44bec7f2",
+      "mode": "100755"
+    },
+    "modeling/lifecycle/rehearsal/rehearsal_test.go": {
+      "blob": "75ab8fed5c619782f84825b9512bb638178ebfae",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsal/README.md": {
+      "blob": "6253a6ac06635215f8bed09d46ee7c4e40fe26cd",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/handoff.go": {
+      "blob": "5621cfefd8efdd522d21ab37ec66229f297f7166",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/handoff_test.go": {
+      "blob": "8f207b44eb0e231858191d0591553cc64ef56064",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/README.md": {
+      "blob": "867379e416e1abbc286ab8d4eb2c6e9376ef408a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/testdata/report-identities.json": {
+      "blob": "10e276706608b8177486c22e88761cf84645166c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main.go": {
+      "blob": "71e7994607ea7c12958c6d1336571f275a3d20e2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main_test.go": {
+      "blob": "da6165569e7660f30890c3714a8be0102fb06387",
+      "mode": "100644"
+    }
+  }
+}
