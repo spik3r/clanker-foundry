@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "6af4a2a6-ba4f-4664-bc91-1d52633e5e19",
+  "runId": "0dd67226-8e98-404e-a04c-b1399f1a6d37",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-input-parity-v1",
+    "path": "tasks/CF-provider-input-parity-v1-transport.md",
+    "revision": "b9bd51d763a20d30ba01cce4813a01f95a530506",
+    "blob": "25b6d8a896d21d4244c18ef063da6fb074b4bf2b",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "e23ebc98b35c17c9fcb0bb846a8e818a9f30765975d6f02bd0bd447d52bb714a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-input-parity-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T06:22:14.733Z",
+  "summary": "Prepare offline provider input parity coverage and portability guidance using separately frozen literals",
+  "next": "Obtain independently authored literal cases and negative controls before implementation",
+  "files": [
+    "tasks/CF-provider-input-parity-v1-transport.md",
+    "runtime/test/provider-input-parity.test.mjs",
+    "docs/agent-context-portability.md"
+  ]
+}
