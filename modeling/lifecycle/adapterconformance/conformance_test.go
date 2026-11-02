@@ -646,3 +646,126 @@ func TestIndividualScalarFieldDrops(t *testing.T) {
 		}
 	}
 }
+
+// Independent pre-fix storage mutation addendum; original tests above unchanged.
+func TestInputStorageSpareCapacityMutationRefused(t *testing.T) {
+	for _, direction := range []string{"ToTask.Acceptance", "FromTask.Acceptance", "FromResult.Task.Acceptance", "FromResult.Refusals"} {
+		t.Run(direction, func(t *testing.T) {
+			a := good()
+			changed := false
+			mutate := func(x []string) {
+				if len(x) == 0 && cap(x) > 0 {
+					x[:cap(x)][cap(x)-1] = "caller-visible spare slot changed"
+					changed = true
+				}
+			}
+			switch direction {
+			case "ToTask.Acceptance":
+				a.ToTask = func(x transport.Task) sampleTask { y := fieldOnlyToTask(x); mutate(x.Acceptance); return y }
+			case "FromTask.Acceptance":
+				a.FromTask = func(x sampleTask) transport.Task { y := fieldOnlyFromTask(x); mutate(x.Acceptance); return y }
+			case "FromResult.Task.Acceptance":
+				a.FromResult = func(x sampleResult) transport.Result {
+					y := fieldOnlyFromResult(x)
+					if x.Task != nil {
+						mutate(x.Task.Acceptance)
+					}
+					return y
+				}
+			case "FromResult.Refusals":
+				a.FromResult = func(x sampleResult) transport.Result { y := fieldOnlyFromResult(x); mutate(x.Refusals); return y }
+			}
+			refuse(t, a)
+			if !changed {
+				t.Fatal("refused before reaching the independently specified storage mutation")
+			}
+		})
+	}
+}
+
+func TestNestedSameValueStorageReplacementRefused(t *testing.T) {
+	for _, field := range []string{"Owner", "Acceptance-nonempty", "Acceptance-empty"} {
+		t.Run(field, func(t *testing.T) {
+			a := good()
+			changed := false
+			a.FromResult = func(x sampleResult) transport.Result {
+				y := fieldOnlyFromResult(x)
+				if x.Task != nil {
+					switch field {
+					case "Owner":
+						if x.Task.Owner != nil {
+							x.Task.Owner = copyOwner(x.Task.Owner)
+							changed = true
+						}
+					case "Acceptance-nonempty":
+						if len(x.Task.Acceptance) > 0 {
+							x.Task.Acceptance = copyStrings(x.Task.Acceptance)
+							changed = true
+						}
+					case "Acceptance-empty":
+						if x.Task.Acceptance != nil && len(x.Task.Acceptance) == 0 {
+							x.Task.Acceptance = make([]string, 0, cap(x.Task.Acceptance)+1)
+							changed = true
+						}
+					}
+				}
+				return y
+			}
+			refuse(t, a)
+			if !changed {
+				t.Fatal("refused before caller-visible nested identity replacement")
+			}
+		})
+	}
+}
+
+func TestOrdinaryInputMutationRefusedInEveryDirection(t *testing.T) {
+	for _, direction := range []string{"ToTask", "FromTask", "ToCommand", "FromResult"} {
+		t.Run(direction, func(t *testing.T) {
+			a := good()
+			changed := false
+			switch direction {
+			case "ToTask":
+				a.ToTask = func(x transport.Task) sampleTask {
+					y := fieldOnlyToTask(x)
+					if x.Owner != nil {
+						*x.Owner = "changed owner"
+						changed = true
+					}
+					return y
+				}
+			case "FromTask":
+				a.FromTask = func(x sampleTask) transport.Task {
+					y := fieldOnlyFromTask(x)
+					if len(x.Acceptance) > 0 {
+						x.Acceptance[0] = "changed acceptance"
+						changed = true
+					}
+					return y
+				}
+			case "ToCommand":
+				a.ToCommand = func(x transport.Command) sampleCommand {
+					y := fieldOnlyToCommand(x)
+					if x.Review != nil {
+						x.Review.TaskID = "changed review task"
+						changed = true
+					}
+					return y
+				}
+			case "FromResult":
+				a.FromResult = func(x sampleResult) transport.Result {
+					y := fieldOnlyFromResult(x)
+					if x.Task != nil {
+						x.Task.ID = "changed nested task"
+						changed = true
+					}
+					return y
+				}
+			}
+			refuse(t, a)
+			if !changed {
+				t.Fatal("refused before ordinary input mutation")
+			}
+		})
+	}
+}
