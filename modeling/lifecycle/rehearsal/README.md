@@ -29,8 +29,9 @@ modeling/lifecycle/rehearsal/run.sh
 ```
 
 The script accepts no arguments or arbitrary model, command, path or program
-input. It checks the Go version, disables Go module/network resolution and
-workspace/ambient Go configuration, makes a private temporary module copy,
+input. It starts Python in isolated mode, checks the Go version, restricts the
+child environment and disables Go module/network resolution and workspace/ambient
+Go configuration. It makes a private temporary module copy,
 invokes the fixed repository tools and attempts to remove that directory before
 publishing success. A cleanup failure is reported without a success receipt; an
 abrupt kill or cleanup failure can leave files behind. `TMPDIR` and Go's cache
@@ -105,7 +106,8 @@ go test -race -count=1 ./rehearsal
 The test invokes the actual documented script twice, requires identical complete
 receipts, checks that every module file's bytes and mode are unchanged, and checks
 temporary cleanup, including an injected cleanup failure after real removal that
-must produce no success output. It also verifies stale binding against a call-count
+must produce no success output. A poison `PYTHONPATH` check confirms isolated
+Python startup ignores ambient user customization. It also verifies stale binding against a call-count
 spy and compiles a candidate reducer with an intentionally removed owner guard: the
 frozen candidate suite must reject that behavioral mutant. These are bounded
 negative controls, not exhaustive proof or a substitute for independent review.

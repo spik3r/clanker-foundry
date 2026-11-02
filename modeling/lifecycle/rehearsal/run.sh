@@ -3,7 +3,7 @@
 set -euo pipefail
 if [ "$#" -ne 0 ]; then printf '%s\n' 'rehearsal: no arguments accepted' >&2; exit 2; fi
 module="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
-exec python3 - "$module" <<'PY'
+exec python3 -I - "$module" <<'PY'
 import base64
 import hashlib
 import io

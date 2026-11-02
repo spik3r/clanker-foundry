@@ -118,7 +118,13 @@ func TestDocumentedRehearsalTwiceWithoutCheckoutMutation(t *testing.T) {
 	root := moduleRoot(t)
 	before := snapshot(t, root)
 	temp := t.TempDir()
-	env := environment(temp)
+	poison := t.TempDir()
+	marker := filepath.Join(t.TempDir(), "unexpected-python-startup")
+	startup := "import os\nopen(os.environ['REHEARSAL_POISON_MARKER'], 'w').write('loaded')\nraise SystemExit(91)\n"
+	if err := os.WriteFile(filepath.Join(poison, "sitecustomize.py"), []byte(startup), 0600); err != nil {
+		t.Fatal(err)
+	}
+	env := cleanEnv(map[string]string{"TMPDIR": temp, "PYTHONPATH": poison, "REHEARSAL_POISON_MARKER": marker, "GOTOOLCHAIN": "local", "GOPROXY": "off", "GOSUMDB": "off", "GOWORK": "off", "GOENV": "off", "GOFLAGS": "-buildvcs=false"})
 	script := filepath.Join(root, "rehearsal", "run.sh")
 	oracle := file(t, filepath.Join(root, "rehearsal/testdata/expected.json"))
 	if checksum(oracle) != "393b2080e0180581fff49857b08a5f9f86314447ee58211e7acf88b67bc0206f" {
@@ -178,6 +184,9 @@ func TestDocumentedRehearsalTwiceWithoutCheckoutMutation(t *testing.T) {
 	delete(got, "generatedArtifactSHA256")
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("summary mismatch: got %#v want %#v", got, want)
+	}
+	if _, err := os.Stat(marker); !errors.Is(err, os.ErrNotExist) {
+		t.Fatal("ambient Python startup code ran")
 	}
 	after := snapshot(t, root)
 	if !reflect.DeepEqual(before, after) {
@@ -308,25 +317,36 @@ func TestFrozenCandidateKillsCompiledOwnerGuardMutant(t *testing.T) {
 func TestCleanupFailureNeverPublishesSuccess(t *testing.T) {
 	root := moduleRoot(t)
 	temp := t.TempDir()
-	inject := t.TempDir()
 	marker := filepath.Join(t.TempDir(), "cleanup-reached")
-	// Fault-inject only the outer Python demo process: perform real cleanup,
-	// record that it happened, then raise an error before success publication.
-	site := `import os, tempfile
-_original = tempfile.TemporaryDirectory.cleanup
-_marker = os.environ['REHEARSAL_TEST_CLEANUP_MARKER']
-def fail_after_cleanup(self):
-    _original(self)
-    with open(_marker, 'w', encoding='ascii') as f:
-        f.write('cleaned')
-    raise OSError('private injected cleanup failure')
-tempfile.TemporaryDirectory.cleanup = fail_after_cleanup
-`
-	if err := os.WriteFile(filepath.Join(inject, "sitecustomize.py"), []byte(site), 0600); err != nil {
+	script := file(t, filepath.Join(root, "rehearsal/run.sh"))
+	begin := []byte("exec python3 -I - \"$module\" <<'PY'\n")
+	end := []byte("\nPY\n")
+	i := bytes.Index(script, begin)
+	j := bytes.LastIndex(script, end)
+	if i < 0 || j < i+len(begin) {
+		t.Fatal("Python program boundary changed")
+	}
+	program := append([]byte{}, script[i+len(begin):j]...)
+	anchor := []byte("    with tempfile.TemporaryDirectory(prefix='foundry-design-rehearsal-') as tmp:\n")
+	if bytes.Count(program, anchor) != 1 {
+		t.Fatal("cleanup injection anchor changed")
+	}
+	markerLiteral, err := json.Marshal(marker)
+	if err != nil {
 		t.Fatal(err)
 	}
-	env := cleanEnv(map[string]string{"TMPDIR": temp, "PYTHONPATH": inject, "REHEARSAL_TEST_CLEANUP_MARKER": marker, "GOTOOLCHAIN": "local", "GOPROXY": "off", "GOSUMDB": "off", "GOWORK": "off", "GOENV": "off", "GOFLAGS": "-buildvcs=false"})
-	out, diag, err := run(t, root, env, nil, "bash", filepath.Join(root, "rehearsal/run.sh"))
+	// Fault-inject a test-only copy of the exact program, after real cleanup.
+	// Production receives no injection hook and Python isolated mode ignores
+	// ambient PYTHONPATH and user site customization.
+	injection := fmt.Sprintf(`    _original_cleanup = tempfile.TemporaryDirectory.cleanup
+    def _fail_after_cleanup(self):
+        _original_cleanup(self)
+        pathlib.Path(%s).write_text('cleaned', encoding='ascii')
+        raise OSError('private injected cleanup failure')
+    tempfile.TemporaryDirectory.cleanup = _fail_after_cleanup
+`, markerLiteral)
+	program = bytes.Replace(program, anchor, append([]byte(injection), anchor...), 1)
+	out, diag, err := run(t, root, environment(temp), program, "python3", "-I", "-", root)
 	var exit *exec.ExitError
 	if !errors.As(err, &exit) || exit.ExitCode() != 1 || len(out) != 0 || string(diag) != "rehearsal: local operation failed\n" {
 		t.Fatalf("cleanup failure: err=%v stdout=%q stderr=%q", err, out, diag)
@@ -334,8 +354,8 @@ tempfile.TemporaryDirectory.cleanup = fail_after_cleanup
 	if string(file(t, marker)) != "cleaned" {
 		t.Fatal("cleanup fault not reached")
 	}
-	entries, e := os.ReadDir(temp)
-	if e != nil || len(entries) != 0 {
-		t.Fatalf("cleanup not completed: %v %v", entries, e)
+	entries, err := os.ReadDir(temp)
+	if err != nil || len(entries) != 0 {
+		t.Fatalf("cleanup not completed: %v %v", entries, err)
 	}
 }
