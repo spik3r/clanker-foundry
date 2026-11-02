@@ -1,6 +1,6 @@
 ---
 id: CF-adapter-conformance-v1
-status: complete
+status: in-progress
 owner: Byte adapter-conformance extraction worker
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-bound-runner-v1]
@@ -133,3 +133,20 @@ Existing traceability gaps remain visible and are not resolved by this helper.
 This completion records local extraction, tests and independent assistant review,
 not arbitrary adapter correctness, human approval, source authentication, private
 consumer adoption, publication, merge, deployment or worker activation.
+
+
+## PR review repair
+
+Independent review of published draft PR 29 at 5641393 found that comparing
+ownership only along matching field paths missed cross-field aliases. The first
+reproduction reused empty input Task.Acceptance as output Refusals; twelve probe
+calls reached that one pattern. Five independently authored regressions cover
+both slice directions and Owner pointers into another field's spare capacity.
+They were reproduced before repair; none changes a frozen scenario expectation.
+
+The existing owner/coordinator authorized a new lifecycle run within this task's
+same seven-file frontier. Compare every reachable input mutable-storage region
+against every output region, regardless of field path or pointer/slice kind,
+including pointer referent sizes and full slice capacity. Keep original objects
+live during address comparison. Preserve prior completion/history, rerun both
+model proofs and independent exact-source review, and do not merge this draft.

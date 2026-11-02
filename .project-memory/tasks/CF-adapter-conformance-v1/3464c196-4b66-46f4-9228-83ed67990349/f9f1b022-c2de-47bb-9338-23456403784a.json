@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "f9f1b022-c2de-47bb-9338-23456403784a",
+  "runId": "3464c196-4b66-46f4-9228-83ed67990349",
+  "kind": "start",
+  "parents": [
+    "e6f42140-755a-4471-9c9f-41f70212eeb0"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-adapter-conformance-v1",
+    "path": "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "revision": "30b46cacadd5e0713ad5e1f983d1991ff71c1ed6",
+    "blob": "3b18cc7745c182fcce9d1dd549e932870f54aa9c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5833e5b1aade6876fabffc9ab109527c13d04262a8f9a8f8fff5452d6499a87e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/adapter-conformance-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/29",
+  "at": "2026-11-02T00:21:36.985Z",
+  "summary": "Reopen the qualified extraction for independent PR29 review finding: matching-path ownership checks miss cross-field and pointer/slice aliases. Preserve prior completion and all frozen evidence; coordinator authorized repair within existing scope.",
+  "next": "Freeze independently reproduced cross-field/cross-kind regressions before replacing ownership comparison with all-region disjointness; re-review exact corrected source and no merge.",
+  "files": [
+    "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "modeling/lifecycle/adapterconformance/README.md",
+    "modeling/lifecycle/adapterconformance/conformance.go",
+    "modeling/lifecycle/adapterconformance/conformance_test.go",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt"
+  ]
+}

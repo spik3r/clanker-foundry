@@ -769,3 +769,89 @@ func TestOrdinaryInputMutationRefusedInEveryDirection(t *testing.T) {
 		})
 	}
 }
+
+// Independent PR review regression: ownership spans all fields and storage kinds.
+func independentStrings(s []string) []string {
+	if s == nil {
+		return nil
+	}
+	return append([]string{}, s...)
+}
+func independentTask(x transport.Task) transport.Task {
+	x.Acceptance = independentStrings(x.Acceptance)
+	if x.Owner != nil {
+		s := *x.Owner
+		x.Owner = &s
+	}
+	return x
+}
+func independentCommand(x transport.Command) transport.Command {
+	if x.Review != nil {
+		r := *x.Review
+		x.Review = &r
+	}
+	return x
+}
+func independentResult(x transport.Result) transport.Result {
+	y := x
+	y.Refusals = independentStrings(x.Refusals)
+	if x.Task != nil {
+		t := independentTask(*x.Task)
+		y.Task = &t
+	}
+	return y
+}
+func TestIndependentCrossFieldOwnership(t *testing.T) {
+	for _, direction := range []string{"ToTask.OwnerFromAcceptance", "FromTask.OwnerFromAcceptance", "FromResult.RefusalsFromAcceptance", "FromResult.AcceptanceFromRefusals", "FromResult.OwnerFromRefusals"} {
+		t.Run(direction, func(t *testing.T) {
+			reached := false
+			a := ac.Adapter[transport.Task, transport.Command, transport.Result]{ToTask: independentTask, FromTask: independentTask, ToCommand: independentCommand, FromResult: independentResult}
+			pointerAlias := func(x transport.Task) transport.Task {
+				y := independentTask(x)
+				if x.Owner != nil && *x.Owner == "" && x.Acceptance != nil && len(x.Acceptance) == 0 && cap(x.Acceptance) > 0 {
+					y.Owner = &x.Acceptance[:cap(x.Acceptance)][0]
+					reached = true
+				}
+				return y
+			}
+			switch direction {
+			case "ToTask.OwnerFromAcceptance":
+				a.ToTask = pointerAlias
+			case "FromTask.OwnerFromAcceptance":
+				a.FromTask = pointerAlias
+			default:
+				a.FromResult = func(x transport.Result) transport.Result {
+					y := independentResult(x)
+					if x.Task == nil {
+						return y
+					}
+					switch direction {
+					case "FromResult.RefusalsFromAcceptance":
+						if x.Refusals != nil && len(x.Refusals) == 0 && x.Task.Acceptance != nil && len(x.Task.Acceptance) == 0 {
+							y.Refusals = x.Task.Acceptance
+							reached = true
+						}
+					case "FromResult.AcceptanceFromRefusals":
+						if x.Refusals != nil && len(x.Refusals) == 0 && x.Task.Acceptance != nil && len(x.Task.Acceptance) == 0 {
+							y.Task.Acceptance = x.Refusals
+							reached = true
+						}
+					case "FromResult.OwnerFromRefusals":
+						if x.Refusals != nil && len(x.Refusals) == 0 && cap(x.Refusals) > 0 && x.Task.Owner != nil && *x.Task.Owner == "" {
+							y.Task.Owner = &x.Refusals[:cap(x.Refusals)][0]
+							reached = true
+						}
+					}
+					return y
+				}
+			}
+			err := ac.Check(a)
+			if !reached {
+				t.Fatal("probe did not reach cross-field alias")
+			}
+			if err == nil {
+				t.Fatal("cross-field mutable storage alias accepted")
+			}
+		})
+	}
+}
