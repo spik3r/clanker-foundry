@@ -1,6 +1,6 @@
 ---
 id: CF-compiler-profile-acceptance-v1
-status: in-progress
+status: review
 owner: Byte compiler profile acceptance
 repositories: [spik3r/clanker-foundry]
 ---
@@ -93,3 +93,51 @@ frontier and byte-preservation of existing code. Obtain independent exact-source
 review. Complete local evidence with observed results, then hand the unpushed branch
 and next integration action to the coordinator. Hosted CI and publication are not
 implied by local completion.
+
+## Local implementation and independent review
+
+The prospective claim was committed at `af70a9854fd059d1b8ff30ad392292035371d824`.
+Its reviewed source was registered and the genuine start recorded before fixture
+edits. Two separate authors froze four invented model families and independent
+public-API oracles; a separate reviewer recomputed all four canonical model hashes,
+eight task-digest vectors, thirteen input-file hashes and the exact test inventory
+without executing a new reducer. Freeze commit
+`4d34bdf` preceded the harness and all new-model execution. Inventory SHA-256 is
+`e96013d6d9d5d2bf603d3dd473075de47a5d89d4a3de633dc5b483ff767e663c`.
+
+Implementation was reviewed at `1e84bc89c51ada598c72f858215b0fb00bbd0306`, tree
+`0ba79e0756101092cf2dc90e69947df0f1b6e9a3`. The independent reviewer found no
+blocking issue and separately ran the focused Go 1.27.3 race test. This is
+independent assistant review, not authenticated human approval. No compiler defect
+was observed, and no frozen expected value was refreshed after execution.
+
+Observed results on that source:
+- All 154 independent leaf cases across eleven top-level tests pass, with exact
+  run/pass inventories and no skips. Four model identities and all fifteen profile
+  references are exercised through public APIs.
+- Fifteen disposable generated-code mutants compile, then fail their specified
+  named semantic assertions. Exact restoration passes every frozen case.
+- All 31 transition effect sequences match frozen declarations. A commuting-effect
+  reorder compiles and passes behavior but fails the separate structural check.
+- Full offline Go 1.27.3 race suite passes: 49 packages, 48 with tests and modelc
+  with no test files. Full vet, modelc validate/check, modeltrace check, formatting
+  and whitespace checks pass. Existing base paths and frozen fixture bytes remain
+  unchanged.
+- Repository validation passes; optional skills-ref is not installed. All 143
+  Project Memory regression tests pass. Fresh committed-diff coverage is checked
+  against the verified base before handoff.
+
+The default home Go cache was not writable; tests used a separate authorized cache.
+The first full race run encountered the existing clean-regeneration test's host
+VCS-stamping failure under an external temporary directory. The full suite then
+passed with temporary files under this valid isolated Git worktree. No existing
+test, VCS policy or host security setting was changed. Temporary work was removed.
+
+Coverage remains finite: nonempty slice/owner ownership probes do not prove every
+possible alias shape, and final Task behavior does not prove effect order. The
+harness is trusted repository test code, not a sandbox for arbitrary caller input.
+No existing production file, dependency, workflow, visual artifact or other claim
+changed. Main was rechecked at the same base before closeout. This branch remains
+local and unpushed; publication and hosted CI require the coordinator's next action
+and applicable authority. No integration, deployment or standards conformance is
+claimed. Held #20, #5 and UML owner clearance remain separate.
