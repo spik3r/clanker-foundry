@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -16,6 +17,8 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/acceptanceauthor"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/adapterconformance"
 	transport "github.com/spik3r/clanker-foundry/modeling/lifecycle/generated"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarioexplain"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarios"
 )
 
@@ -171,6 +174,7 @@ func TestFrozenReplay(t *testing.T) {
 	if field(t, wire, "formatVersion") != "lifecycle-bound-scenario-report/v1" || field(t, wire, "identitySource") != "caller-supplied-go-binding" {
 		t.Fatal("bound report identity source", string(encoded))
 	}
+	assertBoundExplanation(t, model, report, r, &calls)
 	calls = 0
 	ar, err := acceptanceauthor.CheckWithRunner(manifest, model, suite, "replay", r)
 	if err != nil {
@@ -300,4 +304,57 @@ func TestAdapterConformance(t *testing.T) {
 	}); err != nil {
 		t.Fatalf("ADAPTER_CONFORMANCE_MISMATCH: %v", err)
 	}
+}
+
+// This consumes independently frozen projections, never derives expected links
+// from the mapper or replay. The report itself came from the actual reducer.
+func assertBoundExplanation(t *testing.T, source []byte, report scenarios.Report, runner scenarios.Runner, calls *int) {
+	t.Helper()
+	before := *calls
+	ir, err := jsonformat.Decode(source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := scenarioexplain.ExplainWithRunner(ir, report, runner)
+	if err != nil || *calls != before {
+		t.Fatalf("BOUND_EXPLANATION_MISMATCH: explanation invoked provider or failed: %v", err)
+	}
+	vectors := file(t, "bound-explanation-vectors.json")
+	if sum(vectors) != "c5e011aba6dd14f5eaf2de0016de10dd1359196decaf0eb8d6edf4463fc147f9" {
+		t.Fatal("bound explanation literals changed")
+	}
+	var frozen struct {
+		Vectors []struct {
+			Name     string          `json:"name"`
+			Expected json.RawMessage `json:"expected"`
+		} `json:"vectors"`
+	}
+	if err := json.Unmarshal(vectors, &frozen); err != nil {
+		t.Fatal(err)
+	}
+	matches := 0
+	for _, v := range frozen.Vectors {
+		if v.Name != revision {
+			continue
+		}
+		matches++
+		var want, got any
+		if err := json.Unmarshal(v.Expected, &want); err != nil {
+			t.Fatal(err)
+		}
+		b, err := json.Marshal(out)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := json.Unmarshal(b, &got); err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("BOUND_EXPLANATION_MISMATCH: complete %s projection differs", revision)
+		}
+	}
+	if matches != 1 {
+		t.Fatal("bound vector identity missing/duplicated")
+	}
+	t.Log("BOUND_EXPLANATION_MATCH:", revision)
 }

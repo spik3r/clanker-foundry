@@ -32,7 +32,9 @@ func expression(e model.Expr) Expression {
 func fixed(id string) bool {
 	return id == "INVALID_INPUT" || id == "ILLEGAL_TRANSITION" || id == "REVISION_LIMIT"
 }
-func encode(x Explanation) ([]byte, error) {
+func encode(x Explanation) ([]byte, error) { return encodeValue(x) }
+
+func encodeValue(x any) ([]byte, error) {
 	var b bytes.Buffer
 	e := json.NewEncoder(&b)
 	e.SetEscapeHTML(false)
@@ -56,6 +58,12 @@ func encodedSize(v any) (int, error) {
 
 // Explain reports caller-supplied assertions and declared links, not execution.
 func Explain(input model.Model, report scenarios.Report) (Explanation, error) {
+	return explainFor(input, report, lifecycle.ModelDigest, scenarios.EncodeReport)
+}
+
+// Both public paths reuse this mapper. The validator is an existing report
+// encoder, never the runner callback; selection is explicit in reviewed Go code.
+func explainFor(input model.Model, report scenarios.Report, expectedDigest string, validate func(scenarios.Report) ([]byte, error)) (Explanation, error) {
 	m, e := model.Normalize(input)
 	if e != nil {
 		return Explanation{}, ErrInvalid
@@ -66,10 +74,10 @@ func Explain(input model.Model, report scenarios.Report) (Explanation, error) {
 		}
 	}
 	digest, e := canonical.Digest(m)
-	if e != nil || digest != lifecycle.ModelDigest || report.ModelDigest != digest {
+	if e != nil || digest != expectedDigest || report.ModelDigest != digest {
 		return Explanation{}, ErrInvalid
 	}
-	if _, e = scenarios.EncodeReport(report); e != nil {
+	if _, e = validate(report); e != nil {
 		return Explanation{}, ErrInvalid
 	}
 	guards := make(map[string]model.Guard, len(m.Guards))

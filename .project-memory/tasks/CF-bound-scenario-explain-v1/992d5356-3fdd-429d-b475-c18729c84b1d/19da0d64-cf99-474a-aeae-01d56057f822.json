@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "19da0d64-cf99-474a-aeae-01d56057f822",
+  "runId": "992d5356-3fdd-429d-b475-c18729c84b1d",
+  "kind": "checkpoint",
+  "parents": [
+    "a03157f0-ad0f-4364-ad48-5f23eed3d41f"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-bound-scenario-explain-v1",
+    "path": "tasks/CF-bound-scenario-explain-v1-custom-model-review.md",
+    "revision": "6c21b426e2fdabdf2884ba176823ae693edc3b90",
+    "blob": "432b555a3b30f6a68fe8a95fc2f6b56aa7241f3d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8b8b29a70c72f5d35d3145cfaaa36bcb129fcaea2a5a7f5d5642020fa655d6fe"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/bound-explanation-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T05:20:44.742Z",
+  "summary": "Froze independently authored public two-model complete explanation projections and typed refusal/ownership/output-budget tests before API mapping logic. Eight prior consumer fixtures and default mapper unchanged. Existing external harness now carries the separate pinned oracle and mandatory both-model restored explanation assertions.",
+  "next": "Independently review prelogic oracle/source continuity, then implement only shared mapper validation seam and bound API within the claimed frontier.",
+  "files": [
+    "modeling/lifecycle/scenarioexplain/explain.go",
+    "modeling/lifecycle/scenarioexplain/bound.go",
+    "modeling/lifecycle/scenarioexplain/bound_test.go",
+    "modeling/lifecycle/scenarioexplain/testdata/bound-vectors.json",
+    "modeling/lifecycle/scenarioexplain/CONTRACT.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "tasks/CF-bound-scenario-explain-v1-custom-model-review.md"
+  ]
+}

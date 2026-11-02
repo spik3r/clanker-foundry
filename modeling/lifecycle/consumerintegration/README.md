@@ -89,3 +89,23 @@ adapter can lie; this test checks the adapter supplied here, not arbitrary ones.
 The extracted helper remains optional test code, not runtime admission. Its finite
 probes do not authenticate model or generated-code provenance, and the original
 frozen scenario suites remain the independent behavior expectations.
+
+
+## Custom-model refusal explanation
+
+The same actual fourteen-step reports now pass through the optional typed
+`scenarioexplain.ExplainWithRunner` seam. The external module compares each
+complete projection against separately authored, hash-pinned
+[bound explanation literals](../scenarioexplain/testdata/bound-vectors.json).
+Explanation must add zero callback invocations. The original eight consumer
+fixtures, manifests and expected replay results remain unchanged; explanation
+expectations are not derived from either replay or mapper output.
+
+After every adapter and reducer mutation has been restored, both generated model
+packages actually replay and check explanations again. A successful compilation
+alone is not that evidence. New explanation output remains explicitly
+`caller-supplied-assertions` and `caller-supplied-go-binding`, with authority `none`.
+It projects supplied refusals onto declared guard/requirement links; it does not
+establish guard truth, coverage, wire origin, executing-source provenance or real
+review. The baseline CLI/decoder stay baseline-only, and this public test does
+not repin or adopt any private consumer.

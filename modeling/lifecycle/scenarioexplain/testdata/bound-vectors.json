@@ -1,0 +1,850 @@
+{
+  "formatVersion": "bound-explanation-independent-vectors/v1",
+  "origin": "Full declaration projections hand-authored before target mapping or reducer replay. Typed reports are fabricated from original suite expectations; no execution or authentication is implied. Source/scenario/model identities reuse the original public independent consumer fixture pins.",
+  "vectors": [
+    {
+      "name": "v1",
+      "modelSourceSHA256": "c87b17846d4d10fd3ba26ae5c9e0b16d890cce7590add912ce0b3b58975067b7",
+      "suiteSourceSHA256": "4e8f8ca5d486b19ae9b0b43403a59ebc67d8c3308b6da1b56c9692dfd8f0dadd",
+      "expected": {
+        "formatVersion": "lifecycle-bound-scenario-explanation/v1",
+        "identitySource": "caller-supplied-go-binding",
+        "mode": "example-only",
+        "authority": "none",
+        "status": "caller-supplied-assertions",
+        "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+        "scenarioDigest": "6b028428013837b29904d5e120478cbcf3fde9cba2db9185b42ba79f24200c0c",
+        "sourceDigest": "4e8f8ca5d486b19ae9b0b43403a59ebc67d8c3308b6da1b56c9692dfd8f0dadd",
+        "matched": true,
+        "casesCompleted": 7,
+        "stepsExecuted": 14,
+        "entries": [
+          {
+            "caseId": "happy",
+            "stepId": "happy_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_self_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_independent"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_independent"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_independent",
+                "requirementId": "R_independent",
+                "requirementText": "The reviewer label differs from the owner label.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "ne",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.reviewer",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.owner",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_accept",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_terminal",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "",
+            "expectedRefusals": [
+              "ILLEGAL_TRANSITION"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "",
+            "actualRefusals": [
+              "ILLEGAL_TRANSITION"
+            ],
+            "runtimeReason": "ILLEGAL_TRANSITION",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_return",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_return",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_return",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_resubmit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_stale_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewContent",
+                "requirementId": "R_reviewContent",
+                "requirementText": "The review names the current full candidate content.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              },
+              {
+                "guardId": "G_reviewRevision",
+                "requirementId": "R_reviewRevision",
+                "requirementText": "The review names the current revision.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskRevision",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.revision",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_fresh_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "actor_rule",
+            "stepId": "actor_guest_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "content_binding",
+            "stepId": "content_stale_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewContent"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewContent"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewContent",
+                "requirementId": "R_reviewContent",
+                "requirementText": "The review names the current full candidate content.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "model_binding",
+            "stepId": "model_foreign_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewModel"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewModel"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewModel",
+                "requirementId": "R_reviewModel",
+                "requirementText": "The review names this model identity.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.modelDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "model.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "unknown_command",
+            "stepId": "unknown_trigger",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "",
+            "expectedRefusals": [
+              "INVALID_INPUT"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "",
+            "actualRefusals": [
+              "INVALID_INPUT"
+            ],
+            "runtimeReason": "INVALID_INPUT",
+            "guards": []
+          },
+          {
+            "caseId": "overflow",
+            "stepId": "overflow_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [
+              "REVISION_LIMIT"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [
+              "REVISION_LIMIT"
+            ],
+            "runtimeReason": "REVISION_LIMIT",
+            "guards": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "v2",
+      "modelSourceSHA256": "d302465317fdd5fc6d89ed0e39aedaae0ed7ff69d263220b25a8637870ff3e4e",
+      "suiteSourceSHA256": "8e8897ffd8b3fdfe00f48015eb72969825761cbe8eea0fe7bb487b5bf2e0163a",
+      "expected": {
+        "formatVersion": "lifecycle-bound-scenario-explanation/v1",
+        "identitySource": "caller-supplied-go-binding",
+        "mode": "example-only",
+        "authority": "none",
+        "status": "caller-supplied-assertions",
+        "modelDigest": "d3918794fe469ee1600f2a8ee67613a3bdd9a34ed22fe18995b75eb71c42ad85",
+        "scenarioDigest": "6d8074d78c13c8be7ca32cd052a80e3b9b457707eddc7662623ff5c03cd5ce5b",
+        "sourceDigest": "8e8897ffd8b3fdfe00f48015eb72969825761cbe8eea0fe7bb487b5bf2e0163a",
+        "matched": true,
+        "casesCompleted": 7,
+        "stepsExecuted": 14,
+        "entries": [
+          {
+            "caseId": "happy",
+            "stepId": "happy_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_self_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_independent"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_independent"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_independent",
+                "requirementId": "R_independent",
+                "requirementText": "The reviewer label differs from the owner label.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "ne",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.reviewer",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.owner",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_accept",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "happy",
+            "stepId": "happy_terminal",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "",
+            "expectedRefusals": [
+              "ILLEGAL_TRANSITION"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "",
+            "actualRefusals": [
+              "ILLEGAL_TRANSITION"
+            ],
+            "runtimeReason": "ILLEGAL_TRANSITION",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_return",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_return",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_return",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_resubmit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_stale_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewContent",
+                "requirementId": "R_reviewContent",
+                "requirementText": "The review names the current full candidate content.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              },
+              {
+                "guardId": "G_reviewRevision",
+                "requirementId": "R_reviewRevision",
+                "requirementText": "The review names the current revision.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskRevision",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.revision",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "rework",
+            "stepId": "rework_fresh_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [],
+            "actualOk": true,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [],
+            "runtimeReason": "",
+            "guards": []
+          },
+          {
+            "caseId": "actor_rule",
+            "stepId": "actor_guest_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [
+              "G_submitActor"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [
+              "G_submitActor"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_submitActor",
+                "requirementId": "R_submitActor",
+                "requirementText": "Only the literal maker actor may submit a candidate.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "command.actor",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "string",
+                      "ref": "",
+                      "value": "maker",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_submit"
+              }
+            ]
+          },
+          {
+            "caseId": "content_binding",
+            "stepId": "content_stale_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewContent"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewContent"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewContent",
+                "requirementId": "R_reviewContent",
+                "requirementText": "The review names the current full candidate content.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.taskDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "task.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "model_binding",
+            "stepId": "model_foreign_review",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_accept",
+            "expectedRefusals": [
+              "G_reviewModel"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_accept",
+            "actualRefusals": [
+              "G_reviewModel"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_reviewModel",
+                "requirementId": "R_reviewModel",
+                "requirementText": "The review names this model identity.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "eq",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "review.modelDigest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    },
+                    {
+                      "kind": "ref",
+                      "ref": "model.digest",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_accept"
+              }
+            ]
+          },
+          {
+            "caseId": "unknown_command",
+            "stepId": "unknown_trigger",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "",
+            "expectedRefusals": [
+              "INVALID_INPUT"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "",
+            "actualRefusals": [
+              "INVALID_INPUT"
+            ],
+            "runtimeReason": "INVALID_INPUT",
+            "guards": []
+          },
+          {
+            "caseId": "overflow",
+            "stepId": "overflow_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [
+              "REVISION_LIMIT"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [
+              "REVISION_LIMIT"
+            ],
+            "runtimeReason": "REVISION_LIMIT",
+            "guards": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "fabricated-v1-guard-refusal",
+      "modelSourceSHA256": "c87b17846d4d10fd3ba26ae5c9e0b16d890cce7590add912ce0b3b58975067b7",
+      "suiteSourceSHA256": "4e8f8ca5d486b19ae9b0b43403a59ebc67d8c3308b6da1b56c9692dfd8f0dadd",
+      "expected": {
+        "formatVersion": "lifecycle-bound-scenario-explanation/v1",
+        "identitySource": "caller-supplied-go-binding",
+        "mode": "example-only",
+        "authority": "none",
+        "status": "caller-supplied-assertions",
+        "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+        "scenarioDigest": "6b028428013837b29904d5e120478cbcf3fde9cba2db9185b42ba79f24200c0c",
+        "sourceDigest": null,
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "actor_rule",
+            "stepId": "actor_guest_submit",
+            "matched": true,
+            "differences": [],
+            "expectedTransitionId": "T_submit",
+            "expectedRefusals": [
+              "G_submitActor"
+            ],
+            "actualOk": false,
+            "actualTransitionId": "T_submit",
+            "actualRefusals": [
+              "G_submitActor"
+            ],
+            "runtimeReason": "",
+            "guards": [
+              {
+                "guardId": "G_submitActor",
+                "requirementId": "R_submitActor",
+                "requirementText": "Any nonblank actor may submit an unowned candidate.",
+                "expression": {
+                  "kind": "op",
+                  "ref": "",
+                  "value": "",
+                  "op": "nonempty",
+                  "args": [
+                    {
+                      "kind": "ref",
+                      "ref": "command.actor",
+                      "value": "",
+                      "op": "",
+                      "args": []
+                    }
+                  ]
+                },
+                "transitionId": "T_submit"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
