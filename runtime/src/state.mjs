@@ -177,7 +177,9 @@ export function evaluate(current, command, context = {}) {
         sameSubject(evidence);
         requireGuard(evidence.attempt_id === execution.attempt.attempt_id && evidence.repository_revision === execution.spec.repository.revision, 'SUBJECT_MISMATCH');
         requireGuard(checks().includes(evidence.check_id), 'UNEXPECTED_CHECK');
-        requireGuard(millis(evidence.at) <= now && millis(evidence.at) >= millis(execution.updated_at), 'INVALID_EVIDENCE_TIME');
+        // Later checks and approvals advance updated_at, but do not change the submitted subject.
+        const submittedAt = millis(execution.validation_deadline) - execution.spec.validation_ms;
+        requireGuard(millis(evidence.at) <= now && millis(evidence.at) >= submittedAt, 'INVALID_EVIDENCE_TIME');
         requireGuard(!execution.validations.some((item) => item.check_id === evidence.check_id), 'DUPLICATE_EVIDENCE');
         execution.validations.push(structuredClone(evidence));
         break;

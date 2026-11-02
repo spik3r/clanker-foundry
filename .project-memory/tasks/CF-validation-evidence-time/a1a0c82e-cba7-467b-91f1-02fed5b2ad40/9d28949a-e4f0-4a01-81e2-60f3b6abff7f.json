@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "9d28949a-e4f0-4a01-81e2-60f3b6abff7f",
+  "runId": "a1a0c82e-cba7-467b-91f1-02fed5b2ad40",
+  "kind": "complete",
+  "parents": [
+    "9bde878d-a390-495b-820b-c1f621c99c1a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validation-evidence-time",
+    "path": "tasks/CF-validation-evidence-time-fix.md",
+    "revision": "638da7a672c60396608a59ea183ee8656e58d181",
+    "blob": "39091a47927e6d0d3f3f12d3302866a143be576a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b7aafc767649173cf0b2aa4bfcdd9f5d77d0f0002b22c76a34ad9f32983084c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validation-evidence-time",
+  "pullRequest": null,
+  "at": "2026-11-01T02:00:37.125Z",
+  "summary": "Use the fixed validation window start for evidence freshness; add delayed-receipt, approval, boundary, binding and replay regressions.",
+  "next": "Independent review of the exact local patch and lifecycle identities after committed validation; publication remains unauthorized.",
+  "files": [
+    "runtime/src/state.mjs",
+    "runtime/test/state.test.mjs",
+    "tasks/CF-validation-evidence-time-fix.md"
+  ],
+  "validation": "Node v24.15.0 with existing exact dependencies: all four new validation freshness tests failed with INVALID_EVIDENCE_TIME against unchanged evaluator before the fix. Fixed focused state/contract/import-export/consumer suites passed 42 tests. node --test --test-skip-pattern=\"packed artifact installs\" runtime/test/*.test.mjs passed 179; one npm-ci clean-consumer installation test deliberately excluded under no-installation constraint. node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs passed 143 with no skips. bash scripts/validate.sh passed; optional skills-ref unavailable. git diff --check and git diff --cached --check passed. All 225 out-of-scope base blobs remain unchanged. No live-provider, actual Docker, browser or operating authority test ran. Full committed lifecycle validation follows the local commit.",
+  "snapshot": {
+    "runtime/src/state.mjs": {
+      "blob": "5f3a24ee27fb6194b6b43a212aac2aaefde35c83",
+      "mode": "100644"
+    },
+    "runtime/test/state.test.mjs": {
+      "blob": "77b1ab8d0bae73a511b367f2680ac778f3df4465",
+      "mode": "100644"
+    },
+    "tasks/CF-validation-evidence-time-fix.md": {
+      "blob": "2b07b30f10c73eafde410609cd34360e67d79c89",
+      "mode": "100644"
+    }
+  }
+}
