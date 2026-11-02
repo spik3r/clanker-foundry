@@ -309,3 +309,62 @@ func TestWirePackAndInspectBoundaries(t *testing.T) {
 		t.Fatal("accepted invalid references")
 	}
 }
+
+// The independent reviewer's candidate-side control rebuilds a fully valid
+// opaque archive; only the separate suite/model preflight can reject it.
+func TestStaleCandidateInConsistentArchiveIsRejected(t *testing.T) {
+	m, r := fixture(t)
+	stale := bytes.ReplaceAll(m.CandidateSuite, []byte(r.CandidateModelDigest), []byte(r.BeforeModelDigest))
+	if bytes.Equal(stale, m.CandidateSuite) {
+		t.Fatal("candidate binding mutation missed")
+	}
+	m.CandidateSuite = stale
+	r.CandidateSuiteSHA256 = digestBytes(stale)
+	sources := []artifactbundle.File{}
+	for _, name := range qualification.SourceNames() {
+		sources = append(sources, artifactbundle.File{Name: name, Data: read(t, filepath.Join(root(t), name))})
+	}
+	var err error
+	m.Archive, err = designchange.Build(m.Request, stale, sources)
+	if err != nil {
+		t.Fatalf("archive setup rejected opaque suite: %v", err)
+	}
+	expected := designchange.Expected{RequestSHA256: r.RequestSHA256, BeforeSourceSHA256: r.BeforeSourceSHA256, BeforeModelDigest: r.BeforeModelDigest, CandidateSHA256: r.CandidateSHA256, CandidateModelDigest: r.CandidateModelDigest, SuiteSHA256: r.CandidateSuiteSHA256}
+	if err = designchange.Verify(m.Archive, expected); err != nil {
+		t.Fatalf("stale suite archive is not independently consistent: %v", err)
+	}
+	if out, err := Build(m, r); !errors.Is(err, ErrInvalid) || out != nil {
+		t.Fatalf("stale candidate binding evaded preflight: %v", err)
+	}
+}
+
+func TestOpaqueReportExactLimitsAndEmptyFields(t *testing.T) {
+	m, r := fixture(t)
+	m.BaselineReport = bytes.Repeat([]byte{0xff}, 2<<20)
+	m.CandidateReport = bytes.Repeat([]byte{0}, 2<<20)
+	r.BaselineReportSHA256 = digestBytes(m.BaselineReport)
+	r.CandidateReportSHA256 = digestBytes(m.CandidateReport)
+	raw, err := Build(m, r)
+	if err != nil {
+		t.Fatalf("exact report caps must accept opaque bytes: %v", err)
+	}
+	if _, err = Verify(raw, r); err != nil {
+		t.Fatal(err)
+	}
+	m.CandidateReport = append(m.CandidateReport, 1)
+	r.CandidateReportSHA256 = digestBytes(m.CandidateReport)
+	if out, err := Build(m, r); !errors.Is(err, ErrLimit) || out != nil {
+		t.Fatalf("report cap not enforced: %v", err)
+	}
+	m, r = fixture(t)
+	for i := 0; i < reflect.TypeOf(m).NumField(); i++ {
+		x := m
+		v := reflect.ValueOf(&x).Elem()
+		v.Field(i).SetBytes(nil)
+		t.Run(v.Type().Field(i).Name, func(t *testing.T) {
+			if out, err := Build(x, r); !errors.Is(err, ErrInvalid) || out != nil {
+				t.Fatalf("empty input accepted: %v", err)
+			}
+		})
+	}
+}
