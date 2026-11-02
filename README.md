@@ -57,6 +57,7 @@ on modes, behaviour, output, and example invocations.
 | [`agent-coordination`](skills/agent-coordination/README.md) | Check shared claims, avoid overlap and transfer bounded work | Coordinates ownership; does not launch workers |
 | [`backlog-maintenance`](skills/backlog-maintenance/README.md) | Reconcile stale, duplicate or completed tasks with evidence | Reviews stay read-only; upkeep edits the agreed records |
 | [`project-memory`](skills/project-memory/README.md) | Record immutable v2 task/run history and verify fresh committed-change evidence | Records local implementation evidence; keeps ownership in canonical task records |
+| [`model-driven-design`](skills/model-driven-design/README.md) | Turn an idea into a strict model proposal and independent acceptance handoff | Clarifies by default; authorized drafts and review preparation only |
 | [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
 | [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
 | [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents, current plans, ownership, and independent review | Delegates only when the task benefits from orchestration |
