@@ -38,3 +38,30 @@ report actual observations and limits, and run repository and committed-diff
 Project Memory validation. Obtain a separate review of the guide where available.
 Normal branch publication and a draft PR are authorized; merge, deployment,
 worker activation and formal human approval are not part of this claim.
+
+## Observed local result
+
+Added a testing guide and README entry point without changing executable source or
+existing generated artifacts. Its five Bash blocks ran in order on this checkout
+with Go 1.27.3, Python 3 and an outside-checkout private workspace: the fixed
+rehearsals, non-executing preflight and separately invoked candidate replay all
+returned the documented observations. An earlier full `/tmp` caused a rehearsal
+build failure; the guide now supports an explicit outside-checkout storage parent
+and sets temporary and cache paths. An earlier draft expected the wrong successful
+proposal cleanup label; independent review caught it and the corrected full run
+passed. Neither unsuccessful attempt is counted as a pass.
+
+A separate read-only reviewer inspected the final corrections, checked all five
+blocks with `bash -n`, and ran the two summary readers on independently observed
+rehearsal receipts. Repository validation and Markdown relative links passed;
+optional `skills-ref` was unavailable. The source checkouts and receipts concern
+fixed invented examples, not human approval, visual review or deployment.
+
+The reviewer separately reran focused serial Go 1.27.3 race tests for tutorial,
+rehearsal, merge rehearsal, proposal replay and both handoff CLI/package pairs:
+all seven packages passed with workspace-backed temporary storage and cache. A
+prior run failed when `/tmp` filled and is not counted as a pass. The reviewer
+observed an unchanged lifecycle module and empty temporary directory afterward.
+The initial start event accidentally supplied all three file names as one
+comma-separated value; the next checkpoint records the exact three paths before
+completion rather than editing immutable history.

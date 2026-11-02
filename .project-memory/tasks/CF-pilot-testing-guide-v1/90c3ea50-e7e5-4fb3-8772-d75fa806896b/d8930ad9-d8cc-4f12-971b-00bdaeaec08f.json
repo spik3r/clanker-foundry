@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "d8930ad9-d8cc-4f12-971b-00bdaeaec08f",
+  "runId": "90c3ea50-e7e5-4fb3-8772-d75fa806896b",
+  "kind": "complete",
+  "parents": [
+    "b7d93625-2589-4256-a2f9-6ee275d71caf"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pilot-testing-guide-v1",
+    "path": "tasks/CF-pilot-testing-guide-v1-operator-guide.md",
+    "revision": "ea9033f42ca415ef81792e5aeb39e0ee939f1e04",
+    "blob": "dde2d7eadf6e1da8db6b52f88dde205fcbfd5e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c2319305ddcd068a42ca3c35eea0eb6f76d8c5696adfc2f3ddfed35d35d7319d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-pilot-testing-guide-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T23:46:29.872Z",
+  "summary": "Documented and independently reviewed the fixed pilot testing paths and execution boundaries",
+  "next": "Validate the committed diff and publish a draft for review",
+  "files": [
+    "README.md",
+    "docs/model-driven-pilot-testing.md",
+    "tasks/CF-pilot-testing-guide-v1-operator-guide.md"
+  ],
+  "validation": "Five extracted Bash blocks passed on Go 1.27.3 with private outside-checkout storage; reviewer checked both receipt readers and seven focused race packages passed; scripts/validate.sh passed with optional skills-ref unavailable; staged diff whitespace passed",
+  "snapshot": {
+    "README.md": {
+      "blob": "ec42a1a6bb953c5ab9b29afaf3b434f3fee23f14",
+      "mode": "100644"
+    },
+    "docs/model-driven-pilot-testing.md": {
+      "blob": "72a081e697277adc054a23675802a67a1ffa38af",
+      "mode": "100644"
+    },
+    "tasks/CF-pilot-testing-guide-v1-operator-guide.md": {
+      "blob": "b12941b815097398e69482a4e5ed8bb9515a3470",
+      "mode": "100644"
+    }
+  }
+}

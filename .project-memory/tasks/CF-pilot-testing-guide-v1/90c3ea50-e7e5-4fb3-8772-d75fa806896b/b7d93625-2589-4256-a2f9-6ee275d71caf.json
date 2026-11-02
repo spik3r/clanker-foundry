@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "b7d93625-2589-4256-a2f9-6ee275d71caf",
+  "runId": "90c3ea50-e7e5-4fb3-8772-d75fa806896b",
+  "kind": "checkpoint",
+  "parents": [
+    "76839ee5-1e16-46f3-8a19-1a31af5b7c70"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pilot-testing-guide-v1",
+    "path": "tasks/CF-pilot-testing-guide-v1-operator-guide.md",
+    "revision": "ea9033f42ca415ef81792e5aeb39e0ee939f1e04",
+    "blob": "dde2d7eadf6e1da8db6b52f88dde205fcbfd5e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c2319305ddcd068a42ca3c35eea0eb6f76d8c5696adfc2f3ddfed35d35d7319d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-pilot-testing-guide-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T23:46:22.112Z",
+  "summary": "Correct the initial comma-separated path entry to the three exact claimed paths",
+  "next": "Complete validation and stage the reviewed result",
+  "files": [
+    "README.md",
+    "docs/model-driven-pilot-testing.md",
+    "tasks/CF-pilot-testing-guide-v1-operator-guide.md"
+  ]
+}

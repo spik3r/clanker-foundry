@@ -16,8 +16,9 @@ workshop analogy, with diagrams separating human, AI and non-AI tooling roles.
 It keeps the working lifecycle example distinct from future plans.
 Deterministic generation makes results reproducible; it does not make them correct.
 
-For the runnable example, see the [lifecycle demo](modeling/lifecycle/README.md)
-and [step-by-step revision tutorial](modeling/lifecycle/tutorial/README.md).
+To try the current example, start with the [pilot testing guide](docs/model-driven-pilot-testing.md).
+See also the [lifecycle demo](modeling/lifecycle/README.md) and
+[step-by-step revision tutorial](modeling/lifecycle/tutorial/README.md).
 The skill pack and installation instructions below remain usable on their own;
 the example does not replace the separate orchestration runtime.
 
