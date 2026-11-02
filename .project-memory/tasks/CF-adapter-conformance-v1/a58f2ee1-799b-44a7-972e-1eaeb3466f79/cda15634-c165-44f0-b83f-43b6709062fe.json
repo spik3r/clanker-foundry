@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "cda15634-c165-44f0-b83f-43b6709062fe",
+  "runId": "a58f2ee1-799b-44a7-972e-1eaeb3466f79",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-adapter-conformance-v1",
+    "path": "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "revision": "30b46cacadd5e0713ad5e1f983d1991ff71c1ed6",
+    "blob": "3b18cc7745c182fcce9d1dd549e932870f54aa9c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5833e5b1aade6876fabffc9ab109527c13d04262a8f9a8f8fff5452d6499a87e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/adapter-conformance-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T23:58:15.140Z",
+  "summary": "Extract reusable one-way adapter checks after owner and coordinator clearance, preserving all frozen consumer oracles and execution boundaries.",
+  "next": "Freeze independently authored conformance tests before helper logic, then implement scoped extraction and behaviorally qualify both generated models.",
+  "files": [
+    "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "modeling/lifecycle/adapterconformance/README.md",
+    "modeling/lifecycle/adapterconformance/conformance.go",
+    "modeling/lifecycle/adapterconformance/conformance_test.go",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt"
+  ]
+}
