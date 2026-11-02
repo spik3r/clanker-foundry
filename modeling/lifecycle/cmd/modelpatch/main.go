@@ -5,6 +5,8 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/modelpatch"
 	"io"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func run(args []string, in io.Reader, out, diag io.Writer) int {
@@ -29,4 +31,9 @@ func run(args []string, in io.Reader, out, diag io.Writer) int {
 	}
 	return 0
 }
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Let stdout Write report a closed pipe so the documented exit 3 contract
+	// also holds for real pipes, not only injected test writers.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}

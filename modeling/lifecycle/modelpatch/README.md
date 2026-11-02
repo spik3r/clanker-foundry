@@ -152,3 +152,45 @@ result is an inspectable proposed model and declared-link review, not permission
 to regenerate code, rewrite evidence, execute a model or publish anything.
 Final exact-source lead review and genuine completion evidence remain separate
 project gates. A source checkpoint is not completion or publication authority.
+
+
+## Current-main integration
+
+This is an adoption of the existing local planner, not a new modeling engine or
+an adoption of the held reviewpack/exporter stack. The task records the original
+nine-file source identities. The planner, strict decoder and original oracle stay
+byte-for-byte unchanged. The CLI now ignores SIGPIPE so a real closed stdout pipe
+returns exit 3 and the fixed output-error diagnostic, as promised above. Its test
+launches only the trusted test binary with a deadline and finite WaitDelay; this
+is not a general process runner or a descendant-cleanup guarantee.
+
+The independently authored `integration_test.go` spells a complete `T_prepare`
+replacement against the frozen baseline digest. It adds the existing `G_actor`
+guard reference and compares the whole normalized candidate to the existing
+[tutorial candidate](../tutorial/model-v2.json), not to output from the planner.
+The strict JSON request is independently spelled as well. Run it from the module:
+
+```sh
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -race -count=1 ./modelpatch ./cmd/modelpatch
+```
+
+Canonical model identity is distinct from source-byte identity: normalized output
+has the tutorial candidate's canonical digest, not its raw file hash. The tests
+keep both old and candidate manifests/suites unchanged. Existing
+[acceptance authoring](../acceptanceauthor/README.md) check mode reports the old
+model binding stale; the candidate manifest can match the proposed model while
+the compiled baseline runner remains stale. Neither check rebinds evidence or
+claims scenario validation/replay. Reapplying the original patch fails its old
+precondition, with no candidate or output bytes.
+
+For actual generated-code execution, use the existing
+[tutorial](../tutorial/README.md) and its separate frozen expectations:
+
+```sh
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -race -count=1 ./tutorial
+```
+
+That test already builds and replays its candidate in a disposable copy. The
+planner integration proves candidate identity and stale-evidence preservation;
+it does not add a second orchestration command, execute caller-provided code or
+certify intent, arbitrary adapters, provenance, UML or SysML conformance.
