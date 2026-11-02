@@ -1,6 +1,6 @@
 ---
 id: CF-qualification-adoption-v1
-status: in-progress
+status: completed
 owner: Byte current-main offline qualification export adoption worker
 repositories: [spik3r/clanker-foundry]
 ---
@@ -146,3 +146,55 @@ not original archive completion or publication authority.
 | qualification/README.md | 1466f17092d32745fcb3a2fc112af101caa1a14c | 2773 | 747192f707630cd6886eb96108728bd7baa3a0446aacf1bad94033af13a61342 |
 | cmd/modelqualify/main.go | f1050c264ba8501730ee68b25002545dac34919e | 3265 | 2df33d2b18cbb1924b94c4098acf61209ea32e4a309534c73e345c7b39601d4d |
 | cmd/modelqualify/main_test.go | 5221e9e64d5f91bb0ae262991f6da13b6007efac | 3312 | 8fac69c2d5132fc9e5e95bc2a2e648378c122024b8e256909d97edd38ce41c26 |
+
+
+## Local completion and independent qualification
+
+Exact reviewed source is 84f2cac542f6226fd5d4b6fb5d291e56b4d41a35, tree
+db20406de65db522e6e1bfd73beaab667a392aba. The original producer lead found no
+material source, ownership, closure, chronology or authority defect. The oracle
+author separately reviewed its unchanged expectations, source identities,
+strengthened existing harness and README claims. This newly qualifies only the
+claimed pure archive/exporter subset; it does not complete the old reviewpack task.
+
+All four original archive files remain exact3312/f572. Candidate/suite bytes retain
+their hashes above. Independent adoption_test.go retains SHA-256
+c03f6b4c0dd48af1e840318e3db7fd44087f98fc5cafb88c6c7b725a8177dc19,
+frozen at 4623dcc before original production adoption d089ee4 and explicit pin
+reconciliation 509e91d. All eleven current copied-source files are unmodified;
+no existing main path changed. Public main was rechecked at 3d6d1718 before
+completion. The source revision, longest-name bound and seventeen-payload
+inventory were reviewed changes, not silent refreshes.
+
+Author and original lead independently passed actual Go 1.27.3 offline full race
+checks (43 tested packages), focused verbose tests, vet, formatting, modelc
+validate/check, modeltrace check, schema 2/2 with a lock-matched existing installed
+dependency closure, and repository validation. The oracle author independently
+passed the three affected packages under race. Optional skills-ref is absent.
+The wrong-toolchain-only negative is intentionally skipped under required
+Go 1.27.3; no unsupported-toolchain execution result is claimed.
+
+The existing exported-project test actually compiled the candidate-specific
+current-source module and ran generated structural tests. Initial four-case/six-
+step output, the deliberate wrong-expectation mismatch and restored replay matched
+full independently frozen reports. Wrong binding and malformed suite rejected.
+Both unchanged generated-code mutants compiled and failed behaviorally; original
+code was restored, rebuilt and replayed, and all materialized payloads stayed
+unchanged. Those observations concern only these trusted fixed tests, not a
+product execution service or later callers' suites.
+
+Both actual CLI closed-pipe regressions failed unmodified main at 509e91d with
+SIGPIPE and passed the reviewed correction with existing exit 2. The author also
+ran a separately built CLI: deterministic new archive verified with the exact
+unvalidated/unexecuted status, an actual old nine-source archive rejected with
+empty stdout, and both closed-output modes returned 2. The example archive has
+17 payloads plus manifest, 101580 bytes and SHA-256
+159cf77605273dbf86cd44b8bb43b7c1634b68fbe2cf9f272d9521ff63ad2050.
+These extra CLI artifact observations are author-run, not attributed to the lead.
+
+Final metadata-only continuity and full committed Project Memory validation follow
+this completion commit. A verified complete-history bundle preserves only fresh
+adoption ancestry from public main. No old held task/events are copied, no private
+pin is refreshed, and no visual, timing, browser, publication or deployment gate
+is waived. Every exported/verified suite remains described as opaque, unvalidated
+and unexecuted unless a separate invocation supplies its own observed evidence.
