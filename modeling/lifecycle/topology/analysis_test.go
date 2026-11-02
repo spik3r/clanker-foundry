@@ -1,6 +1,12 @@
 package topology
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"strings"
+
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
 	"reflect"
 	"testing"
 
@@ -48,5 +54,160 @@ func TestFrozenGraphVectors(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got.Cycles, wantCycles) {
 		t.Fatalf("cycles: got %#v want %#v", got.Cycles, wantCycles)
+	}
+}
+
+func TestDeterminismOwnershipAndNoGuardEvaluation(t *testing.T) {
+	m := fixture()
+	raw, err := json.Marshal(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var original model.Model
+	if err = json.Unmarshal(raw, &original); err != nil {
+		t.Fatal(err)
+	}
+	first, err := Analyze(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if first.FormatVersion != FormatVersion || first.Mode != "structural-only" || first.Authority != "none" || first.ModelID != "M" || first.Initial != "A" || len(first.ModelDigest) != 64 {
+		t.Fatalf("envelope: %+v", first)
+	}
+	if !reflect.DeepEqual(m, original) {
+		t.Fatal("input mutated")
+	}
+	for i, j := 0, len(m.States)-1; i < j; i, j = i+1, j-1 {
+		m.States[i], m.States[j] = m.States[j], m.States[i]
+	}
+	for i, j := 0, len(m.Transitions)-1; i < j; i, j = i+1, j-1 {
+		m.Transitions[i], m.Transitions[j] = m.Transitions[j], m.Transitions[i]
+	}
+	reordered, err := Analyze(m)
+	if err != nil || !reflect.DeepEqual(first, reordered) {
+		t.Fatal("set reordering changed output", err)
+	}
+	first.States[0].TransitionIDs[0] = "changed"
+	first.Cycles[0].States[0] = "changed"
+	first.Cycles[0].InternalTransitions[0] = "changed"
+	again, err := Analyze(m)
+	if err != nil || !reflect.DeepEqual(again, reordered) {
+		t.Fatal("output aliases input or another result", err)
+	}
+	// An unsatisfiable expression must not be evaluated or treated as a proof
+	// that the declared paths cannot be used. Its changed model digest remains visible.
+	impossible := fixture()
+	impossible.Guards[0].Expr = model.Expr{Kind: "op", Op: "eq", Args: []model.Expr{{Kind: "string", Value: "x"}, {Kind: "string", Value: "y"}}}
+	structural, err := Analyze(impossible)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(structural.States, reordered.States) || !reflect.DeepEqual(structural.Cycles, reordered.Cycles) || structural.ModelDigest == reordered.ModelDigest {
+		t.Fatal("guard handling changed structural graph or hid model identity")
+	}
+}
+
+func TestParallelEdgeAndInvalidTypedModels(t *testing.T) {
+	m := fixture()
+	edge := m.Transitions[0]
+	edge.ID = "T_A_B_alt"
+	edge.Trigger = "alternative"
+	m.Transitions = append(m.Transitions, edge)
+	result, err := Analyze(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(result.States[0].TransitionIDs, []string{"T_A_B", "T_B_T"}) {
+		t.Fatal("parallel edge tie", result.States[0])
+	}
+	invalid := []model.Model{model.Model{}, fixture(), fixture(), fixture()}
+	invalid[1].States[0].ID = "bad id"
+	invalid[2].Transitions[0].To = "Missing"
+	invalid[3].Transitions = append(invalid[3].Transitions, invalid[3].Transitions[0])
+	for _, bad := range invalid {
+		got, err := Analyze(bad)
+		if err == nil || !reflect.DeepEqual(got, Report{}) {
+			t.Fatal("invalid model produced partial report")
+		}
+	}
+}
+
+func TestExecuteStrictAndDeterministic(t *testing.T) {
+	modelBytes, err := jsonformat.Encode(fixture())
+	if err != nil {
+		t.Fatal(err)
+	}
+	req, err := json.Marshal(struct {
+		FormatVersion string          `json:"formatVersion"`
+		Model         json.RawMessage `json:"model"`
+	}{RequestFormatVersion, modelBytes})
+	if err != nil {
+		t.Fatal(err)
+	}
+	first, err := Execute(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := Execute(req)
+	if err != nil || !bytes.Equal(first, second) {
+		t.Fatal("nondeterministic output", err)
+	}
+	var decoded Report
+	if err = json.Unmarshal(first, &decoded); err != nil || decoded.Mode != "structural-only" || len(decoded.Cycles) != 3 {
+		t.Fatal("unexpected output", err)
+	}
+	cases := map[string][]byte{
+		"empty":         []byte(`{}`),
+		"extra":         bytes.Replace(req, []byte(`{"formatVersion"`), []byte(`{"unknown":1,"formatVersion"`), 1),
+		"duplicate":     bytes.Replace(req, []byte(`"formatVersion":`), []byte(`"formatVersion":"x","formatVersion":`), 1),
+		"case":          bytes.Replace(req, []byte(`"formatVersion"`), []byte(`"FormatVersion"`), 1),
+		"null":          []byte(`{"formatVersion":"lifecycle-structural-topology-request/v1","model":null}`),
+		"trailing":      append(append([]byte{}, req...), []byte(` {}`)...),
+		"bad utf8":      append(append([]byte{}, req...), 0xff),
+		"bad surrogate": bytes.Replace(req, []byte(`"label":"A"`), []byte(`"label":"\ud800"`), 1),
+		"oversized":     []byte(strings.Repeat(" ", MaxRequestBytes+1)),
+		"wrong version": bytes.Replace(req, []byte(RequestFormatVersion), []byte("other"), 1),
+	}
+	for name, b := range cases {
+		t.Run(name, func(t *testing.T) {
+			if bytes.Equal(req, b) {
+				t.Fatal("mutation did not apply")
+			}
+			out, err := Execute(b)
+			if err == nil || out != nil {
+				t.Fatal("accepted invalid request")
+			}
+		})
+	}
+}
+
+func TestMaximumDeclaredGraphBounds(t *testing.T) {
+	m := model.Model{Version: 1, ID: "MaxModel", Initial: "S00", Requirements: []model.Requirement{{ID: "R", Text: "condition"}}, Guards: []model.Guard{{ID: "G", Requirement: "R", Expr: model.Expr{Kind: "op", Op: "nonempty", Args: []model.Expr{{Kind: "ref", Ref: "task.id"}}}}}}
+	for i := 0; i < 16; i++ {
+		m.States = append(m.States, model.State{ID: fmt.Sprintf("S%02d", i), Label: "state", Terminal: i == 15})
+	}
+	edge := func(id, from, to string) model.Transition {
+		return model.Transition{ID: id, From: from, To: to, Trigger: id, Guards: []string{"G"}, Effects: []model.Effect{{Op: model.SetState}, {Op: model.IncrementRevision}}}
+	}
+	for i := 0; i < 15; i++ {
+		from := fmt.Sprintf("S%02d", i)
+		to := fmt.Sprintf("S%02d", i+1)
+		m.Transitions = append(m.Transitions, edge(fmt.Sprintf("E%02d", i), from, to), edge(fmt.Sprintf("L%02d", i), from, from))
+	}
+	m.Transitions = append(m.Transitions, edge("Zalt1", "S00", "S01"), edge("Zalt2", "S00", "S01"))
+	if len(m.Transitions) != 32 {
+		t.Fatal("fixture is not at transition bound")
+	}
+	got, err := Analyze(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got.States) != 16 || len(got.Cycles) != 15 || !got.States[0].HasTerminalPath || got.States[0].TerminalID != "S15" || len(got.States[0].TransitionIDs) != 15 || got.States[0].TransitionIDs[0] != "E00" {
+		t.Fatal("unexpected bounded graph result")
+	}
+	over := m
+	over.States = append(append([]model.State{}, m.States...), model.State{ID: "Extra", Label: "extra"})
+	if result, err := Analyze(over); err == nil || !reflect.DeepEqual(result, Report{}) {
+		t.Fatal("accepted graph above model bound")
 	}
 }
