@@ -1,6 +1,6 @@
 ---
 id: CF-first-design-handoff-v1
-status: in-progress
+status: review
 owner: Byte first-design handoff contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -118,3 +118,80 @@ regressions, whole-module offline Go1.27.3 race/vet/modelc checks, Project Memor
 regressions and committed-diff lifecycle validation. Freeze independent fixtures,
 review exact source and preserve failures/skips honestly. Stay local until separate
 publication authority is granted.
+
+
+## Local result and evidence
+
+Implemented locally and reviewed; no publication, integration or deployment is
+authorized by this record. Fresh remote main remains
+`014eaa2163929a3fb4db4993bb38d59ba0b2aa69` as checked on 2026-11-02. The separate
+rehearsal lane remains outside this frontier. Only one root README skill row was
+added; existing skills, shared modeling implementations and denied artifacts were
+not changed.
+
+The skill connects clarification, profile fit, strict original-byte model checks,
+independent expectation preparation and draft view/code generation through existing
+Foundry capabilities. It stops at a review handoff, not a running application or
+approved model. The test-only `authoringhandoff` package checks the worked proposal
+with existing APIs and a panic-only reducer sentinel; it never executes that
+proposal's scenario expectations. Repository-wide baseline tests are separate from
+new-proposal execution.
+
+### Independent evidence
+
+- The expectation author received the brief and public interface/profile contract,
+  not the proposed guard expressions, generated implementation or observed results.
+  A missing transition-identity requirement was clarified before its nine literal
+  cases and manifest froze in `eeaeb63ac143e9a5e566f2d617b9317670126a7d`.
+  Fixture self-checking preceded integration-test implementation. The subsequent
+  inventory froze in `8942cdd821b000b4876160ad7f8890ae24653f7e`.
+- Frozen suite SHA-256 is
+  `184115eead4e94d37dd369d7f07a36ed6cb84080e8a4c9f27be3dd5562e2e7dd`;
+  manifest is `68cf7227f055ab2079d9b3b4d7159b6dec8bbd19d8246f33eef8a036d96838ae`;
+  inventory is `8377777ad497b3c8901cf77738774498962e29bcfe26874d59efcb10d5c0755d`.
+  These hashes identify bytes, not independent correctness or human approval.
+- A separate read-only forward test used an ambiguous shared-board idea with timers,
+  team visibility and undecided self-approval. The skill elicited consequential
+  questions, preserved the undecided policy, separated unsupported scheduler/access
+  controls from the profile and did not create files or claim application generation.
+- A second independent forward test prepared a review handoff in an exclusive
+  disposable checkout. An intentionally appended suite newline was detected as stale
+  against the frozen declarations. The agent preserved every input byte, generated
+  the five candidate artifacts and used a candidate-bound acceptance tool in
+  check-only mode: stale binding, validation not-checked, replay not-run. It did not
+  repair the declaration or execute candidate behavior. The actual SVG viewer did
+  not support the file, so visual review remained pending without a substitute.
+- Independent exact-source review of `f3284fed2a2093fd2382c8d142d0529684527434`
+  found no blocker and independently passed focused race tests. Its nonblocking
+  fail-fast suggestion was addressed in
+  `79e960a0c75612adeeabaeb976516ef13fc7f30a`; the reviewer confirmed that exact
+  two-line documentation delta and unchanged frozen fixtures. Full-module and
+  forward-test results above remain their respective authors' evidence, not a
+  claim that the source reviewer reran them.
+
+### Observed checks and limits
+
+- Go 1.27.3 offline, bounded serial `go test -p 1 -race -count=1 ./...`:
+  **57 tested packages passed**. Whole-module `go vet -p 1 ./...`, `modelc validate`
+  and `modelc check` passed; checked baseline artifacts match with no writes.
+- Targeted normal/race tests passed, including five negative controls for missing
+  observations, source-only drift, invalid model and stale binding. Generated Go
+  parsing and SVG XML/table checks are syntax/structure evidence, not visual review.
+- Repository validator, skill-creator frontmatter validation, `tests/test-agent-model.sh`,
+  gofmt and whitespace checks passed. Project Memory regression tests passed 143/143.
+  Exact reference shell blocks stopped at a wrong Go version and missing model
+  input in isolated negative controls, without reaching build/generation commands.
+- **Installation regression remains unverified:** `bash tests/test-install.sh`
+  reached the Stow step and exited 1 because GNU Stow is absent. No dependency was
+  installed, no test was weakened and no successful install is claimed. The optional
+  `skills-ref` check was unavailable and skipped by the existing validator.
+- An early test-file command used a module-relative working directory with a
+  repository-root-relative path, so file creation and the ensuing no-files test
+  failed. Correcting the working directory allowed the actual test to run; the
+  failed setup is not counted as a test pass.
+
+The worked proposal deliberately keeps human meaning/provenance review, its open
+use decision, visual review and candidate execution authorization pending. These
+are handoff gates, not fabricated approvals. Before publication, obtain separate
+authority and refresh current main/ownership; before claiming installer qualification,
+run the unchanged installer regression in an authorized environment with GNU Stow.
