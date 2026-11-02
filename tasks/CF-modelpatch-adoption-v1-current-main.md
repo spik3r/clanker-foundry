@@ -141,7 +141,12 @@ expected value. Original logs were retained and no fixture was changed.
 
 One independent fresh-cache attempt stopped on host /tmp capacity with empty
 logs; no pass was inferred. The reviewer reran in its own workspace cache and
-repository-local temporary directory, then observed all checks above pass.
+repository-local temporary directory, then observed the full Go, source and
+repository checks pass. The three mutation checks above are the author's runs.
+The reviewer's first supplemental schema attempt could not resolve ajv; with an
+explicit path to the same existing byte-pinned dependency closure, its later
+independent Node 24.22.1 schema run also passed 2/2. No dependency install or source
+change was needed. Both unsuccessful environmental attempts remain in its logs.
 Full committed-diff Project Memory validation and final blob/mode continuity are
 checked after this completion commit. The original held task/events and every
 visual, private-consumer and timing-publication gate remain unchanged.
