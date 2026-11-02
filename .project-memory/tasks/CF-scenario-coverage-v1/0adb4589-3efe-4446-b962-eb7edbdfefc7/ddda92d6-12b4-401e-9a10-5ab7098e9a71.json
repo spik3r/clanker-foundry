@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "ddda92d6-12b4-401e-9a10-5ab7098e9a71",
+  "runId": "0adb4589-3efe-4446-b962-eb7edbdfefc7",
+  "kind": "checkpoint",
+  "parents": [
+    "a1e05c4b-69b6-41bd-97b1-ee2c7b8b9ae5"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-coverage-v1",
+    "path": "tasks/CF-scenario-coverage-v1-assertion-inventory.md",
+    "revision": "99931aadff8dbdfe2c6096e4dc4e73c6f998f33c",
+    "blob": "8bf13f654c255f3cbe25e899f35f3071f0cfbf08",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "b3978c07e725720b6e3e833bddf03d3ab9c470a397c40a7f5f36f6bf34c56862"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-coverage-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T09:12:48.362Z",
+  "summary": "Correct active path scope: the initial start event accidentally stored these six paths as one comma-concatenated path; the pinned task source recorded the intended separate paths before implementation",
+  "next": "Independent exact-source review; do not misstate the initial start event scope or timing",
+  "files": [
+    "tasks/CF-scenario-coverage-v1-assertion-inventory.md",
+    "modeling/lifecycle/scenariocoverage/coverage.go",
+    "modeling/lifecycle/scenariocoverage/coverage_test.go",
+    "modeling/lifecycle/scenariocoverage/README.md",
+    "modeling/lifecycle/cmd/modelcoverage/main.go",
+    "modeling/lifecycle/cmd/modelcoverage/main_test.go"
+  ]
+}
