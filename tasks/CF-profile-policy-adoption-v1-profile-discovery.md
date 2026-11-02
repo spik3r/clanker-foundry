@@ -1,6 +1,6 @@
 ---
 id: CF-profile-policy-adoption-v1
-status: in-progress
+status: complete
 owner: Byte current-main profile discovery and compatible source-policy adoption worker
 repositories: [spik3r/clanker-foundry]
 ---
@@ -214,3 +214,73 @@ all eleven old source pins. The model package at this checkpoint contains exactl
 ir.go and capabilities.go as production files. Catalog mapping and all seven
 shared policy paths were still unmodified at that checkpoint. Independent policy
 expectations will name this actual revision before changed policy logic.
+
+## Observed current-main qualification
+
+The implementation at 4f92855d8187eca833a118e5d37b6402c781414d, tree
+a74a4914b7306e3b2fe00a48ae567b001f697570, contains the eighteen scoped modeling
+files only. Existing compiler, IR, Runner, scenarios, artifact layer, execution
+harness and unrelated fixtures are unchanged. The three new/revised acceptance
+files remain byte-identical to independent pre-policy freeze 0148c28. Original
+catalog/parity vectors, candidate/suite/request/result literals and public legacy
+ZIP remain unchanged. No held ancestors, old tasks or old evidence were imported.
+Fresh read-only fetch still identified public main 107fd917 as the ancestor.
+
+Author checks on actual Go 1.27.3 passed: offline full-module race tests (47 tested
+packages), focused verbose race, vet, formatting, modelc validate/check and
+modeltrace check. The unchanged candidate-project test actually built/replayed
+the current twelve-source project, killed both compiling reducer mutants, then
+restored/replayed it. Wrong-toolchain rejection was correctly skipped on the
+required toolchain. Lock-matched installed dependencies passed schema 2/2;
+repository validation passed, with optional skills-ref unavailable. Initial actual
+closed stdout reproduced SIGPIPE; the narrow signal change then passed the frozen
+exit 3 regression without changing catalog bytes.
+
+The author separately ran the documented byte-preserving design-change recipe,
+built all three affected CLIs, verified unchanged legacy and new default archives
+through outer/native CLI paths, and confirmed default native export equals the
+new nested archive. Both old eleven-source and new twelve-source materialized
+projects passed structural tests and replayed the complete existing four-case,
+six-step expected report with every payload unchanged. An initial scratch check
+compared pretty-printed expected JSON with compact CLI bytes and failed only on
+formatting; the retained corrected check compares every literal decoded field.
+No expected bytes were changed. These are observations of these fixed trusted
+projects, not claims that export/Verify executes a caller's suite.
+
+Observed legacy archive SHA-256 remains
+d7cffd252c57f0854257b8cfe019b88a482f2482110473343ef000cabb868c91;
+new default archive SHA-256 is
+d39743e2985b4ec5698fb130b540b29d4b4347e77c0c1a5b4f3100750c1e0c55
+(138518 bytes; eighteen nested payloads plus manifest). Both CLI replay outputs
+have SHA-256 1868399a547aea237c101dc04c703fd6e89df15b1ff97ece721ddbf3f4f8f07f.
+These observed output hashes are consistency receipts, not independent semantic
+or provenance expectations.
+
+Four author-only overlay mutants compiled and failed at named frozen-oracle
+assertions: unknown-policy fallback, omitted native byte equality, omitted outer
+byte equality and disabled source-hash enforcement. Restored focused race passed;
+no maintained bytes were changed by mutation runs. The oracle author separately
+reviewed the exact source and unchanged prelogic tests and independently passed
+focused race/vet, including real closed stdout. Original producer exact-source
+review and completion continuity are recorded separately below.
+
+Local completion does not publish this branch, complete held reviewpack visual or
+PM gates, permit denied browser/diagnostic actions, grant execution or review
+authority, migrate old archives, or change private consumer pins. Verification
+under a recognized historical policy is not currentness. Publication remains a
+separate coordinator-controlled action after final continuity and bundle checks.
+
+### Independent source verdict
+
+The original producer independently reviewed exact source 4f92855/tree a74a4914
+and verified that 8ce3c568 adds only the qualification checkpoint. No blocking
+source finding remained. They independently passed full 47-package race,
+focused verbose candidate execution/mutants/restoration, vet, formatting,
+model/trace drift, schema 2/2 and repository checks; verified actual closed stdout,
+exact catalog output and all twelve pins at the real capability checkpoint; and
+built the CLIs to verify/replay both old and new projects with complete frozen
+report comparison and unchanged payloads. Original vectors, full report literals,
+public legacy ZIP and all three prelogic acceptance files were independently
+checked unchanged. The four extra policy-source overlay mutants remain attributed
+to the author. This technical verdict does not grant publication or held-gate
+approval; final completion metadata is checked separately.
