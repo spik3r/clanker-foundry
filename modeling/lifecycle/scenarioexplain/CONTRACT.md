@@ -145,3 +145,72 @@ only the caller assertion and declared structural compatibility: it does not
 prove a transition was evaluated, was illegal, overflow occurred or any effect
 was applied. Altering sensitive model text is a negative digest-mismatch case;
 only caller-supplied literals in an otherwise compatible report test escaping.
+
+
+## Current-main adoption and default-report boundary
+
+This adopts the existing local explainer, not the held archive/reviewpack stack.
+The fresh task pins the original source and literal vectors; mapping, decoder and
+original tests are unchanged. Scenario conversion/encoding internals have since
+gained the separately reviewed model-bound Runner, so the adoption tests qualify
+those current helpers rather than claiming an unchanged dependency closure.
+
+`DecodeReport` accepts only the original baseline report wire contract. It rejects
+`lifecycle-bound-scenario-report/v1` and the `identitySource` field separately;
+it never strips these fields or substitutes a requested model identity. Changed
+models, including the tutorial candidate, remain unsupported by this v1 explainer.
+
+A typed `scenarios.Report` does not carry its wire envelope or origin. An otherwise
+compatible typed value can be invented or come from a baseline-bound callback;
+`Explain` cannot distinguish those cases. It accepts structural assertions, not
+an authenticated execution receipt. For example, a structurally consistent report
+may claim success without applying the declared effects. Explanation does not
+check effects, invoke the callback or promote that assertion into observed truth.
+
+The independently frozen integration uses the existing four-case/thirteen-step
+suite through the existing scenario engine, then checks complete literal
+explanations, guard projections, report roundtrip and the strict wrapper. It also
+checks invented reports, null/empty refusals, stale model identity and separate
+bound-version/unknown-field rejections. Bound report encoding is tested with a
+callback that must never run. Neither original nor integration expectations are
+refreshed from explanation output.
+
+The CLI now ignores SIGPIPE so a real closed stdout returns the documented exit 3
+with the fixed output diagnostic. A trusted subprocess regression has a deadline
+and finite WaitDelay; it is not a general process runner or a process-tree cleanup
+guarantee. Existing short-writer tests remain.
+
+## Reuse the existing report workflow
+
+From the module directory with actual Go 1.27.3, run:
+
+```sh
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go test -race -count=1 ./scenarioexplain ./scenarios ./cmd/modelexplain
+```
+
+For an inspectable example, compose the existing commands; no new orchestration
+entrypoint is needed. The Python wrapper preserves the exact model/report bytes
+instead of text-mode newline conversion. All files below are example artifacts
+in a new local temporary directory, not authenticated execution evidence:
+
+```sh
+export GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off
+work=$(mktemp -d)
+go run ./cmd/modelplay < scenarios/testdata/lifecycle-v1.json > "$work/report.json"
+python3 - "$work/report.json" > "$work/request.json" <<'PY'
+from pathlib import Path
+import sys
+model = Path("examples/lifecycle.json").read_bytes()
+report = Path(sys.argv[1]).read_bytes()
+sys.stdout.buffer.write(
+    b'{"formatVersion":"lifecycle-scenario-explain-request/v1","model":'
+    + model + b',"report":' + report + b'}\n'
+)
+PY
+go run ./cmd/modelexplain < "$work/request.json" > "$work/explanation.json"
+```
+
+The resulting status is still `caller-supplied-assertions`. Source/scenario digests
+are copied claims, not authentication. Keep real private model text and reports
+out of public artifacts. This workflow performs no browser rendering, deployment,
+worker activation or UML/SysML conformance check.

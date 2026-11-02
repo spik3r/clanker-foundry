@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "994e1e86-4222-4028-88bb-98d4b2335565",
+  "runId": "e2701656-2c6a-46b9-8422-46787e5c8928",
+  "kind": "checkpoint",
+  "parents": [
+    "47fb6bce-a7a4-4a06-a478-0f7e08b7b6ad"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-explain-adoption-v1",
+    "path": "tasks/CF-scenario-explain-adoption-v1-current-main.md",
+    "revision": "1ddf7a7380c29c3e396915f9fc7b48a36fc42b8e",
+    "blob": "389349545f6143ebd6a956b39fea10064fcea105",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "56010bd061ac2ca246fec65493c6b0e13aad4770202b9dcdc5fceb831f8f8098"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-explain-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:33:27.027Z",
+  "summary": "Actual focused race checks pass original vectors, current-main integration and report decoder; repaired real closed stdout returns exit3. Existing mapper/decoder/oracles unchanged; documentation states exact default-only and caller-assertion boundaries.",
+  "next": "Qualify full current-main tree and actual documented composition; obtain independent exact-source review",
+  "files": [
+    "modeling/lifecycle/scenarioexplain/CONTRACT.md",
+    "modeling/lifecycle/scenarioexplain/types.go",
+    "modeling/lifecycle/scenarioexplain/explain.go",
+    "modeling/lifecycle/scenarioexplain/explain_test.go",
+    "modeling/lifecycle/scenarioexplain/testdata/vectors.json",
+    "modeling/lifecycle/scenarioexplain/integration_test.go",
+    "modeling/lifecycle/cmd/modelexplain/main.go",
+    "modeling/lifecycle/cmd/modelexplain/main_test.go",
+    "modeling/lifecycle/scenarios/report_decode.go",
+    "modeling/lifecycle/scenarios/report_decode_test.go",
+    "tasks/CF-scenario-explain-adoption-v1-current-main.md"
+  ]
+}

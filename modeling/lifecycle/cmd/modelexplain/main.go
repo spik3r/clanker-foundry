@@ -7,7 +7,9 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarioexplain"
 	"io"
 	"os"
+	"os/signal"
 	"runtime"
+	"syscall"
 )
 
 func run(args []string, in io.Reader, out, diag io.Writer) int {
@@ -30,4 +32,8 @@ func run(args []string, in io.Reader, out, diag io.Writer) int {
 	}
 	return 0
 }
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Report real closed stdout as the documented write failure, not SIGPIPE.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}
