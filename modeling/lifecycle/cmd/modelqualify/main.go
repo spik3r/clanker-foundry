@@ -9,7 +9,9 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/strictjson"
 	"io"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 )
 
 const maxRequest = 3 << 20
@@ -122,4 +124,8 @@ func run(args []string, in io.Reader, out, diag io.Writer) int {
 		return fail()
 	}
 }
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Preserve the existing exit-2 write-failure policy for actual closed pipes.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}
