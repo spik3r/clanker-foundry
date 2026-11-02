@@ -62,6 +62,7 @@ Inspect the paths first. Keep original proposal bytes untouched. The commands
 below compile existing trusted tools, not candidate behavior:
 
 ```sh
+set -eu
 : "${FOUNDRY_ROOT:?set the disposable checkout}"
 : "${PROPOSAL_DIR:?set the proposal directory}"
 : "${HANDOFF_WORK:?set a new private output directory}"
@@ -118,6 +119,7 @@ The existing generator only owns its fixed `generated/` frontier and refuses uns
 or inconsistent outputs; do not delete/repair that frontier to force success.
 
 ```sh
+set -eu
 cp "$PROPOSAL_DIR/model.json" "$FOUNDRY_ROOT/modeling/lifecycle/examples/lifecycle.json"
 cd "$FOUNDRY_ROOT/modeling/lifecycle"
 "$HANDOFF_WORK/modelc" validate
