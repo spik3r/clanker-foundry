@@ -20,8 +20,8 @@ import (
 var ErrInvalid = errors.New("invalid qualification project")
 
 const maxInput = 1 << 20
-const maxSourceName = len("canonical/canonical.go")
-const SourceRevision = "3312a090afac526ddeda392dbd31ed49fa0e04ca"
+const maxSourceName = len("scenarios/report_decode.go")
+const SourceRevision = "3d6d17188cc2723cfe04649d0f8b4220a37b1afe"
 const guide = "Example-only candidate project; no review or execution authority.\nThe literal suite has not been validated or executed. Use a trusted single-writer host.\nOffline with Go 1.27.3:\n  GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off go test -buildvcs=false ./generated\n  GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off go run -buildvcs=false ./cmd/modelplay < suite.json\nProject identity comes from the verified manifest and supplied hashes, not ambient VCS stamping.\nDo not change the suite or model binding to force a pass.\n"
 
 type pin struct {
@@ -36,10 +36,13 @@ var pins = []pin{
 	{"canonical/canonical.go", 1946, "2c3cba3fd53adf8ca5a4cc2ce3d96b51457742c47b6ab4fcedba219e19001a06"},
 	{"strictjson/decode.go", 4236, "a72ded4af99ffba5f5cca2931c6cace072634ee2e42eb00cd9a5988c691f1ee2"},
 	{"compiler/generate.go", 12315, "e17610a27748a5d3baedf4f59c2183cb184f7e2681b5532c6f9d8d3d1eda6a38"},
-	{"scenarios/types.go", 5814, "40a685b674d907cf60ae4beeeb1f56b26e52e58f177f9d055ff553cbc7466a9c"},
-	{"scenarios/decode.go", 6707, "0a8c45b233f9759b899deaefaadb21fc21b62631db75a8a1672f839a2642c086"},
-	{"scenarios/run.go", 8755, "186580b43c3d318da5c6679d03205a25444c97d04e27a512b2d032157e179447"},
-	{"cmd/modelplay/main.go", 1613, "925ec202c74aba5d50eb2bfb5dc54ea22387ccec90e969f1a7ebe1ecbd9a0c63"}}
+	{"scenarios/types.go", 5904, "147b12bd1726fec156ba08ec5666a9a362e1563115151ae57bf9face70f86eec"},
+	{"scenarios/decode.go", 7047, "e6119229899d3084820d72a777d1771037f871b14554630067b7da022cdedc15"},
+	{"scenarios/run.go", 10114, "46d41c5d27d87f71f7191f18d182a99c3ca491126afb601599067692c3379dde"},
+	{"scenarios/runner.go", 4005, "e85b2146d7c1d16269ff886f6c67084de5e263db8b01a7676b8c7491ed8fb59c"},
+	{"scenarios/report_decode.go", 3626, "f14816a19faacf707e23b01d5d16b26be8e8c03a9f5f9af801029b89fb2ceddf"},
+	{"cmd/modelplay/main.go", 1613, "925ec202c74aba5d50eb2bfb5dc54ea22387ccec90e969f1a7ebe1ecbd9a0c63"},
+}
 
 // SourceNames returns a fresh list of the only accepted source paths.
 func SourceNames() []string {

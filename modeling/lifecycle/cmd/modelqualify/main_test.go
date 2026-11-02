@@ -2,14 +2,18 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestInvalidRequests(t *testing.T) {
@@ -120,6 +124,81 @@ func TestRejectsNonregularAndOversizedSource(t *testing.T) {
 			defer os.Chdir(old)
 			if _, e := readSources(); e == nil {
 				t.Fatal("accepted invalid source")
+			}
+		})
+	}
+}
+
+// Closed stdout must preserve run's existing exit-2 failure contract for both
+// archive output and verification text. Only this trusted test binary is run.
+func TestCLIClosedStdoutProcesses(t *testing.T) {
+	const child = "FOUNDRY_MODELQUALIFY_CLOSED_STDOUT_CHILD"
+	if mode := os.Getenv(child); mode != "" {
+		os.Args = []string{"modelqualify", mode}
+		main()
+		return
+	}
+	old, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.Chdir("../.."); err != nil {
+		t.Fatal(err)
+	}
+	defer os.Chdir(old)
+	root, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	candidate, err := os.ReadFile("examples/lifecycle.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	suite, err := os.ReadFile("scenarios/testdata/lifecycle-v1.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	exportRequest, err := json.Marshal(map[string]string{"candidate": base64.StdEncoding.EncodeToString(candidate), "suite": base64.StdEncoding.EncodeToString(suite)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var archive, diag bytes.Buffer
+	if code := run([]string{"export"}, bytes.NewReader(exportRequest), &archive, &diag); code != 0 {
+		t.Fatal("prepare archive", code, diag.String())
+	}
+	c, s := sha256.Sum256(candidate), sha256.Sum256(suite)
+	verifyRequest, err := json.Marshal(map[string]string{"archive": base64.StdEncoding.EncodeToString(archive.Bytes()), "candidateSHA256": hex.EncodeToString(c[:]), "suiteSHA256": hex.EncodeToString(s[:])})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		mode    string
+		request []byte
+	}{{"export", exportRequest}, {"verify", verifyRequest}} {
+		t.Run(tc.mode, func(t *testing.T) {
+			reader, writer, err := os.Pipe()
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer writer.Close()
+			if err = reader.Close(); err != nil {
+				t.Fatal(err)
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestCLIClosedStdoutProcesses$")
+			cmd.Env = append(os.Environ(), child+"="+tc.mode)
+			cmd.Dir, cmd.Stdin, cmd.Stdout = root, bytes.NewReader(tc.request), writer
+			var diagnostic bytes.Buffer
+			cmd.Stderr = &diagnostic
+			cmd.WaitDelay = time.Second
+			err = cmd.Run()
+			if ctx.Err() != nil {
+				t.Fatal("closed stdout process deadline", ctx.Err())
+			}
+			var exit *exec.ExitError
+			if !errors.As(err, &exit) || exit.ExitCode() != 2 || diagnostic.String() != "modelqualify: invalid request or project\n" {
+				t.Fatalf("closed stdout got %v / %q; want exit2 and fixed failure diagnostic", err, diagnostic.String())
 			}
 		})
 	}

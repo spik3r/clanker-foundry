@@ -2,6 +2,8 @@ package qualification
 
 import (
 	"bytes"
+	"context"
+	"errors"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/artifactbundle"
 	"os"
 	"os/exec"
@@ -9,6 +11,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
 
 // Frozen before exporter implementation. Independently calculated canonical model
@@ -119,6 +122,22 @@ func TestReproducibilityAndTamper(t *testing.T) {
 		t.Fatal("wrong expected suite hash accepted")
 	}
 }
+
+// qualificationOutput caps only this trusted fixed-fixture test's observations.
+// It is not a resource sandbox for caller-provided programs.
+type qualificationOutput struct {
+	bytes.Buffer
+	overflow bool
+}
+
+func (w *qualificationOutput) Write(p []byte) (int, error) {
+	if len(p) > (1<<20)-w.Len() {
+		w.overflow = true
+		return 0, errors.New("qualification test output limit")
+	}
+	return w.Buffer.Write(p)
+}
+
 func TestCandidateProjectRun(t *testing.T) {
 	if runtime.Version() != compilerToolchain() {
 		t.Skip("requires actual Go 1.27.3")
@@ -131,107 +150,109 @@ func TestCandidateProjectRun(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	// The exported project must not depend on an unrelated broken Git ancestor.
 	parent := t.TempDir()
-	gitDir := filepath.Join(parent, ".git")
-	for _, name := range []string{"objects", "refs"} {
-		if e = os.MkdirAll(filepath.Join(gitDir, name), 0755); e != nil {
+	// Keep the existing ambient-VCS regression: no exported command may need
+	// the malformed unrelated ancestor's Git metadata.
+	for _, name := range []string{".git/objects", ".git/refs", "project", "home", "cache", "tmp", "gopath"} {
+		if e = os.MkdirAll(filepath.Join(parent, name), 0700); e != nil {
 			t.Fatal(e)
 		}
 	}
-	if e = os.WriteFile(filepath.Join(gitDir, "HEAD"), []byte("ref: refs/heads/main\n"), 0644); e != nil {
+	if e = os.WriteFile(filepath.Join(parent, ".git", "HEAD"), []byte("ref: refs/heads/main\n"), 0600); e != nil {
 		t.Fatal(e)
 	}
-	if e = os.WriteFile(filepath.Join(gitDir, "config"), []byte("[broken\n"), 0644); e != nil {
+	if e = os.WriteFile(filepath.Join(parent, ".git", "config"), []byte("[broken\n"), 0600); e != nil {
 		t.Fatal(e)
 	}
 	dir := filepath.Join(parent, "project")
-	if e = os.Mkdir(dir, 0755); e != nil {
+	goBinary := filepath.Join(runtime.GOROOT(), "bin", "go")
+	if !filepath.IsAbs(goBinary) {
+		t.Fatal("Go executable must be absolute")
+	}
+	env := []string{
+		"PATH=" + filepath.Dir(goBinary), "HOME=" + filepath.Join(parent, "home"),
+		"GOCACHE=" + filepath.Join(parent, "cache"), "TMPDIR=" + filepath.Join(parent, "tmp"), "GOPATH=" + filepath.Join(parent, "gopath"),
+		"GOTOOLCHAIN=local", "GOWORK=off", "GOENV=off", "GOFLAGS=", "GOPROXY=off", "GOSUMDB=off", "CGO_ENABLED=0", "LC_ALL=C", "GIT_CONFIG_NOSYSTEM=1",
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 180*time.Second)
+	defer cancel()
+	runProgram := func(t *testing.T, executable string, args []string, input string) (int, []byte, []byte) {
+		t.Helper()
+		phase, stop := context.WithTimeout(ctx, 90*time.Second)
+		defer stop()
+		cmd := exec.CommandContext(phase, executable, args...)
+		cmd.Dir, cmd.Env, cmd.Stdin = dir, env, strings.NewReader(input)
+		cmd.WaitDelay = time.Second
+		var out, diag qualificationOutput
+		cmd.Stdout, cmd.Stderr = &out, &diag
+		err := cmd.Run()
+		if phase.Err() != nil || out.overflow || diag.overflow {
+			t.Fatalf("test process deadline/output limit: %v", phase.Err())
+		}
+		if err == nil {
+			return 0, out.Bytes(), diag.Bytes()
+		}
+		var exit *exec.ExitError
+		if errors.As(err, &exit) {
+			return exit.ExitCode(), out.Bytes(), diag.Bytes()
+		}
+		t.Fatalf("test process failed to start/wait: %v", err)
+		return -1, nil, nil
+	}
+	gitBinary, e := exec.LookPath("git")
+	if e != nil {
 		t.Fatal(e)
 	}
-	git := exec.Command("git", "-C", dir, "status", "--short")
-	for _, entry := range os.Environ() {
-		if !strings.HasPrefix(entry, "GIT_") && !strings.HasPrefix(entry, "HOME=") {
-			git.Env = append(git.Env, entry)
-		}
-	}
-	git.Env = append(git.Env, "HOME="+parent, "GIT_CONFIG_NOSYSTEM=1")
-	diagnostic, err := git.CombinedOutput()
-	if err == nil || !bytes.Contains(diagnostic, []byte("bad config")) {
+	status, _, diagnostic := runProgram(t, gitBinary, []string{"status", "--short"}, "")
+	if status == 0 || !bytes.Contains(diagnostic, []byte("bad config")) {
 		t.Fatal("expected constructed ancestor config to be invalid")
 	}
 	for _, f := range files {
 		p := filepath.Join(dir, filepath.FromSlash(f.Name))
-		if e = os.MkdirAll(filepath.Dir(p), 0755); e != nil {
+		if e = os.MkdirAll(filepath.Dir(p), 0700); e != nil {
 			t.Fatal(e)
 		}
-		if e = os.WriteFile(p, f.Data, 0644); e != nil {
+		if e = os.WriteFile(p, f.Data, 0600); e != nil {
 			t.Fatal(e)
 		}
 	}
-
-	var env []string
-	for _, entry := range os.Environ() {
-		key, _, _ := strings.Cut(entry, "=")
-		switch key {
-		case "GOTOOLCHAIN", "GOWORK", "GOENV", "GOFLAGS", "GOPROXY", "GOSUMDB", "GOROOT", "GOOS", "GOARCH", "GOEXPERIMENT":
-			continue
-		}
-		env = append(env, entry)
+	status, version, _ := runProgram(t, goBinary, []string{"env", "GOVERSION"}, "")
+	if status != 0 || strings.TrimSpace(string(version)) != compilerToolchain() {
+		t.Fatal("wrong Go executable")
 	}
-	env = append(env, "GOTOOLCHAIN=local", "GOWORK=off", "GOENV=off", "GOFLAGS=", "GOPROXY=off", "GOSUMDB=off")
-	goBinary := filepath.Join(runtime.GOROOT(), "bin", "go")
-	goCmd := func(args ...string) ([]byte, error) {
-		cmd := exec.Command(goBinary, args...)
-		cmd.Dir = dir
-		cmd.Env = env
-		return cmd.CombinedOutput()
+	if status, _, _ = runProgram(t, goBinary, []string{"test", "-buildvcs=false", "./generated"}, ""); status != 0 {
+		t.Fatalf("generated structural tests exit %d", status)
 	}
-	version, e := goCmd("env", "GOVERSION")
-	if e != nil || strings.TrimSpace(string(version)) != compilerToolchain() {
-		t.Fatalf("wrong Go executable: %q %v", version, e)
-	}
-	if output, e := goCmd("test", "-buildvcs=false", "./generated"); e != nil {
-		t.Fatalf("generated structural test: %v (%d bytes)", e, len(output))
-	}
-	binary := filepath.Join(dir, "modelplay-test-bin")
-	build := func() {
+	binary := filepath.Join(parent, "modelplay-test-bin")
+	build := func(t *testing.T) {
 		t.Helper()
-		output, e := goCmd("build", "-buildvcs=false", "-o", binary, "./cmd/modelplay")
-		if e != nil {
-			t.Fatalf("build: %v (%d bytes)", e, len(output))
+		if code, _, _ := runProgram(t, goBinary, []string{"build", "-buildvcs=false", "-o", binary, "./cmd/modelplay"}, ""); code != 0 {
+			t.Fatalf("candidate build exit %d", code)
 		}
 	}
-	run := func(input string) int {
+	run := func(t *testing.T, input string) (int, []byte) {
 		t.Helper()
-		cmd := exec.Command(binary)
-		cmd.Dir = dir
-		cmd.Stdin = strings.NewReader(input)
-		cmd.Env = env
-		output, e := cmd.CombinedOutput()
-		if e == nil {
-			return 0
-		}
-		if x, ok := e.(*exec.ExitError); ok {
-			return x.ExitCode()
-		}
-		t.Fatalf("run: %v (%d bytes)", e, len(output))
-		return -1
+		code, out, _ := runProgram(t, binary, nil, input)
+		return code, out
 	}
-	build()
-	if code := run(suite); code != 0 {
+	build(t)
+	code, output := run(t, suite)
+	if code != 0 {
 		t.Fatalf("candidate suite exit %d", code)
 	}
+	assertFrozenCandidateReport(t, output)
 	wrongBinding := strings.Replace(suite, "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c", "b9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c", 1)
-	if code := run(wrongBinding); code != 2 {
-		t.Fatalf("wrong binding exit %d", code)
+	if code, out := run(t, wrongBinding); code != 2 || len(out) != 0 {
+		t.Fatalf("wrong binding exit/output %d/%d", code, len(out))
 	}
 	wrongExpected := strings.Replace(suite, "G_owner", "G_actor", 1)
-	if code := run(wrongExpected); code != 1 {
+	code, output = run(t, wrongExpected)
+	if code != 1 {
 		t.Fatalf("wrong expectation exit %d", code)
 	}
-	if code := run("{"); code != 2 {
-		t.Fatalf("malformed suite exit %d", code)
+	assertFrozenMismatchReport(t, output)
+	if code, out := run(t, "{"); code != 2 || len(out) != 0 {
+		t.Fatalf("malformed suite exit/output %d/%d", code, len(out))
 	}
 	codePath := filepath.Join(dir, "generated", "lifecycle.go")
 	original, e := os.ReadFile(codePath)
@@ -248,16 +269,30 @@ func TestCandidateProjectRun(t *testing.T) {
 				t.Fatal("mutation target not unique")
 			}
 			mutated := bytes.Replace(original, []byte(m.old), []byte(m.new), 1)
-			if e := os.WriteFile(codePath, mutated, 0644); e != nil {
+			if e := os.WriteFile(codePath, mutated, 0600); e != nil {
 				t.Fatal(e)
 			}
-			build()
-			if code := run(suite); code != 1 {
+			build(t)
+			if code, _ := run(t, suite); code != 1 {
 				t.Fatalf("mutant exit %d", code)
 			}
 		})
 	}
-
+	if e = os.WriteFile(codePath, original, 0600); e != nil {
+		t.Fatal(e)
+	}
+	build(t)
+	code, output = run(t, suite)
+	if code != 0 {
+		t.Fatalf("restored candidate suite exit %d", code)
+	}
+	assertFrozenCandidateReport(t, output)
+	for _, f := range files {
+		b, e := os.ReadFile(filepath.Join(dir, filepath.FromSlash(f.Name)))
+		if e != nil || !bytes.Equal(b, f.Data) {
+			t.Fatalf("exported payload changed: %s", f.Name)
+		}
+	}
 }
 func compilerToolchain() string { return "go1.27.3" }
 
