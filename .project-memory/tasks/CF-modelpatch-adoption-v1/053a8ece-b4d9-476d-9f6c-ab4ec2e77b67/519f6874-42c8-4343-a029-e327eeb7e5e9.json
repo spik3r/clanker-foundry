@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "519f6874-42c8-4343-a029-e327eeb7e5e9",
+  "runId": "053a8ece-b4d9-476d-9f6c-ab4ec2e77b67",
+  "kind": "checkpoint",
+  "parents": [
+    "935b3fcb-3172-43fb-a0ba-2c819460dc81"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-modelpatch-adoption-v1",
+    "path": "tasks/CF-modelpatch-adoption-v1-current-main.md",
+    "revision": "0a8b8c5ad9dd3d813d8e17e99fd21bdda60d0a68",
+    "blob": "e68864cef7a67690ca4a87af2621dd81c882af47",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "3efe4c264e75aa6a8510c4ac3e3e2e5a2967be3d691ca6158cb6e57a89e8eabc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/modelpatch-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:07:23.292Z",
+  "summary": "Exact source 7315873 passes actual Go 1.27.3 offline full race (38 tested packages), full vet, modelc validate/check, modeltrace check, format, two schema tests and repository checks. Three valid isolated stale/partial/omitted-edit mutants fail unchanged integration behavior; original and new oracle hashes preserved. Fixture author independently confirms integration and README claims. Built CLI also returns exit 3 on a real closed pipe.",
+  "next": "Await independent original-lead exact-source review, then record genuine local completion and preserve full-history bundle; publication remains ungranted",
+  "files": [
+    "modeling/lifecycle/modelpatch/types.go",
+    "modeling/lifecycle/modelpatch/oracle_test.go",
+    "modeling/lifecycle/modelpatch/apply.go",
+    "modeling/lifecycle/modelpatch/apply_test.go",
+    "modeling/lifecycle/modelpatch/decode.go",
+    "modeling/lifecycle/modelpatch/decode_test.go",
+    "modeling/lifecycle/modelpatch/README.md",
+    "modeling/lifecycle/cmd/modelpatch/main.go",
+    "modeling/lifecycle/cmd/modelpatch/main_test.go",
+    "modeling/lifecycle/modelpatch/integration_test.go",
+    "tasks/CF-modelpatch-adoption-v1-current-main.md"
+  ]
+}

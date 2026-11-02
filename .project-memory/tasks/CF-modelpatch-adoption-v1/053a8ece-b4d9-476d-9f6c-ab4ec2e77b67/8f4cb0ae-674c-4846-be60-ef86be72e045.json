@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "8f4cb0ae-674c-4846-be60-ef86be72e045",
+  "runId": "053a8ece-b4d9-476d-9f6c-ab4ec2e77b67",
+  "kind": "checkpoint",
+  "parents": [
+    "731e231d-16d9-4dce-8704-024d1b8d7835"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-modelpatch-adoption-v1",
+    "path": "tasks/CF-modelpatch-adoption-v1-current-main.md",
+    "revision": "0a8b8c5ad9dd3d813d8e17e99fd21bdda60d0a68",
+    "blob": "e68864cef7a67690ca4a87af2621dd81c882af47",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "3efe4c264e75aa6a8510c4ac3e3e2e5a2967be3d691ca6158cb6e57a89e8eabc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/modelpatch-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:03:39.918Z",
+  "summary": "Adopted pinned engine unchanged; original and independent integration tests pass actual race execution. Real closed-stdout test fails original CLI with broken pipe signal, not documented exit 3; regression frozen before repair.",
+  "next": "Ignore SIGPIPE only in command main, document integration and qualify exact current-main source",
+  "files": [
+    "modeling/lifecycle/modelpatch/types.go",
+    "modeling/lifecycle/modelpatch/oracle_test.go",
+    "modeling/lifecycle/modelpatch/apply.go",
+    "modeling/lifecycle/modelpatch/apply_test.go",
+    "modeling/lifecycle/modelpatch/decode.go",
+    "modeling/lifecycle/modelpatch/decode_test.go",
+    "modeling/lifecycle/modelpatch/README.md",
+    "modeling/lifecycle/cmd/modelpatch/main.go",
+    "modeling/lifecycle/cmd/modelpatch/main_test.go",
+    "modeling/lifecycle/modelpatch/integration_test.go",
+    "tasks/CF-modelpatch-adoption-v1-current-main.md"
+  ]
+}
