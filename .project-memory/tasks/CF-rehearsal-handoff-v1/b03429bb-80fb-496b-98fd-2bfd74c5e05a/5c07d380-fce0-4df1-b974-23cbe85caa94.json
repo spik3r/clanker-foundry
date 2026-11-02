@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "5c07d380-fce0-4df1-b974-23cbe85caa94",
+  "runId": "b03429bb-80fb-496b-98fd-2bfd74c5e05a",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-rehearsal-handoff-v1",
+    "path": "tasks/CF-rehearsal-handoff-v1-portable-evidence.md",
+    "revision": "a84f7eb4da6eefba58b6363f8d6c4c424cdd1eee",
+    "blob": "22fcaec82dcb4d11dfeec086477288c404416973",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "99ab2bdd5e71ab049792508542e7d100bf8ada08df4fcb5b261f43c14eb49948"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/rehearsal-handoff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T18:23:34.383Z",
+  "summary": "Prepare portable fixed-fixture design rehearsal handoff with separately supplied references and no execution attestation",
+  "next": "Freeze independent report identities and negative controls before implementation",
+  "files": [
+    "tasks/CF-rehearsal-handoff-v1-portable-evidence.md",
+    "modeling/lifecycle/rehearsal/run.sh",
+    "modeling/lifecycle/rehearsal/rehearsal_test.go",
+    "modeling/lifecycle/rehearsal/README.md",
+    "modeling/lifecycle/rehearsalhandoff/handoff.go",
+    "modeling/lifecycle/rehearsalhandoff/handoff_test.go",
+    "modeling/lifecycle/rehearsalhandoff/README.md",
+    "modeling/lifecycle/rehearsalhandoff/testdata/report-identities.json",
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalhandoff/main_test.go"
+  ]
+}
