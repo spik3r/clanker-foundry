@@ -327,3 +327,28 @@ func TestAllSmallValidGraphsAgainstBruteForce(t *testing.T) {
 	}
 	t.Logf("checked %d valid four-state graphs", tested)
 }
+
+func TestShortestPathSharedPrefixAndMultipleTerminals(t *testing.T) {
+	m := model.Model{Version: 1, ID: "M", Initial: "A", States: []model.State{{ID: "A", Label: "A"}, {ID: "B", Label: "B"}, {ID: "C", Label: "C"}, {ID: "D", Label: "D"}, {ID: "T", Label: "T", Terminal: true}, {ID: "U", Label: "U", Terminal: true}}, Requirements: []model.Requirement{{ID: "R", Text: "condition"}}, Guards: []model.Guard{{ID: "G", Requirement: "R", Expr: model.Expr{Kind: "op", Op: "nonempty", Args: []model.Expr{{Kind: "ref", Ref: "task.id"}}}}}}
+	edge := func(id, from, to string) model.Transition {
+		return model.Transition{ID: id, From: from, To: to, Trigger: id, Guards: []string{"G"}, Effects: []model.Effect{{Op: model.SetState}, {Op: model.IncrementRevision}}}
+	}
+	// Equal-length routes share T_A_B; their second transition decides the
+	// lexicographic tie, even though they end at different terminals.
+	m.Transitions = []model.Transition{edge("T_A_B", "A", "B"), edge("T_B_C", "B", "C"), edge("T_B_D", "B", "D"), edge("T_C_U", "C", "U"), edge("T_D_T", "D", "T")}
+	got, err := Analyze(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []string{"T_A_B", "T_B_C", "T_C_U"}
+	if !got.States[0].HasTerminalPath || got.States[0].TerminalID != "U" || !reflect.DeepEqual(got.States[0].TransitionIDs, want) {
+		t.Fatalf("shared-prefix tie: %+v", got.States[0])
+	}
+	for i, j := 0, len(m.Transitions)-1; i < j; i, j = i+1, j-1 {
+		m.Transitions[i], m.Transitions[j] = m.Transitions[j], m.Transitions[i]
+	}
+	reversed, err := Analyze(m)
+	if err != nil || !reflect.DeepEqual(got, reversed) {
+		t.Fatal("input order changed tied route", err)
+	}
+}
