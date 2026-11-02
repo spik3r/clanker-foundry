@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "4d778e8a-0553-4881-a467-fd45142a0f76",
+  "runId": "ab2f9cd3-db51-4662-a0ed-3be28a037368",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-suite-diff-v1",
+    "path": "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "revision": "1ae497612b379fa395907b25ac2106eb6746c3e5",
+    "blob": "4560391adcdc231036048b049c92510088b22e72",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "990e617ac00a07fd97421b249637c0bd57d34c9d64ec01fef7c877445fe1a4f0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-suite-diff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:08:37.225Z",
+  "summary": "Implement bounded literal suite comparison without execution",
+  "next": "Freeze independent literal oracle, implement and validate local-only frontier",
+  "files": [
+    "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "modeling/lifecycle/scenariodiff/types.go",
+    "modeling/lifecycle/scenariodiff/compare.go",
+    "modeling/lifecycle/scenariodiff/decode.go",
+    "modeling/lifecycle/scenariodiff/compare_test.go",
+    "modeling/lifecycle/scenariodiff/decode_test.go",
+    "modeling/lifecycle/scenariodiff/oracle_test.go",
+    "modeling/lifecycle/scenariodiff/README.md",
+    "modeling/lifecycle/cmd/modelscenariodiff/main.go",
+    "modeling/lifecycle/cmd/modelscenariodiff/main_test.go"
+  ]
+}
