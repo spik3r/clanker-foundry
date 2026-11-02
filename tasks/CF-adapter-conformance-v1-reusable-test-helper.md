@@ -1,6 +1,6 @@
 ---
 id: CF-adapter-conformance-v1
-status: in-progress
+status: complete
 owner: Byte adapter-conformance extraction worker
 repositories: [spik3r/clanker-foundry]
 depends_on: [CF-model-bound-runner-v1]
@@ -150,3 +150,23 @@ against every output region, regardless of field path or pointer/slice kind,
 including pointer referent sizes and full slice capacity. Keep original objects
 live during address comparison. Preserve prior completion/history, rerun both
 model proofs and independent exact-source review, and do not merge this draft.
+
+The repair passed independent exact-source review at
+9967e06e7ec471a72f57b41c41f26396875e799b, tree
+0c9ad5b543929936066dad7550aa8e54ce45e395. The five new regression cases
+were frozen at c445b3f before correction; the complete test file remains SHA-256
+48b6548d8fdf566662e62a9d7fc841a9e1ed69119fb0f14d37b306377a11935b,
+with all previous test bytes unchanged as a prefix. All-region comparison now
+rejects the original false negative on its first reached alias. An independent
+second reviewer also checked shifted empty subslices, final spare-slot pointers,
+forced GC and adjacent fresh storage without false positives.
+
+Corrected-source full offline Go race tests (36 tested packages), vet,
+modelc/modeltrace validate/check, repository validation, formatting and schema
+checks passed. The exact-source reviewer independently reran the full Go checks.
+The external proof now kills eighteen adapter mutants, including cross-field
+lists and pointer-into-list aliases for both generated models, plus the original
+two reducer mutants. Restored adapters and both frozen suites pass. All eight
+consumer fixtures remain unchanged. Previous lifecycle events and completions
+are preserved; this new completion records the reviewed repair only. Updated
+draft publication, hosted checks and any merge remain separate coordinator gates.
