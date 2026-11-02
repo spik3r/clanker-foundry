@@ -1,0 +1,61 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Prepare a fictional first-design proposal for Draft-to-Ready submission; no real use or execution is authorized.",
+  "decisions": [
+    {
+      "id": "D_scope",
+      "text": "Model only Draft to Ready via submit.",
+      "rationale": "Keep an inspectable pure lifecycle proposal, not an application."
+    },
+    {
+      "id": "D_actor",
+      "text": "Require a nonblank supplied actor.",
+      "rationale": "Represent the invented brief without claiming authentication."
+    },
+    {
+      "id": "D_owner",
+      "text": "Preserve owner, including nil, without requiring actor equality.",
+      "rationale": "The example does not assign ownership or claim permission policy."
+    },
+    {
+      "id": "D_terminal",
+      "text": "Ready is terminal in this bounded example.",
+      "rationale": "No reopening or follow-on behavior is requested."
+    },
+    {
+      "id": "D_failures",
+      "text": "Refusals preserve the task and report all failing guard IDs sorted.",
+      "rationale": "Keep refusal behavior explicit for independent expectations."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_use",
+      "text": "Who is authorized to accept this proposal for real use, and what review evidence must they see?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de",
+      "author": "Example brief author; fictional decisions, not a human approver"
+    },
+    "model": {
+      "sha256": "3e7b8c44c10940a7524161dd306d022019e8fc41e793a66a11771d6dd8621239",
+      "author": "Model proposal author, separate from literal expectation author"
+    },
+    "scenarioSuite": {
+      "sha256": "184115eead4e94d37dd369d7f07a36ed6cb84080e8a4c9f27be3dd5562e2e7dd",
+      "author": "Independent assistant fixture author; no human approval or execution claim"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de",
+    "suiteRequirements": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de",
+    "suiteModel": "3e7b8c44c10940a7524161dd306d022019e8fc41e793a66a11771d6dd8621239"
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}
