@@ -187,6 +187,9 @@ try:
         (module / 'examples/lifecycle.json').write_bytes(candidate_bytes)
         invoke('candidate generation', [tool('modelc'), 'generate'], module)
         invoke('candidate generation check', [tool('modelc'), 'check'], module)
+        generated_names = ['generated/lifecycle.go', 'generated/model_paths_test.go', 'generated/decision.svg',
+                           'generated/decision-table.json', 'generated/trace.json']
+        artifact_hashes = {name: sha((module / name).read_bytes()) for name in generated_names}
         invoke('generated structural tests', [go, 'test', '-count=1', './generated'], module)
         candidate_runner = str(bins / 'modelplay-candidate')
         invoke('build candidate runner', [go, 'build', '-o', candidate_runner, './cmd/modelplay'], module)
@@ -201,8 +204,10 @@ try:
                   'candidateBindingRefusedByBaseline': True, 'baselineBindingRefusedByCandidate': True,
                   'modelReviewRequired': True, 'suiteReviewRequired': True, 'topologyMode': 'structural-only',
                   'archiveConsistent': True, 'archiveSuiteStatus': expected['suiteStatus'],
-                  'archiveBindingStatus': expected['suiteBindingStatus']}
-        sys.stdout.buffer.write(encoded(result) + b'\n')
+                  'archiveBindingStatus': expected['suiteBindingStatus'], 'archiveSHA256': sha(archive),
+                  'generatedArtifactSHA256': artifact_hashes}
+    # Publish success only after the private directory has been cleaned up.
+    sys.stdout.buffer.write(encoded(result) + b'\n')
 except RehearsalFailure as exc:
     # Only fixed stage names are raised by this script; no caller content is echoed.
     print('rehearsal: failed at ' + str(exc), file=sys.stderr)

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -153,6 +154,28 @@ func TestDocumentedRehearsalTwiceWithoutCheckoutMutation(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[string]any{"formatVersion": "lifecycle-design-rehearsal-result/v1", "mode": "example-only", "authority": "none", "beforeModelDigest": expected.ExternalExpected.BeforeModelDigest, "candidateModelDigest": expected.ExternalExpected.CandidateModelDigest, "baselineMatched": true, "baselineSteps": float64(expected.Baseline.Steps), "candidateMatched": true, "candidateSteps": float64(expected.Candidate.Steps), "candidateBindingRefusedByBaseline": true, "baselineBindingRefusedByCandidate": true, "modelReviewRequired": true, "suiteReviewRequired": true, "topologyMode": "structural-only", "archiveConsistent": true, "archiveSuiteStatus": expected.SuiteStatus, "archiveBindingStatus": expected.SuiteBindingStatus}
+	validHash := func(v any) bool {
+		s, ok := v.(string)
+		if !ok || len(s) != 64 || strings.ToLower(s) != s {
+			return false
+		}
+		_, err := hex.DecodeString(s)
+		return err == nil
+	}
+	if !validHash(got["archiveSHA256"]) {
+		t.Fatal("archive hash missing or invalid")
+	}
+	hashes, ok := got["generatedArtifactSHA256"].(map[string]any)
+	if !ok || len(hashes) != 5 {
+		t.Fatal("generated artifact inventory missing")
+	}
+	for _, name := range []string{"generated/lifecycle.go", "generated/model_paths_test.go", "generated/decision.svg", "generated/decision-table.json", "generated/trace.json"} {
+		if !validHash(hashes[name]) {
+			t.Fatalf("invalid generated artifact hash: %s", name)
+		}
+	}
+	delete(got, "archiveSHA256")
+	delete(got, "generatedArtifactSHA256")
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("summary mismatch: got %#v want %#v", got, want)
 	}
@@ -279,5 +302,40 @@ func TestFrozenCandidateKillsCompiledOwnerGuardMutant(t *testing.T) {
 	}
 	if report.Matched || report.StepsExecuted != 1 || len(report.Entries) != 1 || !report.Entries[0].Actual.OK || report.Entries[0].Actual.TransitionID != "T_prepare" {
 		t.Fatal("wrong mutant failure")
+	}
+}
+
+func TestCleanupFailureNeverPublishesSuccess(t *testing.T) {
+	root := moduleRoot(t)
+	temp := t.TempDir()
+	inject := t.TempDir()
+	marker := filepath.Join(t.TempDir(), "cleanup-reached")
+	// Fault-inject only the outer Python demo process: perform real cleanup,
+	// record that it happened, then raise an error before success publication.
+	site := `import os, tempfile
+_original = tempfile.TemporaryDirectory.cleanup
+_marker = os.environ['REHEARSAL_TEST_CLEANUP_MARKER']
+def fail_after_cleanup(self):
+    _original(self)
+    with open(_marker, 'w', encoding='ascii') as f:
+        f.write('cleaned')
+    raise OSError('private injected cleanup failure')
+tempfile.TemporaryDirectory.cleanup = fail_after_cleanup
+`
+	if err := os.WriteFile(filepath.Join(inject, "sitecustomize.py"), []byte(site), 0600); err != nil {
+		t.Fatal(err)
+	}
+	env := cleanEnv(map[string]string{"TMPDIR": temp, "PYTHONPATH": inject, "REHEARSAL_TEST_CLEANUP_MARKER": marker, "GOTOOLCHAIN": "local", "GOPROXY": "off", "GOSUMDB": "off", "GOWORK": "off", "GOENV": "off", "GOFLAGS": "-buildvcs=false"})
+	out, diag, err := run(t, root, env, nil, "bash", filepath.Join(root, "rehearsal/run.sh"))
+	var exit *exec.ExitError
+	if !errors.As(err, &exit) || exit.ExitCode() != 1 || len(out) != 0 || string(diag) != "rehearsal: local operation failed\n" {
+		t.Fatalf("cleanup failure: err=%v stdout=%q stderr=%q", err, out, diag)
+	}
+	if string(file(t, marker)) != "cleaned" {
+		t.Fatal("cleanup fault not reached")
+	}
+	entries, e := os.ReadDir(temp)
+	if e != nil || len(entries) != 0 {
+		t.Fatalf("cleanup not completed: %v %v", entries, e)
 	}
 }

@@ -31,8 +31,10 @@ modeling/lifecycle/rehearsal/run.sh
 The script accepts no arguments or arbitrary model, command, path or program
 input. It checks the Go version, disables Go module/network resolution and
 workspace/ambient Go configuration, makes a private temporary module copy,
-invokes the fixed repository tools and removes that directory on normal exit or
-Python failure. `TMPDIR` and Go's cache may be set for the local host; sufficient
+invokes the fixed repository tools and attempts to remove that directory before
+publishing success. A cleanup failure is reported without a success receipt; an
+abrupt kill or cleanup failure can leave files behind. `TMPDIR` and Go's cache
+may be set for the local host; sufficient
 space and an already installed toolchain are required. It does not install or
 fetch dependencies, write generated files into the checkout, start workers,
 render diagrams, push Git state or deploy anything. On success it emits one
@@ -82,7 +84,10 @@ uses and should be handled accordingly.
    all six actual steps must match frozen complete task/refusal literals. The
    archive's earlier unexecuted status is not rewritten by that separate replay.
 
-The success receipt records these bounded observations, not a promotion decision.
+The success receipt also records the archive hash and all five generated artifact
+hashes. The regression test compares these hashes across two runs; equality is a
+byte-consistency observation, not authentication. The generated SVG is neither
+rendered nor visually reviewed. The receipt is not a promotion decision.
 A passing test or matching digest cannot prove that requirements are correct,
 that a human approved them, that other behavior is covered, or that the example
 represents production policy. No UML, BPMN, SysML or other standards conformance
@@ -99,7 +104,8 @@ go test -race -count=1 ./rehearsal
 
 The test invokes the actual documented script twice, requires identical complete
 receipts, checks that every module file's bytes and mode are unchanged, and checks
-temporary cleanup. It also verifies stale binding against a call-count spy and
-compiles a candidate reducer with an intentionally removed owner guard: the
+temporary cleanup, including an injected cleanup failure after real removal that
+must produce no success output. It also verifies stale binding against a call-count
+spy and compiles a candidate reducer with an intentionally removed owner guard: the
 frozen candidate suite must reject that behavioral mutant. These are bounded
 negative controls, not exhaustive proof or a substitute for independent review.
