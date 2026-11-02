@@ -214,3 +214,62 @@ The resulting status is still `caller-supplied-assertions`. Source/scenario dige
 are copied claims, not authentication. Keep real private model text and reports
 out of public artifacts. This workflow performs no browser rendering, deployment,
 worker activation or UML/SysML conformance check.
+
+## Explicit custom-model explanation (typed Go API)
+
+`ExplainWithRunner(model, report, runner)` uses an explicit concrete
+`scenarios.Runner` supplied by trusted Go composition. It never invokes the
+callback. The model's normalized canonical digest, runner binding and supplied
+report digest must match exactly. A zero runner refuses. It validates the entire
+report with `runner.EncodeReport`, then reuses the same declared-link mapper as
+`Explain`. It does not evaluate a guard, verify effects, run a suite, inspect its
+source or repair an identity.
+
+The return type is `BoundExplanation`, version
+`lifecycle-bound-scenario-explanation/v1`, with fixed fields
+`identitySource: caller-supplied-go-binding`, `mode: example-only`,
+`authority: none`, and `status: caller-supplied-assertions`. The remaining fields
+retain the original explanation meanings and entry shapes. An explicit runner
+bound to the baseline model still produces this distinct bound envelope.
+Typed `scenarios.Report` contains no wire-origin information. A fabricated,
+structurally consistent report can pass; these checks prove neither bound wire
+origin, actual replay, complete suite coverage, effects, compiled-code provenance,
+independent authorship nor review. Matching declared identities is not authentication.
+
+Validation order is explicit runner binding; complete model normalization and
+reserved guard-ID refusal; exact canonical model/runner/report identity equality;
+whole bound report encoding; existing mapping checks; complete bound output
+encoding. All failures return a zero `BoundExplanation` and fixed `ErrInvalid`.
+No partial result or callback invocation occurs. Callers must not mutate input
+model/report memory concurrently during the call. Returned collections are owned.
+
+The selected report validator remains authoritative. Bound provider validation
+rejects **every nil actual.Refusals slice**, even on success. A non-nil empty
+slice can be accepted on success. This differs deliberately from the legacy
+encoder, which can accept nil actual refusals. No nil/empty coercion is added.
+Other accepted null/empty distinctions, source digest, mismatch differences and
+unknown expected IDs are copied without promotion or reinterpretation. Guard IDs
+colliding with `INVALID_INPUT`, `ILLEGAL_TRANSITION` or `REVISION_LIMIT` refuse;
+those runtime labels are supplied assertions, not evaluated explanations.
+
+The fixed compact JSON representation with HTML escaping disabled and a final LF
+must fit the existing 8 MiB output cap before typed success. This is not a promise
+about a caller's different serializer. No arbitrary bound-result encoder, new CLI,
+wire request format or bound wire decoder is exposed. Existing `Explain`,
+`Execute`, default CLI and `scenarios.DecodeReport` keep their baseline-only
+behavior and exact bytes. No source pins or private consumer dependency change.
+
+Independent public projections for the two existing consumer models are frozen
+before the mapping extension. Pure tests construct explicitly fabricated reports
+from their unchanged suite literals; expected explanations come from separately
+authored declaration/entry fields, not explanation output. A fabricated v1 submit
+refusal covers its nonempty-actor declaration even though that suite's guest
+submission succeeds. The v2 projection preserves its distinct equality guard.
+Neither fixture claims that an asserted guard was false.
+
+The existing external consumer test separately compiles both real generated
+packages, replays both fourteen-step suites and compares explanations to those
+same frozen projections with zero additional callback calls. Original adapter and
+reducer mutation controls remain, and restored runs execute explanations for both
+models. This is finite evidence for these public examples, not private consumer
+adoption, a new process runner, sandbox, provenance service or operational gate.
