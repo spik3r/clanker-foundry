@@ -1,6 +1,6 @@
 ---
 id: CF-designchange-adoption-v1
-status: in-progress
+status: completed
 owner: Byte current-main design-change exporter adoption worker
 repositories: [spik3r/clanker-foundry]
 ---
@@ -174,3 +174,71 @@ All paths below are relative to modeling/lifecycle.
 | designchange/testdata/suite.json | 6887273ce671bf4a5e73d68f1fc3d47d706bd472 | 6656 | 53b5ceec6b68719243853dae5285c13d5c25df89cb203a16279f3cacd2f989f1 |
 | designchange/types.go | dd879b8cb3f48db9d4620ff3af475917c98d1298 | 3811 | f593a58955fe7245f0e31ab954e92de06e066776a050a21b56128c05ed1bd5f9 |
 | designchange/verify.go | 03ddd0216fe0339003277b81c02a2d4c66e62574 | 4159 | f4a36e7f909a27ff9db2c195de5db20070861d11e0ae640989e93b39a6346edb |
+
+
+## Local completion and independent qualification
+
+Reviewed source is 253c8849c5c15dd3cf3064a4cbc5538b5950ded6, tree
+b03025442317484c3ec537edcf40d21e810c79ee. The original producer lead independently
+reviewed exact source, ownership, fixture/source closure, authority language and
+claim/start/freeze chronology with no material finding. The independent oracle
+author separately reviewed unchanged expectations and passed focused race tests.
+
+Eight original mapping/types/test/fixture files remain byte-identical to the
+original final. All three frozen fixture identities above remain exact. New
+adoption_test.go stays SHA-256
+bd2fc0dc90d6ca501da891c1b27f964e4aaa8bfe3cee5439c1a57bf0cb9538c8,
+frozen at cdda86f before mapping/profile adoption 1af614f. The original archive
+test prefix remains unchanged. Its production delta is only the third-profile
+constant/allowance; docs correct the supported list. No qualifier source pin or
+source revision changed. Existing main modeling paths outside the four archive
+files are untouched.
+
+Author and lead independently passed actual Go 1.27.3 offline full race checks
+(45 tested packages), focused verbose race, vet, formatting, modelc validate/check,
+modeltrace check, schema 2/2 using existing lock-matched dependencies, repository
+and whitespace checks. Both real CLI closed-output cases failed before the repair
+at 1af614f by SIGPIPE and pass with exit 3 at reviewed source. The author's first
+modelc command incorrectly supplied a file argument; that usage failure is retained,
+not counted as a pass. Correct documented commands subsequently passed. Optional
+skills-ref is absent. The wrong-toolchain-only qualifier negative is skipped under
+required Go 1.27.3; no unsupported-toolchain run is claimed.
+
+Author and lead separately ran the documented carrier build/verify recipe twice,
+changing only its output destination to owned scratch. The archive is deterministic:
+137626 bytes, SHA-256 d7cffd252c57f0854257b8cfe019b88a482f2482110473343ef000cabb868c91.
+It contains seven outer payloads plus manifest and seventeen nested payloads plus
+manifest. Both independently invoked the nested project's generated structural
+tests and modelplay commands. The complete four-case/six-step report matches the
+pre-existing independently frozen qualification literal; every materialized payload
+remains unchanged. These are separately observed fixed test invocations, not an
+export or verifier execution claim. The consistency receipt still says authority
+none, suite unvalidated and unexecuted, binding not inspected.
+
+The existing qualification test also passed actual candidate-module build/replay,
+wrong binding/malformed suite/mismatch controls, both compiling reducer mutants
+and restored replay. Separately author-run designchange overlay mutants compiled
+and were behaviorally rejected for omitting external request identity, omitting
+canonical rebuild equality and rewriting the suite. Overlays never changed
+maintained bytes; unmutated tests passed afterward. Author-only built-binary
+checks rejected an actual old nine-source project with exit 2 and empty stdout,
+verified the current project, and returned exit 3 for both real closed-output modes.
+These extra controls are not attributed to the independent lead.
+
+During final refresh public main advanced to
+31b6df4c3fa7e97ae4ad7b51e1243ee6e764c760 through the independently reviewed public
+validation-timing fix. The coordinator confirmed ordinary incorporation was
+permitted. Merge 51e084f99314943b759a92d447aae8067663799a, tree
+c1a2d723eeb3d17515f8e7777dda0c1da65a1f64, preserves both original histories. The
+lead independently confirmed every modeling byte is unchanged from reviewed
+source, with only six upstream runtime/task/event files incorporated. This is not
+new timing-source review or publication by this task. On that exact union the
+author reran full 45-package race, vet, drift, schema 2/2 and repository checks,
+plus the 22 runtime state regression tests, all passing. No timing source was edited.
+
+Final metadata-only continuity and committed Project Memory validation against
+31b6df4 follow this genuine completion. Preserve a verified complete-history bundle
+for the coordinator's publication decision. No original held design-change task,
+events or ancestors were imported; only fresh adoption and already-public main
+history are included. Held reviewpack visual/completion and private restrictions
+remain unchanged; no browser, deployment, worker or product runner was activated.
