@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "224a8c08-342e-4e05-86a2-b5f22948dc18",
+  "runId": "0389f31a-a29e-442d-bd06-58b7cbad2b61",
+  "kind": "checkpoint",
+  "parents": [
+    "530e9623-a162-4cab-9df6-4083450e93e7"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-topology-v1",
+    "path": "tasks/CF-model-topology-v1-structural-review.md",
+    "revision": "a1b84cb47f260e87878ee51e0cb1379f33d98d29",
+    "blob": "9c60e779905637048a1ad4efba9cc9b42cfc70e6",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "9aa4afd151d48babdc96f94aa4d490ddd20a9bac18b57f48eb4d417d4d332b7b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-topology-exact-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:10:14.043Z",
+  "summary": "Exact-main candidate e217b06 passed focused and full Go 1.27.3 race tests, vet, modelc/modeltrace, repository validator, CLI example and whitespace; 1650 same-author graphs and compiling tie/cycle mutants were checked",
+  "next": "Finish independent exact-source review, address findings, complete lifecycle and validate committed diff; no publication",
+  "files": [
+    "tasks/CF-model-topology-v1-structural-review.md",
+    "modeling/lifecycle/topology/analysis.go",
+    "modeling/lifecycle/topology/analysis_test.go",
+    "modeling/lifecycle/topology/README.md",
+    "modeling/lifecycle/cmd/modeltopology/main.go",
+    "modeling/lifecycle/cmd/modeltopology/main_test.go"
+  ]
+}
