@@ -267,3 +267,42 @@ func TestReorderedModelAndLateFailure(t *testing.T) {
 		t.Fatal("late invalid entry returned inventory")
 	}
 }
+
+// Full, literal inventory for the pre-existing frozen fixture. This expansion
+// was added after independent review identified unasserted transitions; it was
+// not independently authored. Empty lists are intentional assertions too.
+func TestFrozenFixtureFullTransitionAndGuardInventory(t *testing.T) {
+	raw, report := sample(t)
+	m, err := jsonformat.Decode(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := Analyze(m, report)
+	if err != nil {
+		t.Fatal(err)
+	}
+	refs := func(values ...string) []Reference {
+		out := []Reference{}
+		for i := 0; i < len(values); i += 2 {
+			out = append(out, Reference{CaseID: values[i], StepID: values[i+1]})
+		}
+		return out
+	}
+	guard := func(id string, values ...string) Guard { return Guard{ID: id, Refusals: refs(values...)} }
+	want := []Transition{
+		{ID: "T_approve", Successes: refs("happy", "approve", "rework_and_replay", "fresh_approval"), RevisionLimit: refs(), Guards: []Guard{
+			guard("G_acceptance"), guard("G_approved"), guard("G_independent"), guard("G_outcome"), guard("G_owner"), guard("G_reviewActor"),
+			guard("G_reviewContent", "rework_and_replay", "stale_review_fresh_command", "rework_and_replay", "replayed_entire_command", "same_revision_content_mismatch", "old_content_review"),
+			guard("G_reviewModel"), guard("G_reviewRevision", "rework_and_replay", "stale_review_fresh_command", "rework_and_replay", "replayed_entire_command"), guard("G_reviewTask"), guard("G_reviewer"), guard("G_revision", "rework_and_replay", "replayed_entire_command"),
+		}},
+		{ID: "T_prepare", Successes: refs("happy", "prepare"), RevisionLimit: refs(), Guards: []Guard{guard("G_acceptance"), guard("G_outcome"), guard("G_revision")}},
+		{ID: "T_requestChanges", Successes: refs("rework_and_replay", "changes"), RevisionLimit: refs(), Guards: []Guard{
+			guard("G_acceptance"), guard("G_changesRequested"), guard("G_independent"), guard("G_outcome"), guard("G_owner"), guard("G_reviewActor"), guard("G_reviewContent"), guard("G_reviewModel"), guard("G_reviewRevision"), guard("G_reviewTask"), guard("G_reviewer"), guard("G_revision"),
+		}},
+		{ID: "T_requestReview", Successes: refs("happy", "submit", "rework_and_replay", "resubmit"), RevisionLimit: refs(), Guards: []Guard{guard("G_acceptance"), guard("G_outcome"), guard("G_owner"), guard("G_ownerActor"), guard("G_revision")}},
+		{ID: "T_start", Successes: refs("happy", "start", "refusal_then_success", "start_after_both_refusals"), RevisionLimit: refs(), Guards: []Guard{guard("G_acceptance"), guard("G_actor", "refusal_then_success", "blank_actor"), guard("G_outcome"), guard("G_ownerCompatible"), guard("G_revision")}},
+	}
+	if !reflect.DeepEqual(got.Transitions, want) {
+		t.Fatalf("full transition inventory differs\ngot: %#v\nwant: %#v", got.Transitions, want)
+	}
+}
