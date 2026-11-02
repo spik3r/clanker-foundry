@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "b5f9ae15-e408-49de-b6ef-ef9d31586750",
+  "runId": "ab2f9cd3-db51-4662-a0ed-3be28a037368",
+  "kind": "checkpoint",
+  "parents": [
+    "541b5b43-0aa0-49d8-90af-bcecd0252d21"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-suite-diff-v1",
+    "path": "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "revision": "1ae497612b379fa395907b25ac2106eb6746c3e5",
+    "blob": "4560391adcdc231036048b049c92510088b22e72",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "990e617ac00a07fd97421b249637c0bd57d34c9d64ec01fef7c877445fe1a4f0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-suite-diff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:18:04.880Z",
+  "summary": "Independent 28-vector oracle frozen before Compare; focused package/CLI tests pass, repository validator and 143 Project Memory regressions pass",
+  "next": "Finish full offline race/vet/generated checks, independent mutants and exact-source review before local completion",
+  "files": [
+    "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "modeling/lifecycle/scenariodiff/types.go",
+    "modeling/lifecycle/scenariodiff/compare.go",
+    "modeling/lifecycle/scenariodiff/decode.go",
+    "modeling/lifecycle/scenariodiff/compare_test.go",
+    "modeling/lifecycle/scenariodiff/decode_test.go",
+    "modeling/lifecycle/scenariodiff/oracle_test.go",
+    "modeling/lifecycle/scenariodiff/README.md",
+    "modeling/lifecycle/cmd/modelscenariodiff/main.go",
+    "modeling/lifecycle/cmd/modelscenariodiff/main_test.go"
+  ]
+}
