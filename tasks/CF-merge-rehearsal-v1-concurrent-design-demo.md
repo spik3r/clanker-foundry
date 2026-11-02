@@ -1,6 +1,6 @@
 ---
 id: CF-merge-rehearsal-v1
-status: in-progress
+status: review
 owner: Codex concurrent-design rehearsal contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -75,3 +75,50 @@ vet, compiler/trace drift checks, repository validator, shell checks, whitespace
 checks and full committed-diff Project Memory validation. Preserve unavailable or
 failed checks as such. Independent exact-source review precedes draft publication;
 verify the remote head and exact-head CI. No completion or test pass is yet claimed.
+
+## Implementation result and independent review
+
+The claim was committed at `6025b3d8d963b58aee4a48b9279e358bc3475bd1`, then
+registered and genuinely started in `b5ade3bfdf1e65564fa4bbec0c8372faccef18ff`.
+An independent assistant authored all thirteen fixture files without observing
+merger, compiler or runner outputs. The full oracle was frozen in `f7de685` before
+implementation. Its unchanged SHA-256 is
+`8ae4be53b0ee172073e6e36d9c21f3dbb0e6a39b50e8729d23a85e2669acac4e`.
+It contains six complete merge reports, four complete nine-step replay reports,
+two complete guard-mutant mismatch reports and one wrong-expectation mismatch.
+
+Reviewed implementation source is `38df891cd59663f236424bf57e651e97479e290b`.
+Both successful merger orientations actually generate, compile and replay the
+returned candidate. Four independently specified model versions each replay
+seven cases/nine steps. Both conflict orientations and both invalid combinations
+stop before generation/replay. Each guard-removal mutant compiles and fails at
+its separately predicted witness; the restored original passes. The wrong
+expectation stays a fail-fast mismatch without changing either frozen suite.
+
+A separate source reviewer independently checked oracle identities and literals,
+reviewed the exact implementation, and reran all three focused race tests in
+21.712 seconds with no material finding. Tests include repeated actual commands,
+all twelve stale binding pairs with zero callbacks, preserved source bytes/modes,
+failure/short-circuit controls and cleanup failure after real removal. All frozen
+fixtures and all pre-existing base paths remain byte-preserved. These checks do
+not authenticate human authorship or prove requirements correct.
+
+Local observed validation on unchanged reviewed implementation:
+- Installed Go 1.27.3 offline serial `go test -p 1 -race -count=1 ./...`: all
+  61 tested packages pass, with one additional package having no test files.
+- Full serial `go vet -p 1 ./...`, modelc validate/check, modeltrace check and
+  gofmt pass. Native compiler/trace checks report no writes or drift.
+- Repository validator, Bash syntax, ShellCheck, Python syntax without cache
+  writes, installer/model-resolver regressions and all 143 Project Memory tests
+  pass. Optional skills-ref is unavailable; no pass is claimed for it.
+- The first aggregate run lost its command handle during the session reset;
+  its final exit status is unavailable and it is not counted as passing. A fresh
+  logged full aggregate run exited zero. No tests or expected values changed.
+
+During validation main advanced through PR 46 to
+`4aac7418a15c3b25f8cc4863e8fe208242d6926b`; its additive paths are disjoint.
+The branch preserves its reviewed history without merging or rewriting another
+lane. Fresh committed lifecycle validation and exact remote/hosted qualification
+are the next publication checks. Implementation is ready for draft review, not
+integrated, approved or deployed. This claim reserves no further implementation
+edits; its own task/evidence and publication handoff remain accountable here.
