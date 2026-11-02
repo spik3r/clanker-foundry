@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "4aca7f5e-bdb0-464c-b1c3-5cfad9a6710c",
+  "runId": "0dd67226-8e98-404e-a04c-b1399f1a6d37",
+  "kind": "checkpoint",
+  "parents": [
+    "6af4a2a6-ba4f-4664-bc91-1d52633e5e19"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-input-parity-v1",
+    "path": "tasks/CF-provider-input-parity-v1-transport.md",
+    "revision": "b9bd51d763a20d30ba01cce4813a01f95a530506",
+    "blob": "25b6d8a896d21d4244c18ef063da6fb074b4bf2b",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "e23ebc98b35c17c9fcb0bb846a8e818a9f30765975d6f02bd0bd447d52bb714a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-input-parity-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T06:30:45.129Z",
+  "summary": "Independent pre-implementation oracle handoff verified: oracle SHA-256 f9cb0ec7eddf6d3ad1aaed632acb7896e3fd744441c471da78aad38a68d2b3d9, freeze record SHA-256 c52bd68b24ecd93a4ac2115be2911ee31e5ee4d6695fc55c26d9b331e6dadb7c; four literal byte hashes checked against handoff and baseline source blobs matched",
+  "next": "Transcribe frozen cases into claimed fake-only test and write portability guide; preserve oracle identities and seek independent review",
+  "files": [
+    "tasks/CF-provider-input-parity-v1-transport.md",
+    "runtime/test/provider-input-parity.test.mjs",
+    "docs/agent-context-portability.md"
+  ]
+}
