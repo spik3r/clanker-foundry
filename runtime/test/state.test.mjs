@@ -217,6 +217,94 @@ test('validation deadline does not slide with evidence, and worker lifecycle com
   assert.equal(h.execution.state, 'RETRY_WAIT');
 });
 
+test('validation freshness permits independently timed receipts after another check', () => {
+  for (const observed of [[4_000, 5_000], [5_000, 4_000]]) {
+    const spec = specFor();
+    spec.acceptance_checks = ['pack-validation', 'second-check'];
+    const h = harness(spec);
+    assign(h, 'worker-1', later(1_000)); acknowledge(h, later(2_000)); succeeded(h, later(3_000));
+    const deadline = h.execution.validation_deadline;
+    const receipts = [
+      evidence(h, {}, later(observed[0])),
+      evidence(h, { check_id: 'second-check' }, later(observed[1])),
+    ];
+    const registered = { ...checker, trusted_checks: [...trustedChecks,
+      { check_id: 'second-check', check_version: '1', runner_id: 'checker' }] };
+    h.send('RECORD_VALIDATION', { evidence: receipts[0] }, registered, later(6_000));
+    assert.equal(h.execution.validation_deadline, deadline);
+    h.send('RECORD_VALIDATION', { evidence: receipts[1] }, registered, later(7_000));
+    assert.deepEqual(h.execution.validations, receipts);
+    assert.equal(h.execution.validation_deadline, deadline);
+    assert.equal(h.execution.updated_at, later(7_000));
+    rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: receipts[0] }, registered, later(8_000)), 'DUPLICATE_EVIDENCE');
+
+    let replay = null;
+    for (const entry of h.transcript) {
+      if (entry.error) rejectsCode(() => evaluate(replay, entry.command, entry.context), entry.error);
+      else {
+        const answer = evaluate(replay, entry.command, entry.context);
+        assert.deepEqual(answer, entry.answer);
+        replay = answer.execution;
+      }
+    }
+    assert.deepEqual(replay, h.execution);
+  }
+});
+
+test('validation freshness survives an intervening approval without weakening bindings', () => {
+  const h = harness();
+  assign(h, 'worker-1', later(1_000)); acknowledge(h, later(2_000)); succeeded(h, later(3_000));
+  const deadline = h.execution.validation_deadline;
+  const receipt = evidence(h, {}, later(5_000));
+  h.send('RECORD_APPROVAL', { approval: approval(h) }, owner, later(6_000));
+  assert.equal(h.execution.validation_deadline, deadline);
+  for (const [changes, code] of [
+    [{ attempt_id: 'old-attempt' }, 'SUBJECT_MISMATCH'],
+    [{ subject_digest: 'b'.repeat(64) }, 'SUBJECT_MISMATCH'],
+    [{ spec_digest: 'c'.repeat(64) }, 'SUBJECT_MISMATCH'],
+    [{ repository_revision: 'd'.repeat(40) }, 'SUBJECT_MISMATCH'],
+    [{ workflow_id: 'other-workflow' }, 'SUBJECT_MISMATCH'],
+  ]) rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: { ...receipt, ...changes } }, checker, later(7_000)), code);
+  rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: receipt }, { ...checker, trusted_checks: [] }, later(7_000)), 'UNTRUSTED_CHECK');
+  h.send('RECORD_VALIDATION', { evidence: receipt }, checker, later(7_000));
+  assert.deepEqual(h.execution.validations, [receipt]);
+  assert.equal(h.execution.approvals.length, 1);
+  assert.equal(h.execution.validation_deadline, deadline);
+  accept(h, later(8_000));
+  assert.equal(h.execution.state, 'COMPLETED');
+});
+
+test('validation freshness includes exact SUBMIT and command-time boundaries', () => {
+  for (const observedAt of [later(3_000), later(7_000)]) {
+    const h = harness();
+    assign(h, 'worker-1', later(1_000)); acknowledge(h, later(2_000)); succeeded(h, later(3_000));
+    const deadline = h.execution.validation_deadline;
+    h.send('RECORD_APPROVAL', { approval: approval(h) }, owner, later(6_000));
+    const receipt = evidence(h, {}, observedAt);
+    h.send('RECORD_VALIDATION', { evidence: receipt }, checker, later(7_000));
+    assert.deepEqual(h.execution.validations, [receipt]);
+    assert.equal(h.execution.validation_deadline, deadline);
+  }
+});
+
+test('validation freshness rejects pre-SUBMIT, future, regressing and expired commands', () => {
+  const h = harness();
+  assign(h, 'worker-1', later(1_000)); acknowledge(h, later(2_000)); succeeded(h, later(3_000));
+  const deadline = h.execution.validation_deadline;
+  h.send('RECORD_APPROVAL', { approval: approval(h) }, owner, later(6_000));
+  for (const observedAt of [later(2_999), later(7_001)]) {
+    rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: evidence(h, {}, observedAt) }, checker, later(7_000)), 'INVALID_EVIDENCE_TIME');
+  }
+  const receipt = evidence(h, {}, later(5_000));
+  rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: receipt }, checker, later(5_999)), 'TIME_REGRESSION');
+  rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: receipt }, checker, deadline), 'ATTEMPT_EXPIRED');
+  rejectsCode(() => h.send('RECORD_VALIDATION', { evidence: receipt }, checker, later(63_001)), 'ATTEMPT_EXPIRED');
+  assert.deepEqual(h.execution.validations, []);
+  assert.equal(h.execution.validation_deadline, deadline);
+  h.send('RECORD_VALIDATION', { evidence: receipt }, checker, later(62_999));
+  assert.equal(h.execution.validation_deadline, deadline);
+});
+
 test('review cannot reuse builder and rework exhaustion blocks owner decisions', () => {
   const spec = specFor(['builder-developer', 'reviewer-verifier']);
   const h = harness(spec);
