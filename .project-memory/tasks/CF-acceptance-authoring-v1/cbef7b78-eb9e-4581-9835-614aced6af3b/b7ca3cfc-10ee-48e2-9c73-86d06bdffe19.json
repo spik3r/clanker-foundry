@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "b7ca3cfc-10ee-48e2-9c73-86d06bdffe19",
+  "runId": "cbef7b78-eb9e-4581-9835-614aced6af3b",
+  "kind": "start",
+  "parents": [
+    "8c275dde-a7fc-4529-bc52-64299933638c"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-acceptance-authoring-v1",
+    "path": "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+    "revision": "429fb6416a9fd55590fe2db754668d767b87daa5",
+    "blob": "590d45c49a4b485928ce406c56d193844262a579",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cfbfc946e1731c09981d5448650195a7da536db29b7d681cba9e3520832827fa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/acceptance-authoring-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/18",
+  "at": "2026-11-01T21:09:57.660Z",
+  "summary": "Address independent review: preserve Unicode recipe output on ASCII locales while keeping exact UTF-8 artifact bytes",
+  "next": "Extend recipe regression and retest; obtain review of new head",
+  "files": [
+    "tasks/CF-acceptance-authoring-v1-frozen-suites.md",
+    "modeling/lifecycle/acceptanceauthor/author.go",
+    "modeling/lifecycle/acceptanceauthor/author_test.go",
+    "modeling/lifecycle/acceptanceauthor/README.md",
+    "modeling/lifecycle/acceptanceauthor/testdata/suite.json",
+    "modeling/lifecycle/acceptanceauthor/testdata/manifest.json",
+    "modeling/lifecycle/acceptanceauthor/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelacceptance/main.go",
+    "modeling/lifecycle/cmd/modelacceptance/main_test.go"
+  ]
+}

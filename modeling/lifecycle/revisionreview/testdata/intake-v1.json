@@ -1,0 +1,41 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Prepare a valid draft with an optional actor.",
+  "decisions": [
+    {
+      "id": "D_actor",
+      "text": "Permit a blank actor.",
+      "rationale": "Illustrate the tutorial behavior revision."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_case_link",
+      "text": "Which independently executed case should be linked in the requirements trace?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "5b8161cab626cc0b9bd0d56ca44b18158364b5b2724ba0dfaacd134bc90e8cc7",
+      "author": "Invented unverified author"
+    },
+    "model": {
+      "sha256": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8",
+      "author": "Invented unverified author"
+    },
+    "scenarioSuite": {
+      "sha256": "2031108ec41558c01ae70e80b4e580f8af391213d4bb3db5e14ec2e080e3e2d8",
+      "author": "Invented unverified author"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "5b8161cab626cc0b9bd0d56ca44b18158364b5b2724ba0dfaacd134bc90e8cc7",
+    "suiteRequirements": "5b8161cab626cc0b9bd0d56ca44b18158364b5b2724ba0dfaacd134bc90e8cc7",
+    "suiteModel": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8"
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}

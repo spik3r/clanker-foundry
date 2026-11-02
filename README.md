@@ -3,6 +3,24 @@
 A small, modular engineering skill pack using the open Agent Skills `SKILL.md` format,
 plus the templates, workflows, and checklists that support it.
 
+## The model-driven pipeline
+
+Clanker Foundry is also developing a model-driven way to build software: use AI
+and people to clarify the intent, review an explicit model of the rules, then
+use repeatable tools to derive code and views and check them against independently
+written expectations. The model here is a structured design, not the AI itself.
+
+**Start with [the plain-language pipeline guide](docs/model-driven-pipeline.md).**
+It explains the ideal outcome, reasons for the approach, key concepts and a
+workshop analogy, with diagrams separating human, AI and non-AI tooling roles.
+It keeps the working lifecycle example distinct from future plans.
+Deterministic generation makes results reproducible; it does not make them correct.
+
+For the runnable example, see the [lifecycle demo](modeling/lifecycle/README.md)
+and [step-by-step revision tutorial](modeling/lifecycle/tutorial/README.md).
+The skill pack and installation instructions below remain usable on their own;
+the example does not replace the separate orchestration runtime.
+
 ## Repository layout
 
 | Path | Contents |
@@ -14,6 +32,7 @@ plus the templates, workflows, and checklists that support it.
 | `checklists/` | Verification lists: `security.md`, `code-review.md` |
 | `docs/` | Framework and external-skill guidance |
 | `runtime/` | Optional single-host deterministic orchestration pilot with supervised read-only workers |
+| `modeling/lifecycle/` | Isolated model-to-Go example, generated views, independent acceptance checks and revision tutorial |
 | `scripts/stow.sh` | Stows skills, subagents, workflows, templates, checklists, and global instructions |
 | `global-agents/` | Tracked machine-wide `AGENTS.md`, setup guide, and tool wiring |
 | `AGENTS.md` | Repo instructions and conventions — the source of truth for agents (`CLAUDE.md` and `GEMINI.md` point at it) |

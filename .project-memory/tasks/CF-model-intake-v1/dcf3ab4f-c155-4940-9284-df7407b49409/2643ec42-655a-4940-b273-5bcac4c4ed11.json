@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "2643ec42-655a-4940-b273-5bcac4c4ed11",
+  "runId": "dcf3ab4f-c155-4940-9284-df7407b49409",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-intake-v1",
+    "path": "tasks/CF-model-intake-v1-design-handoff.md",
+    "revision": "6a677e7b871faa0b5692ea3150cc0fcf615a7280",
+    "blob": "c5da63c34bda5e475f6665448d1df15e4804e994",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8d0bcda3b87743a7c34e0b86f784f43c49b0ba138f7e5da154e01bc8f9831ec1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-intake-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T20:34:16.019Z",
+  "summary": "Implement bounded upstream intent and declared artifact identity handoff",
+  "next": "Implement strict record, identity comparison, CLI and tests",
+  "files": [
+    "tasks/CF-model-intake-v1-design-handoff.md",
+    "modeling/lifecycle/intake/intake.go",
+    "modeling/lifecycle/intake/intake_test.go",
+    "modeling/lifecycle/intake/README.md",
+    "modeling/lifecycle/cmd/modelintake/main.go",
+    "modeling/lifecycle/cmd/modelintake/main_test.go"
+  ]
+}

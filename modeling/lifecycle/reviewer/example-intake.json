@@ -1,0 +1,47 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Illustrate review of input rejection and revision advancement in the lifecycle example.",
+  "decisions": [
+    {
+      "id": "D_input_boundary",
+      "text": "Consider malformed task and command input before lifecycle rules.",
+      "rationale": "A reviewer needs to see the input boundary as well as the state model."
+    },
+    {
+      "id": "D_revision",
+      "text": "Consider exactly one revision increment on each accepted command.",
+      "rationale": "Revision advancement is part of the example's intended behavior."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_input_evidence",
+      "text": "Which independently executed cases establish the input-boundary behavior for this exact model and adapter?"
+    },
+    {
+      "id": "Q_revision_evidence",
+      "text": "Which case should be explicitly linked to revision advancement?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "8f50fa3dbaf95ce1a5530a8256ecb42572ab96bb2ebb475177b1d07d446040d3",
+      "author": "Invented requirements author"
+    },
+    "model": {
+      "sha256": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8",
+      "author": "Invented model author"
+    },
+    "scenarioSuite": null
+  },
+  "dependencies": {
+    "modelRequirements": "8f50fa3dbaf95ce1a5530a8256ecb42572ab96bb2ebb475177b1d07d446040d3",
+    "suiteRequirements": null,
+    "suiteModel": null
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}

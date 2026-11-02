@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "0b528a09-c7fb-4776-997c-36473bcce68a",
+  "runId": "3464c196-4b66-46f4-9228-83ed67990349",
+  "kind": "complete",
+  "parents": [
+    "8c7a2ce0-6d53-47da-9a9d-a714a96713f8"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-adapter-conformance-v1",
+    "path": "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "revision": "30b46cacadd5e0713ad5e1f983d1991ff71c1ed6",
+    "blob": "3b18cc7745c182fcce9d1dd549e932870f54aa9c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5833e5b1aade6876fabffc9ab109527c13d04262a8f9a8f8fff5452d6499a87e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/adapter-conformance-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/29",
+  "at": "2026-11-02T00:27:22.104Z",
+  "summary": "Closed independent PR29 cross-field ownership finding with all input/output mutable-region comparison and live-root retention; preserved all frozen evidence and prior lifecycle history.",
+  "next": "Verify final metadata/lifecycle continuity; hand verified full-history bundle to authorized publisher for PR29 update, then reviewer checks exact remote head/current-main/CI. No merge by this worker.",
+  "files": [
+    "tasks/CF-adapter-conformance-v1-reusable-test-helper.md",
+    "modeling/lifecycle/adapterconformance/README.md",
+    "modeling/lifecycle/adapterconformance/conformance.go",
+    "modeling/lifecycle/adapterconformance/conformance_test.go",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt"
+  ],
+  "validation": "Independent exact-source GO at9967e06. Five pre-fix regressions now PASS; original false-negative probe rejects first alias. Separate shifted-empty, spare-slot-pointer, forced-GC and adjacent-fresh-storage controls PASS. Pinned offline full race36 tested packages, full vet, modelc/modeltrace validate/check, schema2 and repository/format checks PASS; reviewer reran full Go checks. Eighteen actual adapter mutants plus two original reducer mutants behaviorally killed across both generated models, with restored conformance and frozen suites PASS. Earlier test bytes remain prefix; all eight consumer fixtures unchanged.",
+  "snapshot": {
+    "tasks/CF-adapter-conformance-v1-reusable-test-helper.md": {
+      "blob": "03a4281032c5acac2f1c2ad0fc8f39f51c36406e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/adapterconformance/README.md": {
+      "blob": "753b092bbb10f4f92fa44108df60acd341b5e399",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/adapterconformance/conformance.go": {
+      "blob": "acf48dcf034514d5bbbf94029fb218a445674f6f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/adapterconformance/conformance_test.go": {
+      "blob": "852781ccf0a20c14775f91bb6c1096972a2c6dc0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/README.md": {
+      "blob": "e97893491389dd78e71e8cb48a412d592b3f4471",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/consumer_test.go": {
+      "blob": "db5710522633eb393b93657dcbf6e40bed1abc65",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt": {
+      "blob": "7282a96212c959fd733262a4d0a3eed63a3108e3",
+      "mode": "100644"
+    }
+  }
+}

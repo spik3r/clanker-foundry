@@ -1,0 +1,173 @@
+{
+  "formatVersion": "lifecycle-requirements-json/v1",
+  "modelId": "TaskLifecycleExample",
+  "acceptanceCatalog": "lifecycle-semantic-oracle-v2",
+  "requirements": [
+    {
+      "id": "UR-001",
+      "title": "Ordered path to done",
+      "statement": "A task reaches Done only by being prepared, started, sent for review and approved, in that order.",
+      "modelLinks": [
+        { "kind": "state", "id": "Draft" },
+        { "kind": "state", "id": "Ready" },
+        { "kind": "state", "id": "InProgress" },
+        { "kind": "state", "id": "InReview" },
+        { "kind": "state", "id": "Done" },
+        { "kind": "transition", "id": "T_prepare" },
+        { "kind": "transition", "id": "T_start" },
+        { "kind": "transition", "id": "T_requestReview" },
+        { "kind": "transition", "id": "T_approve" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "sequences-01" },
+        { "caseId": "refusals-14" }
+      ]
+    },
+    {
+      "id": "UR-002",
+      "title": "Done is final",
+      "statement": "A task in Done accepts no further lifecycle commands.",
+      "modelLinks": [
+        { "kind": "state", "id": "Done" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "refusals-15" }
+      ]
+    },
+    {
+      "id": "UR-003",
+      "title": "Commands use the current revision",
+      "statement": "A command written against an older revision of the task is refused.",
+      "modelLinks": [
+        { "kind": "guard", "id": "G_revision" },
+        { "kind": "modelRequirement", "id": "R_revision" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "stale-command" }
+      ]
+    },
+    {
+      "id": "UR-004",
+      "title": "Work is defined before it is prepared",
+      "statement": "Work is prepared only once a nonblank outcome and at least one acceptance criterion are recorded; it does not need an owner yet.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_prepare" },
+        { "kind": "guard", "id": "G_outcome" },
+        { "kind": "guard", "id": "G_acceptance" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "refusals-02" },
+        { "caseId": "refusals-03" },
+        { "caseId": "special-01" }
+      ]
+    },
+    {
+      "id": "UR-005",
+      "title": "Starting names the worker without a takeover",
+      "statement": "Starting work names who is doing it. It assigns that person only if the task has no owner and never takes over another owner's task.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_start" },
+        { "kind": "guard", "id": "G_actor" },
+        { "kind": "guard", "id": "G_ownerCompatible" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "start-assigns" },
+        { "caseId": "assigned-wrong-actor" },
+        { "caseId": "refusals-16" }
+      ]
+    },
+    {
+      "id": "UR-006",
+      "title": "The owner requests review",
+      "statement": "Only the task's owner can send it for review.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_requestReview" },
+        { "kind": "guard", "id": "G_owner" },
+        { "kind": "guard", "id": "G_ownerActor" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "refusals-05" },
+        { "caseId": "refusals-17" }
+      ]
+    },
+    {
+      "id": "UR-007",
+      "title": "Independent, explicit review decision",
+      "statement": "A review decision comes from a named reviewer who is not the owner, is made by that reviewer, and states the decision explicitly.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_approve" },
+        { "kind": "guard", "id": "G_reviewer" },
+        { "kind": "guard", "id": "G_independent" },
+        { "kind": "guard", "id": "G_reviewActor" },
+        { "kind": "guard", "id": "G_approved" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "refusals-06" },
+        { "caseId": "refusals-10" },
+        { "caseId": "refusals-11" },
+        { "caseId": "refusals-12" }
+      ]
+    },
+    {
+      "id": "UR-008",
+      "title": "A review applies to what was reviewed",
+      "statement": "A review counts only for the task, revision, content and model version it was given for.",
+      "modelLinks": [
+        { "kind": "guard", "id": "G_reviewTask" },
+        { "kind": "guard", "id": "G_reviewRevision" },
+        { "kind": "guard", "id": "G_reviewContent" },
+        { "kind": "guard", "id": "G_reviewModel" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "refusals-07" },
+        { "caseId": "refusals-08" },
+        { "caseId": "refusals-09" }
+      ]
+    },
+    {
+      "id": "UR-009",
+      "title": "Rework needs a fresh review",
+      "statement": "A reviewer can send work back for changes; the reworked task needs a fresh review before it can be approved.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_requestChanges" },
+        { "kind": "guard", "id": "G_changesRequested" }
+      ],
+      "acceptanceLinks": [
+        { "caseId": "sequences-02" },
+        { "caseId": "refusals-13" }
+      ]
+    },
+    {
+      "id": "UR-010",
+      "title": "Malformed input is rejected first",
+      "statement": "Malformed task or command input is rejected before any lifecycle rule is applied.",
+      "modelLinks": [],
+      "acceptanceLinks": [
+        { "caseId": "special-03" },
+        { "caseId": "special-04" }
+      ]
+    },
+    {
+      "id": "UR-011",
+      "title": "Revision never wraps around",
+      "statement": "A command that would push the revision past its maximum is refused instead of wrapping around.",
+      "modelLinks": [],
+      "acceptanceLinks": [
+        { "caseId": "maximum-revision" }
+      ]
+    },
+    {
+      "id": "UR-012",
+      "title": "Each accepted command advances the revision once",
+      "statement": "Every accepted command advances the task revision by exactly one.",
+      "modelLinks": [
+        { "kind": "transition", "id": "T_prepare" },
+        { "kind": "transition", "id": "T_start" },
+        { "kind": "transition", "id": "T_requestReview" },
+        { "kind": "transition", "id": "T_approve" },
+        { "kind": "transition", "id": "T_requestChanges" }
+      ],
+      "acceptanceLinks": []
+    }
+  ]
+}

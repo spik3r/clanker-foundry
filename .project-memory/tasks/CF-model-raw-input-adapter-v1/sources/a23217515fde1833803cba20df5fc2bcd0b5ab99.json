@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a23217515fde1833803cba20df5fc2bcd0b5ab99",
+  "id": "CF-model-raw-input-adapter-v1",
+  "path": "tasks/CF-model-raw-input-adapter-v1-go-adapter.md",
+  "blob": "368981314e236853a164dca10b3c8b6f31ed3046",
+  "record": "---\nid: CF-model-raw-input-adapter-v1\nstatus: in-progress\nowner: Raw-input adapter worker\nrepositories: [spik3r/clanker-foundry]\ndepends_on: []\n---\n\n# Offline Go adapter for raw Task and Command JSON\n\n## Implementation claim\n\nA cloud agent session owns this isolated demo on branch\n`claude/exciting-einstein-h5r52a`, based on main\n`d5e29983bd7e0b49fe05135f6c68fb367a0589c6`. It is a manual producer claim,\nnot managed dispatch, a production API or a second lifecycle engine.\n\nGoal: accept raw Task and Command JSON bytes, validate their structure with the\nexisting `strictjson` decoder, then call the existing generated reducer\n`generated.Transition` unchanged. Make the pending oracle cases `special-03` and\n`special-04` executable in a new acceptance package, without editing\n`examples/oracle.json` or `acceptance/oracle_test.go`.\n\nInspected before claiming: main at the base above, and open PR 12 (scenario\nreplay and model review diff). PR 12 is a separate interface and touches\n`impact/`, `scenarios/`, `cmd/modelplay`, `cmd/modeldiff`, `impactacceptance/`\nand `scenarioacceptance/`. This task touches none of them. Other lanes named in\nthe request (model patch, profile catalog, exporter, visual review pack) have no\nclaim, branch or PR visible in this repository; recheck before publication. If a\nclaim appears on the paths below, stop and report the overlap.\n\nExact write scope under `modeling/lifecycle/`, all new files:\n- `rawinput/adapter.go`, `rawinput/adapter_test.go`, `rawinput/README.md`\n- `rawinputacceptance/oracle_test.go`, `rawinputacceptance/expected.json`\n\nAlso this task record and new immutable Project Memory source/event files only.\nNo edit to the model, compiler, generated reducer, `strictjson`, existing oracle,\nworkflows, runtime or any existing claim. No HTTP endpoint, no CLI, no network.\n\n## Acceptance\n\n- Reject malformed or trailing JSON, duplicate or unknown keys, wrong or missing\n  fields, invalid UTF-8, invalid surrogate escapes, and invalid or overflowing\n  revisions before the reducer is called.\n- Documented null versus empty semantics, input-size and nesting limits.\n- Structurally valid requests call the reducer and return its result unchanged,\n  including guard precedence. The adapter adds no lifecycle rules.\n- Independent expected outcomes are written and frozen before the adapter exists.\n- Invented data only. Results stay `example-only`, `authority=none`.\n- No merge, approval, deployment, worker activation or auto-merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-model-raw-input-adapter-v1-go-adapter.md",
+        "id": "CF-model-raw-input-adapter-v1",
+        "blob": "368981314e236853a164dca10b3c8b6f31ed3046",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

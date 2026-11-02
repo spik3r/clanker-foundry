@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "9599dfde-de8e-46e7-aa47-849c64237f04",
+  "runId": "91ebb06e-29c7-4c76-ad0d-5f9c88f01d31",
+  "kind": "complete",
+  "parents": [
+    "198dc78d-141b-4ff5-a5d7-4e707d090c82"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-scenarios-v1",
+    "path": "tasks/CF-model-scenarios-v1-offline-runner.md",
+    "revision": "7e4f615be3cbd09b8d7aa775a4263cb4269e0a36",
+    "blob": "836cb40bbc4ac7fa3ca373111665707e1c3a9fc1",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b24dc7e0dd8ac518c482c93cf3712f19fb925012274c7446c1c4ebd1431965e4"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-scenarios-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T05:19:11.027Z",
+  "summary": "Implemented local offline scenario fixture replay and bounded stdout CLI; exact source tree e4cf2b1b71d4c3a7a9fd432947e480867c2ec4ef passed independent architecture and fresh-cache acceptance review, preserving PR11 unchanged.",
+  "next": "Commit and validate exact local lifecycle diff, hand off local result, then await PR11 review and coordinated publication authority; no push, duplicate PR, merge, denied-action retry or activation.",
+  "files": [
+    "modeling/lifecycle/scenarios/README.md",
+    "modeling/lifecycle/scenarios/types.go",
+    "modeling/lifecycle/scenarios/types_test.go",
+    "modeling/lifecycle/scenarios/decode.go",
+    "modeling/lifecycle/scenarios/decode_test.go",
+    "modeling/lifecycle/scenarios/run.go",
+    "modeling/lifecycle/scenarios/run_test.go",
+    "modeling/lifecycle/scenarios/testdata/lifecycle-v1.json",
+    "modeling/lifecycle/cmd/modelplay/main.go",
+    "modeling/lifecycle/cmd/modelplay/main_test.go",
+    "modeling/lifecycle/scenarioacceptance/oracle_test.go",
+    "tasks/CF-model-scenarios-v1-offline-runner.md"
+  ],
+  "validation": "Actual Go 1.27.3 Linux amd64 with offline modules: full go test -race -count=1 ./..., go vet ./..., modelc check and formatting pass. Counted full suite: 281 passing tests/subtests, 79 top-level, no failures. Independently frozen fixture ef199aa93c9e70887f3da8e72aa4a79dcaf130c4cec72d27b240d6780a3e4b26 retains 4 cases/13 literal-expected steps; independent oracle 894a54216a771a04a356d9379f9aeb7764e0919d664d8340719e8ddb8f56d968 passes unchanged on a separate fresh offline cache with race checks. Scratch mutations of actual reducer always-refuse, G_actor and G_reviewContent are killed behaviorally. Tests cover whole-suite zero-call preflight, first-mismatch stop, expected-refusal recovery, nil/empty exactness, uint64 boundaries, canonical vectors, aliases, concurrency, report caps/consistency/continuity, separate-process repeatability and short/error I/O. Independent review verified 12-file manifest SHA256 8d9360d1cca044a62a0ed2f2633f8576aea573824003a3adadc7efa90bfdd779 against staged tree. Pack validator and whitespace pass; optional skills-ref unavailable. New implementation is local only; no hosted follow-up CI or publication. Full committed lifecycle validation follows this completion commit.",
+  "snapshot": {
+    "modeling/lifecycle/scenarios/README.md": {
+      "blob": "05e6963abb065bae2c52c44c75e1154a88a54479",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/types.go": {
+      "blob": "1f2d4652955f3c871eeb7e0cd10a83041291dbc2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/types_test.go": {
+      "blob": "8ff30d890a18f7af0bd98257cf75f1fd492ae497",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/decode.go": {
+      "blob": "5f7a70a4bd05ccbee29a7a4fce6529c4d7ec7d0a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/decode_test.go": {
+      "blob": "13f2dccc4abc3f6baf3b0a38eb35b8b0cb1014c3",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/run.go": {
+      "blob": "71d558f3461ea895341c708e3c8c2f2f5c6d9ade",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/run_test.go": {
+      "blob": "2eabfe70c613a89a39bd9148c72e09b499575aa0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/testdata/lifecycle-v1.json": {
+      "blob": "8ae057c27f2dbcd2ed973bdce5b391d6e7b0a721",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelplay/main.go": {
+      "blob": "53a5d3106812c2af200e49150f39c08544f0833a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelplay/main_test.go": {
+      "blob": "b3174a24f3501fb08e923c714753a0e49646a3e4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarioacceptance/oracle_test.go": {
+      "blob": "be7eb4f531d1dd92417e173718476150eff29e44",
+      "mode": "100644"
+    },
+    "tasks/CF-model-scenarios-v1-offline-runner.md": {
+      "blob": "a9a85cdcc64a3efb95053dce5b033826707c41f2",
+      "mode": "100644"
+    }
+  }
+}

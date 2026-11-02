@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "d486d390-f827-4133-9775-b5cede4cb89a",
+  "runId": "719c9321-dbf2-4ae2-b011-710fbddb1980",
+  "kind": "complete",
+  "parents": [
+    "3323e51b-5648-4176-b015-126f89855bdc"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-tutorial-v1",
+    "path": "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+    "revision": "d80552d796b7ee1b4c32aae128d433839c1f1d4a",
+    "blob": "28ff1090a5717f1bbdf3a940c7ce3d79759f0aa0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "64365cbec874b209b01c8709a7eb06bc2ffb0aee699144c2495073747d0876a7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-e2e-tutorial",
+  "pullRequest": null,
+  "at": "2026-11-01T21:21:27.892Z",
+  "summary": "Built and independently reviewed a reproducible disposable-copy walkthrough from fixed intent through stale binding and revised replay",
+  "next": "Commit and validate complete diff, then prepare one draft for orchestration review; no merge or activation",
+  "files": [
+    "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+    "modeling/lifecycle/tutorial/README.md",
+    "modeling/lifecycle/tutorial/requirements-v1.md",
+    "modeling/lifecycle/tutorial/requirements-v2.md",
+    "modeling/lifecycle/tutorial/model-v2.json",
+    "modeling/lifecycle/tutorial/suite-v1.json",
+    "modeling/lifecycle/tutorial/suite-v2.json",
+    "modeling/lifecycle/tutorial/manifest-v1.json",
+    "modeling/lifecycle/tutorial/manifest-v2.json",
+    "modeling/lifecycle/tutorial/intake-v1.json",
+    "modeling/lifecycle/tutorial/intake-v2.json",
+    "modeling/lifecycle/tutorial/tutorial_test.go"
+  ],
+  "validation": "Go 1.27.3 offline full go test -race -count=1 ./... passed before documentation/test-only review fixes; fresh focused go test -race -count=1 ./tutorial, vet and gofmt passed after fixes. Exact README commands passed with pinned Ajv and PYTHONOPTIMIZE=1, preserving source node_modules marker. Independent read-only review verified frozen expectations before execution and re-reviewed commit 7042cb5: no remaining findings; separately tested report tampering, model-delta mutant and both cross-version refusals. Repository validation passed, optional skills-ref unavailable; diff whitespace clean.",
+  "snapshot": {
+    "tasks/CF-lifecycle-tutorial-v1-e2e.md": {
+      "blob": "28ff1090a5717f1bbdf3a940c7ce3d79759f0aa0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/README.md": {
+      "blob": "f5d9d1954c789469f0f70d079c01929f08f6fa26",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/requirements-v1.md": {
+      "blob": "96e60193b4640742bbeca5781ed62f62f12cd63b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/requirements-v2.md": {
+      "blob": "69c2cf4f042105098c9c92e458508b0c9be091ad",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/model-v2.json": {
+      "blob": "43ae1e430379fe97b726e36acc1b08c818533350",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/suite-v1.json": {
+      "blob": "b28f3875fe8a7b92270d6a2d800378fa832407b4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/suite-v2.json": {
+      "blob": "65458c803dceeed86205530c222f07c399a49327",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/manifest-v1.json": {
+      "blob": "14308cbe126c49adfcb9d493c7bd1ace6ceb1363",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/manifest-v2.json": {
+      "blob": "d85bf0b2dcaf76a33d396f3f34c2c27c09c7d0dc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/intake-v1.json": {
+      "blob": "66a818dbe63b8b30b7a10c9f33904f52ce51165c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/intake-v2.json": {
+      "blob": "2ffb0f3dcb80c26880c6970fe4fa1b7aaf5ba33a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/tutorial/tutorial_test.go": {
+      "blob": "24d8380dc283fa626327d498b454b741344e1d9c",
+      "mode": "100644"
+    }
+  }
+}

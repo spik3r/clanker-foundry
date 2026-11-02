@@ -1,0 +1,637 @@
+{
+  "schema": "lifecycle-trace/v1",
+  "status": "Generated design intent; invented example; authority none; no verified execution or approval evidence.",
+  "identity": {
+    "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "formatVersion": "lifecycle-json/v1",
+    "profileVersion": "lifecycle/v1",
+    "generatorVersion": "lifecycle-go/v1",
+    "toolchainVersion": "go1.27.3"
+  },
+  "sourceConvention": "Stable semantic-ID paths; no source line numbers or verification evidence.",
+  "artifacts": [
+    {
+      "path": "generated/decision-table.json",
+      "sha256": "1d30cef2bf89dbacad6490ce1516afbec67c002ff47bafab884d24b9c83704c0"
+    },
+    {
+      "path": "generated/decision.svg",
+      "sha256": "4956c7517ed03bf2b9979570185afd2b673e0c302b7c1ee63e6ad13a60781c85"
+    },
+    {
+      "path": "generated/lifecycle.go",
+      "sha256": "c57eb61782bac8935ea0bcf703f0b622fef39c9458c46c21aade8490617fe5a1"
+    },
+    {
+      "path": "generated/model_paths_test.go",
+      "sha256": "eeb29a8254a0d238f12092a043f518279b90603747f150df899229b59630f78a"
+    }
+  ],
+  "locations": [
+    {
+      "id": "Done",
+      "kind": "states",
+      "semanticPath": "model/TaskLifecycleExample/states/Done",
+      "requirements": [],
+      "guards": [],
+      "transitions": [
+        "T_approve"
+      ]
+    },
+    {
+      "id": "Draft",
+      "kind": "states",
+      "semanticPath": "model/TaskLifecycleExample/states/Draft",
+      "requirements": [],
+      "guards": [],
+      "transitions": [
+        "T_prepare"
+      ]
+    },
+    {
+      "id": "G_acceptance",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_acceptance",
+      "requirements": [
+        "R_acceptance"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "G_actor",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_actor",
+      "requirements": [
+        "R_actor"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_start"
+      ]
+    },
+    {
+      "id": "G_approved",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_approved",
+      "requirements": [
+        "R_approved"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve"
+      ]
+    },
+    {
+      "id": "G_changesRequested",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_changesRequested",
+      "requirements": [
+        "R_changesRequested"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_independent",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_independent",
+      "requirements": [
+        "R_independent"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_outcome",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_outcome",
+      "requirements": [
+        "R_outcome"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "G_owner",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_owner",
+      "requirements": [
+        "R_owner"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges",
+        "T_requestReview"
+      ]
+    },
+    {
+      "id": "G_ownerActor",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_ownerActor",
+      "requirements": [
+        "R_ownerActor"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_requestReview"
+      ]
+    },
+    {
+      "id": "G_ownerCompatible",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_ownerCompatible",
+      "requirements": [
+        "R_ownerCompatible"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_start"
+      ]
+    },
+    {
+      "id": "G_reviewActor",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewActor",
+      "requirements": [
+        "R_reviewActor"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_reviewContent",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewContent",
+      "requirements": [
+        "R_reviewContent"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_reviewModel",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewModel",
+      "requirements": [
+        "R_reviewModel"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_reviewRevision",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewRevision",
+      "requirements": [
+        "R_reviewRevision"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_reviewTask",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewTask",
+      "requirements": [
+        "R_reviewTask"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_reviewer",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_reviewer",
+      "requirements": [
+        "R_reviewer"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "G_revision",
+      "kind": "guards",
+      "semanticPath": "model/TaskLifecycleExample/guards/G_revision",
+      "requirements": [
+        "R_revision"
+      ],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "InProgress",
+      "kind": "states",
+      "semanticPath": "model/TaskLifecycleExample/states/InProgress",
+      "requirements": [],
+      "guards": [],
+      "transitions": [
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "InReview",
+      "kind": "states",
+      "semanticPath": "model/TaskLifecycleExample/states/InReview",
+      "requirements": [],
+      "guards": [],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges",
+        "T_requestReview"
+      ]
+    },
+    {
+      "id": "R_acceptance",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_acceptance",
+      "requirements": [],
+      "guards": [
+        "G_acceptance"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "R_actor",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_actor",
+      "requirements": [],
+      "guards": [
+        "G_actor"
+      ],
+      "transitions": [
+        "T_start"
+      ]
+    },
+    {
+      "id": "R_approved",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_approved",
+      "requirements": [],
+      "guards": [
+        "G_approved"
+      ],
+      "transitions": [
+        "T_approve"
+      ]
+    },
+    {
+      "id": "R_changesRequested",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_changesRequested",
+      "requirements": [],
+      "guards": [
+        "G_changesRequested"
+      ],
+      "transitions": [
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_independent",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_independent",
+      "requirements": [],
+      "guards": [
+        "G_independent"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_outcome",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_outcome",
+      "requirements": [],
+      "guards": [
+        "G_outcome"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "R_owner",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_owner",
+      "requirements": [],
+      "guards": [
+        "G_owner"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges",
+        "T_requestReview"
+      ]
+    },
+    {
+      "id": "R_ownerActor",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_ownerActor",
+      "requirements": [],
+      "guards": [
+        "G_ownerActor"
+      ],
+      "transitions": [
+        "T_requestReview"
+      ]
+    },
+    {
+      "id": "R_ownerCompatible",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_ownerCompatible",
+      "requirements": [],
+      "guards": [
+        "G_ownerCompatible"
+      ],
+      "transitions": [
+        "T_start"
+      ]
+    },
+    {
+      "id": "R_reviewActor",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewActor",
+      "requirements": [],
+      "guards": [
+        "G_reviewActor"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_reviewContent",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewContent",
+      "requirements": [],
+      "guards": [
+        "G_reviewContent"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_reviewModel",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewModel",
+      "requirements": [],
+      "guards": [
+        "G_reviewModel"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_reviewRevision",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewRevision",
+      "requirements": [],
+      "guards": [
+        "G_reviewRevision"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_reviewTask",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewTask",
+      "requirements": [],
+      "guards": [
+        "G_reviewTask"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_reviewer",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_reviewer",
+      "requirements": [],
+      "guards": [
+        "G_reviewer"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_requestChanges"
+      ]
+    },
+    {
+      "id": "R_revision",
+      "kind": "requirements",
+      "semanticPath": "model/TaskLifecycleExample/requirements/R_revision",
+      "requirements": [],
+      "guards": [
+        "G_revision"
+      ],
+      "transitions": [
+        "T_approve",
+        "T_prepare",
+        "T_requestChanges",
+        "T_requestReview",
+        "T_start"
+      ]
+    },
+    {
+      "id": "Ready",
+      "kind": "states",
+      "semanticPath": "model/TaskLifecycleExample/states/Ready",
+      "requirements": [],
+      "guards": [],
+      "transitions": [
+        "T_prepare",
+        "T_start"
+      ]
+    },
+    {
+      "id": "T_approve",
+      "kind": "transitions",
+      "semanticPath": "model/TaskLifecycleExample/transitions/T_approve",
+      "requirements": [
+        "R_acceptance",
+        "R_approved",
+        "R_independent",
+        "R_outcome",
+        "R_owner",
+        "R_reviewActor",
+        "R_reviewContent",
+        "R_reviewModel",
+        "R_reviewRevision",
+        "R_reviewTask",
+        "R_reviewer",
+        "R_revision"
+      ],
+      "guards": [
+        "G_acceptance",
+        "G_approved",
+        "G_independent",
+        "G_outcome",
+        "G_owner",
+        "G_reviewActor",
+        "G_reviewContent",
+        "G_reviewModel",
+        "G_reviewRevision",
+        "G_reviewTask",
+        "G_reviewer",
+        "G_revision"
+      ],
+      "transitions": []
+    },
+    {
+      "id": "T_prepare",
+      "kind": "transitions",
+      "semanticPath": "model/TaskLifecycleExample/transitions/T_prepare",
+      "requirements": [
+        "R_acceptance",
+        "R_outcome",
+        "R_revision"
+      ],
+      "guards": [
+        "G_acceptance",
+        "G_outcome",
+        "G_revision"
+      ],
+      "transitions": []
+    },
+    {
+      "id": "T_requestChanges",
+      "kind": "transitions",
+      "semanticPath": "model/TaskLifecycleExample/transitions/T_requestChanges",
+      "requirements": [
+        "R_acceptance",
+        "R_changesRequested",
+        "R_independent",
+        "R_outcome",
+        "R_owner",
+        "R_reviewActor",
+        "R_reviewContent",
+        "R_reviewModel",
+        "R_reviewRevision",
+        "R_reviewTask",
+        "R_reviewer",
+        "R_revision"
+      ],
+      "guards": [
+        "G_acceptance",
+        "G_changesRequested",
+        "G_independent",
+        "G_outcome",
+        "G_owner",
+        "G_reviewActor",
+        "G_reviewContent",
+        "G_reviewModel",
+        "G_reviewRevision",
+        "G_reviewTask",
+        "G_reviewer",
+        "G_revision"
+      ],
+      "transitions": []
+    },
+    {
+      "id": "T_requestReview",
+      "kind": "transitions",
+      "semanticPath": "model/TaskLifecycleExample/transitions/T_requestReview",
+      "requirements": [
+        "R_acceptance",
+        "R_outcome",
+        "R_owner",
+        "R_ownerActor",
+        "R_revision"
+      ],
+      "guards": [
+        "G_acceptance",
+        "G_outcome",
+        "G_owner",
+        "G_ownerActor",
+        "G_revision"
+      ],
+      "transitions": []
+    },
+    {
+      "id": "T_start",
+      "kind": "transitions",
+      "semanticPath": "model/TaskLifecycleExample/transitions/T_start",
+      "requirements": [
+        "R_acceptance",
+        "R_actor",
+        "R_outcome",
+        "R_ownerCompatible",
+        "R_revision"
+      ],
+      "guards": [
+        "G_acceptance",
+        "G_actor",
+        "G_outcome",
+        "G_ownerCompatible",
+        "G_revision"
+      ],
+      "transitions": []
+    }
+  ]
+}

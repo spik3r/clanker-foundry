@@ -1,0 +1,36 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Tutorial revision 2: require nonblank actor on prepare",
+  "decisions": [
+    {
+      "id": "D_behavior",
+      "text": "Blank actor is refused on prepare.",
+      "rationale": "Illustrate an explicit change in intended behavior."
+    }
+  ],
+  "questions": [],
+  "artifacts": {
+    "requirements": {
+      "sha256": "20c994e81e114cd5525121a4e72f4e88634983c1f3371202a15244fd352d6931",
+      "author": "Example requirements author (unverified)"
+    },
+    "model": {
+      "sha256": "6c6820e6d8544136a5629aa2977aa5319d853a63a5f1363b86766d8204f73499",
+      "author": "Example model author (unverified)"
+    },
+    "scenarioSuite": {
+      "sha256": "149aeb2ebe4ebbaea661ae944a7b30f083be406d97394189c2049d82b351baaf",
+      "author": "Example scenario author (unverified)"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "20c994e81e114cd5525121a4e72f4e88634983c1f3371202a15244fd352d6931",
+    "suiteRequirements": "20c994e81e114cd5525121a4e72f4e88634983c1f3371202a15244fd352d6931",
+    "suiteModel": "6c6820e6d8544136a5629aa2977aa5319d853a63a5f1363b86766d8204f73499"
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}

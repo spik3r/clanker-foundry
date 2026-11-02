@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "e367bb91-7006-4b42-af9b-b292d68717c1",
+  "runId": "33704264-d39b-4f03-b029-b447b54137ae",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-qualification-adoption-v1",
+    "path": "tasks/CF-qualification-adoption-v1-current-source-closure.md",
+    "revision": "8b49d1d07a31a501d7cfe6778eb8d8f0d93c6e90",
+    "blob": "e230e3b73a610cd46e3bda4f54fd5793e646cbc6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2bb748883ea897f2cb38750d904448d8f0b5e473b02aa928ef0056fc96304883"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/qualification-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:57:22.850Z",
+  "summary": "Begin separately claimed pure archive and current-source qualification export adoption; no held completion imported",
+  "next": "Freeze original archive oracle and candidate/suite literals plus independent current-closure/full-result expectations before changed logic",
+  "files": [
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/qualification_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/cmd/modelqualify/main.go",
+    "modeling/lifecycle/cmd/modelqualify/main_test.go",
+    "tasks/CF-qualification-adoption-v1-current-source-closure.md"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "67d392f7-a865-4709-98c5-9b28ad50b255",
+  "runId": "c4d0432f-c61b-4167-868c-c37bd17ac520",
+  "kind": "start",
+  "parents": [
+    "fce5ac9b-9f54-4566-8a50-0e02648281ff"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-authoring-v1",
+    "path": "tasks/CF-model-authoring-v1-schema.md",
+    "revision": "fda0d0c396c0e95170fad4f7def098077dc96f91",
+    "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1c40f9798d3683c522e285ac8be0a305300942f06489f7893db21b072435b807"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-authoring-contract",
+  "pullRequest": null,
+  "at": "2026-11-01T20:31:33.046Z",
+  "summary": "Correct previous comma-delimited scope entry; inspect and revalidate existing implementation with exact paths",
+  "next": "Revalidate existing files and record accurate final snapshots",
+  "files": [
+    "tasks/CF-model-authoring-v1-schema.md",
+    "modeling/lifecycle/authoring/lifecycle-v1.schema.json",
+    "modeling/lifecycle/authoring/README.md",
+    "modeling/lifecycle/authoring/cases.json",
+    "modeling/lifecycle/authoring/schema.test.cjs",
+    "modeling/lifecycle/authoring/contract_test.go",
+    ".github/workflows/model-authoring-contract.yml"
+  ]
+}

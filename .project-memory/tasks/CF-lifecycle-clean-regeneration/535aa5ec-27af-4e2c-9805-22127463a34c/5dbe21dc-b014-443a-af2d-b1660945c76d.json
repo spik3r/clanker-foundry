@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "5dbe21dc-b014-443a-af2d-b1660945c76d",
+  "runId": "535aa5ec-27af-4e2c-9805-22127463a34c",
+  "kind": "start",
+  "parents": [
+    "7d2d6b77-51f7-484e-9494-e2740df0528b"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-clean-regeneration",
+    "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "revision": "329bdeae49a4ee4ca34431c0a1d470648b99c500",
+    "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3c35e49c469f8ef8c29df78ce827fa4981a8ea0b4accf36a637e5b08d956b1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-clean-regeneration",
+  "pullRequest": null,
+  "at": "2026-11-01T22:08:23.722Z",
+  "summary": "Correct the earlier comma-joined scope and revalidate final implementation",
+  "next": "Rerun checks and record correct file fingerprints",
+  "files": [
+    "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "modeling/lifecycle/reproducibility/clean_test.go",
+    "modeling/lifecycle/reproducibility/README.md"
+  ]
+}

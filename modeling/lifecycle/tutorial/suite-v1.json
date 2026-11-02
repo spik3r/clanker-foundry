@@ -1,0 +1,119 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "id": "tutorial_v1",
+  "cases": [
+    {
+      "id": "blank_actor",
+      "initial": {
+        "id": "example",
+        "state": "Draft",
+        "revision": "0",
+        "outcome": "Deliver a result",
+        "acceptance": [
+          "Explain the result"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "blank_prepare",
+          "command": {
+            "type": "prepare",
+            "actor": "",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "example",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "Deliver a result",
+              "acceptance": [
+                "Explain the result"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "named_actor",
+      "initial": {
+        "id": "example",
+        "state": "Draft",
+        "revision": "0",
+        "outcome": "Deliver a result",
+        "acceptance": [
+          "Explain the result"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "named_prepare",
+          "command": {
+            "type": "prepare",
+            "actor": "Ava",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "example",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "Deliver a result",
+              "acceptance": [
+                "Explain the result"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown_command",
+      "initial": {
+        "id": "example",
+        "state": "Draft",
+        "revision": "0",
+        "outcome": "Deliver a result",
+        "acceptance": [
+          "Explain the result"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "unknown_step",
+          "command": {
+            "type": "unknownExample",
+            "actor": "Ava",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": null,
+            "refusals": [
+              "INVALID_INPUT"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

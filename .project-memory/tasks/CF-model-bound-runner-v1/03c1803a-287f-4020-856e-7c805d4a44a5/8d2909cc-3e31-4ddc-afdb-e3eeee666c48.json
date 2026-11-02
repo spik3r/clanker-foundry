@@ -1,0 +1,51 @@
+{
+  "formatVersion": 2,
+  "eventId": "8d2909cc-3e31-4ddc-afdb-e3eeee666c48",
+  "runId": "03c1803a-287f-4020-856e-7c805d4a44a5",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-bound-runner-v1",
+    "path": "tasks/CF-model-bound-runner-v1-consumer-replay.md",
+    "revision": "2d34b52fae4bc2abaa03db95a344bb50cb6f348e",
+    "blob": "74238540e85c6a51d8ce43b180fed159644bc350",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b6c8bb7c3169606b285e15547b0c89840f1a3659b607123de248ba1d6afc17a2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-bound-runner-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T22:50:02.320Z",
+  "summary": "Implement owner-coordinated opt-in bound replay without altering default APIs or compiler",
+  "next": "Freeze independent fixtures and baseline parity before implementation",
+  "files": [
+    "tasks/CF-model-bound-runner-v1-consumer-replay.md",
+    "modeling/lifecycle/scenarios/types.go",
+    "modeling/lifecycle/scenarios/decode.go",
+    "modeling/lifecycle/scenarios/run.go",
+    "modeling/lifecycle/scenarios/run_test.go",
+    "modeling/lifecycle/scenarios/README.md",
+    "modeling/lifecycle/scenarios/runner.go",
+    "modeling/lifecycle/scenarios/runner_test.go",
+    "modeling/lifecycle/scenarios/testdata/legacy-parity.json",
+    "modeling/lifecycle/acceptanceauthor/author.go",
+    "modeling/lifecycle/acceptanceauthor/README.md",
+    "modeling/lifecycle/acceptanceauthor/bound.go",
+    "modeling/lifecycle/acceptanceauthor/runner_test.go",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/requirements.md",
+    "modeling/lifecycle/consumerintegration/testdata/model-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/model-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/suite-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/suite-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/expected.json",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt"
+  ]
+}

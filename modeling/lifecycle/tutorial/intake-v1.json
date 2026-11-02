@@ -1,0 +1,36 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Tutorial revision 1: allow blank actor on prepare",
+  "decisions": [
+    {
+      "id": "D_behavior",
+      "text": "Blank actor is allowed on prepare.",
+      "rationale": "Illustrate an explicit change in intended behavior."
+    }
+  ],
+  "questions": [],
+  "artifacts": {
+    "requirements": {
+      "sha256": "b6323929fc06af3b5e13ae516591de381345ed59e9d4c0ed82529a6ac9454568",
+      "author": "Example requirements author (unverified)"
+    },
+    "model": {
+      "sha256": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8",
+      "author": "Example model author (unverified)"
+    },
+    "scenarioSuite": {
+      "sha256": "2031108ec41558c01ae70e80b4e580f8af391213d4bb3db5e14ec2e080e3e2d8",
+      "author": "Example scenario author (unverified)"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "b6323929fc06af3b5e13ae516591de381345ed59e9d4c0ed82529a6ac9454568",
+    "suiteRequirements": "b6323929fc06af3b5e13ae516591de381345ed59e9d4c0ed82529a6ac9454568",
+    "suiteModel": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8"
+  },
+  "observed": {
+    "requirements": null,
+    "model": null,
+    "scenarioSuite": null
+  }
+}

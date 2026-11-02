@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "a23a573c-5d0e-42d3-9845-1e4489267f64",
+  "runId": "535aa5ec-27af-4e2c-9805-22127463a34c",
+  "kind": "complete",
+  "parents": [
+    "5dbe21dc-b014-443a-af2d-b1660945c76d"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-clean-regeneration",
+    "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "revision": "329bdeae49a4ee4ca34431c0a1d470648b99c500",
+    "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3c35e49c469f8ef8c29df78ce827fa4981a8ea0b4accf36a637e5b08d956b1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-clean-regeneration",
+  "pullRequest": null,
+  "at": "2026-11-01T22:09:01.402Z",
+  "summary": "Corrected the scope and independently reran validation against the final files",
+  "next": "Validate committed diff and prepare review draft; no merge or activation",
+  "files": [
+    "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "modeling/lifecycle/reproducibility/clean_test.go",
+    "modeling/lifecycle/reproducibility/README.md"
+  ],
+  "validation": "Go 1.27.3 offline go test -race -count=1 ./... and go vet ./... passed; modelc and modeltrace check passed; gofmt clean; schema Ajv tests and scripts/validate.sh passed; optional skills-ref unavailable; git diff --check passed",
+  "snapshot": {
+    "tasks/CF-lifecycle-clean-regeneration-test.md": {
+      "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reproducibility/clean_test.go": {
+      "blob": "9569115adde7e1d4916229b370d8ec77fa60cbfc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/reproducibility/README.md": {
+      "blob": "be436fd7996b423898b76f41894acac3bb807ece",
+      "mode": "100644"
+    }
+  }
+}

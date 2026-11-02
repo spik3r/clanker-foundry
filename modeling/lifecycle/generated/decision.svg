@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1696" viewBox="0 0 1200 1696" role="img">
+<title>Lifecycle design intent: TaskLifecycleExample</title>
+<rect width="1200" height="1696" fill="white"/>
+<text x="20" y="30" font-family="monospace" font-size="11">Model TaskLifecycleExample; initial: Draft</text>
+<text x="20" y="54" font-family="monospace" font-size="11">Generated design intent; invented example; authority none; no verified execution or approval evidenc</text>
+<text x="20" y="78" font-family="monospace" font-size="11">e.</text>
+<text x="20" y="102" font-family="monospace" font-size="11">Digest: 948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed</text>
+<text x="20" y="126" font-family="monospace" font-size="11">Format: lifecycle-json/v1; profile: lifecycle/v1</text>
+<text x="20" y="150" font-family="monospace" font-size="11">Generator: lifecycle-go/v1; toolchain: go1.27.3</text>
+<text x="20" y="174" font-family="monospace" font-size="11">Guards are conjunctions. Effects follow the numbered order. Text uses Go string escaping.</text>
+<text x="20" y="198" font-family="monospace" font-size="11">State Done: Done; terminal=true</text>
+<text x="20" y="222" font-family="monospace" font-size="11">State Draft: Draft; terminal=false</text>
+<text x="20" y="246" font-family="monospace" font-size="11">State InProgress: In progress; terminal=false</text>
+<text x="20" y="270" font-family="monospace" font-size="11">State InReview: In review; terminal=false</text>
+<text x="20" y="294" font-family="monospace" font-size="11">State Ready: Ready; terminal=false</text>
+<rect x="20" y="302" width="350" height="22" fill="#eef" stroke="#223"/><rect x="810" y="302" width="350" height="22" fill="#eef" stroke="#223"/><path d="M 375 313 H 800 l -8 -5 m 8 5 l -8 5" fill="none" stroke="#223"/>
+<text x="25" y="318" font-family="monospace" font-size="11">InReview</text><text x="815" y="318" font-family="monospace" font-size="11">Done</text>
+<text x="380" y="311" font-family="monospace" font-size="7">T_approve / approve</text>
+<text x="20" y="342" font-family="monospace" font-size="11">Transition T_approve guards (all): G_acceptance, G_approved, G_independent, G_outcome, G_owner, G_re</text>
+<text x="20" y="366" font-family="monospace" font-size="11">viewActor, G_reviewContent, G_reviewModel, G_reviewRevision, G_reviewTask, G_reviewer, G_revision</text>
+<text x="20" y="390" font-family="monospace" font-size="11">Effect 1: set_state(Done)</text>
+<text x="20" y="414" font-family="monospace" font-size="11">Effect 2: increment_revision</text>
+<rect x="20" y="422" width="350" height="22" fill="#eef" stroke="#223"/><rect x="810" y="422" width="350" height="22" fill="#eef" stroke="#223"/><path d="M 375 433 H 800 l -8 -5 m 8 5 l -8 5" fill="none" stroke="#223"/>
+<text x="25" y="438" font-family="monospace" font-size="11">Draft</text><text x="815" y="438" font-family="monospace" font-size="11">Ready</text>
+<text x="380" y="431" font-family="monospace" font-size="7">T_prepare / prepare</text>
+<text x="20" y="462" font-family="monospace" font-size="11">Transition T_prepare guards (all): G_acceptance, G_outcome, G_revision</text>
+<text x="20" y="486" font-family="monospace" font-size="11">Effect 1: set_state(Ready)</text>
+<text x="20" y="510" font-family="monospace" font-size="11">Effect 2: increment_revision</text>
+<rect x="20" y="518" width="350" height="22" fill="#eef" stroke="#223"/><rect x="810" y="518" width="350" height="22" fill="#eef" stroke="#223"/><path d="M 375 529 H 800 l -8 -5 m 8 5 l -8 5" fill="none" stroke="#223"/>
+<text x="25" y="534" font-family="monospace" font-size="11">InReview</text><text x="815" y="534" font-family="monospace" font-size="11">InProgress</text>
+<text x="380" y="527" font-family="monospace" font-size="7">T_requestChanges / requestChanges</text>
+<text x="20" y="558" font-family="monospace" font-size="11">Transition T_requestChanges guards (all): G_acceptance, G_changesRequested, G_independent, G_outcome</text>
+<text x="20" y="582" font-family="monospace" font-size="11">, G_owner, G_reviewActor, G_reviewContent, G_reviewModel, G_reviewRevision, G_reviewTask, G_reviewer</text>
+<text x="20" y="606" font-family="monospace" font-size="11">, G_revision</text>
+<text x="20" y="630" font-family="monospace" font-size="11">Effect 1: set_state(InProgress)</text>
+<text x="20" y="654" font-family="monospace" font-size="11">Effect 2: increment_revision</text>
+<rect x="20" y="662" width="350" height="22" fill="#eef" stroke="#223"/><rect x="810" y="662" width="350" height="22" fill="#eef" stroke="#223"/><path d="M 375 673 H 800 l -8 -5 m 8 5 l -8 5" fill="none" stroke="#223"/>
+<text x="25" y="678" font-family="monospace" font-size="11">InProgress</text><text x="815" y="678" font-family="monospace" font-size="11">InReview</text>
+<text x="380" y="671" font-family="monospace" font-size="7">T_requestReview / requestReview</text>
+<text x="20" y="702" font-family="monospace" font-size="11">Transition T_requestReview guards (all): G_acceptance, G_outcome, G_owner, G_ownerActor, G_revision</text>
+<text x="20" y="726" font-family="monospace" font-size="11">Effect 1: set_state(InReview)</text>
+<text x="20" y="750" font-family="monospace" font-size="11">Effect 2: increment_revision</text>
+<rect x="20" y="758" width="350" height="22" fill="#eef" stroke="#223"/><rect x="810" y="758" width="350" height="22" fill="#eef" stroke="#223"/><path d="M 375 769 H 800 l -8 -5 m 8 5 l -8 5" fill="none" stroke="#223"/>
+<text x="25" y="774" font-family="monospace" font-size="11">Ready</text><text x="815" y="774" font-family="monospace" font-size="11">InProgress</text>
+<text x="380" y="767" font-family="monospace" font-size="7">T_start / start</text>
+<text x="20" y="798" font-family="monospace" font-size="11">Transition T_start guards (all): G_acceptance, G_actor, G_outcome, G_ownerCompatible, G_revision</text>
+<text x="20" y="822" font-family="monospace" font-size="11">Effect 1: assign_owner_if_absent(command.actor)</text>
+<text x="20" y="846" font-family="monospace" font-size="11">Effect 2: set_state(InProgress)</text>
+<text x="20" y="870" font-family="monospace" font-size="11">Effect 3: increment_revision</text>
+<text x="20" y="894" font-family="monospace" font-size="11">Guard G_acceptance; requirement R_acceptance: nonempty(task.acceptance)</text>
+<text x="20" y="918" font-family="monospace" font-size="11">Guard G_actor; requirement R_actor: nonempty(command.actor)</text>
+<text x="20" y="942" font-family="monospace" font-size="11">Guard G_approved; requirement R_approved: eq(review.decision, \&#34;approved\&#34;)</text>
+<text x="20" y="966" font-family="monospace" font-size="11">Guard G_changesRequested; requirement R_changesRequested: eq(review.decision, \&#34;changesRequested\&#34;)</text>
+<text x="20" y="990" font-family="monospace" font-size="11">Guard G_independent; requirement R_independent: ne(review.reviewer, task.owner)</text>
+<text x="20" y="1014" font-family="monospace" font-size="11">Guard G_outcome; requirement R_outcome: nonempty(task.outcome)</text>
+<text x="20" y="1038" font-family="monospace" font-size="11">Guard G_owner; requirement R_owner: nonempty(task.owner)</text>
+<text x="20" y="1062" font-family="monospace" font-size="11">Guard G_ownerActor; requirement R_ownerActor: eq(task.owner, command.actor)</text>
+<text x="20" y="1086" font-family="monospace" font-size="11">Guard G_ownerCompatible; requirement R_ownerCompatible: any(eq(task.owner, command.actor), absent(ta</text>
+<text x="20" y="1110" font-family="monospace" font-size="11">sk.owner))</text>
+<text x="20" y="1134" font-family="monospace" font-size="11">Guard G_reviewActor; requirement R_reviewActor: eq(review.reviewer, command.actor)</text>
+<text x="20" y="1158" font-family="monospace" font-size="11">Guard G_reviewContent; requirement R_reviewContent: eq(review.taskDigest, task.digest)</text>
+<text x="20" y="1182" font-family="monospace" font-size="11">Guard G_reviewModel; requirement R_reviewModel: eq(review.modelDigest, model.digest)</text>
+<text x="20" y="1206" font-family="monospace" font-size="11">Guard G_reviewRevision; requirement R_reviewRevision: eq(review.taskRevision, task.revision)</text>
+<text x="20" y="1230" font-family="monospace" font-size="11">Guard G_reviewTask; requirement R_reviewTask: eq(review.taskId, task.id)</text>
+<text x="20" y="1254" font-family="monospace" font-size="11">Guard G_reviewer; requirement R_reviewer: nonempty(review.reviewer)</text>
+<text x="20" y="1278" font-family="monospace" font-size="11">Guard G_revision; requirement R_revision: eq(task.revision, command.expectedRevision)</text>
+<text x="20" y="1302" font-family="monospace" font-size="11">Requirement R_acceptance: Acceptance criteria are supplied.</text>
+<text x="20" y="1326" font-family="monospace" font-size="11">Requirement R_actor: The named starting actor is nonblank.</text>
+<text x="20" y="1350" font-family="monospace" font-size="11">Requirement R_approved: Approval is explicit.</text>
+<text x="20" y="1374" font-family="monospace" font-size="11">Requirement R_changesRequested: Changes are explicitly requested.</text>
+<text x="20" y="1398" font-family="monospace" font-size="11">Requirement R_independent: The reviewer differs from the owner.</text>
+<text x="20" y="1422" font-family="monospace" font-size="11">Requirement R_outcome: An outcome is nonblank.</text>
+<text x="20" y="1446" font-family="monospace" font-size="11">Requirement R_owner: An owner is present.</text>
+<text x="20" y="1470" font-family="monospace" font-size="11">Requirement R_ownerActor: The owner requests review.</text>
+<text x="20" y="1494" font-family="monospace" font-size="11">Requirement R_ownerCompatible: Start assigns only absent ownership or matches the existing owner.</text>
+<text x="20" y="1518" font-family="monospace" font-size="11">Requirement R_reviewActor: The acting reviewer matches the review.</text>
+<text x="20" y="1542" font-family="monospace" font-size="11">Requirement R_reviewContent: Review refers to current task content.</text>
+<text x="20" y="1566" font-family="monospace" font-size="11">Requirement R_reviewModel: Review refers to the accepted model.</text>
+<text x="20" y="1590" font-family="monospace" font-size="11">Requirement R_reviewRevision: Review refers to the current revision.</text>
+<text x="20" y="1614" font-family="monospace" font-size="11">Requirement R_reviewTask: Review refers to this task.</text>
+<text x="20" y="1638" font-family="monospace" font-size="11">Requirement R_reviewer: The reviewer is nonblank.</text>
+<text x="20" y="1662" font-family="monospace" font-size="11">Requirement R_revision: Command matches the current revision.</text>
+</svg>

@@ -1,0 +1,1225 @@
+[
+  {
+    "name": "minimal valid",
+    "schemaValid": true,
+    "modelValid": true,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "optional assignment effect",
+    "schemaValid": true,
+    "modelValid": true,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "assign_owner_if_absent"
+            },
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "literal comparison",
+    "schemaValid": true,
+    "modelValid": true,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "command.actor"
+              },
+              {
+                "string": "operator"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown property",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ],
+      "extra": true
+    }
+  },
+  {
+    "name": "missing required field",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft"
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "null list",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": null,
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "wrong version",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v2",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "invalid identifier",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "0bad",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "too few states",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown expression field",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "bogus": "x"
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown operator",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "execute",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown effect",
+    "schemaValid": false,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "delete"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "dangling target is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Missing",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "duplicate identifiers are semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Draft",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown reference is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "task.unknown"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "wrong operand type is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "task.revision"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "wrong effect order is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "increment_revision"
+            },
+            {
+              "op": "set_state"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "nonterminal dead end is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": false
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "blank label is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "  ",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "wrong comparison arity is semantic",
+    "schemaValid": true,
+    "modelValid": false,
+    "document": {
+      "formatVersion": "lifecycle-json/v1",
+      "profileVersion": "lifecycle/v1",
+      "id": "Flow",
+      "initial": "Draft",
+      "states": [
+        {
+          "id": "Draft",
+          "label": "Draft",
+          "terminal": false
+        },
+        {
+          "id": "Done",
+          "label": "Done",
+          "terminal": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "R_actor",
+          "text": "An actor is present."
+        }
+      ],
+      "guards": [
+        {
+          "id": "G_actor",
+          "requirement": "R_actor",
+          "expr": {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "command.actor"
+              }
+            ]
+          }
+        }
+      ],
+      "transitions": [
+        {
+          "id": "T_finish",
+          "from": "Draft",
+          "trigger": "finish",
+          "to": "Done",
+          "guards": [
+            "G_actor"
+          ],
+          "effects": [
+            {
+              "op": "set_state"
+            },
+            {
+              "op": "increment_revision"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

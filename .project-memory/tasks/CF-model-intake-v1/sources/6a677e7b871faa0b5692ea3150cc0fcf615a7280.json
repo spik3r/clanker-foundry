@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "6a677e7b871faa0b5692ea3150cc0fcf615a7280",
+  "id": "CF-model-intake-v1",
+  "path": "tasks/CF-model-intake-v1-design-handoff.md",
+  "blob": "c5da63c34bda5e475f6665448d1df15e4804e994",
+  "record": "---\nid: CF-model-intake-v1\nstatus: in-progress\nowner: Codex design-intake contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Design intake and artifact identity handoff\n\n## Implementation claim\n\nOn branch `codex/model-intake-v1` from current main, implement a bounded,\nstrict, offline intake record for original intent, explicit decisions, unresolved\nquestions and separately declared requirements, model and scenario-suite\nidentities. Compare declarations with caller-supplied exact bytes, reporting\nmissing declarations, missing observations and digest mismatches honestly.\nAuthor labels and SHA-256 matches are assertions and consistency checks, never\nproof of independence, execution, review, approval, identity or authority.\n\nScope: `modeling/lifecycle/intake/`, `modeling/lifecycle/cmd/modelintake/`,\nthis task and its own new immutable Project Memory source/events. No writes to\nexisting model, traceability, authoring schema, modelpatch, scenario, diagnostics,\nreviewpack, qualification, export, workflowacceptance, runtime or workflow files.\nThe held stack contains an independent workflow acceptance test and a design\nchange exporter; this upstream record neither executes or evaluates suites nor\npackages artifacts or supplies their execution evidence. The other evidence\nhandoff lane is not transferred. Main and visible PRs and claims were inspected;\nthis local claim is not a shared lock. Recheck before publication.\n\n## Acceptance and handoff\n\nPreserve original intent and explicit decisions/questions; use strict versioned\nJSON, bounded fields and input, exact-key/null discipline, deterministic ordering,\nseparate declared and observed identity, and a no-write stdin CLI. Include\nindependently stated positive and negative cases for malformed input, duplicates,\nmissing and mismatched artifacts, exact-byte sensitivity and deterministic output.\nKeep actual artifacts private and do not claim format validity or executed tests.\nRun the pinned Go and repository checks, record genuine Project Memory evidence,\nand prepare one draft for review if permitted. No deployment or activation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-model-intake-v1-design-handoff.md",
+        "id": "CF-model-intake-v1",
+        "blob": "c5da63c34bda5e475f6665448d1df15e4804e994",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

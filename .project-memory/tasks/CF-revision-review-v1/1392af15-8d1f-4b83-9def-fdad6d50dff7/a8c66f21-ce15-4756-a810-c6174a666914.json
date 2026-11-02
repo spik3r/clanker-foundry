@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "a8c66f21-ce15-4756-a810-c6174a666914",
+  "runId": "1392af15-8d1f-4b83-9def-fdad6d50dff7",
+  "kind": "complete",
+  "parents": [
+    "25d94d49-920c-4f2d-9569-e13f7898890d"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-review-v1",
+    "path": "tasks/CF-revision-review-v1-walkthrough.md",
+    "revision": "18fd9516af2a49331b18860869a77fe283dbe731",
+    "blob": "05cf54d907df6f6e1efaa4273c7b8688a66160a2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ed0fb550851e6682739598d2f2e0f5940ca0021d9748b75c8369f41bc6034ef4"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-review-workflow",
+  "pullRequest": null,
+  "at": "2026-11-01T22:39:17.555Z",
+  "summary": "Added a frozen revision review walkthrough combining existing intake, model, trace and acceptance checks",
+  "next": "Validate committed diff and prepare draft for independent review; no merge, deployment or activation",
+  "files": [
+    "tasks/CF-revision-review-v1-walkthrough.md",
+    "modeling/lifecycle/revisionreview/README.md",
+    "modeling/lifecycle/revisionreview/revision_test.go",
+    "modeling/lifecycle/revisionreview/testdata/requirements-v1.json",
+    "modeling/lifecycle/revisionreview/testdata/requirements-v2.json",
+    "modeling/lifecycle/revisionreview/testdata/intake-v1.json",
+    "modeling/lifecycle/revisionreview/testdata/intake-v2.json",
+    "modeling/lifecycle/revisionreview/testdata/expected.json"
+  ],
+  "validation": "Go 1.27.3 offline go test -race -count=1 ./... and go vet ./... passed; after adding the frozen-expectation hash guard, targeted race test and vet passed; documented CLI block ran successfully and output statuses were inspected; modelc and modeltrace checks, schema test, scripts/validate.sh and git diff --check passed; optional skills-ref unavailable",
+  "snapshot": {
+    "tasks/CF-revision-review-v1-walkthrough.md": {
+      "blob": "05cf54d907df6f6e1efaa4273c7b8688a66160a2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/README.md": {
+      "blob": "91d20e3eeac5c14ca0ce07fee7d387995dc7c2cb",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/revision_test.go": {
+      "blob": "de83ec4d239064056b8e0d4ae5071944bdc060e7",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/testdata/requirements-v1.json": {
+      "blob": "d019c84743f680024b3380f575279003c82e215e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/testdata/requirements-v2.json": {
+      "blob": "54283838ae388170647f3aa265af163c0824aa62",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/testdata/intake-v1.json": {
+      "blob": "23b405f6523c6363cd58979adfebf1143892e049",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/testdata/intake-v2.json": {
+      "blob": "696cefb263e883c73efbc7397001f3d7b903a4d1",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/testdata/expected.json": {
+      "blob": "bdc4c0322db787d7c233cb298531995dc57446f6",
+      "mode": "100644"
+    }
+  }
+}

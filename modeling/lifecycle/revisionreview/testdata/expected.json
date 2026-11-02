@@ -1,0 +1,15 @@
+{
+  "description": "Hand-stated expectations for the invented review; declarations are assertions and no case link or human review is inferred.",
+  "question": "Q_case_link",
+  "requirement": "UR-101",
+  "requirementGap": "no-acceptance-link",
+  "transition": "T_prepare",
+  "addedGuard": "G_actor",
+  "beforeCanonicalModel": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "afterCanonicalModel": "c9bd33388e7595872bfab1f33edf905e232243f21f252bf3672fad4d340df1b8",
+  "intakeModelStatus": "accepted",
+  "schemaValidation": "not-run",
+  "baselineAcceptance": {"modelBinding":"current", "suiteBinding":"current", "suiteModelBinding":"current", "runnerBinding":"current", "suiteValidation":"valid", "replay":"not-run"},
+  "oldAcceptanceAgainstCandidate": {"modelBinding":"stale", "suiteBinding":"current", "suiteModelBinding":"current", "runnerBinding":"stale", "suiteValidation":"not-checked", "replay":"not-run"},
+  "candidateAcceptanceOnBaselineRunner": {"modelBinding":"current", "suiteBinding":"current", "suiteModelBinding":"current", "runnerBinding":"stale", "suiteValidation":"not-checked", "replay":"not-run"}
+}

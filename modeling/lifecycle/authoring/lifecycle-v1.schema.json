@@ -1,0 +1,240 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://clanker-foundry.invalid/schemas/lifecycle-json-v1.schema.json",
+  "title": "Lifecycle JSON v1 authoring shape",
+  "description": "Authoring aid; existing strict JSON adapter and semantic validator remain authoritative.",
+  "type": "object",
+  "properties": {
+    "formatVersion": {
+      "const": "lifecycle-json/v1"
+    },
+    "profileVersion": {
+      "const": "lifecycle/v1"
+    },
+    "id": {
+      "$ref": "#/definitions/id"
+    },
+    "initial": {
+      "$ref": "#/definitions/id"
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/state"
+      },
+      "minItems": 2,
+      "maxItems": 16
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/requirement"
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "guards": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/guard"
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/transition"
+      },
+      "minItems": 1,
+      "maxItems": 32
+    }
+  },
+  "required": [
+    "formatVersion",
+    "profileVersion",
+    "id",
+    "initial",
+    "states",
+    "requirements",
+    "guards",
+    "transitions"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,47}$"
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "label": {
+          "type": "string"
+        },
+        "terminal": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "terminal"
+      ],
+      "additionalProperties": false
+    },
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "expr": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "ref"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "string": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "string"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "eq",
+                "ne",
+                "nonempty",
+                "absent",
+                "all",
+                "any"
+              ]
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/expr"
+              },
+              "minItems": 1,
+              "maxItems": 16
+            }
+          },
+          "required": [
+            "op",
+            "args"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "guard": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "requirement": {
+          "$ref": "#/definitions/id"
+        },
+        "expr": {
+          "$ref": "#/definitions/expr"
+        }
+      },
+      "required": [
+        "id",
+        "requirement",
+        "expr"
+      ],
+      "additionalProperties": false
+    },
+    "effect": {
+      "type": "object",
+      "properties": {
+        "op": {
+          "enum": [
+            "assign_owner_if_absent",
+            "set_state",
+            "increment_revision"
+          ]
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "additionalProperties": false
+    },
+    "transition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "from": {
+          "$ref": "#/definitions/id"
+        },
+        "trigger": {
+          "$ref": "#/definitions/id"
+        },
+        "to": {
+          "$ref": "#/definitions/id"
+        },
+        "guards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/id"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/effect"
+          },
+          "minItems": 2,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "trigger",
+        "to",
+        "guards",
+        "effects"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

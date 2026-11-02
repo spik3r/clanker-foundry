@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d80552d796b7ee1b4c32aae128d433839c1f1d4a",
+  "id": "CF-lifecycle-tutorial-v1",
+  "path": "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+  "blob": "28ff1090a5717f1bbdf3a940c7ce3d79759f0aa0",
+  "record": "---\nid: CF-lifecycle-tutorial-v1\nstatus: in-progress\nowner: Codex lifecycle tutorial contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reproducible lifecycle authoring tutorial\n\n## Implementation claim\n\nOn `codex/lifecycle-e2e-tutorial` from current main, build an invented,\nreproducible walkthrough using the merged intake, authoring schema, compiler,\nacceptance-authoring and scenario runner. Freeze independently specified literal\nsuccess/refusal expectations, revise the example model to require a nonblank\nactor for prepare, demonstrate stale old evidence, and separately review the\nupdated expectations before any revised replay. Commands operate in a disposable\ncopy; no product process runner, silent expectation refresh, deployment,\nactivation, approval or production authority. Exact scope is new files under\n`modeling/lifecycle/tutorial/`, this task and its own Project Memory events only.\n\nThe held workflowacceptance integration test uses a different owner-guard model\nrevision and is not this tutorial. Do not change scenario runner, compiler,\ntraceability PR15, intake/model bridge (`intakemodel/`, `cmd/modelintakecheck/`),\nreviewpack, qualification or export files. Main, visible PRs and held claims were\ninspected; local claim is not a shared lock. Recheck before publication.\n\n## Validation and handoff\n\nCommit/register this task and record genuine start before implementation. Freeze\nauthored requirement statements and literal initial/revised behavior before\nexecution; obtain separate read-only review of the expectation update and report\nwhat was and was not reviewed. Verify the documented commands end to end with\nGo 1.27.3, including stale refusal and candidate replay in a disposable copy; add\nindependently stated executable assertions, run relevant checks and preserve all\nexisting artifacts. Record actual evidence and one coherent draft for review if\nallowed. No unreviewed artifacts are overwritten.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+        "id": "CF-lifecycle-tutorial-v1",
+        "blob": "28ff1090a5717f1bbdf3a940c7ce3d79759f0aa0",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

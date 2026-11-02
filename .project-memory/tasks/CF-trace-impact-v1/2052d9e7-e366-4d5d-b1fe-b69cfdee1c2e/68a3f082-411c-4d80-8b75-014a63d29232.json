@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "68a3f082-411c-4d80-8b75-014a63d29232",
+  "runId": "2052d9e7-e366-4d5d-b1fe-b69cfdee1c2e",
+  "kind": "checkpoint",
+  "parents": [
+    "cda46a1d-0d23-44da-85f8-27a000db3b94"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-trace-impact-v1",
+    "path": "tasks/CF-trace-impact-v1-review.md",
+    "revision": "342c419d8a52821e2151f90991b9e32db90f74ae",
+    "blob": "cbe55d5cf4e39baa0e29988f5f34d108365f8197",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9995d2e34e6f2d5529ecf58c1590e257a38b27b50f55490c848e3cdaf35252c6"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/trace-evidence-diff",
+  "pullRequest": null,
+  "at": "2026-11-01T21:50:46.661Z",
+  "summary": "Implemented bounded trace/model-diff join and strict CLI against independently frozen before/after report cases",
+  "next": "Complete validation and obtain independent exact-source review",
+  "files": [
+    "tasks/CF-trace-impact-v1-review.md",
+    "modeling/lifecycle/traceimpact/compare.go",
+    "modeling/lifecycle/traceimpact/README.md",
+    "modeling/lifecycle/traceimpact/compare_external_test.go",
+    "modeling/lifecycle/traceimpact/testdata/before-model.json",
+    "modeling/lifecycle/traceimpact/testdata/after-model.json",
+    "modeling/lifecycle/traceimpact/testdata/before-requirements.json",
+    "modeling/lifecycle/traceimpact/testdata/after-requirements.json",
+    "modeling/lifecycle/traceimpact/testdata/before-catalog.json",
+    "modeling/lifecycle/traceimpact/testdata/after-catalog.json",
+    "modeling/lifecycle/traceimpact/testdata/expected.json",
+    "modeling/lifecycle/cmd/modeltraceimpact/main.go",
+    "modeling/lifecycle/cmd/modeltraceimpact/main_test.go"
+  ]
+}

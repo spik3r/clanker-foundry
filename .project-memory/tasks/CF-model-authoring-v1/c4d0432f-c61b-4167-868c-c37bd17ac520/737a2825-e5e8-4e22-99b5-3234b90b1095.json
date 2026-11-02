@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "737a2825-e5e8-4e22-99b5-3234b90b1095",
+  "runId": "c4d0432f-c61b-4167-868c-c37bd17ac520",
+  "kind": "complete",
+  "parents": [
+    "67d392f7-a865-4709-98c5-9b28ad50b255"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-authoring-v1",
+    "path": "tasks/CF-model-authoring-v1-schema.md",
+    "revision": "fda0d0c396c0e95170fad4f7def098077dc96f91",
+    "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1c40f9798d3683c522e285ac8be0a305300942f06489f7893db21b072435b807"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-authoring-contract",
+  "pullRequest": null,
+  "at": "2026-11-01T20:31:37.396Z",
+  "summary": "Corrected file scope and revalidated unchanged implementation; original claim and initial start preceded implementation",
+  "next": "Commit evidence and validate full diff; publish draft for review, no merge or deployment",
+  "files": [
+    "tasks/CF-model-authoring-v1-schema.md",
+    "modeling/lifecycle/authoring/lifecycle-v1.schema.json",
+    "modeling/lifecycle/authoring/README.md",
+    "modeling/lifecycle/authoring/cases.json",
+    "modeling/lifecycle/authoring/schema.test.cjs",
+    "modeling/lifecycle/authoring/contract_test.go",
+    ".github/workflows/model-authoring-contract.yml"
+  ],
+  "validation": "Fresh Node schema tests with installed Ajv 8.20.0 pass; Go 1.27.3 authoring cases pass; pack validation passes with optional skills-ref unavailable; diff whitespace clean. Prior full Go race suite and vet and modelc check passed on same files.",
+  "snapshot": {
+    "tasks/CF-model-authoring-v1-schema.md": {
+      "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoring/lifecycle-v1.schema.json": {
+      "blob": "34d534e70bfee5adfc6ba89971cd576973b3cd47",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoring/README.md": {
+      "blob": "b87782d0d66cf067436639a55a1ad9e542294ef6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoring/cases.json": {
+      "blob": "b84bc116b2f9ee7672a02a6406f949bdd1908b42",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoring/schema.test.cjs": {
+      "blob": "05b2ddc065cc360f87d34b6d62e98b9fa7a70935",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoring/contract_test.go": {
+      "blob": "8fb682065fbbdf053c239f27c50979821ee3e301",
+      "mode": "100644"
+    },
+    ".github/workflows/model-authoring-contract.yml": {
+      "blob": "6da4e196744fa476380c8f0c01cc713581753a3a",
+      "mode": "100644"
+    }
+  }
+}

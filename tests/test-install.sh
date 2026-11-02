@@ -99,4 +99,6 @@ printf '%s\n' '[valid](README.md)' > "$untracked_doc"
 (cd "$fixture_repo" && bash scripts/validate.sh) >/dev/null
 rm "$untracked_doc"
 
+bash "$repo_dir/tests/test-agent-model.sh"
+
 printf '%s\n' 'PASS  installer wiring regression tests'

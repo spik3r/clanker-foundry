@@ -1,0 +1,4025 @@
+{
+ "schema": "rawinput-acceptance-v1",
+ "about": "Independent expected outcomes for package rawinput. Raw inputs are literal text. Placeholders: ${MODEL} (lifecycle.ModelDigest), ${OTHER_MODEL} (a different valid 64-hex digest), ${D:name} (hex SHA-256 of digests[name]); tokens {{xHH}} (one raw byte) and {{rep:N|unit}} (unit repeated N times). Expectation kinds: ok (full result task literal in task or taskText), refused (refusals literal; unchanged:true means the result task equals the parsed input task, nil and empty slices and null and empty owner preserved), invalid (reducer INVALID_INPUT, nil Task, nil error), rejected (non-nil *InputError with the named input and reason; reducer result is the INVALID_INPUT literal).",
+ "digests": {
+  "dr0": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "ip2": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "ir1": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "ir2": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "ir3": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "ir3n": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+  "ir3e": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+  "ir5": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"5\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "irmax": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "dn4": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+  "vec1": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship <&>\",\"acceptance\":[\"café\",\"✓\"],\"owner\":\"owner-1\"}",
+  "vec2": "{\"id\":\"例\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"雪\",\"acceptance\":[],\"owner\":null}"
+ },
+ "revisionMatrix": {
+  "about": "Each rejected value is placed, as a JSON string, in task.revision, command.expectedRevision and review.taskRevision, with the other input valid. Each wrongType token is placed raw in the same positions and must give strict_json.",
+  "rejected": [
+   "18446744073709551616",
+   "99999999999999999999999",
+   "28446744073709551615",
+   "184467440737095516150",
+   "",
+   "01",
+   "00",
+   "-0",
+   "-1",
+   "+1",
+   " 1",
+   "1 ",
+   "\t1",
+   "1\n",
+   "1.0",
+   "1e3",
+   "0x1",
+   "0x10",
+   "1_0",
+   "٣",
+   "１",
+   "٠",
+   "null",
+   "NaN",
+   "0b1",
+   "1,2",
+   "1 2"
+  ],
+  "wrongTypeRaw": [
+   "0",
+   "1",
+   "1.5",
+   "-1",
+   "1e3",
+   "null",
+   "true",
+   "false",
+   "[]",
+   "[\"1\"]",
+   "{}"
+  ]
+ },
+ "cases": [
+  {
+   "id": "ok-prepare",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-prepare-owner-null",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": null
+    }
+   }
+  },
+  {
+   "id": "ok-prepare-owner-empty",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": ""
+    }
+   },
+   "note": "present empty owner is preserved, not turned into null"
+  },
+  {
+   "id": "ok-start-assigns-actor",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_start",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-start-assigns-other-actor",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\"new-owner\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_start",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "new-owner"
+    }
+   }
+  },
+  {
+   "id": "ok-start-matching-owner",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_start",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-request-review",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_requestReview",
+    "task": {
+     "id": "task-1",
+     "state": "InReview",
+     "revision": "3",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-approve",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_approve",
+    "task": {
+     "id": "task-1",
+     "state": "Done",
+     "revision": "4",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-request-changes",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_requestChanges",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "4",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "refuse-review-owner-null",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3n}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_independent",
+     "G_owner"
+    ],
+    "unchanged": true
+   },
+   "note": "Absent owner: G_independent fails (a missing operand makes ne false) and G_owner fails (owner nonblank; T_approve lists G_owner in examples/lifecycle.json). Corrected after the first run; the frozen text expected only G_independent."
+  },
+  {
+   "id": "refuse-review-owner-empty",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3e}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_owner"
+    ],
+    "unchanged": true
+   },
+   "note": "A present empty owner is not absent, so G_independent passes, but G_owner (owner nonblank) fails; T_approve lists G_owner in examples/lifecycle.json. Corrected after the first run; the frozen text wrongly expected approval (case ok-approve-owner-empty)."
+  },
+  {
+   "id": "ok-approve-unicode-html-digest",
+   "group": "ok",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship <&>\",\"acceptance\":[\"café\",\"✓\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:vec1}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_approve",
+    "task": {
+     "id": "task-1",
+     "state": "Done",
+     "revision": "4",
+     "outcome": "Ship <&>",
+     "acceptance": [
+      "café",
+      "✓"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-prepare-revision-1",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-prepare-revision-max-minus-1",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"18446744073709551614\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551614\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "18446744073709551615",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "ok-approve-review-revision-1",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"1\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"1\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir1}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_approve",
+    "task": {
+     "id": "task-1",
+     "state": "Done",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "seq-1-prepare",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": null
+    }
+   }
+  },
+  {
+   "id": "seq-2-start",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_start",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "2",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "chainFrom": "seq-1-prepare"
+  },
+  {
+   "id": "seq-3-request-review",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_requestReview",
+    "task": {
+     "id": "task-1",
+     "state": "InReview",
+     "revision": "3",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "chainFrom": "seq-2-start"
+  },
+  {
+   "id": "seq-4-request-changes",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_requestChanges",
+    "task": {
+     "id": "task-1",
+     "state": "InProgress",
+     "revision": "4",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "chainFrom": "seq-3-request-review"
+  },
+  {
+   "id": "seq-5-request-review-again",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_requestReview",
+    "task": {
+     "id": "task-1",
+     "state": "InReview",
+     "revision": "5",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "chainFrom": "seq-4-request-changes"
+  },
+  {
+   "id": "seq-6-approve",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"5\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"5\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"5\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir5}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_approve",
+    "task": {
+     "id": "task-1",
+     "state": "Done",
+     "revision": "6",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "chainFrom": "seq-5-request-review-again"
+  },
+  {
+   "id": "seq-7-done-is-terminal",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"6\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"6\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   },
+   "chainFrom": "seq-6-approve"
+  },
+  {
+   "id": "seq-old-approval-invalid",
+   "group": "seq",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"5\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"5\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewContent",
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   },
+   "note": "review bound to revision 3 is stale after rework: revision and content-at-revision differ"
+  },
+  {
+   "id": "unusual-surrogate-pair",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\ud83d\\ude00\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "😀",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-surrogate-pair-upper-hex",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\uD83D\\uDE00\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "😀",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-nul-escape",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a\\u0000b\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "a\u0000b",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "note": "NUL is not Unicode space, so the outcome is nonblank"
+  },
+  {
+   "id": "unusual-nul-only-outcome",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\u0000\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "\u0000",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-non-ascii",
+   "group": "unusual",
+   "task": "{\"id\":\"例\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"雪\",\"acceptance\":[\"café\",\"✓\"],\"owner\":\"owner-é\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "例",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "雪",
+     "acceptance": [
+      "café",
+      "✓"
+     ],
+     "owner": "owner-é"
+    }
+   }
+  },
+  {
+   "id": "unusual-zero-width-space-outcome-nonblank",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"​\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "​",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "note": "U+200B is not a TrimSpace space"
+  },
+  {
+   "id": "unusual-whitespace-between-tokens",
+   "group": "unusual",
+   "task": " \n{\r\n\t\"id\" : \"task-1\" ,\n \"state\":\t\"Draft\", \"revision\" :\"0\",\n\"outcome\":\"Ship outcome\",\n\"acceptance\" : [ \"Verified\" ] ,\n\"owner\" : \"owner-1\"\n}\n ",
+   "command": "\t{ \"type\" :\n\"prepare\",\r\n\"actor\": \"owner-1\" , \"expectedRevision\":\"0\" ,\n\"review\" : null }\r\n",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-key-order-reversed",
+   "group": "unusual",
+   "task": "{\"owner\":\"owner-1\",\"acceptance\":[\"Verified\"],\"outcome\":\"Ship outcome\",\"revision\":\"0\",\"state\":\"Draft\",\"id\":\"task-1\"}",
+   "command": "{\"review\":null,\"expectedRevision\":\"0\",\"actor\":\"owner-1\",\"type\":\"prepare\"}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-key-order-approve-review-reversed",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"review\":{\"decision\":\"approved\",\"reviewer\":\"reviewer-1\",\"taskDigest\":\"${D:ir3}\",\"modelDigest\":\"${MODEL}\",\"taskRevision\":\"3\",\"taskId\":\"task-1\"},\"expectedRevision\":\"3\",\"actor\":\"reviewer-1\",\"type\":\"approve\"}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_approve",
+    "task": {
+     "id": "task-1",
+     "state": "Done",
+     "revision": "4",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-escaped-key-name",
+   "group": "unusual",
+   "task": "{\"\\u0069d\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "note": "ASSUMPTION: keys are compared after JSON escape decoding, so an escaped spelling of id is the id key"
+  },
+  {
+   "id": "unusual-escaped-string-value",
+   "group": "unusual",
+   "task": "{\"id\":\"task\\u002d1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-outcome-4096-bytes",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{rep:4096|a}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "{{rep:4096|a}}",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-outcome-4096-bytes-multibyte",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{rep:2048|é}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "{{rep:2048|é}}",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-id-256-bytes",
+   "group": "unusual",
+   "task": "{\"id\":\"{{rep:256|i}}\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "{{rep:256|i}}",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-criterion-1024-bytes",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"{{rep:1024|c}}\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "{{rep:1024|c}}"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-32-criteria",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[{{rep:31|\"a\",}}\"a\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "taskText": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[{{rep:31|\"a\",}}\"a\"],\"owner\":\"owner-1\"}"
+   }
+  },
+  {
+   "id": "unusual-duplicate-criteria-allowed",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"a\",\"a\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "Ship outcome",
+     "acceptance": [
+      "a",
+      "a"
+     ],
+     "owner": "owner-1"
+    }
+   }
+  },
+  {
+   "id": "unusual-leading-trailing-ws-text",
+   "group": "unusual",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"  padded  \",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "ok",
+    "transition": "T_prepare",
+    "task": {
+     "id": "task-1",
+     "state": "Ready",
+     "revision": "1",
+     "outcome": "  padded  ",
+     "acceptance": [
+      "Verified"
+     ],
+     "owner": "owner-1"
+    }
+   },
+   "note": "strings preserved without trimming"
+  },
+  {
+   "id": "invalid-state-unknown",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Bogus\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-state-lowercase",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   },
+   "note": "ASSUMPTION: state names are case-sensitive"
+  },
+  {
+   "id": "invalid-state-empty",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-trigger-unknown",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"bogus\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-trigger-empty",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-trigger-case",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"Prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   },
+   "note": "ASSUMPTION: trigger names are case-sensitive"
+  },
+  {
+   "id": "invalid-id-empty",
+   "group": "invalid",
+   "task": "{\"id\":\"\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-id-spaces",
+   "group": "invalid",
+   "task": "{\"id\":\"  \",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-id-nbsp",
+   "group": "invalid",
+   "task": "{\"id\":\" \",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-id-257-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"{{rep:257|i}}\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-owner-257-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"{{rep:257|o}}\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-actor-257-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"{{rep:257|a}}\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-outcome-4097-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{rep:4097|a}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-outcome-4098-bytes-multibyte",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{rep:2049|é}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-empty-element",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-spaces-element",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"ok\",\"  \"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-tab-element",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"\\t\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-nbsp-element",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"\\u00a0\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-1025-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"{{rep:1025|c}}\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-acceptance-33-criteria",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[{{rep:32|\"a\",}}\"a\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-task-digest-uppercase",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"ABCDEF0000000000000000000000000000000000000000000000000000000000\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-model-digest-63-chars",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"{{rep:63|a}}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-task-digest-65-chars",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"{{rep:65|a}}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-digest-non-hex",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"g000000000000000000000000000000000000000000000000000000000000000\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-digest-empty",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-decision-unsupported",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"maybe\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-decision-empty",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-decision-case",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"Approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-task-id-257-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"{{rep:257|t}}\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-review-reviewer-257-bytes",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"{{rep:257|r}}\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "invalid-beats-illegal-transition",
+   "group": "invalid",
+   "task": "{\"id\":\"\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   },
+   "note": "typed-invalid input wins over ILLEGAL_TRANSITION"
+  },
+  {
+   "id": "invalid-beats-guard-failure",
+   "group": "invalid",
+   "task": "{\"id\":\"\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"9\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   },
+   "note": "typed-invalid input wins over failed guards"
+  },
+  {
+   "id": "invalid-beats-guard-failure-review",
+   "group": "invalid",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"other\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"XYZ\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "refuse-stale-expected-revision",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-future-expected-revision",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-outcome-empty",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-outcome-blank-ascii",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\" \\t\\n\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-outcome-nbsp",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\" \",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   },
+   "note": "U+00A0 is space under strings.TrimSpace"
+  },
+  {
+   "id": "refuse-outcome-em-space",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\" \",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-outcome-nel",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-acceptance-null",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":null,\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_acceptance"
+    ],
+    "unchanged": true
+   },
+   "note": "unchanged task keeps nil acceptance"
+  },
+  {
+   "id": "refuse-acceptance-empty-list",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_acceptance"
+    ],
+    "unchanged": true
+   },
+   "note": "unchanged task keeps empty non-nil acceptance"
+  },
+  {
+   "id": "refuse-multi-outcome-acceptance-sorted",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\",\"acceptance\":[],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_acceptance",
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-multi-null-acceptance-sorted",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\",\"acceptance\":null,\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_acceptance",
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-multi-three-sorted",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"\",\"acceptance\":[],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_acceptance",
+     "G_outcome",
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-start-wrong-actor",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"other\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_ownerCompatible"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-start-blank-actor-unassigned",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\"\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_actor"
+    ],
+    "unchanged": true
+   },
+   "note": "unchanged task keeps owner null; no assignment on refusal"
+  },
+  {
+   "id": "refuse-start-nbsp-actor-unassigned",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\" \",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_actor"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-start-blank-actor-owned",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_actor",
+     "G_ownerCompatible"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-start-owner-empty-present",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_ownerCompatible"
+    ],
+    "unchanged": true
+   },
+   "note": "present empty owner is not absent, so no assignment and the actor does not match"
+  },
+  {
+   "id": "refuse-start-owner-spaces-present",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"  \"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_ownerCompatible"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-start-owner-empty-actor-empty",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_actor"
+    ],
+    "unchanged": true
+   },
+   "note": "eq(owner,actor) holds for two present empty strings, so only G_actor fails"
+  },
+  {
+   "id": "refuse-request-review-non-owner",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"other\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_ownerActor"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-request-review-owner-null",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_owner",
+     "G_ownerActor"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-request-review-owner-empty-actor-empty",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_owner"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-request-review-owner-empty-actor-set",
+   "group": "refused",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_owner",
+     "G_ownerActor"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-blank-reviewer",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewer"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-blank-reviewer-spaces",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"  \",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"  \",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewer"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-wrong-task",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"other\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewTask"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-stale-revision-binding",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"2\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"1\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir2}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   },
+   "note": "review.taskRevision != task.revision while the digest matches current content"
+  },
+  {
+   "id": "refuse-review-future-revision-binding",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"4\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-stale-content-digest",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Changed\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewContent"
+    ],
+    "unchanged": true
+   },
+   "note": "same revision, changed acceptance, old digest"
+  },
+  {
+   "id": "refuse-review-stale-content-outcome",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Different\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewContent"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-zero-digest",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewContent"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-wrong-model-digest",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${OTHER_MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewModel"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-reviewer-not-actor",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"other\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewActor"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-owner-reviews-own",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"owner-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"owner-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_independent"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-approve-wrong-decision",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_approved"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-request-changes-wrong-decision",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_changesRequested"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-request-changes-stale-content",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Changed\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewContent"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-all-binding-faults-sorted",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"other\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"other\",\"taskRevision\":\"1\",\"modelDigest\":\"${OTHER_MODEL}\",\"taskDigest\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewActor",
+     "G_reviewContent",
+     "G_reviewModel",
+     "G_reviewRevision",
+     "G_reviewTask"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "refuse-review-mixed-sorted",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"other\",\"expectedRevision\":\"2\",\"review\":{\"taskId\":\"other\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"owner-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_approved",
+     "G_independent",
+     "G_reviewActor",
+     "G_reviewTask",
+     "G_revision"
+    ],
+    "unchanged": true
+   },
+   "note": "G_revision sorts after G_review*: 'e' < 's' at the 7th byte"
+  },
+  {
+   "id": "refuse-request-changes-all-faults-sorted",
+   "group": "refused-review",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"other\",\"expectedRevision\":\"2\",\"review\":{\"taskId\":\"other\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"owner-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_changesRequested",
+     "G_independent",
+     "G_reviewActor",
+     "G_reviewTask",
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-draft-start",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-done-prepare",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-ready-prepare",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-inprogress-prepare",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"2\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-inreview-start",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"3\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-draft-request-review",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-inreview-request-review",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"3\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"3\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-done-start",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-inprogress-approve",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"2\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"2\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"2\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ip2}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-draft-request-changes",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"0\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"0\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:dr0}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-done-approve",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"4\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"4\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:dn4}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-wins-over-guard-failures",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"\",\"acceptance\":[],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"start\",\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   },
+   "note": "illegal pair is reported before any guard, even with stale revision, blank outcome and empty acceptance"
+  },
+  {
+   "id": "illegal-wins-over-guard-failures-done",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\" \",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-preserves-nil-acceptance-and-empty-owner",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":null,\"owner\":\"\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "illegal-preserves-empty-acceptance-and-null-owner",
+   "group": "illegal",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"4\",\"outcome\":\"Ship outcome\",\"acceptance\":[],\"owner\":null}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"4\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-prepare-limit",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "REVISION_LIMIT"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-start-limit-owner-not-assigned",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Ready\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":null}",
+   "command": "{\"type\":\"start\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "REVISION_LIMIT"
+    ],
+    "unchanged": true
+   },
+   "note": "unchanged task keeps owner null: no assignment before the limit check"
+  },
+  {
+   "id": "maxrev-request-review-limit",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"InProgress\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestReview\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "REVISION_LIMIT"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-approve-limit",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"18446744073709551615\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:irmax}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "REVISION_LIMIT"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-request-changes-limit",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"requestChanges\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"18446744073709551615\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:irmax}\",\"reviewer\":\"reviewer-1\",\"decision\":\"changesRequested\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "REVISION_LIMIT"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-stale-command-guard-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551614\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-stale-command-zero-guard-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-blank-outcome-guard-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_outcome"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-review-stale-binding-guard-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"18446744073709551614\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:irmax}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-illegal-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"task-1\",\"state\":\"Done\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "ILLEGAL_TRANSITION"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "maxrev-invalid-input-wins",
+   "group": "maxrev",
+   "task": "{\"id\":\"\",\"state\":\"Draft\",\"revision\":\"18446744073709551615\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "invalid"
+   }
+  },
+  {
+   "id": "rev-command-expected-1-vs-task-0",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"1\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "rev-command-expected-max-vs-task-0",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"18446744073709551615\",\"review\":null}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_revision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "rev-review-revision-0-vs-task-1",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"1\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"0\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir1}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "rev-review-revision-max-vs-task-1",
+   "group": "rev-accepted",
+   "task": "{\"id\":\"task-1\",\"state\":\"InReview\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"1\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"18446744073709551615\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir1}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "refused",
+    "refusals": [
+     "G_reviewRevision"
+    ],
+    "unchanged": true
+   }
+  },
+  {
+   "id": "task-empty",
+   "group": "task-rejected",
+   "task": "",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-whitespace-only",
+   "group": "task-rejected",
+   "task": "  \n\t\r ",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-not-json",
+   "group": "task-rejected",
+   "task": "not json",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-trailing-object",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}{}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-trailing-garbage",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"} x",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-trailing-copy",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-trailing-comma",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"},",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-truncated",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-trailing-comma-inside",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-single-quotes",
+   "group": "task-rejected",
+   "task": "{'id':'task-1'}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-invalid-escape",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a\\xb\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-raw-control-char-in-string",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a{{x01}}b\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-raw-newline-in-string",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a\nb\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-id",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"id\":\"task-2\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-id-escaped",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"\\u0069d\":\"task-2\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   },
+   "note": "keys equal after escape decoding are duplicates"
+  },
+  {
+   "id": "task-dup-id-escaped-first",
+   "group": "task-rejected",
+   "task": "{\"\\u0069d\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"id\":\"task-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-state",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"state\":\"Ready\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-acceptance",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"acceptance\":[]}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-owner-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"owner\":null}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-dup-revision",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"revision\":\"0\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   },
+   "note": "duplicate of a revision key is strict_json even if both values are valid"
+  },
+  {
+   "id": "task-unknown-key",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"extra\":\"x\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-unknown-key-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"extra\":null}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-case-folded-id",
+   "group": "task-rejected",
+   "task": "{\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"ID\":\"task-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-case-folded-extra-id",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"Id\":\"task-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-case-folded-state",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"STATE\":\"Draft\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-case-folded-owner",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"Owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-case-folded-acceptance",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"owner\":\"owner-1\",\"Acceptance\":[\"Verified\"]}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-id",
+   "group": "task-rejected",
+   "task": "{\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-state",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-revision",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-outcome",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-acceptance",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-owner",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"]}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-missing-all-empty-object",
+   "group": "task-rejected",
+   "task": "{}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-id-number",
+   "group": "task-rejected",
+   "task": "{\"id\":1,\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-id-object",
+   "group": "task-rejected",
+   "task": "{\"id\":{},\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-id-null",
+   "group": "task-rejected",
+   "task": "{\"id\":null,\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-state-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":1,\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-state-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":null,\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-revision-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":1,\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   },
+   "note": "a JSON number in a revision position is a type error, not invalid_revision"
+  },
+  {
+   "id": "task-type-revision-number-zero",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":0,\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-revision-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":null,\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-revision-true",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":true,\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-revision-array",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":[\"0\"],\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-outcome-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":1,\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-outcome-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":null,\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-outcome-bool",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":false,\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-string",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":\"Verified\",\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-object",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":{},\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-object-nonempty",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":{\"0\":\"Verified\"},\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":1,\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-array-of-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[1],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-array-with-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"a\",2],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-array-with-null",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[null],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-array-with-array",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[[\"a\"]],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-acceptance-array-with-object",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[{}],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-owner-number",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":1}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-owner-array",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":[]}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-owner-object",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":{}}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-type-owner-bool",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":true}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-array",
+   "group": "task-rejected",
+   "task": "[]",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-array-of-task",
+   "group": "task-rejected",
+   "task": "[{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}]",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-null",
+   "group": "task-rejected",
+   "task": "null",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-string",
+   "group": "task-rejected",
+   "task": "\"x\"",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-number",
+   "group": "task-rejected",
+   "task": "1",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-toplevel-true",
+   "group": "task-rejected",
+   "task": "true",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-invalid-ff-in-value",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a{{xff}}b\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-invalid-ff-in-key",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"out{{xff}}come\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-truncated-sequence",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"a{{xe2}}{{x82}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-truncated-sequence-before-quote",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{xe2}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-overlong-slash",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{xc0}}{{xaf}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-stray-continuation",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{x80}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-encoded-surrogate",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"{{xed}}{{xa0}}{{x80}}\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-invalid-in-acceptance",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"a{{xff}}\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-invalid-in-owner",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"{{xfe}}\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-utf8-invalid-outside-strings",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}{{xff}}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-high",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\ud800\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-high-upper-hex",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\uD800\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-low",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\udc00\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-high-then-letter",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\ud800a\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-high-then-bmp-escape",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\ud800\\u0041\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-high-at-end",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"abc\\udbff\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-reversed-pair",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\udc00\\ud800\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-two-highs",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"\\ud800\\ud800\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-in-id",
+   "group": "task-rejected",
+   "task": "{\"id\":\"\\udc00\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-in-acceptance",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"\\ud800\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-in-owner",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"\\udfff\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-surrogate-lone-in-key",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"out\\ud800come\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-nesting-too-deep-small",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[[[[[[]]]]]],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "task-nesting-unknown-key",
+   "group": "task-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\",\"x\":[[[[[1]]]]]}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-empty",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-whitespace-only",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": " \n\t ",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-not-json",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "not json",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   },
+   "note": "stronger variant of oracle special-04: the task is fully valid"
+  },
+  {
+   "id": "command-trailing-object",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}{}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-trailing-garbage",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null} x",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-trailing-copy",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-truncated",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"type\":\"start\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-type-escaped",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"t\\u0079pe\":\"start\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"actor\":\"x\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-expected-revision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"expectedRevision\":\"0\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-review",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-review-both-objects",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"},\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-in-review-taskId",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\",\"taskId\":\"task-1\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-in-review-decision-escaped",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\",\"d\\u0065cision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-dup-in-review-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\",\"reviewer\":\"x\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-unknown-key",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"extra\":\"x\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-unknown-key-in-review",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\",\"extra\":\"x\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-case-folded-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"Type\":\"prepare\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-case-folded-extra-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null,\"Type\":\"prepare\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-case-folded-expected-revision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"review\":null,\"expectedrevision\":\"0\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-case-folded-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"expectedRevision\":\"0\",\"review\":null,\"ACTOR\":\"owner-1\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-case-folded-in-review",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\",\"taskid\":\"task-1\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-snake-case-expected-revision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"review\":null,\"expected_revision\":\"0\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-missing-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-missing-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-missing-expectedRevision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-missing-review",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-taskId",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-taskRevision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-modelDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-taskDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-missing-decision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-empty-object",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-missing-all-empty-object",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-type-number",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":1,\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-type-null",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":null,\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-actor-number",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":1,\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-actor-null",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":null,\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-actor-array",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":[\"a\"],\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-expected-revision-number",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":0,\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   },
+   "note": "a JSON number in a revision position is a type error, not invalid_revision"
+  },
+  {
+   "id": "command-type-expected-revision-null",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":null,\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-review-string",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":\"x\"}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-review-array",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":[]}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-review-number",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":1}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-type-review-true",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":true}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-taskId",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":null,\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-taskId",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":1,\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-taskRevision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":null,\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-taskRevision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":1,\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-modelDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":null,\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-modelDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":1,\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-taskDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":null,\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-taskDigest",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":1,\"reviewer\":\"reviewer-1\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":null,\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":1,\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-null-decision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":null}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-review-number-decision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":1}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-toplevel-array",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "[]",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-toplevel-null",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "null",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-toplevel-string",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "\"x\"",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-toplevel-number",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "1",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-toplevel-true",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "true",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-utf8-invalid-in-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"a{{xff}}\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-utf8-invalid-in-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"pre{{xc0}}{{xaf}}\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-utf8-truncated-in-review-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"{{xe2}}{{x82}}\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-utf8-invalid-key",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"act{{xff}}or\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-lone-high-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"\\ud800\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-lone-low-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"\\udc00\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-high-then-letter-type",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"\\ud800a\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-reversed-pair-actor",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"\\udc00\\ud800\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-lone-in-review-reviewer",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"\\ud800\",\"decision\":\"approved\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-surrogate-lone-in-review-decision",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"approve\",\"actor\":\"reviewer-1\",\"expectedRevision\":\"3\",\"review\":{\"taskId\":\"task-1\",\"taskRevision\":\"3\",\"modelDigest\":\"${MODEL}\",\"taskDigest\":\"${D:ir3}\",\"reviewer\":\"reviewer-1\",\"decision\":\"\\udc00x\"}}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "command-nesting-too-deep-review",
+   "group": "command-rejected",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":[[[[[[]]]]]]}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "order-both-not-json",
+   "group": "order",
+   "task": "not json",
+   "command": "not json",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "order-task-bad-command-bad-revision",
+   "group": "order",
+   "task": "not json",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"01\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "order-task-bad-revision-command-not-json",
+   "group": "order",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"01\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "not json",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "invalid_revision"
+   }
+  },
+  {
+   "id": "order-task-bad-revision-command-bad-revision",
+   "group": "order",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"01\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"01\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "invalid_revision"
+   }
+  },
+  {
+   "id": "order-task-semantic-invalid-command-malformed",
+   "group": "order",
+   "task": "{\"id\":\"task-1\",\"state\":\"Bogus\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "not json",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   },
+   "note": "both inputs are decoded before the reducer runs, so a bad command prevents a reducer call even for an otherwise INVALID_INPUT task"
+  },
+  {
+   "id": "order-task-valid-command-bad-revision",
+   "group": "order",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"0\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{\"type\":\"prepare\",\"actor\":\"owner-1\",\"expectedRevision\":\"01\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "invalid_revision"
+   }
+  },
+  {
+   "id": "order-task-malformed-command-semantic-invalid",
+   "group": "order",
+   "task": "{}",
+   "command": "{\"type\":\"bogus\",\"actor\":\"owner-1\",\"expectedRevision\":\"0\",\"review\":null}",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  },
+  {
+   "id": "order-task-valid-command-malformed-stale",
+   "group": "order",
+   "task": "{\"id\":\"task-1\",\"state\":\"Draft\",\"revision\":\"1\",\"outcome\":\"Ship outcome\",\"acceptance\":[\"Verified\"],\"owner\":\"owner-1\"}",
+   "command": "{",
+   "expect": {
+    "kind": "rejected",
+    "input": "command",
+    "reason": "strict_json"
+   },
+   "note": "task would fail G_revision in the reducer but the command is rejected first"
+  },
+  {
+   "id": "order-task-empty-command-empty",
+   "group": "order",
+   "task": "",
+   "command": "",
+   "expect": {
+    "kind": "rejected",
+    "input": "task",
+    "reason": "strict_json"
+   }
+  }
+ ]
+}

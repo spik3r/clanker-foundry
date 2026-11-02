@@ -1,0 +1,23 @@
+{
+  "formatVersion":"lifecycle-json/v1",
+  "profileVersion":"lifecycle/v1",
+  "id":"Flow",
+  "initial":"Draft",
+  "states":[
+    {"id":"Ready","label":"Ready","terminal":false},
+    {"id":"Done","label":"Done","terminal":true},
+    {"id":"Draft","label":"Draft","terminal":false}
+  ],
+  "requirements":[
+    {"id":"Ry","text":"The actor is present."},
+    {"id":"Rx","text":"The outcome is present."}
+  ],
+  "guards":[
+    {"id":"Gy","requirement":"Ry","expr":{"op":"nonempty","args":[{"ref":"command.actor"}]}},
+    {"id":"Gx","requirement":"Rx","expr":{"op":"nonempty","args":[{"ref":"task.outcome"}]}}
+  ],
+  "transitions":[
+    {"id":"Tgo","from":"Draft","trigger":"go","to":"Ready","guards":["Gy","Gx"],"effects":[{"op":"set_state"},{"op":"increment_revision"}]},
+    {"id":"Tfinish","from":"Ready","trigger":"finish","to":"Done","guards":["Gx"],"effects":[{"op":"set_state"},{"op":"increment_revision"}]}
+  ]
+}

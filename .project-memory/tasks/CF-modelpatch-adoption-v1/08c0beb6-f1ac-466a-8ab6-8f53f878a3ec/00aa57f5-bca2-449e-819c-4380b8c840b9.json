@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "00aa57f5-bca2-449e-819c-4380b8c840b9",
+  "runId": "08c0beb6-f1ac-466a-8ab6-8f53f878a3ec",
+  "kind": "start",
+  "parents": [
+    "2d82205a-bb05-4b87-82bd-e843beb71ec1"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-modelpatch-adoption-v1",
+    "path": "tasks/CF-modelpatch-adoption-v1-current-main.md",
+    "revision": "0a8b8c5ad9dd3d813d8e17e99fd21bdda60d0a68",
+    "blob": "e68864cef7a67690ca4a87af2621dd81c882af47",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "3efe4c264e75aa6a8510c4ac3e3e2e5a2967be3d691ca6158cb6e57a89e8eabc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/modelpatch-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:12:02.733Z",
+  "summary": "Clarify local completion evidence attribution only; preserve reviewed source and prior completion history",
+  "next": "Name independent and author validation separately; revalidate task metadata and completion continuity",
+  "files": [
+    "modeling/lifecycle/modelpatch/types.go",
+    "modeling/lifecycle/modelpatch/oracle_test.go",
+    "modeling/lifecycle/modelpatch/apply.go",
+    "modeling/lifecycle/modelpatch/apply_test.go",
+    "modeling/lifecycle/modelpatch/decode.go",
+    "modeling/lifecycle/modelpatch/decode_test.go",
+    "modeling/lifecycle/modelpatch/README.md",
+    "modeling/lifecycle/cmd/modelpatch/main.go",
+    "modeling/lifecycle/cmd/modelpatch/main_test.go",
+    "modeling/lifecycle/modelpatch/integration_test.go",
+    "tasks/CF-modelpatch-adoption-v1-current-main.md"
+  ]
+}

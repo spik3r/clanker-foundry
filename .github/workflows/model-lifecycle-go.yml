@@ -1,0 +1,43 @@
+name: model-lifecycle-go
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  model-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: modeling/lifecycle
+    env:
+      GOTOOLCHAIN: local
+      GOPROXY: 'off'
+      GOSUMDB: 'off'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.3'
+          check-latest: false
+          cache: false
+      - name: Verify exact compiler and formatting
+        run: |
+          test "$(go env GOVERSION)" = go1.27.3
+          test -z "$(gofmt -l .)"
+      - name: Test compiler, independent oracle, and generation boundary
+        run: go test -race -count=1 ./...
+      - name: Static checks
+        run: go vet ./...
+      - name: Validate model and check generated drift without writes
+        run: |
+          go run ./cmd/modelc validate
+          go run ./cmd/modelc check
+          git diff --exit-code

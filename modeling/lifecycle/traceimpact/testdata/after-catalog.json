@@ -1,0 +1,7 @@
+{
+  "schema":"lifecycle-semantic-oracle-v2",
+  "sequences":[{"caseId":"case-1","name":"first case","executionStatus":"executable","opaque":{"note":"changed but not inspected"}}],
+  "refusals":[{"caseId":"case-2","name":"second case","executionStatus":"executable"}],
+  "special":[{"caseId":"case-3","name":"unlinked case","executionStatus":"pending"}],
+  "unconsumed":{"version":2}
+}

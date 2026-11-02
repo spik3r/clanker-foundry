@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "42629fef-9447-4293-a5ec-dbaa1e90c79d",
+  "runId": "719c9321-dbf2-4ae2-b011-710fbddb1980",
+  "kind": "checkpoint",
+  "parents": [
+    "464a258c-3503-451b-ab72-042e4b340990"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-tutorial-v1",
+    "path": "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+    "revision": "d80552d796b7ee1b4c32aae128d433839c1f1d4a",
+    "blob": "28ff1090a5717f1bbdf3a940c7ce3d79759f0aa0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "64365cbec874b209b01c8709a7eb06bc2ffb0aee699144c2495073747d0876a7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-e2e-tutorial",
+  "pullRequest": null,
+  "at": "2026-11-01T21:15:38.750Z",
+  "summary": "Froze invented v1/v2 requirements, model revision and handwritten success/refusal suites with explicit source and model bindings before executing either suite",
+  "next": "Seek separate expectation review, then validate the walkthrough without regenerating expectations",
+  "files": [
+    "tasks/CF-lifecycle-tutorial-v1-e2e.md",
+    "modeling/lifecycle/tutorial/README.md",
+    "modeling/lifecycle/tutorial/requirements-v1.md",
+    "modeling/lifecycle/tutorial/requirements-v2.md",
+    "modeling/lifecycle/tutorial/model-v2.json",
+    "modeling/lifecycle/tutorial/suite-v1.json",
+    "modeling/lifecycle/tutorial/suite-v2.json",
+    "modeling/lifecycle/tutorial/manifest-v1.json",
+    "modeling/lifecycle/tutorial/manifest-v2.json",
+    "modeling/lifecycle/tutorial/intake-v1.json",
+    "modeling/lifecycle/tutorial/intake-v2.json",
+    "modeling/lifecycle/tutorial/tutorial_test.go"
+  ]
+}

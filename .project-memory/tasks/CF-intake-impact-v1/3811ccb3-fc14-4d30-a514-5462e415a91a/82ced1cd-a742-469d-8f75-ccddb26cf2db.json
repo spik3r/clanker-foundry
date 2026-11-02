@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "82ced1cd-a742-469d-8f75-ccddb26cf2db",
+  "runId": "3811ccb3-fc14-4d30-a514-5462e415a91a",
+  "kind": "complete",
+  "parents": [
+    "e615530e-e92d-44e0-9e7b-18e635c71f5c"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-intake-impact-v1",
+    "path": "tasks/CF-intake-impact-v1-review.md",
+    "revision": "2692e4cc658f86862624ec0b3e6538a4d5e66d56",
+    "blob": "6dab910a18fb3fe7130e76e1c3fa31f2a64eaf8a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "debffa444f04f72e0e73c0985610d5b4764f8a6052db0649d37ffc0a3b304aa1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/intake-change-review",
+  "pullRequest": null,
+  "at": "2026-11-01T22:16:28.462Z",
+  "summary": "Added bounded upstream intake-change review; current main f862a872 merged without changing independently reviewed implementation or frozen expectations",
+  "next": "Validate full committed diff, verify full-history bundle, publish one draft through authorized normal Git publisher and inspect exact-head CI; no merge or activation",
+  "files": [
+    "tasks/CF-intake-impact-v1-review.md",
+    "modeling/lifecycle/intakeimpact/compare.go",
+    "modeling/lifecycle/intakeimpact/README.md",
+    "modeling/lifecycle/intakeimpact/compare_external_test.go",
+    "modeling/lifecycle/intakeimpact/integration_test.go",
+    "modeling/lifecycle/intakeimpact/testdata/before.json",
+    "modeling/lifecycle/intakeimpact/testdata/after.json",
+    "modeling/lifecycle/intakeimpact/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelintakediff/main.go",
+    "modeling/lifecycle/cmd/modelintakediff/main_test.go"
+  ],
+  "validation": "Go 1.27.3 offline full race tests: 29 tested packages passed; go vet ./... passed; modelc validate/check and modeltrace validate/check passed; README commands passed verbatim; scripts/validate.sh passed (optional skills-ref unavailable); Project Memory helper tests 143 passed; separate source review and 633 independent binary probes passed at unchanged add7ecb source; six compiled mutants killed; frozen oracle SHA256 unchanged; git diff --check and gofmt passed; guide/image bytes identical to origin/main",
+  "snapshot": {
+    "tasks/CF-intake-impact-v1-review.md": {
+      "blob": "0cb4c5d019bc4909b391e4774818c2c50f89960e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/compare.go": {
+      "blob": "d29a8cef29ad30c30817c3f10b90db16a61ce774",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/README.md": {
+      "blob": "d54fecb233bfcc2334026042a8246a1ce7acfb2f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/compare_external_test.go": {
+      "blob": "62c9441d00cd6ab04dbe5672f268e684d0f91cf4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/integration_test.go": {
+      "blob": "4465d65fde527195f7eef46e114fcaf5b03ab2aa",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/testdata/before.json": {
+      "blob": "257fef12ed7ca374933fc9f30c41d40f3f3d8d58",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/testdata/after.json": {
+      "blob": "4c951c8554b8066cc739e4e54eeade27b436e612",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/intakeimpact/testdata/expected.json": {
+      "blob": "5a9e8ae8ac2100bfb60a62f17a170d34500b335e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelintakediff/main.go": {
+      "blob": "ef73a2bc01be60ab0eb9941bb26ec9a53ef22215",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelintakediff/main_test.go": {
+      "blob": "4a14a970171f4680b80a9fc4ed6e7d3ab5df81e2",
+      "mode": "100644"
+    }
+  }
+}

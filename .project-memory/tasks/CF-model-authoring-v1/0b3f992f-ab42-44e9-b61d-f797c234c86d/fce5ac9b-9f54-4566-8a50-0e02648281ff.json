@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "fce5ac9b-9f54-4566-8a50-0e02648281ff",
+  "runId": "0b3f992f-ab42-44e9-b61d-f797c234c86d",
+  "kind": "complete",
+  "parents": [
+    "ab01c67c-17cc-43f7-ac34-95de6423b196"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-authoring-v1",
+    "path": "tasks/CF-model-authoring-v1-schema.md",
+    "revision": "fda0d0c396c0e95170fad4f7def098077dc96f91",
+    "blob": "de7324172c45fc06788ae5d3e4ba20d824ed05da",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1c40f9798d3683c522e285ac8be0a305300942f06489f7893db21b072435b807"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-authoring-contract",
+  "pullRequest": null,
+  "at": "2026-11-01T20:31:10.913Z",
+  "summary": "Added draft-07 authoring schema with shared structural and semantic cases, Go adapter checks, editor guidance and pinned test-only schema CI",
+  "next": "Commit, validate full diff, recheck claims and publish draft for independent review; no merge or deployment",
+  "files": [
+    "tasks/CF-model-authoring-v1-schema.md,modeling/lifecycle/authoring/lifecycle-v1.schema.json,modeling/lifecycle/authoring/README.md,modeling/lifecycle/authoring/cases.json,modeling/lifecycle/authoring/schema.test.cjs,modeling/lifecycle/authoring/contract_test.go,.github/workflows/model-authoring-contract.yml"
+  ],
+  "validation": "Go 1.27.3 offline go test -race -count=1 ./... passed; go vet ./... passed; modelc check passed with no writes; Node 26 with pinned Ajv 8.20.0 schema tests passed after offline npm ci; bash scripts/validate.sh passed with optional skills-ref unavailable; git diff --check passed",
+  "snapshot": {
+    "tasks/CF-model-authoring-v1-schema.md,modeling/lifecycle/authoring/lifecycle-v1.schema.json,modeling/lifecycle/authoring/README.md,modeling/lifecycle/authoring/cases.json,modeling/lifecycle/authoring/schema.test.cjs,modeling/lifecycle/authoring/contract_test.go,.github/workflows/model-authoring-contract.yml": {
+      "blob": null,
+      "mode": null
+    }
+  }
+}

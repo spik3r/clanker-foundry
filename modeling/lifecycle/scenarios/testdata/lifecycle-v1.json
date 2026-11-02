@@ -1,0 +1,441 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "id": "independent_lifecycle_v1",
+  "cases": [
+    {
+      "id": "happy",
+      "initial": {
+        "id": "task-1",
+        "state": "Draft",
+        "revision": "0",
+        "outcome": "Ship <&>",
+        "acceptance": [
+          "café",
+          "✓"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "prepare",
+          "command": {
+            "type": "prepare",
+            "actor": "owner-1",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "start",
+          "command": {
+            "type": "start",
+            "actor": "owner-1",
+            "expectedRevision": "1",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_start",
+            "task": {
+              "id": "task-1",
+              "state": "InProgress",
+              "revision": "2",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "submit",
+          "command": {
+            "type": "requestReview",
+            "actor": "owner-1",
+            "expectedRevision": "2",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_requestReview",
+            "task": {
+              "id": "task-1",
+              "state": "InReview",
+              "revision": "3",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "approve",
+          "command": {
+            "type": "approve",
+            "actor": "reviewer-1",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "3",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94",
+              "reviewer": "reviewer-1",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "task-1",
+              "state": "Done",
+              "revision": "4",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "refusal_then_success",
+      "initial": {
+        "id": "task-1",
+        "state": "Ready",
+        "revision": "1",
+        "outcome": "Ship <&>",
+        "acceptance": [
+          "café",
+          "✓"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "blank_actor",
+          "command": {
+            "type": "start",
+            "actor": "",
+            "expectedRevision": "1",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_start",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_actor"
+            ]
+          }
+        },
+        {
+          "id": "unknown_command",
+          "command": {
+            "type": "unknownExample",
+            "actor": "owner-1",
+            "expectedRevision": "1",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": null,
+            "refusals": [
+              "INVALID_INPUT"
+            ]
+          }
+        },
+        {
+          "id": "start_after_both_refusals",
+          "command": {
+            "type": "start",
+            "actor": "owner-1",
+            "expectedRevision": "1",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_start",
+            "task": {
+              "id": "task-1",
+              "state": "InProgress",
+              "revision": "2",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "rework_and_replay",
+      "initial": {
+        "id": "task-1",
+        "state": "InReview",
+        "revision": "3",
+        "outcome": "Ship <&>",
+        "acceptance": [
+          "café",
+          "✓"
+        ],
+        "owner": "owner-1"
+      },
+      "steps": [
+        {
+          "id": "changes",
+          "command": {
+            "type": "requestChanges",
+            "actor": "reviewer-1",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "3",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94",
+              "reviewer": "reviewer-1",
+              "decision": "changesRequested"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_requestChanges",
+            "task": {
+              "id": "task-1",
+              "state": "InProgress",
+              "revision": "4",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "resubmit",
+          "command": {
+            "type": "requestReview",
+            "actor": "owner-1",
+            "expectedRevision": "4",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_requestReview",
+            "task": {
+              "id": "task-1",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "stale_review_fresh_command",
+          "command": {
+            "type": "approve",
+            "actor": "reviewer-1",
+            "expectedRevision": "5",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "3",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94",
+              "reviewer": "reviewer-1",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "task-1",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ]
+          }
+        },
+        {
+          "id": "replayed_entire_command",
+          "command": {
+            "type": "approve",
+            "actor": "reviewer-1",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "3",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94",
+              "reviewer": "reviewer-1",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "task-1",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": [
+              "G_reviewContent",
+              "G_reviewRevision",
+              "G_revision"
+            ]
+          }
+        },
+        {
+          "id": "fresh_approval",
+          "command": {
+            "type": "approve",
+            "actor": "reviewer-1",
+            "expectedRevision": "5",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "5",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "b00a67f26543c0a2259a9a638ba1b416edff4bd2d11287ae2c2956466a25f1f9",
+              "reviewer": "reviewer-1",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "task-1",
+              "state": "Done",
+              "revision": "6",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "café",
+                "✓"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "same_revision_content_mismatch",
+      "initial": {
+        "id": "task-1",
+        "state": "InReview",
+        "revision": "3",
+        "outcome": "Ship <&>",
+        "acceptance": [
+          "Changed"
+        ],
+        "owner": "owner-1"
+      },
+      "steps": [
+        {
+          "id": "old_content_review",
+          "command": {
+            "type": "approve",
+            "actor": "reviewer-1",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "task-1",
+              "taskRevision": "3",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "taskDigest": "e0ab0176010aa6044142a2c830c3a6d146f41f862393d3a54bdb410071babc94",
+              "reviewer": "reviewer-1",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "task-1",
+              "state": "InReview",
+              "revision": "3",
+              "outcome": "Ship <&>",
+              "acceptance": [
+                "Changed"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": [
+              "G_reviewContent"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
