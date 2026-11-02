@@ -1,0 +1,69 @@
+package lifecycle_test
+
+import (
+	lifecycle "example.com/compilerprofile/generated"
+	"math"
+	"reflect"
+	"testing"
+)
+
+const expectedModel = "e4b871a029bb81d19df3428c6834f827986042daf50b0eef84e32faad252c012"
+
+func ptr(s string) *string { return &s }
+func task(state lifecycle.State, revision uint64, outcome string, owner *string) lifecycle.Task {
+	return lifecycle.Task{ID: "dispatch-item", State: state, Revision: revision, Outcome: outcome, Acceptance: []string{"criterion"}, Owner: owner}
+}
+func result(ok bool, id string, task *lifecycle.Task, reasons ...string) lifecycle.Result {
+	if reasons == nil {
+		reasons = []string{}
+	}
+	return lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: expectedModel, OK: ok, TransitionID: id, Task: task, Refusals: reasons}
+}
+func assertResult(t *testing.T, in lifecycle.Task, c lifecycle.Command, want lifecycle.Result) {
+	t.Helper()
+	before := task(in.State, in.Revision, in.Outcome, nil)
+	before.ID = in.ID
+	before.Acceptance = append([]string(nil), in.Acceptance...)
+	if in.Owner != nil {
+		before.Owner = ptr(*in.Owner)
+	}
+	got := lifecycle.Transition(in, c)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("PROFILE_ORACLE_MISMATCH got %#v task %#v want %#v task %#v", got, got.Task, want, want.Task)
+	}
+	if !reflect.DeepEqual(in, before) {
+		t.Fatal("PROFILE_ORACLE_MISMATCH input mutation")
+	}
+	if got.Task != nil {
+		got.Task.Acceptance[0] = "changed output"
+		if got.Task.Owner != nil {
+			*got.Task.Owner = "changed output owner"
+		}
+		if !reflect.DeepEqual(in, before) {
+			t.Fatal("PROFILE_ORACLE_MISMATCH shared result storage")
+		}
+	}
+}
+func TestProfileDispatch(t *testing.T) {
+	cases := []struct {
+		name string
+		in   lifecycle.Task
+		c    lifecycle.Command
+		want lifecycle.Result
+	}{
+		{"assign_nonstart", task("Queue", 7, "ready", nil), lifecycle.Command{Type: "advance", Actor: "signal-actor"}, result(true, "T_queue", func() *lifecycle.Task { x := task("ReviewBay", 8, "ready", ptr("signal-actor")); return &x }())},
+		{"keep_empty_owner", task("Queue", 7, "ready", ptr("")), lifecycle.Command{Type: "advance", Actor: "signal-actor"}, result(true, "T_queue", func() *lifecycle.Task { x := task("ReviewBay", 8, "ready", ptr("")); return &x }())},
+		{"same_trigger_other_state", task("ReviewBay", 8, "", ptr("owner")), lifecycle.Command{Type: "advance", Actor: "other"}, result(true, "T_accept", func() *lifecycle.Task { x := task("Accepted", 9, "", ptr("owner")); return &x }())},
+		{"self_loop", task("ReviewBay", 8, "", ptr("owner")), lifecycle.Command{Type: "pulse", Actor: "other"}, result(true, "T_pulse", func() *lifecycle.Task { x := task("ReviewBay", 9, "", ptr("owner")); return &x }())},
+		{"second_terminal", task("Queue", 8, "", nil), lifecycle.Command{Type: "discard", Actor: "other"}, result(true, "T_discard", func() *lifecycle.Task { x := task("Discarded", 9, "", nil); return &x }())},
+		{"guard_order_before_overflow", task("Queue", math.MaxUint64, " ", ptr("owner")), lifecycle.Command{Type: "advance", Actor: "\t"}, result(false, "T_queue", func() *lifecycle.Task { x := task("Queue", math.MaxUint64, " ", ptr("owner")); return &x }(), "G_actor", "G_outcome")},
+		{"overflow_atomic", task("Queue", math.MaxUint64, "ready", nil), lifecycle.Command{Type: "advance", Actor: "other"}, result(false, "T_queue", func() *lifecycle.Task { x := task("Queue", math.MaxUint64, "ready", nil); return &x }(), "REVISION_LIMIT")},
+		{"illegal_before_overflow", task("Queue", math.MaxUint64, "", ptr("owner")), lifecycle.Command{Type: "pulse", Actor: ""}, result(false, "", func() *lifecycle.Task { x := task("Queue", math.MaxUint64, "", ptr("owner")); return &x }(), "ILLEGAL_TRANSITION")},
+		{"accepted_terminal", task("Accepted", 8, "", nil), lifecycle.Command{Type: "advance", Actor: "other"}, result(false, "", func() *lifecycle.Task { x := task("Accepted", 8, "", nil); return &x }(), "ILLEGAL_TRANSITION")},
+		{"discarded_terminal", task("Discarded", 8, "", nil), lifecycle.Command{Type: "discard", Actor: "other"}, result(false, "", func() *lifecycle.Task { x := task("Discarded", 8, "", nil); return &x }(), "ILLEGAL_TRANSITION")},
+		{"unknown_command_invalid", task("Queue", math.MaxUint64, "", nil), lifecycle.Command{Type: "missing"}, result(false, "", nil, "INVALID_INPUT")},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) { assertResult(t, c.in, c.c, c.want) })
+	}
+}

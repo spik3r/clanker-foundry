@@ -1,0 +1,518 @@
+{
+  "version": "compiler-profile-acceptance/v1",
+  "files": [
+    {
+      "path": "dispatch/model.json",
+      "bytes": 2408,
+      "sha256": "b9dfcc79da4024fe0e5a71c3860808cde0d03a048bbf6b690ad5e2a643c0aee2"
+    },
+    {
+      "path": "dispatch/oracle_test.go.txt",
+      "bytes": 4381,
+      "sha256": "c8d27d4356e6d1b53a0d542f65bed2d9a12ede99f789569617d4de348df5c98e"
+    },
+    {
+      "path": "dispatch/requirements.md",
+      "bytes": 1665,
+      "sha256": "833d635a9e3df47d4abbb2fe54760306e46d9e98a604124f580bf008c4736390"
+    },
+    {
+      "path": "integers/model.json",
+      "bytes": 3181,
+      "sha256": "b794c3e9ff74ced37d2a00394906610e4aa56e5c684da8cf97bbe709df97a38a"
+    },
+    {
+      "path": "integers/oracle_test.go.txt",
+      "bytes": 19633,
+      "sha256": "c3cc48aa0a07d077a23c84b2c6786a98e23d264ebfc58d9fbb40d05d6abf7b45"
+    },
+    {
+      "path": "integers/requirements.md",
+      "bytes": 2133,
+      "sha256": "37a913b1322f42831df814ca50fa73e36f99c1722e444ae750f480a6dff95ef9"
+    },
+    {
+      "path": "presence/model.json",
+      "bytes": 14491,
+      "sha256": "9f981c0436fe51eef9f3b9f4beb9f4641b7b90fd31073ddb9badc9e66b3ea752"
+    },
+    {
+      "path": "presence/oracle_test.go.txt",
+      "bytes": 46843,
+      "sha256": "99cdb130291c34f41c6d9082601e43bdbb53a8ade40e623cd346af08af394c83"
+    },
+    {
+      "path": "presence/requirements.md",
+      "bytes": 2365,
+      "sha256": "818babf8ecbc0fa0b92b0a2554cf6dd624c7a2a7723ae0897638e32206516109"
+    },
+    {
+      "path": "requirements.md",
+      "bytes": 4650,
+      "sha256": "bbe5e9d88988839148104e3592c0f805c66c6d3ae953b365750c4c1ab0fcd313"
+    },
+    {
+      "path": "textdigest/model.json",
+      "bytes": 8895,
+      "sha256": "576841adb132ce6a62b88e9470ed45b78769525f00071ab7dfe5612a121d479a"
+    },
+    {
+      "path": "textdigest/oracle_test.go.txt",
+      "bytes": 8965,
+      "sha256": "d95b07586e88c30b0cbc693724b0a3e170cb80294ae2384d2b4c148b288c7c62"
+    },
+    {
+      "path": "textdigest/requirements.md",
+      "bytes": 2376,
+      "sha256": "ce329af690d1a8eb5fa2a8c9763fc8bb29cc43570ff97368bb9a11a1114497f1"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "dispatch",
+      "modelDigest": "e4b871a029bb81d19df3428c6834f827986042daf50b0eef84e32faad252c012",
+      "tests": [
+        "TestProfileDispatch",
+        "TestProfileDispatch/accepted_terminal",
+        "TestProfileDispatch/assign_nonstart",
+        "TestProfileDispatch/discarded_terminal",
+        "TestProfileDispatch/guard_order_before_overflow",
+        "TestProfileDispatch/illegal_before_overflow",
+        "TestProfileDispatch/keep_empty_owner",
+        "TestProfileDispatch/overflow_atomic",
+        "TestProfileDispatch/same_trigger_other_state",
+        "TestProfileDispatch/second_terminal",
+        "TestProfileDispatch/self_loop",
+        "TestProfileDispatch/unknown_command_invalid"
+      ],
+      "effects": [
+        {
+          "transition": "T_accept",
+          "destination": "Accepted",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_discard",
+          "destination": "Discarded",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_pulse",
+          "destination": "ReviewBay",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_queue",
+          "destination": "ReviewBay",
+          "operations": [
+            "assign_owner_if_absent",
+            "set_state",
+            "increment_revision"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "integers",
+      "modelDigest": "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914",
+      "tests": [
+        "TestProfileIntegerBoundaries",
+        "TestProfileIntegerBoundaries/above_float_precision",
+        "TestProfileIntegerBoundaries/above_uint32",
+        "TestProfileIntegerBoundaries/equal_large",
+        "TestProfileIntegerBoundaries/equal_max_overflow",
+        "TestProfileIntegerBoundaries/equal_refuses",
+        "TestProfileIntegerBoundaries/equal_zero",
+        "TestProfileIntegerBoundaries/guard_precedes_overflow",
+        "TestProfileIntegerBoundaries/increment_to_maximum",
+        "TestProfileIntegerBoundaries/invalid_before_guard_and_overflow",
+        "TestProfileIntegerBoundaries/overflow_after_true_guard",
+        "TestProfileIntegerBoundaries/unequal_large",
+        "TestProfileIntegerBoundaries/zero_differs",
+        "TestProfileIntegerOptionalOperands",
+        "TestProfileIntegerOptionalOperands/invalid_review_before_absent_guard",
+        "TestProfileIntegerOptionalOperands/reviewDifferent_absent",
+        "TestProfileIntegerOptionalOperands/reviewDifferent_large_distinct",
+        "TestProfileIntegerOptionalOperands/reviewDifferent_large_equal",
+        "TestProfileIntegerOptionalOperands/reviewDifferent_present_one",
+        "TestProfileIntegerOptionalOperands/reviewDifferent_present_zero",
+        "TestProfileIntegerOptionalOperands/reviewEqual_absent",
+        "TestProfileIntegerOptionalOperands/reviewEqual_large_distinct",
+        "TestProfileIntegerOptionalOperands/reviewEqual_large_equal",
+        "TestProfileIntegerOptionalOperands/reviewEqual_present_one",
+        "TestProfileIntegerOptionalOperands/reviewEqual_present_zero",
+        "TestProfileIntegerOptionalOperands/review_max_distinct",
+        "TestProfileIntegerOptionalOperands/review_max_equal_overflow"
+      ],
+      "effects": [
+        {
+          "transition": "T_advance",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_match",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_reviewDifferent",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_reviewEqual",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "presence",
+      "modelDigest": "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3",
+      "tests": [
+        "TestProfileBooleanComposition",
+        "TestProfileBooleanComposition/all_reject_operand_00",
+        "TestProfileBooleanComposition/all_reject_operand_01",
+        "TestProfileBooleanComposition/all_reject_operand_02",
+        "TestProfileBooleanComposition/all_reject_operand_03",
+        "TestProfileBooleanComposition/all_reject_operand_04",
+        "TestProfileBooleanComposition/all_reject_operand_05",
+        "TestProfileBooleanComposition/all_reject_operand_06",
+        "TestProfileBooleanComposition/all_reject_operand_07",
+        "TestProfileBooleanComposition/all_reject_operand_08",
+        "TestProfileBooleanComposition/all_reject_operand_09",
+        "TestProfileBooleanComposition/all_reject_operand_10",
+        "TestProfileBooleanComposition/all_reject_operand_11",
+        "TestProfileBooleanComposition/all_reject_operand_12",
+        "TestProfileBooleanComposition/all_reject_operand_13",
+        "TestProfileBooleanComposition/all_reject_operand_14",
+        "TestProfileBooleanComposition/all_reject_operand_15",
+        "TestProfileBooleanComposition/all_sentinel",
+        "TestProfileBooleanComposition/any_accept_operand_00",
+        "TestProfileBooleanComposition/any_accept_operand_01",
+        "TestProfileBooleanComposition/any_accept_operand_02",
+        "TestProfileBooleanComposition/any_accept_operand_03",
+        "TestProfileBooleanComposition/any_accept_operand_04",
+        "TestProfileBooleanComposition/any_accept_operand_05",
+        "TestProfileBooleanComposition/any_accept_operand_06",
+        "TestProfileBooleanComposition/any_accept_operand_07",
+        "TestProfileBooleanComposition/any_accept_operand_08",
+        "TestProfileBooleanComposition/any_accept_operand_09",
+        "TestProfileBooleanComposition/any_accept_operand_10",
+        "TestProfileBooleanComposition/any_accept_operand_11",
+        "TestProfileBooleanComposition/any_accept_operand_12",
+        "TestProfileBooleanComposition/any_accept_operand_13",
+        "TestProfileBooleanComposition/any_accept_operand_14",
+        "TestProfileBooleanComposition/any_accept_operand_15",
+        "TestProfileBooleanComposition/any_outside",
+        "TestProfileBooleanComposition/nested_absent_and_list",
+        "TestProfileBooleanComposition/nested_absent_nil",
+        "TestProfileBooleanComposition/nested_different_and_list",
+        "TestProfileBooleanComposition/nested_matching_and_list",
+        "TestProfileBooleanComposition/nested_matching_empty",
+        "TestProfileBooleanComposition/nested_present_empty_matches",
+        "TestProfileListPresence",
+        "TestProfileListPresence/blank_item_is_invalid_not_guard_false",
+        "TestProfileListPresence/empty_list",
+        "TestProfileListPresence/nil_list",
+        "TestProfileListPresence/one_item",
+        "TestProfileOptionalStrings",
+        "TestProfileOptionalStrings/ownerAbsent_empty",
+        "TestProfileOptionalStrings/ownerAbsent_named",
+        "TestProfileOptionalStrings/ownerAbsent_nil",
+        "TestProfileOptionalStrings/ownerAbsent_unicode_space",
+        "TestProfileOptionalStrings/ownerDifferent_empty",
+        "TestProfileOptionalStrings/ownerDifferent_named",
+        "TestProfileOptionalStrings/ownerDifferent_nil",
+        "TestProfileOptionalStrings/ownerDifferent_unicode_space",
+        "TestProfileOptionalStrings/ownerEmpty_empty",
+        "TestProfileOptionalStrings/ownerEmpty_named",
+        "TestProfileOptionalStrings/ownerEmpty_nil",
+        "TestProfileOptionalStrings/ownerEmpty_unicode_space",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_both_absent",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_both_empty",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_different",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_equal",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_owner_absent",
+        "TestProfileOptionalStrings/ownerReviewerDifferent_review_absent",
+        "TestProfileOptionalStrings/ownerReviewerEqual_both_absent",
+        "TestProfileOptionalStrings/ownerReviewerEqual_both_empty",
+        "TestProfileOptionalStrings/ownerReviewerEqual_different",
+        "TestProfileOptionalStrings/ownerReviewerEqual_equal",
+        "TestProfileOptionalStrings/ownerReviewerEqual_owner_absent",
+        "TestProfileOptionalStrings/ownerReviewerEqual_review_absent",
+        "TestProfileOptionalStrings/ownerText_empty",
+        "TestProfileOptionalStrings/ownerText_named",
+        "TestProfileOptionalStrings/ownerText_nil",
+        "TestProfileOptionalStrings/ownerText_unicode_space"
+      ],
+      "effects": [
+        {
+          "transition": "T_allSixteen",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_anySixteen",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_criteria",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_nested",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerAbsent",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerDifferent",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerEmpty",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerReviewerDifferent",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerReviewerEqual",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_ownerText",
+          "destination": "Closed",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "textdigest",
+      "modelDigest": "9995b9e76a43b07b7b55ddeda0448e2a02c90b71344669bbdc73244233877866",
+      "tests": [
+        "TestProfileAbsentReview",
+        "TestProfileAbsentReview/decision",
+        "TestProfileAbsentReview/digest",
+        "TestProfileAbsentReview/model",
+        "TestProfileAbsentReview/reviewer",
+        "TestProfileAbsentReview/reviewid",
+        "TestProfileAbsentReview/reviewrevision",
+        "TestProfileInvalidText",
+        "TestProfileInvalidText/blank_acceptance_entry",
+        "TestProfileInvalidText/blank_id",
+        "TestProfileInvalidText/invalid_review_decision",
+        "TestProfileInvalidText/invalid_utf8",
+        "TestProfileReferenceBindings",
+        "TestProfileReferenceBindings/acceptance",
+        "TestProfileReferenceBindings/actor",
+        "TestProfileReferenceBindings/decision",
+        "TestProfileReferenceBindings/digest",
+        "TestProfileReferenceBindings/id",
+        "TestProfileReferenceBindings/model",
+        "TestProfileReferenceBindings/nonblank",
+        "TestProfileReferenceBindings/outcome",
+        "TestProfileReferenceBindings/owner",
+        "TestProfileReferenceBindings/reviewer",
+        "TestProfileReferenceBindings/reviewid",
+        "TestProfileReferenceBindings/reviewrevision",
+        "TestProfileReferenceBindings/revision",
+        "TestProfileReferenceRefusals",
+        "TestProfileReferenceRefusals/acceptance_empty",
+        "TestProfileReferenceRefusals/acceptance_nil",
+        "TestProfileReferenceRefusals/actor",
+        "TestProfileReferenceRefusals/decision",
+        "TestProfileReferenceRefusals/digest",
+        "TestProfileReferenceRefusals/id",
+        "TestProfileReferenceRefusals/model",
+        "TestProfileReferenceRefusals/owner_empty",
+        "TestProfileReferenceRefusals/owner_nil",
+        "TestProfileReferenceRefusals/reviewer",
+        "TestProfileReferenceRefusals/reviewid",
+        "TestProfileReferenceRefusals/reviewrevision",
+        "TestProfileReferenceRefusals/revision",
+        "TestProfileReferenceRefusals/unicode_not_normalized",
+        "TestProfileReferenceRefusals/unicode_whitespace",
+        "TestProfileTaskDigests",
+        "TestProfileTaskDigests/acceptance_order",
+        "TestProfileTaskDigests/base",
+        "TestProfileTaskDigests/decomposed",
+        "TestProfileTaskDigests/empty_acceptance",
+        "TestProfileTaskDigests/empty_owner",
+        "TestProfileTaskDigests/max_uint64",
+        "TestProfileTaskDigests/nil_acceptance",
+        "TestProfileTaskDigests/nil_owner"
+      ],
+      "effects": [
+        {
+          "transition": "T_acceptance",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_actor",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_decision",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_digest",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_id",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_model",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_nonblank",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_outcome",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_owner",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_reviewer",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_reviewid",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_reviewrevision",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        },
+        {
+          "transition": "T_revision",
+          "destination": "Archived",
+          "operations": [
+            "set_state",
+            "increment_revision"
+          ]
+        }
+      ]
+    }
+  ]
+}
