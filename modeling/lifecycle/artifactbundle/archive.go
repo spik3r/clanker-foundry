@@ -30,8 +30,10 @@ type manifest struct {
 	InventoryDigest string           `json:"inventoryDigest"`
 }
 
-func profileOK(p string) bool { return p == ReviewProfile || p == QualificationProfile }
-func sha(b []byte) string     { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
+func profileOK(p string) bool {
+	return p == ReviewProfile || p == QualificationProfile || p == DesignChangeProfile
+}
+func sha(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
 func validName(name string) bool {
 	if len(name) == 0 || len(name) > MaxNameBytes || strings.ToLower(name) == ManifestName {
 		return false
