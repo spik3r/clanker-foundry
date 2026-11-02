@@ -1,6 +1,6 @@
 ---
 id: CF-proposal-replay-v1
-status: in-progress
+status: review
 owner: Byte proposal replay contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -119,3 +119,74 @@ validation and committed-diff lifecycle validation. Obtain independent exact-sou
 and invocation-boundary review. Record failures/skips honestly; installation is not
 part of this Go bridge and existing installer evidence is separate. Keep all prior
 fixture bytes and old lifecycle files untouched.
+
+## Local result and evidence
+
+The bridge and later-authorized first-design reference route are implemented.
+Source review is pinned to `48848bb51d6b1e780950b46944776ebb98567d8b`, tree
+`ce295704592b7306f7b23945ebac4dc2b612d37f`, on the canonical main above. The
+subsequent completion changes only this task and its append-only event. No shared
+compiler, runner, source policy, baseline fixture, dependency or workflow changed.
+
+### Independently frozen expectations
+
+- A separate author selected ParcelSeal and CuratorRelease policies and their
+  eight cases / thirteen complete literal steps from published baseline contracts.
+  It froze eight exact payloads and hashes in the review transcript before bridge
+  logic existed. Its native executor was unavailable. The implementer mechanically
+  decoded those payloads, verified every byte count, SHA-256 and Git blob identity,
+  and committed only those files in `0f9d553bcd4fd48dc4a76e30897064887d0e1ea6`.
+  Transcript freeze precedes implementation; later materialization is not claimed
+  as an earlier Git commit or as an independent runtime rerun by that author.
+- The complete oracle remains SHA-256
+  `cdc873a15122f8ccd1bd020cf7d193f101d88e5360e3a873a1bec0317cf57804`.
+  Strict decode/digest and acceptance check-only self-checks passed without invoking
+  a reducer. The optional `oracle_test.go` was not authored; the checkpoint removed
+  that absent path from the planned scope. All eight fixture files remain unchanged.
+- Actual candidate A and B report bytes match the independently frozen full reports:
+  `d4a22fddf07c543137912226728d3e1e2b3124769ea0fb223d02647695055095` and
+  `7707b41b23fb536ab5124a7bb058f676ff2028ce05b5a8dbabc2c328626db3ee`.
+  Both actual CLI executions compiled, started, exited zero and observed cleanup.
+  Repeating A produced an identical receipt on the same host/toolchain. Source
+  bytes/modes and original input hashes were unchanged.
+- Two disposable generated reducers compiled but failed the unchanged behavior
+  oracle: removing A owner assignment first differed on owner Mira versus null at
+  step A_assign; ignoring B's curator guard first omitted G_curator from refusals
+  at B_three_guards. Both exited one with cleanup, not compilation failure. The
+  independent author predicted these exact witnesses before seeing their receipts.
+  A separate negative suite changes A's first expected revision from 8 to 9 and
+  updates only its own manifest hash; replay retains expected 9 versus actual 8,
+  rather than repairing the expectation. Frozen files were not changed.
+
+### Checks and independent review
+
+- Installed Go 1.27.3, offline bounded serial
+  `go test -p 1 -race -count=1 ./...`: **60 tested packages passed**.
+  Whole-module `go vet -p 1 ./...`, `modelc validate`, `modelc check`,
+  `modeltrace check`, focused normal tests, gofmt and whitespace checks passed.
+- Repository validation passed. Its optional `skills-ref` executable was absent
+  and skipped. Installation was not rerun: no local GNU Stow installation or
+  installer pass is claimed by this change; previous installer evidence is separate.
+- A different native-capable reviewer independently reviewed the exact source and
+  reran focused race/vet and both actual CLI proposals with no findings. It verified
+  all frozen hashes, complete reports, unchanged source/input bytes, fixed version
+  and build commands, sanitized offline environment, the exact 18-member private
+  project, 0700 directory permissions and removal. Poisoned-go/non-module/missing-temp
+  controls confirmed check and stale execute do not launch a process. It separately
+  verified full mutant receipts. The whole-module aggregate remains implementer
+  evidence, not a claim that this reviewer reran it.
+- The fixture author separately reviewed the comparator excerpts: hard-coded
+  oracle/provenance hashes, exact raw report hashes and full JSON equality consume
+  its literal expectations without refreshing them from execution. That static
+  assessment is distinct from the other reviewer's native execution evidence.
+
+An early real output-limit regression failed because embedding `bytes.Buffer`
+promoted `ReadFrom`, allowing `io.Copy` to bypass the bounded `Write`. The retained
+test now passes after changing to a named buffer. An initial modelc check used an
+unsupported flag; the documented subcommand retry passed. Neither failed attempt
+is reported as a pass. No expectation was changed to accommodate a runtime result.
+
+This completes the local bridge, not human design approval, visual review, the
+worked first-design example's open use decision, publication, integration or
+deployment. Current main and exact lifecycle coverage must be checked again for
+any later publication/integration operation. No denied artifact was accessed.
