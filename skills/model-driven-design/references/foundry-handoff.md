@@ -164,3 +164,23 @@ are in place and candidate execution is authorized. Keep the literal expectation
 frozen, record actual invoked code/toolchain and results, and obtain independent
 review of discrepancies. A matching replay still does not authorize publication,
 integration or deployment. Surrounding product behavior remains separate engineering.
+
+
+### Direct route for separately authorized proposal replay
+
+The existing checkout now provides `modeling/lifecycle/cmd/modelproposal` and its
+`proposalreplay/README.md`. Its `check` action consumes original model, suite and
+manifest text and performs only existing strict/check-only preflight. It does not
+need a candidate runner or mutate the checkout. Its separately invoked `execute`
+action builds the closed qualification project privately, compiles an actual
+candidate-bound modelplay and returns the full observed replay report, preserving
+frozen expectations and stale refusals rather than repairing them.
+
+Read that command's host/cleanup/output contract before execution. Its request has
+no paths or executable selection; execute runs from the trusted modeling module.
+An explicit execute invocation is still not proof that the required human choices,
+independent semantic review or permission exist. This route does not broaden
+**Prepare review** into execution, close the worked example's unanswered Q_use,
+replace actual visual review, or authorize real integration/deployment. Use it only
+for the separately authorized later action and keep its result distinct from the
+earlier unexecuted handoff and archive-consistency receipt.
