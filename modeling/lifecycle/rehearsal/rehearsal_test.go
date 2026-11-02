@@ -24,6 +24,7 @@ import (
 	lifecycle "github.com/spik3r/clanker-foundry/modeling/lifecycle/generated"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/modelpatch"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/rehearsalhandoff"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarios"
 )
 
@@ -155,6 +156,16 @@ func TestDocumentedRehearsalTwiceWithoutCheckoutMutation(t *testing.T) {
 			t.Fatal("rehearsal output not deterministic")
 		}
 	}
+	identities := file(t, filepath.Join(root, "rehearsalhandoff/testdata/report-identities.json"))
+	var pinned struct {
+		DefaultSummarySHA256 string `json:"defaultSummarySHA256"`
+	}
+	if err := json.Unmarshal(identities, &pinned); err != nil {
+		t.Fatal(err)
+	}
+	if checksum(first) != pinned.DefaultSummarySHA256 {
+		t.Fatal("default summary differs from pre-handoff observed reference")
+	}
 	var got map[string]any
 	if err := json.Unmarshal(first, &got); err != nil {
 		t.Fatal(err)
@@ -196,10 +207,10 @@ func TestDocumentedRehearsalTwiceWithoutCheckoutMutation(t *testing.T) {
 	if err != nil || len(entries) != 0 {
 		t.Fatalf("private temp not cleaned: %v %v", entries, err)
 	}
-	out, _, err := run(t, root, env, nil, "bash", script, "unexpected")
+	out, diag, err := run(t, root, env, nil, "bash", script, "unexpected")
 	var exit *exec.ExitError
-	if !errors.As(err, &exit) || exit.ExitCode() != 2 || len(out) != 0 {
-		t.Fatal("arguments not refused without stdout")
+	if !errors.As(err, &exit) || exit.ExitCode() != 2 || len(out) != 0 || string(diag) != "rehearsal: no arguments accepted\n" {
+		t.Fatalf("argument compatibility: stdout=%q stderr=%q err=%v", out, diag, err)
 	}
 }
 
@@ -319,7 +330,7 @@ func TestCleanupFailureNeverPublishesSuccess(t *testing.T) {
 	temp := t.TempDir()
 	marker := filepath.Join(t.TempDir(), "cleanup-reached")
 	script := file(t, filepath.Join(root, "rehearsal/run.sh"))
-	begin := []byte("exec python3 -I - \"$module\" <<'PY'\n")
+	begin := []byte("exec python3 -I - \"$module\" \"$mode\" <<'PY'\n")
 	end := []byte("\nPY\n")
 	i := bytes.Index(script, begin)
 	j := bytes.LastIndex(script, end)
@@ -346,16 +357,72 @@ func TestCleanupFailureNeverPublishesSuccess(t *testing.T) {
     tempfile.TemporaryDirectory.cleanup = _fail_after_cleanup
 `, markerLiteral)
 	program = bytes.Replace(program, anchor, append([]byte(injection), anchor...), 1)
-	out, diag, err := run(t, root, environment(temp), program, "python3", "-I", "-", root)
-	var exit *exec.ExitError
-	if !errors.As(err, &exit) || exit.ExitCode() != 1 || len(out) != 0 || string(diag) != "rehearsal: local operation failed\n" {
-		t.Fatalf("cleanup failure: err=%v stdout=%q stderr=%q", err, out, diag)
+	for _, mode := range []string{"summary", "handoff"} {
+		_ = os.Remove(marker)
+		out, diag, err := run(t, root, environment(temp), program, "python3", "-I", "-", root, mode)
+		var exit *exec.ExitError
+		if !errors.As(err, &exit) || exit.ExitCode() != 1 || len(out) != 0 || string(diag) != "rehearsal: local operation failed\n" {
+			t.Fatalf("%s cleanup failure: err=%v stdout=%q stderr=%q", mode, err, out, diag)
+		}
+		if string(file(t, marker)) != "cleaned" {
+			t.Fatal("cleanup fault not reached")
+		}
+		entries, err := os.ReadDir(temp)
+		if err != nil || len(entries) != 0 {
+			t.Fatalf("cleanup not completed: %v %v", entries, err)
+		}
 	}
-	if string(file(t, marker)) != "cleaned" {
-		t.Fatal("cleanup fault not reached")
+}
+
+func TestOptInHandoffIsDeterministicAndIndependentlyVerifiable(t *testing.T) {
+	root := moduleRoot(t)
+	before := snapshot(t, root)
+	temp := t.TempDir()
+	env := environment(temp)
+	script := filepath.Join(root, "rehearsal/run.sh")
+	var first []byte
+	for i := 0; i < 2; i++ {
+		out, diag, err := run(t, root, env, nil, "bash", script, "--handoff")
+		if err != nil || len(diag) != 0 {
+			t.Fatalf("handoff %d failed: %v %q", i, err, diag)
+		}
+		if i == 0 {
+			first = append([]byte{}, out...)
+		} else if !bytes.Equal(first, out) {
+			t.Fatal("handoff carrier not deterministic")
+		}
+	}
+	var x struct {
+		ExternalExpected    struct{ RequestSHA256, BeforeSourceSHA256, BeforeModelDigest, CandidateSHA256, CandidateModelDigest, SuiteSHA256 string }
+		BaselineSuiteSHA256 string
+	}
+	if err := json.Unmarshal(file(t, filepath.Join(root, "rehearsal/testdata/expected.json")), &x); err != nil {
+		t.Fatal(err)
+	}
+	var ids struct {
+		Baseline struct {
+			SHA256 string `json:"sha256"`
+		}
+		Candidate struct {
+			SHA256 string `json:"sha256"`
+		}
+	}
+	if err := json.Unmarshal(file(t, filepath.Join(root, "rehearsalhandoff/testdata/report-identities.json")), &ids); err != nil {
+		t.Fatal(err)
+	}
+	refs := rehearsalhandoff.References{RequestSHA256: x.ExternalExpected.RequestSHA256, BeforeSourceSHA256: x.ExternalExpected.BeforeSourceSHA256, BeforeModelDigest: x.ExternalExpected.BeforeModelDigest, CandidateSHA256: x.ExternalExpected.CandidateSHA256, CandidateModelDigest: x.ExternalExpected.CandidateModelDigest, CandidateSuiteSHA256: x.ExternalExpected.SuiteSHA256, BaselineSuiteSHA256: x.BaselineSuiteSHA256, BaselineReportSHA256: ids.Baseline.SHA256, CandidateReportSHA256: ids.Candidate.SHA256}
+	receipt, err := rehearsalhandoff.Verify(first, refs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if receipt.Status != "caller-supplied-records" || receipt.Authority != "none" || receipt.ReportBytesStatus != rehearsalhandoff.ReportStatus || receipt.CarrierSHA256 != checksum(first) {
+		t.Fatal("untruthful handoff receipt", receipt)
+	}
+	if !reflect.DeepEqual(before, snapshot(t, root)) {
+		t.Fatal("handoff mutated checkout")
 	}
 	entries, err := os.ReadDir(temp)
 	if err != nil || len(entries) != 0 {
-		t.Fatalf("cleanup not completed: %v %v", entries, err)
+		t.Fatalf("handoff temp not cleaned: %v %v", entries, err)
 	}
 }

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # Fixed-fixture local demonstration; this is not a sandbox or approval service.
 set -euo pipefail
-if [ "$#" -ne 0 ]; then printf '%s\n' 'rehearsal: no arguments accepted' >&2; exit 2; fi
+mode=summary
+if [ "$#" -eq 1 ] && [ "$1" = "--handoff" ]; then mode=handoff
+elif [ "$#" -ne 0 ]; then printf '%s\n' 'rehearsal: no arguments accepted' >&2; exit 2
+fi
 module="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
-exec python3 -I - "$module" <<'PY'
+exec python3 -I - "$module" "$mode" <<'PY'
 import base64
 import hashlib
 import io
@@ -19,6 +22,7 @@ import zipfile
 # The expected fixture was separately authored and frozen before this script.
 EXPECTED_SHA256 = '393b2080e0180581fff49857b08a5f9f86314447ee58211e7acf88b67bc0206f'
 source = pathlib.Path(sys.argv[1])
+mode = sys.argv[2]
 # Keep only documented local execution settings; do not inherit arbitrary Go
 # flags, tool overrides or proxy configuration from the calling environment.
 env = {key: os.environ[key] for key in ('PATH', 'HOME', 'TMPDIR', 'GOCACHE', 'LANG', 'LC_ALL') if key in os.environ}
@@ -118,10 +122,13 @@ try:
         bins = work / 'bin'
         bins.mkdir()
         targets = ['modelpatch', 'modeldiff', 'modeltopology', 'modelscenariodiff', 'modeldesignchange', 'modelplay', 'modelc']
+        if mode == 'handoff':
+            targets.append('modelrehearsalhandoff')
         invoke('build baseline tools', [go, 'build', '-o', str(bins) + os.sep] + ['./cmd/' + x for x in targets], module)
         tool = lambda name: str(bins / name)
 
-        baseline_report = parse(invoke('baseline replay', [tool('modelplay')], module, baseline_bytes), 'baseline replay')
+        baseline_report_bytes = invoke('baseline replay', [tool('modelplay')], module, baseline_bytes)
+        baseline_report = parse(baseline_report_bytes, 'baseline replay')
         check_replay(baseline_report, expected, 'baseline')
         require(invoke('candidate binding refusal', [tool('modelplay')], module, candidate_suite_bytes, 2) == b'', 'candidate binding refusal')
 
@@ -194,7 +201,8 @@ try:
         candidate_runner = str(bins / 'modelplay-candidate')
         invoke('build candidate runner', [go, 'build', '-o', candidate_runner, './cmd/modelplay'], module)
         require(invoke('baseline binding refusal', [candidate_runner], module, baseline_bytes, 2) == b'', 'baseline binding refusal')
-        candidate_report = parse(invoke('candidate replay', [candidate_runner], module, candidate_suite_bytes), 'candidate replay')
+        candidate_report_bytes = invoke('candidate replay', [candidate_runner], module, candidate_suite_bytes)
+        candidate_report = parse(candidate_report_bytes, 'candidate replay')
         check_replay(candidate_report, expected, 'candidate')
         result = {'formatVersion': 'lifecycle-design-rehearsal-result/v1', 'mode': 'example-only', 'authority': 'none',
                   'beforeModelDigest': expected['externalExpected']['BeforeModelDigest'],
@@ -206,8 +214,33 @@ try:
                   'archiveConsistent': True, 'archiveSuiteStatus': expected['suiteStatus'],
                   'archiveBindingStatus': expected['suiteBindingStatus'], 'archiveSHA256': sha(archive),
                   'generatedArtifactSHA256': artifact_hashes}
+        output = encoded(result) + b'\n'
+        if mode == 'handoff':
+            identities_bytes = (module / 'rehearsalhandoff/testdata/report-identities.json').read_bytes()
+            require(sha(identities_bytes) == 'dcc235323c66de66aa9cba3fa805260ea1008b71a4c383960cf5f8eb13646a61', 'report identity fixture')
+            identities = parse(identities_bytes, 'report identities')
+            refs = {'requestSHA256': external['requestSHA256'], 'beforeSourceSHA256': external['beforeSourceSHA256'],
+                    'beforeModelDigest': external['beforeModelDigest'], 'candidateSHA256': external['candidateSHA256'],
+                    'candidateModelDigest': external['candidateModelDigest'], 'candidateSuiteSHA256': external['suiteSHA256'],
+                    'baselineSuiteSHA256': expected['baselineSuiteSHA256'], 'baselineReportSHA256': identities['baseline']['sha256'],
+                    'candidateReportSHA256': identities['candidate']['sha256']}
+            payload = {'requestBase64': b64(request_bytes), 'baselineSuiteBase64': b64(baseline_bytes),
+                       'candidateSuiteBase64': b64(candidate_suite_bytes), 'archiveBase64': b64(archive),
+                       'baselineReportBase64': b64(baseline_report_bytes), 'candidateReportBase64': b64(candidate_report_bytes),
+                       'generatedGoBase64': b64((module / 'generated/lifecycle.go').read_bytes()),
+                       'generatedTestsBase64': b64((module / 'generated/model_paths_test.go').read_bytes())}
+            pack_request = {'formatVersion': 'lifecycle-rehearsal-handoff-pack/v1', 'references': refs, 'payload': payload}
+            output = invoke('handoff pack', [tool('modelrehearsalhandoff'), 'pack'], module, encoded(pack_request))
+            verify_request = {'formatVersion': 'lifecycle-rehearsal-handoff-verify/v1', 'references': refs, 'bundleBase64': b64(output)}
+            receipt = parse(invoke('handoff verify', [tool('modelrehearsalhandoff'), 'verify'], module, encoded(verify_request)), 'handoff verify')
+            require(receipt == {'formatVersion': 'lifecycle-rehearsal-handoff-receipt/v1',
+                    'status': 'caller-supplied-records', 'authority': 'none',
+                    'reportBytesStatus': 'hash-matched-only-not-inspected',
+                    'suiteBindings': 'consistent-with-verified-models',
+                    'archiveSuiteStatus': 'unvalidated and unexecuted; binding not inspected by archive',
+                    'carrierSHA256': sha(output)}, 'handoff receipt')
     # Publish success only after the private directory has been cleaned up.
-    sys.stdout.buffer.write(encoded(result) + b'\n')
+    sys.stdout.buffer.write(output)
 except RehearsalFailure as exc:
     # Only fixed stage names are raised by this script; no caller content is echoed.
     print('rehearsal: failed at ' + str(exc), file=sys.stderr)

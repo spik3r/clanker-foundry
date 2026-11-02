@@ -30,8 +30,9 @@ Python 3 and the exact Go **1.27.3** toolchain, then run:
 modeling/lifecycle/rehearsal/run.sh
 ```
 
-The script accepts no arguments or arbitrary model, command, path or program
-input. It starts Python in isolated mode, checks the Go version, restricts the
+The default script accepts no arguments or arbitrary model, command, path or
+program input. An explicit `--handoff` option produces the separately verifiable
+[portable carrier](../rehearsalhandoff/README.md) after the same fixed run. It starts Python in isolated mode, checks the Go version, restricts the
 child environment and disables Go module/network resolution and workspace/ambient
 Go configuration. It makes a private temporary module copy,
 invokes the fixed repository tools and attempts to remove that directory before
@@ -87,7 +88,7 @@ uses and should be handled accordingly.
    all six actual steps must match frozen complete task/refusal literals. The
    archive's earlier unexecuted status is not rewritten by that separate replay.
 
-The success receipt also records the archive hash and all five generated artifact
+The default success receipt also records the archive hash and all five generated artifact
 hashes. The regression test compares these hashes across two runs; equality is a
 byte-consistency observation, not authentication. The generated SVG is neither
 rendered nor visually reviewed. The receipt is not a promotion decision.
