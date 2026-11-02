@@ -1,6 +1,6 @@
 ---
 id: CF-model-three-way-merge-v1
-status: in-progress
+status: review
 owner: Byte model merge contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -123,3 +123,62 @@ Memory validation against verified main. Require independent exact-source review
 Use disposable mutants which compile and fail relevant frozen assertions; do not
 count compilation errors as behavioral kills. Record unavailable checks honestly.
 Completion remains a local handoff; publication requires separate authorization.
+
+
+## Local result and independent review
+
+Claim source `7e580a426b905a6707b727986dce52159068cb22` and the genuine start
+preceded maintained edits. API shapes were committed separately, then an independent
+author froze fourteen invented model/conflict vectors at `30fa851`. The unchanged
+oracle SHA-256 is
+`00c46bc02a46795b36c0c56383f7a640c0d6145bf73fcf303da68e2354489cbd`.
+Candidate digest expectations were independently computed with Python JSON/SHA-256,
+not the merger. Fixture self-checks ran before merge implementation, using a
+panic-only stub which those self-checks never invoked.
+
+The additive typed merger and stdin CLI are implemented. Independent tests compare
+whole literal candidates and all conflicts in both branch orientations. Three
+compiling disposable mutants (discard changed right, misclassify conflicts, accept
+an invalid combination) fail the unchanged behavioral oracle. This is finite
+assistant-authored acceptance evidence, not human approval or exhaustive proof.
+
+Exact-source review found an output-policy defect in `a5e01431`: inherited raw JSON
+preserved HTML escapes in expression literals. Repair `d8dde7519a66c9cca19b42afceea8da04e52998e`
+decodes only the existing adapter's validated output and re-encodes the complete
+envelope; it does not change the shared adapter or apply unsafe byte replacement.
+The reviewer's unchanged `<tag>&` probe and the new Unicode/literal-backslash
+roundtrip test pass. Independent re-review of that exact source found no remaining
+blocker; its bounded focused race run passed. The frozen oracle did not change.
+
+Final observed checks use actual Go 1.27.3, disabled module network and ambient Go
+workspace/config/flags, an authorized workspace cache/temp directory, GOMAXPROCS=2:
+- `go test -p 1 -race -count=1 ./...` passes on the branch: 49 tested packages;
+  modelc has no test files. `go vet -p 1 ./...` and `go run ./cmd/modelc check` pass.
+- The same full race/vet/drift checks pass in a disposable current-main union:
+  50 tested packages plus modelc. Current main was read at
+  `1c57dd3f6b6489f6f690917366e8e803ad610076`, tree
+  `feb030b57a23db4ec53984414ebedee81a54802f`. The union used local `03cd2bb`, whose
+  complete tree exactly equals that verified main tree, and applied this branch's
+  non-overlapping diff. The maintained branch was not rebased or published.
+- The actual stdin CLI no-op command reports merged with the unchanged canonical
+  digest and authority none. All three valid CLI statuses, input failures, short
+  writes and a real closed stdout pipe are tested.
+- Repository validator, gofmt and whitespace checks pass. Optional skills-ref is
+  unavailable. All 143 Project Memory regressions pass. Full committed-diff
+  lifecycle coverage is validated at closeout against the reviewed base.
+- Every pre-existing base path is byte-preserved; only the claimed new files and
+  this task/evidence are changed. No private data or new dependencies were used.
+
+Environmental failures were not counted as passes. The default home Go cache was
+read-only; a writable cache was selected. A full build initially exhausted /tmp;
+only this lane's own cache was moved to the workspace. Its external temporary
+build directory then needed a valid local Git repository for unchanged VCS-stamping
+checks. Later concurrent aggregate runs under host resource pressure hit several
+existing and new closed-pipe deadlines. Those runs failed; the unchanged full
+suites and independent focused race subsequently passed with bounded serial
+execution. No check, deadline, policy or expected result was weakened.
+
+The task remains a local review handoff. No push, PR, merge, deployment, worker
+activation, scenario execution or evidence rebinding was performed by this tool or
+lane. #20, #5, standard projections and other ownership remain untouched. Publication
+and integration require the coordinator's applicable authority and fresh checks.

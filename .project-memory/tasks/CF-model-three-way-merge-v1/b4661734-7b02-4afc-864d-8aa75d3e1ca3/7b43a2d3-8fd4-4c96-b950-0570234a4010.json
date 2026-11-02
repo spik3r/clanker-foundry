@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "7b43a2d3-8fd4-4c96-b950-0570234a4010",
+  "runId": "b4661734-7b02-4afc-864d-8aa75d3e1ca3",
+  "kind": "complete",
+  "parents": [
+    "979b23ab-ed75-488f-8266-c956cedede1e"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-three-way-merge-v1",
+    "path": "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "revision": "7e580a426b905a6707b727986dce52159068cb22",
+    "blob": "d1df764160a8f30c104fb0b73df4cf425239ae37",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fc16ce75ce08e351d95b1d47554d3cb596b0a70ff5fc8a5d9586a6ff6f34bd31"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-three-way-merge-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T09:34:36.223Z",
+  "summary": "Implemented and independently reviewed deterministic three-way model merge; frozen oracle unchanged and invalid combinations refuse without partial candidates",
+  "next": "Validate committed full diff, verify local bundle, and hand unpushed branch to coordinator; publication remains separately gated",
+  "files": [
+    "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "modeling/lifecycle/modelmerge/types.go",
+    "modeling/lifecycle/modelmerge/merge.go",
+    "modeling/lifecycle/modelmerge/decode.go",
+    "modeling/lifecycle/modelmerge/merge_test.go",
+    "modeling/lifecycle/modelmerge/decode_test.go",
+    "modeling/lifecycle/modelmerge/oracle_test.go",
+    "modeling/lifecycle/modelmerge/README.md",
+    "modeling/lifecycle/cmd/modelmerge/main.go",
+    "modeling/lifecycle/cmd/modelmerge/main_test.go"
+  ],
+  "validation": "Go 1.27.3 offline with GOMAXPROCS=2: full go test -p 1 -race -count=1 ./... passes on branch (49 tested packages) and current-main-tree union (50 tested); full vet and modelc check pass on both. Fourteen independent literal vectors in both orientations, all wire replays, three compiled behavioral mutants, Unicode escaping repair probe and independent exact-source focused race pass. Actual stdin CLI and real closed-pipe tests pass. Repository validator, gofmt, whitespace and 143 Project Memory regressions pass. skills-ref unavailable. Earlier tmp capacity, VCS stamping and saturated parallel deadline failures recovered without weakening tests; existing paths preserved.",
+  "snapshot": {
+    "tasks/CF-model-three-way-merge-v1-concurrent-designs.md": {
+      "blob": "22329a078b87fdc0c7c155811582a52f9d659f2c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/types.go": {
+      "blob": "b3914cc1802327f8f31b4ddd1f65699fc552cb2c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/merge.go": {
+      "blob": "71b167ae3ff05f8568101d635ad38d20fabcd941",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/decode.go": {
+      "blob": "165636aae634dd056ee6bce0b71ceb2a8c42a5ef",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/merge_test.go": {
+      "blob": "f479d8b387756903b3acfa350869295be70797a0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/decode_test.go": {
+      "blob": "3867b75844e71f3d4fea697481ce36bee5c9a36e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/oracle_test.go": {
+      "blob": "b1b2c368af36946ecdac9ebc18913f4763bfe908",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/README.md": {
+      "blob": "bdc8e158ce8a7668520d6091c685e027a3914699",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmerge/main.go": {
+      "blob": "aca353ce47e8cbfa95226bbd32e274588ad2dc07",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmerge/main_test.go": {
+      "blob": "908197dbd605e05f7dc845bb57949b82c919f7bb",
+      "mode": "100644"
+    }
+  }
+}
