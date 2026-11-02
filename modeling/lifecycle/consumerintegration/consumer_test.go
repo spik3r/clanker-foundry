@@ -80,6 +80,14 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 	for _, name := range []string{"requirements.md", "expected.json", "model-v1.json", "model-v2.json", "suite-v1.json", "suite-v2.json", "manifest-v1.json", "manifest-v2.json"} {
 		write(t, filepath.Join(root, "fixtures", name), read(t, filepath.Join(here, "testdata", name)))
 	}
+	// This separately authored explanation oracle is new; all eight prior fixtures
+	// retain their original bytes and independent inventory.
+	projection := read(t, filepath.Join(module, "scenarioexplain", "testdata", "bound-vectors.json"))
+	projectionHash := sha256.Sum256(projection)
+	if hex.EncodeToString(projectionHash[:]) != "c5e011aba6dd14f5eaf2de0016de10dd1359196decaf0eb8d6edf4463fc147f9" {
+		t.Fatal("bound explanation oracle bytes changed")
+	}
+	write(t, filepath.Join(root, "fixtures", "bound-explanation-vectors.json"), projection)
 	template := string(read(t, filepath.Join(here, "testdata", "adapter.go.txt")))
 	sources := map[string][]byte{}
 	adapters := map[string][]byte{}
@@ -173,6 +181,14 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 		}
 		if out, e := goTest(t, root, "./proof"+version, "-run", "^TestAdapterConformance$"); e != nil {
 			t.Fatalf("restored %s adapter conformance failed: %v\n%s", version, e, out)
+		}
+	}
+	// After all reducer/adapter mutations restore, actually replay and explain
+	// both models again. A build-only success is not this evidence.
+	for _, version := range []string{"v1", "v2"} {
+		out, err := goTest(t, root, "-v", "./proof"+version, "-run", "^TestFrozenReplay$")
+		if err != nil || !bytes.Contains(out, []byte("BOUND_EXPLANATION_MATCH: "+version)) {
+			t.Fatalf("restored %s explanation was not executed: %v\n%s", version, err, out)
 		}
 	}
 }
