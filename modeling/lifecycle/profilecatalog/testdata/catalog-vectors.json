@@ -1,0 +1,290 @@
+{
+  "formatVersion": "lifecycle-profile-catalog/v1",
+  "projectionVersion": "lifecycle-v1-source-projection/v1",
+  "status": "descriptive-projection",
+  "authority": "none",
+  "identities": {
+    "module": "github.com/spik3r/clanker-foundry/modeling/lifecycle",
+    "typedIRVersion": 1,
+    "profileVersion": "lifecycle/v1",
+    "sourceFormatVersion": "lifecycle-json/v1",
+    "generatorVersion": "lifecycle-go/v1",
+    "toolchainVersion": "go1.27.3"
+  },
+  "sourcePins": [
+    {
+      "path": "model/ir.go",
+      "size": 9385,
+      "sha256": "13f4ad2980b1ca523b07bdbc8ebeb0e0300f8df81faa8dcd1cdec5ccef007aeb",
+      "identityKind": "expected-reviewed-source"
+    },
+    {
+      "path": "jsonformat/json.go",
+      "size": 5162,
+      "sha256": "fe4eab95f978c6bf714171b553d2c7647322c20442d886a19d147b892899c9f3",
+      "identityKind": "expected-reviewed-source"
+    },
+    {
+      "path": "strictjson/decode.go",
+      "size": 4236,
+      "sha256": "a72ded4af99ffba5f5cca2931c6cace072634ee2e42eb00cd9a5988c691f1ee2",
+      "identityKind": "expected-reviewed-source"
+    },
+    {
+      "path": "compiler/generate.go",
+      "size": 12315,
+      "sha256": "e17610a27748a5d3baedf4f59c2183cb184f7e2681b5532c6f9d8d3d1eda6a38",
+      "identityKind": "expected-reviewed-source"
+    }
+  ],
+  "references": [
+    {
+      "path": "command.actor",
+      "type": "string",
+      "optional": false
+    },
+    {
+      "path": "command.expectedRevision",
+      "type": "uint64",
+      "optional": false
+    },
+    {
+      "path": "model.digest",
+      "type": "string",
+      "optional": false
+    },
+    {
+      "path": "review.decision",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "review.modelDigest",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "review.reviewer",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "review.taskDigest",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "review.taskId",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "review.taskRevision",
+      "type": "uint64",
+      "optional": true
+    },
+    {
+      "path": "task.acceptance",
+      "type": "strings",
+      "optional": false
+    },
+    {
+      "path": "task.digest",
+      "type": "string",
+      "optional": false
+    },
+    {
+      "path": "task.id",
+      "type": "string",
+      "optional": false
+    },
+    {
+      "path": "task.outcome",
+      "type": "string",
+      "optional": false
+    },
+    {
+      "path": "task.owner",
+      "type": "string",
+      "optional": true
+    },
+    {
+      "path": "task.revision",
+      "type": "uint64",
+      "optional": false
+    }
+  ],
+  "expressionForms": [
+    {
+      "kind": "ref",
+      "meaning": "one declared typed reference; other scalar fields and args empty"
+    },
+    {
+      "kind": "string",
+      "meaning": "UTF-8 string literal up to 4096 bytes; blank allowed; other scalar fields and args empty"
+    },
+    {
+      "kind": "op",
+      "meaning": "one supported operator with typed arguments; ref and value fields empty"
+    }
+  ],
+  "operators": [
+    {
+      "name": "absent",
+      "minArity": 1,
+      "maxArity": 1,
+      "arguments": "one direct optional reference",
+      "result": "bool",
+      "policy": "direct-optional-reference",
+      "allowedOperandTypes": [
+        "string",
+        "uint64"
+      ],
+      "directReferenceRequired": true,
+      "optionalReferenceRequired": true,
+      "sameOperandTypeRequired": false,
+      "distinctExprKeyRequired": false,
+      "normalizationDuplicateRecheck": false
+    },
+    {
+      "name": "all",
+      "minArity": 1,
+      "maxArity": 16,
+      "arguments": "boolean expressions with distinct ExprKey; duplicates rechecked after normalization",
+      "result": "bool",
+      "policy": "distinct-boolean-set",
+      "allowedOperandTypes": [
+        "bool"
+      ],
+      "directReferenceRequired": false,
+      "optionalReferenceRequired": false,
+      "sameOperandTypeRequired": false,
+      "distinctExprKeyRequired": true,
+      "normalizationDuplicateRecheck": true
+    },
+    {
+      "name": "any",
+      "minArity": 1,
+      "maxArity": 16,
+      "arguments": "boolean expressions with distinct ExprKey; duplicates rechecked after normalization",
+      "result": "bool",
+      "policy": "distinct-boolean-set",
+      "allowedOperandTypes": [
+        "bool"
+      ],
+      "directReferenceRequired": false,
+      "optionalReferenceRequired": false,
+      "sameOperandTypeRequired": false,
+      "distinctExprKeyRequired": true,
+      "normalizationDuplicateRecheck": true
+    },
+    {
+      "name": "eq",
+      "minArity": 2,
+      "maxArity": 2,
+      "arguments": "same-type string/string or uint64/uint64",
+      "result": "bool",
+      "policy": "same-type-scalar-pair",
+      "allowedOperandTypes": [
+        "string",
+        "uint64"
+      ],
+      "directReferenceRequired": false,
+      "optionalReferenceRequired": false,
+      "sameOperandTypeRequired": true,
+      "distinctExprKeyRequired": false,
+      "normalizationDuplicateRecheck": false
+    },
+    {
+      "name": "ne",
+      "minArity": 2,
+      "maxArity": 2,
+      "arguments": "same-type string/string or uint64/uint64",
+      "result": "bool",
+      "policy": "same-type-scalar-pair",
+      "allowedOperandTypes": [
+        "string",
+        "uint64"
+      ],
+      "directReferenceRequired": false,
+      "optionalReferenceRequired": false,
+      "sameOperandTypeRequired": true,
+      "distinctExprKeyRequired": false,
+      "normalizationDuplicateRecheck": false
+    },
+    {
+      "name": "nonempty",
+      "minArity": 1,
+      "maxArity": 1,
+      "arguments": "one string or strings expression",
+      "result": "bool",
+      "policy": "nonempty-value",
+      "allowedOperandTypes": [
+        "string",
+        "strings"
+      ],
+      "directReferenceRequired": false,
+      "optionalReferenceRequired": false,
+      "sameOperandTypeRequired": false,
+      "distinctExprKeyRequired": false,
+      "normalizationDuplicateRecheck": false
+    }
+  ],
+  "effects": {
+    "allowedSequences": [
+      [
+        "set_state",
+        "increment_revision"
+      ],
+      [
+        "assign_owner_if_absent",
+        "set_state",
+        "increment_revision"
+      ]
+    ],
+    "semantics": "ordered; set_state uses the transition target; no arbitrary effect op"
+  },
+  "limits": {
+    "identifierBytesMin": 1,
+    "identifierBytesMax": 48,
+    "identifierGrammar": "ASCII letter followed by ASCII letters, digits or underscores",
+    "statesMin": 2,
+    "statesMax": 16,
+    "requirementsMin": 1,
+    "requirementsMax": 64,
+    "guardsMin": 1,
+    "guardsMax": 64,
+    "transitionsMin": 1,
+    "transitionsMax": 32,
+    "transitionGuardsMin": 1,
+    "transitionGuardsMax": 64,
+    "stateLabelBytesMax": 256,
+    "requirementTextBytesMax": 4096,
+    "stringLiteralBytesMax": 4096,
+    "expressionMaxDepthRootZero": 16,
+    "typeOfMaxNodes": 512,
+    "wholeModelMaxGuardNodes": 512,
+    "booleanArgumentsMin": 1,
+    "booleanArgumentsMax": 16,
+    "jsonSourceBytesMax": 1048576,
+    "jsonSourceMaxDepth": 64,
+    "catalogOutputBytesMax": 65536,
+    "strictJSONMaxScannedValues": 100000
+  },
+  "structuralRules": [
+    "Model version is 1; IDs are globally unique across model, states, requirements, guards and transitions.",
+    "A guard references a requirement and has a boolean root expression; all guards and requirements are used.",
+    "Transition endpoints and guards exist; transition guard IDs are unique; state/trigger pairs are unique.",
+    "At least one terminal state exists; terminals have no outgoing transitions, nonterminals have an outgoing transition, and all states are reachable from the initial state.",
+    "State labels and requirement text are nonblank valid UTF-8; string literals may be blank.",
+    "Normalization sorts ID collections, transition guards, and all/any operands; effect order and eq/ne operand order remain significant."
+  ],
+  "limitations": [
+    "Operator and limit entries are a reviewed source-pinned descriptive projection, not a reflective authoritative registry or evaluator.",
+    "Source hashes are consistency assertions, not authenticated binary provenance or proof of human review.",
+    "TypeOf and this catalog do not establish model validity, guard satisfiability, execution, review, authorization or production policy.",
+    "The available source adapter is JSON-v1 only; no JSON Schema, second format, plugin system or UML/BPMN/SysML conformance is claimed.",
+    "Example lifecycle guards and decisions are model content, not universal profile policy."
+  ],
+  "sourceIdentityMeaning": "Expected reviewed source identities; the pure API and CLI do not read or observe source bytes at runtime. Test-only drift checks do not authenticate binaries, hosts, or review."
+}

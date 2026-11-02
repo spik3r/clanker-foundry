@@ -1,0 +1,598 @@
+{
+  "version": "lifecycle-profile-parity-vectors/v1",
+  "basis": "independently transcribed from pinned reviewed model source; not descriptor output",
+  "typeOf": [
+    {
+      "id": "eq_string",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "string",
+            "ref": "",
+            "value": "invented",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "ne_uint",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "ne",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.revision",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "ref",
+            "ref": "command.expectedRevision",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "eq_uint",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.revision",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "ref",
+            "ref": "command.expectedRevision",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "ne_string",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "ne",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "string",
+            "ref": "",
+            "value": "invented",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "nonempty_string",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "nonempty",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.outcome",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "nonempty_strings",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "nonempty",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.acceptance",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "optional_absent",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "absent",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.owner",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "all_distinct",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "all",
+        "args": [
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "nonempty",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.id",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          },
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "absent",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.owner",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "any_distinct",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "any",
+        "args": [
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "nonempty",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.id",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          },
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "absent",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.owner",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          }
+        ]
+      },
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "empty_string_literal",
+      "expr": {
+        "kind": "string",
+        "ref": "",
+        "value": "",
+        "op": "",
+        "args": []
+      },
+      "valid": true,
+      "type": "string"
+    },
+    {
+      "id": "eq_mixed",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "ref",
+            "ref": "task.revision",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "eq_lists",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.acceptance",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "ref",
+            "ref": "task.acceptance",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "eq_one_arg",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "eq_three_args",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "eq",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "string",
+            "ref": "",
+            "value": "a",
+            "op": "",
+            "args": []
+          },
+          {
+            "kind": "string",
+            "ref": "",
+            "value": "b",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "absent_required",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "absent",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "absent_literal",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "absent",
+        "args": [
+          {
+            "kind": "string",
+            "ref": "",
+            "value": "x",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "nonempty_uint",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "nonempty",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.revision",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "all_empty",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "all",
+        "args": []
+      },
+      "valid": false
+    },
+    {
+      "id": "all_nonbool",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "all",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "all_duplicate",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "all",
+        "args": [
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "nonempty",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.id",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          },
+          {
+            "kind": "op",
+            "ref": "",
+            "value": "",
+            "op": "nonempty",
+            "args": [
+              {
+                "kind": "ref",
+                "ref": "task.id",
+                "value": "",
+                "op": "",
+                "args": []
+              }
+            ]
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "unknown_ref",
+      "expr": {
+        "kind": "ref",
+        "ref": "task.unknown",
+        "value": "",
+        "op": "",
+        "args": []
+      },
+      "valid": false
+    },
+    {
+      "id": "unknown_operator",
+      "expr": {
+        "kind": "op",
+        "ref": "",
+        "value": "",
+        "op": "execute",
+        "args": [
+          {
+            "kind": "ref",
+            "ref": "task.id",
+            "value": "",
+            "op": "",
+            "args": []
+          }
+        ]
+      },
+      "valid": false
+    },
+    {
+      "id": "mixed_reference",
+      "expr": {
+        "kind": "ref",
+        "ref": "task.id",
+        "value": "mixed",
+        "op": "",
+        "args": []
+      },
+      "valid": false
+    }
+  ],
+  "boundedRecipes": [
+    {
+      "id": "max_depth_16",
+      "construction": "15 nested single-argument all nodes around nonempty(ref task.id); root depth zero, reference depth 16",
+      "valid": true,
+      "type": "bool"
+    },
+    {
+      "id": "depth_17",
+      "construction": "16 nested single-argument all nodes around nonempty(ref task.id); reference depth 17",
+      "valid": false
+    },
+    {
+      "id": "boolean_17_args",
+      "construction": "all with 17 distinct boolean children",
+      "valid": false
+    },
+    {
+      "id": "node_513",
+      "construction": "otherwise well-typed tree with 513 expression nodes",
+      "valid": false
+    },
+    {
+      "id": "invalid_utf8_literal",
+      "construction": "one string literal containing byte ff",
+      "valid": false
+    }
+  ],
+  "wholeModelNegativeCases": [
+    "cross-kind duplicate ID including model ID",
+    "state label blank or invalid UTF-8",
+    "requirement text blank or invalid UTF-8",
+    "terminal state with outgoing transition",
+    "nonterminal with no outgoing transition",
+    "unreachable state",
+    "duplicate from/trigger pair",
+    "dangling state or guard reference",
+    "unused guard or requirement",
+    "duplicate transition guard ID",
+    "missing, extra, unsupported or reordered effects"
+  ],
+  "wholeModelPositiveCases": [
+    "set_state then increment_revision",
+    "assign_owner_if_absent then set_state then increment_revision"
+  ],
+  "behavioralMutationChecks": [
+    "returned reference slice mutation leaves registry and later calls unchanged",
+    "changing pinned source bytes makes drift gate fail",
+    "reordering all/any inputs normalizes identically",
+    "effect reordering is rejected",
+    "eq/ne operands are not reordered by normalization"
+  ]
+}

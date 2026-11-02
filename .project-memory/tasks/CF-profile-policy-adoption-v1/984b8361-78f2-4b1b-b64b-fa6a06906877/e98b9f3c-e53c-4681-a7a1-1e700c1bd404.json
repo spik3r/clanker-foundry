@@ -1,0 +1,48 @@
+{
+  "formatVersion": 2,
+  "eventId": "e98b9f3c-e53c-4681-a7a1-1e700c1bd404",
+  "runId": "984b8361-78f2-4b1b-b64b-fa6a06906877",
+  "kind": "checkpoint",
+  "parents": [
+    "24b9ff5e-a87d-48de-ae3a-177ebe11083f"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-profile-policy-adoption-v1",
+    "path": "tasks/CF-profile-policy-adoption-v1-profile-discovery.md",
+    "revision": "893c151b66e2719f1e0c8a6c9a20a01d993e0adf",
+    "blob": "8ea0e585a8a1569a3c5fa8064cc6290522f4520c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "decf5d777fdfaa33486c5cf2733214c0b5356394771aae26477598ee5390ee3a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/profile-policy-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T04:23:27.684Z",
+  "summary": "Independent current/legacy policy matrix and narrowly revised adoption tests frozen before changed policy logic at SHA256 b32e4008/ef962e49/265f7afe; old11pin arrays, both full semantic report literals, catalog/parity vectors and exact public ZIP preserved. Current policy revision fixed to actual1e88dbeb helper checkpoint; real stdout exit3 regression and policy documentation frozen.",
+  "next": "Adopt original catalog mapping and implement closed2policy lookup/full same-policy rebuild; observe real CLI signal regression before repair",
+  "files": [
+    "modeling/lifecycle/cmd/modelprofile/main.go",
+    "modeling/lifecycle/cmd/modelprofile/main_test.go",
+    "modeling/lifecycle/model/capabilities.go",
+    "modeling/lifecycle/model/capabilities_test.go",
+    "modeling/lifecycle/profilecatalog/README.md",
+    "modeling/lifecycle/profilecatalog/catalog.go",
+    "modeling/lifecycle/profilecatalog/catalog_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/catalog-vectors.json",
+    "modeling/lifecycle/profilecatalog/testdata/parity-vectors.json",
+    "modeling/lifecycle/profilecatalog/adoption_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/public-11-source-project.zip",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "tasks/CF-profile-policy-adoption-v1-profile-discovery.md"
+  ]
+}
