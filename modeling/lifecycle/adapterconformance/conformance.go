@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"runtime"
 
 	transport "github.com/spik3r/clanker-foundry/modeling/lifecycle/generated"
 )
@@ -161,47 +162,48 @@ func namedResult[T, R any](x transport.Result) R {
 	return v.Interface().(R)
 }
 
-// detached checks mutable storage in both directions after value equality. It
-// mutates only the newly constructed probes and restores their original values.
-// Walking the declared, finite shape also covers nested task/review pointers.
-func detached(a, b reflect.Value) bool {
-	switch a.Kind() {
-	case reflect.Struct:
-		for i := 0; i < a.NumField(); i++ {
-			if !detached(a.Field(i), b.Field(i)) {
-				return false
+// A region includes mutable pointer referents and full slice backing capacity.
+// String data is immutable and deliberately excluded; a *string's mutable header
+// is included. Shapes were validated before this traversal, so there are no
+// recursive type graphs or interface-valued fields to follow.
+type memoryRegion struct {
+	start, size uintptr
+}
+
+func mutableRegions(input any) []memoryRegion {
+	var regions []memoryRegion
+	var walk func(reflect.Value)
+	walk = func(v reflect.Value) {
+		switch v.Kind() {
+		case reflect.Struct:
+			for i := 0; i < v.NumField(); i++ {
+				walk(v.Field(i))
 			}
-		}
-	case reflect.Pointer:
-		if !a.IsNil() && !b.IsNil() {
-			if a.Pointer() == b.Pointer() {
-				return false
+		case reflect.Pointer:
+			if !v.IsNil() {
+				regions = append(regions, memoryRegion{v.Pointer(), v.Type().Elem().Size()})
+				walk(v.Elem())
 			}
-			return detached(a.Elem(), b.Elem())
-		}
-	case reflect.Slice:
-		if a.Cap() != 0 && b.Cap() != 0 {
-			x, y := a.Slice(0, a.Cap()), b.Slice(0, b.Cap())
-			// Include overlapping empty subslices with different starting
-			// offsets; equal length and first-element checks alone miss them.
-			xp, yp, size := x.Pointer(), y.Pointer(), x.Type().Elem().Size()
-			if (xp <= yp && yp-xp < uintptr(x.Cap())*size) ||
-				(yp <= xp && xp-yp < uintptr(y.Cap())*size) {
-				return false
+		case reflect.Slice:
+			if v.Cap() > 0 {
+				regions = append(regions, memoryRegion{v.Pointer(), uintptr(v.Cap()) * v.Type().Elem().Size()})
 			}
-			// Probes have distinct first/second entries. First-element mutation
-			// also detects shared empty capacity without requiring equal caps.
-			x0, y0 := x.Index(0).String(), y.Index(0).String()
-			x.Index(0).SetString("mutated-source")
-			forward := y.Index(0).String() == y0
-			x.Index(0).SetString(x0)
-			y.Index(0).SetString("mutated-result")
-			backward := x.Index(0).String() == x0
-			y.Index(0).SetString(y0)
-			return forward && backward
 		}
 	}
-	return true
+	walk(reflect.ValueOf(input))
+	return regions
+}
+
+// Subtraction avoids overflowing a start+size endpoint. Ordinary Go pointers and
+// slices have valid referents; callbacks using unsafe memory are not sandboxed.
+func overlaps(a, b memoryRegion) bool {
+	if a.size == 0 || b.size == 0 {
+		return false
+	}
+	if a.start <= b.start {
+		return b.start-a.start < a.size
+	}
+	return a.start-b.start < b.size
 }
 
 func unchanged(label string, got, want any) error {
@@ -253,7 +255,24 @@ func unchangedInput(label string, got, want any, before []storageRecord) error {
 	return nil
 }
 func owned(label string, input, output any) error {
-	if !detached(reflect.ValueOf(input), reflect.ValueOf(output)) {
+	// Comparing only matching paths misses an output Owner pointing into an input
+	// list, or output Refusals sharing input Task.Acceptance. Compare all regions.
+	inputs, outputs := mutableRegions(input), mutableRegions(output)
+	separate := true
+compare:
+	for _, in := range inputs {
+		for _, out := range outputs {
+			if overlaps(in, out) {
+				separate = false
+				break compare
+			}
+		}
+	}
+	// uintptr ranges alone do not keep their objects alive. Retain both complete
+	// roots until comparison ends so address reuse cannot become an apparent alias.
+	runtime.KeepAlive(input)
+	runtime.KeepAlive(output)
+	if !separate {
 		return fmt.Errorf("%s: mutable storage aliases", label)
 	}
 	return nil

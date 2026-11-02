@@ -54,7 +54,10 @@ both directions can cancel in a round trip and must still fail here. Probes cove
   Equal-value replacement of caller-visible nested storage still fails.
   Detached task/review pointers, nested owner/list storage and result refusals.
   Empty lists have spare capacity to expose aliases;
-  overlap checks include shifted empty subslices, not only equal starting pointers.
+  every input mutable region is compared with every output region, regardless of
+  field path or pointer/slice kind. Overlap checks include pointer referent extents
+  and shifted empty subslices, not only equal starting pointers. Original objects
+  remain live through address comparison.
   Fresh probe storage is used for each call.
 
 `Check` returns nil on success or the first error. Diagnostics identify the failed
@@ -75,11 +78,15 @@ That separation is not independent-person review or proof of real requirements.
 Independent review later exposed spare-capacity input mutations that value-only
 comparison missed. An independently authored addendum was frozen before the
 storage-snapshot correction; the original pre-logic cases remain unchanged.
+Later PR review found cross-field aliases that matching-path comparisons missed.
+Five independent cross-field/cross-kind regressions were frozen before replacing
+that comparison with all-region disjointness. Earlier test bytes remain unchanged.
 
 The existing consumer proof adopts this helper for **both** independently generated
 models. It still runs both frozen fourteen-step scenario suites and its original
-generated-code behavioral mutants. Seven disposable adapter mutations per model
-exercise a coupled field swap, command-field drop and five alias forms. A compile
+generated-code behavioral mutants. Nine disposable adapter mutations per model
+exercise a coupled field swap, command-field drop and seven alias forms, including
+cross-field lists and a pointer into another field's backing storage. A compile
 failure does not count: the conformance test must run and emit its failure marker.
 After mutation, each restored adapter must actually pass conformance again.
 No frozen model, suite, manifest, requirements or expected-inventory bytes change.

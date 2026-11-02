@@ -147,6 +147,8 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 		{"alias-review", []edit{{"out.Review = &custom.Review{TaskID: r.TaskID, TaskRevision: r.TaskRevision, ModelDigest: r.ModelDigest, TaskDigest: r.TaskDigest, Reviewer: r.Reviewer, Decision: r.Decision}", "_ = r; out.Review = (*custom.Review)(c.Review)", 1}}},
 		{"alias-result-task-slice", []edit{{"t := fromTask(*r.Task)", "t := fromTask(*r.Task); t.Acceptance = r.Task.Acceptance", 1}}},
 		{"alias-result-refusals", []edit{{"stringsCopy(r.Refusals)", "r.Refusals", 1}}},
+		{"cross-field-refusals", []edit{{"out.Task = &t\n\t}\n\treturn out", "out.Task = &t\n\t}\n\tif r.Task != nil && r.Refusals != nil && len(r.Refusals) == 0 && r.Task.Acceptance != nil && len(r.Task.Acceptance) == 0 { out.Refusals = r.Task.Acceptance }\n\treturn out", 1}}},
+		{"cross-kind-owner", []edit{{"out.Task = &t\n\t}\n\treturn out", "out.Task = &t\n\t}\n\tif r.Task != nil && r.Task.Owner != nil && *r.Task.Owner == \"\" && r.Task.Acceptance != nil && len(r.Task.Acceptance) == 0 && cap(r.Task.Acceptance) > 0 { out.Task.Owner = &r.Task.Acceptance[:cap(r.Task.Acceptance)][0] }\n\treturn out", 1}}},
 	}
 	for _, version := range []string{"v1", "v2"} {
 		path := filepath.Join(root, "proof"+version, "adapter_test.go")

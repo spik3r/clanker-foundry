@@ -70,8 +70,9 @@ the changed submit-actor rule. The test checks:
   empty lists/pointers, ordered duplicate refusals, copied ownership and unchanged
   result envelopes. Expected fields never come from an inverse adapter: mutually
   wrong round-trip conversions must not cancel each other's errors.
-- Seven disposable adapter mutations per model (coupled field swap, field drop,
-  task slice/owner, review, nested result-task slice and refusal aliases) must run
+- Nine disposable adapter mutations per model (coupled field swap, field drop,
+  task slice/owner, review, nested result-task slice, refusal, cross-field list
+  and pointer-into-list aliases) must run
   the conformance test and fail with its marker, not a build error. Each restored
   adapter must actually pass conformance again.
 - Two mutations in disposable generated code—always refusing, and removing the
