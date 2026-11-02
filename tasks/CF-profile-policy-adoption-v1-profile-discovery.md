@@ -201,3 +201,16 @@ Original final557441afc8c0bb00d91483303ff001d02af6823b, not new adoption authori
 | modeling/lifecycle/profilecatalog/catalog_test.go | 12329 | df321e13b5d82828ad519f23837ba028e1e30ac2fb6aa1b56027723a8e2dc18c |
 | modeling/lifecycle/profilecatalog/testdata/catalog-vectors.json | 8841 | 42d745b5307eb8f8a6985b4f4cc875d93fa1f7dcae2cf6922add38cd384c392a |
 | modeling/lifecycle/profilecatalog/testdata/parity-vectors.json | 12496 | 789378e0e89dacd84f6a2b4f06078b6aeab895b5fd59a467d0c5af72dcfc2e94 |
+
+
+## Actual pre-policy source checkpoint
+
+Current policy source revision is now fixed to the genuine committed checkpoint
+1e88dbebb4ab13873e2a4159dc928dd1f5f73e20, tree
+965db61c0506c84770a1e3dd13081316ed604354, a direct child of the fresh claim.
+The original lead independently checked the source record and start/checkpoint
+chain, exact capability file and vector identities, unchanged public archive, and
+all eleven old source pins. The model package at this checkpoint contains exactly
+ir.go and capabilities.go as production files. Catalog mapping and all seven
+shared policy paths were still unmodified at that checkpoint. Independent policy
+expectations will name this actual revision before changed policy logic.

@@ -24,7 +24,10 @@ import (
 	"testing"
 )
 
+// Legacy policy identity and eleven pins remain readable and unchanged.
 const adoptionRevision = "3d6d17188cc2723cfe04649d0f8b4220a37b1afe"
+
+const adoptionCurrentRevision = "1e88dbebb4ab13873e2a4159dc928dd1f5f73e20"
 
 func adoptionExpected() designchange.Expected {
 	return designchange.Expected{
@@ -73,14 +76,14 @@ func adoptionSources(t *testing.T) []artifactbundle.File {
 	t.Helper()
 	want := []string{}
 	out := []artifactbundle.File{}
-	for _, p := range adoptionPins {
+	for _, p := range adoptionCurrentPins() {
 		want = append(want, p.name)
 		out = append(out, artifactbundle.File{Name: p.name, Data: adoptionRead(t, filepath.Join("..", p.name), p.sha, p.size)})
 	}
 	got := qualification.SourceNames()
 	sort.Strings(got)
 	sort.Strings(want)
-	if !reflect.DeepEqual(got, want) || qualification.SourceRevision != adoptionRevision {
+	if !reflect.DeepEqual(got, want) || qualification.SourceRevision != adoptionCurrentRevision {
 		t.Fatal("current qualifier closure changed")
 	}
 	return out
@@ -122,7 +125,7 @@ func adoptionOuterNames() []string {
 }
 func adoptionInnerNames() []string {
 	n := []string{"GUIDE.txt", "candidate.json", "suite.json", "qualification.json", "generated/lifecycle.go", "generated/model_paths_test.go"}
-	for _, p := range adoptionPins {
+	for _, p := range adoptionCurrentPins() {
 		n = append(n, p.name)
 	}
 	return n
@@ -140,11 +143,11 @@ func adoptionCheckMetadata(t *testing.T, outer, inner map[string][]byte, w desig
 	// Only the two hashes of dynamically generated artifacts are consistency
 	// assertions computed from their bytes. They are not independent golden output
 	// digests, provenance, or a substitute for the six frozen external identities.
-	want := map[string]any{"formatVersion": "lifecycle-designchange/v1", "mode": "example-only", "authority": "none", "requestSHA256": w.RequestSHA256, "beforeSourceSHA256": w.BeforeSourceSHA256, "beforeModelDigest": w.BeforeModelDigest, "candidateSHA256": w.CandidateSHA256, "candidateModelDigest": w.CandidateModelDigest, "suiteSHA256": w.SuiteSHA256, "plannerResultSHA256": adoptionSHA(outer["planner-result.json"]), "qualificationSHA256": adoptionSHA(outer["qualification.zip"]), "modelFormatVersion": "lifecycle-json/v1", "profileVersion": "lifecycle/v1", "generatorVersion": "lifecycle-go/v1", "toolchainVersion": "go1.27.3", "qualificationSourceRevision": adoptionRevision, "suiteStatus": "unvalidated and unexecuted", "suiteBindingStatus": "not inspected"}
+	want := map[string]any{"formatVersion": "lifecycle-designchange/v1", "mode": "example-only", "authority": "none", "requestSHA256": w.RequestSHA256, "beforeSourceSHA256": w.BeforeSourceSHA256, "beforeModelDigest": w.BeforeModelDigest, "candidateSHA256": w.CandidateSHA256, "candidateModelDigest": w.CandidateModelDigest, "suiteSHA256": w.SuiteSHA256, "plannerResultSHA256": adoptionSHA(outer["planner-result.json"]), "qualificationSHA256": adoptionSHA(outer["qualification.zip"]), "modelFormatVersion": "lifecycle-json/v1", "profileVersion": "lifecycle/v1", "generatorVersion": "lifecycle-go/v1", "toolchainVersion": "go1.27.3", "qualificationSourceRevision": adoptionCurrentRevision, "suiteStatus": "unvalidated and unexecuted", "suiteBindingStatus": "not inspected"}
 	if !reflect.DeepEqual(adoptionJSON(t, outer["design-change.json"]), want) {
 		t.Fatal("outer metadata/status/authority drift")
 	}
-	innerWant := map[string]any{"format": "lifecycle-json/v1", "profile": "lifecycle/v1", "generator": "lifecycle-go/v1", "toolchain": "go1.27.3", "modelDigest": w.CandidateModelDigest, "sourceRevision": adoptionRevision, "suiteStatus": "unvalidated and unexecuted"}
+	innerWant := map[string]any{"format": "lifecycle-json/v1", "profile": "lifecycle/v1", "generator": "lifecycle-go/v1", "toolchain": "go1.27.3", "modelDigest": w.CandidateModelDigest, "sourceRevision": adoptionCurrentRevision, "suiteStatus": "unvalidated and unexecuted"}
 	if !reflect.DeepEqual(adoptionJSON(t, inner["qualification.json"]), innerWant) {
 		t.Fatal("nested metadata or suite status drift")
 	}
@@ -201,7 +204,7 @@ func TestAdoptionCurrentNestedClosureAndFrozenIdentities(t *testing.T) {
 	if adoptionSHA(outer["candidate.json"]) == "9674eb213352232f354c2c338709baf6a3230a599ef89845e1cfac5525d4c6e1" {
 		t.Fatal("normalized candidate confused with old formatted source")
 	}
-	for _, p := range adoptionPins {
+	for _, p := range adoptionCurrentPins() {
 		if len(inner[p.name]) != p.size || adoptionSHA(inner[p.name]) != p.sha {
 			t.Fatal("inner source pin differs", p.name)
 		}
@@ -314,6 +317,7 @@ func TestAdoptionRejectsMissingTamperedAndOldNestedClosure(t *testing.T) {
 		case "missing-report-decoder":
 			delete(inner, "scenarios/report_decode.go")
 		case "old-nine-source-inventory":
+			delete(inner, "model/capabilities.go")
 			delete(inner, "scenarios/runner.go")
 			delete(inner, "scenarios/report_decode.go")
 		case "stale-revision":
@@ -345,4 +349,11 @@ func TestAdoptionRejectsMissingTamperedAndOldNestedClosure(t *testing.T) {
 			t.Fatal("stale or incomplete nested domain accepted", mutation)
 		}
 	}
+}
+
+// New default export uses the actual helper-freeze commit; the legacy public
+// archive remains tested independently by profilecatalog's compatibility oracle.
+func adoptionCurrentPins() []adoptionPin {
+	out := append([]adoptionPin{}, adoptionPins...)
+	return append(out, adoptionPin{"model/capabilities.go", 654, "e78f4f9c102f8d894e50130dd0bfb8030e0c7c325b01eb2452e9839c02c27e4e"})
 }

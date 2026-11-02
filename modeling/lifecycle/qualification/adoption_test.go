@@ -66,7 +66,7 @@ func adoptionPinnedSources(t *testing.T) []artifactbundle.File {
 	return out
 }
 func TestAdoptionFrozenSourceAndInputIdentities(t *testing.T) {
-	if SourceRevision != adoptionSourceRevision {
+	if SourceRevision != "1e88dbebb4ab13873e2a4159dc928dd1f5f73e20" {
 		t.Fatal("source revision relabeled")
 	}
 	if len(candidate) != 8769 || adoptionSHA([]byte(candidate)) != adoptionCandidateSHA || len(suite) != 6656 || adoptionSHA([]byte(suite)) != adoptionSuiteSHA {
@@ -81,30 +81,19 @@ func TestAdoptionFrozenSourceAndInputIdentities(t *testing.T) {
 		t.Fatal("candidate semantic identity changed", d, e)
 	}
 	want := []string{}
-	wantPins := map[string]adoptionSourcePin{}
 	for _, p := range adoptionExpectedSources {
 		want = append(want, p.name)
-		wantPins[p.name] = p
 	}
-	got := SourceNames()
+	got := adoptionLegacySourceNames(t)
 	sort.Strings(got)
 	sort.Strings(want)
 	if !reflect.DeepEqual(got, want) {
 		t.Fatal("source names differ from independent eleven-file inventory", got)
 	}
-	if len(pins) != 11 {
-		t.Fatal("wrong source pin count")
-	}
-	for _, p := range pins {
-		w, ok := wantPins[p.name]
-		if !ok || p.size != w.size || p.hash != w.sha {
-			t.Fatal("implementation source pin differs", p.name)
-		}
-	}
 	// SourceNames must not expose mutable pin state.
-	exposed := SourceNames()
+	exposed := adoptionLegacySourceNames(t)
 	exposed[0] = "corrupted caller list"
-	fresh := SourceNames()
+	fresh := adoptionLegacySourceNames(t)
 	sort.Strings(fresh)
 	if !reflect.DeepEqual(fresh, want) {
 		t.Fatal("source list aliases implementation")
@@ -138,11 +127,11 @@ func adoptionMetadata(t *testing.T, files []artifactbundle.File) {
 }
 func TestAdoptionDeterministicCompleteOpaqueBundle(t *testing.T) {
 	src := adoptionPinnedSources(t)
-	a, e := Build([]byte(candidate), []byte(suite), src)
+	a, e := adoptionLegacyBuild([]byte(candidate), []byte(suite), src)
 	if e != nil {
 		t.Fatal(e)
 	}
-	b, e := Build([]byte(candidate), []byte(suite), src)
+	b, e := adoptionLegacyBuild([]byte(candidate), []byte(suite), src)
 	if e != nil || !bytes.Equal(a, b) {
 		t.Fatal("nondeterministic bundle", e)
 	}
@@ -196,7 +185,7 @@ func TestAdoptionDeterministicCompleteOpaqueBundle(t *testing.T) {
 	// Even malformed suite text remains exact opaque data; export success is not
 	// scenario validation, a passing suite, or authority to execute anything.
 	malformed := []byte("{ malformed suite\n")
-	raw, e := Build([]byte(candidate), malformed, src)
+	raw, e := adoptionLegacyBuild([]byte(candidate), malformed, src)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -224,7 +213,7 @@ func TestAdoptionRefusesStalePinsMetadataAndDomainExtras(t *testing.T) {
 				filtered = append(filtered, f)
 			}
 		}
-		out, e := Build([]byte(candidate), []byte(suite), filtered)
+		out, e := adoptionLegacyBuild([]byte(candidate), []byte(suite), filtered)
 		if e == nil || out != nil {
 			t.Fatal("missing current runner dependency accepted", name)
 		}
@@ -233,12 +222,12 @@ func TestAdoptionRefusesStalePinsMetadataAndDomainExtras(t *testing.T) {
 		bad := append([]artifactbundle.File{}, src...)
 		bad[i].Data = bytes.Clone(src[i].Data)
 		bad[i].Data[0] ^= 1
-		out, e := Build([]byte(candidate), []byte(suite), bad)
+		out, e := adoptionLegacyBuild([]byte(candidate), []byte(suite), bad)
 		if e == nil || out != nil {
 			t.Fatal("stale source bytes accepted", bad[i].Name)
 		}
 	}
-	raw, e := Build([]byte(candidate), []byte(suite), src)
+	raw, e := adoptionLegacyBuild([]byte(candidate), []byte(suite), src)
 	if e != nil {
 		t.Fatal(e)
 	}
@@ -786,3 +775,18 @@ const adoptionExpectedMismatchReport = `{
     }
   ]
 }`
+
+// These original eleven-pin/17-payload expectations now explicitly exercise the
+// supported historical policy. Semantic fixtures and full report literals above
+// remain byte-for-byte unchanged; current policy is tested in profilecatalog.
+func adoptionLegacySourceNames(t *testing.T) []string {
+	t.Helper()
+	names, err := SourceNamesForRevision(adoptionSourceRevision)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return names
+}
+func adoptionLegacyBuild(candidate, suite []byte, sources []artifactbundle.File) ([]byte, error) {
+	return BuildForRevision(adoptionSourceRevision, candidate, suite, sources)
+}

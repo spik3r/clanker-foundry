@@ -2,10 +2,14 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/compiler"
+	"os"
+	"os/exec"
 	"runtime"
 	"testing"
+	"time"
 )
 
 type poisonReader struct{ reads *int }
@@ -53,4 +57,41 @@ func TestCLI(t *testing.T) {
 		t.Fatal("output error handling")
 	}
 
+}
+
+// This executes main with a real closed stdout descriptor, not a fake writer.
+func TestCLIClosedStdoutProcess(t *testing.T) {
+	const child = "FOUNDRY_MODELPROFILE_CLOSED_STDOUT_CHILD"
+	if os.Getenv(child) == "1" {
+		os.Args = []string{"modelprofile"}
+		main()
+		return
+	}
+	if runtime.Version() != compiler.ToolchainVersion {
+		t.Skip("positive CLI case requires pinned Go toolchain")
+	}
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer writer.Close()
+	if err = reader.Close(); err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestCLIClosedStdoutProcess$")
+	cmd.Env = append(os.Environ(), child+"=1")
+	cmd.Stdout = writer
+	var diagnostic bytes.Buffer
+	cmd.Stderr = &diagnostic
+	cmd.WaitDelay = time.Second
+	err = cmd.Run()
+	if ctx.Err() != nil {
+		t.Fatal("closed stdout deadline", ctx.Err())
+	}
+	var exit *exec.ExitError
+	if !errors.As(err, &exit) || exit.ExitCode() != 3 || diagnostic.String() != "modelprofile: output failed\n" {
+		t.Fatalf("closed stdout got %v / %q; want exit3 with fixed output diagnostic", err, diagnostic.String())
+	}
 }
