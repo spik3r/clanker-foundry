@@ -29,7 +29,7 @@ coordinator's assignment and separate review. Proposed implementation branch:
 - New `runtime/test/provider-input-parity.test.mjs`.
 - New `docs/agent-context-portability.md`.
 - This new public-safe task record at
-  `tasks/CF-provider-input-parity-v1.md` and this task's own new immutable
+  `tasks/CF-provider-input-parity-v1-transport.md` and this task's own new immutable
   `.project-memory/tasks/CF-provider-input-parity-v1/` source and events.
 
 No changes to `runtime/src/providers.mjs`, existing provider tests, runtime
