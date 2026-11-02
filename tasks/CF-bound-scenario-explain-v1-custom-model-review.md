@@ -1,6 +1,6 @@
 ---
 id: CF-bound-scenario-explain-v1
-status: in-progress
+status: complete
 owner: Byte bound-model explanation worker
 repositories: [spik3r/clanker-foundry]
 ---
@@ -177,3 +177,66 @@ required before completion. Source pins cannot change: the new package code is
 not in the qualifier's current source closure, and existing pinned files stay
 byte-identical. Publication requires its own permitted coordinator action; this
 contract cannot waive any denied publication, browser, diagnostic or private gate.
+
+
+## Observed local qualification
+
+Exact implementation ea22fb7896e97b774db09b10bc4b37d8ef3035ba, tree
+0f5c7f6b7ec3aca4334434e5efa3d13a6e7a887a, was independently reviewed with no
+material finding. The common mapper keeps baseline validation/output behavior;
+the explicit bound wrapper never invokes its callback and checks the complete
+new envelope before returning success. No interpreter, CLI, wire decoder or
+source-policy change was added. The later e5e8a267 checkpoint changes evidence
+only, not maintained source. Fresh read-only fetch still identifies public
+main 107fd917 as the unchanged ancestor; no held history was imported.
+
+Independent full projection literals were frozen before mapper changes at
+283b1c845d1a8f85337338b09822f5c7134e841b. The vector SHA-256 remains
+c5e011aba6dd14f5eaf2de0016de10dd1359196decaf0eb8d6edf4463fc147f9;
+the typed acceptance file remains
+34c7ff22c8921adbaa20544c76d42b63f025e44b6ec00a4417a570c1baf01916.
+The original producer independently checked all twenty-eight public suite-step
+projections and the separately fabricated v1 guard assertion before mapping.
+Original default vectors, all eight prior consumer fixtures, the pinned source
+closure and every excluded path remain unchanged. Fixtures were not refreshed
+from explanation or replay results. The type/claim/start/freeze sequence is
+preserved in the fresh local history.
+
+The author and original producer independently passed actual Go 1.27.3 offline
+full-module race tests (45 tested packages), focused verbose race, vet,
+formatting, modelc validate/check, modeltrace check, lock-matched installed
+schema tests (2/2) and repository validation. Optional skills-ref is unavailable.
+The independent oracle author also reviewed exact source and passed focused
+race/vet. Actual external execution built both separate generated models and
+replayed both fourteen-step suites; full bound explanations matched the frozen
+projections with zero extra callbacks. Existing two reducer mutations and nine
+adapter mutations per model failed as intended; final restored tests actually
+replayed and explained both models. The precise independently encoded boundary
+control has an 8,388,608-byte legacy projection and an 8,388,701-byte bound envelope;
+the valid model/native report reach the final bound-output refusal. Pure typed
+cases remain explicitly fabricated assertions, not observed replay claims.
+
+The original producer separately ran the unchanged default CLI with a preserved
+prior request and confirmed byte-identical explanation output. Bound nil actual
+refusals reject, while the existing default behavior remains separately tested.
+All success/refusal paths use zero-callback controls; stale identities, reserved
+used-guard collisions, invalid report comparisons, ownership, private literals,
+null/empty differences and whole-output limits retain their stated boundaries.
+
+Six additional author-only source-overlay mutants compiled and failed named
+assertions: ignored native validation, dropped guard projection, erased mismatch,
+omitted final envelope bound, rebound output identity and callback invocation.
+Restored focused race passed and maintained source bytes did not change. The
+initial scratch mutation runner expected panic text for the callback mutant;
+the test instead reported its deferred callback-count failure (one call). The
+original log is retained; only the scratch runner's marker was corrected, not a
+test or expected value. These mutation observations are not attributed to either
+independent reviewer.
+
+Local technical completion does not publish this branch or change any held
+publication, browser, diagnostics, visual or private operational gate. Consumer
+adoption and dependency repinning remain separately owned. Output still describes
+caller assertions and declared links, not authenticated source/execution, human
+review, behavioral coverage or operational authority. Final committed lifecycle
+and metadata-only continuity are checked separately before any permitted
+coordinator-controlled publication.
