@@ -14,8 +14,8 @@ file data are valid; nil data and empty data encode the same zero-byte payload.
 Nil input inventory normalizes to an empty inventory; returned inventories are
 nonnull empty slices. No filesystem, subprocess, network or clock use occurs.
 
-Supported profiles are exactly `lifecycle-reviewpack/v1` and
-`lifecycle-qualification/v1`. Unknown profiles fail. Limits apply together:
+Supported profiles are exactly `lifecycle-reviewpack/v1`,
+`lifecycle-qualification/v1` and `lifecycle-designchange/v1`. Unknown profiles fail. Limits apply together:
 64 payloads, 8 MiB per payload, 32 MiB total payload bytes, 16 MiB whole archive,
 64 KiB manifest and 192 bytes per payload name. Because storage is uncompressed,
 the archive limit can be reached before the total-payload limit. Bounds are
@@ -72,3 +72,8 @@ before archive/zip allocates member records. It only reads Store
 members with equal bounded compressed/uncompressed sizes, checks actual sizes
 and CRC, recomputes the manifest, and compares deterministic rebuilt archive
 bytes. This rejects alternate valid ZIP encodings and silent extra bytes.
+
+The `lifecycle-designchange/v1` profile uses the same canonical archive format
+and limits. Its domain owns its exact inventory and one bounded nested
+qualification archive. Hashes establish consistency only; suites in that project
+remain unvalidated and unexecuted, with their binding not inspected.

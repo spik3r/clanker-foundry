@@ -255,3 +255,18 @@ func TestForgedSmallCountCannotHideManyCentralRecords(t *testing.T) {
 	}
 	reject(t, forged, ReviewProfile)
 }
+
+func TestDesignChangeProfileCanonical(t *testing.T) {
+	files := []File{{Name: "example.txt", Data: []byte("example-only")}}
+	raw, e := Build(DesignChangeProfile, files)
+	if e != nil {
+		t.Fatal(e)
+	}
+	got, e := Verify(raw, DesignChangeProfile)
+	if e != nil || len(got) != 1 || got[0].Name != files[0].Name || string(got[0].Data) != string(files[0].Data) {
+		t.Fatalf("profile roundtrip: %v", e)
+	}
+	if _, e = Verify(raw, QualificationProfile); e == nil {
+		t.Fatal("wrong profile accepted")
+	}
+}

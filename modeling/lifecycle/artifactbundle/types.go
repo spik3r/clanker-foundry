@@ -8,6 +8,7 @@ const (
 	FormatVersion        = "lifecycle-artifact-bundle/v1"
 	ReviewProfile        = "lifecycle-reviewpack/v1"
 	QualificationProfile = "lifecycle-qualification/v1"
+	DesignChangeProfile  = "lifecycle-designchange/v1"
 	ManifestName         = "manifest.json"
 	MaxFiles             = 64
 	MaxFileBytes         = 8 << 20
