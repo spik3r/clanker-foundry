@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "68ea46b5-f41b-4c21-9257-9b53c341b6ee",
+  "runId": "33704264-d39b-4f03-b029-b447b54137ae",
+  "kind": "checkpoint",
+  "parents": [
+    "e367bb91-7006-4b42-af9b-b292d68717c1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-qualification-adoption-v1",
+    "path": "tasks/CF-qualification-adoption-v1-current-source-closure.md",
+    "revision": "8b49d1d07a31a501d7cfe6778eb8d8f0d93c6e90",
+    "blob": "e230e3b73a610cd46e3bda4f54fd5793e646cbc6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2bb748883ea897f2cb38750d904448d8f0b5e473b02aa928ef0056fc96304883"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/qualification-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:57:23.033Z",
+  "summary": "Freeze original archive types/format/golden tests and unchanged qualification test fixture literals candidate9674eb21/suite53b5ceec; independent11pin/17payload/full-result oracle SHA c03f6b4c0dd48af1e840318e3db7fd44087f98fc5cafb88c6c7b725a8177dc19 precedes production adoption and source reconciliation. No target exporter/runner output authored expectations.",
+  "next": "Confirm prospective contract; adopt original production, demonstrate stale-pin failure, then explicitly reconcile reviewed closure and bounded harness",
+  "files": [
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/qualification_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/cmd/modelqualify/main.go",
+    "modeling/lifecycle/cmd/modelqualify/main_test.go",
+    "tasks/CF-qualification-adoption-v1-current-source-closure.md"
+  ]
+}
