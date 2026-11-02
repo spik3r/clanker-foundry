@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "f7542a50-d2f3-4bbf-805c-dc29a3fdc0e0",
+  "runId": "e2701656-2c6a-46b9-8422-46787e5c8928",
+  "kind": "checkpoint",
+  "parents": [
+    "ba5facf1-82d0-4835-9814-829170271dc4"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-explain-adoption-v1",
+    "path": "tasks/CF-scenario-explain-adoption-v1-current-main.md",
+    "revision": "1ddf7a7380c29c3e396915f9fc7b48a36fc42b8e",
+    "blob": "389349545f6143ebd6a956b39fea10064fcea105",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "56010bd061ac2ca246fec65493c6b0e13aad4770202b9dcdc5fceb831f8f8098"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-explain-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T02:31:25.449Z",
+  "summary": "Freeze independently authored integration SHA884d4b7dfa0125b8e62315ec1b84fecbe61513c9bb9a9763ffe21446966f7962 before mapping/decoder adoption: full13 literal entries, fabricated assertions, separate bound-version/identitySource negatives, zero callback and changed-model rejection. Target APIs not executed to derive expectations.",
+  "next": "Adopt pinned mapping/decoder/CLI and freeze actual closed-stdout regression before repair",
+  "files": [
+    "modeling/lifecycle/scenarioexplain/CONTRACT.md",
+    "modeling/lifecycle/scenarioexplain/types.go",
+    "modeling/lifecycle/scenarioexplain/explain.go",
+    "modeling/lifecycle/scenarioexplain/explain_test.go",
+    "modeling/lifecycle/scenarioexplain/testdata/vectors.json",
+    "modeling/lifecycle/scenarioexplain/integration_test.go",
+    "modeling/lifecycle/cmd/modelexplain/main.go",
+    "modeling/lifecycle/cmd/modelexplain/main_test.go",
+    "modeling/lifecycle/scenarios/report_decode.go",
+    "modeling/lifecycle/scenarios/report_decode_test.go",
+    "tasks/CF-scenario-explain-adoption-v1-current-main.md"
+  ]
+}
