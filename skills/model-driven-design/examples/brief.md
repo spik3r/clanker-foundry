@@ -38,7 +38,8 @@ from Draft to Ready when command type is submit and all four conditions hold:
 
 Successful submission changes only state to Ready and increments revision once.
 Task ID, outcome, ordered acceptance and owner are preserved. Refusal returns the
-unchanged task and sorted failing guard IDs. A submit in terminal Ready returns
+unchanged task and sorted failing guard IDs, with transition ID T_submit because
+that transition was selected. A submit in terminal Ready returns
 ILLEGAL_TRANSITION with no transition ID. The profile's existing input validation
 and revision-overflow rules still apply; this model does not override them.
 
