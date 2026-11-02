@@ -1,0 +1,33 @@
+{
+  "formatVersion": "foundry-first-design-example-inventory/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelCanonicalSHA256": "4280fa4c999f7291c3325a997887c5e7b02b565f275a53df158afb55636d7db4",
+  "suiteSemanticSHA256": "f0cea0b128e3e21b76c6ab2b15fefc841e72517fbfb37d12b8e41ee4d3e43ef9",
+  "files": [
+    {
+      "name": "brief.md",
+      "bytes": 3569,
+      "sha256": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de"
+    },
+    {
+      "name": "model.json",
+      "bytes": 2001,
+      "sha256": "3e7b8c44c10940a7524161dd306d022019e8fc41e793a66a11771d6dd8621239"
+    },
+    {
+      "name": "suite.json",
+      "bytes": 5618,
+      "sha256": "184115eead4e94d37dd369d7f07a36ed6cb84080e8a4c9f27be3dd5562e2e7dd"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 2446,
+      "sha256": "68cf7227f055ab2079d9b3b4d7159b6dec8bbd19d8246f33eef8a036d96838ae"
+    },
+    {
+      "name": "intake.json",
+      "bytes": 2293,
+      "sha256": "9f4d049dc8ccf5de939cc22c802207dcad7bd075cbd5edb8a6b8ffd6592535af"
+    }
+  ]
+}

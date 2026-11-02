@@ -1,0 +1,111 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "FirstDesignDraft",
+  "initial": "Draft",
+  "states": [
+    {
+      "id": "Draft",
+      "label": "Draft",
+      "terminal": false
+    },
+    {
+      "id": "Ready",
+      "label": "Ready",
+      "terminal": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R_actor",
+      "text": "Submission actor is nonblank."
+    },
+    {
+      "id": "R_criteria",
+      "text": "At least one acceptance criterion is supplied."
+    },
+    {
+      "id": "R_outcome",
+      "text": "The proposed outcome is nonblank."
+    },
+    {
+      "id": "R_revision",
+      "text": "The command names the exact current revision."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G_actor",
+      "requirement": "R_actor",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "command.actor"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_criteria",
+      "requirement": "R_criteria",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "task.acceptance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_outcome",
+      "requirement": "R_outcome",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "task.outcome"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_revision",
+      "requirement": "R_revision",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "command.expectedRevision"
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T_submit",
+      "from": "Draft",
+      "trigger": "submit",
+      "to": "Ready",
+      "guards": [
+        "G_actor",
+        "G_criteria",
+        "G_outcome",
+        "G_revision"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    }
+  ]
+}

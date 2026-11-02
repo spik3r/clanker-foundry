@@ -1,0 +1,90 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "4280fa4c999f7291c3325a997887c5e7b02b565f275a53df158afb55636d7db4",
+  "id": "FirstDesignAcceptance",
+  "cases": [
+    {
+      "id": "C_submit_unowned",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null},
+      "steps": [{
+        "id": "S_submit_unowned",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "0", "review": null},
+        "expected": {"ok": true, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Ready", "revision": "1", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null}, "refusals": []}
+      }]
+    },
+    {
+      "id": "C_submit_preserves_content",
+      "initial": {"id": "item-2", "state": "Draft", "revision": "7", "outcome": "  Describe this other change  ", "acceptance": ["Second criterion", "First criterion"], "owner": "owner-2"},
+      "steps": [{
+        "id": "S_submit_preserves_content",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "7", "review": null},
+        "expected": {"ok": true, "transitionId": "T_submit", "task": {"id": "item-2", "state": "Ready", "revision": "8", "outcome": "  Describe this other change  ", "acceptance": ["Second criterion", "First criterion"], "owner": "owner-2"}, "refusals": []}
+      }]
+    },
+    {
+      "id": "C_actor_blank",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null},
+      "steps": [{
+        "id": "S_actor_blank",
+        "command": {"type": "submit", "actor": " \t\n", "expectedRevision": "0", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null}, "refusals": ["G_actor"]}
+      }]
+    },
+    {
+      "id": "C_criteria_empty",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": [], "owner": null},
+      "steps": [{
+        "id": "S_criteria_empty",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "0", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": [], "owner": null}, "refusals": ["G_criteria"]}
+      }]
+    },
+    {
+      "id": "C_criteria_absent",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": null, "owner": null},
+      "steps": [{
+        "id": "S_criteria_absent",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "0", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": "Describe the change", "acceptance": null, "owner": null}, "refusals": ["G_criteria"]}
+      }]
+    },
+    {
+      "id": "C_outcome_blank",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": " \t\n", "acceptance": ["Acceptance stated"], "owner": null},
+      "steps": [{
+        "id": "S_outcome_blank",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "0", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Draft", "revision": "0", "outcome": " \t\n", "acceptance": ["Acceptance stated"], "owner": null}, "refusals": ["G_outcome"]}
+      }]
+    },
+    {
+      "id": "C_revision_stale",
+      "initial": {"id": "item-1", "state": "Draft", "revision": "2", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": "owner-1"},
+      "steps": [{
+        "id": "S_revision_stale",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "1", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-1", "state": "Draft", "revision": "2", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": "owner-1"}, "refusals": ["G_revision"]}
+      }]
+    },
+    {
+      "id": "C_all_guards_refuse",
+      "initial": {"id": "item-3", "state": "Draft", "revision": "4", "outcome": "", "acceptance": [], "owner": "owner-3"},
+      "steps": [{
+        "id": "S_all_guards_refuse",
+        "command": {"type": "submit", "actor": "", "expectedRevision": "3", "review": null},
+        "expected": {"ok": false, "transitionId": "T_submit", "task": {"id": "item-3", "state": "Draft", "revision": "4", "outcome": "", "acceptance": [], "owner": "owner-3"}, "refusals": ["G_actor", "G_criteria", "G_outcome", "G_revision"]}
+      }]
+    },
+    {
+      "id": "C_terminal_refuses_submit",
+      "initial": {"id": "item-1", "state": "Ready", "revision": "1", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null},
+      "steps": [{
+        "id": "S_terminal_refuses_submit",
+        "command": {"type": "submit", "actor": "author-1", "expectedRevision": "1", "review": null},
+        "expected": {"ok": false, "transitionId": "", "task": {"id": "item-1", "state": "Ready", "revision": "1", "outcome": "Describe the change", "acceptance": ["Acceptance stated"], "owner": null}, "refusals": ["ILLEGAL_TRANSITION"]}
+      }]
+    }
+  ]
+}
