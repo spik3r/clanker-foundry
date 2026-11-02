@@ -211,3 +211,119 @@ func TestMaximumDeclaredGraphBounds(t *testing.T) {
 		t.Fatal("accepted graph above model bound")
 	}
 }
+
+// Exhaustively compare four-state graphs with an independently structured
+// simple-path enumerator and per-source DFS connectivity oracle. This is a
+// same-contributor test, not an independent-person attestation.
+func TestAllSmallValidGraphsAgainstBruteForce(t *testing.T) {
+	ids := []string{"A", "B", "C", "T"}
+	tested := 0
+	for mask := 0; mask < 1<<12; mask++ {
+		m := model.Model{Version: 1, ID: "M", Initial: "A", States: []model.State{{ID: "A", Label: "A"}, {ID: "B", Label: "B"}, {ID: "C", Label: "C"}, {ID: "T", Label: "T", Terminal: true}}, Requirements: []model.Requirement{{ID: "R", Text: "condition"}}, Guards: []model.Guard{{ID: "G", Requirement: "R", Expr: model.Expr{Kind: "op", Op: "nonempty", Args: []model.Expr{{Kind: "ref", Ref: "task.id"}}}}}}
+		for i := 0; i < 3; i++ {
+			for j := 0; j < 4; j++ {
+				if mask&(1<<(i*4+j)) != 0 {
+					id := fmt.Sprintf("E%d%d", i, j)
+					m.Transitions = append(m.Transitions, model.Transition{ID: id, From: ids[i], To: ids[j], Trigger: id, Guards: []string{"G"}, Effects: []model.Effect{{Op: model.SetState}, {Op: model.IncrementRevision}}})
+				}
+			}
+		}
+		if model.Validate(m) != nil {
+			continue
+		}
+		tested++
+		got, err := Analyze(m)
+		if err != nil {
+			t.Fatalf("mask %03x: %v", mask, err)
+		}
+		byID := map[string][]model.Transition{}
+		for _, e := range m.Transitions {
+			byID[e.From] = append(byID[e.From], e)
+		}
+		for i, start := range ids {
+			var best []string
+			found := false
+			var enumerate func(string, map[string]bool, []string)
+			enumerate = func(at string, seen map[string]bool, path []string) {
+				if at == "T" {
+					if !found || len(path) < len(best) || (len(path) == len(best) && strings.Join(path, "\x00") < strings.Join(best, "\x00")) {
+						found = true
+						best = append([]string{}, path...)
+					}
+					return
+				}
+				for _, e := range byID[at] {
+					if !seen[e.To] {
+						seen[e.To] = true
+						enumerate(e.To, seen, append(path, e.ID))
+						delete(seen, e.To)
+					}
+				}
+			}
+			enumerate(start, map[string]bool{start: true}, []string{})
+			state := got.States[i]
+			if state.ID != start || state.HasTerminalPath != found || (found && (state.TerminalID != "T" || !reflect.DeepEqual(state.TransitionIDs, best))) || (!found && (state.TerminalID != "" || len(state.TransitionIDs) != 0)) {
+				t.Fatalf("mask %03x state %s: %+v expected %v %v", mask, start, state, found, best)
+			}
+		}
+		// Compute connectivity by DFS from each state rather than the product's
+		// all-pairs closure, then derive component membership and edge lists.
+		paths := map[string]map[string]bool{}
+		for _, start := range ids {
+			seen := map[string]bool{}
+			var visit func(string)
+			visit = func(at string) {
+				if seen[at] {
+					return
+				}
+				seen[at] = true
+				for _, e := range byID[at] {
+					visit(e.To)
+				}
+			}
+			visit(start)
+			paths[start] = seen
+		}
+		used := map[string]bool{}
+		want := []Cycle{}
+		for _, start := range ids {
+			if used[start] {
+				continue
+			}
+			members := map[string]bool{}
+			states := []string{}
+			for _, other := range ids {
+				if paths[start][other] && paths[other][start] {
+					used[other] = true
+					members[other] = true
+					states = append(states, other)
+				}
+			}
+			internal := []string{}
+			outgoing := []string{}
+			self := false
+			for _, e := range m.Transitions {
+				if members[e.From] {
+					if members[e.To] {
+						internal = append(internal, e.ID)
+						if e.From == e.To {
+							self = true
+						}
+					} else {
+						outgoing = append(outgoing, e.ID)
+					}
+				}
+			}
+			if len(states) > 1 || self {
+				want = append(want, Cycle{States: states, InternalTransitions: internal, OutgoingTransitions: outgoing})
+			}
+		}
+		if !reflect.DeepEqual(got.Cycles, want) {
+			t.Fatalf("mask %03x cycles got %#v want %#v", mask, got.Cycles, want)
+		}
+	}
+	if tested < 100 {
+		t.Fatalf("only %d valid graphs; sweep unexpectedly vacuous", tested)
+	}
+	t.Logf("checked %d valid four-state graphs", tested)
+}

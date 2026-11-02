@@ -83,8 +83,10 @@ independently authored. The fixture covers equal-length paths, a closed two-stat
 cycle, an exit-bearing cycle and an exit-bearing self-loop, as well as terminal
 and no-terminal-path states. Additional tests exercise ordering invariance,
 parallel edges, impossible guards, invalid models, input ownership, strict JSON,
-deterministic output and failed I/O. These are mapping regressions, not a proof
-of model behavior. With the exact local toolchain:
+deterministic output and failed I/O. A same-contributor exhaustive sweep compares
+1,650 valid four-state graphs against separately structured simple-path and DFS
+connectivity oracles. These are mapping regressions, not proof of model behavior.
+With the exact local toolchain:
 
 ```sh
 go test -race -count=1 ./topology ./cmd/modeltopology
