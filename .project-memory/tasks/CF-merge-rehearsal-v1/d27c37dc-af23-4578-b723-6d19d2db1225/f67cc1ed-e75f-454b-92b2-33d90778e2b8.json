@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "f67cc1ed-e75f-454b-92b2-33d90778e2b8",
+  "runId": "d27c37dc-af23-4578-b723-6d19d2db1225",
+  "kind": "checkpoint",
+  "parents": [
+    "5960bef4-0e9f-439e-83ba-c07b7812a2e4"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-merge-rehearsal-v1",
+    "path": "tasks/CF-merge-rehearsal-v1-concurrent-design-demo.md",
+    "revision": "6025b3d8d963b58aee4a48b9279e358bc3475bd1",
+    "blob": "e0dccbb7d146ae3584b3e25cba66853ddc001811",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "25a12cb352e71948d182ccb03325e72960cd4f545a45443e7fffff9320f937f1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/merge-rehearsal-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T22:03:22.801Z",
+  "summary": "Resumed preserved reviewed source 38df891 after command handle loss; prior aggregate exit unavailable and fresh logged validation underway",
+  "next": "Finish fresh race, vet and drift; preserve independent review, complete lifecycle and publish authorized draft",
+  "files": [
+    "tasks/CF-merge-rehearsal-v1-concurrent-design-demo.md",
+    "modeling/lifecycle/mergerehearsal/README.md",
+    "modeling/lifecycle/mergerehearsal/run.sh",
+    "modeling/lifecycle/mergerehearsal/run.py",
+    "modeling/lifecycle/mergerehearsal/rehearsal_test.go",
+    "modeling/lifecycle/mergerehearsal/testdata/requirements.md",
+    "modeling/lifecycle/mergerehearsal/testdata/model-base.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-merged.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-conflict.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-base.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-merged.json",
+    "modeling/lifecycle/mergerehearsal/testdata/expected.json"
+  ]
+}

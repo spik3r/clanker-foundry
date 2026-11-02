@@ -1,0 +1,122 @@
+{
+  "formatVersion": 2,
+  "eventId": "6f65e1ff-4c2f-4f15-9fd0-7e18a88d2c2d",
+  "runId": "d27c37dc-af23-4578-b723-6d19d2db1225",
+  "kind": "complete",
+  "parents": [
+    "f67cc1ed-e75f-454b-92b2-33d90778e2b8"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-merge-rehearsal-v1",
+    "path": "tasks/CF-merge-rehearsal-v1-concurrent-design-demo.md",
+    "revision": "6025b3d8d963b58aee4a48b9279e358bc3475bd1",
+    "blob": "e0dccbb7d146ae3584b3e25cba66853ddc001811",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "25a12cb352e71948d182ccb03325e72960cd4f545a45443e7fffff9320f937f1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/merge-rehearsal-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T22:07:46.909Z",
+  "summary": "Independent full oracle and exact-source review complete; actual concurrent merge and generated replay controls pass",
+  "next": "Validate committed diff, publish authorized draft, verify exact remote head and CI; no merge or deployment",
+  "files": [
+    "tasks/CF-merge-rehearsal-v1-concurrent-design-demo.md",
+    "modeling/lifecycle/mergerehearsal/README.md",
+    "modeling/lifecycle/mergerehearsal/run.sh",
+    "modeling/lifecycle/mergerehearsal/run.py",
+    "modeling/lifecycle/mergerehearsal/rehearsal_test.go",
+    "modeling/lifecycle/mergerehearsal/testdata/requirements.md",
+    "modeling/lifecycle/mergerehearsal/testdata/model-base.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-merged.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-conflict.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-base.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-left.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-right.json",
+    "modeling/lifecycle/mergerehearsal/testdata/suite-merged.json",
+    "modeling/lifecycle/mergerehearsal/testdata/expected.json"
+  ],
+  "validation": "Go1.27.3 offline serial full race:61 tested packages pass plus1 no tests; full vet, modelc validate/check, modeltrace check, gofmt, pack validator, Bash/ShellCheck/Python syntax, installer/resolver and143 PM tests pass. Independent reviewer reran3 focused race tests and found no material issue at38df891. All13 frozen fixtures and pre-existing paths preserved. Initial interrupted aggregate has no exit status and is not counted; fresh logged aggregate exited0. skills-ref unavailable.",
+  "snapshot": {
+    "tasks/CF-merge-rehearsal-v1-concurrent-design-demo.md": {
+      "blob": "3b7c642b4d6e55ef14f0f390bb7cf180458c66c2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/README.md": {
+      "blob": "d92d7e230ea1022ea6d8fd15dceb442ff2d47736",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/run.sh": {
+      "blob": "b4c316420dc346636e8c7adbb8b88bb9e33b6d76",
+      "mode": "100755"
+    },
+    "modeling/lifecycle/mergerehearsal/run.py": {
+      "blob": "687c915c7d7145b8d1c01f3e87f67a7be21bc81f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/rehearsal_test.go": {
+      "blob": "b8aa05923c2c0a4aeaf023c8fc7ea1d65aef4aa4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/requirements.md": {
+      "blob": "0f186e9a2a5f88a77b03e272cb5fda57fe005b96",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-base.json": {
+      "blob": "d1c8cd3a36fb709c35a1ecb04f90fcbd83cba68a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-left.json": {
+      "blob": "7bdf397a833005963c96e3f6f17d3c5524150afd",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-right.json": {
+      "blob": "ebf6e068f17089a6c3e7531a5c0b4077bee8d508",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-merged.json": {
+      "blob": "3d6d0659d4ddb5c09d7b676e9b16bf9d12e7f9f5",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-conflict.json": {
+      "blob": "4d7e0e6c255fbc468adf33e4cbbedf005f2da9ab",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-left.json": {
+      "blob": "2f8db4c3774183231d9ee4b67e1bdfe8a77a4155",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/model-invalid-right.json": {
+      "blob": "65b5944ec9b627d83611f98efccbe900323eea86",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/suite-base.json": {
+      "blob": "2dff462e3e22adaf44b5f2277f35957e9f431849",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/suite-left.json": {
+      "blob": "4d820f885c538e20edd12f2410cbafb24fce45e9",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/suite-right.json": {
+      "blob": "ffca778edd06ac64131c0f9b67130318b64c7ebc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/suite-merged.json": {
+      "blob": "41da0c760832fa8d4990973ccdbbb989548ac6ad",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/mergerehearsal/testdata/expected.json": {
+      "blob": "ebad4c2a1561cb6cb30df15bdf321627776aaa94",
+      "mode": "100644"
+    }
+  }
+}

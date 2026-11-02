@@ -1,0 +1,350 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "b686403d694cd9a3d9f43c908283fc5b9f1f61d80909eb67150808bd84b8b1c1",
+  "id": "parcel_merge_merged",
+  "cases": [
+    {
+      "id": "happy",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Raw",
+        "revision": "0",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "happy_pack",
+          "command": {
+            "type": "packParcel",
+            "actor": "packer",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_pack",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Packed",
+              "revision": "1",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "happy_dispatch",
+          "command": {
+            "type": "dispatchParcel",
+            "actor": "dispatcher",
+            "expectedRevision": "1",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_dispatch",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Dispatched",
+              "revision": "2",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          }
+        },
+        {
+          "id": "happy_terminal",
+          "command": {
+            "type": "packParcel",
+            "actor": "packer",
+            "expectedRevision": "2",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Dispatched",
+              "revision": "2",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "ILLEGAL_TRANSITION"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "guest_pack",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Raw",
+        "revision": "0",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "guest_pack_rule",
+          "command": {
+            "type": "packParcel",
+            "actor": "guest",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_pack",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Raw",
+              "revision": "0",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_packActor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "guest_dispatch",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Packed",
+        "revision": "4",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": "keeper"
+      },
+      "steps": [
+        {
+          "id": "guest_dispatch_rule",
+          "command": {
+            "type": "dispatchParcel",
+            "actor": "guest",
+            "expectedRevision": "4",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_dispatch",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Packed",
+              "revision": "4",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": "keeper"
+            },
+            "refusals": [
+              "G_dispatchActor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "stale_revision",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Raw",
+        "revision": "3",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "stale_pack",
+          "command": {
+            "type": "packParcel",
+            "actor": "packer",
+            "expectedRevision": "2",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_pack",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Raw",
+              "revision": "3",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_revision"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "blank_actor",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Raw",
+        "revision": "0",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "blank_pack",
+          "command": {
+            "type": "packParcel",
+            "actor": " \t",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_pack",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Raw",
+              "revision": "0",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_packActor"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "revision_overflow",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Packed",
+        "revision": "18446744073709551615",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "overflow_dispatch",
+          "command": {
+            "type": "dispatchParcel",
+            "actor": "dispatcher",
+            "expectedRevision": "18446744073709551615",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_dispatch",
+            "task": {
+              "id": "parcel_demo",
+              "state": "Packed",
+              "revision": "18446744073709551615",
+              "outcome": "Ship <parcel>",
+              "acceptance": [
+                "Keep seal",
+                "Log dispatch"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "REVISION_LIMIT"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown_trigger",
+      "initial": {
+        "id": "parcel_demo",
+        "state": "Raw",
+        "revision": "0",
+        "outcome": "Ship <parcel>",
+        "acceptance": [
+          "Keep seal",
+          "Log dispatch"
+        ],
+        "owner": null
+      },
+      "steps": [
+        {
+          "id": "unknown_command",
+          "command": {
+            "type": "unknownParcel",
+            "actor": "packer",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "",
+            "task": null,
+            "refusals": [
+              "INVALID_INPUT"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
