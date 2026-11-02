@@ -178,7 +178,7 @@ existing and new closed-pipe deadlines. Those runs failed; the unchanged full
 suites and independent focused race subsequently passed with bounded serial
 execution. No check, deadline, policy or expected result was weakened.
 
-The task remains a local review handoff. No push, PR, merge, deployment, worker
-activation, scenario execution or evidence rebinding was performed by this tool or
-lane. #20, #5, standard projections and other ownership remain untouched. Publication
+The task remains a local review handoff. No push, PR, merge, deployment or worker activation was performed. Modelmerge
+never executes scenarios or rebinds evidence; the full regression suites still
+execute their existing disposable example scenarios as validation. #20, #5, standard projections and other ownership remain untouched. Publication
 and integration require the coordinator's applicable authority and fresh checks.
