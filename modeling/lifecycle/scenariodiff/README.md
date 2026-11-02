@@ -75,7 +75,9 @@ Replace placeholders with complete existing JSON-v1 model and scenario-suite
 documents. The wrapper is bounded to 5 MiB/depth66; each embedded model/suite keeps
 its existing 1 MiB limit and schema. Duplicate, unknown, case-variant and missing
 keys, unsupported formats, malformed Unicode and trailing data are rejected.
-The complete report is buffered and capped at 1 MiB. All errors are fixed messages
+The complete report is buffered and capped at 1 MiB. Wrapper/output byte-limit
+failures return ErrLimit; structural/depth and other invalid input return ErrInvalid.
+All errors are fixed messages
 without echoed input; no public arbitrary-report encoder is provided.
 
 Wire `sources` hashes exact request bytes and each embedded JSON token's bytes,

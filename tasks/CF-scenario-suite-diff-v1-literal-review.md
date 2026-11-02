@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-suite-diff-v1
-status: in-progress
+status: review
 owner: Byte scenario suite comparison contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -98,8 +98,9 @@ unsupported. Errors contain no partial output. Typed Sources is null.
 All fields are required/non-null. Reuse strictjson, jsonformat and bound scenario
 Decode; reject unknown/duplicate/case-variant/missing keys, malformed Unicode,
 trailing data and unsupported formats. Wrapper limit 5 MiB/depth66; each embedded
-model and suite retains existing 1 MiB limits. Report limit 1 MiB. Wrapper/output
-limits return fixed ErrLimit; invalid input returns fixed ErrInvalid.
+model and suite retains existing 1 MiB limits. Report limit 1 MiB. Wrapper byte/output byte
+limits return fixed ErrLimit; structural/depth and other invalid input return
+fixed ErrInvalid.
 
 Wire output recomputes the comparison and adds SHA-256 Sources for exact request
 and each embedded JSON token, separate from semantic digests. Whitespace can alter
@@ -124,3 +125,45 @@ Use independent behavioral mutants and exact-source review. Run focused and whol
 module offline Go 1.27.3 tests/race/vet, generated model check, repository validator,
 Project Memory regressions and committed-diff lifecycle validation. Record actual
 results, not inferred success. Remain local pending separate publication authority.
+
+
+## Observed local result
+
+Implementation/source commit `4a3277d822719c898b412446b0f04454b47b165a` was
+independently reviewed with no code blocker. The reviewer noted an ambiguous
+limit phrase above; this task now distinguishes byte limits from structural/depth
+invalidity, matching the implemented checks and existing refusal tests. No logic
+or expectations changed for that clarification.
+
+Independent oracle commit `0892adc32224eb1209a6702ad32edbda15fa61d9` predates
+Compare and freezes 28 complete literal reports with independently Python-computed
+model/suite digests. File SHA-256 remains
+`bbfe5de8d87dc1a577ebee738f846c1a0a28be70c56d66e0872ae7c5485c0600`.
+Its input self-check ran with a panic-only Compare stub and never invoked comparison.
+The unchanged oracle passed against implementation. An independent disposable wire
+probe passed all 28 reports and all five exact source hashes, excluding external
+token whitespace. Fifteen independently authored compiling behavioral mutants were
+killed: eight field omissions, case order, initial task, two root fields, sort order,
+added/removed-case children and null empty arrays. These are behavioral checks, not
+claims that expectations describe actual reducer results.
+
+Observed checks on unchanged implementation bytes, offline Go 1.27.3:
+- `GOMAXPROCS=2 go test -p 1 -race -count=1 ./...`: all 54 tested packages passed.
+- Independent bounded focused race for scenariodiff and its CLI passed.
+- `go vet -p 1 ./...`, `go run ./cmd/modelc validate` and `go run ./cmd/modelc check`
+  passed; generated artifacts match, no writes.
+- Ten-second bounded fuzz pass completed 172,834 inputs without failure.
+- Repository validator passed; optional skills-ref was unavailable, not run.
+- Project Memory regression suites: 143 passed, zero failures/skips.
+- README no-change CLI example passed; gofmt and whitespace checks passed.
+
+An initial local test invocation used the module directory with root-relative
+creation paths and therefore failed to compile missing Compare. No file was written
+by that mistaken creation command. The corrected path and all actual final checks
+above passed; that early build failure is not recorded as a pass.
+
+Current canonical main was rechecked at the same `fcda4be`/`bb13598e` identities;
+no integration delta existed at that observation. No existing source, fixtures,
+runner, compiler, model artifacts, other tasks or legacy history were edited.
+Final committed lifecycle validation and exact metadata/documentation delta review
+follow this local completion record. No remote publication or deployment occurred.
