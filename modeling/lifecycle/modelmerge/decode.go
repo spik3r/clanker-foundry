@@ -44,26 +44,34 @@ func Execute(raw []byte) ([]byte, error) {
 		return nil, err
 	}
 	result.Sources = &SourceDigests{Request: hash(raw), Base: hash(req.Base), Left: hash(req.Left), Right: hash(req.Right)}
-	var candidate json.RawMessage
+	var candidate any
 	if result.Candidate != nil {
-		candidate, err = jsonformat.Encode(*result.Candidate)
-		if err != nil {
+		encoded, encodeErr := jsonformat.Encode(*result.Candidate)
+		if encodeErr != nil {
+			return nil, ErrInvalid
+		}
+		// Decode only the existing adapter's validated output, not caller input.
+		// RawMessage would preserve its nested expression HTML escapes and evade
+		// the outer encoder's no-HTML-escaping policy. Map keys sort on encoding.
+		decoder := json.NewDecoder(bytes.NewReader(encoded))
+		decoder.UseNumber()
+		if err = decoder.Decode(&candidate); err != nil {
 			return nil, ErrInvalid
 		}
 	}
 	dto := struct {
-		MergeVersion    string          `json:"mergeVersion"`
-		ProfileVersion  string          `json:"profileVersion"`
-		Mode            string          `json:"mode"`
-		Authority       string          `json:"authority"`
-		BaseDigest      string          `json:"baseDigest"`
-		LeftDigest      string          `json:"leftDigest"`
-		RightDigest     string          `json:"rightDigest"`
-		Sources         *SourceDigests  `json:"sources"`
-		Status          string          `json:"status"`
-		CandidateDigest *string         `json:"candidateDigest"`
-		Candidate       json.RawMessage `json:"candidate"`
-		Conflicts       []Conflict      `json:"conflicts"`
+		MergeVersion    string         `json:"mergeVersion"`
+		ProfileVersion  string         `json:"profileVersion"`
+		Mode            string         `json:"mode"`
+		Authority       string         `json:"authority"`
+		BaseDigest      string         `json:"baseDigest"`
+		LeftDigest      string         `json:"leftDigest"`
+		RightDigest     string         `json:"rightDigest"`
+		Sources         *SourceDigests `json:"sources"`
+		Status          string         `json:"status"`
+		CandidateDigest *string        `json:"candidateDigest"`
+		Candidate       any            `json:"candidate"`
+		Conflicts       []Conflict     `json:"conflicts"`
 	}{result.MergeVersion, result.ProfileVersion, result.Mode, result.Authority, result.BaseDigest, result.LeftDigest, result.RightDigest, result.Sources, result.Status, result.CandidateDigest, candidate, result.Conflicts}
 	var buffer bytes.Buffer
 	encoder := json.NewEncoder(&buffer)

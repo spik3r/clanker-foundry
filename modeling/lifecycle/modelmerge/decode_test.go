@@ -86,6 +86,10 @@ func TestWireFrozenExpectations(t *testing.T) {
 func TestSourceIdentityAndUnicodeOutput(t *testing.T) {
 	m := oracleBase()
 	m.Requirements[0].Text = "<review> 雪 \u2028"
+	m.Guards[0].Expr = model.Expr{Kind: "op", Op: "eq", Args: []model.Expr{
+		{Kind: "ref", Ref: "task.outcome"},
+		{Kind: "string", Value: "<guard>& 雪 literal \\u003c"},
+	}}
 	original := modelBytes(t, m)
 	var compact bytes.Buffer
 	if err := json.Compact(&compact, original); err != nil {
@@ -110,8 +114,12 @@ func TestSourceIdentityAndUnicodeOutput(t *testing.T) {
 	if a.Sources.Request == b.Sources.Request || a.Sources.Base == b.Sources.Base || a.Sources.Left != b.Sources.Left || a.Sources.Right != b.Sources.Right {
 		t.Fatal("source hash distinction")
 	}
-	if !bytes.Contains(one, []byte("<review> 雪")) || bytes.Contains(one, []byte(`\u003c`)) || !bytes.Contains(one, []byte(`\u2028`)) {
+	if !bytes.Contains(one, []byte("<review> 雪")) || !bytes.Contains(one, []byte("<guard>& 雪")) || bytes.Contains(one, []byte(`\u003cguard`)) || !bytes.Contains(one, []byte(`\u2028`)) {
 		t.Fatal("unexpected Unicode/HTML encoding")
+	}
+	decoded, decodeErr := jsonformat.Decode(a.Candidate)
+	if decodeErr != nil || !reflect.DeepEqual(decoded, m) {
+		t.Fatal("candidate string literal changed while removing HTML escapes", decodeErr)
 	}
 }
 
