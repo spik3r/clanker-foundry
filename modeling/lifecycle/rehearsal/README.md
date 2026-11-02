@@ -10,7 +10,9 @@ requirements, patch, model and expectations using its own process.
 
 The example adds the existing `G_owner` guard to `T_prepare`. A task without an
 owner previously prepared successfully; the candidate must refuse it with
-`G_owner`. A named owner still succeeds. The candidate suite also exercises
+`G_owner`. The shared case ID `missing_owner_refuses` is a stable comparison
+identifier, not a baseline assertion: the baseline literal expects success.
+A named owner still succeeds. The candidate suite also exercises
 rework and stale/content-bound review refusals. The baseline and candidate
 expectations were separately stated **before** this workflow was implemented;
 no expectation, model digest or suite binding is refreshed from a run. The
