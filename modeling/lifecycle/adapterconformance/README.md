@@ -49,8 +49,11 @@ both directions can cancel in a round trip and must still fail here. Probes cove
   and both success flags. Invented sentinel strings need not be valid model data:
   the adapter must copy them, not apply business rules or rewrite them.
 - Refusal order and duplicate entries; nil and empty are distinct.
-- Unchanged callback inputs, detached task/review pointers, nested owner/list
-  storage and result refusals. Empty lists have spare capacity to expose aliases;
+- Unchanged callback input values **and storage**: pre-call snapshots cover
+  pointer/slice identities, length/capacity and the contents of spare capacity.
+  Equal-value replacement of caller-visible nested storage still fails.
+  Detached task/review pointers, nested owner/list storage and result refusals.
+  Empty lists have spare capacity to expose aliases;
   overlap checks include shifted empty subslices, not only equal starting pointers.
   Fresh probe storage is used for each call.
 
@@ -69,6 +72,9 @@ before implementation. They use their own explicitly named custom structs and
 copying adapter, corrupt or drop each named field, and check swaps, narrowing,
 nil/empty changes, ordered duplicate refusals, nested aliases and preflight.
 That separation is not independent-person review or proof of real requirements.
+Independent review later exposed spare-capacity input mutations that value-only
+comparison missed. An independently authored addendum was frozen before the
+storage-snapshot correction; the original pre-logic cases remain unchanged.
 
 The existing consumer proof adopts this helper for **both** independently generated
 models. It still runs both frozen fourteen-step scenario suites and its original

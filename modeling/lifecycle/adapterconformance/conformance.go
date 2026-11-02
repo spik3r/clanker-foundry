@@ -210,6 +210,48 @@ func unchanged(label string, got, want any) error {
 	}
 	return nil
 }
+
+type storageRecord struct {
+	kind             reflect.Kind
+	address          uintptr
+	length, capacity int
+	contents         []string
+}
+
+// Values alone do not describe caller-visible input storage. A callback can
+// replace a nested owner/list with equal values or write beyond a slice's length.
+// Snapshot identities and all initialized capacity before invoking trusted code.
+func inputStorage(input any) []storageRecord {
+	var records []storageRecord
+	var walk func(reflect.Value)
+	walk = func(v reflect.Value) {
+		switch v.Kind() {
+		case reflect.Struct:
+			for i := 0; i < v.NumField(); i++ {
+				walk(v.Field(i))
+			}
+		case reflect.Pointer:
+			records = append(records, storageRecord{kind: v.Kind(), address: v.Pointer()})
+			if !v.IsNil() {
+				walk(v.Elem())
+			}
+		case reflect.Slice:
+			contents := append([]string(nil), v.Slice(0, v.Cap()).Interface().([]string)...)
+			records = append(records, storageRecord{kind: v.Kind(), address: v.Pointer(), length: v.Len(), capacity: v.Cap(), contents: contents})
+		}
+	}
+	walk(reflect.ValueOf(input))
+	return records
+}
+func unchangedInput(label string, got, want any, before []storageRecord) error {
+	if err := unchanged(label, got, want); err != nil {
+		return err
+	}
+	if !reflect.DeepEqual(before, inputStorage(got)) {
+		return fmt.Errorf("%s: input storage changed", label)
+	}
+	return nil
+}
 func owned(label string, input, output any) error {
 	if !detached(reflect.ValueOf(input), reflect.ValueOf(output)) {
 		return fmt.Errorf("%s: mutable storage aliases", label)
@@ -240,8 +282,9 @@ func Check[T, C, R any](a Adapter[T, C, R]) error {
 		for list := 0; list < 3; list++ {
 			for owner := 0; owner < 3; owner++ {
 				input := literalTask(revision, list, owner)
+				before := inputStorage(input)
 				got := a.ToTask(input)
-				if err := unchanged("ToTask input", input, literalTask(revision, list, owner)); err != nil {
+				if err := unchangedInput("ToTask input", input, literalTask(revision, list, owner), before); err != nil {
 					return err
 				}
 				if err := unchanged("ToTask", got, namedTask[T](literalTask(revision, list, owner))); err != nil {
@@ -252,8 +295,9 @@ func Check[T, C, R any](a Adapter[T, C, R]) error {
 				}
 
 				source := namedTask[T](literalTask(revision, list, owner))
+				before = inputStorage(source)
 				out := a.FromTask(source)
-				if err := unchanged("FromTask input", source, namedTask[T](literalTask(revision, list, owner))); err != nil {
+				if err := unchangedInput("FromTask input", source, namedTask[T](literalTask(revision, list, owner)), before); err != nil {
 					return err
 				}
 				if err := unchanged("FromTask", out, literalTask(revision, list, owner)); err != nil {
@@ -278,8 +322,9 @@ func Check[T, C, R any](a Adapter[T, C, R]) error {
 		}
 		for review := 0; review < 3; review++ {
 			input := literalCommand(revision, review)
+			before := inputStorage(input)
 			got := a.ToCommand(input)
-			if err := unchanged("ToCommand input", input, literalCommand(revision, review)); err != nil {
+			if err := unchangedInput("ToCommand input", input, literalCommand(revision, review), before); err != nil {
 				return err
 			}
 			if err := unchanged("ToCommand", got, namedCommand[C](literalCommand(revision, review))); err != nil {
@@ -302,8 +347,9 @@ func Check[T, C, R any](a Adapter[T, C, R]) error {
 
 func checkResult[T, R any](from func(R) transport.Result, literal func() transport.Result) error {
 	input := namedResult[T, R](literal())
+	before := inputStorage(input)
 	got := from(input)
-	if err := unchanged("FromResult input", input, namedResult[T, R](literal())); err != nil {
+	if err := unchangedInput("FromResult input", input, namedResult[T, R](literal()), before); err != nil {
 		return err
 	}
 	if err := unchanged("FromResult", got, literal()); err != nil {
