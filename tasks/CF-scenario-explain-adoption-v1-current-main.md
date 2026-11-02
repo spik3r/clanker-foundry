@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-explain-adoption-v1
-status: in-progress
+status: completed
 owner: Byte current-main scenario explanation adoption worker
 repositories: [spik3r/clanker-foundry]
 ---
@@ -111,3 +111,43 @@ Only the prospectively named CLI main/test and CONTRACT may intentionally differ
 | cmd/modelexplain/main_test.go | 674b87aa41d992d91d5ce5d236aa573837fe6ce2 | b89c0460095d874d5b8a94d81190390cd6aaf50e5451b0a20014f375c1d72526 | 2341 |
 | scenarios/report_decode.go | 2886a78eaba56118c7c44899ad850431ffad155b | f14816a19faacf707e23b01d5d16b26be8e8c03a9f5f9af801029b89fb2ceddf | 3626 |
 | scenarios/report_decode_test.go | f8121f03bdf0253596a10e42ac88e673e7d78e31 | 36ad86ba5ad3aa31e2af82be8dd55124fe35eb0c88e6f14712b13a16e4ab4013 | 1587 |
+
+
+## Local completion and independent exact-source review
+
+Reviewed source is 5427d0d40953ca9cbc3874c62cb4bf628ad8ae70, tree
+af7acceaf2049db42eb8a5ba4a07ec60acde2a48. The original lead found no material
+source, ownership, authority or compatibility defect. The independent integration
+author separately verified its frozen expectations and appended contract claims.
+The original six mapper/decoder/type/test/vector files remain byte-identical to
+dfe14ea; only the prospectively named CLI main/test and contract intentionally
+differ. Integration SHA-256 remains
+884d4b7dfa0125b8e62315ec1b84fecbe61513c9bb9a9763ffe21446966f7962,
+frozen at 1eb30ca before logic adoption at fc54c2a. No existing current-main path
+was modified. Public main was rechecked at 713c2457 before completion.
+
+Both author and original lead independently passed actual Go 1.27.3 offline full
+race tests (40 tested packages), focused tests including real closed stdout, full
+vet, formatting, modelc validate/check, modeltrace check, authoring schema 2/2 and
+repository validation. Schema runs used an existing installed dependency closure
+with a byte-matched lockfile, not a new install. Optional skills-ref is absent.
+The integration author independently reran the three affected packages under race.
+
+The CLI's real closed-stdout regression failed original main at fc54c2a with
+SIGPIPE and passed the reviewed correction with exit 3 and fixed diagnostic.
+Both author and lead executed the maintained modelplay-to-wrapper-to-modelexplain
+recipe: the existing four-case/thirteen-step suite produced declared refusal links
+and caller-supplied-assertions status. No explanation output was used to refresh
+an expected value, and the receipt is not authenticated execution evidence.
+
+The author also ran four isolated compilable mutants: accepting the wrong bound
+report version, promoting status to execution-verified, dropping guard links and
+collapsing nil refusals to empty. Unchanged frozen integration assertions rejected
+all four for behavioral reasons, not compilation failure. These are author-run
+controls, not a claim that the reviewer independently ran them.
+
+Final full committed-diff Project Memory validation and completion blob/mode
+continuity follow this metadata-only completion. A complete-history bundle will
+preserve this fresh adoption history without held ancestors, old tasks or old
+events. Publication remains a separate coordinator decision; no reviewpack,
+process-view, private-consumer, timing or browser restriction is waived.
