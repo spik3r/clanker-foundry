@@ -6,7 +6,20 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/canonical"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/qualification"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/strictjson"
 )
+
+// This DTO is only a bounded schema for routing. Native qualification.Verify
+// must validate every field and rebuilt byte before the selected policy is trusted.
+type qualificationIdentity struct {
+	Format         string `json:"format"`
+	Profile        string `json:"profile"`
+	Generator      string `json:"generator"`
+	Toolchain      string `json:"toolchain"`
+	ModelDigest    string `json:"modelDigest"`
+	SourceRevision string `json:"sourceRevision"`
+	SuiteStatus    string `json:"suiteStatus"`
+}
 
 func digest(s string) bool {
 	if len(s) != 64 {
@@ -84,7 +97,20 @@ func Verify(raw []byte, expected Expected) error {
 	if e != nil {
 		return archiveError(e)
 	}
-	names, _, _ := sourceNames()
+	var metadata qualificationIdentity
+	var metadataBytes []byte
+	for _, f := range innerFiles {
+		if f.Name == "qualification.json" {
+			metadataBytes = f.Data
+		}
+	}
+	if strictjson.Decode(metadataBytes, &metadata, 4<<10, 4) != nil {
+		return ErrInvalid
+	}
+	names, _, _, e := sourceNamesForRevision(metadata.SourceRevision)
+	if e != nil {
+		return e
+	}
 	innerNames := append(append([]string{}, names...), "GUIDE.txt", "candidate.json", "suite.json", "qualification.json", "generated/lifecycle.go", "generated/model_paths_test.go")
 	inner, e := inventory(innerFiles, innerNames)
 	if e != nil {
@@ -97,7 +123,7 @@ func Verify(raw []byte, expected Expected) error {
 	for _, n := range names {
 		sources = append(sources, artifactbundle.File{Name: n, Data: inner[n]})
 	}
-	if e = checkSources(sources); e != nil {
+	if e = checkSourcesForRevision(sources, metadata.SourceRevision); e != nil {
 		return e
 	}
 	if hash(outer["change-request.json"]) != expected.RequestSHA256 || hash(outer["before.json"]) != expected.BeforeSourceSHA256 || hash(inner["candidate.json"]) != expected.CandidateSHA256 || hash(inner["suite.json"]) != expected.SuiteSHA256 || !bytes.Equal(outer["candidate.json"], inner["candidate.json"]) {
@@ -114,7 +140,7 @@ func Verify(raw []byte, expected Expected) error {
 	if e = qualification.Verify(outer["qualification.zip"], expected.CandidateSHA256, expected.SuiteSHA256); e != nil {
 		return archiveError(e)
 	}
-	rebuilt, e := Build(outer["change-request.json"], inner["suite.json"], sources)
+	rebuilt, e := buildForRevision(outer["change-request.json"], inner["suite.json"], sources, metadata.SourceRevision)
 	if e != nil {
 		return e
 	}

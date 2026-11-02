@@ -43,7 +43,14 @@ func encode(v any) ([]byte, error) {
 // sourceNames derives the complete allowed set and transport name bound from
 // qualification. Exact source sizes/hashes remain the qualifier's responsibility.
 func sourceNames() ([]string, map[string]bool, int) {
-	names := qualification.SourceNames()
+	names, set, max, _ := sourceNamesForRevision(qualification.SourceRevision)
+	return names, set, max
+}
+func sourceNamesForRevision(revision string) ([]string, map[string]bool, int, error) {
+	names, err := qualification.SourceNamesForRevision(revision)
+	if err != nil {
+		return nil, nil, 0, ErrInvalid
+	}
 	set := make(map[string]bool, len(names))
 	max := 0
 	for _, n := range names {
@@ -52,10 +59,13 @@ func sourceNames() ([]string, map[string]bool, int) {
 			max = len(n)
 		}
 	}
-	return names, set, max
+	return names, set, max, nil
 }
-func checkSources(s []artifactbundle.File) error {
-	names, set, max := sourceNames()
+func checkSourcesForRevision(s []artifactbundle.File, revision string) error {
+	names, set, max, err := sourceNamesForRevision(revision)
+	if err != nil {
+		return err
+	}
 	if len(s) > len(names) {
 		return ErrLimit
 	}
@@ -81,14 +91,18 @@ func checkSources(s []artifactbundle.File) error {
 	}
 	return nil
 }
-func preflight(request, suite []byte, sources []artifactbundle.File) error {
-	if len(request) > MaxRequestBytes || len(suite) > MaxSuiteBytes || len(sources) > len(qualification.SourceNames()) {
+func preflightForRevision(request, suite []byte, sources []artifactbundle.File, revision string) error {
+	names, _, _, err := sourceNamesForRevision(revision)
+	if err != nil {
+		return err
+	}
+	if len(request) > MaxRequestBytes || len(suite) > MaxSuiteBytes || len(sources) > len(names) {
 		return ErrLimit
 	}
 	if len(request) == 0 || len(suite) == 0 {
 		return ErrInvalid
 	}
-	return checkSources(sources)
+	return checkSourcesForRevision(sources, revision)
 }
 
 // acceptedRequest delegates the whole patch to the existing planner before
@@ -143,14 +157,19 @@ func acceptedRequest(request []byte) ([]byte, []byte, []byte, plannerResultDTO, 
 // Build returns one inert canonical archive. It never validates or executes the
 // opaque suite and never inspects its binding. Inputs must not change concurrently.
 func Build(request, suite []byte, sources []artifactbundle.File) ([]byte, error) {
-	if e := preflight(request, suite, sources); e != nil {
+	return buildForRevision(request, suite, sources, qualification.SourceRevision)
+}
+
+// Only native verification selects a historical policy; public builds stay current.
+func buildForRevision(request, suite []byte, sources []artifactbundle.File, revision string) ([]byte, error) {
+	if e := preflightForRevision(request, suite, sources, revision); e != nil {
 		return nil, e
 	}
 	result, before, candidate, r, e := acceptedRequest(request)
 	if e != nil {
 		return nil, e
 	}
-	inner, e := qualification.Build(candidate, suite, sources)
+	inner, e := qualification.BuildForRevision(revision, candidate, suite, sources)
 	if e != nil {
 		return nil, archiveError(e)
 	}
@@ -160,7 +179,7 @@ func Build(request, suite []byte, sources []artifactbundle.File) ([]byte, error)
 	if e = qualification.Verify(inner, hash(candidate), hash(suite)); e != nil {
 		return nil, archiveError(e)
 	}
-	meta := metadataDTO{Profile, "example-only", "none", hash(request), hash(before), r.BeforeDigest, hash(candidate), r.AfterDigest, hash(suite), hash(result), hash(inner), jsonformat.FormatVersion, model.ProfileVersion, compiler.GeneratorVersion, compiler.ToolchainVersion, qualification.SourceRevision, "unvalidated and unexecuted", "not inspected"}
+	meta := metadataDTO{Profile, "example-only", "none", hash(request), hash(before), r.BeforeDigest, hash(candidate), r.AfterDigest, hash(suite), hash(result), hash(inner), jsonformat.FormatVersion, model.ProfileVersion, compiler.GeneratorVersion, compiler.ToolchainVersion, revision, "unvalidated and unexecuted", "not inspected"}
 	mb, e := encode(meta)
 	if e != nil {
 		return nil, e

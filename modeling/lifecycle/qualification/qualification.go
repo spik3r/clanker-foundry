@@ -15,13 +15,16 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/compiler"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/jsonformat"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/model"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/strictjson"
 )
 
 var ErrInvalid = errors.New("invalid qualification project")
 
 const maxInput = 1 << 20
 const maxSourceName = len("scenarios/report_decode.go")
-const SourceRevision = "3d6d17188cc2723cfe04649d0f8b4220a37b1afe"
+const SourceRevision = "1e88dbebb4ab13873e2a4159dc928dd1f5f73e20"
+const legacySourceRevision = "3d6d17188cc2723cfe04649d0f8b4220a37b1afe"
+const maxIdentityBytes = 4 << 10
 const guide = "Example-only candidate project; no review or execution authority.\nThe literal suite has not been validated or executed. Use a trusted single-writer host.\nOffline with Go 1.27.3:\n  GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off go test -buildvcs=false ./generated\n  GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off go run -buildvcs=false ./cmd/modelplay < suite.json\nProject identity comes from the verified manifest and supplied hashes, not ambient VCS stamping.\nDo not change the suite or model binding to force a pass.\n"
 
 type pin struct {
@@ -30,7 +33,8 @@ type pin struct {
 	hash string
 }
 
-var pins = []pin{
+// These historical pins are unchanged; current policy adds one owned helper.
+var legacyPins = []pin{
 	{"go.mod", 71, "cc128fce13193d3066bdeb08cca9db627fb6c3120967c3beff254a514f2a5fac"},
 	{"model/ir.go", 9385, "13f4ad2980b1ca523b07bdbc8ebeb0e0300f8df81faa8dcd1cdec5ccef007aeb"},
 	{"canonical/canonical.go", 1946, "2c3cba3fd53adf8ca5a4cc2ce3d96b51457742c47b6ab4fcedba219e19001a06"},
@@ -44,13 +48,45 @@ var pins = []pin{
 	{"cmd/modelplay/main.go", 1613, "925ec202c74aba5d50eb2bfb5dc54ea22387ccec90e969f1a7ebe1ecbd9a0c63"},
 }
 
-// SourceNames returns a fresh list of the only accepted source paths.
+// sourcePins is a closed policy lookup, never a caller-supplied registry.
+func sourcePins(revision string) ([]pin, error) {
+	if len(revision) != 40 {
+		return nil, ErrInvalid
+	}
+	for _, c := range revision {
+		if !(c >= '0' && c <= '9' || c >= 'a' && c <= 'f') {
+			return nil, ErrInvalid
+		}
+	}
+	switch revision {
+	case legacySourceRevision:
+		return legacyPins, nil
+	case SourceRevision:
+		out := append([]pin{}, legacyPins...)
+		return append(out, pin{"model/capabilities.go", 654, "e78f4f9c102f8d894e50130dd0bfb8030e0c7c325b01eb2452e9839c02c27e4e"}), nil
+	default:
+		return nil, ErrInvalid
+	}
+}
+
+// SourceNames returns a fresh list for the current default source policy.
 func SourceNames() []string {
+	names, _ := SourceNamesForRevision(SourceRevision)
+	return names
+}
+
+// SourceNamesForRevision returns a fresh list only for an exact supported policy.
+// A recognized source revision is not authenticated binary provenance/currentness.
+func SourceNamesForRevision(revision string) ([]string, error) {
+	pins, err := sourcePins(revision)
+	if err != nil {
+		return nil, err
+	}
 	out := make([]string, len(pins))
 	for i, p := range pins {
 		out[i] = p.name
 	}
-	return out
+	return out, nil
 }
 func hash(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
 
@@ -67,8 +103,19 @@ type identity struct {
 // Build accepts only the pinned source inventory. The suite is copied unvalidated.
 // Callers must not mutate candidate, suite, or source bytes during this call.
 func Build(candidate, suite []byte, sources []artifactbundle.File) ([]byte, error) {
+	return BuildForRevision(SourceRevision, candidate, suite, sources)
+}
+
+// BuildForRevision explicitly selects one of two closed reviewed source policies.
+// It never migrates/rebinds inputs or accepts an arbitrary pin table. Callers must
+// keep input slices immutable during the call; suites remain opaque/unexecuted.
+func BuildForRevision(revision string, candidate, suite []byte, sources []artifactbundle.File) ([]byte, error) {
 	if runtime.Version() != compiler.ToolchainVersion {
 		return nil, ErrInvalid
+	}
+	pins, err := sourcePins(revision)
+	if err != nil {
+		return nil, err
 	}
 	if len(candidate) == 0 || len(candidate) > maxInput || len(suite) == 0 || len(suite) > maxInput || len(sources) != len(pins) {
 		return nil, ErrInvalid
@@ -117,7 +164,7 @@ func Build(candidate, suite []byte, sources []artifactbundle.File) ([]byte, erro
 	if e != nil {
 		return nil, ErrInvalid
 	}
-	id := identity{jsonformat.FormatVersion, model.ProfileVersion, compiler.GeneratorVersion, compiler.ToolchainVersion, digest, SourceRevision, "unvalidated and unexecuted"}
+	id := identity{jsonformat.FormatVersion, model.ProfileVersion, compiler.GeneratorVersion, compiler.ToolchainVersion, digest, revision, "unvalidated and unexecuted"}
 	meta, e := json.Marshal(id)
 	if e != nil {
 		return nil, ErrInvalid
@@ -131,7 +178,8 @@ func Build(candidate, suite []byte, sources []artifactbundle.File) ([]byte, erro
 	return result, nil
 }
 
-// Verify requires the complete exact domain inventory and regenerates artifacts.
+// Verify requires the exact recognized source policy and regenerates all artifacts.
+// Success means consistency under that policy, not current-source freshness.
 // Callers must not mutate raw archive bytes during this call.
 func Verify(raw []byte, expectedCandidateSHA256, expectedSuiteSHA256 string) error {
 	files, e := artifactbundle.Verify(raw, artifactbundle.QualificationProfile)
@@ -141,6 +189,16 @@ func Verify(raw []byte, expectedCandidateSHA256, expectedSuiteSHA256 string) err
 	byName := make(map[string][]byte, len(files))
 	for _, f := range files {
 		byName[f.Name] = f.Data
+	}
+	// This bounded declaration only routes to a compiled policy. It is not trusted
+	// until full exact-policy reconstruction below agrees with every archive byte.
+	var metadata identity
+	if strictjson.Decode(byName["qualification.json"], &metadata, maxIdentityBytes, 4) != nil {
+		return ErrInvalid
+	}
+	pins, err := sourcePins(metadata.SourceRevision)
+	if err != nil {
+		return ErrInvalid
 	}
 	sources := make([]artifactbundle.File, 0, len(pins))
 	for _, p := range pins {
@@ -161,7 +219,7 @@ func Verify(raw []byte, expectedCandidateSHA256, expectedSuiteSHA256 string) err
 	if hash(candidate) != expectedCandidateSHA256 || hash(suite) != expectedSuiteSHA256 {
 		return ErrInvalid
 	}
-	rebuilt, e := Build(candidate, suite, sources)
+	rebuilt, e := BuildForRevision(metadata.SourceRevision, candidate, suite, sources)
 	if e != nil || !bytes.Equal(raw, rebuilt) {
 		return ErrInvalid
 	}
