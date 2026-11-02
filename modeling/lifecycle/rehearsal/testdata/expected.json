@@ -1,0 +1,140 @@
+{
+  "oracleVersion": "lifecycle-design-rehearsal-oracle/v1",
+  "provenance": {
+    "authorship": "Separate contributor agent; not independent-person or human approval.",
+    "timing": "Frozen before rehearsal implementation or execution; no reducer, compiler, Compare or topology execution used.",
+    "copied": "externalExpected, changes, linkedTransitions, archive status strings and candidate outcome literals are copied from the pre-existing frozen designchange fixtures.",
+    "reasoned": "Baseline success literals follow the baseline T_prepare guards/effects. Candidate outcomes were checked against declared guards/effects and stale review inputs. Totals, case order, suite-diff classifications and structural topology are reasoned from the supplied declarations, not observed output.",
+    "hashed": "Baseline exact bytes and baseline/candidate canonical suite digests independently calculated with Python hashlib.sha256; canonical JSON excludes formatVersion and trailing LF, preserves documented DTO field order, decimal strings, arrays and null values.",
+    "boundary": "Expected replay outcomes below are assertions to verify later, not claims of execution. Topology paths ignore guards; archive consistency is not execution or approval."
+  },
+  "externalExpected": {
+    "RequestSHA256": "f3a14ba6adfd54832d810e26dccfc929e5fa61801990fa7c52436ec51eaacde0",
+    "BeforeSourceSHA256": "95b17eb3e2ef78a9485b40076c0b085e5e542e8fa3db827ea99345abe6077e26",
+    "BeforeModelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "CandidateSHA256": "22e6ee6f5208b124bcebffe2ac8608920a74cd34c0eeefe8ab8519b2523ea8c6",
+    "CandidateModelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+    "SuiteSHA256": "53b5ceec6b68719243853dae5285c13d5c25df89cb203a16279f3cacd2f989f1"
+  },
+  "baselineSuiteSHA256": "8ec1c9187d4f4083579165ab8976de4d0ad8a583f0a3b8fa33e400d345f2d5b7",
+  "baselineSuiteDigest": "d2877e1386e89b96415cabe6f1db8cd53eafc0b23d8420b4b6f15aa3bdac2a36",
+  "candidateSuiteDigest": "7a50d74f611ddf854504eceaa34d85a42bb5e56777b80ab84332921d167f3975",
+  "baseline": {
+    "cases": 2,
+    "steps": 2,
+    "caseOrder": ["missing_owner_refuses", "named_owner_succeeds"]
+  },
+  "candidate": {
+    "cases": 4,
+    "steps": 6,
+    "caseOrder": ["missing_owner_refuses", "named_owner_succeeds", "rework_replay", "content_mismatch"]
+  },
+  "changes": [{"kind":"transition","id":"T_prepare","type":"modified","fields":["guards"]}],
+  "linkedTransitions": [
+    {"side":"before","transitionId":"T_prepare","causes":["transition:T_prepare"]},
+    {"side":"after","transitionId":"T_prepare","causes":["transition:T_prepare"]}
+  ],
+  "suiteStatus": "unvalidated and unexecuted",
+  "suiteBindingStatus": "not inspected",
+  "suiteDiff": {
+    "diffVersion": "lifecycle-scenario-diff/v1",
+    "profileVersion": "lifecycle/v1",
+    "mode": "example-only",
+    "authority": "none",
+    "beforeModelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "afterModelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+    "beforeSuiteDigest": "d2877e1386e89b96415cabe6f1db8cd53eafc0b23d8420b4b6f15aa3bdac2a36",
+    "afterSuiteDigest": "7a50d74f611ddf854504eceaa34d85a42bb5e56777b80ab84332921d167f3975",
+    "sources": null,
+    "modelChanged": true,
+    "suiteChanged": true,
+    "reviewRequired": true,
+    "suiteFields": ["modelDigest"],
+    "caseOrder": {
+      "before": ["missing_owner_refuses", "named_owner_succeeds"],
+      "after": ["missing_owner_refuses", "named_owner_succeeds", "rework_replay", "content_mismatch"],
+      "changed": true
+    },
+    "cases": [
+      {"id":"content_mismatch","kind":"added","fields":[],"beforeSteps":[],"afterSteps":["approve"]},
+      {"id":"missing_owner_refuses","kind":"modified","fields":["steps"],"beforeSteps":["prepare_refused"],"afterSteps":["prepare_refused"]},
+      {"id":"rework_replay","kind":"added","fields":[],"beforeSteps":[],"afterSteps":["request_changes","resubmit","stale_review"]}
+    ],
+    "steps": [
+      {"caseId":"content_mismatch","id":"approve","kind":"added","fields":[]},
+      {"caseId":"missing_owner_refuses","id":"prepare_refused","kind":"modified","fields":["expected.ok","expected.refusals","expected.task"]},
+      {"caseId":"rework_replay","id":"request_changes","kind":"added","fields":[]},
+      {"caseId":"rework_replay","id":"resubmit","kind":"added","fields":[]},
+      {"caseId":"rework_replay","id":"stale_review","kind":"added","fields":[]}
+    ]
+  },
+  "baselineExpectedReplay": [
+    {
+      "caseId":"missing_owner_refuses","stepId":"prepare_refused",
+      "ok":true,"transitionId":"T_prepare",
+      "task":{"id":"task-1","state":"Ready","revision":"1","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":null},
+      "refusals":[]
+    },
+    {
+      "caseId":"named_owner_succeeds","stepId":"prepare_allowed",
+      "ok":true,"transitionId":"T_prepare",
+      "task":{"id":"task-1","state":"Ready","revision":"1","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":"owner-1"},
+      "refusals":[]
+    }
+  ],
+  "candidateExpectedReplay": [
+    {
+      "caseId":"missing_owner_refuses","stepId":"prepare_refused",
+      "ok":false,"transitionId":"T_prepare",
+      "task":{"id":"task-1","state":"Draft","revision":"0","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":null},
+      "refusals":["G_owner"]
+    },
+    {
+      "caseId":"named_owner_succeeds","stepId":"prepare_allowed",
+      "ok":true,"transitionId":"T_prepare",
+      "task":{"id":"task-1","state":"Ready","revision":"1","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":"owner-1"},
+      "refusals":[]
+    },
+    {
+      "caseId":"rework_replay","stepId":"request_changes",
+      "ok":true,"transitionId":"T_requestChanges",
+      "task":{"id":"review-example","state":"InProgress","revision":"4","outcome":"Deliver an example","acceptance":["First criterion"],"owner":"worker"},
+      "refusals":[]
+    },
+    {
+      "caseId":"rework_replay","stepId":"resubmit",
+      "ok":true,"transitionId":"T_requestReview",
+      "task":{"id":"review-example","state":"InReview","revision":"5","outcome":"Deliver an example","acceptance":["First criterion"],"owner":"worker"},
+      "refusals":[]
+    },
+    {
+      "caseId":"rework_replay","stepId":"stale_review",
+      "ok":false,"transitionId":"T_approve",
+      "task":{"id":"review-example","state":"InReview","revision":"5","outcome":"Deliver an example","acceptance":["First criterion"],"owner":"worker"},
+      "refusals":["G_reviewContent","G_reviewRevision"]
+    },
+    {
+      "caseId":"content_mismatch","stepId":"approve",
+      "ok":false,"transitionId":"T_approve",
+      "task":{"id":"review-example","state":"InReview","revision":"3","outcome":"Deliver an example","acceptance":["Revised criterion"],"owner":"worker"},
+      "refusals":["G_reviewContent"]
+    }
+  ],
+  "sharedStructuralTopology": {
+    "formatVersion":"lifecycle-structural-topology/v1",
+    "mode":"structural-only",
+    "authority":"none",
+    "modelId":"TaskLifecycleExample",
+    "initial":"Draft",
+    "states":[
+      {"id":"Done","hasTerminalPath":true,"terminalId":"Done","transitionIds":[]},
+      {"id":"Draft","hasTerminalPath":true,"terminalId":"Done","transitionIds":["T_prepare","T_start","T_requestReview","T_approve"]},
+      {"id":"InProgress","hasTerminalPath":true,"terminalId":"Done","transitionIds":["T_requestReview","T_approve"]},
+      {"id":"InReview","hasTerminalPath":true,"terminalId":"Done","transitionIds":["T_approve"]},
+      {"id":"Ready","hasTerminalPath":true,"terminalId":"Done","transitionIds":["T_start","T_requestReview","T_approve"]}
+    ],
+    "cycles":[
+      {"states":["InProgress","InReview"],"internalTransitions":["T_requestChanges","T_requestReview"],"outgoingTransitions":["T_approve"]}
+    ]
+  }
+}
