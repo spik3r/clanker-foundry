@@ -1,0 +1,155 @@
+package lifecycle_test
+
+import (
+	lifecycle "example.com/compilerprofile/generated"
+	"math"
+	"reflect"
+	"strings"
+	"testing"
+)
+
+const expectedModel = "9995b9e76a43b07b7b55ddeda0448e2a02c90b71344669bbdc73244233877866"
+const expectedTaskDigest = "ffee8398cb44cff6e329036a7b1d24c040b011a3a1450d9b6753d00796fe6a8d"
+const exactOutcome = "café <>& \"line\"\n\u2028😀"
+
+func ptr(s string) *string { return &s }
+func fixtureTask() lifecycle.Task {
+	return lifecycle.Task{ID: "item-雪", State: "Working", Revision: 9007199254740993, Outcome: exactOutcome, Acceptance: []string{"first-一", "second-二"}, Owner: ptr("owner-Ω")}
+}
+func expectedTask(state lifecycle.State, id, outcome string, revision uint64, acceptance []string, owner *string) *lifecycle.Task {
+	return &lifecycle.Task{ID: id, State: state, Revision: revision, Outcome: outcome, Acceptance: acceptance, Owner: owner}
+}
+func normalExpected(state lifecycle.State, revision uint64) *lifecycle.Task {
+	return expectedTask(state, "item-雪", exactOutcome, revision, []string{"first-一", "second-二"}, ptr("owner-Ω"))
+}
+func fixtureCommand(kind string) lifecycle.Command {
+	return lifecycle.Command{Type: kind, Actor: "actor-β", ExpectedRevision: 9007199254740993, Review: &lifecycle.Review{TaskID: "review-item-λ", TaskRevision: 9007199254740993, ModelDigest: expectedModel, TaskDigest: expectedTaskDigest, Reviewer: "reviewer-π", Decision: "approved"}}
+}
+func result(ok bool, id string, task *lifecycle.Task, reasons ...string) lifecycle.Result {
+	if reasons == nil {
+		reasons = []string{}
+	}
+	return lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: expectedModel, OK: ok, TransitionID: id, Task: task, Refusals: reasons}
+}
+func check(t *testing.T, in lifecycle.Task, c lifecycle.Command, want lifecycle.Result) {
+	t.Helper()
+	before := in
+	if in.Acceptance != nil {
+		before.Acceptance = append([]string{}, in.Acceptance...)
+	}
+	if in.Owner != nil {
+		before.Owner = ptr(*in.Owner)
+	}
+	beforeC := c
+	if c.Review != nil {
+		r := *c.Review
+		beforeC.Review = &r
+	}
+	got := lifecycle.Transition(in, c)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("PROFILE_ORACLE_MISMATCH got %#v task %#v want %#v task %#v", got, got.Task, want, want.Task)
+	}
+	if !reflect.DeepEqual(in, before) || !reflect.DeepEqual(c, beforeC) {
+		t.Fatal("PROFILE_ORACLE_MISMATCH input mutation")
+	}
+	if got.Task != nil {
+		if len(got.Task.Acceptance) > 0 {
+			got.Task.Acceptance[0] = "output changed"
+		}
+		if got.Task.Owner != nil {
+			*got.Task.Owner = "output changed"
+		}
+		if !reflect.DeepEqual(in, before) {
+			t.Fatal("PROFILE_ORACLE_MISMATCH output shares input storage")
+		}
+	}
+}
+func TestProfileReferenceBindings(t *testing.T) {
+	for _, kind := range []string{"id", "outcome", "owner", "actor", "reviewid", "reviewer", "decision", "model", "digest", "revision", "reviewrevision", "acceptance", "nonblank"} {
+		t.Run(kind, func(t *testing.T) {
+			check(t, fixtureTask(), fixtureCommand("check_"+kind), result(true, "T_"+kind, normalExpected("Archived", 9007199254740994)))
+		})
+	}
+}
+func TestProfileReferenceRefusals(t *testing.T) {
+	cases := []struct {
+		name, kind string
+		change     func(*lifecycle.Task, *lifecycle.Command)
+		task       *lifecycle.Task
+	}{
+		{"id", "id", func(x *lifecycle.Task, c *lifecycle.Command) { x.ID = "other-id" }, expectedTask("Working", "other-id", exactOutcome, 9007199254740993, []string{"first-一", "second-二"}, ptr("owner-Ω"))},
+		{"unicode_not_normalized", "outcome", func(x *lifecycle.Task, c *lifecycle.Command) { x.Outcome = "cafe\u0301 <>& \"line\"\n\u2028😀" }, expectedTask("Working", "item-雪", "cafe\u0301 <>& \"line\"\n\u2028😀", 9007199254740993, []string{"first-一", "second-二"}, ptr("owner-Ω"))},
+		{"owner_nil", "owner", func(x *lifecycle.Task, c *lifecycle.Command) { x.Owner = nil }, expectedTask("Working", "item-雪", exactOutcome, 9007199254740993, []string{"first-一", "second-二"}, nil)},
+		{"owner_empty", "owner", func(x *lifecycle.Task, c *lifecycle.Command) { x.Owner = ptr("") }, expectedTask("Working", "item-雪", exactOutcome, 9007199254740993, []string{"first-一", "second-二"}, ptr(""))},
+		{"actor", "actor", func(x *lifecycle.Task, c *lifecycle.Command) { c.Actor = "owner-Ω" }, normalExpected("Working", 9007199254740993)},
+		{"reviewid", "reviewid", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.TaskID = "item-雪" }, normalExpected("Working", 9007199254740993)},
+		{"reviewer", "reviewer", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.Reviewer = "actor-β" }, normalExpected("Working", 9007199254740993)},
+		{"decision", "decision", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.Decision = "changesRequested" }, normalExpected("Working", 9007199254740993)},
+		{"model", "model", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.ModelDigest = strings.Repeat("0", 64) }, normalExpected("Working", 9007199254740993)},
+		{"digest", "digest", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.TaskDigest = strings.Repeat("1", 64) }, normalExpected("Working", 9007199254740993)},
+		{"revision", "revision", func(x *lifecycle.Task, c *lifecycle.Command) { c.ExpectedRevision = 9007199254740992 }, normalExpected("Working", 9007199254740993)},
+		{"reviewrevision", "reviewrevision", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.TaskRevision = 9007199254740992 }, normalExpected("Working", 9007199254740993)},
+		{"acceptance_nil", "acceptance", func(x *lifecycle.Task, c *lifecycle.Command) { x.Acceptance = nil }, expectedTask("Working", "item-雪", exactOutcome, 9007199254740993, nil, ptr("owner-Ω"))},
+		{"acceptance_empty", "acceptance", func(x *lifecycle.Task, c *lifecycle.Command) { x.Acceptance = []string{} }, expectedTask("Working", "item-雪", exactOutcome, 9007199254740993, []string{}, ptr("owner-Ω"))},
+		{"unicode_whitespace", "nonblank", func(x *lifecycle.Task, c *lifecycle.Command) { x.Outcome = "\u2003\u00a0\t" }, expectedTask("Working", "item-雪", "\u2003\u00a0\t", 9007199254740993, []string{"first-一", "second-二"}, ptr("owner-Ω"))},
+	}
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			in, c := fixtureTask(), fixtureCommand("check_"+v.kind)
+			v.change(&in, &c)
+			check(t, in, c, result(false, "T_"+v.kind, v.task, "G_"+v.kind))
+		})
+	}
+}
+func TestProfileAbsentReview(t *testing.T) {
+	for _, kind := range []string{"reviewid", "reviewer", "decision", "model", "digest", "reviewrevision"} {
+		t.Run(kind, func(t *testing.T) {
+			c := fixtureCommand("check_" + kind)
+			c.Review = nil
+			check(t, fixtureTask(), c, result(false, "T_"+kind, normalExpected("Working", 9007199254740993), "G_"+kind))
+		})
+	}
+}
+func TestProfileInvalidText(t *testing.T) {
+	cases := []struct {
+		name   string
+		change func(*lifecycle.Task, *lifecycle.Command)
+	}{
+		{"blank_id", func(x *lifecycle.Task, c *lifecycle.Command) { x.ID = "\u2003" }},
+		{"invalid_utf8", func(x *lifecycle.Task, c *lifecycle.Command) { x.Outcome = string([]byte{0xff}) }},
+		{"blank_acceptance_entry", func(x *lifecycle.Task, c *lifecycle.Command) { x.Acceptance = []string{"\u2003"} }},
+		{"invalid_review_decision", func(x *lifecycle.Task, c *lifecycle.Command) { c.Review.Decision = "pending" }},
+	}
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			in, c := fixtureTask(), fixtureCommand("check_id")
+			v.change(&in, &c)
+			check(t, in, c, result(false, "", nil, "INVALID_INPUT"))
+		})
+	}
+}
+func TestProfileTaskDigests(t *testing.T) {
+	cases := []struct {
+		name, want string
+		change     func(*lifecycle.Task)
+	}{
+		{"base", "ffee8398cb44cff6e329036a7b1d24c040b011a3a1450d9b6753d00796fe6a8d", func(*lifecycle.Task) {}},
+		{"acceptance_order", "a1abab37e3a48897cd0b962215ea58089ba10f0d411ec224985db92eb5dcf92f", func(x *lifecycle.Task) { x.Acceptance = []string{"second-二", "first-一"} }},
+		{"nil_acceptance", "f78253a6905a4674693a14f5c414592797aefbf0d1da7448db43e78edd8f3f5b", func(x *lifecycle.Task) { x.Acceptance = nil }},
+		{"empty_acceptance", "f78253a6905a4674693a14f5c414592797aefbf0d1da7448db43e78edd8f3f5b", func(x *lifecycle.Task) { x.Acceptance = []string{} }},
+		{"nil_owner", "8c71f86ce3d14f80a604140c04e171ede3fabd174a76ef64d5d74a12f8651b56", func(x *lifecycle.Task) { x.Owner = nil }},
+		{"empty_owner", "680c5d52646a39ecc62d15e2f4d7bcee5d74e69af5e29656899ddf4231236e04", func(x *lifecycle.Task) { x.Owner = ptr("") }},
+		{"decomposed", "75269c56b20763d4fe4063fe252a9e3e9fbb0218f614cb3c0a9f12ab5cdd23f9", func(x *lifecycle.Task) { x.Outcome = "cafe\u0301 <>& \"line\"\n\u2028😀" }},
+		{"max_uint64", "261bce177be167221546a750c48f04f940763922696f9a324a7651f39538979d", func(x *lifecycle.Task) { x.Revision = math.MaxUint64 }},
+	}
+	for _, v := range cases {
+		t.Run(v.name, func(t *testing.T) {
+			in := fixtureTask()
+			v.change(&in)
+			got, e := lifecycle.TaskDigest(in)
+			if e != nil || got != v.want {
+				t.Fatalf("PROFILE_ORACLE_MISMATCH digest %s error %v want %s", got, e, v.want)
+			}
+		})
+	}
+}

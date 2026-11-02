@@ -1,0 +1,286 @@
+package lifecycle_test
+
+import (
+	lifecycle "example.com/compilerprofile/generated"
+	"reflect"
+	"testing"
+)
+
+func ptr(s string) *string { return &s }
+func snapshot(t lifecycle.Task) lifecycle.Task {
+	c := t
+	if t.Owner != nil {
+		c.Owner = ptr(*t.Owner)
+	}
+	if t.Acceptance != nil {
+		c.Acceptance = append([]string{}, t.Acceptance...)
+	}
+	return c
+}
+func verify(t *testing.T, input lifecycle.Task, command lifecycle.Command, want lifecycle.Result) {
+	t.Helper()
+	before := snapshot(input)
+	commandBefore := command
+	if command.Review != nil {
+		r := *command.Review
+		commandBefore.Review = &r
+	}
+	got := lifecycle.Transition(input, command)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("PROFILE_ORACLE_MISMATCH complete result mismatch\ngot: %#v task=%#v\nwant: %#v task=%#v", got, got.Task, want, want.Task)
+	}
+	if !reflect.DeepEqual(input, before) || !reflect.DeepEqual(command, commandBefore) {
+		t.Fatal("PROFILE_ORACLE_MISMATCH input mutation")
+	}
+	if got.Task != nil {
+		if input.Owner != nil && got.Task.Owner == input.Owner {
+			t.Fatal("PROFILE_ORACLE_MISMATCH owner aliases input")
+		}
+		if got.Task.Owner != nil {
+			*got.Task.Owner = "changed-output"
+		}
+		if len(got.Task.Acceptance) > 0 {
+			got.Task.Acceptance[0] = "changed-output"
+		}
+		if !reflect.DeepEqual(input, before) {
+			t.Fatal("PROFILE_ORACLE_MISMATCH output aliases input storage")
+		}
+		if input.Owner != nil {
+			*input.Owner = "changed-input"
+			if got.Task.Owner != nil && *got.Task.Owner == "changed-input" {
+				t.Fatal("PROFILE_ORACLE_MISMATCH input aliases output owner")
+			}
+		}
+		if len(input.Acceptance) > 0 {
+			input.Acceptance[0] = "changed-input"
+			if got.Task.Acceptance[0] == "changed-input" {
+				t.Fatal("PROFILE_ORACLE_MISMATCH input aliases output acceptance")
+			}
+		}
+	}
+}
+
+func TestProfileOptionalStrings(t *testing.T) {
+	t.Run("ownerAbsent_nil", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, lifecycle.Command{Type: "ownerAbsent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerAbsent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{}, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("ownerAbsent_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, lifecycle.Command{Type: "ownerAbsent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerAbsent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, Refusals: []string{"G_ownerAbsent"}})
+	})
+	t.Run("ownerAbsent_unicode_space", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, lifecycle.Command{Type: "ownerAbsent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerAbsent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, Refusals: []string{"G_ownerAbsent"}})
+	})
+	t.Run("ownerAbsent_named", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerAbsent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerAbsent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, Refusals: []string{"G_ownerAbsent"}})
+	})
+	t.Run("ownerEmpty_nil", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, lifecycle.Command{Type: "ownerEmpty", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerEmpty", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, Refusals: []string{"G_ownerEmpty"}})
+	})
+	t.Run("ownerEmpty_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, lifecycle.Command{Type: "ownerEmpty", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerEmpty", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, Refusals: []string{}})
+	})
+	t.Run("ownerEmpty_unicode_space", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, lifecycle.Command{Type: "ownerEmpty", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerEmpty", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, Refusals: []string{"G_ownerEmpty"}})
+	})
+	t.Run("ownerEmpty_named", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerEmpty", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerEmpty", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, Refusals: []string{"G_ownerEmpty"}})
+	})
+	t.Run("ownerDifferent_nil", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, lifecycle.Command{Type: "ownerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, Refusals: []string{"G_ownerDifferent"}})
+	})
+	t.Run("ownerDifferent_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, lifecycle.Command{Type: "ownerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, Refusals: []string{"G_ownerDifferent"}})
+	})
+	t.Run("ownerDifferent_unicode_space", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, lifecycle.Command{Type: "ownerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, Refusals: []string{}})
+	})
+	t.Run("ownerDifferent_named", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("ownerText_nil", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, lifecycle.Command{Type: "ownerText", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerText", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, Refusals: []string{"G_ownerText"}})
+	})
+	t.Run("ownerText_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, lifecycle.Command{Type: "ownerText", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerText", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("")}, Refusals: []string{"G_ownerText"}})
+	})
+	t.Run("ownerText_unicode_space", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, lifecycle.Command{Type: "ownerText", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerText", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("  ")}, Refusals: []string{"G_ownerText"}})
+	})
+	t.Run("ownerText_named", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerText", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerText", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("ownerReviewerEqual_both_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, Refusals: []string{"G_ownerReviewerEqual"}})
+	})
+	t.Run("ownerReviewerEqual_owner_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, Refusals: []string{"G_ownerReviewerEqual"}})
+	})
+	t.Run("ownerReviewerEqual_review_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, Refusals: []string{"G_ownerReviewerEqual"}})
+	})
+	t.Run("ownerReviewerEqual_both_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, Refusals: []string{}})
+	})
+	t.Run("ownerReviewerEqual_equal", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "keeper", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("ownerReviewerEqual_different", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerReviewerEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "other", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{"G_ownerReviewerEqual"}})
+	})
+	t.Run("ownerReviewerDifferent_both_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, Refusals: []string{"G_ownerReviewerDifferent"}})
+	})
+	t.Run("ownerReviewerDifferent_owner_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, Refusals: []string{"G_ownerReviewerDifferent"}})
+	})
+	t.Run("ownerReviewerDifferent_review_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, Refusals: []string{"G_ownerReviewerDifferent"}})
+	})
+	t.Run("ownerReviewerDifferent_both_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, Refusals: []string{"G_ownerReviewerDifferent"}})
+	})
+	t.Run("ownerReviewerDifferent_equal", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "keeper", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{"G_ownerReviewerDifferent"}})
+	})
+	t.Run("ownerReviewerDifferent_different", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "ownerReviewerDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "other", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_ownerReviewerDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+}
+
+func TestProfileListPresence(t *testing.T) {
+	t.Run("nil_list", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "criteria", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_criteria", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_criteria"}})
+	})
+	t.Run("empty_list", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, lifecycle.Command{Type: "criteria", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_criteria", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: nil}, Refusals: []string{"G_criteria"}})
+	})
+	t.Run("one_item", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "criteria", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_criteria", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("blank_item_is_invalid_not_guard_false", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{" "}, Owner: nil}, lifecycle.Command{Type: "criteria", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "", Task: nil, Refusals: []string{"INVALID_INPUT"}})
+	})
+}
+
+func TestProfileBooleanComposition(t *testing.T) {
+	t.Run("all_sentinel", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sentinel", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "sentinel", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("any_outside", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sentinel", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "sentinel", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_anySixteen"}})
+	})
+	t.Run("all_reject_operand_00", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked00", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked00", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_00", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed00", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed00", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_01", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked01", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked01", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_01", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed01", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed01", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_02", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked02", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked02", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_02", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed02", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed02", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_03", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked03", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked03", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_03", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed03", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed03", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_04", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked04", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked04", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_04", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed04", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed04", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_05", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked05", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked05", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_05", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed05", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed05", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_06", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked06", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked06", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_06", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed06", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed06", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_07", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked07", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked07", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_07", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed07", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed07", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_08", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked08", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked08", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_08", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed08", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed08", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_09", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked09", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked09", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_09", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed09", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed09", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_10", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked10", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked10", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_10", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed10", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed10", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_11", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked11", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked11", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_11", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed11", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed11", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_12", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked12", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked12", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_12", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed12", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed12", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_13", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked13", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked13", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_13", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed13", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed13", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_14", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked14", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked14", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_14", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed14", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed14", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("all_reject_operand_15", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "blocked15", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "allSixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_allSixteen", Task: &lifecycle.Task{ID: "blocked15", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_allSixteen"}})
+	})
+	t.Run("any_accept_operand_15", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "allowed15", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "anySixteen", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_anySixteen", Task: &lifecycle.Task{ID: "allowed15", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("nested_absent_and_list", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, lifecycle.Command{Type: "nested", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("nested_matching_and_list", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "nested", Actor: "keeper", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("nested_different_and_list", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "nested", Actor: "other", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{"G_nested"}})
+	})
+	t.Run("nested_absent_nil", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "nested", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_nested"}})
+	})
+	t.Run("nested_matching_empty", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, lifecycle.Command{Type: "nested", Actor: "keeper", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: false, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{}, Owner: ptr("keeper")}, Refusals: []string{"G_nested"}})
+	})
+	t.Run("nested_present_empty_matches", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, lifecycle.Command{Type: "nested", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "c93f00645c2e8fcf763d65f294df8f742d024bb519fc0851a9e7320df04253e3", OK: true, TransitionID: "T_nested", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("")}, Refusals: []string{}})
+	})
+}

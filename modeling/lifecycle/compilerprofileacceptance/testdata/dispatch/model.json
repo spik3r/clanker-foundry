@@ -1,0 +1,138 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "DispatchSignals",
+  "initial": "Queue",
+  "states": [
+    {
+      "id": "Queue",
+      "label": "Queue",
+      "terminal": false
+    },
+    {
+      "id": "ReviewBay",
+      "label": "ReviewBay",
+      "terminal": false
+    },
+    {
+      "id": "Accepted",
+      "label": "Accepted",
+      "terminal": true
+    },
+    {
+      "id": "Discarded",
+      "label": "Discarded",
+      "terminal": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R_actor",
+      "text": "A signal names a nonblank actor."
+    },
+    {
+      "id": "R_outcome",
+      "text": "Advancing the queue names a nonblank outcome."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G_actor",
+      "requirement": "R_actor",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "command.actor"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_outcome",
+      "requirement": "R_outcome",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "task.outcome"
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T_queue",
+      "from": "Queue",
+      "trigger": "advance",
+      "to": "ReviewBay",
+      "guards": [
+        "G_outcome",
+        "G_actor"
+      ],
+      "effects": [
+        {
+          "op": "assign_owner_if_absent"
+        },
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_accept",
+      "from": "ReviewBay",
+      "trigger": "advance",
+      "to": "Accepted",
+      "guards": [
+        "G_actor"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_pulse",
+      "from": "ReviewBay",
+      "trigger": "pulse",
+      "to": "ReviewBay",
+      "guards": [
+        "G_actor"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_discard",
+      "from": "Queue",
+      "trigger": "discard",
+      "to": "Discarded",
+      "guards": [
+        "G_actor"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    }
+  ]
+}
