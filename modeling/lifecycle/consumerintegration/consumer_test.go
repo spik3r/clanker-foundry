@@ -82,6 +82,7 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 	}
 	template := string(read(t, filepath.Join(here, "testdata", "adapter.go.txt")))
 	sources := map[string][]byte{}
+	adapters := map[string][]byte{}
 	for i := 1; i <= 2; i++ {
 		version := fmt.Sprintf("v%d", i)
 		ir, e := jsonformat.Decode(read(t, filepath.Join(root, "fixtures", "model-"+version+".json")))
@@ -101,6 +102,7 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 			t.Fatal("adapter template syntax", e)
 		}
 		write(t, filepath.Join(root, "proof"+version, "adapter_test.go"), formatted)
+		adapters[version] = formatted
 	}
 	if out, e := goTest(t, root, "-race", "./..."); e != nil {
 		t.Fatalf("external consumer baseline failed: %v\n%s", e, out)
@@ -127,5 +129,48 @@ func TestExternalConsumerBoundModels(t *testing.T) {
 	}
 	if out, e := goTest(t, root, "./proofv2", "-run", "^TestFrozenReplay$"); e != nil {
 		t.Fatalf("restored reducer failed: %v\n%s", e, out)
+	}
+	// These change only disposable adapter code, not fixtures or reducers. Each
+	// generated type family must actually run conformance and reject the mutant.
+	type edit struct {
+		old, replacement string
+		count            int
+	}
+	adapterMutations := []struct {
+		name  string
+		edits []edit
+	}{
+		{"coupled-task-swap", []edit{{"ID: t.ID,", "ID: t.Outcome,", 2}, {"Outcome: t.Outcome,", "Outcome: t.ID,", 2}}},
+		{"drop-command-actor", []edit{{"Actor: c.Actor,", "Actor: \"\",", 1}}},
+		{"alias-task-slice", []edit{{"stringsCopy(t.Acceptance)", "t.Acceptance", 2}}},
+		{"alias-task-owner", []edit{{"ownerCopy(t.Owner)", "t.Owner", 2}}},
+		{"alias-review", []edit{{"out.Review = &custom.Review{TaskID: r.TaskID, TaskRevision: r.TaskRevision, ModelDigest: r.ModelDigest, TaskDigest: r.TaskDigest, Reviewer: r.Reviewer, Decision: r.Decision}", "_ = r; out.Review = (*custom.Review)(c.Review)", 1}}},
+		{"alias-result-task-slice", []edit{{"t := fromTask(*r.Task)", "t := fromTask(*r.Task); t.Acceptance = r.Task.Acceptance", 1}}},
+		{"alias-result-refusals", []edit{{"stringsCopy(r.Refusals)", "r.Refusals", 1}}},
+	}
+	for _, version := range []string{"v1", "v2"} {
+		path := filepath.Join(root, "proof"+version, "adapter_test.go")
+		original := adapters[version]
+		for _, m := range adapterMutations {
+			t.Run(version+"/"+m.name, func(t *testing.T) {
+				mutant := string(original)
+				for _, edit := range m.edits {
+					if strings.Count(mutant, edit.old) != edit.count {
+						t.Fatal("adapter mutation target changed; review control")
+					}
+					mutant = strings.ReplaceAll(mutant, edit.old, edit.replacement)
+				}
+				write(t, path, []byte(mutant))
+				defer write(t, path, original)
+				out, e := goTest(t, root, "./proof"+version, "-run", "^TestAdapterConformance$")
+				if e == nil || !bytes.Contains(out, []byte("ADAPTER_CONFORMANCE_MISMATCH:")) ||
+					!bytes.Contains(out, []byte("--- FAIL: TestAdapterConformance")) || bytes.Contains(out, []byte("build failed")) {
+					t.Fatalf("adapter mutation was not behaviorally killed: %v\n%s", e, out)
+				}
+			})
+		}
+		if out, e := goTest(t, root, "./proof"+version, "-run", "^TestAdapterConformance$"); e != nil {
+			t.Fatalf("restored %s adapter conformance failed: %v\n%s", version, e, out)
+		}
 	}
 }

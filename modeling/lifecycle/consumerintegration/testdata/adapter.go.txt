@@ -8,14 +8,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"math"
 	"os"
-	"reflect"
 	"strings"
 	"testing"
 
 	custom "__MODEL_IMPORT__"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/acceptanceauthor"
+	"github.com/spik3r/clanker-foundry/modeling/lifecycle/adapterconformance"
 	transport "github.com/spik3r/clanker-foundry/modeling/lifecycle/generated"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/scenarios"
 )
@@ -294,83 +293,11 @@ func TestMismatchProtocolAndIdentityLayers(t *testing.T) {
 	}
 }
 
-func fields(t *testing.T, v any, want []string) {
-	t.Helper()
-	typ := reflect.TypeOf(v)
-	got := []string{}
-	for i := 0; i < typ.NumField(); i++ {
-		got = append(got, typ.Field(i).Name)
-	}
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("adapter field inventory changed for %s: %v", typ, got)
-	}
-}
-func TestAdapterFieldInventoryAndCopies(t *testing.T) {
-	for _, v := range []any{transport.Task{}, custom.Task{}} {
-		fields(t, v, []string{"ID", "State", "Revision", "Outcome", "Acceptance", "Owner"})
-	}
-	for _, v := range []any{transport.Command{}, custom.Command{}} {
-		fields(t, v, []string{"Type", "Actor", "ExpectedRevision", "Review"})
-	}
-	for _, v := range []any{transport.Review{}, custom.Review{}} {
-		fields(t, v, []string{"TaskID", "TaskRevision", "ModelDigest", "TaskDigest", "Reviewer", "Decision"})
-	}
-	for _, v := range []any{transport.Result{}, custom.Result{}} {
-		fields(t, v, []string{"Mode", "Authority", "ModelDigest", "OK", "TransitionID", "Task", "Refusals"})
-	}
-	owner := ""
-	for _, list := range [][]string{nil, {}, {"one", "two"}} {
-		for _, o := range []*string{nil, &owner} {
-			in := transport.Task{ID: "id", State: "invented", Revision: math.MaxUint64, Outcome: "<&>", Acceptance: list, Owner: o}
-			out := toTask(in)
-			back := fromTask(out)
-			if !reflect.DeepEqual(in, back) {
-				t.Fatal("task adapter lost fields", in, back)
-			}
-			if len(out.Acceptance) > 0 {
-				out.Acceptance[0] = "changed"
-				if in.Acceptance[0] != "one" || back.Acceptance[0] != "one" {
-					t.Fatal("task slices alias")
-				}
-			}
-			if out.Owner != nil {
-				*out.Owner = "changed"
-				if *in.Owner != "" || *back.Owner != "" {
-					t.Fatal("owner aliases")
-				}
-			}
-		}
-	}
-	c := transport.Command{Type: "trigger", Actor: "actor", ExpectedRevision: math.MaxUint64, Review: &transport.Review{TaskID: "task", TaskRevision: math.MaxUint64, ModelDigest: "model", TaskDigest: "content", Reviewer: "reviewer", Decision: "decision"}}
-	converted := toCommand(c)
-	if converted.Type != c.Type || converted.Actor != c.Actor || converted.ExpectedRevision != c.ExpectedRevision || converted.Review.TaskID != c.Review.TaskID || converted.Review.TaskRevision != c.Review.TaskRevision || converted.Review.ModelDigest != c.Review.ModelDigest || converted.Review.TaskDigest != c.Review.TaskDigest || converted.Review.Reviewer != c.Review.Reviewer || converted.Review.Decision != c.Review.Decision {
-		t.Fatal("command/review fields dropped")
-	}
-	converted.Review.TaskID = "changed"
-	if c.Review.TaskID != "task" {
-		t.Fatal("review aliases")
-	}
-	if toCommand(transport.Command{}).Review != nil {
-		t.Fatal("nil review changed")
-	}
-	for _, list := range [][]string{nil, {}, {"z", "a"}} {
-		src := custom.Result{Mode: "actual-mode", Authority: "actual-authority", ModelDigest: "actual-digest", OK: true, TransitionID: "actual-transition", Task: &custom.Task{ID: "result", State: "state", Revision: math.MaxUint64, Outcome: "outcome", Acceptance: []string{}, Owner: &owner}, Refusals: list}
-		out := fromResult(src)
-		if out.Mode != src.Mode || out.Authority != src.Authority || out.ModelDigest != src.ModelDigest || out.OK != src.OK || out.TransitionID != src.TransitionID || !reflect.DeepEqual(out.Refusals, src.Refusals) || !reflect.DeepEqual(*out.Task, fromTask(*src.Task)) {
-			t.Fatal("actual result rewritten")
-		}
-		if len(out.Refusals) > 0 {
-			out.Refusals[0] = "changed"
-			if src.Refusals[0] != "z" {
-				t.Fatal("refusals alias")
-			}
-		}
-		out.Task.ID = "changed"
-		if src.Task.ID != "result" {
-			t.Fatal("result task aliases")
-		}
-	}
-	if fromResult(custom.Result{}).Task != nil {
-		t.Fatal("nil result task changed")
+// This helper is optional test code, not runtime adapter admission or provenance.
+func TestAdapterConformance(t *testing.T) {
+	if err := adapterconformance.Check(adapterconformance.Adapter[custom.Task, custom.Command, custom.Result]{
+		ToTask: toTask, FromTask: fromTask, ToCommand: toCommand, FromResult: fromResult,
+	}); err != nil {
+		t.Fatalf("ADAPTER_CONFORMANCE_MISMATCH: %v", err)
 	}
 }
