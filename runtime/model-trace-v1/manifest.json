@@ -3,7 +3,7 @@
   "mode": "shadow-only",
   "authority": "none",
   "evaluatorVersion": 1,
-  "notice": "Partial human declarations, not a complete model, standard mapping, authority or proof of behavior.",
+  "notice": "Partial authored declarations, not a complete model, standard mapping, authority or proof of behavior.",
   "sources": [
     {
       "path": "runtime/src/state.mjs",
