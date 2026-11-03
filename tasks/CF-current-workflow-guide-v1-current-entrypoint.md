@@ -1,6 +1,6 @@
 ---
 id: CF-current-workflow-guide-v1
-status: in-progress
+status: review
 owner: Foundry current workflow guide contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -42,3 +42,27 @@ and contracts rather than reconstructing expectations from observed results.
 Run repository validation, installer regressions, whitespace checks and committed
 Project Memory validation. Obtain independent source review, publish a PR and
 leave merge to the lead after hosted checks. Record actual results and limits.
+
+## Review result
+
+Added the current entry point and a four-line notice in the historical
+introduction. The selected path covers first-design review, proposal preflight,
+separately authorized replay, process views and rehearsal-report inspection.
+The historical introduction body is unchanged.
+
+All four Bash blocks were extracted without changes and run together from the
+isolated checkout using installed Go 1.27.3 with offline resolution. Check-only
+review reported matching model/suite bytes and no execution or established review;
+proposal preflight requested no candidate. Explicit fixed replay matched the
+pre-existing nine cases/nine steps, with successful compilation and cleanup.
+Process JSON/SVG commands completed. The established fixed rehearsal produced a
+carrier that the inspector accepted with baseline two cases/two steps and
+candidate four cases/six steps. Embedded model/suite/manifest bytes were compared
+with their original files and remained exact. These are observed fixed command
+checks; no new visual inspection, real-design approval or deployment is claimed.
+
+Repository validation, installer regressions and whitespace checks passed.
+Optional skills-ref is absent. No product source, expected fixture, source policy,
+runtime or other documentation was changed. Next: independent exact-source
+review, genuine completion, committed-diff validation and lead review of hosted
+checks before merge.
