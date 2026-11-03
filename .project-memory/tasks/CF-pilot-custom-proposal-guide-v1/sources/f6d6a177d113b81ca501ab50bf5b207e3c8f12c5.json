@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f6d6a177d113b81ca501ab50bf5b207e3c8f12c5",
+  "id": "CF-pilot-custom-proposal-guide-v1",
+  "path": "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md",
+  "blob": "3aef835d00794010300bf9ec2bf93720c7469c10",
+  "record": "---\nid: CF-pilot-custom-proposal-guide-v1\nstatus: in-progress\nowner: Lifecycle pilot testing guide\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Show how to check a user-supplied lifecycle proposal\n\n## Implementation claim\n\nThe coordinating owner requested a bounded extension to the merged testing guide\nfor a user-supplied model, scenario suite and acceptance manifest. Current main is\n`09f1b5a0b46b1b641f738baea6670b1b33f55bdb`. The original guide's documented\nowner is this same guide lane; its Project Memory frontier is complete, while its\ncanonical task remains in-progress. A fresh current-main task and relevant open-PR\ncheck found no competing guide change. This claim is a local proposal, not a lock\nor a claim about another contributor's authority.\n\nExact scope: `docs/model-driven-pilot-testing.md`, this task record and new\nimmutable Project Memory source and event files for this task. Preserve existing\ncode, generated artifacts, fixtures, unrelated tasks and evidence. The held\nprocess-view artifact and interactive modelwalk work are out of scope.\n\nDocument a byte-preserving path for an operator-selected proposal directory,\nwith non-executing preflight as the default. Describe how to interpret variable\nresults and failure exits without assuming the fixed example's counts or treating\nmatching results as approval. Separate any candidate replay into a later explicit,\nauthorized operator action. Keep the trusted-host, independent-expectation,\nprivacy, human-review and no-deployment boundaries clear. Link to the existing\nproposal replay contract instead of duplicating or changing its implementation.\n\n## Validation and handoff\n\nRun the new documented snippets on the two independently frozen invented proposal\nsets in external directories, and exercise stale and mismatched inputs without\nrepairing expectations. Record which commands actually run and distinguish\npreflight from execution. Obtain independent read-only review, run repository and\nfull committed-diff Project Memory validation and report the exact result. Normal\ndraft PR publication is authorized; merge is a separate user-authorized step.\nNo formal approval, deployment or worker activation is implied.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md",
+        "id": "CF-pilot-custom-proposal-guide-v1",
+        "blob": "3aef835d00794010300bf9ec2bf93720c7469c10",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -25,9 +25,10 @@ run Go, including generated code. Temporary copies limit which files are changed
 they are **not an OS security sandbox**, a resource limit or protection against a
 hostile concurrent writer. Abrupt termination or cleanup failure can leave files.
 
-From the checkout root, run the blocks in order in the same Bash session. This
-creates a new private directory outside the checkout for reports, cache and temporary
-files; it does not overwrite the checkout's generated files. Set `PILOT_PARENT` to
+From the checkout root, run this setup block first. Later blocks use the same
+Bash session; choose the fixed demonstrations or the check-only custom-proposal
+path below. This creates a new private directory outside the checkout for reports,
+cache and temporary files; it does not overwrite the checkout's generated files. Set `PILOT_PARENT` to
 an existing, authorized private directory outside the checkout with sufficient
 free space before starting, or the commands use `/tmp`.
 
@@ -198,6 +199,139 @@ host, output or cleanup failures have distinct statuses. See the
 [proposal replay contract](../modeling/lifecycle/proposalreplay/README.md) for
 all exit codes, limits and cleanup semantics. Failure after candidate start does
 not imply rollback. Archive consistency and preflight are not replay results.
+
+## Check your own proposal without running it
+
+This is a separate path from the fixed demonstrations above. You can run the
+initial **Before running anything** setup and then skip directly here: sections 1
+and 2 execute fixed examples, but are not prerequisites for this check. Use this
+path only for a proposal that fits the existing `lifecycle/v1` profile, after
+resolving the choices needed for review. AI can help draft it, but the person
+responsible must review the meaning and unresolved questions. Have the expected
+outcomes independently stated and reviewed against the requirements, not derived
+from a generated reducer or an observed run.
+
+Choose an existing, authorized `PROPOSAL_DIR` containing **`model.json`,
+`suite.json` and `manifest.json`**. Set and export `PROPOSAL_DIR` to its absolute
+path in the same Bash session as the setup. The
+[proposal replay contract](../modeling/lifecycle/proposalreplay/README.md) defines
+the inputs and limits; the [first-design handoff](../skills/model-driven-design/references/foundry-handoff.md)
+explains preparation and review. Keep originals unchanged and handle all request
+and report files as potentially sensitive. The following builds an existing tool
+and performs **check only**; it neither compiles nor invokes the candidate. It
+creates a new `$WORK/custom` directory and refuses to reuse one.
+
+```bash
+: "${PROPOSAL_DIR:?set PROPOSAL_DIR to your reviewed proposal directory}"
+export PROPOSAL_DIR
+cd "$ROOT/modeling/lifecycle"
+mkdir "$WORK/custom"
+go build -o "$WORK/custom/modelproposal" ./cmd/modelproposal
+python3 -I - <<'PYREQUEST' > "$WORK/custom/request.json"
+import json, os, pathlib, sys
+p = pathlib.Path(os.environ['PROPOSAL_DIR'])
+r = {'formatVersion': 'lifecycle-proposal-request/v1'}
+for role in ('model', 'suite', 'manifest'):
+    r[role] = (p / (role + '.json')).read_bytes().decode('utf-8')
+sys.stdout.buffer.write(json.dumps(r, ensure_ascii=False).encode('utf-8'))
+PYREQUEST
+if "$WORK/custom/modelproposal" check < "$WORK/custom/request.json" > "$WORK/custom/check.json"; then
+  CHECK_EXIT=0
+else
+  CHECK_EXIT=$?
+fi
+printf 'Check command status: %s; report: %s\n' "$CHECK_EXIT" "$WORK/custom/check.json"
+if [ "$CHECK_EXIT" -eq 0 ] || [ "$CHECK_EXIT" -eq 1 ]; then
+  python3 -I - "$WORK/custom/check.json" <<'PYREPORT'
+import json, sys
+try:
+    with open(sys.argv[1], encoding='utf-8') as f:
+        r = json.load(f)
+except (OSError, ValueError):
+    raise SystemExit('No complete JSON receipt; do not assume success.')
+p = r['preflight']
+print('outcome:', r['outcome'], '; context:', r['validationContext'])
+print('bindings:', p['modelBinding'], p['suiteBinding'], p['suiteModelBinding'])
+print('suite validation:', p['suiteValidation'], '; preflight replay:', p['replay'])
+print('source SHA-256:', r['sources'])
+PYREPORT
+else
+  echo 'Do not assume a complete receipt; see the proposal replay exit-code contract.'
+fi
+```
+
+The short readers display selected fields; they do not authenticate a receipt or
+replace review of the full report. A command status can also reflect a shell or
+redirection failure before the CLI starts; do not classify it without a complete
+receipt. A CLI exit 0 with `outcome: checked` is validation-only: inspect the full
+preflight, source identities and unresolved human decisions. Its `replay: not-run`
+is not an observed behavioral pass. The nested current runner binding is a
+**non-executing model context**, not a compiled runner. Exit 1 indicates stale
+preflight: inspect its binding and `not-run` fields, retain the old evidence, and
+stop for review rather than silently rebinding or changing expectations. Exit 2
+means invalid arguments/request or input read failure and no receipt; exit 3 can
+leave a partial receipt; exit 4 indicates a host, tool or cleanup boundary failure.
+Do not infer success from an empty or partial output. The linked contract gives
+the full meanings; compare exact source hashes with the reviewed original bytes.
+
+### Separately authorized replay
+
+**Stop after check unless the operator has explicit authority to execute this
+candidate locally.** Review the requirements, model, independently authored
+expectations and any required human decisions first. An AI draft, a valid check,
+a matching hash or a command shown here is not that authorization. The command
+below uses the request bytes saved above and compiles and runs generated Go on
+the trusted host; it is not a sandbox. Verify that those bytes are still the
+reviewed proposal. This creates a private project and uses outside-checkout
+temporary storage and cache; cleanup is attempted, not guaranteed after abrupt
+termination. It does not deploy, integrate or start workers. It refuses to
+overwrite an existing report; use a fresh `$WORK` for a new attempt.
+
+```bash
+cd "$ROOT/modeling/lifecycle"
+if [ "${CHECK_EXIT:-}" != 0 ]; then
+  echo "Stop: check did not complete successfully" >&2; exit 1
+fi
+test ! -e "$WORK/custom/replay.json"
+test ! -L "$WORK/custom/replay.json"
+if "$WORK/custom/modelproposal" execute < "$WORK/custom/request.json" > "$WORK/custom/replay.json"; then
+  REPLAY_EXIT=0
+else
+  REPLAY_EXIT=$?
+fi
+printf 'Replay command status: %s; report: %s\n' "$REPLAY_EXIT" "$WORK/custom/replay.json"
+if [ "$REPLAY_EXIT" -eq 0 ] || [ "$REPLAY_EXIT" -eq 1 ]; then
+  python3 -I - "$WORK/custom/replay.json" <<'PYREPORT'
+import json, sys
+try:
+    with open(sys.argv[1], encoding='utf-8') as f:
+        r = json.load(f)
+except (OSError, ValueError):
+    raise SystemExit('No complete JSON receipt; do not assume success.')
+print('outcome:', r['outcome'], '; compilation:', r['compilation'], '; replay:', r['replay'])
+print('candidate started:', r['candidateStarted'], '; cleanup:', r['cleanup'])
+report = r['candidateReport']
+if report is not None:
+    print('matched:', report['matched'], '; cases:', report['casesCompleted'],
+          '; steps:', report['stepsExecuted'])
+PYREPORT
+else
+  echo 'Do not assume a complete receipt; see the proposal replay exit-code contract.'
+fi
+```
+
+Counts and outcomes depend on your suite; the fixed example's four cases and six
+steps are **not** an expected result for your proposal. Read the entire candidate
+report, including expected and actual results and differences, against the
+reviewed requirements. Exit 1 can mean stale preflight with no candidate launch
+**or** a mismatched replay; the stage fields distinguish them. A matched refusal
+is a passing comparison, not a successful transition. A mismatch is evidence to
+investigate, not permission to rewrite a literal. For exit 3 or 4, consult the
+contract: a partial receipt or a failure after candidate start does not establish
+rollback or that nothing ran. The command packages but does not run generated
+structural tests. Matching replay is an observed comparison, not approval,
+authenticated provenance, visual review, coverage of all behavior or permission
+to integrate or deploy.
 
 ## Moving beyond the fixed examples
 
