@@ -295,7 +295,9 @@ func TestNativeAPIsRemainPinnedAndFullNonexecutingOutputsMatch(t *testing.T) {
 	// aggregate readiness decision. Decode the two explicit JSON-text layers.
 	code, out, diag := run([]string{"revisions"}, strings.NewReader(revisions.Vectors[0].Request))
 	var revision revisioncheck.Report
-	var after firstdesignreview.Report
+	var after struct {
+		ProposalReportJSON string `json:"proposalReportJSON"`
+	}
 	var preflight proposalreplay.Receipt
 	if code != 0 || diag != "" || json.Unmarshal(out, &revision) != nil || json.Unmarshal([]byte(revision.After.FirstDesignReportJSON), &after) != nil || json.Unmarshal([]byte(after.ProposalReportJSON), &preflight) != nil || preflight.Outcome != "stale" || preflight.CandidateStarted {
 		t.Fatal("native stale result lost")
