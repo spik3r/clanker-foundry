@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "aafe21af15d6f26ed5036851b2796fbd875f7e09",
+  "id": "CF-orchestration-trace-dispatch-v1",
+  "path": "tasks/CF-orchestration-trace-dispatch-v1-observation.md",
+  "blob": "d3aabeca606ed966f43762ec29fb21b24ba6df8c",
+  "record": "---\nid: CF-orchestration-trace-dispatch-v1\nstatus: in-progress\nowner: Foundry runtime trace contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Trace assignment, acknowledgement and submission\n\n## Implementation claim\n\nOwner: Foundry runtime trace contributor. Base: main at 634427c. Branch:\ncodex/orchestration-trace-dispatch-v1. The repository owner requested a bounded\nteam of changes with PR publication and coordinator review before merge. The\ncoordinator alone integrates this change. The live open-PR check found only the\nseparate process-view PR20; that lane and its files are excluded.\n\nWrite scope: runtime/model-trace-v1/manifest.json, check.mjs, README.md,\nviews/state.dot, views/sequence.md, testdata/dispatch-oracle.json,\nruntime/test/model-trace-v1.test.mjs, this record and its new immutable Project\nMemory source/events. Preserve the original five-case oracle bytes. Do not edit\nruntime evaluator, contract, store, runner, providers, CI or operational authority.\n\n## Acceptance\n\nExtend the partial review trace with successful ASSIGN, ACKNOWLEDGE and SUBMIT\nthrough PENDING, ASSIGNED, EXECUTING and VALIDATING. Include wrong-worker,\nstale-fence, lease-expiry and invalid-artifact-subject refusals. A separate\ncontributor freezes invented literal expectations from the existing contracts\nbefore trace implementation; record authorship and its limits. Compare actual\npure evaluator events, effect intents and relevant execution fields with those\nliterals and check input preservation. No real worker dispatch or execution.\n\nRetain explicit partial/unmapped coverage and deterministic views. Detect dangling\nreferences, fixture drift and stale views. Behavioral guard mutations must fail\nthe literal comparisons independently of source-pin checks.\n\n## Validation and handoff\n\nRun the focused trace checks, full runtime tests with pinned dependencies,\nrepository validation, installer regressions, whitespace checks and full committed\nProject Memory validation. Record observed results and tool limits. Return the\nexact revision and PR to the coordinator for independent review; do not merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-trace-dispatch-v1-observation.md",
+        "id": "CF-orchestration-trace-dispatch-v1",
+        "blob": "d3aabeca606ed966f43762ec29fb21b24ba6df8c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

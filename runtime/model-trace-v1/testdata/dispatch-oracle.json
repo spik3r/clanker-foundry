@@ -1,0 +1,2923 @@
+{
+  "formatVersion": "orchestration-dispatch-observation-oracle/v1",
+  "sourceRevision": "634427c",
+  "provenance": {
+    "method": "Static reading of state.mjs and v1.schema.json; no evaluator or producer imported or executed. Existing frozen oracle supplied the manually stated pending execution. Full post-states, events, effects and refusals derived from source before trace implementation. Python calculated only canonical JSON SHA-256 identifiers.",
+    "independence": "Separate assistant contributor; not independent-person review, authentication, live dispatch or a semantic oracle independent of existing evaluator design.",
+    "sources": [
+      {
+        "path": "runtime/src/state.mjs",
+        "sha256": "f02d1cf06413200fcd119bfd13a70d4df1515bca502b097bf1a26980d1f961e7"
+      },
+      {
+        "path": "runtime/contracts/v1.schema.json",
+        "sha256": "427c541572665da73b3264ca4780ffe338b82422e5022dc2cdbbe2ba228ef966"
+      },
+      {
+        "path": "runtime/src/contract.mjs",
+        "sha256": "ab58f65b8c0761d9adbb2f3239433a18e844559252b11b7e0cf2cff0e3b8a215"
+      },
+      {
+        "path": "runtime/model-trace-v1/testdata/oracle.json",
+        "sha256": "09b152afafec087c7101e71b26ff89a9a531288a45cafa1382d0063c4c0f411b"
+      }
+    ],
+    "limits": [
+      "Pure evaluator inputs are caller assertions, not persisted authority.",
+      "Returned effects are inert intents; no worker, provider, check, lease timer or process executed.",
+      "Only bounded read-only single-stage assignment/acknowledgment/submission and selected refusals covered.",
+      "Wrong artifact digest refers to manifest consistency, not stored artifact bytes."
+    ]
+  },
+  "cases": [
+    {
+      "id": "assign_success",
+      "intent": "Assertions pass: reserve and emit launch intent only; no adapter or process runs.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "PENDING",
+          "stage_index": 0,
+          "revision": 1,
+          "attempt": null,
+          "fence": 0,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": false,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:00.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "invented-success-assign",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 1,
+          "at": "2026-11-03T10:00:01.000Z",
+          "kind": "ASSIGN",
+          "payload": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ]
+          }
+        },
+        "context": {
+          "role": "scheduler",
+          "actor_id": "invented-scheduler",
+          "dependencies_satisfied": true,
+          "resources_available": true,
+          "worker_eligible": true
+        }
+      },
+      "expected": {
+        "completion": "return",
+        "execution": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "event": {
+          "schema_version": 1,
+          "evaluator_version": 1,
+          "event_id": "invented-success-assign",
+          "command_id": "invented-success-assign",
+          "execution_id": "invented-trace-execution",
+          "sequence": 2,
+          "prior_revision": 1,
+          "new_revision": 2,
+          "actor_id": "invented-scheduler",
+          "at": "2026-11-03T10:00:01.000Z",
+          "kind": "ASSIGN",
+          "from_state": "PENDING",
+          "to_state": "ASSIGNED",
+          "reason": null
+        },
+        "effects": [
+          {
+            "schema_version": 1,
+            "effect_id": "effect-ba97632c85d58ce6ba1eda0fc390edd016d33ccd7b73fe0eea37f8e75b04de58",
+            "execution_id": "invented-trace-execution",
+            "kind": "LAUNCH_ATTEMPT",
+            "payload": {
+              "attempt": {
+                "attempt_id": "invented-trace-attempt",
+                "worker_id": "invented-review-worker",
+                "lease_deadline": "2026-11-03T10:01:00.000Z",
+                "workspace": "invented-readonly-workspace",
+                "capabilities": [
+                  "read",
+                  "analyze"
+                ],
+                "input_revisions": [
+                  "1234567890abcdef1234567890abcdef12345678"
+                ],
+                "stage_id": "inspect",
+                "attempt_number": 1,
+                "fencing_token": 1
+              }
+            }
+          }
+        ],
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "ack_success",
+      "intent": "Matching live assigned worker acknowledges without effect.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "invented-success-ack",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 2,
+          "at": "2026-11-03T10:00:02.000Z",
+          "kind": "ACKNOWLEDGE",
+          "payload": {
+            "attempt_id": "invented-trace-attempt",
+            "fencing_token": 1
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "return",
+        "execution": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "event": {
+          "schema_version": 1,
+          "evaluator_version": 1,
+          "event_id": "invented-success-ack",
+          "command_id": "invented-success-ack",
+          "execution_id": "invented-trace-execution",
+          "sequence": 3,
+          "prior_revision": 2,
+          "new_revision": 3,
+          "actor_id": "invented-review-worker",
+          "at": "2026-11-03T10:00:02.000Z",
+          "kind": "ACKNOWLEDGE",
+          "from_state": "ASSIGNED",
+          "to_state": "EXECUTING",
+          "reason": null
+        },
+        "effects": [],
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_success",
+      "intent": "Successful supplied artifact manifest enters validation and emits one check intent; no checks execute.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "invented-success-submit",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "return",
+        "execution": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "VALIDATING",
+          "stage_index": 0,
+          "revision": 4,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": {
+            "schema_version": 1,
+            "attempt_id": "invented-trace-attempt",
+            "fencing_token": 1,
+            "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+            "kind": "SUCCEEDED",
+            "artifacts": [
+              {
+                "path": "invented-result.md",
+                "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+              }
+            ],
+            "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+          },
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": "2026-11-03T10:01:03.000Z",
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:03.000Z"
+        },
+        "event": {
+          "schema_version": 1,
+          "evaluator_version": 1,
+          "event_id": "invented-success-submit",
+          "command_id": "invented-success-submit",
+          "execution_id": "invented-trace-execution",
+          "sequence": 4,
+          "prior_revision": 3,
+          "new_revision": 4,
+          "actor_id": "invented-review-worker",
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "from_state": "EXECUTING",
+          "to_state": "VALIDATING",
+          "reason": null
+        },
+        "effects": [
+          {
+            "schema_version": 1,
+            "effect_id": "effect-956fbec855963590397d4e9bbaeee9ed99088fbc5c88f9f6afd9690435d7c817",
+            "execution_id": "invented-trace-execution",
+            "kind": "RUN_CHECKS",
+            "payload": {
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535",
+              "check_ids": [
+                "invented-review-check"
+              ]
+            }
+          }
+        ],
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "ack_wrong_worker",
+      "intent": "A different worker cannot acknowledge.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "ack_wrong_worker",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 2,
+          "at": "2026-11-03T10:00:02.000Z",
+          "kind": "ACKNOWLEDGE",
+          "payload": {
+            "attempt_id": "invented-trace-attempt",
+            "fencing_token": 1
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "other-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "UNAUTHORIZED"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "ack_stale_fence",
+      "intent": "Wrong fencing token refuses before identity.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "ack_stale_fence",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 2,
+          "at": "2026-11-03T10:00:02.000Z",
+          "kind": "ACKNOWLEDGE",
+          "payload": {
+            "attempt_id": "invented-trace-attempt",
+            "fencing_token": 2
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "STALE_ATTEMPT",
+          "message": "STALE_ATTEMPT"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "ack_expired_lease",
+      "intent": "Exact deadline is expired, not inclusive.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "ack_expired_lease",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 2,
+          "at": "2026-11-03T10:01:00.000Z",
+          "kind": "ACKNOWLEDGE",
+          "payload": {
+            "attempt_id": "invented-trace-attempt",
+            "fencing_token": 1
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "ATTEMPT_EXPIRED",
+          "message": "ATTEMPT_EXPIRED"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "ASSIGNED",
+          "stage_index": 0,
+          "revision": 2,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:01.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_wrong_worker",
+      "intent": "A different worker cannot submit.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_wrong_worker",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "other-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "UNAUTHORIZED"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_stale_fence",
+      "intent": "Wrong result fencing token refuses.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_stale_fence",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 2,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "STALE_ATTEMPT",
+          "message": "STALE_ATTEMPT"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_expired_lease",
+      "intent": "Submission at exact lease deadline refuses.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_expired_lease",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:01:00.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "ATTEMPT_EXPIRED",
+          "message": "ATTEMPT_EXPIRED"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_wrong_repository_subject",
+      "intent": "Artifact repository revision mismatch refuses before manifest digest check.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_wrong_repository_subject",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "ffffffffffffffffffffffffffffffffffffffff"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "SUBJECT_MISMATCH",
+          "message": "SUBJECT_MISMATCH"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_wrong_artifact_digest",
+      "intent": "Subject digest must hash exact ordered artifact list.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_wrong_artifact_digest",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "ARTIFACT_DIGEST_MISMATCH",
+          "message": "ARTIFACT_DIGEST_MISMATCH"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    },
+    {
+      "id": "submit_wrong_spec_digest",
+      "intent": "Submission must name exact current specification digest.",
+      "input": {
+        "current": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "command": {
+          "schema_version": 1,
+          "command_id": "submit_wrong_spec_digest",
+          "execution_id": "invented-trace-execution",
+          "expected_revision": 3,
+          "at": "2026-11-03T10:00:03.000Z",
+          "kind": "SUBMIT",
+          "payload": {
+            "result": {
+              "schema_version": 1,
+              "attempt_id": "invented-trace-attempt",
+              "fencing_token": 1,
+              "spec_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "kind": "SUCCEEDED",
+              "artifacts": [
+                {
+                  "path": "invented-result.md",
+                  "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "repository_revision": "1234567890abcdef1234567890abcdef12345678"
+                }
+              ],
+              "subject_digest": "400a6ee7f5c60f8dc30b29cb4b35faa1646a16bf22f211d3815fecd37768b535"
+            }
+          }
+        },
+        "context": {
+          "role": "worker",
+          "actor_id": "invented-review-worker"
+        }
+      },
+      "expected": {
+        "completion": "throw",
+        "error": {
+          "code": "SPEC_DIGEST_MISMATCH",
+          "message": "SPEC_DIGEST_MISMATCH"
+        },
+        "resultReturned": false,
+        "eventReturned": false,
+        "effectsReturned": false,
+        "currentAfter": {
+          "schema_version": 1,
+          "execution_id": "invented-trace-execution",
+          "spec": {
+            "schema_version": 1,
+            "task_id": "CF-trace-invented-review",
+            "spec_revision": 1,
+            "outcome": "Inspect an invented read-only task without starting a worker.",
+            "repository": {
+              "repository_id": "example/invented-orchestration",
+              "revision": "1234567890abcdef1234567890abcdef12345678"
+            },
+            "dependencies": [
+              {
+                "task_id": "CF-trace-invented-input",
+                "spec_digest": "1111111111111111111111111111111111111111111111111111111111111111"
+              }
+            ],
+            "write_scope": [],
+            "shared_resources": [
+              {
+                "resource_id": "invented-review-resource",
+                "mode": "exclusive"
+              }
+            ],
+            "acceptance_checks": [
+              "invented-review-check"
+            ],
+            "workflow": {
+              "workflow_id": "read-only-v1",
+              "version": 1,
+              "stages": [
+                {
+                  "id": "inspect",
+                  "role": "reviewer-verifier",
+                  "required_checks": [
+                    "invented-review-check"
+                  ],
+                  "requires_approval": true
+                }
+              ]
+            },
+            "retry_policy": {
+              "execution_retries": 1,
+              "rework_retries": 1,
+              "retry_delay_ms": 1000
+            },
+            "lease_ms": 60000,
+            "validation_ms": 60000,
+            "accountable_owner": "invented-owner",
+            "integration_policy": "read_only"
+          },
+          "spec_digest": "454767e7c0f6110ea566127e950ed8c85626d2a308b3589356a2f5803fb6983f",
+          "state": "EXECUTING",
+          "stage_index": 0,
+          "revision": 3,
+          "attempt": {
+            "attempt_id": "invented-trace-attempt",
+            "worker_id": "invented-review-worker",
+            "lease_deadline": "2026-11-03T10:01:00.000Z",
+            "workspace": "invented-readonly-workspace",
+            "capabilities": [
+              "read",
+              "analyze"
+            ],
+            "input_revisions": [
+              "1234567890abcdef1234567890abcdef12345678"
+            ],
+            "stage_id": "inspect",
+            "attempt_number": 1,
+            "fencing_token": 1
+          },
+          "fence": 1,
+          "retry_count": 0,
+          "rework_count": 0,
+          "result": null,
+          "validations": [],
+          "approvals": [],
+          "cleanup_pending": false,
+          "resources_held": true,
+          "validation_deadline": null,
+          "accepted_subject_digest": null,
+          "worker_history": [
+            {
+              "stage_id": "inspect",
+              "role": "reviewer-verifier",
+              "worker_id": "invented-review-worker",
+              "attempt_id": "invented-trace-attempt"
+            }
+          ],
+          "retry_at": null,
+          "blocker": null,
+          "outcome": null,
+          "updated_at": "2026-11-03T10:00:02.000Z"
+        },
+        "noMutation": {
+          "currentDeepEqualBeforeAfter": true,
+          "commandDeepEqualBeforeAfter": true,
+          "contextDeepEqualBeforeAfter": true
+        }
+      }
+    }
+  ]
+}
