@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "255ccf04-d5bb-496b-80e1-7f8ed288e9db",
+  "runId": "938299ad-afd5-4759-9753-54fb5eafe7e8",
+  "kind": "complete",
+  "parents": [
+    "523d313d-a582-4cb8-9787-ff65716e9319"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-process-pipe-v1",
+    "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+    "revision": "b25afdf5531408895b99281e3a7253c3a24e94a7",
+    "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba652b3f11a1f3c72f7cd829421481d9eea6de7e5987c6fb6776713c5b41405c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-process-view",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/20",
+  "at": "2026-11-03T21:50:52.462Z",
+  "summary": "Reproduced real SIGPIPE in both modes; ignored SIGPIPE in main; binary output regression passes; independent ba2fcf4 source review clean; coordinator native visual review of three exact SVGs passed",
+  "next": "Coordinator verifies hosted checks and merges PR20 after final evidence review",
+  "files": [
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main_test.go",
+    "tasks/CF-process-pipe-v1-closed-stdout.md"
+  ],
+  "validation": "Go1.27.3 offline full go test -race -count=1 ./... passed69 packages; go vet ./... passed; modelc check passed no writes; focused CLI includes both compiled json/svg good and closed pipe paths; gofmt clean; pack validation passed (optional skills-ref absent); installer regressions passed; whitespace checks passed",
+  "snapshot": {
+    "modeling/lifecycle/cmd/modelprocess/main.go": {
+      "blob": "29745760200e08852b1823801dd4c230de698907",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelprocess/main_test.go": {
+      "blob": "d885bc25c59c48d3f18ce8f5b9ebbe33a739e42d",
+      "mode": "100644"
+    },
+    "tasks/CF-process-pipe-v1-closed-stdout.md": {
+      "blob": "3cda9814a250ee45175eb4640cb27dd993847b63",
+      "mode": "100644"
+    }
+  }
+}
