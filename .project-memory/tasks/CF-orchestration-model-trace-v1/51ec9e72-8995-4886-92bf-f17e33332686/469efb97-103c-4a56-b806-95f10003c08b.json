@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "469efb97-103c-4a56-b806-95f10003c08b",
+  "runId": "51ec9e72-8995-4886-92bf-f17e33332686",
+  "kind": "complete",
+  "parents": [
+    "1f6bc926-b992-462b-8b04-3bb27ad4f2d4"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-model-trace-v1",
+    "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+    "revision": "143c6aaba504753856539f6f168e101578b31f51",
+    "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bec17f94ffaf108a139d4a408391eeff72ac00730d6000bdd5b33858feaf3ffb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-model-trace-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T10:52:44.458Z",
+  "summary": "Revalidated the complete trace and corrected authorship wording",
+  "next": "Publish reviewed correction and check exact-head CI",
+  "files": [
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/oracle.json",
+    "runtime/model-trace-v1/testdata/README.md",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-model-trace-v1-shadow.md"
+  ],
+  "validation": "Trace check and 3 focused tests pass; offline Node runtime suite 196 pass; repository validation passes; original 143 Project Memory regressions and independent exact-source review remain applicable to unchanged files; separate reviewer checked wording and focused tests; optional skills-ref unavailable",
+  "snapshot": {
+    "runtime/model-trace-v1/manifest.json": {
+      "blob": "b1d5f3b17151434d232cb350d3722f06439af305",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/check.mjs": {
+      "blob": "7200878d00f3740a4ddedcf3b0b1ebdccfaf0590",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/README.md": {
+      "blob": "2af350d88691c92c63f5a238668e6fc03add0e65",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/views/state.dot": {
+      "blob": "2615d1e8d117c5d3b6ed9f824556c634db941f96",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/views/sequence.md": {
+      "blob": "af371babce84c67037de15da58f3a924413bd5ea",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/testdata/oracle.json": {
+      "blob": "d1781631d757c288aa20fae673a513ad4c779d13",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/testdata/README.md": {
+      "blob": "b241718a125972b03ad737fcd6210e5590a87dd1",
+      "mode": "100644"
+    },
+    "runtime/test/model-trace-v1.test.mjs": {
+      "blob": "c8cdacc803fdf4cf3ed61aa8e5ef2ed64be362ac",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-model-trace-v1-shadow.md": {
+      "blob": "0222c129afc41cfb493d4034c04d5432e0a03fb3",
+      "mode": "100644"
+    }
+  }
+}
