@@ -7,7 +7,9 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/processview"
 	"io"
 	"os"
+	"os/signal"
 	"runtime"
+	"syscall"
 )
 
 func run(args []string, in io.Reader, out, diagnostic io.Writer) int {
@@ -42,4 +44,8 @@ func run(args []string, in io.Reader, out, diagnostic io.Writer) int {
 	}
 	return 0
 }
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Return the declared write-error status even when stdout is a closed pipe.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}
