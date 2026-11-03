@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "f4b5bc7c-7ae5-4084-b08c-faef478d9d72",
+  "runId": "5fee6b3b-5b69-412e-b775-c0e7acdf45bd",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-rehearsal-inspection-v1",
+    "path": "tasks/CF-rehearsal-inspection-v1-semantic-report-binding.md",
+    "revision": "9143ad2ab8f19115b727cc577a44612084b456d4",
+    "blob": "81d52f448458bb6a404d1b3ee22e1893c6410b37",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d455796754e526e842ba4a034bbe3372de14f94b6a414c4639dabb61fa22b2cb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/rehearsal-inspection-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/54",
+  "at": "2026-11-03T20:23:25.561Z",
+  "summary": "Inspect verified carried reports against original literal suites without running reducers",
+  "next": "Freeze separate-contributor observations then implement and validate additive inspection",
+  "files": [
+    "tasks/CF-rehearsal-inspection-v1-semantic-report-binding.md",
+    "modeling/lifecycle/rehearsalinspection/inspect.go",
+    "modeling/lifecycle/rehearsalinspection/inspect_test.go",
+    "modeling/lifecycle/rehearsalinspection/oracle_test.go",
+    "modeling/lifecycle/rehearsalinspection/README.md",
+    "modeling/lifecycle/rehearsalinspection/testdata/observations.json",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main_test.go",
+    "modeling/lifecycle/scenarios/report_inspection.go",
+    "modeling/lifecycle/scenarios/report_inspection_test.go",
+    "modeling/lifecycle/rehearsalhandoff/material.go",
+    "modeling/lifecycle/rehearsalhandoff/material_test.go"
+  ]
+}
