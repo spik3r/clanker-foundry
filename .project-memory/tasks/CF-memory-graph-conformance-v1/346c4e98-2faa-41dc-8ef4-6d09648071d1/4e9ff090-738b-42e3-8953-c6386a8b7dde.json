@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "4e9ff090-738b-42e3-8953-c6386a8b7dde",
+  "runId": "346c4e98-2faa-41dc-8ef4-6d09648071d1",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-memory-graph-conformance-v1",
+    "path": "tasks/CF-memory-graph-conformance-v1-real-producer.md",
+    "revision": "014007c0bfddfb5e6446a8b3baee921fa8cf0a92",
+    "blob": "438a617f9ccfb9d16cbac03d372926b8564b5395",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0ebb387d4495b7d7bf53399eaf2aa0d2a04fd1771792a35595429f757f62fcc5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-memory-conformance-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T10:57:26.149Z",
+  "summary": "Implement bounded read-only conformance over the existing Project Memory graph producer",
+  "next": "Freeze independent cases, implement replay and coverage, run tests and independent review",
+  "files": [
+    "modeling/project-memory-conformance/README.md",
+    "modeling/project-memory-conformance/check.mjs",
+    "modeling/project-memory-conformance/coverage.json",
+    "modeling/project-memory-conformance/testdata/cases.json",
+    "modeling/project-memory-conformance/testdata/README.md",
+    "tests/project-memory-conformance.test.mjs",
+    ".github/workflows/project-memory-conformance.yml",
+    "tasks/CF-memory-graph-conformance-v1-real-producer.md"
+  ]
+}
