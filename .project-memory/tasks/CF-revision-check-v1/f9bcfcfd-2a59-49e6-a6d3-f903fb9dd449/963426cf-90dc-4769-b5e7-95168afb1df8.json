@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "963426cf-90dc-4769-b5e7-95168afb1df8",
+  "runId": "f9bcfcfd-2a59-49e6-a6d3-f903fb9dd449",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-check-v1",
+    "path": "tasks/CF-revision-check-v1-two-design-review.md",
+    "revision": "b6d80d96b285a20c00e97c0b94623917c36519c2",
+    "blob": "a5ba066689642bfbf7f94933f33e383e58a5c964",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "18bc3c67cfff8b5119c9fbf99b65908d583bff77d9cf86b112b72995e23e881c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-check-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T21:58:14.815Z",
+  "summary": "Compose exact native two-revision review reports without running scenarios",
+  "next": "Freeze separately authored custom revision vectors, then implement and validate",
+  "files": [
+    "tasks/CF-revision-check-v1-two-design-review.md",
+    "modeling/lifecycle/revisioncheck/check.go",
+    "modeling/lifecycle/revisioncheck/check_test.go",
+    "modeling/lifecycle/revisioncheck/oracle_test.go",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/revisioncheck/testdata/observations.json",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main_test.go"
+  ]
+}

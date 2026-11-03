@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "1441853d-8a60-424a-80b1-fffd6c4b0e37",
+  "runId": "f9bcfcfd-2a59-49e6-a6d3-f903fb9dd449",
+  "kind": "complete",
+  "parents": [
+    "48006a69-0d7e-45c4-bafd-ef50469395e2"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-check-v1",
+    "path": "tasks/CF-revision-check-v1-two-design-review.md",
+    "revision": "b6d80d96b285a20c00e97c0b94623917c36519c2",
+    "blob": "a5ba066689642bfbf7f94933f33e383e58a5c964",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "18bc3c67cfff8b5119c9fbf99b65908d583bff77d9cf86b112b72995e23e881c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-check-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/60",
+  "at": "2026-11-03T22:05:03.346Z",
+  "summary": "Compose two native first-design reports with intake and declared trace changes, preserving exact native bytes and stale/open observations",
+  "next": "Commit immutable completion, validate against current main, push PR60 and hand final review/hosted gates/merge to lead",
+  "files": [
+    "tasks/CF-revision-check-v1-two-design-review.md",
+    "modeling/lifecycle/revisioncheck/check.go",
+    "modeling/lifecycle/revisioncheck/check_test.go",
+    "modeling/lifecycle/revisioncheck/oracle_test.go",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/revisioncheck/testdata/observations.json",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main_test.go"
+  ],
+  "validation": "Go1.27.3 offline race passed revisioncheck/cmd modelrevisioncheck/firstdesignreview/intakeimpact/traceimpact; whole-module vet passed; pack and whitespace passed; actual CLI full output shortwrite and closed stdout passed; README build/run passed; independent exact-source ce164ab review clean with independent five-package race; frozen vectors unchanged; optional skills-ref unavailable",
+  "snapshot": {
+    "tasks/CF-revision-check-v1-two-design-review.md": {
+      "blob": "f8a4433bfc7c1511fab2de4ad1bffd50a498ab22",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/check.go": {
+      "blob": "597cfb9f2553029dc8b0e423a5c415a4758623cf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/check_test.go": {
+      "blob": "e9ac21290b581d1ea5d65f0bb267cbce788590d4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/oracle_test.go": {
+      "blob": "f0799b80350623076cfcd4a6d8b43f6a41e27463",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/README.md": {
+      "blob": "7e791b785ba08ac0bd4632e6981f5c0d91c8ef1c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/testdata/observations.json": {
+      "blob": "d23ee7027d9ca040e84ea22f2e9cb482863acb5e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go": {
+      "blob": "762a73229b03d127c072673eff53819e134aa522",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrevisioncheck/main_test.go": {
+      "blob": "180888fc33f8332c33c3a8e0408501d7bc84b66b",
+      "mode": "100644"
+    }
+  }
+}
