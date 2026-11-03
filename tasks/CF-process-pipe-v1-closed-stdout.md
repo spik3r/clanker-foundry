@@ -1,11 +1,20 @@
 ---
 id: CF-process-pipe-v1
-status: review
+status: done
 owner: Foundry process CLI repair contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Return the declared process-view status on a closed pipe
+
+## Integration result
+
+[PR20](https://github.com/spik3r/clanker-foundry/pull/20) merged as
+`83007fa3083dc46add5f83e628d2aac30d1a972b` after all five hosted workflows
+passed on head `2254bf73d4acce3b6b3ed1684b227be6beedd4ef`. Independent source
+review and the lead's native visual review passed. JSON and SVG subprocess
+regressions confirm closed stdout returns exit 3 with the documented diagnostic.
+The repair claim is complete and reserves no further work.
 
 ## Implementation claim
 

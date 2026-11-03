@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f9417c95-be12-4a04-94b2-c75154eb44a9",
+  "runId": "5e7a0dd4-be1f-4f49-9153-f2fe2fc1cd2e",
+  "kind": "start",
+  "parents": [
+    "255ccf04-d5bb-496b-80e1-7f8ed288e9db"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-process-pipe-v1",
+    "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+    "revision": "b25afdf5531408895b99281e3a7253c3a24e94a7",
+    "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba652b3f11a1f3c72f7cd829421481d9eea6de7e5987c6fb6776713c5b41405c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/process-view-closeout",
+  "pullRequest": null,
+  "at": "2026-11-03T21:56:16.775Z",
+  "summary": "Record merged closed-pipe fix and release repair claim",
+  "next": "Close canonical repair task from verified PR20 evidence",
+  "files": [
+    "tasks/CF-process-pipe-v1-closed-stdout.md"
+  ]
+}
