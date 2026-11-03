@@ -11,8 +11,8 @@ const knownSources = [
   'runtime/contracts/v1.schema.json', 'runtime/contracts/authority.schema.json',
   'runtime/contracts/evidence.schema.json', 'runtime/contracts/workspace.schema.json',
   'runtime/package-lock.json', 'runtime/test/state.test.mjs', 'runtime/test/fixtures.mjs',
-  'runtime/test/consumer-shadow-v1.test.mjs',
-  `${trace}/testdata/oracle.json`,
+  'runtime/test/consumer-shadow-v1.test.mjs', 'runtime/test/model-trace-v1.test.mjs',
+  `${trace}/testdata/oracle.json`, `${trace}/testdata/dispatch-oracle.json`,
 ];
 const sha = (data) => createHash('sha256').update(data).digest('hex');
 const insist = (value, message) => { if (!value) throw new Error(message); };
@@ -44,27 +44,49 @@ export function verify(manifest, files) {
     insist(sameSet(entries.map((e) => e.id), observed), `${label} inventory`);
     for (const entry of entries) insist(entry.coverage === (partial.includes(entry.id) ? 'partial' : 'unmapped'), `${label} coverage`);
   };
-  inventory(manifest.commands, commands, ['ADMIT','ASSIGN'], 'command');
-  inventory(manifest.states, states, ['PENDING'], 'state');
-  const fixture = JSON.parse(files[`${trace}/testdata/oracle.json`]);
+  inventory(manifest.commands, commands, ['ADMIT','ASSIGN','ACKNOWLEDGE','SUBMIT'], 'command');
+  inventory(manifest.states, states, ['PENDING','ASSIGNED','EXECUTING','VALIDATING'], 'state');
+  const original = JSON.parse(files[`${trace}/testdata/oracle.json`]);
+  const dispatch = JSON.parse(files[`${trace}/testdata/dispatch-oracle.json`]);
+  const fixture = { cases: [...original.cases, ...dispatch.cases] };
   const ids = fixture.cases.map((c) => c.id);
   insist(unique(ids), 'fixture IDs');
-  insist(Array.isArray(manifest.requirements) && sameSet(manifest.requirements.map((x) => x.id), ['TR-ADMIT','TR-DEPENDENCY','TR-RESOURCE']), 'requirement inventory');
+  const expectedCodes = {
+    "TR-ADMIT": null,
+    "TR-DEPENDENCY": "DEPENDENCIES_NOT_SATISFIED",
+    "TR-RESOURCE": "RESOURCE_CONFLICT",
+    "TR-ASSIGN-SUCCESS": null,
+    "TR-ACK-SUCCESS": null,
+    "TR-SUBMIT-SUCCESS": null,
+    "TR-ACK-WRONG-WORKER": "UNAUTHORIZED",
+    "TR-ACK-STALE-FENCE": "STALE_ATTEMPT",
+    "TR-ACK-EXPIRED-LEASE": "ATTEMPT_EXPIRED",
+    "TR-SUBMIT-WRONG-WORKER": "UNAUTHORIZED",
+    "TR-SUBMIT-STALE-FENCE": "STALE_ATTEMPT",
+    "TR-SUBMIT-EXPIRED-LEASE": "ATTEMPT_EXPIRED",
+    "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT": "SUBJECT_MISMATCH",
+    "TR-SUBMIT-WRONG-ARTIFACT-DIGEST": "ARTIFACT_DIGEST_MISMATCH",
+    "TR-SUBMIT-WRONG-SPEC-DIGEST": "SPEC_DIGEST_MISMATCH"
+  };
+  insist(Array.isArray(manifest.requirements) && sameSet(manifest.requirements.map((x) => x.id), Object.keys(expectedCodes)), 'requirement inventory');
   const allCases = [];
   for (const req of manifest.requirements) {
     insist(keys(req,['id','command','statement','anchor','schemaPointer','caseIds','existingTest','existingTestPath','expectedCode']), 'requirement shape');
-    insist(commands.includes(req.command) && ['ADMIT','ASSIGN'].includes(req.command), 'requirement command');
+    insist(commands.includes(req.command) && ['ADMIT','ASSIGN','ACKNOWLEDGE','SUBMIT'].includes(req.command), 'requirement command');
     insist(typeof req.statement === 'string' && req.statement.length > 0, 'requirement statement');
     insist(typeof req.anchor === 'string' && req.anchor.length > 0 && files['runtime/src/state.mjs'].includes(req.anchor), 'source anchor');
     const match = /^#\/\$defs\/Command\/oneOf\/(0|[1-9][0-9]*)$/.exec(req.schemaPointer);
     insist(match && variants[Number(match[1])]?.properties?.kind?.const === req.command, 'schema reference');
-    insist(['runtime/test/state.test.mjs','runtime/test/consumer-shadow-v1.test.mjs'].includes(req.existingTestPath)
+    insist(['runtime/test/state.test.mjs','runtime/test/consumer-shadow-v1.test.mjs','runtime/test/model-trace-v1.test.mjs'].includes(req.existingTestPath)
       && typeof req.existingTest === 'string' && files[req.existingTestPath].includes(`test('${req.existingTest}'`), 'test reference');
     insist(Array.isArray(req.caseIds) && req.caseIds.length > 0 && unique(req.caseIds) && req.caseIds.every((id) => ids.includes(id)), 'case reference');
     insist(req.caseIds.every((id) => fixture.cases.find((c) => c.id === id)?.input.command.kind === req.command), 'case command');
-    const expectedCode = {'TR-ADMIT':null, 'TR-DEPENDENCY':'DEPENDENCIES_NOT_SATISFIED', 'TR-RESOURCE':'RESOURCE_CONFLICT'}[req.id];
+    const expectedCode = expectedCodes[req.id];
     insist(req.expectedCode === expectedCode, 'requirement outcome');
-    if (expectedCode) insist(req.anchor.includes(`'${expectedCode}'`), 'guard outcome reference');
+    if (expectedCode === 'UNAUTHORIZED') {
+      insist(files['runtime/src/state.mjs'].includes("const authorized = (allowed = owner) => requireGuard(allowed, 'UNAUTHORIZED');"), 'guard helper outcome');
+      insist(req.anchor === 'authorized(context.role === \'worker\' && context.actor_id === execution.attempt.worker_id);', 'guard outcome reference');
+    } else if (expectedCode) insist(req.anchor.includes(`'${expectedCode}'`), 'guard outcome reference');
     insist(req.caseIds.every((id) => {
       const c = fixture.cases.find((item) => item.id === id);
       return expectedCode ? c.expected.completion === 'throw' && c.expected.error.code === expectedCode
@@ -73,11 +95,80 @@ export function verify(manifest, files) {
     allCases.push(...req.caseIds);
   }
   insist(sameSet(allCases, ids), 'fixture coverage');
-  insist(Array.isArray(manifest.flows) && sameSet(manifest.flows.map((f) => f.id), ['admission','blocked-assignment']), 'flow inventory');
   const expected = {
-    admission: {command:'ADMIT', from:'NONE', to:'PENDING', outcome:'return', requirementIds:['TR-ADMIT']},
-    'blocked-assignment': {command:'ASSIGN', from:'PENDING', to:'REFUSED', outcome:'throw', requirementIds:['TR-DEPENDENCY','TR-RESOURCE']},
+    "admission": {
+      "command": "ADMIT",
+      "from": "NONE",
+      "to": "PENDING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ADMIT"
+      ]
+    },
+    "blocked-assignment": {
+      "command": "ASSIGN",
+      "from": "PENDING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-DEPENDENCY",
+        "TR-RESOURCE"
+      ]
+    },
+    "assignment": {
+      "command": "ASSIGN",
+      "from": "PENDING",
+      "to": "ASSIGNED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ASSIGN-SUCCESS"
+      ]
+    },
+    "acknowledgement": {
+      "command": "ACKNOWLEDGE",
+      "from": "ASSIGNED",
+      "to": "EXECUTING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ACK-SUCCESS"
+      ]
+    },
+    "blocked-acknowledgement": {
+      "command": "ACKNOWLEDGE",
+      "from": "ASSIGNED",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-ACK-WRONG-WORKER",
+        "TR-ACK-STALE-FENCE",
+        "TR-ACK-EXPIRED-LEASE"
+      ]
+    },
+    "submission": {
+      "command": "SUBMIT",
+      "from": "EXECUTING",
+      "to": "VALIDATING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-SUBMIT-SUCCESS"
+      ]
+    },
+    "blocked-submission": {
+      "command": "SUBMIT",
+      "from": "EXECUTING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-SUBMIT-WRONG-WORKER",
+        "TR-SUBMIT-STALE-FENCE",
+        "TR-SUBMIT-EXPIRED-LEASE",
+        "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT",
+        "TR-SUBMIT-WRONG-ARTIFACT-DIGEST",
+        "TR-SUBMIT-WRONG-SPEC-DIGEST"
+      ]
+    }
   };
+  insist(Array.isArray(manifest.flows) && sameSet(manifest.flows.map((f) => f.id), Object.keys(expected)), 'flow inventory');
   for (const flow of manifest.flows) {
     insist(keys(flow,['id','command','from','to','outcome','requirementIds']), 'flow shape');
     const want = expected[flow.id];
@@ -90,10 +181,11 @@ export function verify(manifest, files) {
 }
 
 export function render(manifest) {
-  const node = (name) => ({NONE:'start', PENDING:'pending', REFUSED:'refused'})[name];
+  const node = (name) => ({NONE:'start', PENDING:'pending', ASSIGNED:'assigned', EXECUTING:'executing', VALIDATING:'validating', REFUSED:'refused'})[name];
   const lines = [
     'digraph bounded_shadow {', '  // Partial review trace; not an executable or complete state model.',
     '  rankdir=LR;', '  start [shape=point];', '  pending [label="PENDING (partial)"];',
+    '  assigned [label="ASSIGNED (partial)"];', '  executing [label="EXECUTING (partial)"];', '  validating [label="VALIDATING (partial)"];',
     '  refused [shape=box,label="REFUSED outcome (no new state)"];',
     ...manifest.flows.map((f) => `  ${node(f.from)} -> ${node(f.to)} [${f.outcome === 'throw' ? 'style=dashed,' : ''}label="${f.command}: ${f.requirementIds.join(' / ')}"];`),
     '}', ''
@@ -101,7 +193,7 @@ export function render(manifest) {
   const md = [
     '# Partial orchestration sequence', '',
     'This is a declared review view, not an executable state machine or a complete account of the evaluator.',
-    'REFUSED is an outcome marker, not a runtime state. In the invented refusal cases the input remains PENDING at revision 1.', '',
+    'REFUSED is an outcome marker, not a runtime state. Every invented refusal leaves its supplied execution unchanged; no receipt or effect list is returned.', '',
     ...manifest.flows.flatMap((f, i) => [`${i+1}. **${f.command}**: ${f.from} → ${f.to} (${f.outcome}).`,
       ...f.requirementIds.map((id) => { const r = manifest.requirements.find((x) => x.id === id); return `   - **${r.id}**: ${r.statement} Fixtures: ${r.caseIds.join(', ')}.`; })]), '',
     `Commands not modeled: ${manifest.commands.filter((x) => x.coverage === 'unmapped').map((x) => x.id).join(', ')}.`, '',
