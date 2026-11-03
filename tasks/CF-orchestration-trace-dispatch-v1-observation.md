@@ -1,11 +1,21 @@
 ---
 id: CF-orchestration-trace-dispatch-v1
-status: review
+status: done
 owner: Foundry runtime trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Trace assignment, acknowledgement and submission
+
+## Integration result
+
+[PR53](https://github.com/spik3r/clanker-foundry/pull/53) merged as
+`899dcc7e57a2ca2a7f34e8685ea80bb6fb08c1a0` after independent source review
+and successful validate, orchestration, model-lifecycle-go,
+project-memory-conformance and model-authoring-contract workflows on head
+`799dc253cfef0771ac38b619a84a6ae84c088bb7`. The lead verified committed
+evidence coverage for all eight changed paths and the focused six-test trace
+suite. The implementation claim is complete and reserves no further work.
 
 ## Implementation claim
 
