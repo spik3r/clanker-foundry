@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-trace-dispatch-v1
-status: in-progress
+status: review
 owner: Foundry runtime trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -41,3 +41,27 @@ Run the focused trace checks, full runtime tests with pinned dependencies,
 repository validation, installer regressions, whitespace checks and full committed
 Project Memory validation. Record observed results and tool limits. Return the
 exact revision and PR to the coordinator for independent review; do not merge.
+
+## Review handoff
+
+The trace now covers successful assignment, acknowledgement and successful
+submission, plus nine refusal observations. The original five-case oracle is
+unchanged. A separate contributor statically authored twelve new full literal
+observations before implementation, frozen in d588cc1. This is separate-assistant
+authorship rather than independent-person review or observed execution evidence.
+
+Validation: focused trace tests passed 6/6, including four in-memory behavioral
+guard mutation controls. The full runtime suite passed 199/199 with Node 26.0.0
+and a locked offline dependency install. The fixed trace checker, pack validator,
+installer regressions and whitespace checks passed. Optional skills-ref is absent.
+No evaluator, runtime contract, dispatcher, provider or workflow was changed.
+
+The first local registration rejected the task filename without a description
+suffix. The corrected source claim was committed and published before genuine
+registration/start or implementation. The first fence mutation test retained a
+second fence check and did not alter behavior; the control now weakens both fence
+checks, and the stale-fence fixture detects the resulting behavioral difference.
+
+Next: independent exact-source review, immutable completion/full-diff validation,
+and coordinator review of hosted checks before any merge. This task grants no
+managed-runtime authority and launches no real worker.

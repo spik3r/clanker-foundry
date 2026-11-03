@@ -48,6 +48,10 @@
     {
       "path": "runtime/model-trace-v1/testdata/oracle.json",
       "sha256": "09b152afafec087c7101e71b26ff89a9a531288a45cafa1382d0063c4c0f411b"
+    },
+    {
+      "path": "runtime/model-trace-v1/testdata/dispatch-oracle.json",
+      "sha256": "4afde4fc00e01c2c54ce060a7d118883a6480b7e50856a11717b3b151e27edd3"
     }
   ],
   "commands": [
@@ -61,11 +65,11 @@
     },
     {
       "id": "ACKNOWLEDGE",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "SUBMIT",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "RECORD_VALIDATION",
@@ -127,15 +131,15 @@
     },
     {
       "id": "ASSIGNED",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "EXECUTING",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "VALIDATING",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "RETRY_WAIT",
@@ -199,6 +203,162 @@
       "existingTest": "assignment intents remain hypothetical and stale revisions/uncertain prerequisites refuse",
       "expectedCode": "RESOURCE_CONFLICT",
       "existingTestPath": "runtime/test/consumer-shadow-v1.test.mjs"
+    },
+    {
+      "id": "TR-ASSIGN-SUCCESS",
+      "command": "ASSIGN",
+      "statement": "A valid invented read-only assignment records the supplied worker attempt, advances the fence and returns a LAUNCH_ATTEMPT intent.",
+      "anchor": "execution.state = 'ASSIGNED';",
+      "schemaPointer": "#/$defs/Command/oneOf/1",
+      "caseIds": [
+        "assign_success"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": null,
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-ACK-SUCCESS",
+      "command": "ACKNOWLEDGE",
+      "statement": "The matching worker acknowledges its live attempt before the lease deadline without returning an effect.",
+      "anchor": "execution.state = 'EXECUTING';",
+      "schemaPointer": "#/$defs/Command/oneOf/2",
+      "caseIds": [
+        "ack_success"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": null,
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-SUCCESS",
+      "command": "SUBMIT",
+      "statement": "The matching live worker submits a consistent successful artifact manifest; validation starts and a RUN_CHECKS intent names the stage checks.",
+      "anchor": "execution.state = 'VALIDATING';",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_success"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": null,
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-ACK-WRONG-WORKER",
+      "command": "ACKNOWLEDGE",
+      "statement": "Acknowledgement by a different worker refuses.",
+      "anchor": "authorized(context.role === 'worker' && context.actor_id === execution.attempt.worker_id);",
+      "schemaPointer": "#/$defs/Command/oneOf/2",
+      "caseIds": [
+        "ack_wrong_worker"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "UNAUTHORIZED",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-ACK-STALE-FENCE",
+      "command": "ACKNOWLEDGE",
+      "statement": "Acknowledgement with a stale fence refuses.",
+      "anchor": "requireGuard(execution.attempt !== null && input.attempt_id === execution.attempt.attempt_id && input.fencing_token === execution.attempt.fencing_token, 'STALE_ATTEMPT');",
+      "schemaPointer": "#/$defs/Command/oneOf/2",
+      "caseIds": [
+        "ack_stale_fence"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "STALE_ATTEMPT",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-ACK-EXPIRED-LEASE",
+      "command": "ACKNOWLEDGE",
+      "statement": "Acknowledgement at the exact lease deadline refuses.",
+      "anchor": "requireGuard(now < millis(deadline), 'ATTEMPT_EXPIRED');",
+      "schemaPointer": "#/$defs/Command/oneOf/2",
+      "caseIds": [
+        "ack_expired_lease"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "ATTEMPT_EXPIRED",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-WRONG-WORKER",
+      "command": "SUBMIT",
+      "statement": "Submission by a different worker refuses.",
+      "anchor": "authorized(context.role === 'worker' && context.actor_id === execution.attempt.worker_id);",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_wrong_worker"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "UNAUTHORIZED",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-STALE-FENCE",
+      "command": "SUBMIT",
+      "statement": "Submission with a stale fence refuses.",
+      "anchor": "requireGuard(execution.attempt !== null && input.attempt_id === execution.attempt.attempt_id && input.fencing_token === execution.attempt.fencing_token, 'STALE_ATTEMPT');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_stale_fence"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "STALE_ATTEMPT",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-EXPIRED-LEASE",
+      "command": "SUBMIT",
+      "statement": "Submission at the exact lease deadline refuses.",
+      "anchor": "requireGuard(now < millis(deadline), 'ATTEMPT_EXPIRED');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_expired_lease"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "ATTEMPT_EXPIRED",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT",
+      "command": "SUBMIT",
+      "statement": "Submission whose artifact names a different repository revision refuses.",
+      "anchor": "requireGuard(result.artifacts.every((artifact) => artifact.repository_revision === execution.spec.repository.revision), 'SUBJECT_MISMATCH');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_wrong_repository_subject"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "SUBJECT_MISMATCH",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-WRONG-ARTIFACT-DIGEST",
+      "command": "SUBMIT",
+      "statement": "Submission whose subject digest differs from its artifact manifest digest refuses.",
+      "anchor": "requireGuard(result.subject_digest === digest(result.artifacts), 'ARTIFACT_DIGEST_MISMATCH');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_wrong_artifact_digest"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "ARTIFACT_DIGEST_MISMATCH",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-SUBMIT-WRONG-SPEC-DIGEST",
+      "command": "SUBMIT",
+      "statement": "Submission whose specification digest differs from the current specification refuses.",
+      "anchor": "requireGuard(result.spec_digest === execution.spec_digest, 'SPEC_DIGEST_MISMATCH');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_wrong_spec_digest"
+      ],
+      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "expectedCode": "SPEC_DIGEST_MISMATCH",
+      "existingTestPath": "runtime/test/state.test.mjs"
     }
   ],
   "flows": [
@@ -221,6 +381,63 @@
       "requirementIds": [
         "TR-DEPENDENCY",
         "TR-RESOURCE"
+      ]
+    },
+    {
+      "id": "assignment",
+      "command": "ASSIGN",
+      "from": "PENDING",
+      "to": "ASSIGNED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ASSIGN-SUCCESS"
+      ]
+    },
+    {
+      "id": "acknowledgement",
+      "command": "ACKNOWLEDGE",
+      "from": "ASSIGNED",
+      "to": "EXECUTING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ACK-SUCCESS"
+      ]
+    },
+    {
+      "id": "blocked-acknowledgement",
+      "command": "ACKNOWLEDGE",
+      "from": "ASSIGNED",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-ACK-WRONG-WORKER",
+        "TR-ACK-STALE-FENCE",
+        "TR-ACK-EXPIRED-LEASE"
+      ]
+    },
+    {
+      "id": "submission",
+      "command": "SUBMIT",
+      "from": "EXECUTING",
+      "to": "VALIDATING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-SUBMIT-SUCCESS"
+      ]
+    },
+    {
+      "id": "blocked-submission",
+      "command": "SUBMIT",
+      "from": "EXECUTING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-SUBMIT-WRONG-WORKER",
+        "TR-SUBMIT-STALE-FENCE",
+        "TR-SUBMIT-EXPIRED-LEASE",
+        "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT",
+        "TR-SUBMIT-WRONG-ARTIFACT-DIGEST",
+        "TR-SUBMIT-WRONG-SPEC-DIGEST"
       ]
     }
   ]

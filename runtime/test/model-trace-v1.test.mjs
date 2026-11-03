@@ -74,3 +74,79 @@ test('trace controls reject drift, omissions and dangling evidence', () => {
   assert.throws(() => checkViews(manifest, {...views, [`${path}views/sequence.md`]: `${views[`${path}views/sequence.md`]}tamper`}), /stale view/);
   assert.throws(() => checkViews(manifest, {...views, [`${path}views/state.dot`]: 'corrupted'}), /stale view/);
 });
+
+const dispatchRaw = read(`${path}testdata/dispatch-oracle.json`);
+const dispatchOracle = JSON.parse(dispatchRaw);
+const dispatchPin = '4afde4fc00e01c2c54ce060a7d118883a6480b7e50856a11717b3b151e27edd3';
+
+function assertDispatchCases(apply, cases = dispatchOracle.cases) {
+  for (const c of cases) {
+    const input = structuredClone(c.input);
+    const before = structuredClone(input);
+    const invoke = () => apply(input.current, input.command, input.context);
+    if (c.expected.completion === 'return') {
+      const result = invoke();
+      assert.deepEqual(result.execution, c.expected.execution, `${c.id}: execution`);
+      assert.deepEqual(result.event, c.expected.event, `${c.id}: event`);
+      assert.deepEqual(result.effects, c.expected.effects, `${c.id}: effects`);
+    } else {
+      assert.throws(invoke, (error) => {
+        assert.equal(error.code, c.expected.error.code, `${c.id}: refusal code`);
+        assert.equal(error.message, c.expected.error.message, `${c.id}: refusal message`);
+        return true;
+      }, `${c.id}: refusal expected`);
+      assert.deepEqual(input.current, c.expected.currentAfter, `${c.id}: refused current`);
+      assert.equal(c.expected.resultReturned, false);
+      assert.equal(c.expected.eventReturned, false);
+      assert.equal(c.expected.effectsReturned, false);
+    }
+    assert.deepEqual(input, before, `${c.id}: inputs changed`);
+  }
+}
+
+test('frozen dispatch observations compare full execution, event, effects and unchanged inputs', () => {
+  assert.equal(createHash('sha256').update(dispatchRaw).digest('hex'), dispatchPin);
+  assert.deepEqual(dispatchOracle.cases.map((c) => c.id), [
+    'assign_success', 'ack_success', 'submit_success', 'ack_wrong_worker',
+    'ack_stale_fence', 'ack_expired_lease', 'submit_wrong_worker',
+    'submit_stale_fence', 'submit_expired_lease', 'submit_wrong_repository_subject',
+    'submit_wrong_artifact_digest', 'submit_wrong_spec_digest',
+  ]);
+  assertDispatchCases(evaluate);
+});
+
+test('dispatch trace controls reject reference, outcome and coverage drift', () => {
+  const mutant = (change, expected) => {
+    const copy = structuredClone(manifest); change(copy);
+    assert.throws(() => verify(copy, files), expected);
+  };
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-ACK-WRONG-WORKER').caseIds = ['submit_wrong_worker']; }, /case command/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-SUBMIT-SUCCESS').expectedCode = 'UNAUTHORIZED'; }, /requirement outcome/);
+  mutant((m) => { m.flows.find((f) => f.id === 'submission').to = 'COMPLETED'; }, /flow reference/);
+  mutant((m) => { m.states.find((s) => s.id === 'VALIDATING').coverage = 'unmapped'; }, /state coverage/);
+  const drift = `${files[`${path}testdata/dispatch-oracle.json`]}\n`;
+  assert.throws(() => verify(manifest, {...files, [`${path}testdata/dispatch-oracle.json`]: drift}), /source pin/);
+});
+
+// Mutants run only trusted local source in memory. The original source and
+// snapshot pins remain unchanged, so rejection comes from behavioral assertions.
+test('dispatch observations detect compiling worker, fence, expiry and digest guard mutants', async () => {
+  const source = read('runtime/src/state.mjs');
+  const contractURL = new URL('../src/contract.mjs', import.meta.url).href;
+  const mutations = [
+    ["authorized(context.role === 'worker' && context.actor_id === execution.attempt.worker_id);", 'authorized(true);', 'ack_wrong_worker'],
+    ["input.fencing_token === execution.attempt.fencing_token, 'STALE_ATTEMPT'", "true, 'STALE_ATTEMPT'", 'ack_stale_fence'],
+    ["now < millis(deadline), 'ATTEMPT_EXPIRED'", "now <= millis(deadline), 'ATTEMPT_EXPIRED'", 'ack_expired_lease'],
+    ["result.subject_digest === digest(result.artifacts), 'ARTIFACT_DIGEST_MISMATCH'", "true, 'ARTIFACT_DIGEST_MISMATCH'", 'submit_wrong_artifact_digest'],
+  ];
+  for (const [from, to, id] of mutations) {
+    assert.ok(source.includes(from), `${id}: mutation anchor`);
+    let changed = source.replaceAll(from, to);
+    if (id === 'ack_stale_fence') changed = changed.replaceAll('input.fencing_token === execution.fence', 'true');
+    const mutated = changed.replace("'./contract.mjs'", JSON.stringify(contractURL));
+    const module = await import(`data:text/javascript;base64,${Buffer.from(mutated).toString('base64')}`);
+    const cases = dispatchOracle.cases.filter((c) => c.id === id);
+    assert.equal(cases.length, 1);
+    assert.throws(() => assertDispatchCases(module.evaluate, cases), {code: 'ERR_ASSERTION'}, `${id}: mutant escaped`);
+  }
+});
