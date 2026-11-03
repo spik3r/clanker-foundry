@@ -1,0 +1,97 @@
+{
+  "formatVersion": 2,
+  "eventId": "a637fe77-b673-4593-9c9f-043e3af6f4db",
+  "runId": "2052d9e7-e366-4d5d-b1fe-b69cfdee1c2e",
+  "kind": "complete",
+  "parents": [
+    "68a3f082-411c-4d80-8b75-014a63d29232"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-trace-impact-v1",
+    "path": "tasks/CF-trace-impact-v1-review.md",
+    "revision": "342c419d8a52821e2151f90991b9e32db90f74ae",
+    "blob": "cbe55d5cf4e39baa0e29988f5f34d108365f8197",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9995d2e34e6f2d5529ecf58c1590e257a38b27b50f55490c848e3cdaf35252c6"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/trace-evidence-diff",
+  "pullRequest": null,
+  "at": "2026-11-01T21:52:44.657Z",
+  "summary": "Implemented deterministic review candidates by joining validated trace snapshots with existing model-diff facts",
+  "next": "Commit and validate full diff, recheck claims and prepare draft; no merge, deployment or activation",
+  "files": [
+    "tasks/CF-trace-impact-v1-review.md",
+    "modeling/lifecycle/traceimpact/compare.go",
+    "modeling/lifecycle/traceimpact/README.md",
+    "modeling/lifecycle/traceimpact/compare_external_test.go",
+    "modeling/lifecycle/traceimpact/testdata/before-model.json",
+    "modeling/lifecycle/traceimpact/testdata/after-model.json",
+    "modeling/lifecycle/traceimpact/testdata/before-requirements.json",
+    "modeling/lifecycle/traceimpact/testdata/after-requirements.json",
+    "modeling/lifecycle/traceimpact/testdata/before-catalog.json",
+    "modeling/lifecycle/traceimpact/testdata/after-catalog.json",
+    "modeling/lifecycle/traceimpact/testdata/expected.json",
+    "modeling/lifecycle/cmd/modeltraceimpact/main.go",
+    "modeling/lifecycle/cmd/modeltraceimpact/main_test.go"
+  ],
+  "validation": "Go 1.27.3 offline full go test -race -count=1 ./..., go vet, modelc check, gofmt, repository validation and documented CLI example passed; skills-ref unavailable. Independent fixture oracle was frozen before implementation; independent read-only review of 1abd42c found no findings after both-side, conservative catalog, aliasing, mutation and encoded-report limit tests. Diff whitespace clean.",
+  "snapshot": {
+    "tasks/CF-trace-impact-v1-review.md": {
+      "blob": "cbe55d5cf4e39baa0e29988f5f34d108365f8197",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/compare.go": {
+      "blob": "3121bd37d9595fc72db4e58b4f2143516f6af99d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/README.md": {
+      "blob": "7366384b08d514800875620aa9668effc4bca2f4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/compare_external_test.go": {
+      "blob": "ae0fc6dbdfd4c3fb51739002918136e0b12431cd",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/before-model.json": {
+      "blob": "1e5777a0f0bc3b2a2f6879ac1f3e17fe38282d3f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/after-model.json": {
+      "blob": "e92093616b53f0c4844d719253a077690575c990",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/before-requirements.json": {
+      "blob": "facc4d9c631b5a4e400b8367ad6742a0d359182d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/after-requirements.json": {
+      "blob": "87f8219e520b55f2eb0c0da44c218a293ab2335e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/before-catalog.json": {
+      "blob": "af9e8a9a6920d7a4e468255cff63eeefab096947",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/after-catalog.json": {
+      "blob": "6a08f66f18264bc062d9eae5138287f36452bfff",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/traceimpact/testdata/expected.json": {
+      "blob": "8aee96e48e9cdebfc38bc2665194eb3ef6fde648",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modeltraceimpact/main.go": {
+      "blob": "76deef05c8ac09448db7e96c15c139143ee927be",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modeltraceimpact/main_test.go": {
+      "blob": "85ffd0172b595f0fe1868c91360aaf2193d0635c",
+      "mode": "100644"
+    }
+  }
+}

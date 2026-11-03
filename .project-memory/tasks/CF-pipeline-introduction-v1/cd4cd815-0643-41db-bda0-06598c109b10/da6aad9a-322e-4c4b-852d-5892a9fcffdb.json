@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "da6aad9a-322e-4c4b-852d-5892a9fcffdb",
+  "runId": "cd4cd815-0643-41db-bda0-06598c109b10",
+  "kind": "start",
+  "parents": [
+    "d1b11500-4665-4dcc-b2e5-786995828d53"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pipeline-introduction-v1",
+    "path": "tasks/CF-pipeline-introduction-v1-friend-guide.md",
+    "revision": "6e4c4ac5e7047607b649d098ab05c8d461d80e98",
+    "blob": "350d0dee0a6dfb42f7504c7cf125715ec3e7416f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4de2ab9a0c071c1314253a042ba4261ebdf776bac72c6f767eaf24f5bf22b2e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/model-driven-pipeline-introduction",
+  "pullRequest": null,
+  "at": "2026-11-01T21:55:23.212Z",
+  "summary": "Add the ideal end state, rationale and a human-AI-tooling role image",
+  "next": "Draft the requested summary, inspect the supplied image and validate the integrated guide",
+  "files": [
+    "README.md",
+    "docs/model-driven-pipeline.md",
+    "docs/assets/pipeline-roles.png",
+    "tasks/CF-pipeline-introduction-v1-friend-guide.md"
+  ]
+}

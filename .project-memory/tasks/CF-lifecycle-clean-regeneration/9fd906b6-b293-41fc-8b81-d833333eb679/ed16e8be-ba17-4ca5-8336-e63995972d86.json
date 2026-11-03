@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "ed16e8be-ba17-4ca5-8336-e63995972d86",
+  "runId": "9fd906b6-b293-41fc-8b81-d833333eb679",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-clean-regeneration",
+    "path": "tasks/CF-lifecycle-clean-regeneration-test.md",
+    "revision": "329bdeae49a4ee4ca34431c0a1d470648b99c500",
+    "blob": "67fa2b70eb1049263e41e326eb571ac2e48c3086",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3c35e49c469f8ef8c29df78ce827fa4981a8ea0b4accf36a637e5b08d956b1a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-clean-regeneration",
+  "pullRequest": null,
+  "at": "2026-11-01T22:06:45.557Z",
+  "summary": "Verify clean generation across compiler, trace and independent acceptance",
+  "next": "Implement offline test and run pinned validation",
+  "files": [
+    "tasks/CF-lifecycle-clean-regeneration-test.md,modeling/lifecycle/reproducibility/clean_test.go,modeling/lifecycle/reproducibility/README.md"
+  ]
+}

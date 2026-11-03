@@ -1,0 +1,152 @@
+{
+  "formatVersion": 2,
+  "eventId": "98d815fc-f480-4495-b539-9d78c6a6f7c9",
+  "runId": "03c1803a-287f-4020-856e-7c805d4a44a5",
+  "kind": "complete",
+  "parents": [
+    "8d2909cc-3e31-4ddc-afdb-e3eeee666c48"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-bound-runner-v1",
+    "path": "tasks/CF-model-bound-runner-v1-consumer-replay.md",
+    "revision": "2d34b52fae4bc2abaa03db95a344bb50cb6f348e",
+    "blob": "74238540e85c6a51d8ce43b180fed159644bc350",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b6c8bb7c3169606b285e15547b0c89840f1a3659b607123de248ba1d6afc17a2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-bound-runner-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T23:05:34.458Z",
+  "summary": "Completed opt-in bound runner and external generated-model replay; exact source independently reviewed, legacy bytes preserved",
+  "next": "Publish full-history draft through supported publisher; observe exact-head CI and independent review before any integration",
+  "files": [
+    "tasks/CF-model-bound-runner-v1-consumer-replay.md",
+    "modeling/lifecycle/scenarios/types.go",
+    "modeling/lifecycle/scenarios/decode.go",
+    "modeling/lifecycle/scenarios/run.go",
+    "modeling/lifecycle/scenarios/run_test.go",
+    "modeling/lifecycle/scenarios/README.md",
+    "modeling/lifecycle/scenarios/runner.go",
+    "modeling/lifecycle/scenarios/runner_test.go",
+    "modeling/lifecycle/scenarios/testdata/legacy-parity.json",
+    "modeling/lifecycle/acceptanceauthor/author.go",
+    "modeling/lifecycle/acceptanceauthor/README.md",
+    "modeling/lifecycle/acceptanceauthor/bound.go",
+    "modeling/lifecycle/acceptanceauthor/runner_test.go",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/requirements.md",
+    "modeling/lifecycle/consumerintegration/testdata/model-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/model-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/suite-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/suite-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v1.json",
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v2.json",
+    "modeling/lifecycle/consumerintegration/testdata/expected.json",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt"
+  ],
+  "validation": "Go 1.27.3 offline full race: 35 tested packages pass plus modelc no tests; full vet and modelc/modeltrace checks pass; schema 2 pass with existing exact-lock dependencies; repo validation and 143 memory tests pass; default bytes and 947 baseline/final CLI probes match; two generated and four runner mutants behaviorally killed; independent exact-source and closure probe pass at 238310af; custom fixtures unchanged. Task-local TMPDIR required for existing repro VCS test; fresh offline npm cache incomplete; optional skills-ref unavailable.",
+  "snapshot": {
+    "tasks/CF-model-bound-runner-v1-consumer-replay.md": {
+      "blob": "bbbe291f1fa2e8135b3ac9991b0258e8b223e200",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/types.go": {
+      "blob": "76785f1f2131e09997a539b5404930bd367462ff",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/decode.go": {
+      "blob": "59282659099cb13e847b81eef0938270bc90d6fe",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/run.go": {
+      "blob": "10ad30079e79f6a91d1b9ae525255e2c0bd026f5",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/run_test.go": {
+      "blob": "e2560166633b8a16a50de56abaadaadce2968d86",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/README.md": {
+      "blob": "7c70a604aead3231fdc0db7d31fe10459bcdb059",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/runner.go": {
+      "blob": "f6d11a4d1a9a7fc5fb7dd3397bbcf42570130091",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/runner_test.go": {
+      "blob": "e29c7af616a764334f004c2385033c9a367fee90",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/testdata/legacy-parity.json": {
+      "blob": "c7d67d4235943688206ce1873f8c9db2686a8597",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/acceptanceauthor/author.go": {
+      "blob": "37cb8acd29b453fa9a0967426be3ffd2de0e5b2c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/acceptanceauthor/README.md": {
+      "blob": "c98d0563c13da27815f1bc0131174f9c3b1a1eea",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/acceptanceauthor/bound.go": {
+      "blob": "7b96859845526fbb857fa069daeb137e97413719",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/acceptanceauthor/runner_test.go": {
+      "blob": "d75f344f6eab5266a6c97ac892f3f72d0b2fc188",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/README.md": {
+      "blob": "71d6f199a35f9a2c18be8d0da64d41c127c93ea1",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/consumer_test.go": {
+      "blob": "4811267fb35cea9911d39c94741868f26abc499a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/requirements.md": {
+      "blob": "27f2a6238aaf4d665e75d11ba49f80929957fffd",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/model-v1.json": {
+      "blob": "a3ffed07bc6aea4201da680129f29144bf8d9039",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/model-v2.json": {
+      "blob": "fcc1cb2f3e45d8716bb9996c0bd9b1f336a4176d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/suite-v1.json": {
+      "blob": "c6d5aaef4833df0597acc5a2794c8c31066f566f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/suite-v2.json": {
+      "blob": "9d81ae1d5d968890479bcabcc622c11d0de7f7fc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v1.json": {
+      "blob": "e1ebca6944dfe6c4db3cd9241f113cf89abc178f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/manifest-v2.json": {
+      "blob": "8a0edef95f43e2f603ed85036444dfa567ffa4d8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/expected.json": {
+      "blob": "6849e2a97757aec42a6b2719a483f9d6b047ac88",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt": {
+      "blob": "07dbe61d2c022b0ba14d28cce174e10344de319b",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "447c8895-db2e-4769-ba51-b41deb987401",
+  "runId": "83825165-c480-4d1e-9e3a-3ddd44d6246e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-first-design-review-bridge-v1",
+    "path": "tasks/CF-first-design-review-bridge-v1-consistent-handoff.md",
+    "revision": "a1f6828dfe2a52f55636dce8627b90cbbf801d52",
+    "blob": "a89a357faa810624007d5246a46b43b6da34898c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a17780f7166aff13c8bc636d1cb6538482ee61a2d4dda932d1590f5f5eb76202"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/first-design-review-bridge-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:26:05.897Z",
+  "summary": "Compose intake and proposal check with exact cross-request byte comparison",
+  "next": "Freeze independent fixtures before implementation",
+  "files": [
+    "modeling/lifecycle/firstdesignreview/README.md",
+    "modeling/lifecycle/firstdesignreview/review.go",
+    "modeling/lifecycle/firstdesignreview/review_test.go",
+    "modeling/lifecycle/firstdesignreview/oracle_test.go",
+    "modeling/lifecycle/firstdesignreview/testdata/oracle.json",
+    "modeling/lifecycle/firstdesignreview/testdata/README.md",
+    "modeling/lifecycle/cmd/modelreviewcheck/main.go",
+    "modeling/lifecycle/cmd/modelreviewcheck/main_test.go",
+    "tasks/CF-first-design-review-bridge-v1-consistent-handoff.md"
+  ]
+}

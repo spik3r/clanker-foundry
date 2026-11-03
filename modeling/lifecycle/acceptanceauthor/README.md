@@ -73,3 +73,49 @@ module resolution. The fixture author also wrote the checker and tests; the fixe
 literals prevent deriving those outcomes from the implementation, but do not
 constitute independent-person verification. This is a bounded lifecycle example,
 not a general UML or SysML acceptance engine.
+
+## Explicit generated-model runner (Go API only)
+
+`CheckWithRunner(manifestBytes, modelBytes, suiteBytes, mode, runner)` accepts a
+[scenario Runner](../scenarios/README.md) constructed explicitly in trusted Go
+code. Supply the separately generated package's profile/model constants and a
+field-only adapter to its `Transition` function. The callback owns all reducer
+semantics; no model interpreter, request-selected provider or dynamic loading is
+added. A zero runner refuses rather than selecting the example reducer.
+
+The runner binding is a **caller declaration**. A digest and callback do not prove
+that the callback was compiled from that model. Callback code may panic, block,
+allocate or perform I/O; this API does not sandbox it, cancel it, bound the callback's
+allocations or roll its effects back. Panics propagate. Independent review of the
+composition and generated source remains separate from these consistency checks.
+
+The original manifest, model and suite undergo the same input validation and
+binding checks as the legacy API, with the explicit runner used consistently for
+suite validation, digest, replay and report encoding. Current `check` inputs fully
+validate the suite and exact case IDs and calculate its scenario digest, but invoke
+no callback and report `valid`/`not-run`. Stale bindings retain `not-checked`/
+`not-run` with no callback. Neither path derives or refreshes expectations.
+
+The opt-in return type is `BoundReport`, version
+`lifecycle-bound-acceptance-report/v1`. It uses `runnerModelDigest` and
+`identitySource: caller-supplied-go-binding`, **not** `compiledModelDigest`.
+Nested replay reports use `lifecycle-bound-scenario-report/v1` with the same
+identity-source label. These identities establish neither binary provenance nor
+execution authentication, authorship, approval or deployment authority.
+
+A callback returning an invalid provider envelope or result violates the runner
+protocol. `CheckWithRunner` preserves `scenarios.ErrProviderProtocol` and returns
+a zero report, rather than calling it a frozen-expectation mismatch. Invocation
+may already have happened: this error does not mean `not-run` or rollback.
+Ordinary valid result mismatches still produce `mismatched` and stop before the
+next callback. Invalid input returns no report; all suite steps and cases are
+validated before the first invocation. Aggregate report overflow may occur after
+multiple callbacks and returns `ErrInvalid` without a report. An arbitrary error
+or absent report therefore does not prove zero execution; only the documented
+preflight-refusal, check-only and stale paths guarantee zero calls.
+
+Existing `Check`, `Execute`, `Report` and `modelacceptance` remain bound to the
+built-in example and retain their existing JSON bytes and error behavior. The CLI
+cannot select this new runner. Frozen legacy hashes test that boundary; the
+[consumer integration](../consumerintegration/README.md) exercises a separately
+generated reducer without copying or replacing the Foundry module.

@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "2e4fd032-0e97-4208-8f83-19d6295d0c01",
+  "runId": "9c29d177-877b-46b6-a342-3ad80c7de745",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-first-design-handoff-v1",
+    "path": "tasks/CF-first-design-handoff-v1-human-model.md",
+    "revision": "c0d811e9983cee23c3243564e767afef8969add4",
+    "blob": "682e0dffcd5c6e39a46e11a872c695a94e22b6e4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ade45088078262cc0204fc9ca23fc356c52cf3a6724828932be1cfcbd1ea7a0b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/first-design-handoff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:49:29.270Z",
+  "summary": "Connect explicit human decisions to strict first-design proposals and independent expectation handoff using existing tools",
+  "next": "Write bounded brief/model, delegate independent literal fixtures, author skill and forward-test before local completion",
+  "files": [
+    "README.md",
+    "skills/model-driven-design/SKILL.md",
+    "skills/model-driven-design/README.md",
+    "skills/model-driven-design/references/foundry-handoff.md",
+    "skills/model-driven-design/assets/design-brief.md",
+    "skills/model-driven-design/assets/review-handoff.md",
+    "skills/model-driven-design/examples/brief.md",
+    "skills/model-driven-design/examples/model.json",
+    "skills/model-driven-design/examples/suite.json",
+    "skills/model-driven-design/examples/manifest.json",
+    "skills/model-driven-design/examples/intake.json",
+    "skills/model-driven-design/examples/handoff.md",
+    "skills/model-driven-design/examples/inventory.json",
+    "modeling/lifecycle/authoringhandoff/handoff_test.go",
+    "tasks/CF-first-design-handoff-v1-human-model.md"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "e38b9ab6-30d5-414f-98a2-b5b99e81d979",
+  "runId": "19757872-812e-46cc-a3c0-01d0f93aec73",
+  "kind": "checkpoint",
+  "parents": [
+    "a0e8d75d-152f-4165-8b51-a57e9d0ed0c5"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-intakecheck-v1",
+    "path": "tasks/CF-model-intakecheck-v1-semantic-bridge.md",
+    "revision": "d60dbee05b8f40062fec67e4e3c64eda4dcbf53c",
+    "blob": "e60a2763ac28f39081fce9bf5dfe60b11fe9d0ff",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7b6c8bdd651df21aec38ba10884b9ba9e1046cfa5725c91b8396cc049bae880c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-intakecheck-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T21:17:44.835Z",
+  "summary": "Implement standalone intake/model bridge; frozen independent vectors, full Go race/vet/drift and schema contract pass",
+  "next": "Qualify latest-main integration and independent exact-source review before completion and permitted publication",
+  "files": [
+    "tasks/CF-model-intakecheck-v1-semantic-bridge.md",
+    "modeling/lifecycle/intakemodel/types.go",
+    "modeling/lifecycle/intakemodel/bridge.go",
+    "modeling/lifecycle/intakemodel/bridge_test.go",
+    "modeling/lifecycle/intakemodel/README.md",
+    "modeling/lifecycle/intakemodel/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelintakecheck/main.go",
+    "modeling/lifecycle/cmd/modelintakecheck/main_test.go"
+  ]
+}

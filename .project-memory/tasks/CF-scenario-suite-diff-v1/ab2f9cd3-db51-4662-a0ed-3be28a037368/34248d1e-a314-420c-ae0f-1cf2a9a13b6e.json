@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "34248d1e-a314-420c-ae0f-1cf2a9a13b6e",
+  "runId": "ab2f9cd3-db51-4662-a0ed-3be28a037368",
+  "kind": "complete",
+  "parents": [
+    "b5f9ae15-e408-49de-b6ef-ef9d31586750"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-suite-diff-v1",
+    "path": "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "revision": "1ae497612b379fa395907b25ac2106eb6746c3e5",
+    "blob": "4560391adcdc231036048b049c92510088b22e72",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "990e617ac00a07fd97421b249637c0bd57d34c9d64ec01fef7c877445fe1a4f0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-suite-diff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:24:01.061Z",
+  "summary": "Local declaration comparison qualified with frozen independent oracle; clarify byte versus depth error wording without logic changes",
+  "next": "Validate committed exact frontier, independently verify final documentation/metadata delta, preserve local bundle; publication needs separate authority",
+  "files": [
+    "tasks/CF-scenario-suite-diff-v1-literal-review.md",
+    "modeling/lifecycle/scenariodiff/types.go",
+    "modeling/lifecycle/scenariodiff/compare.go",
+    "modeling/lifecycle/scenariodiff/decode.go",
+    "modeling/lifecycle/scenariodiff/compare_test.go",
+    "modeling/lifecycle/scenariodiff/decode_test.go",
+    "modeling/lifecycle/scenariodiff/oracle_test.go",
+    "modeling/lifecycle/scenariodiff/README.md",
+    "modeling/lifecycle/cmd/modelscenariodiff/main.go",
+    "modeling/lifecycle/cmd/modelscenariodiff/main_test.go"
+  ],
+  "validation": "Offline Go1.27.3 full -p1 race54 tested packages PASS; independent focused race and frozen28 full reports PASS; independent wire/source hash probe28 PASS;15 compiling behavioral mutants killed; vet/modelc validate/check PASS; fuzz172834 inputs PASS; README example PASS; validator PASS (optional skills-ref unavailable); Project Memory143 tests PASS; gofmt/whitespace PASS",
+  "snapshot": {
+    "tasks/CF-scenario-suite-diff-v1-literal-review.md": {
+      "blob": "1c96762d7bd731a5c1f21a5654dacbf6d6bf4a70",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/types.go": {
+      "blob": "3aec940864400eec55cc2c91c98d11e847e18f25",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/compare.go": {
+      "blob": "81a6ca1aeb4db6c2251d9e1c5691efc2ba754f47",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/decode.go": {
+      "blob": "b1ece47c2cd711ec263cccba750347f0ff9a7e51",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/compare_test.go": {
+      "blob": "1bd97b630922a7d2f84955cbb8f632590d29cc7c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/decode_test.go": {
+      "blob": "536393caea15e3344489717109310285a5189b5d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/oracle_test.go": {
+      "blob": "4fba0fa7e25a08cc2febebdcc7a4c8094ecf3b1a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariodiff/README.md": {
+      "blob": "da55e0427e1bd03f13ba0f70af116bf8b8156c55",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelscenariodiff/main.go": {
+      "blob": "106de6cb14ff1a304dc9294623ea4a995e34f2b6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelscenariodiff/main_test.go": {
+      "blob": "7a55d26d2075c3616a3efa255b2261bde489aa68",
+      "mode": "100644"
+    }
+  }
+}

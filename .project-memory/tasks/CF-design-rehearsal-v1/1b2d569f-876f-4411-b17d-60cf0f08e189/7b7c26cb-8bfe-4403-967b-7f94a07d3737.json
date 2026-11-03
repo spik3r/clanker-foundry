@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "7b7c26cb-8bfe-4403-967b-7f94a07d3737",
+  "runId": "1b2d569f-876f-4411-b17d-60cf0f08e189",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-design-rehearsal-v1",
+    "path": "tasks/CF-design-rehearsal-v1-end-to-end.md",
+    "revision": "942744c5600bf74e8edc6163d6cf41798c167afe",
+    "blob": "81533bf20637a12e0427ae9403d1f6185d7e6f67",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "74105e9375e9e3c6639d9a4015c659059ae0c69742f5a2ee33fb4efa0c5a08ed"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/design-rehearsal-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T10:42:16.863Z",
+  "summary": "Prepare fixed-fixture model change rehearsal from declared intent through candidate-bound replay",
+  "next": "Freeze separate contributor baseline and expected observations before implementation",
+  "files": [
+    "tasks/CF-design-rehearsal-v1-end-to-end.md",
+    "modeling/lifecycle/rehearsal/README.md",
+    "modeling/lifecycle/rehearsal/run.sh",
+    "modeling/lifecycle/rehearsal/rehearsal_test.go",
+    "modeling/lifecycle/rehearsal/testdata/baseline-suite.json",
+    "modeling/lifecycle/rehearsal/testdata/expected.json"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "7dcbc42f-e1ad-453e-b328-35fec7113de2",
+  "runId": "19757872-812e-46cc-a3c0-01d0f93aec73",
+  "kind": "checkpoint",
+  "parents": [
+    "e38b9ab6-30d5-414f-98a2-b5b99e81d979"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-intakecheck-v1",
+    "path": "tasks/CF-model-intakecheck-v1-semantic-bridge.md",
+    "revision": "d60dbee05b8f40062fec67e4e3c64eda4dcbf53c",
+    "blob": "e60a2763ac28f39081fce9bf5dfe60b11fe9d0ff",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7b6c8bdd651df21aec38ba10884b9ba9e1046cfa5725c91b8396cc049bae880c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-intakecheck-v1",
+  "pullRequest": null,
+  "at": "2026-11-01T21:22:03.493Z",
+  "summary": "Integrated merged acceptance authoring main without owner edits. Independent review confirmed core identity and strictness; fixed observed SIGPIPE exit mismatch with signal handling and real closed-pipe subprocess regression. All eight mutation controls were behaviorally killed.",
+  "next": "Re-review corrected CLI; integrate latest main traceability; rerun final checks and complete only after independent review.",
+  "files": [
+    "tasks/CF-model-intakecheck-v1-semantic-bridge.md",
+    "modeling/lifecycle/intakemodel/types.go",
+    "modeling/lifecycle/intakemodel/bridge.go",
+    "modeling/lifecycle/intakemodel/bridge_test.go",
+    "modeling/lifecycle/intakemodel/README.md",
+    "modeling/lifecycle/intakemodel/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelintakecheck/main.go",
+    "modeling/lifecycle/cmd/modelintakecheck/main_test.go"
+  ]
+}

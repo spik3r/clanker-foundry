@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "ee490e54-66f7-4dcb-aba8-c25be4c337c6",
+  "runId": "33704264-d39b-4f03-b029-b447b54137ae",
+  "kind": "checkpoint",
+  "parents": [
+    "0b7a8fcf-356f-4629-878f-32e30a5517c2"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-qualification-adoption-v1",
+    "path": "tasks/CF-qualification-adoption-v1-current-source-closure.md",
+    "revision": "8b49d1d07a31a501d7cfe6778eb8d8f0d93c6e90",
+    "blob": "e230e3b73a610cd46e3bda4f54fd5793e646cbc6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2bb748883ea897f2cb38750d904448d8f0b5e473b02aa928ef0056fc96304883"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/qualification-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T03:02:10.896Z",
+  "summary": "Reviewed eleven-source pins and seventeen-payload closure now pass original/new tests; actual exported candidate build/replay matches unchanged full literal4case6step reports, wrong bindings/expectations/malformed suites reject, two generated-code mutants compile and fail, restored replay passes. Both real CLI closed-stdout regressions still fail original main by SIGPIPE and are frozen before repair.",
+  "next": "Repair CLI SIGPIPE while preserving exit2, rerun complete source/fixture qualification and obtain independent exact review",
+  "files": [
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/qualification_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/cmd/modelqualify/main.go",
+    "modeling/lifecycle/cmd/modelqualify/main_test.go",
+    "tasks/CF-qualification-adoption-v1-current-source-closure.md"
+  ]
+}

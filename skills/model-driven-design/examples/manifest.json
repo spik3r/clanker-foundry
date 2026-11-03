@@ -1,0 +1,46 @@
+{
+  "formatVersion": "lifecycle-acceptance-authoring/v1",
+  "id": "FirstDesignExpectationManifest",
+  "author": "Independent assistant fixture author (first_design_oracle), not a human approver",
+  "purpose": "Unexecuted fictional proposal expectations authored from examples/brief.md and the public lifecycle/v1 and scenario transport contracts, without reading the proposed model, model expressions, compiler, generated implementation or observed execution results. The supplied model digest is a transport binding only. Separate human meaning review and authorization remain pending; author label and hashes do not prove independence, approval, authentication or execution.",
+  "modelDigest": "4280fa4c999f7291c3325a997887c5e7b02b565f275a53df158afb55636d7db4",
+  "suiteSourceSha256": "184115eead4e94d37dd369d7f07a36ed6cb84080e8a4c9f27be3dd5562e2e7dd",
+  "cases": [
+    {
+      "id": "C_submit_unowned",
+      "intent": "Submit with all four requirements satisfied; Ready at revision 1 preserves the null owner and all other content."
+    },
+    {
+      "id": "C_submit_preserves_content",
+      "intent": "Submit at revision 7 with an actor different from the owner; preserve owner, exact outcome whitespace and ordered criteria while moving to Ready at revision 8."
+    },
+    {
+      "id": "C_actor_blank",
+      "intent": "Refuse whitespace-only actor as G_actor alone; preserve the full Draft task."
+    },
+    {
+      "id": "C_criteria_empty",
+      "intent": "Refuse an empty acceptance list as G_criteria alone; preserve the empty list and full Draft task."
+    },
+    {
+      "id": "C_criteria_absent",
+      "intent": "Refuse null acceptance as G_criteria alone; preserve null rather than changing it to an empty list."
+    },
+    {
+      "id": "C_outcome_blank",
+      "intent": "Refuse whitespace-only outcome as G_outcome alone; preserve the exact whitespace and full Draft task."
+    },
+    {
+      "id": "C_revision_stale",
+      "intent": "Refuse a stale expected revision as G_revision alone; preserve the current revision, owner and full Draft task."
+    },
+    {
+      "id": "C_all_guards_refuse",
+      "intent": "Report all four failing guards in sorted ID order; preserve owner, empty outcome, empty acceptance and revision."
+    },
+    {
+      "id": "C_terminal_refuses_submit",
+      "intent": "Refuse submit in terminal Ready with ILLEGAL_TRANSITION and no transition ID; preserve the complete Ready task."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "979b23ab-ed75-488f-8266-c956cedede1e",
+  "runId": "b4661734-7b02-4afc-864d-8aa75d3e1ca3",
+  "kind": "checkpoint",
+  "parents": [
+    "1afcf021-0441-4788-9447-8788eb537fa9"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-three-way-merge-v1",
+    "path": "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "revision": "7e580a426b905a6707b727986dce52159068cb22",
+    "blob": "d1df764160a8f30c104fb0b73df4cf425239ae37",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fc16ce75ce08e351d95b1d47554d3cb596b0a70ff5fc8a5d9586a6ff6f34bd31"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-three-way-merge-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T09:16:05.119Z",
+  "summary": "Implemented atomic model merge and strict CLI after frozen independent oracle; focused tests and pack checks passed; aggregate rerun pending after temp-workspace recovery",
+  "next": "Review exact source and finish unchanged full validation",
+  "files": [
+    "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "modeling/lifecycle/modelmerge/types.go",
+    "modeling/lifecycle/modelmerge/merge.go",
+    "modeling/lifecycle/modelmerge/decode.go",
+    "modeling/lifecycle/modelmerge/merge_test.go",
+    "modeling/lifecycle/modelmerge/decode_test.go",
+    "modeling/lifecycle/modelmerge/oracle_test.go",
+    "modeling/lifecycle/modelmerge/README.md",
+    "modeling/lifecycle/cmd/modelmerge/main.go",
+    "modeling/lifecycle/cmd/modelmerge/main_test.go"
+  ]
+}

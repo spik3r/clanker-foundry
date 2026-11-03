@@ -1,0 +1,44 @@
+{
+  "formatVersion": 2,
+  "eventId": "181f43cc-9ccf-4881-ae61-70507bd24141",
+  "runId": "0112dccc-f717-48c1-874b-85d23093cd7f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-compiler-profile-acceptance-v1",
+    "path": "tasks/CF-compiler-profile-acceptance-v1-execution.md",
+    "revision": "af70a9854fd059d1b8ff30ad392292035371d824",
+    "blob": "98937fb8ee6c728cf5e6ee0fd5b21f26bf2f85d4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "24a5671ffa9384fdb7e7872cae0945166776b80ad772f4582a6ec1b1f20defac"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/compiler-profile-acceptance-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T08:17:20.102Z",
+  "summary": "Independently freeze invented profile execution oracles, then build the bounded test-only harness",
+  "next": "Delegate disjoint fixture authors; review and commit frozen inventory before harness implementation",
+  "files": [
+    "tasks/CF-compiler-profile-acceptance-v1-execution.md",
+    "modeling/lifecycle/compilerprofileacceptance/README.md",
+    "modeling/lifecycle/compilerprofileacceptance/conformance_test.go",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/requirements.md",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/inventory.json",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/integers/requirements.md",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/integers/model.json",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/integers/oracle_test.go.txt",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/presence/requirements.md",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/presence/model.json",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/presence/oracle_test.go.txt",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/dispatch/requirements.md",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/dispatch/model.json",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/dispatch/oracle_test.go.txt",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/textdigest/requirements.md",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/textdigest/model.json",
+    "modeling/lifecycle/compilerprofileacceptance/testdata/textdigest/oracle_test.go.txt"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "formatVersion": 2,
+  "eventId": "e733b644-00be-4455-b336-2b467ffdfa66",
+  "runId": "984b8361-78f2-4b1b-b64b-fa6a06906877",
+  "kind": "checkpoint",
+  "parents": [
+    "f6d47030-a947-4563-980f-bde5474d2096"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-profile-policy-adoption-v1",
+    "path": "tasks/CF-profile-policy-adoption-v1-profile-discovery.md",
+    "revision": "893c151b66e2719f1e0c8a6c9a20a01d993e0adf",
+    "blob": "8ea0e585a8a1569a3c5fa8064cc6290522f4520c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "decf5d777fdfaa33486c5cf2733214c0b5356394771aae26477598ee5390ee3a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/profile-policy-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T04:30:35.244Z",
+  "summary": "Author qualification passed: actual Go1.27.3 offline full race (47 tested packages), vet, formatting, model and trace drift, schema2/2, repository validation, exact old/new binary verification and separate nested replay. Four compiling closed-policy mutants failed with frozen-oracle markers; restored race passed. Independent oracle author reviewed unchanged prelogic expectations and scoped source successfully.",
+  "next": "Await original producer exact-source qualification, then genuine completion and independent metadata continuity; publication and held gates remain separate.",
+  "files": [
+    "modeling/lifecycle/cmd/modelprofile/main.go",
+    "modeling/lifecycle/cmd/modelprofile/main_test.go",
+    "modeling/lifecycle/model/capabilities.go",
+    "modeling/lifecycle/model/capabilities_test.go",
+    "modeling/lifecycle/profilecatalog/README.md",
+    "modeling/lifecycle/profilecatalog/catalog.go",
+    "modeling/lifecycle/profilecatalog/catalog_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/catalog-vectors.json",
+    "modeling/lifecycle/profilecatalog/testdata/parity-vectors.json",
+    "modeling/lifecycle/profilecatalog/adoption_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/public-11-source-project.zip",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "tasks/CF-profile-policy-adoption-v1-profile-discovery.md"
+  ]
+}

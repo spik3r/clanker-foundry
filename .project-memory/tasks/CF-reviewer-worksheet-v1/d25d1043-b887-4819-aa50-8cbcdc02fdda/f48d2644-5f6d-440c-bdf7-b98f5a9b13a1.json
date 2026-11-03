@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "f48d2644-5f6d-440c-bdf7-b98f5a9b13a1",
+  "runId": "d25d1043-b887-4819-aa50-8cbcdc02fdda",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewer-worksheet-v1",
+    "path": "tasks/CF-reviewer-worksheet-v1-review.md",
+    "revision": "c31f9e7bd3914d0a0ea0714b0d195d335724bb0d",
+    "blob": "60038a18a2a7aa6831a4f37184e14fd295193996",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5608afb0f484d929f970df6261b6bee931d4ff3a3a046706f1a69c2dc24e76ad"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/reviewer-evidence-linking",
+  "pullRequest": null,
+  "at": "2026-11-01T22:11:30.830Z",
+  "summary": "Create a reviewed human worksheet joining intake decisions and declared trace links",
+  "next": "Write and freeze invented example and independent expectations",
+  "files": [
+    "tasks/CF-reviewer-worksheet-v1-review.md",
+    "modeling/lifecycle/reviewer/README.md",
+    "modeling/lifecycle/reviewer/worksheet.md",
+    "modeling/lifecycle/reviewer/example-intake.json",
+    "modeling/lifecycle/reviewer/example.md",
+    "modeling/lifecycle/reviewer/worksheet_test.go"
+  ]
+}

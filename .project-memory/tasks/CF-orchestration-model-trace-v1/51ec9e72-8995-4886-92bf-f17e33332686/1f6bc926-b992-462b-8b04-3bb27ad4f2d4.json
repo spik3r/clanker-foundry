@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "1f6bc926-b992-462b-8b04-3bb27ad4f2d4",
+  "runId": "51ec9e72-8995-4886-92bf-f17e33332686",
+  "kind": "start",
+  "parents": [
+    "af6de2df-5228-4876-bcf8-10243200ab2f"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-model-trace-v1",
+    "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+    "revision": "143c6aaba504753856539f6f168e101578b31f51",
+    "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bec17f94ffaf108a139d4a408391eeff72ac00730d6000bdd5b33858feaf3ffb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-model-trace-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T10:52:44.329Z",
+  "summary": "Revalidate complete PR scope after the wording correction",
+  "next": "Record full-scope final snapshot before publication",
+  "files": [
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/oracle.json",
+    "runtime/model-trace-v1/testdata/README.md",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-model-trace-v1-shadow.md"
+  ]
+}

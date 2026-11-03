@@ -1,0 +1,41 @@
+{
+  "formatVersion": "lifecycle-scenarios-json/v1",
+  "scenarioVersion": "lifecycle-scenarios/v1",
+  "profileVersion": "lifecycle/v1",
+  "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "id": "qualification_candidate_v1",
+  "cases": [
+    {
+      "id": "missing_owner_refuses",
+      "initial": {"id":"task-1","state":"Draft","revision":"0","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":null},
+      "steps": [
+        {
+          "id": "prepare_refused",
+          "command": {"type":"prepare","actor":"owner-1","expectedRevision":"0","review":null},
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {"id":"task-1","state":"Ready","revision":"1","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":null},
+            "refusals": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "named_owner_succeeds",
+      "initial": {"id":"task-1","state":"Draft","revision":"0","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":"owner-1"},
+      "steps": [
+        {
+          "id": "prepare_allowed",
+          "command": {"type":"prepare","actor":"owner-1","expectedRevision":"0","review":null},
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {"id":"task-1","state":"Ready","revision":"1","outcome":"An invented outcome","acceptance":["An invented criterion"],"owner":"owner-1"},
+            "refusals": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+package lifecycle_test
+
+import (
+	lifecycle "example.com/compilerprofile/generated"
+	"reflect"
+	"testing"
+)
+
+func ptr(s string) *string { return &s }
+func snapshot(t lifecycle.Task) lifecycle.Task {
+	c := t
+	if t.Owner != nil {
+		c.Owner = ptr(*t.Owner)
+	}
+	if t.Acceptance != nil {
+		c.Acceptance = append([]string{}, t.Acceptance...)
+	}
+	return c
+}
+func verify(t *testing.T, input lifecycle.Task, command lifecycle.Command, want lifecycle.Result) {
+	t.Helper()
+	before := snapshot(input)
+	commandBefore := command
+	if command.Review != nil {
+		r := *command.Review
+		commandBefore.Review = &r
+	}
+	got := lifecycle.Transition(input, command)
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("PROFILE_ORACLE_MISMATCH complete result mismatch\ngot: %#v task=%#v\nwant: %#v task=%#v", got, got.Task, want, want.Task)
+	}
+	if !reflect.DeepEqual(input, before) || !reflect.DeepEqual(command, commandBefore) {
+		t.Fatal("PROFILE_ORACLE_MISMATCH input mutation")
+	}
+	if got.Task != nil {
+		if input.Owner != nil && got.Task.Owner == input.Owner {
+			t.Fatal("PROFILE_ORACLE_MISMATCH owner aliases input")
+		}
+		if got.Task.Owner != nil {
+			*got.Task.Owner = "changed-output"
+		}
+		if len(got.Task.Acceptance) > 0 {
+			got.Task.Acceptance[0] = "changed-output"
+		}
+		if !reflect.DeepEqual(input, before) {
+			t.Fatal("PROFILE_ORACLE_MISMATCH output aliases input storage")
+		}
+		if input.Owner != nil {
+			*input.Owner = "changed-input"
+			if got.Task.Owner != nil && *got.Task.Owner == "changed-input" {
+				t.Fatal("PROFILE_ORACLE_MISMATCH input aliases output owner")
+			}
+		}
+		if len(input.Acceptance) > 0 {
+			input.Acceptance[0] = "changed-input"
+			if got.Task.Acceptance[0] == "changed-input" {
+				t.Fatal("PROFILE_ORACLE_MISMATCH input aliases output acceptance")
+			}
+		}
+	}
+}
+
+func TestProfileIntegerBoundaries(t *testing.T) {
+	t.Run("above_float_precision", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 9007199254740993, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 9007199254740993, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("equal_refuses", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 9007199254740992, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_advance"}})
+	})
+	t.Run("guard_precedes_overflow", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 18446744073709551615, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_advance"}})
+	})
+	t.Run("overflow_after_true_guard", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 18446744073709551614, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"REVISION_LIMIT"}})
+	})
+	t.Run("increment_to_maximum", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551614, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 18446744073709551615, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("above_uint32", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 4294967296, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 4294967297, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("zero_differs", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 1, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_advance", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("equal_zero", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, lifecycle.Command{Type: "match", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_match", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: []string{"criterion"}, Owner: ptr("keeper")}, Refusals: []string{}})
+	})
+	t.Run("equal_large", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "match", Actor: "", ExpectedRevision: 9007199254740992, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_match", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 9007199254740993, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("unequal_large", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "match", Actor: "", ExpectedRevision: 9007199254740993, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_match", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_match"}})
+	})
+	t.Run("equal_max_overflow", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "match", Actor: "", ExpectedRevision: 18446744073709551615, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_match", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"REVISION_LIMIT"}})
+	})
+	t.Run("invalid_before_guard_and_overflow", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "advance", Actor: "", ExpectedRevision: 18446744073709551615, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "", Task: nil, Refusals: []string{"INVALID_INPUT"}})
+	})
+}
+
+func TestProfileIntegerOptionalOperands(t *testing.T) {
+	t.Run("reviewDifferent_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewDifferent"}})
+	})
+	t.Run("reviewDifferent_present_zero", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewDifferent"}})
+	})
+	t.Run("reviewDifferent_present_one", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 1, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("reviewDifferent_large_distinct", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 9007199254740993, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 9007199254740993, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("reviewDifferent_large_equal", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 9007199254740992, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewDifferent"}})
+	})
+	t.Run("reviewEqual_absent", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: nil}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewEqual"}})
+	})
+	t.Run("reviewEqual_present_zero", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 1, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("reviewEqual_present_one", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 1, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewEqual"}})
+	})
+	t.Run("reviewEqual_large_distinct", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 9007199254740993, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"G_reviewEqual"}})
+	})
+	t.Run("reviewEqual_large_equal", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 9007199254740992, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 9007199254740992, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 9007199254740993, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("review_max_distinct", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551614, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 18446744073709551615, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: true, TransitionID: "T_reviewDifferent", Task: &lifecycle.Task{ID: "sample", State: "Closed", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{}})
+	})
+	t.Run("review_max_equal_overflow", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewEqual", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 18446744073709551615, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "approved"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "T_reviewEqual", Task: &lifecycle.Task{ID: "sample", State: "Open", Revision: 18446744073709551615, Outcome: "", Acceptance: nil, Owner: nil}, Refusals: []string{"REVISION_LIMIT"}})
+	})
+	t.Run("invalid_review_before_absent_guard", func(t *testing.T) {
+		verify(t, lifecycle.Task{ID: "sample", State: "Open", Revision: 0, Outcome: "", Acceptance: nil, Owner: nil}, lifecycle.Command{Type: "reviewDifferent", Actor: "", ExpectedRevision: 0, Review: &lifecycle.Review{TaskID: "review-task", TaskRevision: 0, ModelDigest: "1111111111111111111111111111111111111111111111111111111111111111", TaskDigest: "2222222222222222222222222222222222222222222222222222222222222222", Reviewer: "reviewer", Decision: "invalid"}}, lifecycle.Result{Mode: "example-only", Authority: "none", ModelDigest: "107331db4daf02f01fd418af40fe39a3a375a46b63a7ac07d3c42321b6711914", OK: false, TransitionID: "", Task: nil, Refusals: []string{"INVALID_INPUT"}})
+	})
+}

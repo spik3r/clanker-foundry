@@ -92,6 +92,12 @@ func binding(a, b string) string {
 // model header, and fully validates the suite only when all bindings are current.
 // Replay delegates to the existing runner; it never derives or rewrites expectations.
 func Check(manifestBytes, modelBytes, suiteBytes []byte, mode string) (Report, error) {
+	return checkWith(manifestBytes, modelBytes, suiteBytes, mode, lifecycle.ModelDigest, defaultScenarioRunner{}, false)
+}
+
+// checkWith shares input validation and frozen comparisons. The Report is private
+// intermediate data on the opt-in path; only BoundReport crosses that boundary.
+func checkWith(manifestBytes, modelBytes, suiteBytes []byte, mode, runnerDigest string, runner scenarioRunner, providerErrors bool) (Report, error) {
 	var zero Report
 	var m manifest
 	if (mode != "check" && mode != "replay") || strictjson.Decode(manifestBytes, &m, MaxManifestBytes, 64) != nil || m.FormatVersion != FormatVersion || !model.Identifier(m.ID) || !nonblank(m.Author, 256) || !nonblank(m.Purpose, 4096) || !validHash(m.ModelDigest) || !validHash(m.SuiteSourceSHA256) || len(m.Cases) < 1 || len(m.Cases) > scenarios.MaxCases {
@@ -123,11 +129,11 @@ func Check(manifestBytes, modelBytes, suiteBytes []byte, mode string) (Report, e
 		return zero, ErrInvalid
 	}
 	observed := hash(suiteBytes)
-	r := Report{FormatVersion: ReportVersion, Authority: "none", ManifestSHA256: hash(manifestBytes), ManifestID: m.ID, DeclaredAuthor: m.Author, DeclaredModelDigest: m.ModelDigest, CurrentModelDigest: current, DeclaredSuiteSHA256: m.SuiteSourceSHA256, ObservedSuiteSHA256: observed, SuiteModelDigest: suiteModel, CompiledModelDigest: lifecycle.ModelDigest, ModelBinding: binding(m.ModelDigest, current), SuiteBinding: binding(m.SuiteSourceSHA256, observed), SuiteModelBinding: binding(suiteModel, m.ModelDigest), RunnerBinding: binding(current, lifecycle.ModelDigest), SuiteValidation: "not-checked", Replay: "not-run"}
+	r := Report{FormatVersion: ReportVersion, Authority: "none", ManifestSHA256: hash(manifestBytes), ManifestID: m.ID, DeclaredAuthor: m.Author, DeclaredModelDigest: m.ModelDigest, CurrentModelDigest: current, DeclaredSuiteSHA256: m.SuiteSourceSHA256, ObservedSuiteSHA256: observed, SuiteModelDigest: suiteModel, CompiledModelDigest: runnerDigest, ModelBinding: binding(m.ModelDigest, current), SuiteBinding: binding(m.SuiteSourceSHA256, observed), SuiteModelBinding: binding(suiteModel, m.ModelDigest), RunnerBinding: binding(current, runnerDigest), SuiteValidation: "not-checked", Replay: "not-run"}
 	if r.ModelBinding != "current" || r.SuiteBinding != "current" || r.SuiteModelBinding != "current" || r.RunnerBinding != "current" {
 		return r, nil
 	}
-	suite, e := scenarios.Decode(suiteBytes)
+	suite, e := runner.Decode(suiteBytes)
 	if e != nil {
 		return zero, ErrInvalid
 	}
@@ -139,18 +145,21 @@ func Check(manifestBytes, modelBytes, suiteBytes []byte, mode string) (Report, e
 			return zero, ErrInvalid
 		}
 	}
-	sd, e := scenarios.Digest(suite)
+	sd, e := runner.Digest(suite)
 	if e != nil {
 		return zero, ErrInvalid
 	}
 	r.ScenarioDigest = &sd
 	r.SuiteValidation = "valid"
 	if mode == "replay" {
-		observedReport, e := scenarios.Execute(suiteBytes)
+		observedReport, e := runner.Execute(suiteBytes)
 		if e != nil {
+			if providerErrors && errors.Is(e, scenarios.ErrProviderProtocol) {
+				return zero, e
+			}
 			return zero, ErrInvalid
 		}
-		b, e := scenarios.EncodeReport(observedReport)
+		b, e := runner.EncodeReport(observedReport)
 		if e != nil {
 			return zero, ErrInvalid
 		}

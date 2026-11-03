@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ea9033f42ca415ef81792e5aeb39e0ee939f1e04",
+  "id": "CF-pilot-testing-guide-v1",
+  "path": "tasks/CF-pilot-testing-guide-v1-operator-guide.md",
+  "blob": "dde2d7eadf6e1da8db6b52f88dde205fcbfd5e06",
+  "record": "---\nid: CF-pilot-testing-guide-v1\nstatus: in-progress\nowner: Lifecycle pilot testing guide\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Document how to test the lifecycle pilot\n\n## Implementation claim\n\nThe coordinating owner requested a repository guide to try the current small\nmodel-driven lifecycle pilot and understand its observable results. This\nsingle-writer documentation lane is based on reviewed main\n`81c6647b00c56cdb8341a160e4fc06faf4f8e55d`. The claim is a local proposal, not\na published reservation. The coordinating owner approved this scope after the\ncurrent open-PR and task/Project Memory checks; the existing pipeline introduction\nis historical and the open process-view lane is separate.\n\nExact scope: new `docs/model-driven-pilot-testing.md`, one discoverability link\nin `README.md`, this task record and new immutable Project Memory source/event\nfiles for this task. Do not change the compiler, generated artifacts, runtime,\nexisting tutorial, fixed rehearsals, other task records or prior evidence. The\nheld process-view artifact and other contributors' work remain out of scope.\n\nProvide executable commands and expected observations grounded in the merged\nimplementation. Separate fixed invented rehearsals from authoring a real design;\nreview preparation from separately authorized execution; generated structural\nchecks from independent behavioral expectations; and matching results from human\napproval or production readiness. State local toolchain and trusted-host limits,\nincluding that isolated temporary copies are not a security sandbox. Link to the\nexisting detailed references instead of replacing them.\n\n## Validation and handoff\n\nRun the documented local commands that the environment and authorization permit,\nreport actual observations and limits, and run repository and committed-diff\nProject Memory validation. Obtain a separate review of the guide where available.\nNormal branch publication and a draft PR are authorized; merge, deployment,\nworker activation and formal human approval are not part of this claim.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-pilot-testing-guide-v1-operator-guide.md",
+        "id": "CF-pilot-testing-guide-v1",
+        "blob": "dde2d7eadf6e1da8db6b52f88dde205fcbfd5e06",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

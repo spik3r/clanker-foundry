@@ -307,7 +307,7 @@ func TestFrozenAcceptanceKillsReducerMutations(t *testing.T) {
 	for _, mutation := range []string{"always-refuse", "G_reviewContent", "G_actor"} {
 		t.Run(mutation, func(t *testing.T) {
 			dir := t.TempDir()
-			files := map[string]string{"go.mod": "../go.mod", "model/ir.go": "../model/ir.go", "strictjson/decode.go": "../strictjson/decode.go", "scenarios/types.go": "types.go", "scenarios/decode.go": "decode.go", "scenarios/run.go": "run.go", "scenarioacceptance/oracle_test.go": "../scenarioacceptance/oracle_test.go", "scenarios/testdata/lifecycle-v1.json": "testdata/lifecycle-v1.json", "generated/lifecycle.go": "../generated/lifecycle.go"}
+			files := map[string]string{"go.mod": "../go.mod", "model/ir.go": "../model/ir.go", "strictjson/decode.go": "../strictjson/decode.go", "scenarios/types.go": "types.go", "scenarios/decode.go": "decode.go", "scenarios/run.go": "run.go", "scenarios/runner.go": "runner.go", "scenarioacceptance/oracle_test.go": "../scenarioacceptance/oracle_test.go", "scenarios/testdata/lifecycle-v1.json": "testdata/lifecycle-v1.json", "generated/lifecycle.go": "../generated/lifecycle.go"}
 			for dest, source := range files {
 				b, e := os.ReadFile(source)
 				if e != nil {

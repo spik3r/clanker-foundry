@@ -1,0 +1,699 @@
+{
+  "oracleVersion": "lifecycle-rehearsal-handoff-report-identities/v1",
+  "provenance": {
+    "authorship": "Separate contributor agent; not independent-person or human approval.",
+    "timing": "Predicted report objects and hashes frozen before handoff implementation; no reducer, compiler, modelplay, rehearsal or handoff execution used.",
+    "copied": "Commands, initial tasks and expected outcomes copied from separately frozen baseline/candidate suites and rehearsal expected.json; model/source identities cross-checked with those frozen literals.",
+    "reasoned": "Successful complete reports predicted, with input task progression explicitly specified for the two successful rework steps and unchanged task after refusal; all matched flags true and differences empty. No generated behavior used as oracle.",
+    "serialization": "Report DTO field order from scenarios/run.go; task/command/review/expected DTO order from scenarios/decode.go. Compact UTF-8 JSON, HTML escaping disabled, exactly one final LF. Ordinary modelplay report has no identitySource field. Null owner/review preserved; successful refusals and all differences are empty arrays, never null; task and command revisions remain decimal strings.",
+    "hashing": "Independent Python json serialization and hashlib.sha256; semantic suite digests exclude formatVersion and final LF; sourceDigest hashes exact original suite bytes including all whitespace.",
+    "limits": "Negative controls are a reasoned contract inventory. Numeric size/depth bounds remain for the implementing fixed-demo profile to declare and test; these records do not claim controls have run.",
+    "trust": "Reports are predicted assertions, not observations or authentication. Verifier only hash-matches report blobs against separately supplied caller assertions."
+  },
+  "baseline": {
+    "sha256": "e1ee93c1c52d9c327e8de39963f3a6e50cc7d28be1dddf4cdda464174fd59534",
+    "bytes": 2172,
+    "report": {
+      "formatVersion": "lifecycle-scenario-report/v1",
+      "scenarioVersion": "lifecycle-scenarios/v1",
+      "profileVersion": "lifecycle/v1",
+      "mode": "example-only",
+      "authority": "none",
+      "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+      "scenarioDigest": "d2877e1386e89b96415cabe6f1db8cd53eafc0b23d8420b4b6f15aa3bdac2a36",
+      "sourceDigest": "8ec1c9187d4f4083579165ab8976de4d0ad8a583f0a3b8fa33e400d345f2d5b7",
+      "matched": true,
+      "casesCompleted": 2,
+      "stepsExecuted": 2,
+      "entries": [
+        {
+          "caseId": "missing_owner_refuses",
+          "stepId": "prepare_refused",
+          "input": {
+            "id": "task-1",
+            "state": "Draft",
+            "revision": "0",
+            "outcome": "An invented outcome",
+            "acceptance": [
+              "An invented criterion"
+            ],
+            "owner": null
+          },
+          "command": {
+            "type": "prepare",
+            "actor": "owner-1",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": null
+            },
+            "refusals": []
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "named_owner_succeeds",
+          "stepId": "prepare_allowed",
+          "input": {
+            "id": "task-1",
+            "state": "Draft",
+            "revision": "0",
+            "outcome": "An invented outcome",
+            "acceptance": [
+              "An invented criterion"
+            ],
+            "owner": "owner-1"
+          },
+          "command": {
+            "type": "prepare",
+            "actor": "owner-1",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          },
+          "matched": true,
+          "differences": []
+        }
+      ]
+    }
+  },
+  "candidate": {
+    "sha256": "1868399a547aea237c101dc04c703fd6e89df15b1ff97ece721ddbf3f4f8f07f",
+    "bytes": 6517,
+    "report": {
+      "formatVersion": "lifecycle-scenario-report/v1",
+      "scenarioVersion": "lifecycle-scenarios/v1",
+      "profileVersion": "lifecycle/v1",
+      "mode": "example-only",
+      "authority": "none",
+      "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+      "scenarioDigest": "7a50d74f611ddf854504eceaa34d85a42bb5e56777b80ab84332921d167f3975",
+      "sourceDigest": "53b5ceec6b68719243853dae5285c13d5c25df89cb203a16279f3cacd2f989f1",
+      "matched": true,
+      "casesCompleted": 4,
+      "stepsExecuted": 6,
+      "entries": [
+        {
+          "caseId": "missing_owner_refuses",
+          "stepId": "prepare_refused",
+          "input": {
+            "id": "task-1",
+            "state": "Draft",
+            "revision": "0",
+            "outcome": "An invented outcome",
+            "acceptance": [
+              "An invented criterion"
+            ],
+            "owner": null
+          },
+          "command": {
+            "type": "prepare",
+            "actor": "owner-1",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Draft",
+              "revision": "0",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_owner"
+            ]
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": false,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Draft",
+              "revision": "0",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": null
+            },
+            "refusals": [
+              "G_owner"
+            ]
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "named_owner_succeeds",
+          "stepId": "prepare_allowed",
+          "input": {
+            "id": "task-1",
+            "state": "Draft",
+            "revision": "0",
+            "outcome": "An invented outcome",
+            "acceptance": [
+              "An invented criterion"
+            ],
+            "owner": "owner-1"
+          },
+          "command": {
+            "type": "prepare",
+            "actor": "owner-1",
+            "expectedRevision": "0",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": true,
+            "transitionId": "T_prepare",
+            "task": {
+              "id": "task-1",
+              "state": "Ready",
+              "revision": "1",
+              "outcome": "An invented outcome",
+              "acceptance": [
+                "An invented criterion"
+              ],
+              "owner": "owner-1"
+            },
+            "refusals": []
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "rework_replay",
+          "stepId": "request_changes",
+          "input": {
+            "id": "review-example",
+            "state": "InReview",
+            "revision": "3",
+            "outcome": "Deliver an example",
+            "acceptance": [
+              "First criterion"
+            ],
+            "owner": "worker"
+          },
+          "command": {
+            "type": "requestChanges",
+            "actor": "observer",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "review-example",
+              "taskRevision": "3",
+              "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+              "taskDigest": "29b49f551bf9020677e1e306946a40530bd9d40b45f0be31ae81bb89d800b300",
+              "reviewer": "observer",
+              "decision": "changesRequested"
+            }
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_requestChanges",
+            "task": {
+              "id": "review-example",
+              "state": "InProgress",
+              "revision": "4",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": []
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": true,
+            "transitionId": "T_requestChanges",
+            "task": {
+              "id": "review-example",
+              "state": "InProgress",
+              "revision": "4",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": []
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "rework_replay",
+          "stepId": "resubmit",
+          "input": {
+            "id": "review-example",
+            "state": "InProgress",
+            "revision": "4",
+            "outcome": "Deliver an example",
+            "acceptance": [
+              "First criterion"
+            ],
+            "owner": "worker"
+          },
+          "command": {
+            "type": "requestReview",
+            "actor": "worker",
+            "expectedRevision": "4",
+            "review": null
+          },
+          "expected": {
+            "ok": true,
+            "transitionId": "T_requestReview",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": []
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": true,
+            "transitionId": "T_requestReview",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": []
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "rework_replay",
+          "stepId": "stale_review",
+          "input": {
+            "id": "review-example",
+            "state": "InReview",
+            "revision": "5",
+            "outcome": "Deliver an example",
+            "acceptance": [
+              "First criterion"
+            ],
+            "owner": "worker"
+          },
+          "command": {
+            "type": "approve",
+            "actor": "observer",
+            "expectedRevision": "5",
+            "review": {
+              "taskId": "review-example",
+              "taskRevision": "3",
+              "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+              "taskDigest": "29b49f551bf9020677e1e306946a40530bd9d40b45f0be31ae81bb89d800b300",
+              "reviewer": "observer",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ]
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "5",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "First criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": [
+              "G_reviewContent",
+              "G_reviewRevision"
+            ]
+          },
+          "matched": true,
+          "differences": []
+        },
+        {
+          "caseId": "content_mismatch",
+          "stepId": "approve",
+          "input": {
+            "id": "review-example",
+            "state": "InReview",
+            "revision": "3",
+            "outcome": "Deliver an example",
+            "acceptance": [
+              "Revised criterion"
+            ],
+            "owner": "worker"
+          },
+          "command": {
+            "type": "approve",
+            "actor": "observer",
+            "expectedRevision": "3",
+            "review": {
+              "taskId": "review-example",
+              "taskRevision": "3",
+              "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+              "taskDigest": "29b49f551bf9020677e1e306946a40530bd9d40b45f0be31ae81bb89d800b300",
+              "reviewer": "observer",
+              "decision": "approved"
+            }
+          },
+          "expected": {
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "3",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "Revised criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": [
+              "G_reviewContent"
+            ]
+          },
+          "actual": {
+            "mode": "example-only",
+            "authority": "none",
+            "modelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+            "ok": false,
+            "transitionId": "T_approve",
+            "task": {
+              "id": "review-example",
+              "state": "InReview",
+              "revision": "3",
+              "outcome": "Deliver an example",
+              "acceptance": [
+                "Revised criterion"
+              ],
+              "owner": "worker"
+            },
+            "refusals": [
+              "G_reviewContent"
+            ]
+          },
+          "matched": true,
+          "differences": []
+        }
+      ]
+    }
+  },
+  "defaultSummarySHA256": "1cb15c2e56b6e67e5c813e65a551732bb7399813adb95030f47aba980a2d8a22",
+  "defaultSummaryProvenance": {
+    "kind": "historical-observed-output-compatibility-pin",
+    "receipt": "design-rehearsal-independent-review-20261102/final-controls.json",
+    "entry": "final-exact-program-independent-hash-audit",
+    "bytes": 1225,
+    "terminalLF": true,
+    "note": "Hash of prior #43 receipt stdout exact UTF-8 bytes. Not independently predicted behavior, not newly executed, and not a modelplay report."
+  },
+  "negativeControls": [
+    {
+      "id": "valid_frozen_handoff",
+      "mutation": "Original fixed fixtures/archive/generated members, predicted reports and separately supplied matching references.",
+      "expected": "accept",
+      "boundary": "Deterministic canonical carrier and consistency receipt only."
+    },
+    {
+      "id": "tampered_baseline_report",
+      "mutation": "Change one baseline report byte, keep separate frozen report reference.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "tampered_candidate_report",
+      "mutation": "Change one candidate report byte, keep separate frozen report reference.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "tampered_archive",
+      "mutation": "Change archive bytes without valid nested consistency.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "tampered_generated_reducer",
+      "mutation": "Change carried Go reducer bytes while archive member is unchanged.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "tampered_generated_test",
+      "mutation": "Change carried structural-test bytes while archive member is unchanged.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "changed_external_reference",
+      "mutation": "Change one valid lowercase digest in separate references, keep original carrier.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "malformed_external_reference",
+      "mutation": "Use uppercase, nonhex, wrong-length, empty or missing required digest.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "carrier_reference_substitution",
+      "mutation": "Try to satisfy an external reference using a replacement asserted inside the carrier.",
+      "expected": "reject",
+      "boundary": "Carrier assertions do not replace caller references."
+    },
+    {
+      "id": "changed_request",
+      "mutation": "Change carried patch bytes while verified archive request is unchanged.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "changed_candidate_suite",
+      "mutation": "Change carried candidate suite bytes while verified archive suite is unchanged.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "stale_baseline_updated_hash",
+      "mutation": "Replace baseline suite binding with candidate model identity and update only baseline suite byte-hash reference.",
+      "expected": "reject",
+      "boundary": "Actual before-model binding must still validate."
+    },
+    {
+      "id": "stale_candidate_updated_hash",
+      "mutation": "Replace candidate suite binding with before-model identity and update byte references.",
+      "expected": "reject",
+      "boundary": "Actual candidate-model binding and nested consistency remain required."
+    },
+    {
+      "id": "duplicate_fields",
+      "mutation": "Duplicate required JSON key at carrier/reference/request structural boundary.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "unknown_fields",
+      "mutation": "Add unknown JSON key at strict structural boundary.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "case_variant_fields",
+      "mutation": "Change required JSON key casing.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "noncanonical_json",
+      "mutation": "Supply valid but noncanonical carrier bytes: changed key order, whitespace or alternate escape encoding.",
+      "expected": "reject",
+      "boundary": "Canonical carrier byte identity must be enforced."
+    },
+    {
+      "id": "noncanonical_base64",
+      "mutation": "Supply unpadded, whitespace-bearing, URL alphabet or nonzero pad-bit base64 in carried bytes.",
+      "expected": "reject",
+      "boundary": "Canonical padded base64 required."
+    },
+    {
+      "id": "null_or_empty",
+      "mutation": "Supply null/empty carrier, required references, archive, source or generated artifact bytes.",
+      "expected": "reject",
+      "boundary": "No partial result; required content cannot disappear."
+    },
+    {
+      "id": "byte_limit",
+      "mutation": "Exceed declared per-member, total decoded or wrapper byte limit, including oversized encoded base64 before allocation.",
+      "expected": "reject",
+      "boundary": "Bound before bulk decode; no partial result."
+    },
+    {
+      "id": "depth_limit",
+      "mutation": "Exceed declared strict JSON nesting depth.",
+      "expected": "reject",
+      "boundary": "No partial result."
+    },
+    {
+      "id": "input_nonmutation",
+      "mutation": "Build/Verify valid inputs, then compare all caller-owned bytes to their prior snapshots.",
+      "expected": "unchanged",
+      "boundary": "Calls never mutate input bytes."
+    },
+    {
+      "id": "output_no_alias",
+      "mutation": "Mutate successful output slices and separately mutate original input storage after return.",
+      "expected": "isolated",
+      "boundary": "Returned mutable data and retained input bytes do not alias."
+    },
+    {
+      "id": "failure_no_partial",
+      "mutation": "Exercise every rejection case.",
+      "expected": "empty-result",
+      "boundary": "No partial carrier/receipt accompanies an error."
+    },
+    {
+      "id": "deterministic_repeat",
+      "mutation": "Build twice from byte-identical fixed inputs and references.",
+      "expected": "identical-bytes",
+      "boundary": "No time/random/environment-derived carrier fields."
+    },
+    {
+      "id": "opaque_report_boundary",
+      "mutation": "Replace a report with nonempty bounded opaque bytes and separately supply their matching valid hash, preserving all other validated evidence.",
+      "expected": "hash-match-only",
+      "boundary": "Verifier does not parse reports or claim semantic validity/execution; this is not approval."
+    },
+    {
+      "id": "default_stdout_compatibility",
+      "mutation": "Run existing normal demo mode after future implementation.",
+      "expected": "historical-hash-match",
+      "boundary": "Compare to separate historical defaultSummarySHA256, not a predicted execution oracle."
+    }
+  ]
+}

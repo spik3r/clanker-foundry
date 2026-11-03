@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "e6538bb9-45e2-48a9-92c0-9bfed1cac508",
+  "runId": "0dd67226-8e98-404e-a04c-b1399f1a6d37",
+  "kind": "complete",
+  "parents": [
+    "2109357d-b5ef-4dfb-8065-71da0b524aa6"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-input-parity-v1",
+    "path": "tasks/CF-provider-input-parity-v1-transport.md",
+    "revision": "b9bd51d763a20d30ba01cce4813a01f95a530506",
+    "blob": "25b6d8a896d21d4244c18ef063da6fb074b4bf2b",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "e23ebc98b35c17c9fcb0bb846a8e818a9f30765975d6f02bd0bd447d52bb714a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-input-parity-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T06:39:45.180Z",
+  "summary": "Offline provider parity tests and context portability guide completed; independently reviewed exact candidate b7e92b0 with frozen oracle preserved",
+  "next": "Validate committed lifecycle, then coordinator review of any permitted publication; no live providers or deployment",
+  "files": [
+    "tasks/CF-provider-input-parity-v1-transport.md",
+    "runtime/test/provider-input-parity.test.mjs",
+    "docs/agent-context-portability.md"
+  ],
+  "validation": "Node 24.11.1 targeted provider and parity tests 36 passed; full runtime npm test passed 193 after approved escalation using unchanged host cache; offline npm ci and scripts/validate.sh passed, optional skills-ref absent. Separate npm pack dry run previously failed EPERM and was not retried; existing full-suite packed-consumer test passed. Independent source review reported 36 tests and two killed mutants on Node 24.22.1; hosted CI unverified.",
+  "snapshot": {
+    "tasks/CF-provider-input-parity-v1-transport.md": {
+      "blob": "25b6d8a896d21d4244c18ef063da6fb074b4bf2b",
+      "mode": "100644"
+    },
+    "runtime/test/provider-input-parity.test.mjs": {
+      "blob": "e7024f2794d969feaea9f1e9e8bbddf9b696df70",
+      "mode": "100644"
+    },
+    "docs/agent-context-portability.md": {
+      "blob": "d5a5111b0eaa11f7e40f88a9f6dd0f9ed209213c",
+      "mode": "100644"
+    }
+  }
+}

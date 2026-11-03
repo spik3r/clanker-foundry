@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f960d05c-5572-4c41-99a0-e804aee8dde7",
+  "runId": "70230095-a643-4d6f-98b3-d3ef670402d2",
+  "kind": "abandon",
+  "parents": [
+    "f8184446-ec27-4195-9ce5-659ae63abb8e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-trace-dispatch-v1",
+    "path": "tasks/CF-orchestration-trace-dispatch-v1-observation.md",
+    "revision": "aafe21af15d6f26ed5036851b2796fbd875f7e09",
+    "blob": "d3aabeca606ed966f43762ec29fb21b24ba6df8c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c290669ce5f72f14f552e283726d9169d16e1547d543b52fa98d7cf007371e06"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "main",
+  "pullRequest": null,
+  "at": "2026-11-03T20:35:07.596Z",
+  "summary": "Closeout start ran in main checkout before any implementation edits; preserve record and restart in isolated branch",
+  "next": "Start isolated closeout run",
+  "files": [
+    "tasks/CF-orchestration-trace-dispatch-v1-observation.md"
+  ]
+}

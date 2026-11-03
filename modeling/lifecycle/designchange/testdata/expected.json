@@ -1,0 +1,49 @@
+{
+  "externalExpected": {
+    "RequestSHA256": "f3a14ba6adfd54832d810e26dccfc929e5fa61801990fa7c52436ec51eaacde0",
+    "BeforeSourceSHA256": "95b17eb3e2ef78a9485b40076c0b085e5e542e8fa3db827ea99345abe6077e26",
+    "BeforeModelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+    "CandidateSHA256": "22e6ee6f5208b124bcebffe2ac8608920a74cd34c0eeefe8ab8519b2523ea8c6",
+    "CandidateModelDigest": "a9ad2dfb926a24a026c8565f0d929a5b803bec43f6eb7342e196830791eccc7c",
+    "SuiteSHA256": "53b5ceec6b68719243853dae5285c13d5c25df89cb203a16279f3cacd2f989f1"
+  },
+  "rawCandidateReferenceSHA256": "9674eb213352232f354c2c338709baf6a3230a599ef89845e1cfac5525d4c6e1",
+  "outerInventory": [
+    "GUIDE.txt",
+    "before.json",
+    "candidate.json",
+    "change-request.json",
+    "design-change.json",
+    "planner-result.json",
+    "qualification.zip"
+  ],
+  "changes": [
+    {
+      "kind": "transition",
+      "id": "T_prepare",
+      "type": "modified",
+      "fields": [
+        "guards"
+      ]
+    }
+  ],
+  "linkedTransitions": [
+    {
+      "side": "before",
+      "transitionId": "T_prepare",
+      "causes": [
+        "transition:T_prepare"
+      ]
+    },
+    {
+      "side": "after",
+      "transitionId": "T_prepare",
+      "causes": [
+        "transition:T_prepare"
+      ]
+    }
+  ],
+  "bindings": [],
+  "suiteStatus": "unvalidated and unexecuted",
+  "suiteBindingStatus": "not inspected"
+}

@@ -1,0 +1,113 @@
+{
+  "formatVersion": "lifecycle-requirements-json/v1",
+  "modelId": "Flow",
+  "acceptanceCatalog": "lifecycle-semantic-oracle-v2",
+  "requirements": [
+    {
+      "id": "UR-005",
+      "title": "Added declaration",
+      "statement": "This declaration was added.",
+      "modelLinks": [
+        {
+          "kind": "modelRequirement",
+          "id": "Rx"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "case-2"
+        }
+      ]
+    },
+    {
+      "id": "UR-001",
+      "title": "Go declaration",
+      "statement": "Track the go transition.",
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "Tgo"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "case-1"
+        }
+      ]
+    },
+    {
+      "id": "UR-002",
+      "title": "Direct guards",
+      "statement": "Track a guard and model requirement.",
+      "modelLinks": [
+        {
+          "kind": "guard",
+          "id": "Gy"
+        },
+        {
+          "kind": "modelRequirement",
+          "id": "Rx"
+        }
+      ],
+      "acceptanceLinks": []
+    },
+    {
+      "id": "UR-003",
+      "title": "Revised finish declaration",
+      "statement": "Track a changing declared link.",
+      "modelLinks": [
+        {
+          "kind": "guard",
+          "id": "Gx"
+        }
+      ],
+      "acceptanceLinks": [
+        {
+          "caseId": "case-2"
+        }
+      ]
+    },
+    {
+      "id": "UR-006",
+      "title": "Stable missing links",
+      "statement": "This declaration deliberately has no links.",
+      "modelLinks": [],
+      "acceptanceLinks": []
+    },
+    {
+      "id": "UR-007",
+      "title": "Added case link",
+      "statement": "A case link will be declared later.",
+      "modelLinks": [],
+      "acceptanceLinks": [
+        {
+          "caseId": "case-2"
+        }
+      ]
+    },
+    {
+      "id": "UR-008",
+      "title": "State declaration",
+      "statement": "Track the ready state.",
+      "modelLinks": [
+        {
+          "kind": "state",
+          "id": "Ready"
+        }
+      ],
+      "acceptanceLinks": []
+    },
+    {
+      "id": "UR-009",
+      "title": "Added transition link",
+      "statement": "Track a newly declared finish link.",
+      "modelLinks": [
+        {
+          "kind": "transition",
+          "id": "Tfinish"
+        }
+      ],
+      "acceptanceLinks": []
+    }
+  ]
+}

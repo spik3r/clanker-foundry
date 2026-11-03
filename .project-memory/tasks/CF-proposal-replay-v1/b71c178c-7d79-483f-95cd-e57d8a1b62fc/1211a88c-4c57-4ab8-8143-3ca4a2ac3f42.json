@@ -1,0 +1,46 @@
+{
+  "formatVersion": 2,
+  "eventId": "1211a88c-4c57-4ab8-8143-3ca4a2ac3f42",
+  "runId": "b71c178c-7d79-483f-95cd-e57d8a1b62fc",
+  "kind": "checkpoint",
+  "parents": [
+    "9aaa1258-c1ea-4ea7-8461-0781bffbdc79"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-proposal-replay-v1",
+    "path": "tasks/CF-proposal-replay-v1-authorized-bridge.md",
+    "revision": "3d3193b08a0f1fb2cfd409f699f98745ab2f5b82",
+    "blob": "40bbedd0a9ada747833e8ed876418c196e4f1094",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "39a7eb3a9b57572da978948895012fe7da133839e4268f4b7ab82acec6736a69"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/proposal-replay-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T19:05:04.419Z",
+  "summary": "Independent author froze eight literal files before bridge logic; mechanically materialized exact bytes in 0f9d553. Actual custom A/B candidate reports, repeatability, two compiling behavior mutants, changed-expectation and boundary tests pass; repository validator passes. Aggregate and independent exact-source review remain pending. Optional oracle_test.go was not authored and is removed from planned scope.",
+  "next": "Finish serial aggregate qualification and independent exact-source/invocation review; keep local only",
+  "files": [
+    "modeling/lifecycle/proposalreplay/README.md",
+    "modeling/lifecycle/proposalreplay/replay.go",
+    "modeling/lifecycle/proposalreplay/host.go",
+    "modeling/lifecycle/proposalreplay/replay_test.go",
+    "modeling/lifecycle/proposalreplay/host_test.go",
+    "modeling/lifecycle/proposalreplay/testdata/model-a.json",
+    "modeling/lifecycle/proposalreplay/testdata/suite-a.json",
+    "modeling/lifecycle/proposalreplay/testdata/manifest-a.json",
+    "modeling/lifecycle/proposalreplay/testdata/model-b.json",
+    "modeling/lifecycle/proposalreplay/testdata/suite-b.json",
+    "modeling/lifecycle/proposalreplay/testdata/manifest-b.json",
+    "modeling/lifecycle/proposalreplay/testdata/expected.json",
+    "modeling/lifecycle/proposalreplay/testdata/README.md",
+    "modeling/lifecycle/cmd/modelproposal/main.go",
+    "modeling/lifecycle/cmd/modelproposal/main_test.go",
+    "skills/model-driven-design/references/foundry-handoff.md",
+    "tasks/CF-proposal-replay-v1-authorized-bridge.md"
+  ]
+}

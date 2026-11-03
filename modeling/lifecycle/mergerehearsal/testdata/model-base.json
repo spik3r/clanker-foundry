@@ -1,0 +1,116 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "ParcelDispatchMerge",
+  "initial": "Raw",
+  "states": [
+    {
+      "id": "Dispatched",
+      "label": "Dispatched",
+      "terminal": true
+    },
+    {
+      "id": "Packed",
+      "label": "Packed",
+      "terminal": false
+    },
+    {
+      "id": "Raw",
+      "label": "Raw",
+      "terminal": false
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R_dispatchActor",
+      "text": "The dispatch actor satisfies the reviewed dispatch rule."
+    },
+    {
+      "id": "R_packActor",
+      "text": "The pack actor satisfies the reviewed pack rule."
+    },
+    {
+      "id": "R_revision",
+      "text": "The command names the current parcel revision."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G_dispatchActor",
+      "requirement": "R_dispatchActor",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "command.actor"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_packActor",
+      "requirement": "R_packActor",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "command.actor"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_revision",
+      "requirement": "R_revision",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "command.expectedRevision"
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T_dispatch",
+      "from": "Packed",
+      "trigger": "dispatchParcel",
+      "to": "Dispatched",
+      "guards": [
+        "G_dispatchActor",
+        "G_revision"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_pack",
+      "from": "Raw",
+      "trigger": "packParcel",
+      "to": "Packed",
+      "guards": [
+        "G_packActor",
+        "G_revision"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "e3b74aa0-8857-4eb6-b8b7-7a964e77fa45",
+  "runId": "8a0ba299-8f6d-4bc6-8218-4a951614d531",
+  "kind": "complete",
+  "parents": [
+    "acdac6c8-e3da-43cf-8040-9c4b9d26c9b0"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-three-way-merge-v1",
+    "path": "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "revision": "7e580a426b905a6707b727986dce52159068cb22",
+    "blob": "d1df764160a8f30c104fb0b73df4cf425239ae37",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fc16ce75ce08e351d95b1d47554d3cb596b0a70ff5fc8a5d9586a6ff6f34bd31"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-three-way-merge-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T09:35:24.445Z",
+  "summary": "Clarified modelmerge no-execution boundary versus disposable existing regression execution; source and frozen oracle unchanged",
+  "next": "Verify committed lifecycle and local bundle; hand unpushed result to coordinator",
+  "files": [
+    "tasks/CF-model-three-way-merge-v1-concurrent-designs.md",
+    "modeling/lifecycle/modelmerge/types.go",
+    "modeling/lifecycle/modelmerge/merge.go",
+    "modeling/lifecycle/modelmerge/decode.go",
+    "modeling/lifecycle/modelmerge/merge_test.go",
+    "modeling/lifecycle/modelmerge/decode_test.go",
+    "modeling/lifecycle/modelmerge/oracle_test.go",
+    "modeling/lifecycle/modelmerge/README.md",
+    "modeling/lifecycle/cmd/modelmerge/main.go",
+    "modeling/lifecycle/cmd/modelmerge/main_test.go"
+  ],
+  "validation": "Repository validator and whitespace checks pass after wording correction; exact production/tests/README bytes remain identical to independently reviewed d8dde751 and its passing full branch/current-main union race/vet/drift checks. No implementation or test expectation changed; skills-ref remains unavailable.",
+  "snapshot": {
+    "tasks/CF-model-three-way-merge-v1-concurrent-designs.md": {
+      "blob": "54ebf9d54ebd899a7585a77fbe91d8221d2fed06",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/types.go": {
+      "blob": "b3914cc1802327f8f31b4ddd1f65699fc552cb2c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/merge.go": {
+      "blob": "71b167ae3ff05f8568101d635ad38d20fabcd941",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/decode.go": {
+      "blob": "165636aae634dd056ee6bce0b71ceb2a8c42a5ef",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/merge_test.go": {
+      "blob": "f479d8b387756903b3acfa350869295be70797a0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/decode_test.go": {
+      "blob": "3867b75844e71f3d4fea697481ce36bee5c9a36e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/oracle_test.go": {
+      "blob": "b1b2c368af36946ecdac9ebc18913f4763bfe908",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/modelmerge/README.md": {
+      "blob": "bdc8e158ce8a7668520d6091c685e027a3914699",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmerge/main.go": {
+      "blob": "aca353ce47e8cbfa95226bbd32e274588ad2dc07",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmerge/main_test.go": {
+      "blob": "908197dbd605e05f7dc845bb57949b82c919f7bb",
+      "mode": "100644"
+    }
+  }
+}

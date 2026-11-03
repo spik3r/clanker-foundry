@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "a8f6ba84-9416-4967-b650-cd15212743ba",
+  "runId": "54b3f417-74ab-443b-8637-cfe259c69000",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-trace-dispatch-v1",
+    "path": "tasks/CF-orchestration-trace-dispatch-v1-observation.md",
+    "revision": "aafe21af15d6f26ed5036851b2796fbd875f7e09",
+    "blob": "d3aabeca606ed966f43762ec29fb21b24ba6df8c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c290669ce5f72f14f552e283726d9169d16e1547d543b52fa98d7cf007371e06"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-trace-dispatch-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/53",
+  "at": "2026-11-03T20:22:17.562Z",
+  "summary": "Extend partial trace through pure assignment acknowledgment and submission",
+  "next": "Freeze independently authored literals then implement trace and validate",
+  "files": [
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/dispatch-oracle.json",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-trace-dispatch-v1-observation.md"
+  ]
+}

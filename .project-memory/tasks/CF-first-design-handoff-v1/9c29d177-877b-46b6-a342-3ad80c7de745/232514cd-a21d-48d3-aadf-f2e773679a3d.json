@@ -1,0 +1,107 @@
+{
+  "formatVersion": 2,
+  "eventId": "232514cd-a21d-48d3-aadf-f2e773679a3d",
+  "runId": "9c29d177-877b-46b6-a342-3ad80c7de745",
+  "kind": "complete",
+  "parents": [
+    "7d722899-ec57-4a2f-b5c1-517e8cab0e0f"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-first-design-handoff-v1",
+    "path": "tasks/CF-first-design-handoff-v1-human-model.md",
+    "revision": "c0d811e9983cee23c3243564e767afef8969add4",
+    "blob": "682e0dffcd5c6e39a46e11a872c695a94e22b6e4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ade45088078262cc0204fc9ca23fc356c52cf3a6724828932be1cfcbd1ea7a0b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/first-design-handoff-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T11:18:38.355Z",
+  "summary": "Local first-design skill and check-only integration complete; independent fixtures, forward tests and source review passed; installer qualification remains dependency-blocked",
+  "next": "Local handoff for coordinator review; preserve unverified installer check, obtain separate publication authority and refresh current main before any remote action",
+  "files": [
+    "README.md",
+    "skills/model-driven-design/SKILL.md",
+    "skills/model-driven-design/README.md",
+    "skills/model-driven-design/references/foundry-handoff.md",
+    "skills/model-driven-design/assets/design-brief.md",
+    "skills/model-driven-design/assets/review-handoff.md",
+    "skills/model-driven-design/examples/brief.md",
+    "skills/model-driven-design/examples/model.json",
+    "skills/model-driven-design/examples/suite.json",
+    "skills/model-driven-design/examples/manifest.json",
+    "skills/model-driven-design/examples/intake.json",
+    "skills/model-driven-design/examples/handoff.md",
+    "skills/model-driven-design/examples/inventory.json",
+    "modeling/lifecycle/authoringhandoff/handoff_test.go",
+    "tasks/CF-first-design-handoff-v1-human-model.md"
+  ],
+  "validation": "Go1.27.3 offline serial full-module race 57 packages PASS; vet and modelc validate/check PASS; targeted tests and five negative controls PASS; repository and skill validation PASS; Project Memory regressions 143 PASS; agent-model tests and shell fail-fast controls PASS. Two independent skill forward tests and exact source review PASS. Installer regression exited1: GNU Stow absent, unverified; optional skills-ref absent/skipped. No candidate scenario execution or visual approval claimed.",
+  "snapshot": {
+    "README.md": {
+      "blob": "56f269ec255cc27e5de65aada82829ba1c18ea43",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/SKILL.md": {
+      "blob": "fc6f1bf49e27a94a56c038904f428b373f1ef6af",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/README.md": {
+      "blob": "2ccf5f2d7ed2e3e43ea07d5720ee93966e315a9f",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/references/foundry-handoff.md": {
+      "blob": "7e395965aacc935a2ba755d787464ea6976cd5c8",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/assets/design-brief.md": {
+      "blob": "8f5ae6a837c505af8f727ed28cf18e02039bf7d0",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/assets/review-handoff.md": {
+      "blob": "a44f17dd3e550fc026a8401d5268577d835f84c3",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/brief.md": {
+      "blob": "a35e7e9a8a1dee264aa605a4549dfecb54baa521",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/model.json": {
+      "blob": "8d1de3264eb91e36d514a305f4651c28c4ce7bc0",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/suite.json": {
+      "blob": "50c3f8ed965687c1df8b5d2f6160f41e504a6839",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/manifest.json": {
+      "blob": "bcd0b8adb2b58da2eeb4e2939195b1e9971f98d2",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/intake.json": {
+      "blob": "f393109061829147379f4c09a7a405631827e56e",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/handoff.md": {
+      "blob": "cce1401155b52834466b227308bd7a4b2312bc36",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/examples/inventory.json": {
+      "blob": "af4884955bcdab012a26fd3398d4a3f69ad77e59",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/authoringhandoff/handoff_test.go": {
+      "blob": "e887bd0b23e31c60cc8955b95aac0c31ba76bead",
+      "mode": "100644"
+    },
+    "tasks/CF-first-design-handoff-v1-human-model.md": {
+      "blob": "cf5264380a92ef7ec9a7a149c7a55d388cf43dfe",
+      "mode": "100644"
+    }
+  }
+}

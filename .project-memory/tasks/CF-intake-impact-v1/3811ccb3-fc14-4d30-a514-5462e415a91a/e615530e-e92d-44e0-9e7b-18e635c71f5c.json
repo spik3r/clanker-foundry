@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "e615530e-e92d-44e0-9e7b-18e635c71f5c",
+  "runId": "3811ccb3-fc14-4d30-a514-5462e415a91a",
+  "kind": "checkpoint",
+  "parents": [
+    "c13dd897-c933-4830-9cb2-c71e1b3be17d"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-intake-impact-v1",
+    "path": "tasks/CF-intake-impact-v1-review.md",
+    "revision": "2692e4cc658f86862624ec0b3e6538a4d5e66d56",
+    "blob": "6dab910a18fb3fe7130e76e1c3fa31f2a64eaf8a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "debffa444f04f72e0e73c0985610d5b4764f8a6052db0649d37ffc0a3b304aa1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/intake-change-review",
+  "pullRequest": null,
+  "at": "2026-11-01T22:14:15.857Z",
+  "summary": "Implementation passed separate source review, 633 independent binary probes and six killed compiled mutation controls; frozen oracle unchanged",
+  "next": "Integrate current main without rewriting history, revalidate and complete evidence",
+  "files": [
+    "tasks/CF-intake-impact-v1-review.md",
+    "modeling/lifecycle/intakeimpact/compare.go",
+    "modeling/lifecycle/intakeimpact/README.md",
+    "modeling/lifecycle/intakeimpact/compare_external_test.go",
+    "modeling/lifecycle/intakeimpact/integration_test.go",
+    "modeling/lifecycle/intakeimpact/testdata/before.json",
+    "modeling/lifecycle/intakeimpact/testdata/after.json",
+    "modeling/lifecycle/intakeimpact/testdata/expected.json",
+    "modeling/lifecycle/cmd/modelintakediff/main.go",
+    "modeling/lifecycle/cmd/modelintakediff/main_test.go"
+  ]
+}

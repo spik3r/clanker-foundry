@@ -1,0 +1,741 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "PresenceWitness",
+  "initial": "Open",
+  "states": [
+    {
+      "id": "Open",
+      "label": "Open",
+      "terminal": false
+    },
+    {
+      "id": "Closed",
+      "label": "Closed",
+      "terminal": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R_ownerAbsent",
+      "text": "Owner absence differs from present empty ownership."
+    },
+    {
+      "id": "R_ownerEmpty",
+      "text": "An empty but present owner compares equal to the empty string."
+    },
+    {
+      "id": "R_ownerDifferent",
+      "text": "Only a present nonempty raw owner differs from empty."
+    },
+    {
+      "id": "R_ownerText",
+      "text": "Owner nonempty trims Unicode whitespace."
+    },
+    {
+      "id": "R_ownerReviewerEqual",
+      "text": "Both optional strings must be present and equal."
+    },
+    {
+      "id": "R_ownerReviewerDifferent",
+      "text": "Both optional strings must be present and different."
+    },
+    {
+      "id": "R_criteria",
+      "text": "An acceptance list must contain at least one item."
+    },
+    {
+      "id": "R_allSixteen",
+      "text": "Every one of sixteen exclusions must hold."
+    },
+    {
+      "id": "R_anySixteen",
+      "text": "Any one of sixteen alternatives suffices."
+    },
+    {
+      "id": "R_nested",
+      "text": "An absent owner or matching actor, together with a nonempty list, permits transition."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G_ownerAbsent",
+      "requirement": "R_ownerAbsent",
+      "expr": {
+        "op": "absent",
+        "args": [
+          {
+            "ref": "task.owner"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_ownerEmpty",
+      "requirement": "R_ownerEmpty",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.owner"
+          },
+          {
+            "string": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_ownerDifferent",
+      "requirement": "R_ownerDifferent",
+      "expr": {
+        "op": "ne",
+        "args": [
+          {
+            "ref": "task.owner"
+          },
+          {
+            "string": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_ownerText",
+      "requirement": "R_ownerText",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "task.owner"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_ownerReviewerEqual",
+      "requirement": "R_ownerReviewerEqual",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.owner"
+          },
+          {
+            "ref": "review.reviewer"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_ownerReviewerDifferent",
+      "requirement": "R_ownerReviewerDifferent",
+      "expr": {
+        "op": "ne",
+        "args": [
+          {
+            "ref": "task.owner"
+          },
+          {
+            "ref": "review.reviewer"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_criteria",
+      "requirement": "R_criteria",
+      "expr": {
+        "op": "nonempty",
+        "args": [
+          {
+            "ref": "task.acceptance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_allSixteen",
+      "requirement": "R_allSixteen",
+      "expr": {
+        "op": "all",
+        "args": [
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked00"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked01"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked02"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked03"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked04"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked05"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked06"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked07"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked08"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked09"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked10"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked11"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked12"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked13"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked14"
+              }
+            ]
+          },
+          {
+            "op": "ne",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "blocked15"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_anySixteen",
+      "requirement": "R_anySixteen",
+      "expr": {
+        "op": "any",
+        "args": [
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed00"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed01"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed02"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed03"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed04"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed05"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed06"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed07"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed08"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed09"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed10"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed11"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed12"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed13"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed14"
+              }
+            ]
+          },
+          {
+            "op": "eq",
+            "args": [
+              {
+                "ref": "task.id"
+              },
+              {
+                "string": "allowed15"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_nested",
+      "requirement": "R_nested",
+      "expr": {
+        "op": "all",
+        "args": [
+          {
+            "op": "any",
+            "args": [
+              {
+                "op": "absent",
+                "args": [
+                  {
+                    "ref": "task.owner"
+                  }
+                ]
+              },
+              {
+                "op": "eq",
+                "args": [
+                  {
+                    "ref": "task.owner"
+                  },
+                  {
+                    "ref": "command.actor"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "nonempty",
+            "args": [
+              {
+                "ref": "task.acceptance"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T_ownerAbsent",
+      "from": "Open",
+      "trigger": "ownerAbsent",
+      "to": "Closed",
+      "guards": [
+        "G_ownerAbsent"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_ownerEmpty",
+      "from": "Open",
+      "trigger": "ownerEmpty",
+      "to": "Closed",
+      "guards": [
+        "G_ownerEmpty"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_ownerDifferent",
+      "from": "Open",
+      "trigger": "ownerDifferent",
+      "to": "Closed",
+      "guards": [
+        "G_ownerDifferent"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_ownerText",
+      "from": "Open",
+      "trigger": "ownerText",
+      "to": "Closed",
+      "guards": [
+        "G_ownerText"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_ownerReviewerEqual",
+      "from": "Open",
+      "trigger": "ownerReviewerEqual",
+      "to": "Closed",
+      "guards": [
+        "G_ownerReviewerEqual"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_ownerReviewerDifferent",
+      "from": "Open",
+      "trigger": "ownerReviewerDifferent",
+      "to": "Closed",
+      "guards": [
+        "G_ownerReviewerDifferent"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_criteria",
+      "from": "Open",
+      "trigger": "criteria",
+      "to": "Closed",
+      "guards": [
+        "G_criteria"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_allSixteen",
+      "from": "Open",
+      "trigger": "allSixteen",
+      "to": "Closed",
+      "guards": [
+        "G_allSixteen"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_anySixteen",
+      "from": "Open",
+      "trigger": "anySixteen",
+      "to": "Closed",
+      "guards": [
+        "G_anySixteen"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_nested",
+      "from": "Open",
+      "trigger": "nested",
+      "to": "Closed",
+      "guards": [
+        "G_nested"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    }
+  ]
+}

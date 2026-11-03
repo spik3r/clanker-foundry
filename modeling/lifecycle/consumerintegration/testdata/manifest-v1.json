@@ -1,0 +1,38 @@
+{
+  "formatVersion": "lifecycle-acceptance-authoring/v1",
+  "id": "consumer_literals_v1",
+  "author": "separate assistant fixture author; not independent-person verification",
+  "purpose": "Freeze invented consumer candidate revision 1 outcomes before generated replay.",
+  "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+  "suiteSourceSha256": "4e8f8ca5d486b19ae9b0b43403a59ebc67d8c3308b6da1b56c9692dfd8f0dadd",
+  "cases": [
+    {
+      "id": "happy",
+      "intent": "Submit as maker, refuse self-review, accept a bound distinct review, and refuse a known command from terminal Accepted."
+    },
+    {
+      "id": "rework",
+      "intent": "Return the candidate for rework, resubmit, refuse the old review with a current command revision, then accept a fresh review."
+    },
+    {
+      "id": "actor_rule",
+      "intent": "The literal guest actor succeeds under revision 1 and is refused by G_submitActor under revision 2."
+    },
+    {
+      "id": "content_binding",
+      "intent": "Refuse an approval bound to old task content despite equal task and command revision."
+    },
+    {
+      "id": "model_binding",
+      "intent": "Refuse a review carrying the other model revision digest without treating it as the current model."
+    },
+    {
+      "id": "unknown_command",
+      "intent": "Unknown command input yields INVALID_INPUT with no task."
+    },
+    {
+      "id": "overflow",
+      "intent": "A valid submission at maximum uint64 revision refuses REVISION_LIMIT without mutation."
+    }
+  ]
+}

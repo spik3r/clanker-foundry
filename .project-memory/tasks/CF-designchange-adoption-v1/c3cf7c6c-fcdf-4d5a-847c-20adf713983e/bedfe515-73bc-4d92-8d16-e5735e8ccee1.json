@@ -1,0 +1,46 @@
+{
+  "formatVersion": 2,
+  "eventId": "bedfe515-73bc-4d92-8d16-e5735e8ccee1",
+  "runId": "c3cf7c6c-fcdf-4d5a-847c-20adf713983e",
+  "kind": "checkpoint",
+  "parents": [
+    "1f83d443-aac9-4fc5-937e-d0bbaf2ceff5"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-designchange-adoption-v1",
+    "path": "tasks/CF-designchange-adoption-v1-current-project.md",
+    "revision": "eebafa6a5b4c55b5ac67deb9da382df5bc25ae23",
+    "blob": "36ff4d8f3eda4e5b1fa05d7b60bdb4807f3340cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "78e6644153cb919a17ca237108ef8e0407a73210bb3040e9050c8f1ed8ca096d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/designchange-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T03:34:12.679Z",
+  "summary": "Independently authored current-closure oracle frozen unchanged at SHA256 bd2fc0dc90d6ca501da891c1b27f964e4aaa8bfe3cee5439c1a57bf0cb9538c8 before adopted mapping/profile logic; original three fixture hashes preserved and prior full candidate report separately retained before execution",
+  "next": "Copy original mapping and minimal archive profile delta; observe tests including real SIGPIPE regression before repair",
+  "files": [
+    "modeling/lifecycle/cmd/modeldesignchange/main.go",
+    "modeling/lifecycle/cmd/modeldesignchange/main_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/decode.go",
+    "modeling/lifecycle/designchange/designchange_test.go",
+    "modeling/lifecycle/designchange/testdata/expected.json",
+    "modeling/lifecycle/designchange/testdata/request.json",
+    "modeling/lifecycle/designchange/testdata/suite.json",
+    "modeling/lifecycle/designchange/types.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "tasks/CF-designchange-adoption-v1-current-project.md"
+  ]
+}

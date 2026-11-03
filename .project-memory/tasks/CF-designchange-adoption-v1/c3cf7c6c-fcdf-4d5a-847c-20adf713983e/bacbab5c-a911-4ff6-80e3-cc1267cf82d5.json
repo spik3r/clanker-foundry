@@ -1,0 +1,46 @@
+{
+  "formatVersion": 2,
+  "eventId": "bacbab5c-a911-4ff6-80e3-cc1267cf82d5",
+  "runId": "c3cf7c6c-fcdf-4d5a-847c-20adf713983e",
+  "kind": "checkpoint",
+  "parents": [
+    "46030ff5-dbac-4854-916b-7e21fb558892"
+  ],
+  "sequence": 4,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-designchange-adoption-v1",
+    "path": "tasks/CF-designchange-adoption-v1-current-project.md",
+    "revision": "eebafa6a5b4c55b5ac67deb9da382df5bc25ae23",
+    "blob": "36ff4d8f3eda4e5b1fa05d7b60bdb4807f3340cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "78e6644153cb919a17ca237108ef8e0407a73210bb3040e9050c8f1ed8ca096d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/designchange-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T03:37:16.245Z",
+  "summary": "Scoped SIGPIPE repair preserves original exit3 and both real closed-output regressions now pass under race. Full current Go race45packages, vet/format, corrected modelc/modeltrace drift, schema2/2 and repo checks pass. Actual documented export/verify deterministic nested project replay matches preexisting full4case/6step literal with unchanged payloads; mutation controls still running.",
+  "next": "Complete behavioral mutants and exact independent source/fixture/lifecycle review before completion",
+  "files": [
+    "modeling/lifecycle/cmd/modeldesignchange/main.go",
+    "modeling/lifecycle/cmd/modeldesignchange/main_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/decode.go",
+    "modeling/lifecycle/designchange/designchange_test.go",
+    "modeling/lifecycle/designchange/testdata/expected.json",
+    "modeling/lifecycle/designchange/testdata/request.json",
+    "modeling/lifecycle/designchange/testdata/suite.json",
+    "modeling/lifecycle/designchange/types.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "tasks/CF-designchange-adoption-v1-current-project.md"
+  ]
+}

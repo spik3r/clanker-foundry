@@ -1,0 +1,14 @@
+{
+  "formatVersion": "lifecycle-requirements-json/v1",
+  "modelId": "TaskLifecycleExample",
+  "acceptanceCatalog": "lifecycle-semantic-oracle-v2",
+  "requirements": [
+    {
+      "id": "UR-101",
+      "title": "Prepare a valid draft",
+      "statement": "Preparing a valid draft requires a nonblank actor and advances revision once.",
+      "modelLinks": [{"kind": "transition", "id": "T_prepare"}, {"kind": "guard", "id": "G_actor"}],
+      "acceptanceLinks": []
+    }
+  ]
+}

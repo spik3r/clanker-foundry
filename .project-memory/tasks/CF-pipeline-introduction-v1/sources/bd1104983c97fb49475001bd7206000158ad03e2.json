@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "bd1104983c97fb49475001bd7206000158ad03e2",
+  "id": "CF-pipeline-introduction-v1",
+  "path": "tasks/CF-pipeline-introduction-v1-friend-guide.md",
+  "blob": "5f0da703ede76411478a755af1fbe085e1af2c1e",
+  "record": "---\nid: CF-pipeline-introduction-v1\nstatus: in-progress\nowner: Astra pipeline introduction\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Explain the model-driven pipeline to a new reader\n\n## Implementation claim\n\nThe owner requested a README update linking to a new Markdown introduction for\nfriends: briefly explain the concepts, show the end goal, and include an analogy\nwith its own diagram. Astra owns this documentation-only lane on\n`astra/model-driven-pipeline-introduction`, based on reviewed main\n`2c23031f6fcfcab267828d072201abce504f613f`.\n\nExact scope: `README.md`, `docs/model-driven-pipeline.md`, this task record, and\nnew immutable Project Memory source/event files for this task. Preserve all\nexisting README guidance; add a short entry point and the missing modeling layout\nentry. Record a real start before drafting the introduction. This claim starts\nas a local committed source and is not represented as a published reservation.\n\nMain task records and open pull requests were inspected. The coordinating owner\nconfirmed that the separate process-view lane does not own these two documentation\npaths. That lane may add a BPMN-inspired view; do not implement or document it as\nmerged functionality. Do not edit held review-pack, model-patch, qualification,\nexport, downstream-handoff or intake-model bridge work. No generator, runtime,\nmodel, test, CI, existing task record or existing memory event is in scope.\n\nExplain motivation, requirements, the structured model, semantic validation,\ngeneration, independent acceptance, traceability, change impact and human/AI roles\nin plain language. Distinguish the merged example from the end-to-end aspiration.\nDeterminism means reproducibility, not correctness; independent checks remain\nnecessary. Use a short lifecycle example and accurate standards limitations.\n\n## Acceptance and handoff\n\nCheck factual claims against the pinned main source and relevant official\nstandards descriptions. Run `scripts/validate.sh`, whitespace checks, installer\nregressions and full committed-diff Project Memory validation. Inspect both\ndiagrams and all new links. Run the relevant existing lifecycle checks with the\npinned toolchain when available; report any unavailable check honestly.\n\nAim for one coherent draft pull request, subject to publication permission and\navailable authentication. Recheck actual main and overlap before publication;\nverify the exact remote head and CI separately from local checks. No formal\napproval, merge, deployment, managed dispatch, production integration or change to\nanother lane's scope is authorized by this claim.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-pipeline-introduction-v1-friend-guide.md",
+        "id": "CF-pipeline-introduction-v1",
+        "blob": "5f0da703ede76411478a755af1fbe085e1af2c1e",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

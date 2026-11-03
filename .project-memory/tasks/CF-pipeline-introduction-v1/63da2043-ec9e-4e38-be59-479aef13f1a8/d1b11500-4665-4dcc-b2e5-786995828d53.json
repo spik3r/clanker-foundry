@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "d1b11500-4665-4dcc-b2e5-786995828d53",
+  "runId": "63da2043-ec9e-4e38-be59-479aef13f1a8",
+  "kind": "complete",
+  "parents": [
+    "b4108cb2-3999-49d7-92be-bae6d52c36c1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pipeline-introduction-v1",
+    "path": "tasks/CF-pipeline-introduction-v1-friend-guide.md",
+    "revision": "bd1104983c97fb49475001bd7206000158ad03e2",
+    "blob": "5f0da703ede76411478a755af1fbe085e1af2c1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4de2ab9a0c071c1314253a042ba4261ebdf776bac72c6f767eaf24f5bf22b2e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/model-driven-pipeline-introduction",
+  "pullRequest": null,
+  "at": "2026-11-01T21:42:55.651Z",
+  "summary": "Added and independently checked the friend-facing pipeline guide and README entry point",
+  "next": "Validate the full committed diff, publish one draft PR if permitted and verify exact-head CI",
+  "files": [
+    "README.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-pipeline-introduction-v1-friend-guide.md"
+  ],
+  "validation": "PASS scripts/validate.sh (relative links included; optional skills-ref unavailable); PASS git diff --check and staged whitespace; PASS 143 Project Memory regression tests; PASS Go 1.27.3 offline go test ./... including tutorial; PASS modelc validate/check and modeltrace check; PASS frozen scenario replay, four cases and thirteen steps; PASS separate read-only fact/clarity review with both comments resolved. BLOCKED installer regression: GNU Stow missing. Hosted CI not yet run.",
+  "snapshot": {
+    "README.md": {
+      "blob": "60aebc01e5e06f389c8d7670645e506dff59a180",
+      "mode": "100644"
+    },
+    "docs/model-driven-pipeline.md": {
+      "blob": "37701f3c92fec3711982777d1fac663206b93c69",
+      "mode": "100644"
+    },
+    "tasks/CF-pipeline-introduction-v1-friend-guide.md": {
+      "blob": "68ce168d1b34a7a68726c94019654b654c55d4b2",
+      "mode": "100644"
+    }
+  }
+}

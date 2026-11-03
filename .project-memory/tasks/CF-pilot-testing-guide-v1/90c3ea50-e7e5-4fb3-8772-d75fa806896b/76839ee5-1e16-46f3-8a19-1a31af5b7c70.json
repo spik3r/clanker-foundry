@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "76839ee5-1e16-46f3-8a19-1a31af5b7c70",
+  "runId": "90c3ea50-e7e5-4fb3-8772-d75fa806896b",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pilot-testing-guide-v1",
+    "path": "tasks/CF-pilot-testing-guide-v1-operator-guide.md",
+    "revision": "ea9033f42ca415ef81792e5aeb39e0ee939f1e04",
+    "blob": "dde2d7eadf6e1da8db6b52f88dde205fcbfd5e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c2319305ddcd068a42ca3c35eea0eb6f76d8c5696adfc2f3ddfed35d35d7319d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-pilot-testing-guide-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T23:42:22.353Z",
+  "summary": "Document the current lifecycle pilot testing path and its limits",
+  "next": "Write and test the guide",
+  "files": [
+    "README.md,docs/model-driven-pilot-testing.md,tasks/CF-pilot-testing-guide-v1-operator-guide.md"
+  ]
+}

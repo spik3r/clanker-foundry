@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "2109357d-b5ef-4dfb-8065-71da0b524aa6",
+  "runId": "0dd67226-8e98-404e-a04c-b1399f1a6d37",
+  "kind": "checkpoint",
+  "parents": [
+    "4aca7f5e-bdb0-464c-b1c3-5cfad9a6710c"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-input-parity-v1",
+    "path": "tasks/CF-provider-input-parity-v1-transport.md",
+    "revision": "b9bd51d763a20d30ba01cce4813a01f95a530506",
+    "blob": "25b6d8a896d21d4244c18ef063da6fb074b4bf2b",
+    "claim": {
+      "heading": "Prospective implementation claim",
+      "digest": "e23ebc98b35c17c9fcb0bb846a8e818a9f30765975d6f02bd0bd447d52bb714a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-input-parity-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T06:32:19.242Z",
+  "summary": "Implemented frozen fake-only prompt byte comparisons and bounded portability guide. Node 24.11.1 targeted parity plus existing provider tests passed 36 tests; scripts/validate.sh passed with optional skills-ref absent. Offline npm ci succeeded. Full runtime suite and separate pack dry run encountered EPERM writing the host npm cache; no full pass claimed.",
+  "next": "Independent exact-source review and resolve npm cache permission blocker before completion or publication; no live provider or CLI invocation",
+  "files": [
+    "tasks/CF-provider-input-parity-v1-transport.md",
+    "runtime/test/provider-input-parity.test.mjs",
+    "docs/agent-context-portability.md"
+  ]
+}

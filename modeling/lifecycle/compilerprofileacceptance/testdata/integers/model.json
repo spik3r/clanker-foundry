@@ -1,0 +1,168 @@
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "IntegerWitness",
+  "initial": "Open",
+  "states": [
+    {
+      "id": "Open",
+      "label": "Open",
+      "terminal": false
+    },
+    {
+      "id": "Closed",
+      "label": "Closed",
+      "terminal": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R_advance",
+      "text": "Advance only when the command revision differs, without an implicit freshness rule."
+    },
+    {
+      "id": "R_match",
+      "text": "Match only equal unsigned command and task revisions."
+    },
+    {
+      "id": "R_reviewDifferent",
+      "text": "A present review revision must differ; an absent operand is not unequal."
+    },
+    {
+      "id": "R_reviewEqual",
+      "text": "A present review revision must equal; absent is distinct from present zero."
+    }
+  ],
+  "guards": [
+    {
+      "id": "G_advance",
+      "requirement": "R_advance",
+      "expr": {
+        "op": "ne",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "command.expectedRevision"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_match",
+      "requirement": "R_match",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "command.expectedRevision"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_reviewDifferent",
+      "requirement": "R_reviewDifferent",
+      "expr": {
+        "op": "ne",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "review.taskRevision"
+          }
+        ]
+      }
+    },
+    {
+      "id": "G_reviewEqual",
+      "requirement": "R_reviewEqual",
+      "expr": {
+        "op": "eq",
+        "args": [
+          {
+            "ref": "task.revision"
+          },
+          {
+            "ref": "review.taskRevision"
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "T_advance",
+      "from": "Open",
+      "trigger": "advance",
+      "to": "Closed",
+      "guards": [
+        "G_advance"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_match",
+      "from": "Open",
+      "trigger": "match",
+      "to": "Closed",
+      "guards": [
+        "G_match"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_reviewDifferent",
+      "from": "Open",
+      "trigger": "reviewDifferent",
+      "to": "Closed",
+      "guards": [
+        "G_reviewDifferent"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    },
+    {
+      "id": "T_reviewEqual",
+      "from": "Open",
+      "trigger": "reviewEqual",
+      "to": "Closed",
+      "guards": [
+        "G_reviewEqual"
+      ],
+      "effects": [
+        {
+          "op": "set_state"
+        },
+        {
+          "op": "increment_revision"
+        }
+      ]
+    }
+  ]
+}

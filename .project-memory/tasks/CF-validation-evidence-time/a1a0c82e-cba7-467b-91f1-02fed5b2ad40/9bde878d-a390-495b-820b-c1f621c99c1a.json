@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "9bde878d-a390-495b-820b-c1f621c99c1a",
+  "runId": "a1a0c82e-cba7-467b-91f1-02fed5b2ad40",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validation-evidence-time",
+    "path": "tasks/CF-validation-evidence-time-fix.md",
+    "revision": "638da7a672c60396608a59ea183ee8656e58d181",
+    "blob": "39091a47927e6d0d3f3f12d3302866a143be576a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b7aafc767649173cf0b2aa4bfcdd9f5d77d0f0002b22c76a34ad9f32983084c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validation-evidence-time",
+  "pullRequest": null,
+  "at": "2026-11-01T01:57:24.593Z",
+  "summary": "Correct the validation freshness lower bound and add bounded synthetic regressions.",
+  "next": "Record before-fix failures, implement the stable SUBMIT-time bound, and validate the declared scope.",
+  "files": [
+    "runtime/src/state.mjs",
+    "runtime/test/state.test.mjs",
+    "tasks/CF-validation-evidence-time-fix.md"
+  ]
+}

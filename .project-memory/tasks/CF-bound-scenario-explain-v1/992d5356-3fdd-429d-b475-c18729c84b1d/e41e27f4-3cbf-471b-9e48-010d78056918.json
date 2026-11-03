@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "e41e27f4-3cbf-471b-9e48-010d78056918",
+  "runId": "992d5356-3fdd-429d-b475-c18729c84b1d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-bound-scenario-explain-v1",
+    "path": "tasks/CF-bound-scenario-explain-v1-custom-model-review.md",
+    "revision": "6c21b426e2fdabdf2884ba176823ae693edc3b90",
+    "blob": "432b555a3b30f6a68fe8a95fc2f6b56aa7241f3d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8b8b29a70c72f5d35d3145cfaaa36bcb129fcaea2a5a7f5d5642020fa655d6fe"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/bound-explanation-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T05:13:03.414Z",
+  "summary": "Begin approved eight-path typed custom-model explanation after original producer and harness-owner clearance; preserve baseline behavior, private and held boundaries.",
+  "next": "Independently author and freeze public two-model expected projections and controls before shared mapper/API logic; no callback execution by explanation.",
+  "files": [
+    "modeling/lifecycle/scenarioexplain/explain.go",
+    "modeling/lifecycle/scenarioexplain/bound.go",
+    "modeling/lifecycle/scenarioexplain/bound_test.go",
+    "modeling/lifecycle/scenarioexplain/testdata/bound-vectors.json",
+    "modeling/lifecycle/scenarioexplain/CONTRACT.md",
+    "modeling/lifecycle/consumerintegration/consumer_test.go",
+    "modeling/lifecycle/consumerintegration/testdata/adapter.go.txt",
+    "modeling/lifecycle/consumerintegration/README.md",
+    "tasks/CF-bound-scenario-explain-v1-custom-model-review.md"
+  ]
+}

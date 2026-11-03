@@ -1,0 +1,87 @@
+{
+  "formatVersion": "consumer-integration-literals/v1",
+  "origin": "Literal transitions and refusals authored by a separate assistant before reducer or runner execution; not independent-person verification. Canonical model identities use existing strict IR tooling; other hashes use the documented JSON contracts.",
+  "versions": {
+    "v1": {
+      "modelDigest": "0452d91fbe29ce0c67defb93f05502db60580b2b6bcbeef5e622d4fdd90e881d",
+      "modelSourceSha256": "c87b17846d4d10fd3ba26ae5c9e0b16d890cce7590add912ce0b3b58975067b7",
+      "suiteSourceSha256": "4e8f8ca5d486b19ae9b0b43403a59ebc67d8c3308b6da1b56c9692dfd8f0dadd",
+      "scenarioDigest": "6b028428013837b29904d5e120478cbcf3fde9cba2db9185b42ba79f24200c0c",
+      "manifestSourceSha256": "a316a11093f6f55a6565598080bc7ae5d90177679c6e95842191487d63016406",
+      "caseCount": 7,
+      "stepCount": 14,
+      "matchedCount": 14,
+      "mismatchedCount": 0,
+      "successfulTransitions": 7,
+      "refusedSteps": 7,
+      "caseIds": [
+        "happy",
+        "rework",
+        "actor_rule",
+        "content_binding",
+        "model_binding",
+        "unknown_command",
+        "overflow"
+      ],
+      "reviewTaskDigests": {
+        "happy_self_review": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+        "happy_accept": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+        "rework_return": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+        "rework_stale_review": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+        "rework_fresh_review": "471b0c6f113086bc16a50a7428c178bb991b5cc054e4785f655f279bb8d7c3e2",
+        "content_stale_review": "55fb323190668dd5a9daaefd23ca2fb2e00a1da83c6a91f7f8c6136c913ef54f",
+        "model_foreign_review": "84a3eaeee655c0ff079c0fe56b0e265aab357ad264ad45ae40756a487f8620f9"
+      }
+    },
+    "v2": {
+      "modelDigest": "d3918794fe469ee1600f2a8ee67613a3bdd9a34ed22fe18995b75eb71c42ad85",
+      "modelSourceSha256": "d302465317fdd5fc6d89ed0e39aedaae0ed7ff69d263220b25a8637870ff3e4e",
+      "suiteSourceSha256": "8e8897ffd8b3fdfe00f48015eb72969825761cbe8eea0fe7bb487b5bf2e0163a",
+      "scenarioDigest": "6d8074d78c13c8be7ca32cd052a80e3b9b457707eddc7662623ff5c03cd5ce5b",
+      "manifestSourceSha256": "1c78d864a49aa0bcc680cdc99d7406bbb7cae1390cce8ad8342167129fd8ef15",
+      "caseCount": 7,
+      "stepCount": 14,
+      "matchedCount": 14,
+      "mismatchedCount": 0,
+      "successfulTransitions": 6,
+      "refusedSteps": 8,
+      "caseIds": [
+        "happy",
+        "rework",
+        "actor_rule",
+        "content_binding",
+        "model_binding",
+        "unknown_command",
+        "overflow"
+      ],
+      "reviewTaskDigests": {
+        "happy_self_review": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+        "happy_accept": "6ae7550262464178510c150dd6c9284094c2ba075ca489f4dfd60d74bd3b083f",
+        "rework_return": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+        "rework_stale_review": "f26b48cc973637620a2499512c6bb228a3a13950369b1fbbfaf3963f0c1ca46d",
+        "rework_fresh_review": "471b0c6f113086bc16a50a7428c178bb991b5cc054e4785f655f279bb8d7c3e2",
+        "content_stale_review": "55fb323190668dd5a9daaefd23ca2fb2e00a1da83c6a91f7f8c6136c913ef54f",
+        "model_foreign_review": "84a3eaeee655c0ff079c0fe56b0e265aab357ad264ad45ae40756a487f8620f9"
+      }
+    }
+  },
+  "changedModelElements": [
+    {
+      "kind": "guard",
+      "id": "G_submitActor"
+    },
+    {
+      "kind": "requirement",
+      "id": "R_submitActor"
+    }
+  ],
+  "crossBindingExpectations": {
+    "v1SuiteWithV2Runner": "refuse-before-callback",
+    "v2SuiteWithV1Runner": "refuse-before-callback",
+    "v1ManifestModelSuiteWithV2Runner": "stale-not-run",
+    "v2ManifestModelSuiteWithV1Runner": "stale-not-run",
+    "changedSuiteBytesWithFrozenManifest": "stale-not-run",
+    "checkOnlyCurrentBindings": "not-run-zero-callbacks"
+  },
+  "authority": "none"
+}

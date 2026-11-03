@@ -1,0 +1,63 @@
+{
+  "formatVersion": "lifecycle-intake-json/v1",
+  "intent": "Review a bounded queue.",
+  "decisions": [
+    {
+      "id": "D_add",
+      "text": "Keep refusals explicit.",
+      "rationale": "Do not silently retry."
+    },
+    {
+      "id": "D_keep",
+      "text": "Keep the original record.",
+      "rationale": "Audit it later."
+    },
+    {
+      "id": "D_edit",
+      "text": "Hold all rejected work.",
+      "rationale": "Keep the refusal evidence."
+    }
+  ],
+  "questions": [
+    {
+      "id": "Q_keep",
+      "text": "Who owns the review?"
+    },
+    {
+      "id": "Q_edit",
+      "text": "Which bounded queue is in scope?"
+    },
+    {
+      "id": "Q_add",
+      "text": "What remains unverified?"
+    },
+    {
+      "id": "D_move",
+      "text": "Who owns this decision?"
+    }
+  ],
+  "artifacts": {
+    "requirements": {
+      "sha256": "cb8379ac2098aa165029e3938a51da0bcecfc008fd6795f401178647f96c5b34",
+      "author": "replacement requirements author"
+    },
+    "model": {
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "author": "model author"
+    },
+    "scenarioSuite": {
+      "sha256": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "author": "suite author"
+    }
+  },
+  "dependencies": {
+    "modelRequirements": "cb8379ac2098aa165029e3938a51da0bcecfc008fd6795f401178647f96c5b34",
+    "suiteRequirements": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "suiteModel": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+  },
+  "observed": {
+    "requirements": "abc",
+    "model": "",
+    "scenarioSuite": "abc"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "formatVersion": 2,
+  "eventId": "08121c50-9063-42ff-b942-93cdd2af537c",
+  "runId": "c3cf7c6c-fcdf-4d5a-847c-20adf713983e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-designchange-adoption-v1",
+    "path": "tasks/CF-designchange-adoption-v1-current-project.md",
+    "revision": "eebafa6a5b4c55b5ac67deb9da382df5bc25ae23",
+    "blob": "36ff4d8f3eda4e5b1fa05d7b60bdb4807f3340cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "78e6644153cb919a17ca237108ef8e0407a73210bb3040e9050c8f1ed8ca096d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/designchange-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T03:31:59.459Z",
+  "summary": "Start reviewed fresh current-main design-change adoption; freeze original independent fixtures and separate current-closure expectations before mapping/profile changes",
+  "next": "Freeze independently authored expectations, adopt original source with narrow profile and CLI deltas, then qualify exact current tree",
+  "files": [
+    "modeling/lifecycle/cmd/modeldesignchange/main.go",
+    "modeling/lifecycle/cmd/modeldesignchange/main_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/decode.go",
+    "modeling/lifecycle/designchange/designchange_test.go",
+    "modeling/lifecycle/designchange/testdata/expected.json",
+    "modeling/lifecycle/designchange/testdata/request.json",
+    "modeling/lifecycle/designchange/testdata/suite.json",
+    "modeling/lifecycle/designchange/types.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/artifactbundle/types.go",
+    "modeling/lifecycle/artifactbundle/archive.go",
+    "modeling/lifecycle/artifactbundle/archive_test.go",
+    "modeling/lifecycle/artifactbundle/FORMAT.md",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "tasks/CF-designchange-adoption-v1-current-project.md"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "f1025232-3fa6-4583-afa4-2681f34e7d9e",
+  "runId": "346c4e98-2faa-41dc-8ef4-6d09648071d1",
+  "kind": "complete",
+  "parents": [
+    "4e9ff090-738b-42e3-8953-c6386a8b7dde"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-memory-graph-conformance-v1",
+    "path": "tasks/CF-memory-graph-conformance-v1-real-producer.md",
+    "revision": "014007c0bfddfb5e6446a8b3baee921fa8cf0a92",
+    "blob": "438a617f9ccfb9d16cbac03d372926b8564b5395",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0ebb387d4495b7d7bf53399eaf2aa0d2a04fd1771792a35595429f757f62fcc5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-memory-conformance-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T11:05:35.417Z",
+  "summary": "Added read-only declarative graph conformance over the unchanged real producer",
+  "next": "Validate committed full diff and clean bundle restore; report before draft publication, then verify exact-head hosted checks",
+  "files": [
+    "modeling/project-memory-conformance/README.md",
+    "modeling/project-memory-conformance/check.mjs",
+    "modeling/project-memory-conformance/coverage.json",
+    "modeling/project-memory-conformance/testdata/cases.json",
+    "modeling/project-memory-conformance/testdata/README.md",
+    "tests/project-memory-conformance.test.mjs",
+    ".github/workflows/project-memory-conformance.yml",
+    "tasks/CF-memory-graph-conformance-v1-real-producer.md"
+  ],
+  "validation": "Node24.22.1 final combined suites: 234 passed, zero failures/skips; focused 91 independently reproduced. Frozen 50-case corpus matched in 598 orders; 20 repeats identical. Independent source review and behavioral mutation controls passed. Repository validation, syntax and whitespace passed; optional skills-ref and local Stow unavailable. Hosted CI and final committed/restore checks not yet run.",
+  "snapshot": {
+    "modeling/project-memory-conformance/README.md": {
+      "blob": "5d9d2519a1aedc5d03af9b595858a9ac58c4e395",
+      "mode": "100644"
+    },
+    "modeling/project-memory-conformance/check.mjs": {
+      "blob": "6b16252d67dd505d4f7199306ebbaa91b5a6be00",
+      "mode": "100644"
+    },
+    "modeling/project-memory-conformance/coverage.json": {
+      "blob": "76a96ea82c3a99cdc9ea0ed3874999c88328c817",
+      "mode": "100644"
+    },
+    "modeling/project-memory-conformance/testdata/cases.json": {
+      "blob": "3ce31c085c6d811e1b2c21eaf5c7f4620b2c7271",
+      "mode": "100644"
+    },
+    "modeling/project-memory-conformance/testdata/README.md": {
+      "blob": "88d640b5d680ff15aab1f3a093893beccc5ac10d",
+      "mode": "100644"
+    },
+    "tests/project-memory-conformance.test.mjs": {
+      "blob": "20fe0c5903668f6d3c076f0121a60ff1f71ed831",
+      "mode": "100644"
+    },
+    ".github/workflows/project-memory-conformance.yml": {
+      "blob": "e4e796178bd79e0635bc83075fc1c5b471e73f24",
+      "mode": "100644"
+    },
+    "tasks/CF-memory-graph-conformance-v1-real-producer.md": {
+      "blob": "f77514b5fea49bc48076023b05b63bf6212ebf5f",
+      "mode": "100644"
+    }
+  }
+}

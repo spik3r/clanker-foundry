@@ -1,0 +1,48 @@
+{
+  "formatVersion": 2,
+  "eventId": "24b9ff5e-a87d-48de-ae3a-177ebe11083f",
+  "runId": "984b8361-78f2-4b1b-b64b-fa6a06906877",
+  "kind": "checkpoint",
+  "parents": [
+    "14283a39-20a1-4a2d-b5ff-fa60a4922367"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-profile-policy-adoption-v1",
+    "path": "tasks/CF-profile-policy-adoption-v1-profile-discovery.md",
+    "revision": "893c151b66e2719f1e0c8a6c9a20a01d993e0adf",
+    "blob": "8ea0e585a8a1569a3c5fa8064cc6290522f4520c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "decf5d777fdfaa33486c5cf2733214c0b5356394771aae26477598ee5390ee3a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/profile-policy-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-02T04:17:51.866Z",
+  "summary": "Original capability helper and tests, prelogic catalog types/vectors/tests and exact known public11source archive frozen before catalog mapping or exporter policy changes. This actual checkpoint will identify the12source policy; old11pins remain untouched pending independent current/legacy acceptance.",
+  "next": "Pin this committed capability checkpoint and freeze independently authored compatibility matrix before changed policy logic",
+  "files": [
+    "modeling/lifecycle/cmd/modelprofile/main.go",
+    "modeling/lifecycle/cmd/modelprofile/main_test.go",
+    "modeling/lifecycle/model/capabilities.go",
+    "modeling/lifecycle/model/capabilities_test.go",
+    "modeling/lifecycle/profilecatalog/README.md",
+    "modeling/lifecycle/profilecatalog/catalog.go",
+    "modeling/lifecycle/profilecatalog/catalog_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/catalog-vectors.json",
+    "modeling/lifecycle/profilecatalog/testdata/parity-vectors.json",
+    "modeling/lifecycle/profilecatalog/adoption_test.go",
+    "modeling/lifecycle/profilecatalog/testdata/public-11-source-project.zip",
+    "modeling/lifecycle/qualification/qualification.go",
+    "modeling/lifecycle/qualification/adoption_test.go",
+    "modeling/lifecycle/qualification/README.md",
+    "modeling/lifecycle/designchange/build.go",
+    "modeling/lifecycle/designchange/verify.go",
+    "modeling/lifecycle/designchange/adoption_test.go",
+    "modeling/lifecycle/designchange/CONTRACT.md",
+    "tasks/CF-profile-policy-adoption-v1-profile-discovery.md"
+  ]
+}

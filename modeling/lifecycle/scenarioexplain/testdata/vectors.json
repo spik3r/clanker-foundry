@@ -1,0 +1,2263 @@
+{
+  "format": "independent-report-explanation-vectors/v1",
+  "provenance": "Handwritten examples from reviewed contract and model declarations. Reports are fabricated assertions, not observed output.",
+  "baselineModelPath": "modeling/lifecycle/examples/lifecycle.json",
+  "baselineSourceSHA256": "a60916ca68771b28ee48712288decad7eb741d6a18e1cbc95b2a196eb10d12d8",
+  "baselineCanonicalDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+  "cases": [
+    {
+      "id": "fabricated_multiple",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "runtimeReason": "",
+              "guards": [
+                {
+                  "guardId": "G_outcome",
+                  "requirementId": "R_outcome",
+                  "requirementText": "An outcome is nonblank.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "nonempty",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.outcome",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                },
+                {
+                  "guardId": "G_revision",
+                  "requirementId": "R_revision",
+                  "requirementText": "Command matches the current revision.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "eq",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.revision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      },
+                      {
+                        "kind": "ref",
+                        "ref": "command.expectedRevision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "single_guard",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "G_outcome"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "G_outcome"
+              ],
+              "runtimeReason": "",
+              "guards": [
+                {
+                  "guardId": "G_outcome",
+                  "requirementId": "R_outcome",
+                  "requirementText": "An outcome is nonblank.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "nonempty",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.outcome",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fixed_invalid_input",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "",
+              "task": null,
+              "refusals": [
+                "INVALID_INPUT"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "",
+              "task": null,
+              "refusals": [
+                "INVALID_INPUT"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "",
+              "expectedRefusals": [
+                "INVALID_INPUT"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "",
+              "actualRefusals": [
+                "INVALID_INPUT"
+              ],
+              "runtimeReason": "INVALID_INPUT",
+              "guards": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fixed_illegal_transition",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Done",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Done",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "ILLEGAL_TRANSITION"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Done",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "ILLEGAL_TRANSITION"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "",
+              "expectedRefusals": [
+                "ILLEGAL_TRANSITION"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "",
+              "actualRefusals": [
+                "ILLEGAL_TRANSITION"
+              ],
+              "runtimeReason": "ILLEGAL_TRANSITION",
+              "guards": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fixed_revision_limit",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "18446744073709551615",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "18446744073709551615",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "18446744073709551615",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "REVISION_LIMIT"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "18446744073709551615",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "REVISION_LIMIT"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "REVISION_LIMIT"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "REVISION_LIMIT"
+              ],
+              "runtimeReason": "REVISION_LIMIT",
+              "guards": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unknown_expected_literal_escape",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "unknown_expected_<tag>&\"雪"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": false,
+            "differences": [
+              "refusals"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": false,
+          "casesCompleted": 0,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": false,
+              "differences": [
+                "refusals"
+              ],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "unknown_expected_<tag>&\"雪"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "runtimeReason": "",
+              "guards": [
+                {
+                  "guardId": "G_outcome",
+                  "requirementId": "R_outcome",
+                  "requirementText": "An outcome is nonblank.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "nonempty",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.outcome",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                },
+                {
+                  "guardId": "G_revision",
+                  "requirementId": "R_revision",
+                  "requirementText": "Command matches the current revision.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "eq",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.revision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      },
+                      {
+                        "kind": "ref",
+                        "ref": "command.expectedRevision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "actual_null_refusals",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": true,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": []
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": true,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": null
+            },
+            "matched": false,
+            "differences": [
+              "refusals"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": false,
+          "casesCompleted": 0,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": false,
+              "differences": [
+                "refusals"
+              ],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [],
+              "actualOk": true,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": null,
+              "runtimeReason": "",
+              "guards": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "actual_empty_refusals",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": true,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": []
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": true,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": []
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [],
+              "actualOk": true,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [],
+              "runtimeReason": "",
+              "guards": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unverified_source_label",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "runtimeReason": "",
+              "guards": [
+                {
+                  "guardId": "G_outcome",
+                  "requirementId": "R_outcome",
+                  "requirementText": "An outcome is nonblank.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "nonempty",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.outcome",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                },
+                {
+                  "guardId": "G_revision",
+                  "requirementId": "R_revision",
+                  "requirementText": "Command matches the current revision.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "eq",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.revision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      },
+                      {
+                        "kind": "ref",
+                        "ref": "command.expectedRevision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "unknown_actual_guard",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_not_declared"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_not_declared"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "guard_outside_transition",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_actor"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_actor"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "mixed_fixed_model",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "REVISION_LIMIT"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "REVISION_LIMIT"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "reserved_fixed_guard_collision",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      },
+      "modelChange": {
+        "operation": "rename_guard_and_references",
+        "from": "G_outcome",
+        "to": "INVALID_INPUT",
+        "expected": "reject; precedence unspecified"
+      }
+    },
+    {
+      "id": "altered_model_text",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      },
+      "modelChange": {
+        "operation": "replace_requirement_text",
+        "id": "R_outcome",
+        "value": "Invented sensitive-like <text> & 雪",
+        "expected": "reject incompatible canonical model digest"
+      }
+    },
+    {
+      "id": "invalid_report_envelope",
+      "report": {
+        "formatVersion": "wrong",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "actual_mode_inconsistent",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "other",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": false,
+            "differences": [
+              "mode"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "unknown_actual_transition",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_missing",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": false,
+            "differences": [
+              "transitionId"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "known_transition_wrong_link",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_start",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": false,
+            "differences": [
+              "transitionId"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "actual_model_digest_mismatch",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "matched": false,
+        "casesCompleted": 0,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": false,
+            "differences": [
+              "modelDigest"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "result": "reject"
+      }
+    },
+    {
+      "id": "source_digest_null",
+      "report": {
+        "formatVersion": "lifecycle-scenario-report/v1",
+        "scenarioVersion": "lifecycle-scenarios/v1",
+        "profileVersion": "lifecycle/v1",
+        "mode": "example-only",
+        "authority": "none",
+        "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+        "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceDigest": null,
+        "matched": true,
+        "casesCompleted": 1,
+        "stepsExecuted": 1,
+        "entries": [
+          {
+            "caseId": "Case_example",
+            "stepId": "Step_prepare",
+            "input": {
+              "id": "TASK_PRIVATE_MARKER",
+              "state": "Draft",
+              "revision": "1",
+              "outcome": "PRIVATE_OUTCOME",
+              "acceptance": [
+                "PRIVATE_CRITERION"
+              ],
+              "owner": "PRIVATE_OWNER"
+            },
+            "command": {
+              "type": "prepare",
+              "actor": "PRIVATE_ACTOR",
+              "expectedRevision": "0",
+              "review": null
+            },
+            "expected": {
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "actual": {
+              "mode": "example-only",
+              "authority": "none",
+              "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+              "ok": false,
+              "transitionId": "T_prepare",
+              "task": {
+                "id": "TASK_PRIVATE_MARKER",
+                "state": "Draft",
+                "revision": "1",
+                "outcome": "PRIVATE_OUTCOME",
+                "acceptance": [
+                  "PRIVATE_CRITERION"
+                ],
+                "owner": "PRIVATE_OWNER"
+              },
+              "refusals": [
+                "G_outcome",
+                "G_revision"
+              ]
+            },
+            "matched": true,
+            "differences": []
+          }
+        ]
+      },
+      "expected": {
+        "result": "accept",
+        "explanation": {
+          "formatVersion": "lifecycle-scenario-explanation/v1",
+          "status": "caller-supplied-assertions",
+          "modelDigest": "948630cb7857199443b59b92d9b1ab0fadf2bf7a5bf8125f7a7e767db83958ed",
+          "scenarioDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sourceDigest": null,
+          "matched": true,
+          "casesCompleted": 1,
+          "stepsExecuted": 1,
+          "entries": [
+            {
+              "caseId": "Case_example",
+              "stepId": "Step_prepare",
+              "matched": true,
+              "differences": [],
+              "expectedTransitionId": "T_prepare",
+              "expectedRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "actualOk": false,
+              "actualTransitionId": "T_prepare",
+              "actualRefusals": [
+                "G_outcome",
+                "G_revision"
+              ],
+              "runtimeReason": "",
+              "guards": [
+                {
+                  "guardId": "G_outcome",
+                  "requirementId": "R_outcome",
+                  "requirementText": "An outcome is nonblank.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "nonempty",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.outcome",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                },
+                {
+                  "guardId": "G_revision",
+                  "requirementId": "R_revision",
+                  "requirementText": "Command matches the current revision.",
+                  "expression": {
+                    "kind": "op",
+                    "ref": "",
+                    "value": "",
+                    "op": "eq",
+                    "args": [
+                      {
+                        "kind": "ref",
+                        "ref": "task.revision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      },
+                      {
+                        "kind": "ref",
+                        "ref": "command.expectedRevision",
+                        "value": "",
+                        "op": "",
+                        "args": []
+                      }
+                    ]
+                  },
+                  "transitionId": "T_prepare"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "additionalNegativeRequirements": [
+    "wrapper missing, null, unknown, duplicate, case-variant keys; wrong wrapper version",
+    "report missing/null required fields; duplicate, unknown, case-variant fields, invalid UTF-8, surrogates, trailing values",
+    "integer counts reject null, strings, negative invalid values, fractions and overflow; canonical uint64 decimal strings",
+    "request/model/report/output byte and depth caps, independent boundary values",
+    "short stdout may emit prefix and returns exit 3; invalid input has empty stdout and fixed private-safe diagnostic",
+    "mutate inputs and outputs after return to verify deep ownership; repeated invocation produces identical bytes"
+  ],
+  "rawNegativeVectors": [
+    {
+      "id": "report_missing_version",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJzY2VuYXJpb1ZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW9zL3YxIiwicHJvZmlsZVZlcnNpb24iOiJsaWZlY3ljbGUvdjEiLCJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsInNjZW5hcmlvRGlnZXN0IjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNvdXJjZURpZ2VzdCI6ImJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmIiLCJtYXRjaGVkIjp0cnVlLCJjYXNlc0NvbXBsZXRlZCI6MSwic3RlcHNFeGVjdXRlZCI6MSwiZW50cmllcyI6W3siY2FzZUlkIjoiQ2FzZV9leGFtcGxlIiwic3RlcElkIjoiU3RlcF9wcmVwYXJlIiwiaW5wdXQiOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJjb21tYW5kIjp7InR5cGUiOiJwcmVwYXJlIiwiYWN0b3IiOiJQUklWQVRFX0FDVE9SIiwiZXhwZWN0ZWRSZXZpc2lvbiI6IjAiLCJyZXZpZXciOm51bGx9LCJleHBlY3RlZCI6eyJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJhY3R1YWwiOnsibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJtYXRjaGVkIjp0cnVlLCJkaWZmZXJlbmNlcyI6W119XX0=",
+      "expected": "reject"
+    },
+    {
+      "id": "report_duplicate_version",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsImZvcm1hdFZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW8tcmVwb3J0L3YxIiwic2NlbmFyaW9WZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvcy92MSIsInByb2ZpbGVWZXJzaW9uIjoibGlmZWN5Y2xlL3YxIiwibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJzY2VuYXJpb0RpZ2VzdCI6ImFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWEiLCJzb3VyY2VEaWdlc3QiOiJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiIiwibWF0Y2hlZCI6dHJ1ZSwiY2FzZXNDb21wbGV0ZWQiOjEsInN0ZXBzRXhlY3V0ZWQiOjEsImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19",
+      "expected": "reject"
+    },
+    {
+      "id": "report_case_variant_version",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJGb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "report_unknown_field",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJ1bmtub3duIjowLCJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "report_null_required_entries",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjpudWxsLCJtYXRjaGVkIjp0cnVlLCJjYXNlc0NvbXBsZXRlZCI6MSwic3RlcHNFeGVjdXRlZCI6MSwiZW50cmllcyI6bnVsbH0=",
+      "expected": "reject"
+    },
+    {
+      "id": "report_null_required_counts",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjpudWxsLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "report_fraction_count",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLjUsImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19",
+      "expected": "reject"
+    },
+    {
+      "id": "report_exponent_count",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxZTAsImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19",
+      "expected": "reject"
+    },
+    {
+      "id": "report_count_overflow",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjo5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTksImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19",
+      "expected": "reject"
+    },
+    {
+      "id": "report_decimal_leading_zero",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIwMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJjb21tYW5kIjp7InR5cGUiOiJwcmVwYXJlIiwiYWN0b3IiOiJQUklWQVRFX0FDVE9SIiwiZXhwZWN0ZWRSZXZpc2lvbiI6IjAiLCJyZXZpZXciOm51bGx9LCJleHBlY3RlZCI6eyJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJhY3R1YWwiOnsibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJtYXRjaGVkIjp0cnVlLCJkaWZmZXJlbmNlcyI6W119XX0=",
+      "expected": "reject"
+    },
+    {
+      "id": "report_invalid_surrogate",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX1x1ZDgwMCIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19",
+      "expected": "reject"
+    },
+    {
+      "id": "report_invalid_utf8",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX/8iLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "report_trailing_value",
+      "entrypoint": "DecodeReport",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfSB7fQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "wrapper_missing_model",
+      "entrypoint": "Execute",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLWV4cGxhaW4tcmVxdWVzdC92MSIsInJlcG9ydCI6eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLXJlcG9ydC92MSIsInNjZW5hcmlvVmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpb3MvdjEiLCJwcm9maWxlVmVyc2lvbiI6ImxpZmVjeWNsZS92MSIsIm1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwic2NlbmFyaW9EaWdlc3QiOiJhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhIiwic291cmNlRGlnZXN0IjoiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYiIsIm1hdGNoZWQiOnRydWUsImNhc2VzQ29tcGxldGVkIjoxLCJzdGVwc0V4ZWN1dGVkIjoxLCJlbnRyaWVzIjpbeyJjYXNlSWQiOiJDYXNlX2V4YW1wbGUiLCJzdGVwSWQiOiJTdGVwX3ByZXBhcmUiLCJpbnB1dCI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sImNvbW1hbmQiOnsidHlwZSI6InByZXBhcmUiLCJhY3RvciI6IlBSSVZBVEVfQUNUT1IiLCJleHBlY3RlZFJldmlzaW9uIjoiMCIsInJldmlldyI6bnVsbH0sImV4cGVjdGVkIjp7Im9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sImFjdHVhbCI6eyJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsIm9rIjpmYWxzZSwidHJhbnNpdGlvbklkIjoiVF9wcmVwYXJlIiwidGFzayI6eyJpZCI6IlRBU0tfUFJJVkFURV9NQVJLRVIiLCJzdGF0ZSI6IkRyYWZ0IiwicmV2aXNpb24iOiIxIiwib3V0Y29tZSI6IlBSSVZBVEVfT1VUQ09NRSIsImFjY2VwdGFuY2UiOlsiUFJJVkFURV9DUklURVJJT04iXSwib3duZXIiOiJQUklWQVRFX09XTkVSIn0sInJlZnVzYWxzIjpbIkdfb3V0Y29tZSIsIkdfcmV2aXNpb24iXX0sIm1hdGNoZWQiOnRydWUsImRpZmZlcmVuY2VzIjpbXX1dfX0=",
+      "expected": "reject"
+    },
+    {
+      "id": "wrapper_null_model",
+      "entrypoint": "Execute",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLWV4cGxhaW4tcmVxdWVzdC92MSIsIm1vZGVsIjpudWxsLCJyZXBvcnQiOnsiZm9ybWF0VmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpby1yZXBvcnQvdjEiLCJzY2VuYXJpb1ZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW9zL3YxIiwicHJvZmlsZVZlcnNpb24iOiJsaWZlY3ljbGUvdjEiLCJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsInNjZW5hcmlvRGlnZXN0IjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNvdXJjZURpZ2VzdCI6ImJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmIiLCJtYXRjaGVkIjp0cnVlLCJjYXNlc0NvbXBsZXRlZCI6MSwic3RlcHNFeGVjdXRlZCI6MSwiZW50cmllcyI6W3siY2FzZUlkIjoiQ2FzZV9leGFtcGxlIiwic3RlcElkIjoiU3RlcF9wcmVwYXJlIiwiaW5wdXQiOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJjb21tYW5kIjp7InR5cGUiOiJwcmVwYXJlIiwiYWN0b3IiOiJQUklWQVRFX0FDVE9SIiwiZXhwZWN0ZWRSZXZpc2lvbiI6IjAiLCJyZXZpZXciOm51bGx9LCJleHBlY3RlZCI6eyJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJhY3R1YWwiOnsibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJtYXRjaGVkIjp0cnVlLCJkaWZmZXJlbmNlcyI6W119XX19",
+      "expected": "reject"
+    },
+    {
+      "id": "wrapper_duplicate_version",
+      "entrypoint": "Execute",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLWV4cGxhaW4tcmVxdWVzdC92MSIsImZvcm1hdFZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW8tZXhwbGFpbi1yZXF1ZXN0L3YxIiwibW9kZWwiOnsKICAiZm9ybWF0VmVyc2lvbiI6ICJsaWZlY3ljbGUtanNvbi92MSIsCiAgInByb2ZpbGVWZXJzaW9uIjogImxpZmVjeWNsZS92MSIsCiAgImlkIjogIlRhc2tMaWZlY3ljbGVFeGFtcGxlIiwKICAiaW5pdGlhbCI6ICJEcmFmdCIsCiAgInN0YXRlcyI6IFsKICAgIHsKICAgICAgImlkIjogIkRyYWZ0IiwKICAgICAgImxhYmVsIjogIkRyYWZ0IiwKICAgICAgInRlcm1pbmFsIjogZmFsc2UKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSZWFkeSIsCiAgICAgICJsYWJlbCI6ICJSZWFkeSIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiSW5Qcm9ncmVzcyIsCiAgICAgICJsYWJlbCI6ICJJbiBwcm9ncmVzcyIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiSW5SZXZpZXciLAogICAgICAibGFiZWwiOiAiSW4gcmV2aWV3IiwKICAgICAgInRlcm1pbmFsIjogZmFsc2UKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJEb25lIiwKICAgICAgImxhYmVsIjogIkRvbmUiLAogICAgICAidGVybWluYWwiOiB0cnVlCiAgICB9CiAgXSwKICAicmVxdWlyZW1lbnRzIjogWwogICAgewogICAgICAiaWQiOiAiUl9yZXZpc2lvbiIsCiAgICAgICJ0ZXh0IjogIkNvbW1hbmQgbWF0Y2hlcyB0aGUgY3VycmVudCByZXZpc2lvbi4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9vdXRjb21lIiwKICAgICAgInRleHQiOiAiQW4gb3V0Y29tZSBpcyBub25ibGFuay4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9hY2NlcHRhbmNlIiwKICAgICAgInRleHQiOiAiQWNjZXB0YW5jZSBjcml0ZXJpYSBhcmUgc3VwcGxpZWQuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfYWN0b3IiLAogICAgICAidGV4dCI6ICJUaGUgbmFtZWQgc3RhcnRpbmcgYWN0b3IgaXMgbm9uYmxhbmsuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfb3duZXJDb21wYXRpYmxlIiwKICAgICAgInRleHQiOiAiU3RhcnQgYXNzaWducyBvbmx5IGFic2VudCBvd25lcnNoaXAgb3IgbWF0Y2hlcyB0aGUgZXhpc3Rpbmcgb3duZXIuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfb3duZXIiLAogICAgICAidGV4dCI6ICJBbiBvd25lciBpcyBwcmVzZW50LiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX293bmVyQWN0b3IiLAogICAgICAidGV4dCI6ICJUaGUgb3duZXIgcmVxdWVzdHMgcmV2aWV3LiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX3Jldmlld2VyIiwKICAgICAgInRleHQiOiAiVGhlIHJldmlld2VyIGlzIG5vbmJsYW5rLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX3Jldmlld1Rhc2siLAogICAgICAidGV4dCI6ICJSZXZpZXcgcmVmZXJzIHRvIHRoaXMgdGFzay4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdSZXZpc2lvbiIsCiAgICAgICJ0ZXh0IjogIlJldmlldyByZWZlcnMgdG8gdGhlIGN1cnJlbnQgcmV2aXNpb24uIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3TW9kZWwiLAogICAgICAidGV4dCI6ICJSZXZpZXcgcmVmZXJzIHRvIHRoZSBhY2NlcHRlZCBtb2RlbC4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdDb250ZW50IiwKICAgICAgInRleHQiOiAiUmV2aWV3IHJlZmVycyB0byBjdXJyZW50IHRhc2sgY29udGVudC4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdBY3RvciIsCiAgICAgICJ0ZXh0IjogIlRoZSBhY3RpbmcgcmV2aWV3ZXIgbWF0Y2hlcyB0aGUgcmV2aWV3LiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX2luZGVwZW5kZW50IiwKICAgICAgInRleHQiOiAiVGhlIHJldmlld2VyIGRpZmZlcnMgZnJvbSB0aGUgb3duZXIuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfYXBwcm92ZWQiLAogICAgICAidGV4dCI6ICJBcHByb3ZhbCBpcyBleHBsaWNpdC4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9jaGFuZ2VzUmVxdWVzdGVkIiwKICAgICAgInRleHQiOiAiQ2hhbmdlcyBhcmUgZXhwbGljaXRseSByZXF1ZXN0ZWQuIgogICAgfQogIF0sCiAgImd1YXJkcyI6IFsKICAgIHsKICAgICAgImlkIjogIkdfcmV2aXNpb24iLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpc2lvbiIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5yZXZpc2lvbiIKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAiY29tbWFuZC5leHBlY3RlZFJldmlzaW9uIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfb3V0Y29tZSIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX291dGNvbWUiLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAibm9uZW1wdHkiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sub3V0Y29tZSIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX2FjY2VwdGFuY2UiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9hY2NlcHRhbmNlIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLmFjY2VwdGFuY2UiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19hY3RvciIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX2FjdG9yIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfb3duZXJDb21wYXRpYmxlIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfb3duZXJDb21wYXRpYmxlIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImFueSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJvcCI6ICJhYnNlbnQiLAogICAgICAgICAgICAiYXJncyI6IFsKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAicmVmIjogInRhc2sub3duZXIiCiAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICAgICAiYXJncyI6IFsKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAicmVmIjogInRhc2sub3duZXIiCiAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAicmVmIjogImNvbW1hbmQuYWN0b3IiCiAgICAgICAgICAgICAgfQogICAgICAgICAgICBdCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19vd25lciIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX293bmVyIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfb3duZXJBY3RvciIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX293bmVyQWN0b3IiLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sub3duZXIiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogImNvbW1hbmQuYWN0b3IiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdlciIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld2VyIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcucmV2aWV3ZXIiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdUYXNrIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aWV3VGFzayIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnRhc2tJZCIKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5pZCIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX3Jldmlld1JldmlzaW9uIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aWV3UmV2aXNpb24iLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInJldmlldy50YXNrUmV2aXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sucmV2aXNpb24iCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdNb2RlbCIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld01vZGVsIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcubW9kZWxEaWdlc3QiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogIm1vZGVsLmRpZ2VzdCIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX3Jldmlld0NvbnRlbnQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdDb250ZW50IiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcudGFza0RpZ2VzdCIKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5kaWdlc3QiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdBY3RvciIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld0FjdG9yIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcucmV2aWV3ZXIiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogImNvbW1hbmQuYWN0b3IiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19pbmRlcGVuZGVudCIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX2luZGVwZW5kZW50IiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5lIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcucmV2aWV3ZXIiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sub3duZXIiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19hcHByb3ZlZCIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX2FwcHJvdmVkIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcuZGVjaXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAic3RyaW5nIjogImFwcHJvdmVkIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfY2hhbmdlc1JlcXVlc3RlZCIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX2NoYW5nZXNSZXF1ZXN0ZWQiLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInJldmlldy5kZWNpc2lvbiIKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJzdHJpbmciOiAiY2hhbmdlc1JlcXVlc3RlZCIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0KICBdLAogICJ0cmFuc2l0aW9ucyI6IFsKICAgIHsKICAgICAgImlkIjogIlRfcHJlcGFyZSIsCiAgICAgICJmcm9tIjogIkRyYWZ0IiwKICAgICAgInRyaWdnZXIiOiAicHJlcGFyZSIsCiAgICAgICJ0byI6ICJSZWFkeSIsCiAgICAgICJndWFyZHMiOiBbCiAgICAgICAgIkdfcmV2aXNpb24iLAogICAgICAgICJHX291dGNvbWUiLAogICAgICAgICJHX2FjY2VwdGFuY2UiCiAgICAgIF0sCiAgICAgICJlZmZlY3RzIjogWwogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJzZXRfc3RhdGUiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAiaW5jcmVtZW50X3JldmlzaW9uIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgIHsKICAgICAgImlkIjogIlRfc3RhcnQiLAogICAgICAiZnJvbSI6ICJSZWFkeSIsCiAgICAgICJ0cmlnZ2VyIjogInN0YXJ0IiwKICAgICAgInRvIjogIkluUHJvZ3Jlc3MiLAogICAgICAiZ3VhcmRzIjogWwogICAgICAgICJHX3JldmlzaW9uIiwKICAgICAgICAiR19vdXRjb21lIiwKICAgICAgICAiR19hY2NlcHRhbmNlIiwKICAgICAgICAiR19hY3RvciIsCiAgICAgICAgIkdfb3duZXJDb21wYXRpYmxlIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAiYXNzaWduX293bmVyX2lmX2Fic2VudCIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJzZXRfc3RhdGUiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAiaW5jcmVtZW50X3JldmlzaW9uIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgIHsKICAgICAgImlkIjogIlRfcmVxdWVzdFJldmlldyIsCiAgICAgICJmcm9tIjogIkluUHJvZ3Jlc3MiLAogICAgICAidHJpZ2dlciI6ICJyZXF1ZXN0UmV2aWV3IiwKICAgICAgInRvIjogIkluUmV2aWV3IiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfb3duZXIiLAogICAgICAgICJHX293bmVyQWN0b3IiCiAgICAgIF0sCiAgICAgICJlZmZlY3RzIjogWwogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJzZXRfc3RhdGUiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAiaW5jcmVtZW50X3JldmlzaW9uIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgIHsKICAgICAgImlkIjogIlRfYXBwcm92ZSIsCiAgICAgICJmcm9tIjogIkluUmV2aWV3IiwKICAgICAgInRyaWdnZXIiOiAiYXBwcm92ZSIsCiAgICAgICJ0byI6ICJEb25lIiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfb3duZXIiLAogICAgICAgICJHX3Jldmlld2VyIiwKICAgICAgICAiR19yZXZpZXdUYXNrIiwKICAgICAgICAiR19yZXZpZXdSZXZpc2lvbiIsCiAgICAgICAgIkdfcmV2aWV3TW9kZWwiLAogICAgICAgICJHX3Jldmlld0NvbnRlbnQiLAogICAgICAgICJHX3Jldmlld0FjdG9yIiwKICAgICAgICAiR19pbmRlcGVuZGVudCIsCiAgICAgICAgIkdfYXBwcm92ZWQiCiAgICAgIF0sCiAgICAgICJlZmZlY3RzIjogWwogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJzZXRfc3RhdGUiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAiaW5jcmVtZW50X3JldmlzaW9uIgogICAgICAgIH0KICAgICAgXQogICAgfSwKICAgIHsKICAgICAgImlkIjogIlRfcmVxdWVzdENoYW5nZXMiLAogICAgICAiZnJvbSI6ICJJblJldmlldyIsCiAgICAgICJ0cmlnZ2VyIjogInJlcXVlc3RDaGFuZ2VzIiwKICAgICAgInRvIjogIkluUHJvZ3Jlc3MiLAogICAgICAiZ3VhcmRzIjogWwogICAgICAgICJHX3JldmlzaW9uIiwKICAgICAgICAiR19vdXRjb21lIiwKICAgICAgICAiR19hY2NlcHRhbmNlIiwKICAgICAgICAiR19vd25lciIsCiAgICAgICAgIkdfcmV2aWV3ZXIiLAogICAgICAgICJHX3Jldmlld1Rhc2siLAogICAgICAgICJHX3Jldmlld1JldmlzaW9uIiwKICAgICAgICAiR19yZXZpZXdNb2RlbCIsCiAgICAgICAgIkdfcmV2aWV3Q29udGVudCIsCiAgICAgICAgIkdfcmV2aWV3QWN0b3IiLAogICAgICAgICJHX2luZGVwZW5kZW50IiwKICAgICAgICAiR19jaGFuZ2VzUmVxdWVzdGVkIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0KICBdCn0KLCJyZXBvcnQiOnsiZm9ybWF0VmVyc2lvbiI6ImxpZmVjeWNsZS1zY2VuYXJpby1yZXBvcnQvdjEiLCJzY2VuYXJpb1ZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW9zL3YxIiwicHJvZmlsZVZlcnNpb24iOiJsaWZlY3ljbGUvdjEiLCJtb2RlIjoiZXhhbXBsZS1vbmx5IiwiYXV0aG9yaXR5Ijoibm9uZSIsIm1vZGVsRGlnZXN0IjoiOTQ4NjMwY2I3ODU3MTk5NDQzYjU5YjkyZDliMWFiMGZhZGYyYmY3YTViZjgxMjVmN2E3ZTc2N2RiODM5NThlZCIsInNjZW5hcmlvRGlnZXN0IjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNvdXJjZURpZ2VzdCI6ImJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmIiLCJtYXRjaGVkIjp0cnVlLCJjYXNlc0NvbXBsZXRlZCI6MSwic3RlcHNFeGVjdXRlZCI6MSwiZW50cmllcyI6W3siY2FzZUlkIjoiQ2FzZV9leGFtcGxlIiwic3RlcElkIjoiU3RlcF9wcmVwYXJlIiwiaW5wdXQiOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJjb21tYW5kIjp7InR5cGUiOiJwcmVwYXJlIiwiYWN0b3IiOiJQUklWQVRFX0FDVE9SIiwiZXhwZWN0ZWRSZXZpc2lvbiI6IjAiLCJyZXZpZXciOm51bGx9LCJleHBlY3RlZCI6eyJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJhY3R1YWwiOnsibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJvayI6ZmFsc2UsInRyYW5zaXRpb25JZCI6IlRfcHJlcGFyZSIsInRhc2siOnsiaWQiOiJUQVNLX1BSSVZBVEVfTUFSS0VSIiwic3RhdGUiOiJEcmFmdCIsInJldmlzaW9uIjoiMSIsIm91dGNvbWUiOiJQUklWQVRFX09VVENPTUUiLCJhY2NlcHRhbmNlIjpbIlBSSVZBVEVfQ1JJVEVSSU9OIl0sIm93bmVyIjoiUFJJVkFURV9PV05FUiJ9LCJyZWZ1c2FscyI6WyJHX291dGNvbWUiLCJHX3JldmlzaW9uIl19LCJtYXRjaGVkIjp0cnVlLCJkaWZmZXJlbmNlcyI6W119XX19",
+      "expected": "reject"
+    },
+    {
+      "id": "wrapper_case_variant",
+      "entrypoint": "Execute",
+      "bytesBase64": "eyJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLWV4cGxhaW4tcmVxdWVzdC92MSIsIm1vZGVsIjp7CiAgImZvcm1hdFZlcnNpb24iOiAibGlmZWN5Y2xlLWpzb24vdjEiLAogICJwcm9maWxlVmVyc2lvbiI6ICJsaWZlY3ljbGUvdjEiLAogICJpZCI6ICJUYXNrTGlmZWN5Y2xlRXhhbXBsZSIsCiAgImluaXRpYWwiOiAiRHJhZnQiLAogICJzdGF0ZXMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJEcmFmdCIsCiAgICAgICJsYWJlbCI6ICJEcmFmdCIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUmVhZHkiLAogICAgICAibGFiZWwiOiAiUmVhZHkiLAogICAgICAidGVybWluYWwiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkluUHJvZ3Jlc3MiLAogICAgICAibGFiZWwiOiAiSW4gcHJvZ3Jlc3MiLAogICAgICAidGVybWluYWwiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkluUmV2aWV3IiwKICAgICAgImxhYmVsIjogIkluIHJldmlldyIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiRG9uZSIsCiAgICAgICJsYWJlbCI6ICJEb25lIiwKICAgICAgInRlcm1pbmFsIjogdHJ1ZQogICAgfQogIF0sCiAgInJlcXVpcmVtZW50cyI6IFsKICAgIHsKICAgICAgImlkIjogIlJfcmV2aXNpb24iLAogICAgICAidGV4dCI6ICJDb21tYW5kIG1hdGNoZXMgdGhlIGN1cnJlbnQgcmV2aXNpb24uIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfb3V0Y29tZSIsCiAgICAgICJ0ZXh0IjogIkFuIG91dGNvbWUgaXMgbm9uYmxhbmsuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfYWNjZXB0YW5jZSIsCiAgICAgICJ0ZXh0IjogIkFjY2VwdGFuY2UgY3JpdGVyaWEgYXJlIHN1cHBsaWVkLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX2FjdG9yIiwKICAgICAgInRleHQiOiAiVGhlIG5hbWVkIHN0YXJ0aW5nIGFjdG9yIGlzIG5vbmJsYW5rLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJ0ZXh0IjogIlN0YXJ0IGFzc2lnbnMgb25seSBhYnNlbnQgb3duZXJzaGlwIG9yIG1hdGNoZXMgdGhlIGV4aXN0aW5nIG93bmVyLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX293bmVyIiwKICAgICAgInRleHQiOiAiQW4gb3duZXIgaXMgcHJlc2VudC4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9vd25lckFjdG9yIiwKICAgICAgInRleHQiOiAiVGhlIG93bmVyIHJlcXVlc3RzIHJldmlldy4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdlciIsCiAgICAgICJ0ZXh0IjogIlRoZSByZXZpZXdlciBpcyBub25ibGFuay4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdUYXNrIiwKICAgICAgInRleHQiOiAiUmV2aWV3IHJlZmVycyB0byB0aGlzIHRhc2suIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3UmV2aXNpb24iLAogICAgICAidGV4dCI6ICJSZXZpZXcgcmVmZXJzIHRvIHRoZSBjdXJyZW50IHJldmlzaW9uLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX3Jldmlld01vZGVsIiwKICAgICAgInRleHQiOiAiUmV2aWV3IHJlZmVycyB0byB0aGUgYWNjZXB0ZWQgbW9kZWwuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3Q29udGVudCIsCiAgICAgICJ0ZXh0IjogIlJldmlldyByZWZlcnMgdG8gY3VycmVudCB0YXNrIGNvbnRlbnQuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3QWN0b3IiLAogICAgICAidGV4dCI6ICJUaGUgYWN0aW5nIHJldmlld2VyIG1hdGNoZXMgdGhlIHJldmlldy4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9pbmRlcGVuZGVudCIsCiAgICAgICJ0ZXh0IjogIlRoZSByZXZpZXdlciBkaWZmZXJzIGZyb20gdGhlIG93bmVyLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX2FwcHJvdmVkIiwKICAgICAgInRleHQiOiAiQXBwcm92YWwgaXMgZXhwbGljaXQuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfY2hhbmdlc1JlcXVlc3RlZCIsCiAgICAgICJ0ZXh0IjogIkNoYW5nZXMgYXJlIGV4cGxpY2l0bHkgcmVxdWVzdGVkLiIKICAgIH0KICBdLAogICJndWFyZHMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJHX3JldmlzaW9uIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aXNpb24iLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sucmV2aXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogImNvbW1hbmQuZXhwZWN0ZWRSZXZpc2lvbiIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX291dGNvbWUiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vdXRjb21lIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm91dGNvbWUiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19hY2NlcHRhbmNlIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfYWNjZXB0YW5jZSIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5hY2NlcHRhbmNlIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfYWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9hY3RvciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAiY29tbWFuZC5hY3RvciIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJhbnkiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAib3AiOiAiYWJzZW50IiwKICAgICAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfb3duZXIiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vd25lciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5vd25lciIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX293bmVyQWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vd25lckFjdG9yIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3ZXIiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdlciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3VGFzayIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld1Rhc2siLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInJldmlldy50YXNrSWQiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2suaWQiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdSZXZpc2lvbiIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld1JldmlzaW9uIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcudGFza1JldmlzaW9uIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLnJldmlzaW9uIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3TW9kZWwiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdNb2RlbCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3Lm1vZGVsRGlnZXN0IgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJtb2RlbC5kaWdlc3QiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdDb250ZW50IiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aWV3Q29udGVudCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnRhc2tEaWdlc3QiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2suZGlnZXN0IgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3QWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdBY3RvciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfaW5kZXBlbmRlbnQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9pbmRlcGVuZGVudCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJuZSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfYXBwcm92ZWQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9hcHByb3ZlZCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LmRlY2lzaW9uIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInN0cmluZyI6ICJhcHByb3ZlZCIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX2NoYW5nZXNSZXF1ZXN0ZWQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9jaGFuZ2VzUmVxdWVzdGVkIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcuZGVjaXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAic3RyaW5nIjogImNoYW5nZXNSZXF1ZXN0ZWQiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9CiAgXSwKICAidHJhbnNpdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJUX3ByZXBhcmUiLAogICAgICAiZnJvbSI6ICJEcmFmdCIsCiAgICAgICJ0cmlnZ2VyIjogInByZXBhcmUiLAogICAgICAidG8iOiAiUmVhZHkiLAogICAgICAiZ3VhcmRzIjogWwogICAgICAgICJHX3JldmlzaW9uIiwKICAgICAgICAiR19vdXRjb21lIiwKICAgICAgICAiR19hY2NlcHRhbmNlIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3N0YXJ0IiwKICAgICAgImZyb20iOiAiUmVhZHkiLAogICAgICAidHJpZ2dlciI6ICJzdGFydCIsCiAgICAgICJ0byI6ICJJblByb2dyZXNzIiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfYWN0b3IiLAogICAgICAgICJHX293bmVyQ29tcGF0aWJsZSIKICAgICAgXSwKICAgICAgImVmZmVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgIm9wIjogImFzc2lnbl9vd25lcl9pZl9hYnNlbnQiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3JlcXVlc3RSZXZpZXciLAogICAgICAiZnJvbSI6ICJJblByb2dyZXNzIiwKICAgICAgInRyaWdnZXIiOiAicmVxdWVzdFJldmlldyIsCiAgICAgICJ0byI6ICJJblJldmlldyIsCiAgICAgICJndWFyZHMiOiBbCiAgICAgICAgIkdfcmV2aXNpb24iLAogICAgICAgICJHX291dGNvbWUiLAogICAgICAgICJHX2FjY2VwdGFuY2UiLAogICAgICAgICJHX293bmVyIiwKICAgICAgICAiR19vd25lckFjdG9yIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX2FwcHJvdmUiLAogICAgICAiZnJvbSI6ICJJblJldmlldyIsCiAgICAgICJ0cmlnZ2VyIjogImFwcHJvdmUiLAogICAgICAidG8iOiAiRG9uZSIsCiAgICAgICJndWFyZHMiOiBbCiAgICAgICAgIkdfcmV2aXNpb24iLAogICAgICAgICJHX291dGNvbWUiLAogICAgICAgICJHX2FjY2VwdGFuY2UiLAogICAgICAgICJHX293bmVyIiwKICAgICAgICAiR19yZXZpZXdlciIsCiAgICAgICAgIkdfcmV2aWV3VGFzayIsCiAgICAgICAgIkdfcmV2aWV3UmV2aXNpb24iLAogICAgICAgICJHX3Jldmlld01vZGVsIiwKICAgICAgICAiR19yZXZpZXdDb250ZW50IiwKICAgICAgICAiR19yZXZpZXdBY3RvciIsCiAgICAgICAgIkdfaW5kZXBlbmRlbnQiLAogICAgICAgICJHX2FwcHJvdmVkIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3JlcXVlc3RDaGFuZ2VzIiwKICAgICAgImZyb20iOiAiSW5SZXZpZXciLAogICAgICAidHJpZ2dlciI6ICJyZXF1ZXN0Q2hhbmdlcyIsCiAgICAgICJ0byI6ICJJblByb2dyZXNzIiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfb3duZXIiLAogICAgICAgICJHX3Jldmlld2VyIiwKICAgICAgICAiR19yZXZpZXdUYXNrIiwKICAgICAgICAiR19yZXZpZXdSZXZpc2lvbiIsCiAgICAgICAgIkdfcmV2aWV3TW9kZWwiLAogICAgICAgICJHX3Jldmlld0NvbnRlbnQiLAogICAgICAgICJHX3Jldmlld0FjdG9yIiwKICAgICAgICAiR19pbmRlcGVuZGVudCIsCiAgICAgICAgIkdfY2hhbmdlc1JlcXVlc3RlZCIKICAgICAgXSwKICAgICAgImVmZmVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgIm9wIjogInNldF9zdGF0ZSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJpbmNyZW1lbnRfcmV2aXNpb24iCiAgICAgICAgfQogICAgICBdCiAgICB9CiAgXQp9CiwiUmVwb3J0Ijp7ImZvcm1hdFZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW8tcmVwb3J0L3YxIiwic2NlbmFyaW9WZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvcy92MSIsInByb2ZpbGVWZXJzaW9uIjoibGlmZWN5Y2xlL3YxIiwibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJzY2VuYXJpb0RpZ2VzdCI6ImFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWEiLCJzb3VyY2VEaWdlc3QiOiJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiIiwibWF0Y2hlZCI6dHJ1ZSwiY2FzZXNDb21wbGV0ZWQiOjEsInN0ZXBzRXhlY3V0ZWQiOjEsImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19fQ==",
+      "expected": "reject"
+    },
+    {
+      "id": "wrapper_unknown",
+      "entrypoint": "Execute",
+      "bytesBase64": "eyJ1bmtub3duIjowLCJmb3JtYXRWZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvLWV4cGxhaW4tcmVxdWVzdC92MSIsIm1vZGVsIjp7CiAgImZvcm1hdFZlcnNpb24iOiAibGlmZWN5Y2xlLWpzb24vdjEiLAogICJwcm9maWxlVmVyc2lvbiI6ICJsaWZlY3ljbGUvdjEiLAogICJpZCI6ICJUYXNrTGlmZWN5Y2xlRXhhbXBsZSIsCiAgImluaXRpYWwiOiAiRHJhZnQiLAogICJzdGF0ZXMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJEcmFmdCIsCiAgICAgICJsYWJlbCI6ICJEcmFmdCIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUmVhZHkiLAogICAgICAibGFiZWwiOiAiUmVhZHkiLAogICAgICAidGVybWluYWwiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkluUHJvZ3Jlc3MiLAogICAgICAibGFiZWwiOiAiSW4gcHJvZ3Jlc3MiLAogICAgICAidGVybWluYWwiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkluUmV2aWV3IiwKICAgICAgImxhYmVsIjogIkluIHJldmlldyIsCiAgICAgICJ0ZXJtaW5hbCI6IGZhbHNlCiAgICB9LAogICAgewogICAgICAiaWQiOiAiRG9uZSIsCiAgICAgICJsYWJlbCI6ICJEb25lIiwKICAgICAgInRlcm1pbmFsIjogdHJ1ZQogICAgfQogIF0sCiAgInJlcXVpcmVtZW50cyI6IFsKICAgIHsKICAgICAgImlkIjogIlJfcmV2aXNpb24iLAogICAgICAidGV4dCI6ICJDb21tYW5kIG1hdGNoZXMgdGhlIGN1cnJlbnQgcmV2aXNpb24uIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfb3V0Y29tZSIsCiAgICAgICJ0ZXh0IjogIkFuIG91dGNvbWUgaXMgbm9uYmxhbmsuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfYWNjZXB0YW5jZSIsCiAgICAgICJ0ZXh0IjogIkFjY2VwdGFuY2UgY3JpdGVyaWEgYXJlIHN1cHBsaWVkLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX2FjdG9yIiwKICAgICAgInRleHQiOiAiVGhlIG5hbWVkIHN0YXJ0aW5nIGFjdG9yIGlzIG5vbmJsYW5rLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJ0ZXh0IjogIlN0YXJ0IGFzc2lnbnMgb25seSBhYnNlbnQgb3duZXJzaGlwIG9yIG1hdGNoZXMgdGhlIGV4aXN0aW5nIG93bmVyLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX293bmVyIiwKICAgICAgInRleHQiOiAiQW4gb3duZXIgaXMgcHJlc2VudC4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9vd25lckFjdG9yIiwKICAgICAgInRleHQiOiAiVGhlIG93bmVyIHJlcXVlc3RzIHJldmlldy4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdlciIsCiAgICAgICJ0ZXh0IjogIlRoZSByZXZpZXdlciBpcyBub25ibGFuay4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9yZXZpZXdUYXNrIiwKICAgICAgInRleHQiOiAiUmV2aWV3IHJlZmVycyB0byB0aGlzIHRhc2suIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3UmV2aXNpb24iLAogICAgICAidGV4dCI6ICJSZXZpZXcgcmVmZXJzIHRvIHRoZSBjdXJyZW50IHJldmlzaW9uLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX3Jldmlld01vZGVsIiwKICAgICAgInRleHQiOiAiUmV2aWV3IHJlZmVycyB0byB0aGUgYWNjZXB0ZWQgbW9kZWwuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3Q29udGVudCIsCiAgICAgICJ0ZXh0IjogIlJldmlldyByZWZlcnMgdG8gY3VycmVudCB0YXNrIGNvbnRlbnQuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfcmV2aWV3QWN0b3IiLAogICAgICAidGV4dCI6ICJUaGUgYWN0aW5nIHJldmlld2VyIG1hdGNoZXMgdGhlIHJldmlldy4iCiAgICB9LAogICAgewogICAgICAiaWQiOiAiUl9pbmRlcGVuZGVudCIsCiAgICAgICJ0ZXh0IjogIlRoZSByZXZpZXdlciBkaWZmZXJzIGZyb20gdGhlIG93bmVyLiIKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJSX2FwcHJvdmVkIiwKICAgICAgInRleHQiOiAiQXBwcm92YWwgaXMgZXhwbGljaXQuIgogICAgfSwKICAgIHsKICAgICAgImlkIjogIlJfY2hhbmdlc1JlcXVlc3RlZCIsCiAgICAgICJ0ZXh0IjogIkNoYW5nZXMgYXJlIGV4cGxpY2l0bHkgcmVxdWVzdGVkLiIKICAgIH0KICBdLAogICJndWFyZHMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJHX3JldmlzaW9uIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aXNpb24iLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2sucmV2aXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogImNvbW1hbmQuZXhwZWN0ZWRSZXZpc2lvbiIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX291dGNvbWUiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vdXRjb21lIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogIm5vbmVtcHR5IiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm91dGNvbWUiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19hY2NlcHRhbmNlIiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfYWNjZXB0YW5jZSIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5hY2NlcHRhbmNlIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfYWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9hY3RvciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAiY29tbWFuZC5hY3RvciIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX293bmVyQ29tcGF0aWJsZSIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJhbnkiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAib3AiOiAiYWJzZW50IiwKICAgICAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgewogICAgICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgICAgIH0KICAgICAgICAgICAgXQogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfb3duZXIiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vd25lciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAidGFzay5vd25lciIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX293bmVyQWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9vd25lckFjdG9yIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3ZXIiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdlciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJub25lbXB0eSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3VGFzayIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld1Rhc2siLAogICAgICAiZXhwciI6IHsKICAgICAgICAib3AiOiAiZXEiLAogICAgICAgICJhcmdzIjogWwogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInJldmlldy50YXNrSWQiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2suaWQiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdSZXZpc2lvbiIsCiAgICAgICJyZXF1aXJlbWVudCI6ICJSX3Jldmlld1JldmlzaW9uIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcudGFza1JldmlzaW9uIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLnJldmlzaW9uIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3TW9kZWwiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdNb2RlbCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3Lm1vZGVsRGlnZXN0IgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJtb2RlbC5kaWdlc3QiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgewogICAgICAiaWQiOiAiR19yZXZpZXdDb250ZW50IiwKICAgICAgInJlcXVpcmVtZW50IjogIlJfcmV2aWV3Q29udGVudCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnRhc2tEaWdlc3QiCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAicmVmIjogInRhc2suZGlnZXN0IgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfcmV2aWV3QWN0b3IiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9yZXZpZXdBY3RvciIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJjb21tYW5kLmFjdG9yIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfaW5kZXBlbmRlbnQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9pbmRlcGVuZGVudCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJuZSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LnJldmlld2VyIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJ0YXNrLm93bmVyIgogICAgICAgICAgfQogICAgICAgIF0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImlkIjogIkdfYXBwcm92ZWQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9hcHByb3ZlZCIsCiAgICAgICJleHByIjogewogICAgICAgICJvcCI6ICJlcSIsCiAgICAgICAgImFyZ3MiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJyZWYiOiAicmV2aWV3LmRlY2lzaW9uIgogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgInN0cmluZyI6ICJhcHByb3ZlZCIKICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJHX2NoYW5nZXNSZXF1ZXN0ZWQiLAogICAgICAicmVxdWlyZW1lbnQiOiAiUl9jaGFuZ2VzUmVxdWVzdGVkIiwKICAgICAgImV4cHIiOiB7CiAgICAgICAgIm9wIjogImVxIiwKICAgICAgICAiYXJncyI6IFsKICAgICAgICAgIHsKICAgICAgICAgICAgInJlZiI6ICJyZXZpZXcuZGVjaXNpb24iCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAic3RyaW5nIjogImNoYW5nZXNSZXF1ZXN0ZWQiCiAgICAgICAgICB9CiAgICAgICAgXQogICAgICB9CiAgICB9CiAgXSwKICAidHJhbnNpdGlvbnMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJUX3ByZXBhcmUiLAogICAgICAiZnJvbSI6ICJEcmFmdCIsCiAgICAgICJ0cmlnZ2VyIjogInByZXBhcmUiLAogICAgICAidG8iOiAiUmVhZHkiLAogICAgICAiZ3VhcmRzIjogWwogICAgICAgICJHX3JldmlzaW9uIiwKICAgICAgICAiR19vdXRjb21lIiwKICAgICAgICAiR19hY2NlcHRhbmNlIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3N0YXJ0IiwKICAgICAgImZyb20iOiAiUmVhZHkiLAogICAgICAidHJpZ2dlciI6ICJzdGFydCIsCiAgICAgICJ0byI6ICJJblByb2dyZXNzIiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfYWN0b3IiLAogICAgICAgICJHX293bmVyQ29tcGF0aWJsZSIKICAgICAgXSwKICAgICAgImVmZmVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgIm9wIjogImFzc2lnbl9vd25lcl9pZl9hYnNlbnQiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3JlcXVlc3RSZXZpZXciLAogICAgICAiZnJvbSI6ICJJblByb2dyZXNzIiwKICAgICAgInRyaWdnZXIiOiAicmVxdWVzdFJldmlldyIsCiAgICAgICJ0byI6ICJJblJldmlldyIsCiAgICAgICJndWFyZHMiOiBbCiAgICAgICAgIkdfcmV2aXNpb24iLAogICAgICAgICJHX291dGNvbWUiLAogICAgICAgICJHX2FjY2VwdGFuY2UiLAogICAgICAgICJHX293bmVyIiwKICAgICAgICAiR19vd25lckFjdG9yIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX2FwcHJvdmUiLAogICAgICAiZnJvbSI6ICJJblJldmlldyIsCiAgICAgICJ0cmlnZ2VyIjogImFwcHJvdmUiLAogICAgICAidG8iOiAiRG9uZSIsCiAgICAgICJndWFyZHMiOiBbCiAgICAgICAgIkdfcmV2aXNpb24iLAogICAgICAgICJHX291dGNvbWUiLAogICAgICAgICJHX2FjY2VwdGFuY2UiLAogICAgICAgICJHX293bmVyIiwKICAgICAgICAiR19yZXZpZXdlciIsCiAgICAgICAgIkdfcmV2aWV3VGFzayIsCiAgICAgICAgIkdfcmV2aWV3UmV2aXNpb24iLAogICAgICAgICJHX3Jldmlld01vZGVsIiwKICAgICAgICAiR19yZXZpZXdDb250ZW50IiwKICAgICAgICAiR19yZXZpZXdBY3RvciIsCiAgICAgICAgIkdfaW5kZXBlbmRlbnQiLAogICAgICAgICJHX2FwcHJvdmVkIgogICAgICBdLAogICAgICAiZWZmZWN0cyI6IFsKICAgICAgICB7CiAgICAgICAgICAib3AiOiAic2V0X3N0YXRlIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIm9wIjogImluY3JlbWVudF9yZXZpc2lvbiIKICAgICAgICB9CiAgICAgIF0KICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJUX3JlcXVlc3RDaGFuZ2VzIiwKICAgICAgImZyb20iOiAiSW5SZXZpZXciLAogICAgICAidHJpZ2dlciI6ICJyZXF1ZXN0Q2hhbmdlcyIsCiAgICAgICJ0byI6ICJJblByb2dyZXNzIiwKICAgICAgImd1YXJkcyI6IFsKICAgICAgICAiR19yZXZpc2lvbiIsCiAgICAgICAgIkdfb3V0Y29tZSIsCiAgICAgICAgIkdfYWNjZXB0YW5jZSIsCiAgICAgICAgIkdfb3duZXIiLAogICAgICAgICJHX3Jldmlld2VyIiwKICAgICAgICAiR19yZXZpZXdUYXNrIiwKICAgICAgICAiR19yZXZpZXdSZXZpc2lvbiIsCiAgICAgICAgIkdfcmV2aWV3TW9kZWwiLAogICAgICAgICJHX3Jldmlld0NvbnRlbnQiLAogICAgICAgICJHX3Jldmlld0FjdG9yIiwKICAgICAgICAiR19pbmRlcGVuZGVudCIsCiAgICAgICAgIkdfY2hhbmdlc1JlcXVlc3RlZCIKICAgICAgXSwKICAgICAgImVmZmVjdHMiOiBbCiAgICAgICAgewogICAgICAgICAgIm9wIjogInNldF9zdGF0ZSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJvcCI6ICJpbmNyZW1lbnRfcmV2aXNpb24iCiAgICAgICAgfQogICAgICBdCiAgICB9CiAgXQp9CiwicmVwb3J0Ijp7ImZvcm1hdFZlcnNpb24iOiJsaWZlY3ljbGUtc2NlbmFyaW8tcmVwb3J0L3YxIiwic2NlbmFyaW9WZXJzaW9uIjoibGlmZWN5Y2xlLXNjZW5hcmlvcy92MSIsInByb2ZpbGVWZXJzaW9uIjoibGlmZWN5Y2xlL3YxIiwibW9kZSI6ImV4YW1wbGUtb25seSIsImF1dGhvcml0eSI6Im5vbmUiLCJtb2RlbERpZ2VzdCI6Ijk0ODYzMGNiNzg1NzE5OTQ0M2I1OWI5MmQ5YjFhYjBmYWRmMmJmN2E1YmY4MTI1ZjdhN2U3NjdkYjgzOTU4ZWQiLCJzY2VuYXJpb0RpZ2VzdCI6ImFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWEiLCJzb3VyY2VEaWdlc3QiOiJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiIiwibWF0Y2hlZCI6dHJ1ZSwiY2FzZXNDb21wbGV0ZWQiOjEsInN0ZXBzRXhlY3V0ZWQiOjEsImVudHJpZXMiOlt7ImNhc2VJZCI6IkNhc2VfZXhhbXBsZSIsInN0ZXBJZCI6IlN0ZXBfcHJlcGFyZSIsImlucHV0Ijp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwiY29tbWFuZCI6eyJ0eXBlIjoicHJlcGFyZSIsImFjdG9yIjoiUFJJVkFURV9BQ1RPUiIsImV4cGVjdGVkUmV2aXNpb24iOiIwIiwicmV2aWV3IjpudWxsfSwiZXhwZWN0ZWQiOnsib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwiYWN0dWFsIjp7Im1vZGUiOiJleGFtcGxlLW9ubHkiLCJhdXRob3JpdHkiOiJub25lIiwibW9kZWxEaWdlc3QiOiI5NDg2MzBjYjc4NTcxOTk0NDNiNTliOTJkOWIxYWIwZmFkZjJiZjdhNWJmODEyNWY3YTdlNzY3ZGI4Mzk1OGVkIiwib2siOmZhbHNlLCJ0cmFuc2l0aW9uSWQiOiJUX3ByZXBhcmUiLCJ0YXNrIjp7ImlkIjoiVEFTS19QUklWQVRFX01BUktFUiIsInN0YXRlIjoiRHJhZnQiLCJyZXZpc2lvbiI6IjEiLCJvdXRjb21lIjoiUFJJVkFURV9PVVRDT01FIiwiYWNjZXB0YW5jZSI6WyJQUklWQVRFX0NSSVRFUklPTiJdLCJvd25lciI6IlBSSVZBVEVfT1dORVIifSwicmVmdXNhbHMiOlsiR19vdXRjb21lIiwiR19yZXZpc2lvbiJdfSwibWF0Y2hlZCI6dHJ1ZSwiZGlmZmVyZW5jZXMiOltdfV19fQ==",
+      "expected": "reject"
+    }
+  ]
+}
