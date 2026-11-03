@@ -17,7 +17,7 @@ reservation. The merged pilot guide's README link is preserved. Existing claims
 and open work were inspected; the historical pilot guide claim described only a
 local proposal and its change was merged in #48.
 
-Exact scope: `README.md`, new `docs/getting-started.md`, new `skills/README.md`,
+Exact scope: `README.md`, new `docs/getting-started.md`, new `docs/skills.md`,
 this task record, and new immutable Project Memory source/event files for this
 task. Preserve useful install instructions and the skill catalog in focused
 guides; check links, commands, optional dependencies and capability limits
