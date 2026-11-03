@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "1acc52fa-d5c0-46ee-acb8-ddb913d03960",
+  "runId": "a615023f-0984-4df7-8211-6efb06520eb3",
+  "kind": "complete",
+  "parents": [
+    "3676fe8d-e0c2-408a-868d-740790a318bb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pilot-custom-proposal-guide-v1",
+    "path": "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md",
+    "revision": "f6d6a177d113b81ca501ab50bf5b207e3c8f12c5",
+    "blob": "3aef835d00794010300bf9ec2bf93720c7469c10",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "09042294ef8b2b12701dc0e26f05de9ea4f6dc6ef65b0d43c48cfe74b41a5dba"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/pilot-custom-proposal-guide-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:05:53.119Z",
+  "summary": "Documented and independently checked the check-only custom proposal path and separately authorized replay",
+  "next": "Validate committed diff and hand off exact history for authorized publication",
+  "files": [
+    "docs/model-driven-pilot-testing.md",
+    "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md"
+  ],
+  "validation": "Literal final snippets passed fixture A/B and mismatch controls; stale and invalid inputs refused; missing/failed check, existing/dangling outputs and empty receipt stopped; reviewer independently ran fixture B and bash syntax; scripts/validate.sh passed with optional skills-ref unavailable; staged whitespace passed",
+  "snapshot": {
+    "docs/model-driven-pilot-testing.md": {
+      "blob": "d3603c37401d54ac39815e900caf60c3b4215a48",
+      "mode": "100644"
+    },
+    "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md": {
+      "blob": "a2bcd340b63d9d2fb65c0395bc4ad4539136d618",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "formatVersion": 2,
+  "eventId": "3676fe8d-e0c2-408a-868d-740790a318bb",
+  "runId": "a615023f-0984-4df7-8211-6efb06520eb3",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-pilot-custom-proposal-guide-v1",
+    "path": "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md",
+    "revision": "f6d6a177d113b81ca501ab50bf5b207e3c8f12c5",
+    "blob": "3aef835d00794010300bf9ec2bf93720c7469c10",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "09042294ef8b2b12701dc0e26f05de9ea4f6dc6ef65b0d43c48cfe74b41a5dba"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/pilot-custom-proposal-guide-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:00:55.684Z",
+  "summary": "Extend the existing guide for user-supplied proposals without implicit execution",
+  "next": "Write and test the new guide path",
+  "files": [
+    "docs/model-driven-pilot-testing.md",
+    "tasks/CF-pilot-custom-proposal-guide-v1-user-input.md"
+  ]
+}

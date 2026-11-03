@@ -39,3 +39,31 @@ preflight from execution. Obtain independent read-only review, run repository an
 full committed-diff Project Memory validation and report the exact result. Normal
 draft PR publication is authorized; merge is a separate user-authorized step.
 No formal approval, deployment or worker activation is implied.
+
+## Observed local result
+
+Extended the existing guide with a standalone non-executing check of an
+operator-selected directory and a separate, explicitly authorized replay block.
+The result readers display variable outcomes and counts without asserting the
+fixed example's results. They do not authenticate a receipt or replace review.
+The original guide's setup now permits the reader to skip the executing fixed
+examples when choosing the check-only path.
+
+The literal setup and new blocks were run with the two untouched, separately
+frozen invented proposal sets copied into external private directories. Check
+returned `checked` and `not-run` for each; after separate local authorization,
+actual candidate replay matched 4 cases / 6 steps for A and 4 / 7 for B. A stale
+suite returned exit 1 with no candidate start and the documented path skipped
+replay. A disposable deliberately incorrect expectation with a matching test
+manifest passed preflight but produced a real mismatch at the first step; no
+frozen input was modified or expectation repaired. An invalid model returned
+exit 2 and no receipt; that test also used a directory containing spaces.
+
+Separate shell controls verified a missing or unsuccessful prior check, an
+existing output, and a dangling output symlink stop before candidate invocation;
+an empty JSON receipt is not reported as a success. A read-only reviewer ran the
+literal final blocks independently on fixture B, checked all seven Bash blocks
+with `bash -n`, reviewed the exact guide bytes and found no blocker. This is not
+formal human approval or proof of arbitrary-model correctness. Repository
+validation and relative links passed; optional `skills-ref` was unavailable.
+No production integration, visual review, deployment or worker activation occurred.
