@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "6bd35231-572f-447e-a885-fa3931771d6f",
+  "runId": "a421954e-28bf-4717-8ba7-1a8ce1b033ec",
+  "kind": "start",
+  "parents": [
+    "2fb1f2b8-7422-440b-ac90-dd99a8aa59a5"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-model-trace-v1",
+    "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+    "revision": "143c6aaba504753856539f6f168e101578b31f51",
+    "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bec17f94ffaf108a139d4a408391eeff72ac00730d6000bdd5b33858feaf3ffb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-model-trace-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T10:52:00.097Z",
+  "summary": "Correct wording that could imply human authorship",
+  "next": "Change the notice and rerun trace checks and independent review",
+  "files": [
+    "runtime/model-trace-v1/manifest.json"
+  ]
+}

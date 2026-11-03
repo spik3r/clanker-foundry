@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "143c6aaba504753856539f6f168e101578b31f51",
+  "id": "CF-orchestration-model-trace-v1",
+  "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+  "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+  "record": "---\nid: CF-orchestration-model-trace-v1\nstatus: in-progress\nowner: Byte orchestration trace contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Trace a bounded shared orchestration flow\n\n## Implementation claim\n\nThe coordinating owner assigned this local slice after checking canonical main\n`9a05ecdcf263d3ca1b09f78e3fe29bc3ae753be8`, active task frontiers, permitted\nopen PRs and branch names. The existing runtime and shadow contributors retain\nall of their paths. This record is a local claim, not a shared lock; recheck\nmain and ownership before publication. The held #20 artifact, modelwalk lane,\nREADME reorganization and scenario-coverage producer are excluded.\n\nWrite only these new paths:\n\n- `runtime/model-trace-v1/manifest.json`\n- `runtime/model-trace-v1/check.mjs`\n- `runtime/model-trace-v1/README.md`\n- `runtime/model-trace-v1/views/state.dot`\n- `runtime/model-trace-v1/views/sequence.md`\n- `runtime/model-trace-v1/testdata/oracle.json`\n- `runtime/model-trace-v1/testdata/README.md`\n- `runtime/test/model-trace-v1.test.mjs`\n- this task record and its own new immutable Project Memory source/events.\n\nDo not edit the evaluator, schemas, existing tests or facade, runtime package,\nother tasks, generated lifecycle artifacts, README, other claims or workflows.\nNo provider, store, dispatch, network, worker, deployment or candidate-model\nexecution is authorized by this task. Commit this prospective claim and record\na genuine start before implementation. A separate assistant derives and freezes\ninvented literal observations before implementation; its authorship is not\nindependent-person review or proof of human approval.\n\n## Bounded result\n\nBuild a versioned machine-readable trace of the existing shared runtime, not a\nsecond evaluator or execution authority. Pin the exact evaluator, schema and\nnamed existing tests used as review sources. Inventory every command and state\nfrom the actual v1 schema, marking all unmodeled entries explicitly. Describe\nonly a bounded partial path: ADMIT from no execution to PENDING, followed by\nASSIGN refusal when dependency or resource assertions are missing or false.\nDistinguish partial mappings from complete behavior. Bind declared requirements,\nsource anchors and separately frozen fixture references; reject dangling or\nunknown references. Recompute source hashes and schema inventories so upstream\ndrift fails visibly. Generate deterministic DOT and sequence Markdown views\nfrom the manifest and check committed views for staleness. Do not imply source\nhashes, declared links or named tests prove semantic completeness, provenance,\nreview, standards conformance, runtime admission or effect execution.\n\nA test executes only invented fixtures through the existing pure evaluator and\ncompares independently stated expected states, revision, effects, event and\nrefusal codes; it must verify unchanged inputs. Refusal cases stop before any\nlaunch effect. Deliberate source/inventory, trace and view mutations must cause\nspecific test/check failures, not merely build errors. Run focused and applicable\nfull offline Node regression suites, repository validation and full-diff Project\nMemory checks; report unavailable tools and hosted CI separately. Obtain an\nindependent exact-source review before any draft PR. Recheck ownership, current\nmain and permissions before publication; stop on denial, overlap or uncertainty.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+        "id": "CF-orchestration-model-trace-v1",
+        "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
