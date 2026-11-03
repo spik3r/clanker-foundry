@@ -55,7 +55,11 @@
     },
     {
       "path": "runtime/test/model-trace-v1.test.mjs",
-      "sha256": "7e9204654e2513c677bb0ed7cde5e089e28c7f74278129012ff529de86490852"
+      "sha256": "2f17848f79a4c99a7f34b395eb7006cfcfc46f74a3f433e6ec40f11b021f0645"
+    },
+    {
+      "path": "runtime/model-trace-v1/testdata/completion-oracle.json",
+      "sha256": "d81eb8f2417e4c5fcd5df284eabc5aac8bc4a48f9110795020b2a430b487c3e8"
     }
   ],
   "commands": [
@@ -77,11 +81,11 @@
     },
     {
       "id": "RECORD_VALIDATION",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "RECORD_APPROVAL",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "REVOKE_APPROVAL",
@@ -89,7 +93,7 @@
     },
     {
       "id": "ACCEPT_STAGE",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "REQUEST_CHANGES",
@@ -125,7 +129,7 @@
     },
     {
       "id": "CLEANUP_CONFIRMED",
-      "coverage": "unmapped"
+      "coverage": "partial"
     }
   ],
   "states": [
@@ -155,7 +159,7 @@
     },
     {
       "id": "COMPLETED",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "FAILED",
@@ -363,6 +367,240 @@
       "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "SPEC_DIGEST_MISMATCH",
       "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
+    },
+    {
+      "id": "TR-VALIDATION-PASS",
+      "command": "RECORD_VALIDATION",
+      "statement": "An independent registered validator records a current PASS for the submitted subject without changing its validation deadline.",
+      "anchor": "execution.validations.push(structuredClone(evidence));",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_pass"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-APPROVAL-APPROVE",
+      "command": "RECORD_APPROVAL",
+      "statement": "A registered approver records an unexpired approval bound to the current execution and subject.",
+      "anchor": "execution.approvals.push(structuredClone(approval));",
+      "schemaPointer": "#/$defs/Command/oneOf/5",
+      "caseIds": [
+        "approval_approve"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-ACCEPT-FINAL-COMPLETED",
+      "command": "ACCEPT_STAGE",
+      "statement": "Owner acceptance completes the final stage and returns a revocation intent; the retired attempt, pending cleanup and held resources remain until confirmation.",
+      "anchor": "execution.state = 'COMPLETED'; execution.outcome = { code: 'ACCEPTED' };",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_final_completed"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-CLEANUP-COMPLETED-RELEASED",
+      "command": "CLEANUP_CONFIRMED",
+      "statement": "Owner confirmation with the retired attempt token releases resources and clears the attempt while preserving COMPLETED.",
+      "anchor": "execution.cleanup_pending = false; execution.resources_held = false; execution.attempt = null;",
+      "schemaPointer": "#/$defs/Command/oneOf/16",
+      "caseIds": [
+        "cleanup_completed_released"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-ACCEPT-NONFINAL-PENDING",
+      "command": "ACCEPT_STAGE",
+      "statement": "Owner acceptance of a nonfinal stage advances to PENDING, retains the accepted subject and pending cleanup, and clears result, validations and approvals.",
+      "anchor": "execution.stage_index += 1; execution.state = 'PENDING'; clearSubject();",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_nonfinal_pending"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-VALIDATION-SAME-WORKER",
+      "command": "RECORD_VALIDATION",
+      "statement": "Validation by the assigned worker refuses even when its check registration is supplied.",
+      "anchor": "requireGuard(evidence.runner_id !== execution.attempt.worker_id, 'REVIEW_NOT_INDEPENDENT');",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_same_worker"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "REVIEW_NOT_INDEPENDENT"
+    },
+    {
+      "id": "TR-VALIDATION-UNTRUSTED-CHECK",
+      "command": "RECORD_VALIDATION",
+      "statement": "Validation from a validator without the matching check registration refuses.",
+      "anchor": "requireGuard((context.trusted_checks ?? []).some((check) => check.check_id === evidence.check_id && check.check_version === evidence.check_version && check.runner_id === evidence.runner_id), 'UNTRUSTED_CHECK');",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_untrusted_check"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "UNTRUSTED_CHECK"
+    },
+    {
+      "id": "TR-VALIDATION-WRONG-SUBJECT",
+      "command": "RECORD_VALIDATION",
+      "statement": "Validation bound to a different submitted subject refuses.",
+      "anchor": "requireGuard(record.subject_digest === execution.result?.subject_digest && record.spec_digest === execution.spec_digest && record.workflow_id === execution.spec.workflow.workflow_id && record.workflow_version === execution.spec.workflow.version, 'SUBJECT_MISMATCH');",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_wrong_subject"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "SUBJECT_MISMATCH"
+    },
+    {
+      "id": "TR-VALIDATION-PRESUBMIT-TIME",
+      "command": "RECORD_VALIDATION",
+      "statement": "Validation dated before the recorded submission refuses.",
+      "anchor": "requireGuard(millis(evidence.at) <= now && millis(evidence.at) >= submittedAt, 'INVALID_EVIDENCE_TIME');",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_presubmit_time"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "INVALID_EVIDENCE_TIME"
+    },
+    {
+      "id": "TR-VALIDATION-DUPLICATE",
+      "command": "RECORD_VALIDATION",
+      "statement": "A second receipt for the same check refuses.",
+      "anchor": "requireGuard(!execution.validations.some((item) => item.check_id === evidence.check_id), 'DUPLICATE_EVIDENCE');",
+      "schemaPointer": "#/$defs/Command/oneOf/4",
+      "caseIds": [
+        "validation_duplicate"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "DUPLICATE_EVIDENCE"
+    },
+    {
+      "id": "TR-APPROVAL-WRONG-SUBJECT",
+      "command": "RECORD_APPROVAL",
+      "statement": "An approval bound to a different submitted subject refuses.",
+      "anchor": "requireGuard(record.subject_digest === execution.result?.subject_digest && record.spec_digest === execution.spec_digest && record.workflow_id === execution.spec.workflow.workflow_id && record.workflow_version === execution.spec.workflow.version, 'SUBJECT_MISMATCH');",
+      "schemaPointer": "#/$defs/Command/oneOf/5",
+      "caseIds": [
+        "approval_wrong_subject"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "SUBJECT_MISMATCH"
+    },
+    {
+      "id": "TR-APPROVAL-EXPIRED",
+      "command": "RECORD_APPROVAL",
+      "statement": "Recording an approval that expires at the command time refuses.",
+      "anchor": "requireGuard(approval.execution_id === execution.execution_id && millis(approval.expires_at) > now && approval.revoked === false, 'INVALID_APPROVAL');",
+      "schemaPointer": "#/$defs/Command/oneOf/5",
+      "caseIds": [
+        "approval_expired"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "INVALID_APPROVAL"
+    },
+    {
+      "id": "TR-ACCEPT-MISSING-CHECK",
+      "command": "ACCEPT_STAGE",
+      "statement": "Acceptance without the required passing check refuses.",
+      "anchor": "requireGuard(checks().every((check) => execution.validations.some((item) => item.check_id === check && item.verdict === 'PASS')), 'CHECKS_NOT_PASSED');",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_missing_check"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "CHECKS_NOT_PASSED"
+    },
+    {
+      "id": "TR-ACCEPT-REVOKED-APPROVAL",
+      "command": "ACCEPT_STAGE",
+      "statement": "Acceptance with only a revoked approval refuses.",
+      "anchor": "if (stage.requires_approval) requireGuard(execution.approvals.some((item) => item.decision === 'APPROVE' && !item.revoked && millis(item.expires_at) > now && (context.approver_ids ?? []).includes(item.actor_id)), 'APPROVAL_REQUIRED');",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_revoked_approval"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "APPROVAL_REQUIRED"
+    },
+    {
+      "id": "TR-ACCEPT-UNREGISTERED-APPROVER",
+      "command": "ACCEPT_STAGE",
+      "statement": "Acceptance without a currently registered approver refuses.",
+      "anchor": "if (stage.requires_approval) requireGuard(execution.approvals.some((item) => item.decision === 'APPROVE' && !item.revoked && millis(item.expires_at) > now && (context.approver_ids ?? []).includes(item.actor_id)), 'APPROVAL_REQUIRED');",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_unregistered_approver"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "APPROVAL_REQUIRED"
+    },
+    {
+      "id": "TR-ACCEPT-UNAUTHORIZED-OWNER",
+      "command": "ACCEPT_STAGE",
+      "statement": "Stage acceptance by an actor other than the accountable owner refuses.",
+      "anchor": "authorized(); state('VALIDATING'); unexpired();",
+      "schemaPointer": "#/$defs/Command/oneOf/7",
+      "caseIds": [
+        "accept_unauthorized_owner"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "UNAUTHORIZED"
+    },
+    {
+      "id": "TR-CLEANUP-STALE-FENCE",
+      "command": "CLEANUP_CONFIRMED",
+      "statement": "Cleanup confirmation with the advanced live fence rather than the retired attempt token refuses.",
+      "anchor": "requireGuard(execution.attempt !== null && input.attempt_id === execution.attempt.attempt_id && input.fencing_token === execution.attempt.fencing_token, 'STALE_ATTEMPT');",
+      "schemaPointer": "#/$defs/Command/oneOf/16",
+      "caseIds": [
+        "cleanup_stale_fence"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "STALE_ATTEMPT"
+    },
+    {
+      "id": "TR-CLEANUP-NOT-PENDING",
+      "command": "CLEANUP_CONFIRMED",
+      "statement": "A repeated cleanup confirmation after cleanup has cleared refuses.",
+      "anchor": "authorized(); requireGuard(execution.cleanup_pending, 'NO_CLEANUP_PENDING'); matchingAttempt(payload, false);",
+      "schemaPointer": "#/$defs/Command/oneOf/16",
+      "caseIds": [
+        "cleanup_not_pending"
+      ],
+      "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "NO_CLEANUP_PENDING"
     }
   ],
   "flows": [
@@ -442,6 +680,105 @@
         "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT",
         "TR-SUBMIT-WRONG-ARTIFACT-DIGEST",
         "TR-SUBMIT-WRONG-SPEC-DIGEST"
+      ]
+    },
+    {
+      "id": "validation",
+      "command": "RECORD_VALIDATION",
+      "from": "VALIDATING",
+      "to": "VALIDATING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-VALIDATION-PASS"
+      ]
+    },
+    {
+      "id": "blocked-validation",
+      "command": "RECORD_VALIDATION",
+      "from": "VALIDATING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-VALIDATION-SAME-WORKER",
+        "TR-VALIDATION-UNTRUSTED-CHECK",
+        "TR-VALIDATION-WRONG-SUBJECT",
+        "TR-VALIDATION-PRESUBMIT-TIME",
+        "TR-VALIDATION-DUPLICATE"
+      ]
+    },
+    {
+      "id": "approval",
+      "command": "RECORD_APPROVAL",
+      "from": "VALIDATING",
+      "to": "VALIDATING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-APPROVAL-APPROVE"
+      ]
+    },
+    {
+      "id": "blocked-approval",
+      "command": "RECORD_APPROVAL",
+      "from": "VALIDATING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-APPROVAL-WRONG-SUBJECT",
+        "TR-APPROVAL-EXPIRED"
+      ]
+    },
+    {
+      "id": "final-acceptance",
+      "command": "ACCEPT_STAGE",
+      "from": "VALIDATING",
+      "to": "COMPLETED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ACCEPT-FINAL-COMPLETED"
+      ]
+    },
+    {
+      "id": "nonfinal-acceptance",
+      "command": "ACCEPT_STAGE",
+      "from": "VALIDATING",
+      "to": "PENDING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ACCEPT-NONFINAL-PENDING"
+      ]
+    },
+    {
+      "id": "blocked-acceptance",
+      "command": "ACCEPT_STAGE",
+      "from": "VALIDATING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-ACCEPT-MISSING-CHECK",
+        "TR-ACCEPT-REVOKED-APPROVAL",
+        "TR-ACCEPT-UNREGISTERED-APPROVER",
+        "TR-ACCEPT-UNAUTHORIZED-OWNER"
+      ]
+    },
+    {
+      "id": "completed-cleanup",
+      "command": "CLEANUP_CONFIRMED",
+      "from": "COMPLETED",
+      "to": "COMPLETED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-CLEANUP-COMPLETED-RELEASED"
+      ]
+    },
+    {
+      "id": "blocked-cleanup",
+      "command": "CLEANUP_CONFIRMED",
+      "from": "COMPLETED",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-CLEANUP-STALE-FENCE",
+        "TR-CLEANUP-NOT-PENDING"
       ]
     }
   ]

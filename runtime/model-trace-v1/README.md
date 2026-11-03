@@ -1,17 +1,17 @@
 # Bounded orchestration review trace
 
 This is a first, **partial** machine-readable map of the existing shared
-orchestration evaluator. It connects a small read-only admission and refusal
-sequence to the v1 command schema, exact evaluator source, named existing tests,
+orchestration evaluator. It connects selected read-only lifecycle observations to the v1 command schema, exact evaluator source, named existing tests,
 and invented frozen replay cases. It does not replace, generate or interpret
 runtime behavior. It calls the existing evaluator only in tests; no dispatcher,
 provider, worker, store or candidate model is started.
 
-The manifest marks ADMIT, ASSIGN, ACKNOWLEDGE and SUBMIT as `partial`, alongside
-PENDING, ASSIGNED, EXECUTING and VALIDATING. Every other schema command and state
-remains `unmapped`. Partial is not a coverage percentage or a claim that every
-guard or outcome is represented. Cancellation, cleanup, retries, validation,
-approval and acceptance remain outside this trace.
+The manifest marks ADMIT, ASSIGN, ACKNOWLEDGE, SUBMIT, RECORD_VALIDATION,
+RECORD_APPROVAL, ACCEPT_STAGE and CLEANUP_CONFIRMED as `partial`, alongside
+PENDING, ASSIGNED, EXECUTING, VALIDATING and COMPLETED. Every other schema command
+and state remains `unmapped`. Partial does not mean every guard or outcome is
+represented. Cancellation, rework, approval revocation, retries, failure and the
+full second-stage review workflow remain outside this trace.
 
 The original five cases cover admission and missing/false dependency and resource
 assertions. The additive [dispatch observations](testdata/dispatch-oracle.json)
@@ -23,6 +23,24 @@ they never deliver them. Context flags are caller assertions, not evidence of
 real resources, authenticated identities or authority. REFUSED in the views is
 an outcome marker, not a runtime state; every refusal preserves its supplied
 execution and returns no receipt, event or effect list.
+
+The additive [completion observations](testdata/completion-oracle.json) continue
+the submitted single-review-stage execution through independent validation,
+registered approval, final acceptance and explicit cleanup confirmation. Final
+acceptance reaches COMPLETED but retains the retired attempt, pending cleanup
+and held resources. It returns only a `REVOKE_CAPABILITIES` intent. Confirmation
+with the retired attempt token later clears cleanup, resources and the attempt;
+it does not reopen the completed execution. A separate nonfinal acceptance case
+advances a two-stage workflow to PENDING, clears result/evidence/approvals and
+retains the accepted subject and pending cleanup. It does not trace the entire
+second stage or prove reviewer independence across a complete workflow.
+
+Selected refusals check validator independence, check registration, subject and
+time bindings, duplicate evidence, expired approval, missing checks, revoked or
+unregistered approval, owner identity and cleanup confirmation. The observations
+supply declared validation and approval records; they do not execute real checks,
+authenticate a validator or approver, confirm a process stopped, or change the
+runtime's authority rules.
 
 ## Review and check
 
@@ -60,10 +78,10 @@ contract and fixtures before deliberately revising this trace.
 
 ## What the evidence means
 
-The [original frozen observations](testdata/README.md) and additive dispatch
-observations were written by separate assistant contributors from static source
+The [original frozen observations](testdata/README.md), dispatch observations
+and completion observations were written by separate assistant contributors from static source
 and contract reading before the corresponding trace implementation. The original
-five-case oracle is unchanged. The twelve dispatch cases compare the full
+five-case and twelve-case corpora are unchanged. Both extensions compare the full
 execution, exact event and effects or refusal code/message, plus unchanged inputs.
 The expected cases were not derived from prior runs. This is separate-assistant
 authorship, not independent-person review or an oracle independent of the
@@ -75,6 +93,13 @@ behavioral disagreement; those tests bypass source-pin checking and do not write
 the evaluator file. The wrong-repository fixture also has a mismatched manifest
 digest: its expected subject refusal tests the earlier guard's precedence. These
 finite examples do not cover every refusal or prove the absence of other defects.
+
+Four additional in-memory mutations weaken independent validation, the required
+passing-check gate, revoked-approval filtering and retired-attempt cleanup
+fencing. Their frozen refusal observations must disagree after those mutations
+compile. The connected success inputs are also checked against the previous
+frozen post-state, starting with the original submitted execution. Neither
+control derives expected results from actual replay.
 
 Pins bind this reviewed snapshot to exact bytes and make drift visible; they do
 not authenticate source or show that a linked test ran. The test-name and source

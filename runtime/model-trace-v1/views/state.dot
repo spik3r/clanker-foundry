@@ -6,6 +6,7 @@ digraph bounded_shadow {
   assigned [label="ASSIGNED (partial)"];
   executing [label="EXECUTING (partial)"];
   validating [label="VALIDATING (partial)"];
+  completed [shape=box,label="COMPLETED (partial; cleanup may remain)"];
   refused [shape=box,label="REFUSED outcome (no new state)"];
   start -> pending [label="ADMIT: TR-ADMIT"];
   pending -> refused [style=dashed,label="ASSIGN: TR-DEPENDENCY / TR-RESOURCE"];
@@ -14,4 +15,13 @@ digraph bounded_shadow {
   assigned -> refused [style=dashed,label="ACKNOWLEDGE: TR-ACK-WRONG-WORKER / TR-ACK-STALE-FENCE / TR-ACK-EXPIRED-LEASE"];
   executing -> validating [label="SUBMIT: TR-SUBMIT-SUCCESS"];
   executing -> refused [style=dashed,label="SUBMIT: TR-SUBMIT-WRONG-WORKER / TR-SUBMIT-STALE-FENCE / TR-SUBMIT-EXPIRED-LEASE / TR-SUBMIT-WRONG-REPOSITORY-SUBJECT / TR-SUBMIT-WRONG-ARTIFACT-DIGEST / TR-SUBMIT-WRONG-SPEC-DIGEST"];
+  validating -> validating [label="RECORD_VALIDATION: TR-VALIDATION-PASS"];
+  validating -> refused [style=dashed,label="RECORD_VALIDATION: TR-VALIDATION-SAME-WORKER / TR-VALIDATION-UNTRUSTED-CHECK / TR-VALIDATION-WRONG-SUBJECT / TR-VALIDATION-PRESUBMIT-TIME / TR-VALIDATION-DUPLICATE"];
+  validating -> validating [label="RECORD_APPROVAL: TR-APPROVAL-APPROVE"];
+  validating -> refused [style=dashed,label="RECORD_APPROVAL: TR-APPROVAL-WRONG-SUBJECT / TR-APPROVAL-EXPIRED"];
+  validating -> completed [label="ACCEPT_STAGE: TR-ACCEPT-FINAL-COMPLETED"];
+  validating -> pending [label="ACCEPT_STAGE: TR-ACCEPT-NONFINAL-PENDING"];
+  validating -> refused [style=dashed,label="ACCEPT_STAGE: TR-ACCEPT-MISSING-CHECK / TR-ACCEPT-REVOKED-APPROVAL / TR-ACCEPT-UNREGISTERED-APPROVER / TR-ACCEPT-UNAUTHORIZED-OWNER"];
+  completed -> completed [label="CLEANUP_CONFIRMED: TR-CLEANUP-COMPLETED-RELEASED"];
+  completed -> refused [style=dashed,label="CLEANUP_CONFIRMED: TR-CLEANUP-STALE-FENCE / TR-CLEANUP-NOT-PENDING"];
 }
