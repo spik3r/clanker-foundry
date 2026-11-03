@@ -50,6 +50,7 @@ With installed Go 1.27.3, build from `modeling/lifecycle` into an authorized pri
 directory outside the checkout. Set `REVISION_WORK` to that directory first:
 
 ```sh
+: "${REVISION_WORK:?set an authorized private output directory}"
 export GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off
 go build -o "$REVISION_WORK/modelrevisioncheck" ./cmd/modelrevisioncheck
 "$REVISION_WORK/modelrevisioncheck" < "$REVISION_WORK/request.json" > "$REVISION_WORK/report.json"
