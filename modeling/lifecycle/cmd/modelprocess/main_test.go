@@ -2,14 +2,19 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/processview"
 	"io"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
+	"time"
 )
 
 type brokenReader struct{}
@@ -72,6 +77,74 @@ func TestRun(t *testing.T) {
 					}
 				}
 			}
+		})
+	}
+}
+
+// Build the real CLI so process-level SIGPIPE behavior reaches main.
+func TestCLIProcessOutput(t *testing.T) {
+	source, err := os.ReadFile("../../processview/testdata/model.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected, err := processview.Build(source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	binary := filepath.Join(t.TempDir(), "modelprocess")
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+	build := exec.CommandContext(ctx, filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-o", binary, ".")
+	if output, err := build.CombinedOutput(); err != nil {
+		t.Fatalf("build: %v: %s", err, output)
+	}
+	for _, mode := range []string{"json", "svg"} {
+		t.Run(mode, func(t *testing.T) {
+			t.Run("complete", func(t *testing.T) {
+				ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+				defer cancel()
+				cmd := exec.CommandContext(ctx, binary, mode)
+				cmd.Stdin = bytes.NewReader(source)
+				var stdout, diagnostic bytes.Buffer
+				cmd.Stdout, cmd.Stderr = &stdout, &diagnostic
+				cmd.WaitDelay = time.Second
+				if err := cmd.Run(); err != nil {
+					t.Fatalf("complete output: %v / %q", err, diagnostic.String())
+				}
+				want := expected.JSON
+				if mode == "svg" {
+					want = expected.SVG
+				}
+				if !bytes.Equal(stdout.Bytes(), want) || diagnostic.Len() != 0 {
+					t.Fatal("incomplete output or unexpected diagnostic")
+				}
+			})
+			t.Run("closed_pipe", func(t *testing.T) {
+				reader, writer, err := os.Pipe()
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer writer.Close()
+				if err := reader.Close(); err != nil {
+					t.Fatal(err)
+				}
+				ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+				defer cancel()
+				cmd := exec.CommandContext(ctx, binary, mode)
+				cmd.Stdin = bytes.NewReader(source)
+				cmd.Stdout = writer
+				var diagnostic bytes.Buffer
+				cmd.Stderr = &diagnostic
+				cmd.WaitDelay = time.Second
+				err = cmd.Run()
+				if ctx.Err() != nil {
+					t.Fatal("closed stdout deadline", ctx.Err())
+				}
+				var exit *exec.ExitError
+				if !errors.As(err, &exit) || exit.ExitCode() != 3 || diagnostic.String() != "modelprocess: output write failed\n" {
+					t.Fatalf("closed stdout: %v / %q; want exit 3 with fixed diagnostic", err, diagnostic.String())
+				}
+			})
 		})
 	}
 }

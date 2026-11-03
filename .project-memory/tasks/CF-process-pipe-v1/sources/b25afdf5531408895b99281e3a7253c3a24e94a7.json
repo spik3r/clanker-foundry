@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "b25afdf5531408895b99281e3a7253c3a24e94a7",
+  "id": "CF-process-pipe-v1",
+  "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+  "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+  "record": "---\nid: CF-process-pipe-v1\nstatus: in-progress\nowner: Foundry process CLI repair contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Return the declared process-view status on a closed pipe\n\n## Implementation claim\n\nOwner: Foundry process CLI repair contributor, coordinated by the repository\nowner's lead agent. The owner requested repairing PR20, completing its visual\nreview and merging after review. This supersedes the earlier publication-only\nscope for this repair; the coordinator owns visual inspection and integration.\nBranch: codex/lifecycle-process-view, original head 51822945. Current main\nat a981b3ed is incorporated by an ordinary merge before this claim.\n\nWrite only modeling/lifecycle/cmd/modelprocess/main.go and main_test.go, this\nrecord and its new immutable Project Memory source/events. Preserve the original\nprocess-view task, frozen expectations, renderer and all other product paths.\nNo render or merge action belongs to this builder assignment. The existing PR20\nis the matching active lane; no competing implementation is created.\n\n## Acceptance and validation\n\nReproduce SIGPIPE termination with an actual compiled binary and closed stdout\nbefore repair. Match existing CLI policy by ignoring SIGPIPE in main so a failed\nwrite produces exit 3 and the fixed diagnostic. Add compiled-binary regressions\nfor both json and svg with closed stdout and complete successful output. Run\nGo 1.27.3 full race tests, vet, modelc check, pack validation, installer checks,\nwhitespace checks and fresh committed Project Memory validation. Obtain an\nindependent source review and publish to PR20 for the coordinator's visual review\nand merge decision. Record observed results and any unavailable checks.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+        "id": "CF-process-pipe-v1",
+        "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
