@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "4ea153aa-c913-40fe-a8da-fe29c88aa02d",
+  "runId": "45199cf4-38be-4900-9b73-5eb4583d4f05",
+  "kind": "complete",
+  "parents": [
+    "7ccfc613-9e1e-40f1-a615-f1152fb7b2f8"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-proposal-report-binding-v1",
+    "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+    "revision": "803f7da7399397ccfb3c141bb65d8cf1df7f1096",
+    "blob": "5e0586c148b3840b0583ab745be996c8823d88d0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cb5fa219e38e81ae9b62f9aac21dc1fb082107f099623a1f6fa5222098830e1e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/proposal-report-publication-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T21:46:56.437Z",
+  "summary": "Transfer exact reviewed report-binding bytes onto authentic main ancestry with preserved original history",
+  "next": "Publish verified exact tree as draft PR and check exact-head hosted workflows without merging",
+  "files": [
+    "modeling/lifecycle/proposalreplay/replay.go",
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go",
+    "modeling/lifecycle/proposalreplay/README.md",
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md"
+  ],
+  "validation": "Complete lifecycle module matches ca16be4 byte-for-byte, which passed all 67 offline race-tested packages. Fresh Go1.27.3 race checks passed proposalreplay, cmd/modelproposal, scenarios and rehearsalinspection; whole-module vet, modelc check, modeltrace check, repository validation and whitespace passed. Original immutable local evidence remains unchanged; source803f7da has actual main a981b3e as parent. Hosted CI pending.",
+  "snapshot": {
+    "modeling/lifecycle/proposalreplay/replay.go": {
+      "blob": "aa185e21f1f430b8e16dcd21d247e7b6528dcd3e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go": {
+      "blob": "fd504f308a79e7a7f3fb194591a33a015d12a58a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/proposalreplay/README.md": {
+      "blob": "5d1f58d8359c83f5a4884a0f0bb651f641b56171",
+      "mode": "100644"
+    },
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md": {
+      "blob": "51d35aa596e9adb6c01d8aea5c1efe4413697177",
+      "mode": "100644"
+    }
+  }
+}
