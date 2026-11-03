@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "c143f8db-ec59-435d-a217-cbe1c02d8a7c",
+  "runId": "e4905876-04d0-4f95-b1ab-38758df8b788",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-operator-entrypoint-v1",
+    "path": "tasks/CF-operator-entrypoint-v1-request-preparation.md",
+    "revision": "6a7dba0fa3b2db520c9c4046b9be026901182cb2",
+    "blob": "093216d50d34d51b30f78b25b3b0d7c278a9ec68",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "217c85138add6e185785078f6a78d11156edfae352af2f51235398e0f05f8667"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-entrypoint-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/63",
+  "at": "2026-11-03T23:41:36.256Z",
+  "summary": "Prepare native first-design requests and share compatible CLI runners through one operator entrypoint",
+  "next": "Freeze independent preparation/native compatibility expectations before production changes",
+  "files": [
+    "modeling/lifecycle/internal/operatorcli/native.go",
+    "modeling/lifecycle/internal/operatorcli/prepare.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "modeling/lifecycle/internal/operatorcli/contract_test.go",
+    "modeling/lifecycle/internal/operatorcli/testdata/observations.json",
+    "modeling/lifecycle/internal/operatorcli/dispatch_test.go",
+    "modeling/lifecycle/internal/operatorcli/native_parity_test.go",
+    "modeling/lifecycle/cmd/foundry/main.go",
+    "modeling/lifecycle/cmd/modelreviewcheck/main.go",
+    "modeling/lifecycle/cmd/modelproposal/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-operator-entrypoint-v1-request-preparation.md"
+  ]
+}
