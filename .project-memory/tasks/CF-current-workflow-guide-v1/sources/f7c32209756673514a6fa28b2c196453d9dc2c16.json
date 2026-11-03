@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f7c32209756673514a6fa28b2c196453d9dc2c16",
+  "id": "CF-current-workflow-guide-v1",
+  "path": "tasks/CF-current-workflow-guide-v1-current-entrypoint.md",
+  "blob": "4dbfebafa2a804f64fe9706e3df9f67eda6ce49c",
+  "record": "---\nid: CF-current-workflow-guide-v1\nstatus: in-progress\nowner: Foundry current workflow guide contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Document the current model-driven review path\n\n## Implementation claim\n\nOwner: Foundry current workflow guide contributor. Integration owner: lead Codex\nagent. The repository owner requested the next larger tasks after reviewed PR20\nintegration. Base: reviewed main `83007fa`; branch:\n`codex/current-workflow-guide-v1`. The lead approved this outline before edits.\n\nExact scope: `docs/model-driven-current-workflow.md`, a short historical notice\nand current-guide pointer in `docs/model-driven-pipeline.md`, this task record\nand its new immutable Project Memory source/events. Preserve the historical\nintroduction body, root README, other documentation, tools, source policies,\nruntime, generated files and all other task records. Open PR56 is a separate\nclaim and supplies no merged capability for this guide.\n\n## Acceptance\n\nGive readers a practical entry point dated 4 November 2026 and pinned to reviewed\nmain. Map the selected supported path from the model-driven-design handoff through\ncheck-only intake/proposal correlation, separately authorized proposal execution,\nprocess-view inspection and carried rehearsal-report inspection. Link existing\ncontracts and pilot demonstrations instead of copying their full tutorials.\n\nProvide byte-preserving commands over invented checked-in inputs. Keep expected\nliterals unchanged and distinguish check reports, observed local replay, visual\ninspection, report consistency, human decisions and execution authority. Do not\npresent the map as an exhaustive tool inventory or a future capability promise.\n\n## Validation and handoff\n\nRun the documented commands in private scratch with installed exact Go 1.27.3\nand offline resolution. Check reported fields against existing frozen fixtures\nand contracts rather than reconstructing expectations from observed results.\nRun repository validation, installer regressions, whitespace checks and committed\nProject Memory validation. Obtain independent source review, publish a PR and\nleave merge to the lead after hosted checks. Record actual results and limits.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-current-workflow-guide-v1-current-entrypoint.md",
+        "id": "CF-current-workflow-guide-v1",
+        "blob": "4dbfebafa2a804f64fe9706e3df9f67eda6ce49c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
