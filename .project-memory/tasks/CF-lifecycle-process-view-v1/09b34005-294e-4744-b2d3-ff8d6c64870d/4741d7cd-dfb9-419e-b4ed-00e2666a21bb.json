@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "4741d7cd-dfb9-419e-b4ed-00e2666a21bb",
+  "runId": "09b34005-294e-4744-b2d3-ff8d6c64870d",
+  "kind": "complete",
+  "parents": [
+    "b0a1e38b-2fed-4528-8141-4dd634fe176a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-process-view-v1",
+    "path": "tasks/CF-lifecycle-process-view-v1-review.md",
+    "revision": "a37ac145d7809c6fb3abf0be5123d66aa3027a63",
+    "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "68faaf642ae370976f24e9188ed85cb37d7df3824129717d108d8c5efc784074"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/process-view-closeout",
+  "pullRequest": null,
+  "at": "2026-11-03T21:57:05.125Z",
+  "summary": "Record merged PR20, native visual review and release original process-view claim",
+  "next": "Review and merge task closeout",
+  "files": [
+    "tasks/CF-lifecycle-process-view-v1-review.md"
+  ],
+  "validation": "Verified PR20 merged 83007fa at head 2254bf7; all five hosted workflows passed; pack and whitespace passed",
+  "snapshot": {
+    "tasks/CF-lifecycle-process-view-v1-review.md": {
+      "blob": "bc6ed7c6e70587898e7cc975bd80648c9a4f647b",
+      "mode": "100644"
+    }
+  }
+}

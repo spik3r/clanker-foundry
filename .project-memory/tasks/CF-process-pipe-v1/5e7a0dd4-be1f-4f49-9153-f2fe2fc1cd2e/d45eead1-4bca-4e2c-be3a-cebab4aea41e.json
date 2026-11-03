@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "d45eead1-4bca-4e2c-be3a-cebab4aea41e",
+  "runId": "5e7a0dd4-be1f-4f49-9153-f2fe2fc1cd2e",
+  "kind": "complete",
+  "parents": [
+    "f9417c95-be12-4a04-94b2-c75154eb44a9"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-process-pipe-v1",
+    "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+    "revision": "b25afdf5531408895b99281e3a7253c3a24e94a7",
+    "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba652b3f11a1f3c72f7cd829421481d9eea6de7e5987c6fb6776713c5b41405c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/process-view-closeout",
+  "pullRequest": null,
+  "at": "2026-11-03T21:57:05.224Z",
+  "summary": "Record merged PR20 repair and release completed pipe claim",
+  "next": "Review and merge task closeout",
+  "files": [
+    "tasks/CF-process-pipe-v1-closed-stdout.md"
+  ],
+  "validation": "Verified PR20 merged 83007fa at head 2254bf7; all five hosted workflows passed; both-mode subprocess tests passed; pack and whitespace passed",
+  "snapshot": {
+    "tasks/CF-process-pipe-v1-closed-stdout.md": {
+      "blob": "81d9bb79fceb2fb158b68f244ee6d8a2992979c7",
+      "mode": "100644"
+    }
+  }
+}
