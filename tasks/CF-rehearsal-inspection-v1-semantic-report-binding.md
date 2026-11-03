@@ -1,6 +1,6 @@
 ---
 id: CF-rehearsal-inspection-v1
-status: in-progress
+status: review
 owner: Codex rehearsal report inspection contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -47,3 +47,29 @@ implementation. Run exact Go 1.27.3 race tests and vet, pack validation, immutab
 committed-diff evidence validation and whitespace checks. Test valid matches,
 valid early mismatch, wrong identities, changed commands/expectations/inputs,
 truncated and reordered entries, malformed input, limits and output failures.
+
+
+## Review result
+
+Implementation source `0be22ca33dc989eec0b83222f588da84d225809b` adds a pure
+report inspector, a no-path stdin CLI, an owned verified-material accessor and a
+runner-bound native report decoder. Existing source-policy files, carrier bytes
+and legacy verifier behavior are unchanged. Separate-contributor observation
+vectors were frozen in `51f55da` before implementation; their SHA-256 is
+`fb6433dfe6f2fa1c2e45f8390df9d081bcdab3b007fc9f95abdd9bf066f0efb8`.
+
+Observed checks on that source: Go 1.27.3 offline `go test -race -count=1 ./...`
+passed all lifecycle packages with `TMPDIR=/private/tmp`; `go vet ./...` passed;
+`go run ./cmd/modelc check` reported matching generated artifacts without writes.
+Pack validation, installer regressions and staged/unstaged whitespace checks
+passed. Optional `skills-ref` is unavailable and was reported skipped. The CLI
+regression checked an actual closed stdout pipe and exit 3, alongside complete
+request/receipt output. The separate contributor's literal vectors and updated
+external report hashes exercised semantic refusal after legacy verification.
+
+A fresh reviewer and the lead each reviewed exact source `0be22ca`, reported no
+blocking findings and independently reran the four affected packages with the
+race detector. Their reviews cover source behavior and checks, not authenticated
+execution of arbitrary supplied records. The inspector always retains execution
+not established and authority none. Hosted CI and merge remain lead actions;
+local implementation completion does not declare the PR integrated.

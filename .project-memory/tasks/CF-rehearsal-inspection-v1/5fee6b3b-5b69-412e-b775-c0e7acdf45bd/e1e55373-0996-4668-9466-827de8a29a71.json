@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "e1e55373-0996-4668-9466-827de8a29a71",
+  "runId": "5fee6b3b-5b69-412e-b775-c0e7acdf45bd",
+  "kind": "complete",
+  "parents": [
+    "f4b5bc7c-7ae5-4084-b08c-faef478d9d72"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-rehearsal-inspection-v1",
+    "path": "tasks/CF-rehearsal-inspection-v1-semantic-report-binding.md",
+    "revision": "9143ad2ab8f19115b727cc577a44612084b456d4",
+    "blob": "81d52f448458bb6a404d1b3ee22e1893c6410b37",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d455796754e526e842ba4a034bbe3372de14f94b6a414c4639dabb61fa22b2cb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/rehearsal-inspection-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/54",
+  "at": "2026-11-03T20:31:03.514Z",
+  "summary": "Inspect verified carrier reports against original suite identities and literals; legacy opacity and pinned source bytes preserved",
+  "next": "Commit immutable completion, validate full diff, push PR54 and let lead verify hosted checks and merge",
+  "files": [
+    "tasks/CF-rehearsal-inspection-v1-semantic-report-binding.md",
+    "modeling/lifecycle/rehearsalinspection/inspect.go",
+    "modeling/lifecycle/rehearsalinspection/inspect_test.go",
+    "modeling/lifecycle/rehearsalinspection/oracle_test.go",
+    "modeling/lifecycle/rehearsalinspection/README.md",
+    "modeling/lifecycle/rehearsalinspection/testdata/observations.json",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main_test.go",
+    "modeling/lifecycle/scenarios/report_inspection.go",
+    "modeling/lifecycle/scenarios/report_inspection_test.go",
+    "modeling/lifecycle/rehearsalhandoff/material.go",
+    "modeling/lifecycle/rehearsalhandoff/material_test.go"
+  ],
+  "validation": "Exact Go1.27.3 offline full lifecycle go test -race -count=1 ./... and go vet ./... passed; modelc check matched generated artifacts without writes; pack and installer regressions passed; staged and unstaged whitespace clean; separate contributor vectors frozen before implementation; independent reviewer and lead exact-source affected-package race tests passed; optional skills-ref unavailable",
+  "snapshot": {
+    "tasks/CF-rehearsal-inspection-v1-semantic-report-binding.md": {
+      "blob": "bee0c3e784663713e8c50d3988cb1bbecfe4f3df",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalinspection/inspect.go": {
+      "blob": "419ea5abd6424dcadb6061da9312f89a91728e22",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalinspection/inspect_test.go": {
+      "blob": "6895974afc9d5c5417b393712879a95a30da6982",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalinspection/oracle_test.go": {
+      "blob": "f3deb3316cd9b522b8889e8ea365f4a6d4d04194",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalinspection/README.md": {
+      "blob": "0fc4427526da09bddeb9d01189d3ef8e3a17a9e2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalinspection/testdata/observations.json": {
+      "blob": "6441ed4345f8b346b0b9cf821e501df3a3afd126",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go": {
+      "blob": "6f9bbba3ea5274b4f2965fc054a2f20039ff5fde",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main_test.go": {
+      "blob": "bc777ecfc6abbe38a0f518af3d231f198506fee8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/report_inspection.go": {
+      "blob": "415239f2a0ca142f523b65f7f04ed636cabcfb6c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenarios/report_inspection_test.go": {
+      "blob": "fcee189a12b9a1acd7e5cb6f2905c4d6e7a14285",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/material.go": {
+      "blob": "6d212d2f4ccd50c666333631d4fa9ca579a08239",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/rehearsalhandoff/material_test.go": {
+      "blob": "96b3d3fc4cc2b40edb90796d4cc830c437b9c795",
+      "mode": "100644"
+    }
+  }
+}
