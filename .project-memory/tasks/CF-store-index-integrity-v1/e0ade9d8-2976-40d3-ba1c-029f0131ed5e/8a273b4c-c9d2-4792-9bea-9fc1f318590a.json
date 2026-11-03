@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "8a273b4c-c9d2-4792-9bea-9fc1f318590a",
+  "runId": "e0ade9d8-2976-40d3-ba1c-029f0131ed5e",
+  "kind": "complete",
+  "parents": [
+    "441a7b28-f25a-49a1-a6b9-6c26b2248542"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-store-index-integrity-v1",
+    "path": "tasks/CF-store-index-integrity-v1-execution-routing.md",
+    "revision": "ca0e7c19e799ca0c3af61bd5cef47d0ce18b1d88",
+    "blob": "08f482083735ad711b14df027d3525dafc0c293d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a9b4511c6e24e8ba30a9c71c01ecf3c8019c14ce6c4c9757ed36259c046e3196"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/store-index-integrity-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/62",
+  "at": "2026-11-03T23:48:00.376Z",
+  "summary": "Reject strict-body/index routing inconsistencies before transactional work while preserving valid restart, receipts and large aggregates",
+  "next": "Commit immutable completion, validate full diff against current main, push PR62 and let lead require hosted Node24 CI then merge",
+  "files": [
+    "runtime/src/store.mjs",
+    "runtime/test/store-integrity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-store-index-integrity-v1-execution-routing.md"
+  ],
+  "validation": "Actual Node26.0.0: frozen independent contract23/23, fullruntime225/225 no skips with privateoffline npmcache; baseline21 corruption failures2positive passes observed before production;6compilingmutants rejected and restored23pass; syntax pack whitespace passed; independent source20661ac review clean and23tests independently passed; optional skills-ref unavailable",
+  "snapshot": {
+    "runtime/src/store.mjs": {
+      "blob": "89f3aaa754b2f4afab95815c4f743123b3b73f6b",
+      "mode": "100644"
+    },
+    "runtime/test/store-integrity.test.mjs": {
+      "blob": "1be5d0ceef950f435db9f43b949800bb3f6b2456",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "df898742c7e12bb8a5b18f5c9571862b0d8b5bd6",
+      "mode": "100644"
+    },
+    "tasks/CF-store-index-integrity-v1-execution-routing.md": {
+      "blob": "043097fac4d898651f0089028c578add00f16789",
+      "mode": "100644"
+    }
+  }
+}

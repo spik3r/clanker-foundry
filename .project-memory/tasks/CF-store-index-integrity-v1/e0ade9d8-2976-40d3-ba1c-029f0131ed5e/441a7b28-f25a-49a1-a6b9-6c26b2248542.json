@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "441a7b28-f25a-49a1-a6b9-6c26b2248542",
+  "runId": "e0ade9d8-2976-40d3-ba1c-029f0131ed5e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-store-index-integrity-v1",
+    "path": "tasks/CF-store-index-integrity-v1-execution-routing.md",
+    "revision": "ca0e7c19e799ca0c3af61bd5cef47d0ce18b1d88",
+    "blob": "08f482083735ad711b14df027d3525dafc0c293d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a9b4511c6e24e8ba30a9c71c01ecf3c8019c14ce6c4c9757ed36259c046e3196"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/store-index-integrity-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/62",
+  "at": "2026-11-03T23:39:54.413Z",
+  "summary": "Reject inconsistent indexed execution routing rows before mutations and replay without rewriting records",
+  "next": "Freeze independent corruption matrix and demonstrate baseline refusals missing before production edits",
+  "files": [
+    "runtime/src/store.mjs",
+    "runtime/test/store-integrity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-store-index-integrity-v1-execution-routing.md"
+  ]
+}
