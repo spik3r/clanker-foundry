@@ -1,0 +1,9 @@
+digraph bounded_shadow {
+  // Partial review trace; not an executable or complete state model.
+  rankdir=LR;
+  start [shape=point];
+  pending [label="PENDING (partial)"];
+  refused [shape=box,label="REFUSED outcome (no new state)"];
+  start -> pending [label="ADMIT: TR-ADMIT"];
+  pending -> refused [style=dashed,label="ASSIGN: TR-DEPENDENCY / TR-RESOURCE"];
+}

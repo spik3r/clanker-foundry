@@ -1,0 +1,227 @@
+{
+  "formatVersion": "orchestration-model-trace/v1",
+  "mode": "shadow-only",
+  "authority": "none",
+  "evaluatorVersion": 1,
+  "notice": "Partial human declarations, not a complete model, standard mapping, authority or proof of behavior.",
+  "sources": [
+    {
+      "path": "runtime/src/state.mjs",
+      "sha256": "f02d1cf06413200fcd119bfd13a70d4df1515bca502b097bf1a26980d1f961e7"
+    },
+    {
+      "path": "runtime/src/contract.mjs",
+      "sha256": "ab58f65b8c0761d9adbb2f3239433a18e844559252b11b7e0cf2cff0e3b8a215"
+    },
+    {
+      "path": "runtime/contracts/v1.schema.json",
+      "sha256": "427c541572665da73b3264ca4780ffe338b82422e5022dc2cdbbe2ba228ef966"
+    },
+    {
+      "path": "runtime/contracts/authority.schema.json",
+      "sha256": "a1ff963ef60f3bbab2c78ace40691c93a9966b9d10bef21ec54fd1f67db37a6b"
+    },
+    {
+      "path": "runtime/contracts/evidence.schema.json",
+      "sha256": "ebf4b2ab4304534e397f6dc8b8aa3ce452e7b8ab17f18ca013de76b32dbaf709"
+    },
+    {
+      "path": "runtime/contracts/workspace.schema.json",
+      "sha256": "c9aaea5ad268fd62809a37a3c7cf2d823c0453d84288f4b7cde35f8a78fa197a"
+    },
+    {
+      "path": "runtime/package-lock.json",
+      "sha256": "c7d237cbfb5ac0d006404466454320e181bd2431d6db1a42cc5cb538ec4bc158"
+    },
+    {
+      "path": "runtime/test/state.test.mjs",
+      "sha256": "6f37c982d4c4af89a2702c54ac1a066f16748a3263b5fc4fc4b193ca19f605cc"
+    },
+    {
+      "path": "runtime/test/fixtures.mjs",
+      "sha256": "93a68f541e1763f9de31bd39e79a77d6fc8cb7d17575d5cb80afe90777ea1c5a"
+    },
+    {
+      "path": "runtime/test/consumer-shadow-v1.test.mjs",
+      "sha256": "390e87ce4c4400aa6237bca876e06f15d764e23410bce4f3a1c99daa87901420"
+    },
+    {
+      "path": "runtime/model-trace-v1/testdata/oracle.json",
+      "sha256": "09b152afafec087c7101e71b26ff89a9a531288a45cafa1382d0063c4c0f411b"
+    }
+  ],
+  "commands": [
+    {
+      "id": "ADMIT",
+      "coverage": "partial"
+    },
+    {
+      "id": "ASSIGN",
+      "coverage": "partial"
+    },
+    {
+      "id": "ACKNOWLEDGE",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "SUBMIT",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RECORD_VALIDATION",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RECORD_APPROVAL",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "REVOKE_APPROVAL",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "ACCEPT_STAGE",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "REQUEST_CHANGES",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RETRYABLE_ERROR",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "TIMEOUT",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RETRY_TIMER",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "BLOCK",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RESOLVE",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "FAIL",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "CANCEL",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "CLEANUP_CONFIRMED",
+      "coverage": "unmapped"
+    }
+  ],
+  "states": [
+    {
+      "id": "PENDING",
+      "coverage": "partial"
+    },
+    {
+      "id": "ASSIGNED",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "EXECUTING",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "VALIDATING",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "RETRY_WAIT",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "BLOCKED",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "COMPLETED",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "FAILED",
+      "coverage": "unmapped"
+    },
+    {
+      "id": "CANCELLED",
+      "coverage": "unmapped"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "TR-ADMIT",
+      "command": "ADMIT",
+      "statement": "A valid invented read-only admission produces a PENDING record without effects.",
+      "anchor": "state: 'PENDING', stage_index: 0",
+      "schemaPointer": "#/$defs/Command/oneOf/0",
+      "caseIds": [
+        "admit_read_only_pending"
+      ],
+      "existingTest": "admission is typed, immutable and restricted to supported read-only workflows",
+      "expectedCode": null,
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-DEPENDENCY",
+      "command": "ASSIGN",
+      "statement": "Assignment refuses when the dependency assertion is not true.",
+      "anchor": "requireGuard(context.dependencies_satisfied === true, 'DEPENDENCIES_NOT_SATISFIED');",
+      "schemaPointer": "#/$defs/Command/oneOf/1",
+      "caseIds": [
+        "assign_dependencies_missing",
+        "assign_dependencies_false"
+      ],
+      "existingTest": "readiness, trusted identity, revisions and fencing reject stale workers",
+      "expectedCode": "DEPENDENCIES_NOT_SATISFIED",
+      "existingTestPath": "runtime/test/state.test.mjs"
+    },
+    {
+      "id": "TR-RESOURCE",
+      "command": "ASSIGN",
+      "statement": "After the dependency guard passes, assignment refuses when the resource assertion is not true.",
+      "anchor": "requireGuard(context.resources_available === true, 'RESOURCE_CONFLICT');",
+      "schemaPointer": "#/$defs/Command/oneOf/1",
+      "caseIds": [
+        "assign_resources_missing",
+        "assign_resources_false"
+      ],
+      "existingTest": "assignment intents remain hypothetical and stale revisions/uncertain prerequisites refuse",
+      "expectedCode": "RESOURCE_CONFLICT",
+      "existingTestPath": "runtime/test/consumer-shadow-v1.test.mjs"
+    }
+  ],
+  "flows": [
+    {
+      "id": "admission",
+      "command": "ADMIT",
+      "from": "NONE",
+      "to": "PENDING",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-ADMIT"
+      ]
+    },
+    {
+      "id": "blocked-assignment",
+      "command": "ASSIGN",
+      "from": "PENDING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-DEPENDENCY",
+        "TR-RESOURCE"
+      ]
+    }
+  ]
+}

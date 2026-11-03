@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-model-trace-v1
-status: in-progress
+status: review
 owner: Byte orchestration trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -61,3 +61,26 @@ full offline Node regression suites, repository validation and full-diff Project
 Memory checks; report unavailable tools and hosted CI separately. Obtain an
 independent exact-source review before any draft PR. Recheck ownership, current
 main and permissions before publication; stop on denial, overlap or uncertainty.
+
+## Local validation and review
+
+A separate assistant contributor froze five invented ADMIT and blocked-ASSIGN
+observations before implementation. The focused replay checks complete event
+and effects, selected state, refusal codes and unchanged inputs. A separate
+assistant source reviewer identified and rechecked fixes to flow-derived sequence
+output, view-drift controls, the resource test reference and the explicit
+non-state refusal marker. No independent-person review is claimed.
+
+Node 24.22.1: the final offline runtime suite passed 196 tests, the focused
+trace/state suite passed 25, and Project Memory/workflow regressions passed 143.
+Repository validation and trace checks passed; optional skills-ref was unavailable.
+Two disposable evaluator guard mutations each failed the frozen behavioral
+assertions (and source-pin checks), rather than merely failing to build. Hosted
+CI is not yet established. No candidate model, live provider, live worker, deployment or
+operational action was started by this slice.
+
+The initial npm test attempt had one environment failure because the default npm
+cache was unavailable. An existing populated offline cache enabled a clean locked
+install and the full passing rerun. Exact pins detect drift, not authentication
+or proof of semantics; all commands other than ADMIT and ASSIGN remain unmapped,
+and those two are explicitly partial.
