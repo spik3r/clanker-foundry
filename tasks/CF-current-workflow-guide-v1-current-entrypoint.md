@@ -66,3 +66,11 @@ Optional skills-ref is absent. No product source, expected fixture, source polic
 runtime or other documentation was changed. Next: independent exact-source
 review, genuine completion, committed-diff validation and lead review of hosted
 checks before merge.
+
+The lead independently reviewed source `aec0ad2` and approved the byte handling,
+command meanings and historical notice. Ordinary merge `d2bd23f` incorporated
+main `d040257`, which adds only the completed process-view task records and their
+evidence. Both guide files and every tool/example byte used by the documented
+commands remain unchanged from the reviewed source. Repository validation and
+whitespace checks passed on this union. Final completion and full-diff validation
+follow; hosted checks and merge remain the lead's responsibility.
