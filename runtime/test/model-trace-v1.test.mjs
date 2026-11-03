@@ -150,3 +150,66 @@ test('dispatch observations detect compiling worker, fence, expiry and digest gu
     assert.throws(() => assertDispatchCases(module.evaluate, cases), {code: 'ERR_ASSERTION'}, `${id}: mutant escaped`);
   }
 });
+
+const completionRaw = read(`${path}testdata/completion-oracle.json`);
+const completionOracle = JSON.parse(completionRaw);
+const completionPin = 'd81eb8f2417e4c5fcd5df284eabc5aac8bc4a48f9110795020b2a430b487c3e8';
+
+test('frozen completion observations compare full outcomes and preserve inputs', () => {
+  assert.equal(createHash('sha256').update(completionRaw).digest('hex'), completionPin);
+  assert.deepEqual(completionOracle.cases.map((c) => c.id), [
+    'validation_pass', 'approval_approve', 'accept_final_completed',
+    'cleanup_completed_released', 'accept_nonfinal_pending',
+    'validation_same_worker', 'validation_untrusted_check', 'validation_wrong_subject',
+    'validation_presubmit_time', 'validation_duplicate', 'approval_wrong_subject',
+    'approval_expired', 'accept_missing_check', 'accept_revoked_approval',
+    'accept_unregistered_approver', 'accept_unauthorized_owner',
+    'cleanup_stale_fence', 'cleanup_not_pending',
+  ]);
+  assertDispatchCases(evaluate, completionOracle.cases);
+  // Verify the supplied single-stage observations form a connected path from
+  // the original submitted execution; no observation is synthesized by replay.
+  let prior = dispatchOracle.cases.find((c) => c.id === 'submit_success').expected.execution;
+  for (const id of ['validation_pass', 'approval_approve', 'accept_final_completed', 'cleanup_completed_released']) {
+    const c = completionOracle.cases.find((c) => c.id === id);
+    assert.deepEqual(c.input.current, prior, `${id}: disconnected frozen input`);
+    prior = c.expected.execution;
+  }
+});
+
+test('completion trace preserves partial inventories, references and cleanup distinctions', () => {
+  const mutant = (change, expected) => {
+    const copy = structuredClone(manifest); change(copy);
+    assert.throws(() => verify(copy, files), expected);
+  };
+  mutant((m) => { m.commands.find((c) => c.id === 'REQUEST_CHANGES').coverage = 'partial'; }, /command coverage/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-VALIDATION-PASS').caseIds = ['approval_approve']; }, /case command/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-ACCEPT-UNAUTHORIZED-OWNER').anchor = "authorized(context.role === 'worker' && context.actor_id === execution.attempt.worker_id);"; }, /guard outcome reference/);
+  mutant((m) => { m.flows.find((f) => f.id === 'nonfinal-acceptance').to = 'COMPLETED'; }, /flow reference/);
+  const views = render(manifest);
+  assert.match(views[`${path}views/sequence.md`], /COMPLETED does not release resources/);
+  assert.match(views[`${path}views/state.dot`], /COMPLETED \(partial; cleanup may remain\)/);
+  const drift = `${files[`${path}testdata/completion-oracle.json`]}\n`;
+  assert.throws(() => verify(manifest, {...files, [`${path}testdata/completion-oracle.json`]: drift}), /source pin/);
+});
+
+// These behavioral mutations bypass source pins and never change disk files or
+// deliver effect intents. Each must fail the frozen comparison after compiling.
+test('completion observations detect independence, check, approval and cleanup guard mutants', async () => {
+  const source = read('runtime/src/state.mjs');
+  const contractURL = new URL('../src/contract.mjs', import.meta.url).href;
+  const mutations = [
+    ["requireGuard(evidence.runner_id !== execution.attempt.worker_id, 'REVIEW_NOT_INDEPENDENT');", "requireGuard(true, 'REVIEW_NOT_INDEPENDENT');", 'validation_same_worker'],
+    ["requireGuard(checks().every((check) => execution.validations.some((item) => item.check_id === check && item.verdict === 'PASS')), 'CHECKS_NOT_PASSED');", "requireGuard(true, 'CHECKS_NOT_PASSED');", 'accept_missing_check'],
+    ["item.decision === 'APPROVE' && !item.revoked &&", "item.decision === 'APPROVE' &&", 'accept_revoked_approval'],
+    ['matchingAttempt(payload, false);', 'void payload;', 'cleanup_stale_fence'],
+  ];
+  for (const [from, to, id] of mutations) {
+    assert.equal(source.split(from).length, 2, `${id}: unique mutation anchor`);
+    const mutated = source.replace(from, to).replace("'./contract.mjs'", JSON.stringify(contractURL));
+    const module = await import(`data:text/javascript;base64,${Buffer.from(mutated).toString('base64')}`);
+    const cases = completionOracle.cases.filter((c) => c.id === id);
+    assert.equal(cases.length, 1);
+    assert.throws(() => assertDispatchCases(module.evaluate, cases), {code: 'ERR_ASSERTION'}, `${id}: mutant escaped`);
+  }
+});
