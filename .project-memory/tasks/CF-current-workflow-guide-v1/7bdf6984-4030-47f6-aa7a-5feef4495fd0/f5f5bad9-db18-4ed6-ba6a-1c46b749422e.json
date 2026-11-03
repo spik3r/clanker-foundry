@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f5f5bad9-db18-4ed6-ba6a-1c46b749422e",
+  "runId": "7bdf6984-4030-47f6-aa7a-5feef4495fd0",
+  "kind": "start",
+  "parents": [
+    "63fc7ed3-5fdd-4f94-91cd-2b56c131a9c3"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-current-workflow-guide-v1",
+    "path": "tasks/CF-current-workflow-guide-v1-current-entrypoint.md",
+    "revision": "f7c32209756673514a6fa28b2c196453d9dc2c16",
+    "blob": "4dbfebafa2a804f64fe9706e3df9f67eda6ce49c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5b43e8834b8e7131f28538e81e017231d983d038f2c3baf26bf219c9ec024aa1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-review-wave-closeout",
+  "pullRequest": null,
+  "at": "2026-11-03T22:10:41.331Z",
+  "summary": "Record merged current-workflow guide and release completed claim",
+  "next": "Close canonical task from verified integration",
+  "files": [
+    "tasks/CF-current-workflow-guide-v1-current-entrypoint.md"
+  ]
+}

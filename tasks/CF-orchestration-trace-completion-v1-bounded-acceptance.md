@@ -1,11 +1,21 @@
 ---
 id: CF-orchestration-trace-completion-v1
-status: review
+status: done
 owner: Foundry completion trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Trace validation, approval, stage acceptance and cleanup
+
+## Integration result
+
+[PR57](https://github.com/spik3r/clanker-foundry/pull/57) merged as
+`a13bc2747a049ba2d94b358669356e1d3ee93c6d` after independent source review
+and all five hosted workflows passed on
+`b7ce60f562a4201cfa55c0c75505e34ae9175547`. The lead independently passed
+the nine focused trace tests, checker and committed evidence validation. The
+completed claim reserves no further work. The trace remains a bounded review aid;
+its effect intents were not delivered.
 
 ## Implementation claim
 

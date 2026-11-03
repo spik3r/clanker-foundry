@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "6da2886f-54af-4767-aad2-1474a34b4350",
+  "runId": "ee56a631-4818-4059-89e1-e2c88daedf42",
+  "kind": "start",
+  "parents": [
+    "1441853d-8a60-424a-80b1-fffd6c4b0e37"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-check-v1",
+    "path": "tasks/CF-revision-check-v1-two-design-review.md",
+    "revision": "b6d80d96b285a20c00e97c0b94623917c36519c2",
+    "blob": "a5ba066689642bfbf7f94933f33e383e58a5c964",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "18bc3c67cfff8b5119c9fbf99b65908d583bff77d9cf86b112b72995e23e881c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-review-wave-closeout",
+  "pullRequest": null,
+  "at": "2026-11-03T22:10:41.531Z",
+  "summary": "Record merged revision checker and release completed claim",
+  "next": "Close canonical task from verified integration",
+  "files": [
+    "tasks/CF-revision-check-v1-two-design-review.md"
+  ]
+}

@@ -1,11 +1,20 @@
 ---
 id: CF-current-workflow-guide-v1
-status: review
+status: done
 owner: Foundry current workflow guide contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Document the current model-driven review path
+
+## Integration result
+
+[PR58](https://github.com/spik3r/clanker-foundry/pull/58) merged as
+`5ab29659cc10068e9876033c983a9a7a3f78e38a` after independent document review
+and passing relevant hosted validation and evidence checks on
+`d409c00f4d96a6b67332526f2483e35ac94885b2`. The four command blocks ran
+unchanged. The lead checked saved report fields and exact original proposal
+bytes. The completed claim reserves no further work.
 
 ## Implementation claim
 

@@ -1,11 +1,22 @@
 ---
 id: CF-revision-check-v1
-status: review
+status: done
 owner: Codex revision-check contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Review two supplied design revisions through existing checks
+
+## Integration result
+
+[PR60](https://github.com/spik3r/clanker-foundry/pull/60) merged as
+`bd134f661b5b6163493d9c5ead9f7d4e7125b57a` after independent source review
+and all five hosted workflows passed on
+`4d1da3c52430dcfe1bb180a9ac638f032e520e7c`. The lead tested the ordinary-merge
+union with PR57 using focused Go race and runtime trace checks plus committed
+evidence validation. Its tree `45a4afad806d597ced19569e28c7357c52eceff0`
+matches the final merge exactly. The completed claim reserves no further work;
+the checker establishes no review or execution authority.
 
 ## Implementation claim
 
