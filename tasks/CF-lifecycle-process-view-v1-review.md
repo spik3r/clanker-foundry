@@ -1,11 +1,26 @@
 ---
 id: CF-lifecycle-process-view-v1
-status: in-progress
+status: done
 owner: Codex lifecycle process-view contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Lifecycle process-oriented review view
+
+## Integration result
+
+[PR20](https://github.com/spik3r/clanker-foundry/pull/20) merged as
+`83007fa3083dc46add5f83e628d2aac30d1a972b` after source review, native SVG
+visual review and all five hosted workflows passed on head
+`2254bf73d4acce3b6b3ed1684b227be6beedd4ef`. The later owner request explicitly
+authorized visual review and merge. The original build scope below is retained
+as history; the completed claim reserves no further work.
+
+The lead inspected the frozen fixture, normal lifecycle and maximum-length label
+with escaped characters using native macOS rendering. Reviewed SVG hashes and
+the finite review scope are recorded in the
+[repair task](CF-process-pipe-v1-closed-stdout.md). The view remains a static
+review aid with no execution or approval authority.
 
 ## Implementation claim
 
