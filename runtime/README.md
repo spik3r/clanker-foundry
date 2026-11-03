@@ -119,6 +119,31 @@ the external JSON input limit; each new wire request remains limited to 1 MiB.
 Restore the entire database consistently; test recovery before using it
 for any work that matters. A local event log is not a backup or external claim.
 
+Before each post-open transactional operation, including cached command receipts
+and replay, the store streams an unfiltered check of every execution row under
+the existing writer lock. The indexed `execution_id`, `task_id`, `spec_digest`,
+`state` and integer `revision` must agree with the strictly validated JSON body;
+the body's specification must also hash to its declared digest. Revision metadata
+is read as text with its SQLite storage type, so damaged REAL, text or wide
+integer values produce the same fixed integrity refusal rather than a driver
+conversion error. This prevents an altered index from hiding an active task or
+dependency from a filtered routing query.
+
+A mismatch or malformed body raises `EXECUTION_INDEX_CORRUPTED` with the fixed
+message `Stored execution routing fields disagree with its validated body` before
+transactional work changes any rows. The store does not repair or rewrite the
+record. `get` and `list` validate returned execution rows; dependency selection
+runs its global check and filtered read in one transaction. A missing `get`
+lookup returns null without inspecting unrelated rows. Startup initialization retains its
+existing behavior and is outside this operation guard.
+
+The guard costs one linear scan of all stored execution bodies per transaction;
+streaming avoids retaining a second array of every body. Large valid stored
+aggregates keep their existing size rules, independent of the new-command wire
+limit. This check covers duplicated execution routing fields, not every SQLite
+table or protection against a malicious database writer. Consistent body/index
+values can still disagree with history; replay retains those separate checks.
+
 ## Workers and validation
 
 Use `drainOutbox({store,adapter,checks,dispatcherId,now,limit})` with a bounded adapter

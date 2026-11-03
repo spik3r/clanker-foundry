@@ -9,6 +9,9 @@ import { validateEvidenceBinding, validateNamespaceDecision, verifyLocalPin, ver
 const DATABASE_VERSION = 2;
 const APPLICATION_ID = 0x43464f52;
 const ROLES = new Set(['owner', 'coordinator', 'scheduler', 'worker', 'validator', 'approver']);
+// Cast the indexed revision so a damaged SQLite integer cannot throw during
+// driver conversion before we can return the fixed integrity diagnostic.
+const EXECUTION_COLUMNS = 'execution_id,task_id,spec_digest,state,CAST(revision AS TEXT) AS indexed_revision,typeof(revision) AS revision_type,body';
 
 function parseStored(text) {
   // Validated aggregates and receipts grow across commands. Their serialized
@@ -20,6 +23,21 @@ function reject(code, message) {
   const error = new Error(message);
   error.code = code;
   throw error;
+}
+
+function checkedExecution(row) {
+  let execution;
+  try {
+    execution = parseStored(row.body);
+    validate('TaskExecution', execution);
+    if (row.execution_id !== execution.execution_id || row.task_id !== execution.spec.task_id ||
+        row.spec_digest !== execution.spec_digest || row.state !== execution.state ||
+        row.revision_type !== 'integer' || row.indexed_revision !== String(execution.revision) ||
+        digest(execution.spec) !== execution.spec_digest) throw new Error();
+  } catch {
+    reject('EXECUTION_INDEX_CORRUPTED', 'Stored execution routing fields disagree with its validated body');
+  }
+  return execution;
 }
 
 function identity(auth) {
@@ -169,8 +187,12 @@ export function openStore(databasePath, options = {}) {
 
   const transaction = (operation) => {
     db.exec('BEGIN IMMEDIATE');
-    try { const result = operation(); db.exec('COMMIT'); return result; }
-    catch (error) { db.exec('ROLLBACK'); throw error; }
+    try {
+      // A damaged routing column can hide a row from a filtered query. Check all
+      // executions under the writer lock before even an idempotent receipt read.
+      for (const row of db.prepare(`SELECT ${EXECUTION_COLUMNS} FROM executions`).iterate()) checkedExecution(row);
+      const result = operation(); db.exec('COMMIT'); return result;
+    } catch (error) { db.exec('ROLLBACK'); throw error; }
   };
   const instanceId = db.prepare('SELECT instance_id FROM authority_instance WHERE singleton=1').get().instance_id;
   const namespaceStatus = (id) => {
@@ -197,8 +219,8 @@ export function openStore(databasePath, options = {}) {
     return binding;
   };
   const get = (id) => {
-    const row = db.prepare('SELECT body FROM executions WHERE execution_id=?').get(id);
-    return row ? parseStored(row.body) : null;
+    const row = db.prepare(`SELECT ${EXECUTION_COLUMNS} FROM executions WHERE execution_id=?`).get(id);
+    return row ? checkedExecution(row) : null;
   };
   const specFor = (dependency) => {
     const row = db.prepare('SELECT body FROM specs WHERE task_id=? AND digest=?').get(dependency.task_id, dependency.spec_digest);
@@ -228,9 +250,9 @@ export function openStore(databasePath, options = {}) {
     return true;
   };
   const selectedDependencyOutputs = (spec) => spec.dependencies.flatMap((dependency) => {
-    const row = db.prepare("SELECT execution_id,body FROM executions WHERE task_id=? AND spec_digest=? AND state='COMPLETED' ORDER BY admission_sequence,execution_id LIMIT 1").get(dependency.task_id, dependency.spec_digest);
+    const row = db.prepare(`SELECT ${EXECUTION_COLUMNS} FROM executions WHERE task_id=? AND spec_digest=? AND state='COMPLETED' ORDER BY admission_sequence,execution_id LIMIT 1`).get(dependency.task_id, dependency.spec_digest);
     if (!row) return [];
-    const execution = parseStored(row.body);
+    const execution = checkedExecution(row);
     if (!execution.accepted_subject_digest) reject('INVALID_DEPENDENCY_OUTPUT', 'Completed dependency has no accepted output');
     return [{ ...dependency, execution_id: row.execution_id, subject_digest: execution.accepted_subject_digest }];
   });
@@ -532,9 +554,11 @@ export function openStore(databasePath, options = {}) {
     getArtifact,
     getSubject,
     dependencyOutputs(executionId) {
-      const execution = get(executionId);
-      if (!execution) reject('EXECUTION_NOT_FOUND', 'No execution has that identity');
-      return selectedDependencyOutputs(execution.spec);
+      return transaction(() => {
+        const execution = get(executionId);
+        if (!execution) reject('EXECUTION_NOT_FOUND', 'No execution has that identity');
+        return selectedDependencyOutputs(execution.spec);
+      });
     },
     putArtifact({ digest: artifactDigest, content }) {
       if (typeof content !== 'string' || Buffer.byteLength(content, 'utf8') > 1_048_576) reject('INVALID_ARTIFACT', 'Artifact must be UTF-8 text no larger than 1MiB');
@@ -601,7 +625,7 @@ export function openStore(databasePath, options = {}) {
       const response = canonical({ executions: [...reconstructed.values()], events, effects });
       return parseStored(response);
     }); },
-    list() { return db.prepare('SELECT body FROM executions ORDER BY admission_sequence,execution_id').all().map((row) => parseStored(row.body)); },
+    list() { return db.prepare(`SELECT ${EXECUTION_COLUMNS} FROM executions ORDER BY admission_sequence,execution_id`).all().map(checkedExecution); },
     events(executionId) {
       const rows = executionId === undefined ? db.prepare('SELECT body FROM events ORDER BY global_sequence').all() : db.prepare('SELECT body FROM events WHERE execution_id=? ORDER BY revision').all(executionId);
       return rows.map((row) => parseStored(row.body));
