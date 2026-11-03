@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "70facf5e-a130-4a8e-8341-1e274f9568d7",
+  "runId": "83e03fee-290d-46ff-b9bd-86215bdb167b",
+  "kind": "complete",
+  "parents": [
+    "8bb56033-3205-47db-bda0-67c99196dc49"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "f2b1875f25d0a4caefa86f98fd767805285fc4ae",
+    "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bab182eb945a74ccf67e9a074503bd6e07803bf9502706524f04af8b5cf35250"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:49:17.323Z",
+  "summary": "Reorganized the landing page and preserved installation and catalog guidance in focused guides",
+  "next": "Review draft PR and hosted checks",
+  "files": [
+    "README.md,docs/getting-started.md,docs/skills.md,tasks/CF-readme-navigation-v1-landing-page.md"
+  ],
+  "validation": "scripts/validate.sh passed; optional skills-ref unavailable. git diff --check passed. Manual links and repeat refusal passed in temporary HOME. Independent documentation review found no remaining blockers. bash tests/test-install.sh stopped at missing GNU Stow after wiring checks.",
+  "snapshot": {
+    "README.md,docs/getting-started.md,docs/skills.md,tasks/CF-readme-navigation-v1-landing-page.md": {
+      "blob": null,
+      "mode": null
+    }
+  }
+}
