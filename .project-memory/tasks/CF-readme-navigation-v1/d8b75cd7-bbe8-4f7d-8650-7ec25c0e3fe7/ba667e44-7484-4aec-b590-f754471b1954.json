@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "ba667e44-7484-4aec-b590-f754471b1954",
+  "runId": "d8b75cd7-bbe8-4f7d-8650-7ec25c0e3fe7",
+  "kind": "start",
+  "parents": [
+    "70facf5e-a130-4a8e-8341-1e274f9568d7"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "f2b1875f25d0a4caefa86f98fd767805285fc4ae",
+    "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bab182eb945a74ccf67e9a074503bd6e07803bf9502706524f04af8b5cf35250"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:49:45.832Z",
+  "summary": "Correct path-scoped evidence and revalidate final documentation",
+  "next": "Check exact committed content and complete",
+  "files": [
+    "README.md",
+    "docs/getting-started.md",
+    "docs/skills.md",
+    "tasks/CF-readme-navigation-v1-landing-page.md"
+  ]
+}
