@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "8a2724f9cb4c595f9f52b4f0070505caf4ff94c4",
+  "id": "CF-orchestration-trace-completion-v1",
+  "path": "tasks/CF-orchestration-trace-completion-v1-bounded-acceptance.md",
+  "blob": "90a83464486b30dd8198870a89c66f041dfbbff0",
+  "record": "---\nid: CF-orchestration-trace-completion-v1\nstatus: in-progress\nowner: Foundry completion trace contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Trace validation, approval, stage acceptance and cleanup\n\n## Implementation claim\n\nOwner: Foundry completion trace contributor; the coordinating lead alone merges.\nBase: main at 83007fa3083dc46add5f83e628d2aac30d1a972b. Branch:\ncodex/orchestration-trace-completion-v1. The owner requested the next bounded\nlarger tasks after PR20 merged. The coordinator approved this finite slice.\nThe live open-PR check found separate proposal-report work in PR56; its paths,\nauthority and other task records are excluded.\n\nWrite only runtime/model-trace-v1/check.mjs, manifest.json, README.md,\nviews/state.dot, views/sequence.md, testdata/completion-oracle.json,\nruntime/test/model-trace-v1.test.mjs, this task and its new immutable Project\nMemory source/events. Preserve the original five-case and twelve-case oracle\nbytes and their checks. Do not change evaluator, runtime policy, contracts,\nstore, runner, providers, source policies, global instructions or CI.\n\n## Bounded acceptance\n\nContinue the earlier submitted single-review-stage example through successful\nRECORD_VALIDATION, RECORD_APPROVAL, ACCEPT_STAGE and CLEANUP_CONFIRMED. Acceptance\nreaches COMPLETED while cleanup and resources remain pending; confirmation later\nreleases them. Compare REVOKE_CAPABILITIES as an inert intent, never deliver it.\nAdd one nonfinal acceptance observation with a two-stage read-only workflow:\nadvance to PENDING, retain the accepted subject and pending cleanup, and clear\nresult, validations and approvals. Do not claim the full second-stage workflow.\n\nThe separate contributor freezes five success and thirteen refusal observations\nbefore trace implementation or replay. Refusals cover independent/trusted/bound,\nfresh, nonduplicate validation; bound and unexpired approval; checks and valid\napproval at acceptance; owner identity; cleanup fencing and pending cleanup.\nCompare full execution, exact events/effects or refusal codes/messages, plus\nunchanged inputs. Keep all unrelated commands and states explicitly unmapped.\n\nFour in-memory behavioral controls weaken validator independence, required PASS,\nrevoked-approval filtering and cleanup fencing. They must fail the frozen literal\ncomparisons independently of source-pin checking. Finite observations and source\nlinks do not establish universal coverage, authenticity or actual operations.\n\n## Validation and handoff\n\nPublish this claim before implementation, record genuine Project Memory start,\nand freeze the separately authored corpus before replay or trace changes. Run\nfocused and full runtime tests with locked dependencies, the fixed trace checker,\npack and installer checks, whitespace and full committed evidence validation.\nObtain independent exact-source review. The coordinator reviews hosted checks\nand owns integration. No real validator, approval service or worker is activated.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-trace-completion-v1-bounded-acceptance.md",
+        "id": "CF-orchestration-trace-completion-v1",
+        "blob": "90a83464486b30dd8198870a89c66f041dfbbff0",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
