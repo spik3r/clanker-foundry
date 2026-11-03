@@ -52,6 +52,10 @@
     {
       "path": "runtime/model-trace-v1/testdata/dispatch-oracle.json",
       "sha256": "4afde4fc00e01c2c54ce060a7d118883a6480b7e50856a11717b3b151e27edd3"
+    },
+    {
+      "path": "runtime/test/model-trace-v1.test.mjs",
+      "sha256": "7e9204654e2513c677bb0ed7cde5e089e28c7f74278129012ff529de86490852"
     }
   ],
   "commands": [
@@ -213,9 +217,9 @@
       "caseIds": [
         "assign_success"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": null,
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-ACK-SUCCESS",
@@ -226,9 +230,9 @@
       "caseIds": [
         "ack_success"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": null,
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-SUCCESS",
@@ -239,9 +243,9 @@
       "caseIds": [
         "submit_success"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": null,
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-ACK-WRONG-WORKER",
@@ -252,9 +256,9 @@
       "caseIds": [
         "ack_wrong_worker"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "UNAUTHORIZED",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-ACK-STALE-FENCE",
@@ -265,9 +269,9 @@
       "caseIds": [
         "ack_stale_fence"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "STALE_ATTEMPT",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-ACK-EXPIRED-LEASE",
@@ -278,9 +282,9 @@
       "caseIds": [
         "ack_expired_lease"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "ATTEMPT_EXPIRED",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-WRONG-WORKER",
@@ -291,9 +295,9 @@
       "caseIds": [
         "submit_wrong_worker"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "UNAUTHORIZED",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-STALE-FENCE",
@@ -304,9 +308,9 @@
       "caseIds": [
         "submit_stale_fence"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "STALE_ATTEMPT",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-EXPIRED-LEASE",
@@ -317,9 +321,9 @@
       "caseIds": [
         "submit_expired_lease"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "ATTEMPT_EXPIRED",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-WRONG-REPOSITORY-SUBJECT",
@@ -330,9 +334,9 @@
       "caseIds": [
         "submit_wrong_repository_subject"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "SUBJECT_MISMATCH",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-WRONG-ARTIFACT-DIGEST",
@@ -343,9 +347,9 @@
       "caseIds": [
         "submit_wrong_artifact_digest"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "ARTIFACT_DIGEST_MISMATCH",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     },
     {
       "id": "TR-SUBMIT-WRONG-SPEC-DIGEST",
@@ -356,9 +360,9 @@
       "caseIds": [
         "submit_wrong_spec_digest"
       ],
-      "existingTest": "ordered stages require independent validation and approval, then confirmed cleanup",
+      "existingTest": "frozen dispatch observations compare full execution, event, effects and unchanged inputs",
       "expectedCode": "SPEC_DIGEST_MISMATCH",
-      "existingTestPath": "runtime/test/state.test.mjs"
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs"
     }
   ],
   "flows": [

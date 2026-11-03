@@ -65,3 +65,8 @@ checks, and the stale-fence fixture detects the resulting behavioral difference.
 Next: independent exact-source review, immutable completion/full-diff validation,
 and coordinator review of hosted checks before any merge. This task grants no
 managed-runtime authority and launches no real worker.
+
+Independent source review found that new requirements linked a general happy-path
+runtime test instead of the new replay test that checks those exact observations.
+The manifest now links the source-pinned twelve-case replay test for each new
+requirement. Those references name checks, not proof that a check ran.

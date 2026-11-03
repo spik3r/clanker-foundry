@@ -11,7 +11,7 @@ const knownSources = [
   'runtime/contracts/v1.schema.json', 'runtime/contracts/authority.schema.json',
   'runtime/contracts/evidence.schema.json', 'runtime/contracts/workspace.schema.json',
   'runtime/package-lock.json', 'runtime/test/state.test.mjs', 'runtime/test/fixtures.mjs',
-  'runtime/test/consumer-shadow-v1.test.mjs',
+  'runtime/test/consumer-shadow-v1.test.mjs', 'runtime/test/model-trace-v1.test.mjs',
   `${trace}/testdata/oracle.json`, `${trace}/testdata/dispatch-oracle.json`,
 ];
 const sha = (data) => createHash('sha256').update(data).digest('hex');
@@ -77,7 +77,7 @@ export function verify(manifest, files) {
     insist(typeof req.anchor === 'string' && req.anchor.length > 0 && files['runtime/src/state.mjs'].includes(req.anchor), 'source anchor');
     const match = /^#\/\$defs\/Command\/oneOf\/(0|[1-9][0-9]*)$/.exec(req.schemaPointer);
     insist(match && variants[Number(match[1])]?.properties?.kind?.const === req.command, 'schema reference');
-    insist(['runtime/test/state.test.mjs','runtime/test/consumer-shadow-v1.test.mjs'].includes(req.existingTestPath)
+    insist(['runtime/test/state.test.mjs','runtime/test/consumer-shadow-v1.test.mjs','runtime/test/model-trace-v1.test.mjs'].includes(req.existingTestPath)
       && typeof req.existingTest === 'string' && files[req.existingTestPath].includes(`test('${req.existingTest}'`), 'test reference');
     insist(Array.isArray(req.caseIds) && req.caseIds.length > 0 && unique(req.caseIds) && req.caseIds.every((id) => ids.includes(id)), 'case reference');
     insist(req.caseIds.every((id) => fixture.cases.find((c) => c.id === id)?.input.command.kind === req.command), 'case command');
