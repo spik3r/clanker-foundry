@@ -113,10 +113,19 @@ retained if later cleanup fails, but outcome and exit are failure. Empty output 
 an error alone does not prove zero execution. Diagnostics do not echo proposal or
 subprocess text; receipts themselves can contain sensitive task/command data.
 
-The bridge checks the pinned child's report envelope, source/model/suite identities,
-exit agreement and ordered case/step prefix. The existing compiled modelplay owns
-full result comparison and report consistency. This is not a general verifier for
-reports supplied by other programs, nor authentication of execution or source.
+The bridge checks the pinned child's complete native report using the existing
+model-bound report decoder. It checks nested field shape, actual/expected
+comparison diagnostics, source/model/suite identities, exit agreement and the
+ordered case/step prefix. Every input, command and expectation must also match the
+original suite and its reported task flow. Successful steps advance that flow;
+matching refusals retain it, including `INVALID_INPUT` with a null result task.
+Early mismatches with structurally valid, correctly model-bound actual results
+remain ordinary mismatches. An actual result with incorrect mode, authority or
+model digest, null refusals, or an invalid success/refusal structure is a
+replay-report failure even when its differences accurately describe the defect.
+Inspection invokes no reducer and never changes a literal expectation. This is a consistency
+check, not a general report-provider interface or authentication of execution or
+source. The compiled modelplay still performs the actual replay.
 
 ## Trusted-host boundary
 
@@ -169,3 +178,11 @@ Separate fault-injection tests cover zero-launch preflight, static source/path
 refusals, wrong toolchain, process/output failures, cancellation and cleanup.
 Those fakes establish failure reporting, not actual candidate behavior. No frozen
 expectation is refreshed from a run and no visual inspection is claimed here.
+
+Separately authored captured-report controls mutate only the original frozen
+report literals. They cover nested malformed fields, false comparison claims,
+internally consistent substitutions of suite literals, success/refusal input
+flow, and valid early mismatches at every step of the first fixture. The unchanged
+bridge compiled but failed fifty negative comparisons before the capture checks
+were added; the original full reports and eight positive controls were accepted.
+This contributor separation is not independent-human approval or execution proof.

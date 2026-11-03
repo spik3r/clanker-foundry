@@ -1,11 +1,29 @@
 ---
 id: CF-proposal-report-binding-v1
-status: in-progress
+status: review
 owner: Foundry proposal report contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Bind captured candidate reports to original scenario literals
+
+## Publication preparation result
+
+Prospective claim commit `803f7da7399397ccfb3c141bb65d8cf1df7f1096` has
+actual main `a981b3ed1752f5f8c9fe7bc68fbaf637cfffeef1` as its parent. The
+connected GitHub API created the branch and claim commit normally; exact tree
+and commit hashes were verified locally. A fresh run was registered against
+that remote source, linked to the prior local completion, and started before
+the implementation was copied. Original immutable local evidence bytes remain
+unchanged and retain their original provenance.
+
+The complete lifecycle module is byte-identical to the previously reviewed and
+67-package race-tested local result `ca16be4`. Fresh race tests in the authentic
+ancestry checkout passed for proposal replay, its CLI, scenarios and rehearsal
+inspection. Whole-module vet, modelc check, modeltrace check, repository validation
+and whitespace checks also passed. Hosted checks remain a separate publication
+step. This claim reserves no further implementation edits; draft publication and
+exact-head hosted-check review are next, with no merge or deployment implied.
 
 ## Implementation claim
 

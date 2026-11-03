@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "7ccfc613-9e1e-40f1-a615-f1152fb7b2f8",
+  "runId": "45199cf4-38be-4900-9b73-5eb4583d4f05",
+  "kind": "start",
+  "parents": [
+    "68d3ae91-e4e2-4995-af54-736e69ae6cf0"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-proposal-report-binding-v1",
+    "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+    "revision": "803f7da7399397ccfb3c141bb65d8cf1df7f1096",
+    "blob": "5e0586c148b3840b0583ab745be996c8823d88d0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cb5fa219e38e81ae9b62f9aac21dc1fb082107f099623a1f6fa5222098830e1e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/proposal-report-publication-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T21:45:30.153Z",
+  "summary": "Transfer reviewed proposal-report binding onto authentic current-main ancestry for draft publication",
+  "next": "Copy exact reviewed implementation, verify byte identity and rerun affected checks before fresh completion",
+  "files": [
+    "modeling/lifecycle/proposalreplay/replay.go",
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go",
+    "modeling/lifecycle/proposalreplay/README.md",
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md"
+  ]
+}

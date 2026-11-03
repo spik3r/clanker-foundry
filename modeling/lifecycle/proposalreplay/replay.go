@@ -9,6 +9,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"reflect"
 	"runtime"
 
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/acceptanceauthor"
@@ -68,8 +69,9 @@ type Receipt struct {
 }
 
 type proposal struct {
-	request Request
-	suite   scenarios.Suite
+	request    Request
+	suite      scenarios.Suite
+	inspection scenarios.Runner
 }
 
 func hash(b []byte) string {
@@ -98,6 +100,7 @@ func prepare(raw []byte, action string) (proposal, Receipt, error) {
 	if err != nil {
 		return p, r, ErrInvalid
 	}
+	p.inspection = validation
 	checked, err := acceptanceauthor.CheckWithRunner([]byte(p.request.Manifest), []byte(p.request.Model), []byte(p.request.Suite), "check", validation)
 	if err != nil {
 		return p, r, ErrInvalid
@@ -164,47 +167,24 @@ func ExitCode(r Receipt, err error) int {
 }
 
 // The child is the closed, pinned modelplay, not an arbitrary report provider.
-// These checks bind its captured envelope and ordered prefix to this invocation;
-// they are not a second lifecycle evaluator or a portable report verifier.
-type capturedReport struct {
-	FormatVersion   string          `json:"formatVersion"`
-	ScenarioVersion string          `json:"scenarioVersion"`
-	ProfileVersion  string          `json:"profileVersion"`
-	Mode            string          `json:"mode"`
-	Authority       string          `json:"authority"`
-	ModelDigest     string          `json:"modelDigest"`
-	ScenarioDigest  string          `json:"scenarioDigest"`
-	SourceDigest    string          `json:"sourceDigest"`
-	Matched         bool            `json:"matched"`
-	CasesCompleted  int             `json:"casesCompleted"`
-	StepsExecuted   int             `json:"stepsExecuted"`
-	Entries         []capturedEntry `json:"entries"`
-}
-type capturedEntry struct {
-	CaseID      string          `json:"caseId"`
-	StepID      string          `json:"stepId"`
-	Input       json.RawMessage `json:"input"`
-	Command     json.RawMessage `json:"command"`
-	Expected    json.RawMessage `json:"expected"`
-	Actual      json.RawMessage `json:"actual"`
-	Matched     bool            `json:"matched"`
-	Differences []string        `json:"differences"`
-}
-
+// Inspect native result consistency, then bind its ordered entries to the original
+// suite. The validation-only context never runs a reducer. Consistent observations
+// do not authenticate execution or establish that the model is correct.
 func captured(raw []byte, exit int, p proposal, r Receipt) (bool, error) {
-	var d capturedReport
-	if strictjson.Decode(raw, &d, scenarios.MaxReportBytes, scenarios.MaxDepth) != nil || (exit != 0 && exit != 1) || d.FormatVersion != scenarios.ReportVersion || d.ScenarioVersion != scenarios.ScenarioVersion || d.ProfileVersion != model.ProfileVersion || d.Mode != scenarios.Mode || d.Authority != scenarios.Authority || d.ModelDigest != r.Preflight.CurrentModelDigest || r.Preflight.ScenarioDigest == nil || d.ScenarioDigest != *r.Preflight.ScenarioDigest || d.SourceDigest != r.Sources.SuiteSHA256 || d.Matched != (exit == 0) || d.StepsExecuted != len(d.Entries) || len(d.Entries) == 0 {
+	d, err := p.inspection.DecodeReport(raw)
+	if err != nil || (exit != 0 && exit != 1) || d.ModelDigest != r.Preflight.CurrentModelDigest || r.Preflight.ScenarioDigest == nil || d.ScenarioDigest != *r.Preflight.ScenarioDigest || d.SourceDigest == nil || *d.SourceDigest != r.Sources.SuiteSHA256 || d.Matched != (exit == 0) {
 		return false, ErrExecution
 	}
 	position := 0
 	completed := 0
 	for _, c := range p.suite.Cases {
+		current := c.Initial
 		for _, s := range c.Steps {
 			if position >= len(d.Entries) {
 				return false, ErrExecution
 			}
 			e := d.Entries[position]
-			if e.CaseID != c.ID || e.StepID != s.ID || e.Matched != (len(e.Differences) == 0) {
+			if e.CaseID != c.ID || e.StepID != s.ID || !reflect.DeepEqual(e.Input, current) || !reflect.DeepEqual(e.Command, s.Command) || !reflect.DeepEqual(e.Expected, s.Expected) {
 				return false, ErrExecution
 			}
 			position++
@@ -213,6 +193,9 @@ func captured(raw []byte, exit int, p proposal, r Receipt) (bool, error) {
 					return false, ErrExecution
 				}
 				return false, nil
+			}
+			if e.Actual.OK {
+				current = *e.Actual.Task
 			}
 		}
 		completed++
