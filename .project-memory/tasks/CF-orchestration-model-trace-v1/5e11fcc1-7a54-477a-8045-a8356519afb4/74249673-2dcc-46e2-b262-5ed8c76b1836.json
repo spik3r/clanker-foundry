@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "74249673-2dcc-46e2-b262-5ed8c76b1836",
+  "runId": "5e11fcc1-7a54-477a-8045-a8356519afb4",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-model-trace-v1",
+    "path": "tasks/CF-orchestration-model-trace-v1-shadow.md",
+    "revision": "143c6aaba504753856539f6f168e101578b31f51",
+    "blob": "1faecd457ab2c9389ab8ed0d4e68ab33a76bd8cd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bec17f94ffaf108a139d4a408391eeff72ac00730d6000bdd5b33858feaf3ffb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-model-trace-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T10:10:32.598Z",
+  "summary": "Map a bounded partial shadow flow to the shared evaluator and frozen independent observations",
+  "next": "Freeze independent literal cases before implementing source-linked trace checks",
+  "files": [
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/oracle.json",
+    "runtime/model-trace-v1/testdata/README.md",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-model-trace-v1-shadow.md"
+  ]
+}
