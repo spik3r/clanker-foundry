@@ -7,17 +7,22 @@ and invented frozen replay cases. It does not replace, generate or interpret
 runtime behavior. It calls the existing evaluator only in tests; no dispatcher,
 provider, worker, store or candidate model is started.
 
-The manifest deliberately marks ADMIT and ASSIGN as `partial`, PENDING as
-`partial`, and every other schema command and state as `unmapped`. Partial is
-not a coverage percentage or a claim that every guard or outcome is represented.
-In particular, successful assignment, cancellation, cleanup, fencing, effects
-and every other transition remain outside this slice. The known ASSIGN sequence
-only records that missing/false dependency assertions refuse first, and that
-missing/false resource assertions refuse after dependencies are asserted true.
-These flags are caller-supplied assertions, not evidence of real resources or
-authorization. No `LAUNCH_ATTEMPT` effect is returned by these refusal cases. REFUSED in the
-views is an outcome marker, not a runtime state; the invented input remains
-PENDING at revision 1 after refusal.
+The manifest marks ADMIT, ASSIGN, ACKNOWLEDGE and SUBMIT as `partial`, alongside
+PENDING, ASSIGNED, EXECUTING and VALIDATING. Every other schema command and state
+remains `unmapped`. Partial is not a coverage percentage or a claim that every
+guard or outcome is represented. Cancellation, cleanup, retries, validation,
+approval and acceptance remain outside this trace.
+
+The original five cases cover admission and missing/false dependency and resource
+assertions. The additive [dispatch observations](testdata/dispatch-oracle.json)
+cover successful read-only assignment, acknowledgement and successful submission,
+plus wrong-worker, stale-fence, exact-lease-deadline and artifact/specification
+binding refusals. Successful assignment returns a `LAUNCH_ATTEMPT` intent and
+successful submission returns a `RUN_CHECKS` intent. Tests compare those intents;
+they never deliver them. Context flags are caller assertions, not evidence of
+real resources, authenticated identities or authority. REFUSED in the views is
+an outcome marker, not a runtime state; every refusal preserves its supplied
+execution and returns no receipt, event or effect list.
 
 ## Review and check
 
@@ -55,13 +60,21 @@ contract and fixtures before deliberately revising this trace.
 
 ## What the evidence means
 
-The [frozen observations](testdata/README.md) were written by a separate assistant
-from static source and contract reading before this trace implementation. The
-replay test calls `evaluate` with those original invented inputs and checks the
-selected execution fields, exact event, effects, refusal codes and unchanged
-inputs. The separately stated expected cases were not derived from a prior
-run. This is separation between assistant contributors, not independent-person
-review or an oracle independent of the evaluator's intended semantics.
+The [original frozen observations](testdata/README.md) and additive dispatch
+observations were written by separate assistant contributors from static source
+and contract reading before the corresponding trace implementation. The original
+five-case oracle is unchanged. The twelve dispatch cases compare the full
+execution, exact event and effects or refusal code/message, plus unchanged inputs.
+The expected cases were not derived from prior runs. This is separate-assistant
+authorship, not independent-person review or an oracle independent of the
+evaluator's intended semantics.
+
+Four in-memory source mutations weaken worker identity, both fence checks, lease
+expiry and artifact-digest checks. The frozen observations must detect each by
+behavioral disagreement; those tests bypass source-pin checking and do not write
+the evaluator file. The wrong-repository fixture also has a mismatched manifest
+digest: its expected subject refusal tests the earlier guard's precedence. These
+finite examples do not cover every refusal or prove the absence of other defects.
 
 Pins bind this reviewed snapshot to exact bytes and make drift visible; they do
 not authenticate source or show that a linked test ran. The test-name and source

@@ -3,7 +3,15 @@ digraph bounded_shadow {
   rankdir=LR;
   start [shape=point];
   pending [label="PENDING (partial)"];
+  assigned [label="ASSIGNED (partial)"];
+  executing [label="EXECUTING (partial)"];
+  validating [label="VALIDATING (partial)"];
   refused [shape=box,label="REFUSED outcome (no new state)"];
   start -> pending [label="ADMIT: TR-ADMIT"];
   pending -> refused [style=dashed,label="ASSIGN: TR-DEPENDENCY / TR-RESOURCE"];
+  pending -> assigned [label="ASSIGN: TR-ASSIGN-SUCCESS"];
+  assigned -> executing [label="ACKNOWLEDGE: TR-ACK-SUCCESS"];
+  assigned -> refused [style=dashed,label="ACKNOWLEDGE: TR-ACK-WRONG-WORKER / TR-ACK-STALE-FENCE / TR-ACK-EXPIRED-LEASE"];
+  executing -> validating [label="SUBMIT: TR-SUBMIT-SUCCESS"];
+  executing -> refused [style=dashed,label="SUBMIT: TR-SUBMIT-WRONG-WORKER / TR-SUBMIT-STALE-FENCE / TR-SUBMIT-EXPIRED-LEASE / TR-SUBMIT-WRONG-REPOSITORY-SUBJECT / TR-SUBMIT-WRONG-ARTIFACT-DIGEST / TR-SUBMIT-WRONG-SPEC-DIGEST"];
 }
