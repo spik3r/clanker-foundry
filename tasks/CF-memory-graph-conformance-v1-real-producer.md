@@ -74,3 +74,34 @@ Run repository checks and ordinary full committed-diff Project Memory validation
 obtain separate exact-source review, verify a clean restore and report before
 publication. Ordinary draft publication is authorized; no merge, formal approval,
 deployment, new runtime authority or denied-action retry follows from this claim.
+
+## Observed local result
+
+The separate contributor froze 50 expanded cases under 14 declared rules at
+commit `b35b292`, before the harness was written or the producer was replayed.
+The original corpus SHA-256 is
+`7d8e85a6595e3c3d6b98e594f9167259cb5c6c302970a51e492ff4c545ac402e`.
+Fixture-shape inspection exposed implementation details; this is separate
+contract-derived pre-execution authorship, not blind or independent-human review.
+No expectation correction was needed after replay.
+
+The unchanged actual producer matches all 50 cases, including 25 expected graph
+refusals, across 598 event orderings. Twenty repeated runs produced identical
+reports: 1,000 case comparisons and 11,960 ordering runs. A separate reviewer
+reproduced the final 91 focused tests, literal comparisons and input preservation.
+It found no blocking issue in the harness, dedicated read-only workflow or docs.
+
+Both implementing and reviewing contributors separately checked disposable
+producer mutations. Removing the terminal-parent restriction and freshness
+filter each broke two frozen cases; unconditional refusal broke 25. Mutating the
+freshness set broke 22. The reviewer also checked unexpected TypeError and stale
+coverage behavior. Failures were behavioral or preservation mismatches, not
+source-hash rejection. Frozen expectations and the real producer stayed unchanged.
+
+The final local combined Project Memory and new conformance run passed 234 tests,
+zero failures/skips, on Node 24.22.1. Repository validation, syntax and whitespace
+checks passed. Optional `skills-ref` and GNU Stow were unavailable; no local
+installer-regression pass is claimed. Hosted checks and clean-restore/committed
+validation remain separately reportable observations, not inferred from these
+local results. No runtime, generic Go profile, authority, existing policy, remote
+task, deployment, standards conformance or human approval changed.

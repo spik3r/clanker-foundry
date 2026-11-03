@@ -1,0 +1,176 @@
+{
+  "formatVersion": "project-memory-conformance-coverage/v1",
+  "mode": "declared-test-coverage",
+  "authority": "none",
+  "ruleCount": 14,
+  "caseCount": 50,
+  "orderingRuns": 598,
+  "rules": [
+    {
+      "id": "active-chain",
+      "description": "Checkpoint/resume stays in the same run with one active parent and consecutive sequence.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "checkpoint-chain",
+        "checkpoint-expands-scope",
+        "checkpoint-replaces-scope",
+        "ordinary-event-changes-run",
+        "ordinary-event-two-parents",
+        "skipped-sequence"
+      ]
+    },
+    {
+      "id": "acyclic",
+      "description": "Causal cycles are refused.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "causal-two-run-cycle"
+      ]
+    },
+    {
+      "id": "first-start",
+      "description": "A first run starts at sequence zero without causal parents.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "first-start",
+        "nonzero-start-sequence"
+      ]
+    },
+    {
+      "id": "fresh",
+      "description": "Only a newly added complete single frontier contributes, never a stale or superseded completion.",
+      "contractSection": "File evidence and history preservation",
+      "cases": [
+        "complete-competes-active",
+        "fresh-old-completion-superseded",
+        "reconcile-terminal-antichain",
+        "reconciled-completion-drops-old-scope",
+        "restart-after-abandon",
+        "restart-after-complete",
+        "reverse-wall-clock-order",
+        "stale-completion-not-selected",
+        "two-independent-fresh-completions",
+        "unknown-fresh-id-does-not-cover-stale-head"
+      ]
+    },
+    {
+      "id": "frontier",
+      "description": "Every task needs a single frontier for committed validation, even for identical fingerprints.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "competing-active-heads",
+        "complete-competes-abandoned",
+        "complete-competes-active",
+        "identical-completions-compete",
+        "newest-time-cannot-resolve-conflict",
+        "partial-reconciliation-still-conflicts",
+        "reconcile-active-antichain"
+      ]
+    },
+    {
+      "id": "identity",
+      "description": "Task/source/claim, code repository and branch remain fixed during a run; a PR may be added once but not changed.",
+      "contractSection": "Events and runs; SKILL.md: Resume, complete and commit",
+      "cases": [
+        "pr-added-once",
+        "pr-removed",
+        "pr-swapped",
+        "same-run-branch-change",
+        "same-run-claim-change",
+        "same-run-code-repository-change",
+        "same-run-source-revision-change",
+        "task-key-order-is-not-identity"
+      ]
+    },
+    {
+      "id": "independent",
+      "description": "Separate tasks retain their own frontiers; one active task does not block another task completion.",
+      "contractSection": "Events and runs; SKILL.md: Conflicts and interruptions",
+      "cases": [
+        "two-independent-fresh-completions",
+        "unrelated-active-task-does-not-lock"
+      ]
+    },
+    {
+      "id": "parents",
+      "description": "Parent IDs must exist, be unique, and belong to the same task.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "cross-task-parent",
+        "duplicate-parent",
+        "missing-parent",
+        "ordinary-event-two-parents"
+      ]
+    },
+    {
+      "id": "reconcile",
+      "description": "A new reconciliation run references competing heads forming an antichain; it gives no coverage until completion.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "partial-reconciliation-still-conflicts",
+        "reconcile-active-antichain",
+        "reconcile-terminal-antichain",
+        "reconciled-completion-drops-old-scope",
+        "reconciliation-direct-ancestor",
+        "reconciliation-transitive-ancestor"
+      ]
+    },
+    {
+      "id": "restart",
+      "description": "A later run can supersede a terminal head, but cannot restart one active head.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "fresh-old-completion-superseded",
+        "restart-active-checkpoint",
+        "restart-active-start",
+        "restart-after-abandon",
+        "restart-after-complete"
+      ]
+    },
+    {
+      "id": "run-start",
+      "description": "Every run has exactly one start, with unique event identity.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "duplicate-event-id",
+        "ordinary-event-changes-run",
+        "run-with-no-start",
+        "two-starts-one-run"
+      ]
+    },
+    {
+      "id": "scope",
+      "description": "Checkpoints may change scope; terminal scope must stay within its active parent.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "abandon-exceeds-scope",
+        "abandon-subset",
+        "checkpoint-expands-scope",
+        "checkpoint-replaces-scope",
+        "complete-exceeds-scope",
+        "complete-subset",
+        "reconciled-completion-drops-old-scope"
+      ]
+    },
+    {
+      "id": "terminal",
+      "description": "Complete and abandon terminate their run; ordinary successors are refused.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "abandon-subset",
+        "checkpoint-after-complete",
+        "complete-after-abandon",
+        "complete-subset"
+      ]
+    },
+    {
+      "id": "time",
+      "description": "Timestamps do not order events or select a winning frontier.",
+      "contractSection": "Events and runs",
+      "cases": [
+        "newest-time-cannot-resolve-conflict",
+        "reverse-wall-clock-order"
+      ]
+    }
+  ]
+}
