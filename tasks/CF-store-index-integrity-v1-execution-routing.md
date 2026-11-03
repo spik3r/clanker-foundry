@@ -1,6 +1,6 @@
 ---
 id: CF-store-index-integrity-v1
-status: in-progress
+status: review
 owner: Codex store index integrity contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -69,3 +69,42 @@ Run focused and full runtime tests under Node 24 or later, independent mutation
 controls, pack validation, whitespace and committed-diff Project Memory validation.
 Record actual results and limitations. Only lead review and passing hosted checks
 may authorize merge; local completion alone does not declare integration.
+
+
+## Implementation and observed result
+
+Production source `20661ac1eec16bb7fbe5e6b57d5516eeed1451a8` adds the streamed
+unfiltered transaction guard, strict selected-row checks and atomic dependency
+selection. The duplicated revision is retrieved through SQLite text/type
+projections before comparison, so wide integer metadata cannot bypass the fixed
+diagnostic through a driver conversion error. Database schema/version/startup
+behavior, other table integrity rules and held recovery work are unchanged.
+
+The separate contributor froze `runtime/test/store-integrity.test.mjs` in
+`24ac434` before production, SHA-256
+`2d2cfd73fc188b7521ee9a1769f781af3a5d3d18f5fa85a317a5f205f545eb79`.
+On unchanged old code, 21 corruption expectations failed and both positive
+restart/large-aggregate controls passed. The new source passes all 23 tests,
+including exact fixed diagnostics and unchanged logical-table snapshots on
+refusal. The frozen test bytes remain unchanged.
+
+Six compiling mutants were rejected: removing the unfiltered transaction scan
+caused 20 failures, task-id comparison 5, specification-content digest 2, strict
+body schema validation 1, selected read validation 15 and atomic dependency
+checking 2. Restoring the source passed all 23 tests. Experiments used a separate
+disposable clone and invented private databases, never an operating authority.
+
+Observed local validation on Node v26.0.0: all 225 runtime tests passed, no skips,
+with pinned dependencies installed offline and scripts disabled. The first full
+run passed 224/225; the existing offline consumer-pack test tried the protected
+default npm cache. An environment-only rerun selected the private populated cache
+and passed 225/225 without source changes. Syntax, pack and whitespace checks
+passed. Optional skills-ref is unavailable and reported skipped.
+
+A fresh source reviewer and the lead reviewed exact `20661ac` without blocking
+findings. The independent reviewer reran all 23 unchanged contract tests and
+checked the full diff's whitespace. Linear scan cost and the limits of selected
+reads are documented. This detects duplicated execution routing inconsistencies,
+not arbitrary database corruption or malicious writers. Hosted Node 24 CI,
+committed-diff evidence validation and lead merge remain separate final checks;
+local completion does not declare the PR integrated or release its claim.
