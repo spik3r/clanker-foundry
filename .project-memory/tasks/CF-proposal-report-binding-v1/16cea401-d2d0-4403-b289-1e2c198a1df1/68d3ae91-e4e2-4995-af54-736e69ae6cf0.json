@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "68d3ae91-e4e2-4995-af54-736e69ae6cf0",
+  "runId": "16cea401-d2d0-4403-b289-1e2c198a1df1",
+  "kind": "complete",
+  "parents": [
+    "5b26ade9-9dcc-462a-b475-5ec57ab4bc37"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-proposal-report-binding-v1",
+    "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+    "revision": "c21032c5f335a8734093008e7592dc00dc83053e",
+    "blob": "c19dac74460f7cd9c6e6c411f58c1ebf15533ee6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f3e536f7f88097115f484bfb2b6b8b4034093799dbb8fdbbcd1dc218fc3e11bc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/proposal-report-binding-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T21:39:40.165Z",
+  "summary": "Inspect captured proposal report consistency and bind full entries to original suite literals",
+  "next": "Review local bundle; reconcile exact-tree snapshot with actual main before separately authorized publication",
+  "files": [
+    "modeling/lifecycle/proposalreplay/replay.go",
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go",
+    "modeling/lifecycle/proposalreplay/README.md",
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md"
+  ],
+  "validation": "Go1.27.3 offline full race suite passed all 67 packages; 72 captured-report subtests passed; full vet, modelc validate/check, modeltrace check, repository validation and whitespace passed; independent source review and actual replay regressions passed. Initial aggregate failed in unchanged qualification and reproducibility under constrained ambient temp; final full rerun in dedicated valid scratch passed. Optional skills-ref, Stow and ShellCheck unavailable; existing wrong-toolchain case skipped on required version.",
+  "snapshot": {
+    "modeling/lifecycle/proposalreplay/replay.go": {
+      "blob": "aa185e21f1f430b8e16dcd21d247e7b6528dcd3e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go": {
+      "blob": "fd504f308a79e7a7f3fb194591a33a015d12a58a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/proposalreplay/README.md": {
+      "blob": "5d1f58d8359c83f5a4884a0f0bb651f641b56171",
+      "mode": "100644"
+    },
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md": {
+      "blob": "c82a2aa1d11eb87e347c52ca63d4306d52d05bac",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "5b26ade9-9dcc-462a-b475-5ec57ab4bc37",
+  "runId": "16cea401-d2d0-4403-b289-1e2c198a1df1",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-proposal-report-binding-v1",
+    "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+    "revision": "c21032c5f335a8734093008e7592dc00dc83053e",
+    "blob": "c19dac74460f7cd9c6e6c411f58c1ebf15533ee6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f3e536f7f88097115f484bfb2b6b8b4034093799dbb8fdbbcd1dc218fc3e11bc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/proposal-report-binding-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T21:27:47.111Z",
+  "summary": "Bind captured proposal reports to original literals using existing native report inspection",
+  "next": "Freeze independent negative tests before implementation, then run red and green validation",
+  "files": [
+    "modeling/lifecycle/proposalreplay/replay.go",
+    "modeling/lifecycle/proposalreplay/captured_binding_test.go",
+    "modeling/lifecycle/proposalreplay/README.md",
+    "tasks/CF-proposal-report-binding-v1-captured-literals.md"
+  ]
+}

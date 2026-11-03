@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "c21032c5f335a8734093008e7592dc00dc83053e",
+  "id": "CF-proposal-report-binding-v1",
+  "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+  "blob": "c19dac74460f7cd9c6e6c411f58c1ebf15533ee6",
+  "record": "---\nid: CF-proposal-report-binding-v1\nstatus: in-progress\nowner: Foundry proposal report contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bind captured candidate reports to original scenario literals\n\n## Implementation claim\n\nThe coordinating owner assigned this local-only lane on 2026-11-03. Inspect the\ncaptured candidate report using the existing model-bound native report decoder,\nthen bind every carried input, command and expected result to the original suite.\nPreserve valid early mismatches, refusal input retention, execution stage and\ncleanup behavior. Do not run a reducer during inspection or change literal inputs.\n\nCurrent remote main was `a981b3ed1752f5f8c9fe7bc68fbaf637cfffeef1`, tree\n`a59496f035a13670f4fc27ddc1e30d6d27dcd64a`. Read-only connector retrieval\nverified every missing blob and the complete resulting tree. Local snapshot\n`23bc7f7ea66587ab3f2b20f01f5bec6667951e1c` has that exact tree, but is not\nrepresented as remote ancestry. The current source contains merged PR54's bound\nreport decoder. All Project Memory frontiers were completed, and only held PR20\nwas open. Earlier proposal replay implementation was complete; the merged report\ninspector's claim explicitly reserves no further edits. The coordinator and other\ncurrent contributor confirmed this separate scope before edits. These are observed\ncoordination checks, not an atomic claim or publication permission.\n\nExact scope:\n- `modeling/lifecycle/proposalreplay/replay.go`\n- `modeling/lifecycle/proposalreplay/captured_binding_test.go`\n- `modeling/lifecycle/proposalreplay/README.md`\n- This task record and its new immutable Project Memory source/events.\n\nDo not change source-policy pins, the native scenario decoder, compiler, generated\nfiles, frozen fixtures, other packages, runtime, workflows, existing task claims,\nREADME organization, recovery conformance or held process-view work. No external\nstate changes, push, PR, merge, deployment, worker activation or denied-operation\nretry is part of this local claim.\n\n## Independent expectations and validation\n\nA separate contributor specifies and freezes negative tests from original literal\nreports before implementation. Cases cover malformed nested records, false\ncomparisons, substituted commands or expectations, success and refusal input flow,\nstrict field shape, and honest mismatched prefixes. A compiling pre-fix red test\nis evidence that the added checks catch this gap; do not refresh expected outputs\nfrom a producer run. Contributor separation is not independent-human approval.\n\nRun focused and full offline Go1.27.3 race tests, vet, modelc check, repository\nvalidation and immutable committed-diff validation. Preserve check-only zero-launch\nbehavior and original custom-model replay reports. Record unavailable checks and\nall local evidence without claiming hosted CI or authenticated execution. Obtain\nan independent source review and retain a local, reviewable commit or bundle.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-proposal-report-binding-v1-captured-literals.md",
+        "id": "CF-proposal-report-binding-v1",
+        "blob": "c19dac74460f7cd9c6e6c411f58c1ebf15533ee6",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
