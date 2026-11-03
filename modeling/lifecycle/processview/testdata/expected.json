@@ -1,0 +1,45 @@
+{
+  "projection": {
+    "formatVersion": "lifecycle-process-view/v1",
+    "mode": "example-only",
+    "authority": "none",
+    "modelDigest": "b3ec8e7c7609cd9e7d25ee5a5626c9573b659f4c4c73420a428f23661594bcab",
+    "initial": "Draft",
+    "states": [
+      {"id": "Done", "label": "Done", "terminal": true},
+      {"id": "Draft", "label": "Draft", "terminal": false},
+      {"id": "Ready", "label": "Ready <&>", "terminal": false}
+    ],
+    "transitions": [
+      {"id": "Ta", "from": "Draft", "trigger": "send", "to": "Ready", "guards": ["Ga", "Gb"], "effects": ["set_state", "increment_revision"]},
+      {"id": "Tb", "from": "Ready", "trigger": "finish", "to": "Done", "guards": ["Ga"], "effects": ["assign_owner_if_absent", "set_state", "increment_revision"]}
+    ],
+    "guards": [
+      {"id": "Ga", "requirement": "Ra", "expression": "nonempty(task.outcome)"},
+      {"id": "Gb", "requirement": "Rb", "expression": "eq(command.actor, \"<&>\")"}
+    ]
+  },
+  "svgText": [
+    "Transition Ta / trigger send",
+    "From state Draft",
+    "Command send",
+    "All guards: Ga, Gb",
+    "Guard refusal: unchanged state Draft; failed guard IDs sorted",
+    "Revision limit: unchanged state Draft",
+    "Effect 1: set_state",
+    "Effect 2: increment_revision",
+    "To state Ready",
+    "Transition Tb / trigger finish",
+    "From state Ready",
+    "Command finish",
+    "All guards: Ga",
+    "Guard refusal: unchanged state Ready; failed guard IDs sorted",
+    "Revision limit: unchanged state Ready",
+    "Effect 1: assign_owner_if_absent",
+    "Effect 2: set_state",
+    "Effect 3: increment_revision",
+    "To state Done",
+    "Guard Ga / requirement Ra: nonempty(task.outcome)",
+    "Guard Gb / requirement Rb: eq(command.actor, \"<&>\")"
+  ]
+}

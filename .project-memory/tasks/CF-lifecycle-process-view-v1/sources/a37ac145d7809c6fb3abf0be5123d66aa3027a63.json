@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a37ac145d7809c6fb3abf0be5123d66aa3027a63",
+  "id": "CF-lifecycle-process-view-v1",
+  "path": "tasks/CF-lifecycle-process-view-v1-review.md",
+  "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+  "record": "---\nid: CF-lifecycle-process-view-v1\nstatus: in-progress\nowner: Codex lifecycle process-view contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Lifecycle process-oriented review view\n\n## Implementation claim\n\nBuild a separate offline, deterministic human-review projection of the existing\nvalidated lifecycle model on branch `codex/lifecycle-process-view`. Existing\n`views/` renders transition-per-row state connections and a decision table; this\nview instead lays out each declared state/trigger as an explicit admission flow:\nall guards, guard refusal, revision-limit refusal, ordered effects and destination.\nThe projection is a review aid, not executable process semantics, proof of\nexecution or approval, a scheduler, or BPMN conformance. Explicitly label invalid\ninput/illegal transitions as outside the per-transition lanes and unsupported\nconcepts such as parallelism, timers, pools and subprocesses. Recompute canonical\nmodel identity from validated input; output must not depend on source ordering where\nnormalization makes order immaterial. Never modify compiler-generated artifacts.\n\nScope is new `modeling/lifecycle/processview/` and\n`modeling/lifecycle/cmd/modelprocess/` files, this task and its own new immutable\nProject Memory records only. Do not edit existing model/compiler/views/trace,\ntraceability, tutorial, scenario, reviewpack/exporter or Astra's `intakemodel/`\nbridge paths. Main, visible claims and the held stack were inspected; the local\nclaim is not a shared lock. Recheck before publication.\n\n## Projection contract and verification\n\n`processview.Build(raw []byte) (Outputs, error)` accepts the existing strict\nJSON-v1 model, normalizes it, computes its canonical identity and produces JSON\nand inert SVG bytes. JSON has `formatVersion`, `mode`, `authority`, `modelDigest`,\n`initial`, `states` (id, label, terminal), `transitions` (id, from, trigger, to,\nnormalized guards and ordered effect op names), and `guards` (id, requirement,\nreadable expression). Version is `lifecycle-process-view/v1`; mode is\n`example-only`, authority is `none`. No source-byte hash in the projection, so\nsource formatting and semantic-set order do not change bytes. Effects retain their\nmeaningful order. Bound input and output, escape all untrusted text, never silently\ntruncate, and return no partial artifacts on failure. The CLI consumes bounded\nstdin and emits either JSON or SVG; it never opens a path or writes files itself.\n\nAfter genuine start, an independent contributor freezes expected transition,\nguard and refusal cases before implementation. Test semantics against those fixed\nliterals, validate SVG structure and escaping, repeatability and harmless reorder,\nmalformed and resource-bounded inputs, CLI failure/short output, and actual\nexample model. Run the pinned Go race/vet/drift and repository checks, obtain\nindependent review, record final evidence, and aim for one draft PR. No merge,\ndeployment, worker activation or permission expansion.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-lifecycle-process-view-v1-review.md",
+        "id": "CF-lifecycle-process-view-v1",
+        "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

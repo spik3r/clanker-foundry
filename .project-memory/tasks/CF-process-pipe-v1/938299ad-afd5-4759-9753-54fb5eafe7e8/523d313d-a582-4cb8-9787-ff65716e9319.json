@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "523d313d-a582-4cb8-9787-ff65716e9319",
+  "runId": "938299ad-afd5-4759-9753-54fb5eafe7e8",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-process-pipe-v1",
+    "path": "tasks/CF-process-pipe-v1-closed-stdout.md",
+    "revision": "b25afdf5531408895b99281e3a7253c3a24e94a7",
+    "blob": "c7b3a044a72fdb8e589f74e3d60dab1cf8a44eb8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba652b3f11a1f3c72f7cd829421481d9eea6de7e5987c6fb6776713c5b41405c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-process-view",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/20",
+  "at": "2026-11-03T21:46:55.010Z",
+  "summary": "Repair process CLI closed stdout exit policy with actual binary regression",
+  "next": "Reproduce SIGPIPE before repair then validate both output modes",
+  "files": [
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main_test.go",
+    "tasks/CF-process-pipe-v1-closed-stdout.md"
+  ]
+}

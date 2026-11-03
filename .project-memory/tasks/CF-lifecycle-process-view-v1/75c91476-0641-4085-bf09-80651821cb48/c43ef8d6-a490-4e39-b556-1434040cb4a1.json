@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "c43ef8d6-a490-4e39-b556-1434040cb4a1",
+  "runId": "75c91476-0641-4085-bf09-80651821cb48",
+  "kind": "complete",
+  "parents": [
+    "3937162f-4cfc-4e9a-b7cc-2ca5be755c7f"
+  ],
+  "sequence": 5,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-process-view-v1",
+    "path": "tasks/CF-lifecycle-process-view-v1-review.md",
+    "revision": "a37ac145d7809c6fb3abf0be5123d66aa3027a63",
+    "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "68faaf642ae370976f24e9188ed85cb37d7df3824129717d108d8c5efc784074"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/lifecycle-process-view",
+  "pullRequest": null,
+  "at": "2026-11-01T21:39:00.912Z",
+  "summary": "Implemented separate bounded deterministic process-review JSON/SVG projection and stdin CLI with independently frozen transition and guard expectations",
+  "next": "Commit and validate full diff; prepare draft for review with explicit visual limitation, no merge or activation",
+  "files": [
+    "tasks/CF-lifecycle-process-view-v1-review.md",
+    "modeling/lifecycle/processview/process.go",
+    "modeling/lifecycle/processview/svg.go",
+    "modeling/lifecycle/processview/process_external_test.go",
+    "modeling/lifecycle/processview/testdata/model.json",
+    "modeling/lifecycle/processview/testdata/expected.json",
+    "modeling/lifecycle/processview/README.md",
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main_test.go"
+  ],
+  "validation": "Go 1.27.3 offline full go test -race -count=1 ./... passed; go vet, modelc check, gofmt, repository validation and exact README commands passed (optional skills-ref unavailable). Independent re-review of source 87b74b9 found no remaining findings; programmatic XML/JSON, mutations and boundary checks passed. Browser URL policy denied opening local SVG and forbade workarounds; no visual review occurred.",
+  "snapshot": {
+    "tasks/CF-lifecycle-process-view-v1-review.md": {
+      "blob": "0a74cad49159077ddb7ee1391e18a70f30e4b13d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/process.go": {
+      "blob": "578088bcdd65fbdf50f5ea9d76c9163a338d1899",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/svg.go": {
+      "blob": "7043142f40f2c617bc19a280154896ec0abc6e7c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/process_external_test.go": {
+      "blob": "8f497ff9a5d02da8727575f457b58e27a23e8a6e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/testdata/model.json": {
+      "blob": "0b90c103169071d3bd934684a91bf913d4b3de8f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/testdata/expected.json": {
+      "blob": "9f1b72bed9758ed53c242eb109e1942eb469cf9e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/processview/README.md": {
+      "blob": "c9dabaf43b8976e6d744fe48c73578415de9ebb9",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelprocess/main.go": {
+      "blob": "566b04779056b602b8b2904284bb988c695b501a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelprocess/main_test.go": {
+      "blob": "445fc119ac735271ff343d8400da4604bf4309e0",
+      "mode": "100644"
+    }
+  }
+}
