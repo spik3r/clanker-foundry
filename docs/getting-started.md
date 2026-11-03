@@ -127,4 +127,3 @@ Installer regression tests run with:
 ```bash
 bash tests/test-install.sh
 ```
-

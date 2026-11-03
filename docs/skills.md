@@ -91,4 +91,3 @@ See [useful external skills](../docs/external-skills.md) for the official OpenAI
 - The descriptions include explicit trigger boundaries so agents are less likely to invoke the wrong workflow.
 - Skills use portable instructions; optional helpers have their own prerequisites.
 - The skills complement `AGENTS.md`: global facts and standing rules belong in `AGENTS.md`; repeatable procedures belong in skills and workflows; reusable output shapes belong in templates; verification lists belong in checklists.
-
