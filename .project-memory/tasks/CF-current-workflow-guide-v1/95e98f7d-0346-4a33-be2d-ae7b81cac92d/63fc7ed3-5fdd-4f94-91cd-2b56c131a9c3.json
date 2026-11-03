@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "63fc7ed3-5fdd-4f94-91cd-2b56c131a9c3",
+  "runId": "95e98f7d-0346-4a33-be2d-ae7b81cac92d",
+  "kind": "complete",
+  "parents": [
+    "c0f69990-f0d6-4b05-8887-ef882119c800"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-current-workflow-guide-v1",
+    "path": "tasks/CF-current-workflow-guide-v1-current-entrypoint.md",
+    "revision": "f7c32209756673514a6fa28b2c196453d9dc2c16",
+    "blob": "4dbfebafa2a804f64fe9706e3df9f67eda6ce49c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5b43e8834b8e7131f28538e81e017231d983d038f2c3baf26bf219c9ec024aa1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/current-workflow-guide-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/58",
+  "at": "2026-11-03T22:01:44.247Z",
+  "summary": "Document reviewed current model-driven path with fixed byte-preserving command checks",
+  "next": "Coordinator review hosted checks and merge PR58",
+  "files": [
+    "docs/model-driven-current-workflow.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-current-workflow-guide-v1-current-entrypoint.md"
+  ],
+  "validation": "All four documented Bash blocks passed unchanged with installed Go 1.27.3 offline; preflight and review non-executing, fixed proposal replay9cases9steps, rehearsal inspection2/2and4/6; original embedded bytes exact; pack and installer regressions passed; lead independently approved aec0ad2; current-main merge changes no guide/tool/example bytes; pack and whitespace passed on final union",
+  "snapshot": {
+    "docs/model-driven-current-workflow.md": {
+      "blob": "9748202bfb0138e98ac6c021e513bf396fd96d47",
+      "mode": "100644"
+    },
+    "docs/model-driven-pipeline.md": {
+      "blob": "9d7d706c1bd78c4baeb06717cde400ec21765a16",
+      "mode": "100644"
+    },
+    "tasks/CF-current-workflow-guide-v1-current-entrypoint.md": {
+      "blob": "863918585020c7df7cc89d84699bcf9f3ed7bc16",
+      "mode": "100644"
+    }
+  }
+}

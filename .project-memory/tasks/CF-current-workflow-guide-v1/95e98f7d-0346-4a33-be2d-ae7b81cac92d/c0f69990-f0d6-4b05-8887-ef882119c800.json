@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "c0f69990-f0d6-4b05-8887-ef882119c800",
+  "runId": "95e98f7d-0346-4a33-be2d-ae7b81cac92d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-current-workflow-guide-v1",
+    "path": "tasks/CF-current-workflow-guide-v1-current-entrypoint.md",
+    "revision": "f7c32209756673514a6fa28b2c196453d9dc2c16",
+    "blob": "4dbfebafa2a804f64fe9706e3df9f67eda6ce49c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5b43e8834b8e7131f28538e81e017231d983d038f2c3baf26bf219c9ec024aa1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/current-workflow-guide-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/58",
+  "at": "2026-11-03T21:57:07.810Z",
+  "summary": "Write current supported review path and test byte-preserving commands",
+  "next": "Draft guide, run its fixed examples and obtain independent review",
+  "files": [
+    "docs/model-driven-current-workflow.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-current-workflow-guide-v1-current-entrypoint.md"
+  ]
+}

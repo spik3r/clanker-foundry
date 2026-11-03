@@ -1,5 +1,9 @@
 # Clanker Foundry: from an idea to checked software
 
+Historical introduction: the capability table below describes 1 November 2026 at
+`2c23031f`. For the supported review path on 4 November 2026, see the
+[current workflow guide](model-driven-current-workflow.md).
+
 **The idea:** people and AI work out what software should do; a reviewed,
 structured design makes the rules explicit; repeatable tools turn those rules
 into code and diagrams; independent tests check whether the result does what
