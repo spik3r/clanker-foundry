@@ -1,6 +1,6 @@
 ---
 id: CF-orchestration-trace-completion-v1
-status: in-progress
+status: review
 owner: Foundry completion trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -53,3 +53,29 @@ focused and full runtime tests with locked dependencies, the fixed trace checker
 pack and installer checks, whitespace and full committed evidence validation.
 Obtain independent exact-source review. The coordinator reviews hosted checks
 and owns integration. No real validator, approval service or worker is activated.
+
+## Review handoff
+
+The separate contributor statically authored the eighteen new observations and
+froze them unchanged in 87466d8 before implementation or replay. The original
+five-case and twelve-case files remain byte-identical. The trace checks the full
+frozen post-states, events, inert effect intents, refusals and unchanged inputs.
+The nominal success inputs connect to the original submitted execution; the
+nonfinal stage case remains a separate bounded observation.
+
+Validation: focused trace tests passed 9/9, including the original checks and
+four new behavioral mutation controls. The full runtime suite passed 202/202 on
+8ed0a74 with Node 26.0.0 and locked offline dependencies. An ordinary merge of
+main d040257 produced 18f3a35 and changed only prior task records/events; runtime
+bytes stayed identical. Focused tests, trace checking, pack and whitespace checks
+passed on the merged source. Installer regressions also passed. Optional
+skills-ref is unavailable. No runtime evaluator, policy, schema or CI changed.
+
+A separate reviewer checked exact source 18f3a35, independently passed the focused
+checks and found no remaining issue. This is separate-assistant review, not a
+human approval or proof of universal evaluator coverage. Final acceptance and
+resource release remain distinct; no effect was delivered and no actual check,
+approval service or worker was invoked.
+
+Next: genuine immutable completion, full committed evidence validation, then
+coordinator review of hosted checks before integration.
