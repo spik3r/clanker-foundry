@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "b6d80d96b285a20c00e97c0b94623917c36519c2",
+  "id": "CF-revision-check-v1",
+  "path": "tasks/CF-revision-check-v1-two-design-review.md",
+  "blob": "a5ba066689642bfbf7f94933f33e383e58a5c964",
+  "record": "---\nid: CF-revision-check-v1\nstatus: in-progress\nowner: Codex revision-check contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Review two supplied design revisions through existing checks\n\n## Implementation claim\n\nOwner: Codex revision-check contributor. Branch `codex/revision-check-v1`,\nreviewed base `83007fa`. The repository owner requested another wave of bounded\nlarger tasks after review and integration of the previous work. The lead approved\nthis contract before publication. This worker may publish a PR; the lead owns\nindependent review and merge. Other current claims, including PR56 proposal replay\nreport binding, remain outside this work.\n\nExact scope: new `modeling/lifecycle/revisioncheck/check.go`, `check_test.go`,\n`oracle_test.go`, `README.md` and `testdata/observations.json`; new\n`modeling/lifecycle/cmd/modelrevisioncheck/main.go` and `main_test.go`; this task\nand its immutable Project Memory records. No changes to existing native packages,\nfrozen fixtures, source policies, firstdesignreview, proposalreplay, scenarios,\nprocess views, fixed revisionreview walkthrough, runtime or CI.\n\n## Contract and result\n\nAccept strict `lifecycle-revision-check-request/v1` JSON with before/after\nsnapshots. Each snapshot contains three required text fields: a complete native\n`firstDesignRequest`, trace `requirements`, and trace `catalog`. Keep original\nnative request and artifact bytes. Run firstdesignreview.Check on each side,\nintakeimpact.Execute on the original intake requests and traceimpact.Execute on\nthe proposal models plus supplied trace documents. Preserve all four full native\nreport texts and SHA-256 observations. Compare each intake's observed requirements\nwith the supplied trace document by exact decoded UTF-8 source bytes; report\nmatches, mismatch or missing without treating equality as semantic agreement.\n\nPreserve native open questions, model/suite comparisons and stale preflight\nstatuses. Produce no aggregate readiness or approval decision. Report example-only,\nauthority none, execution not-run and review not-established. No reducer, scenario,\nprocess, provider, network or caller-selected callback runs. Native failure rejects\nthe wrapper with a fixed diagnostic; it does not reflect request bytes.\n\nBound the wrapper at 32 MiB and output at 64 MiB. Use actual native per-input\nlimits and preserve their narrower refusal behavior; a valid native input can\nstill exceed this composition's combined limit. CLI exit 0 means a report, 2 means\ninvalid input or a limit, 4 means a native/encoding boundary failure, and 3 means\nfailed or short output, including real closed stdout.\n\n## Acceptance and checks\n\nA separate contributor freezes custom two-revision fixtures and literal expected\nrelationships before production implementation or replay. Check nondefault models,\nunchanged/changed source, missing/mismatched requirements observations, open\nquestions, stale manifests, exact native report bytes/hashes, strict wrapper and\nnative refusals, limits, zero partial output, complete CLI output and closed stdout.\nRun exact Go 1.27.3 focused race tests, vet, pack validation, whitespace and full\ncommitted-diff Project Memory validation. Record observed results and limitations;\nlocal implementation completion does not declare integration.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-revision-check-v1-two-design-review.md",
+        "id": "CF-revision-check-v1",
+        "blob": "a5ba066689642bfbf7f94933f33e383e58a5c964",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
