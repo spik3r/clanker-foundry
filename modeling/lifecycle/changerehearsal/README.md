@@ -42,7 +42,7 @@ request at `$CHANGE_WORK/request.json` before checking it. Use the trusted local
 Go 1.27.3 toolchain; keep its actual binary directory on PATH for native children.
 
 ```bash
-set -eu
+set -euo pipefail
 export CHANGE_WORK=/absolute/path/to/new-private-change-work
 mkdir -m 700 "$CHANGE_WORK"
 test "$(GOTOOLCHAIN=local go env GOVERSION)" = go1.27.3
