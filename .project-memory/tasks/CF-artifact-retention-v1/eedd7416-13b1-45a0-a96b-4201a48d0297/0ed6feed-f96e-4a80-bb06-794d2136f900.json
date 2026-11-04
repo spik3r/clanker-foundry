@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "0ed6feed-f96e-4a80-bb06-794d2136f900",
+  "runId": "eedd7416-13b1-45a0-a96b-4201a48d0297",
+  "kind": "start",
+  "parents": [
+    "0eb67b4a-e4f3-4fed-bc52-057303fb3714"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-artifact-retention-v1",
+    "path": "tasks/CF-artifact-retention-v1-settled-cleanup.md",
+    "revision": "0bf70d5aedac1bf9bb3323c34afc5d4f8c43784f",
+    "blob": "12c74279d0e2bd04817609fb08c8138473440518",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "90820d2a0961951b40e2fb7563e24aeb17b526cb267fb9d86957107b36384837"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/artifact-retention-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/66",
+  "at": "2026-11-04T01:24:06.797Z",
+  "summary": "Resume truthful WIP from abandoned original scope, now covering one contradictory legacy assertion and supplemental runner controls before their edits",
+  "next": "Update only approved old case; add explicit post-freeze runner controls, validate all final content and preserve initial frozen bytes",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/test/artifact-retention.test.mjs",
+    "runtime/test/artifact-retention-runner.test.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-artifact-retention-v1-settled-cleanup.md"
+  ]
+}
