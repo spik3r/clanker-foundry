@@ -1,6 +1,6 @@
 ---
 id: CF-custom-change-rehearsal-v1
-status: in-progress
+status: review
 owner: Foundry custom change rehearsal contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -97,3 +97,39 @@ Run Go 1.27.3 full race, vet, modelc drift, gofmt, pack, installer, whitespace a
 committed Project Memory validation. Obtain independent exact-source review and
 hand the PR to the coordinator for hosted checks and merge. No fixture match,
 source hash or local run establishes human review or production authority.
+
+
+## Implementation result
+
+Source a5fcd1771ec028a1ff1557634dfe37d0f4f0609a adds the new package and standalone
+command, with the current workflow section. Ordinary merge 87a2a44 incorporates
+main 82b62e6 without changing this task's Go source or independent observations.
+The independent native behavioral controls and fixed input bytes were committed
+in 859f790 before production; their hashes remain unchanged. The coordinator and
+a separate reviewer reviewed the exact final source with no remaining findings.
+
+Go 1.27.3 full `go test -race -count=1 ./...` passed: 75 tested packages and two
+packages with no tests. Focused checks exercised actual native matched runs and
+both mismatch stages, as well as actual compiled-binary stdout and closed-pipe
+behavior for check and execute. An initial full run correctly caught source
+changes made while checkout-immutability tests were active. The complete rerun
+passed after source was frozen; no test or native policy was weakened.
+
+Four separate disposable-clone mutations were detected: removing the candidate
+digest precondition, baseline mismatch stop, cleanup prerequisite or context
+gate. These controls used the private executor seam without native execution.
+Actual standalone invented examples separately produced checked, matched,
+baseline-mismatched and candidate-mismatched reports with exit codes 0, 0, 1 and
+1. Both matching runs reported candidate started and cleanup removed; a baseline
+mismatch retained the candidate's actual check receipt without a child claim.
+
+Go vet, modelc generated-artifact check, gofmt and whitespace checks passed.
+Pack validation and installer regressions passed; skills-ref was unavailable
+and the validator reported that optional check skipped. Full committed Project
+Memory validation follows the completion commit. Existing native source,
+qualified inventories, old fixtures and foundry routes remain unchanged.
+
+The examples and injected failure controls are finite observations. They do not
+establish human approval, authenticated provenance, descendant rollback or all
+possible host failures. The next step is the coordinator's final hosted checks
+and merge; this contributor has not merged the PR.

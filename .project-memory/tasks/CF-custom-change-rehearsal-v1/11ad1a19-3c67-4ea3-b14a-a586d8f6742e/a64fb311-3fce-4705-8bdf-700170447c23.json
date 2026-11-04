@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "a64fb311-3fce-4705-8bdf-700170447c23",
+  "runId": "11ad1a19-3c67-4ea3-b14a-a586d8f6742e",
+  "kind": "complete",
+  "parents": [
+    "e04a40ce-d3bb-45bc-809f-8e3f2e47891e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-change-rehearsal-v1",
+    "path": "tasks/CF-custom-change-rehearsal-v1-checked-execution.md",
+    "revision": "17b2c47b9805d0aabc227a2c32adb79a273d4298",
+    "blob": "e9bbf5e4047c1922f73925d5d37c123ed6693385",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "294376302f8e0f47dd6b1549b4cadd8bd0705404a4bdfea99c7a58ef62cdf2ec"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/custom-change-rehearsal-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/71",
+  "at": "2026-11-04T03:24:24.721Z",
+  "summary": "Added custom patch baseline/candidate check and explicit native rehearsal with guarded sequencing and retained partial receipts",
+  "next": "Validate committed evidence, publish ready PR, coordinator checks hosted CI and merges",
+  "files": [
+    "modeling/lifecycle/changerehearsal/change.go",
+    "modeling/lifecycle/changerehearsal/execute.go",
+    "modeling/lifecycle/changerehearsal/change_test.go",
+    "modeling/lifecycle/changerehearsal/execute_test.go",
+    "modeling/lifecycle/changerehearsal/contract_test.go",
+    "modeling/lifecycle/changerehearsal/testdata/observations.json",
+    "modeling/lifecycle/changerehearsal/README.md",
+    "modeling/lifecycle/cmd/modelchangerehearsal/main.go",
+    "modeling/lifecycle/cmd/modelchangerehearsal/main_test.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md"
+  ],
+  "validation": "Go1.27.3 full race passed 75 tested packages and 2 no-test packages on frozen final source; initial source-mutation snapshot failures rerun successfully. Focused race, real native and actual binary matched/mismatch and closed-output controls passed. Four disposable nonexecuting gate mutants detected. Vet, modelc check, gofmt, pack, installer, whitespace passed; optional skills-ref unavailable. Exact-source independent and coordinator reviews clean.",
+  "snapshot": {
+    "modeling/lifecycle/changerehearsal/change.go": {
+      "blob": "16879cb55e15c6ee4011ea41b28de1715bdaa4de",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/execute.go": {
+      "blob": "bc24b5a92d4ea117beeeb6d3bb4ae1306035f0b8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/change_test.go": {
+      "blob": "1886e277eaa83730ce64b71fe619cfc7dc005800",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/execute_test.go": {
+      "blob": "c5aaedabb0be934c7468c9f7b7bd2a2864fbd5d0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/contract_test.go": {
+      "blob": "635dbfee753e3fea04eb9ba3fdea02d7fe735e1d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/testdata/observations.json": {
+      "blob": "0aecccdd7e43d075688975c0c56c03b5616a79e8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/changerehearsal/README.md": {
+      "blob": "3731545814880c5bc769ae1d52ba20476580d4ca",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelchangerehearsal/main.go": {
+      "blob": "79b311567d2d7d4513715149575a1dcf16d1c4e8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelchangerehearsal/main_test.go": {
+      "blob": "2e3bb5be74d65276a91059f0682cdc62b8932aef",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "ad8c62f9d565f069d4fcfd545f8be3b337ea7645",
+      "mode": "100644"
+    },
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md": {
+      "blob": "32c00d82cdc53b4e716d4292a79204224d1c1f05",
+      "mode": "100644"
+    }
+  }
+}
