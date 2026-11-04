@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "e84a6a34-a55b-4497-b76f-5499df05ad44",
+  "runId": "eedd7416-13b1-45a0-a96b-4201a48d0297",
+  "kind": "complete",
+  "parents": [
+    "0ed6feed-f96e-4a80-bb06-794d2136f900"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-artifact-retention-v1",
+    "path": "tasks/CF-artifact-retention-v1-settled-cleanup.md",
+    "revision": "0bf70d5aedac1bf9bb3323c34afc5d4f8c43784f",
+    "blob": "12c74279d0e2bd04817609fb08c8138473440518",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "90820d2a0961951b40e2fb7563e24aeb17b526cb267fb9d86957107b36384837"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/artifact-retention-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/66",
+  "at": "2026-11-04T01:30:12.949Z",
+  "summary": "Track exact attempt-owned artifact references and free only individually persisted or matching settled abandoned output, preserving shared digests and compatibility",
+  "next": "Commit immutable completion, validate full diff against current main, push PR66 ready and let lead require exact-head hosted Node24 checks before merge",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/src/runner.mjs",
+    "runtime/test/artifact-retention.test.mjs",
+    "runtime/test/artifact-retention-runner.test.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-artifact-retention-v1-settled-cleanup.md"
+  ],
+  "validation": "ActualNode26 full237/237 nofail/skip/cancel; affected37/37 passed on mainunion; originalindependent9file unchanged with baseline8fail1pass; supplemental3postfreezecontrols passed;7compilingmutants rejected and restored12/12; syntax pack whitespace passed; independent37 and leadfull237 exactsource616d4d2 review clean; optional skills-ref unavailable",
+  "snapshot": {
+    "runtime/src/adapters.mjs": {
+      "blob": "53b22a74f63d86835b485ddca55d1091dacceeb0",
+      "mode": "100644"
+    },
+    "runtime/src/runner.mjs": {
+      "blob": "6bce13bc5f71a4cbded6b86bd928cd5b2b363cc8",
+      "mode": "100644"
+    },
+    "runtime/test/artifact-retention.test.mjs": {
+      "blob": "6592c8531f654e2eef788d57d23cc6a63525d118",
+      "mode": "100644"
+    },
+    "runtime/test/artifact-retention-runner.test.mjs": {
+      "blob": "6b90c2fec971a36c249cb61a7a91b50fa3ff217a",
+      "mode": "100644"
+    },
+    "runtime/test/adapters.test.mjs": {
+      "blob": "7708cde5d1cc97d94bbe0414852036f600bfbbf0",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "f0163bbd4dffbd54028d8b0ef4c4fa80187ad2dd",
+      "mode": "100644"
+    },
+    "tasks/CF-artifact-retention-v1-settled-cleanup.md": {
+      "blob": "10cc740c442875ef3f4298aa4b82feb130ed7aaa",
+      "mode": "100644"
+    }
+  }
+}

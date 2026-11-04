@@ -1,6 +1,6 @@
 ---
 id: CF-artifact-retention-v1
-status: in-progress
+status: review
 owner: Codex artifact retention contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -109,3 +109,44 @@ outputs where A remains UNKNOWN while B persists and releases only B's reference
 These are explicit post-freeze controls added after the initial source work;
 they are not represented as part of the original nine independently frozen cases.
 Keep the original frozen file and its SHA-256 unchanged.
+
+
+## Implementation and observed validation
+
+Implementation source `616d4d2370344d24bbec1ac93d3807f17c4861da` tracks retained
+references by captured attempt ID, worker and fence. The runner releases each
+successfully persisted artifact with its assigned attempt. Matching settled
+cleanup discards only that owner's remaining reference; active/UNKNOWN output,
+wrong identities, shared digests and legacy ID-only text stops retain the
+approved distinctions. One-argument release remains deterministic and bounded.
+
+The original independent nine-test file was frozen in `acbe76f` before production,
+SHA-256 `89cd55ea81d4272bca035954043f60791b01ffa8430498736300db4fb1d48e46`.
+Old source failed eight expectations while one compatibility control passed. The
+frozen file remains unchanged. The separately documented post-freeze three-test
+runner file checks A UNKNOWN/B identical persisted ownership, plus a two-artifact
+partial persistence failure with exact release identity and durable first bytes.
+The sole old case amendment retains exact content assertions before and between
+revokes, then expects absence after final matching cleanup, as approved before edit.
+
+All 237 runtime tests passed locally on actual Node v26.0.0 with no skips or
+cancellations, using pinned dependencies installed offline with scripts disabled.
+Syntax, pack and whitespace checks passed. Optional skills-ref is unavailable
+and reported skipped. A fresh reviewer independently passed all 37 affected tests;
+the lead separately passed the complete 237-test suite. Both reviewed exact
+`616d4d2` without blocking findings.
+
+Seven compiling mutants were rejected: removing text settled discard caused five
+failures, fake discard five, scoped owner comparison two, text outer-fence check
+one, legacy nondiscard one, runner assigned identity three, and durable-write-before-
+release ordering five. Restored source passed all 12 new tests with the original
+nine-test hash unchanged. Mutations used a separate disposable clone and invented
+callbacks/databases, never a live provider or operating authority.
+
+Ordinary merge `c3da0ae` incorporates reviewed main `ad6fc76` without changing any
+claimed implementation, fixture or evidence bytes. All 37 affected tests and pack
+checks passed on that union. The original run remains honestly abandoned, and the
+reviewed amended source/new start precede the old-test and supplemental edits.
+The new run's completion covers all final paths. Full committed-diff evidence
+validation follows the completion commit; hosted Node 24 checks and lead merge
+remain pending. Local completion does not declare integration or release the claim.
