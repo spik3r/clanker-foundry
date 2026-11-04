@@ -7,6 +7,7 @@ digraph bounded_shadow {
   executing [label="EXECUTING (partial)"];
   validating [label="VALIDATING (partial)"];
   completed [shape=box,label="COMPLETED (partial; cleanup may remain)"];
+  cancelled [shape=box,label="CANCELLED (partial; cleanup may remain)"];
   refused [shape=box,label="REFUSED outcome (no new state)"];
   start -> pending [label="ADMIT: TR-ADMIT"];
   pending -> refused [style=dashed,label="ASSIGN: TR-DEPENDENCY / TR-RESOURCE"];
@@ -24,4 +25,10 @@ digraph bounded_shadow {
   validating -> refused [style=dashed,label="ACCEPT_STAGE: TR-ACCEPT-MISSING-CHECK / TR-ACCEPT-REVOKED-APPROVAL / TR-ACCEPT-UNREGISTERED-APPROVER / TR-ACCEPT-UNAUTHORIZED-OWNER"];
   completed -> completed [label="CLEANUP_CONFIRMED: TR-CLEANUP-COMPLETED-RELEASED"];
   completed -> refused [style=dashed,label="CLEANUP_CONFIRMED: TR-CLEANUP-STALE-FENCE / TR-CLEANUP-NOT-PENDING"];
+  pending -> cancelled [label="CANCEL: TR-CANCEL-PENDING"];
+  executing -> cancelled [label="CANCEL: TR-CANCEL-ACTIVE"];
+  cancelled -> cancelled [label="CLEANUP_CONFIRMED: TR-CLEANUP-CANCELLED"];
+  executing -> refused [style=dashed,label="CANCEL: TR-CANCEL-WORKER / TR-CANCEL-WRONG-OWNER"];
+  cancelled -> refused [style=dashed,label="CLEANUP_CONFIRMED: TR-CLEANUP-CANCELLED-STALE-FENCE"];
+  cancelled -> refused [style=dashed,label="SUBMIT: TR-SUBMIT-CANCELLED-RETIRED-TOKEN / TR-SUBMIT-CANCELLED-CURRENT-FENCE"];
 }

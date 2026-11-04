@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "0ca36631-ed26-434f-b8d2-4f0f549cb54b",
+  "runId": "3d02d4ad-c33e-49ba-a4c3-8afbb25d6832",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-check-preparation-eligibility-v1",
+    "path": "tasks/CF-check-preparation-eligibility-v1-final-boundary.md",
+    "revision": "ee35161d5e9c529706c4993e31269e7a1d26aee6",
+    "blob": "e7889a236cb33aaa281b09cf1f6a53a81a577aef",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d8679f2ad4e57f6ceb02b153da289801b34f03bcd54580211691e782d3b7b330"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/check-preparation-eligibility-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/89",
+  "at": "2026-11-04T21:49:47.894Z",
+  "summary": "Approved final validation callback eligibility checks; freeze independent boundary tests before production edits",
+  "next": "Hand checkout exclusively to independent reviewer for frozen tests and old-code failures; wait root approval before production",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/check-preparation-eligibility.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-check-preparation-eligibility-v1-final-boundary.md"
+  ]
+}

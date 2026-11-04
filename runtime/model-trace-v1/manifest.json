@@ -55,11 +55,15 @@
     },
     {
       "path": "runtime/test/model-trace-v1.test.mjs",
-      "sha256": "2f17848f79a4c99a7f34b395eb7006cfcfc46f74a3f433e6ec40f11b021f0645"
+      "sha256": "77ee12125f643603c7fff82401298f50bd26175e9a576cb2dd9752fd73cafeeb"
     },
     {
       "path": "runtime/model-trace-v1/testdata/completion-oracle.json",
       "sha256": "d81eb8f2417e4c5fcd5df284eabc5aac8bc4a48f9110795020b2a430b487c3e8"
+    },
+    {
+      "path": "runtime/model-trace-v1/testdata/cancellation-oracle.json",
+      "sha256": "f2555364a4b53001c5e6dcfadf5822b2014c0e3fd1e26d14432eb714b681a044"
     }
   ],
   "commands": [
@@ -125,7 +129,7 @@
     },
     {
       "id": "CANCEL",
-      "coverage": "unmapped"
+      "coverage": "partial"
     },
     {
       "id": "CLEANUP_CONFIRMED",
@@ -167,7 +171,7 @@
     },
     {
       "id": "CANCELLED",
-      "coverage": "unmapped"
+      "coverage": "partial"
     }
   ],
   "requirements": [
@@ -601,6 +605,110 @@
       "existingTest": "frozen completion observations compare full outcomes and preserve inputs",
       "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
       "expectedCode": "NO_CLEANUP_PENDING"
+    },
+    {
+      "id": "TR-CANCEL-PENDING",
+      "command": "CANCEL",
+      "statement": "Owner cancellation without an attempt reaches CANCELLED without cleanup, resources, a fence increment or effect intent.",
+      "anchor": "authorized(); retire(); execution.state = kind === 'FAIL' ? 'FAILED' : 'CANCELLED'; execution.outcome = { code: payload.code }; reason = payload.code;",
+      "schemaPointer": "#/$defs/Command/oneOf/15",
+      "caseIds": [
+        "cancel_pending_without_attempt"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-CANCEL-ACTIVE",
+      "command": "CANCEL",
+      "statement": "Owner cancellation of EXECUTING work advances the fence, retains the retired attempt and held resources, marks cleanup pending and returns only a revocation intent.",
+      "anchor": "authorized(); retire(); execution.state = kind === 'FAIL' ? 'FAILED' : 'CANCELLED'; execution.outcome = { code: payload.code }; reason = payload.code;",
+      "schemaPointer": "#/$defs/Command/oneOf/15",
+      "caseIds": [
+        "cancel_active_retains_cleanup"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-CLEANUP-CANCELLED",
+      "command": "CLEANUP_CONFIRMED",
+      "statement": "Owner cleanup confirmation with the retired token releases resources and the attempt while preserving CANCELLED and the advanced fence.",
+      "anchor": "execution.cleanup_pending = false; execution.resources_held = false; execution.attempt = null;",
+      "schemaPointer": "#/$defs/Command/oneOf/16",
+      "caseIds": [
+        "cleanup_cancelled_released"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": null
+    },
+    {
+      "id": "TR-CANCEL-WORKER",
+      "command": "CANCEL",
+      "statement": "The assigned worker cannot cancel the execution.",
+      "anchor": "authorized(); retire(); execution.state = kind === 'FAIL' ? 'FAILED' : 'CANCELLED'; execution.outcome = { code: payload.code }; reason = payload.code;",
+      "schemaPointer": "#/$defs/Command/oneOf/15",
+      "caseIds": [
+        "cancel_worker_unauthorized"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "UNAUTHORIZED"
+    },
+    {
+      "id": "TR-CANCEL-WRONG-OWNER",
+      "command": "CANCEL",
+      "statement": "An owner-role actor with the wrong accountable-owner identity cannot cancel.",
+      "anchor": "authorized(); retire(); execution.state = kind === 'FAIL' ? 'FAILED' : 'CANCELLED'; execution.outcome = { code: payload.code }; reason = payload.code;",
+      "schemaPointer": "#/$defs/Command/oneOf/15",
+      "caseIds": [
+        "cancel_wrong_owner_unauthorized"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "UNAUTHORIZED"
+    },
+    {
+      "id": "TR-CLEANUP-CANCELLED-STALE-FENCE",
+      "command": "CLEANUP_CONFIRMED",
+      "statement": "Cleanup using the advanced execution fence instead of the retained attempt token refuses and preserves pending cleanup and resources.",
+      "anchor": "requireGuard(execution.attempt !== null && input.attempt_id === execution.attempt.attempt_id && input.fencing_token === execution.attempt.fencing_token, 'STALE_ATTEMPT');",
+      "schemaPointer": "#/$defs/Command/oneOf/16",
+      "caseIds": [
+        "cleanup_cancelled_stale_fence"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "STALE_ATTEMPT"
+    },
+    {
+      "id": "TR-SUBMIT-CANCELLED-RETIRED-TOKEN",
+      "command": "SUBMIT",
+      "statement": "Submission after cancellation using the retired token refuses at the terminal guard before attempt checks.",
+      "anchor": "requireGuard(!TERMINAL_STATES.includes(current.state) || kind === 'CLEANUP_CONFIRMED', 'TERMINAL_EXECUTION');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_cancelled_retired_token"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "TERMINAL_EXECUTION"
+    },
+    {
+      "id": "TR-SUBMIT-CANCELLED-CURRENT-FENCE",
+      "command": "SUBMIT",
+      "statement": "Submission after cancellation using the advanced execution fence also refuses at the terminal guard.",
+      "anchor": "requireGuard(!TERMINAL_STATES.includes(current.state) || kind === 'CLEANUP_CONFIRMED', 'TERMINAL_EXECUTION');",
+      "schemaPointer": "#/$defs/Command/oneOf/3",
+      "caseIds": [
+        "submit_cancelled_current_fence"
+      ],
+      "existingTest": "frozen cancellation observations compare full outcomes and preserve inputs",
+      "existingTestPath": "runtime/test/model-trace-v1.test.mjs",
+      "expectedCode": "TERMINAL_EXECUTION"
     }
   ],
   "flows": [
@@ -779,6 +887,68 @@
       "requirementIds": [
         "TR-CLEANUP-STALE-FENCE",
         "TR-CLEANUP-NOT-PENDING"
+      ]
+    },
+    {
+      "id": "pending-cancellation",
+      "command": "CANCEL",
+      "from": "PENDING",
+      "to": "CANCELLED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-CANCEL-PENDING"
+      ]
+    },
+    {
+      "id": "active-cancellation",
+      "command": "CANCEL",
+      "from": "EXECUTING",
+      "to": "CANCELLED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-CANCEL-ACTIVE"
+      ]
+    },
+    {
+      "id": "cancelled-cleanup",
+      "command": "CLEANUP_CONFIRMED",
+      "from": "CANCELLED",
+      "to": "CANCELLED",
+      "outcome": "return",
+      "requirementIds": [
+        "TR-CLEANUP-CANCELLED"
+      ]
+    },
+    {
+      "id": "blocked-cancellation",
+      "command": "CANCEL",
+      "from": "EXECUTING",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-CANCEL-WORKER",
+        "TR-CANCEL-WRONG-OWNER"
+      ]
+    },
+    {
+      "id": "blocked-cancelled-cleanup",
+      "command": "CLEANUP_CONFIRMED",
+      "from": "CANCELLED",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-CLEANUP-CANCELLED-STALE-FENCE"
+      ]
+    },
+    {
+      "id": "blocked-cancelled-submission",
+      "command": "SUBMIT",
+      "from": "CANCELLED",
+      "to": "REFUSED",
+      "outcome": "throw",
+      "requirementIds": [
+        "TR-SUBMIT-CANCELLED-RETIRED-TOKEN",
+        "TR-SUBMIT-CANCELLED-CURRENT-FENCE"
       ]
     }
   ]

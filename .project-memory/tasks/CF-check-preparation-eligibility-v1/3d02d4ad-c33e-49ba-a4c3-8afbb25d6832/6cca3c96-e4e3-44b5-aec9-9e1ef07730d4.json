@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "6cca3c96-e4e3-44b5-aec9-9e1ef07730d4",
+  "runId": "3d02d4ad-c33e-49ba-a4c3-8afbb25d6832",
+  "kind": "complete",
+  "parents": [
+    "0ca36631-ed26-434f-b8d2-4f0f549cb54b"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-check-preparation-eligibility-v1",
+    "path": "tasks/CF-check-preparation-eligibility-v1-final-boundary.md",
+    "revision": "ee35161d5e9c529706c4993e31269e7a1d26aee6",
+    "blob": "e7889a236cb33aaa281b09cf1f6a53a81a577aef",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d8679f2ad4e57f6ceb02b153da289801b34f03bcd54580211691e782d3b7b330"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/check-preparation-eligibility-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/89",
+  "at": "2026-11-04T21:54:52.807Z",
+  "summary": "Refresh validation callback eligibility after preparing owned inputs and before each new invocation; preserved recorded skips and late-output enforcement",
+  "next": "Commit observed result and completion; validate full diff against current main a00494b, publish draft PR89 for final exact-head review and hosted gates; lead alone merges",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/check-preparation-eligibility.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-check-preparation-eligibility-v1-final-boundary.md"
+  ],
+  "validation": "Actual Node v26.0.0: frozen 9/9 passed; full runtime before trace integration 304/304 passed; after ordinary main a00494b merge combined eligibility/trace checks 21/21 passed, no skips/cancellations. Frozen SHA 02c0d49d unchanged. Independent old code 2 passed/7 failed. Six syntax-valid omission mutants detected; restored 9/9 passed. Separate source review clean and own frozen tests passed. Repository validator, installer/model resolver/wiring and whitespace passed; optional skills-ref unavailable. No real tools/provider/container. Hosted Node 24 checks pending.",
+  "snapshot": {
+    "runtime/src/runner.mjs": {
+      "blob": "ed544534e9b4efd1a965c1fad777480c369a7008",
+      "mode": "100644"
+    },
+    "runtime/test/check-preparation-eligibility.test.mjs": {
+      "blob": "39cf8068c52c43f33f4094889685147b7236801b",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "c56671d55c91baa895ed14a94ae3db8464511952",
+      "mode": "100644"
+    },
+    "tasks/CF-check-preparation-eligibility-v1-final-boundary.md": {
+      "blob": "9777bf20b2fbf3f8c0ab4744283a4f30b0a08e9b",
+      "mode": "100644"
+    }
+  }
+}
