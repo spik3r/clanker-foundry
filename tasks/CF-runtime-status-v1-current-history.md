@@ -1,6 +1,6 @@
 ---
 id: CF-runtime-status-v1
-status: review
+status: in-progress
 owner: Foundry runtime status contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -94,7 +94,7 @@ source review, record only observed completion and publish the final reviewed
 candidate for hosted gates. No runtime suite or live smoke rerun is needed for
 this documentation-only scope.
 
-## Observed result
+## Prior observed result before hosted correction
 
 The architecture plan now separates a current source-supported implementation
 overlay from its dated recommendations, assumptions, findings and phases. The
@@ -134,3 +134,33 @@ Final committed Project Memory validation is checked after recording completion
 against the actual PR base. Exact-head hosted gates and final coordinator review
 remain required before merge. No runtime implementation, policy, configuration,
 activation, migration or held recovery work changed.
+
+## Correction after hosted validation
+
+Hosted Go run `41930444551`, job `126925680560`, failed on final candidate
+`cf45bc915bac4aa9b5a48af33797515f958c987e`. The builderdemo and
+cmd/modelbuilderdemo checks reported `baseline drift: AGENTS.md` and source
+preflight mismatch. Project AGENTS is one of fifteen pinned builder inputs.
+The earlier scope expansion and both source reviews missed that coupling. The
+local documentation checks did not establish these hosted Go checks would pass.
+
+The coordinator supersedes the earlier two-fact correction directive: restore
+only this branch's two AGENTS phrases to their original base
+`ffdce31feb3fd5e8c6c44e9487533a696a0cd5c7` bytes. The final PR must leave
+AGENTS unchanged. Preserve all fifteen pinned inputs, source policies, expectations
+and tests; do not repin or weaken any of them. Standing-fact cleanup is deferred
+because it needs a separately considered change to that pinned dependency, not a
+silent extension of this documentation reconciliation. The reviewed plan and
+rollout bytes from `f18956d` remain unchanged.
+
+Keep the existing claim snapshots, starts, abandonment and completion immutable.
+Completion at `cf45bc9` records the content and checks observed then; it does not
+cover the correction or assert the failed hosted Go check passed. Commit this
+amended canonical source for coordinator review before registration and a new
+genuine start after that completed run. Include all four ordinary paths in the
+new start, even though restoring AGENTS will remove it from the final PR diff.
+Only then restore those two phrases. Revalidate the final staged scope, record
+observed correction and completion, and validate committed Project Memory against
+the actual base. The final PR description must disclose the failed hosted check
+and bounded revert. All five workflows at the new final head must pass before
+the coordinator merges. No other source or policy change is authorized.
