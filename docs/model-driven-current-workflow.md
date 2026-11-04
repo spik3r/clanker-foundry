@@ -1,9 +1,15 @@
 # Use the current model-driven review path
 
-The native contracts below were checked against reviewed main
-[`2e2a190b`](https://github.com/spik3r/clanker-foundry/commit/2e2a190b629a983ba854d59ecc356274ec7e5a4f)
-on **4 November 2026**. The `foundry` entrypoint in this checkout prepares requests
-and exposes those contracts through one binary. This is a selected workflow.
+The four Bash blocks for the fixed first-design and rehearsal examples below
+were exercised on reviewed main
+[`ffdce31f`](https://github.com/spik3r/clanker-foundry/commit/ffdce31feb3fd5e8c6c44e9487533a696a0cd5c7)
+on **5 November 2026**. That observation did not include native visual review or
+the later optional revision and custom-change routes; those sections describe
+their linked contracts and require separate inputs. The original native-contract
+baseline was
+[`2e2a190b`](https://github.com/spik3r/clanker-foundry/commit/2e2a190b629a983ba854d59ecc356274ec7e5a4f),
+which predates the `foundry` entrypoint. Use a current checkout containing that
+entrypoint to prepare requests and use the selected workflow through one binary.
 The [pipeline introduction](model-driven-pipeline.md) retains its earlier dated
 snapshot. The [pilot testing guide](model-driven-pilot-testing.md) provides longer
 fixed-example and custom-proposal exercises.
@@ -31,9 +37,8 @@ the existing orchestration evaluator; this design path does not dispatch workers
 ## Prepare private outputs and check a first design
 
 Use Bash, Python 3, Git and installed **Go 1.27.3** on a trusted, exclusive local
-checkout containing the `foundry` entrypoint; the linked revision identifies the
-native contract baseline. Set `WORK_PARENT` to an authorized directory
-outside that checkout. The examples compile trusted tools and write only new
+checkout containing the `foundry` entrypoint. Set `WORK_PARENT` to an authorized
+directory outside that checkout. The examples compile trusted tools and write only new
 private scratch files; the later execute and rehearsal commands also run generated
 Go. Local execution requires the operator's authority and is not an OS sandbox.
 Keep real proposals and reports private as appropriate.

@@ -72,9 +72,11 @@ is the design, not the AI. Repeatability does not prove correctness, so review a
 independent checks matter.
 
 The [plain-language pipeline guide](docs/model-driven-pipeline.md) explains the
-motivation and future goal. To try what exists today, follow the
-[pilot testing guide](docs/model-driven-pilot-testing.md): a bounded task-lifecycle
-example, not a general app generator. It is separate from the runtime below.
+motivation and future goal. Start the supported commands with the
+[current workflow guide](docs/model-driven-current-workflow.md); the
+[pilot testing guide](docs/model-driven-pilot-testing.md) has longer exercises.
+Both use bounded task-lifecycle examples, not a general app generator. They are
+separate from the runtime below.
 
 ### Orchestration
 
