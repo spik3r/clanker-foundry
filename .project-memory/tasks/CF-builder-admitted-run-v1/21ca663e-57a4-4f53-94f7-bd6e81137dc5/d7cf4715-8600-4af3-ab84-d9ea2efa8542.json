@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "d7cf4715-8600-4af3-ab84-d9ea2efa8542",
+  "runId": "21ca663e-57a4-4f53-94f7-bd6e81137dc5",
+  "kind": "complete",
+  "parents": [
+    "39722154-26c1-43f7-b566-3df6e819e08a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-admitted-run-v1",
+    "path": "tasks/CF-builder-admitted-run-v1-fresh-go-candidate.md",
+    "revision": "7311c677da96bf0346e6cd40e0dbcc2e6225b36a",
+    "blob": "bc713e49c1c6963deb5d85324748a600bfd55b52",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1de56dac958e5d29bdd8571e221d5ffab295830b42ba7b536e0fbe6cabc1421f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-admitted-run-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/88",
+  "at": "2026-11-04T22:16:48.636Z",
+  "summary": "Observed fresh edit-only builder through dual source review, exact six-file admission and separately authorized plain/race build and full acceptance runs",
+  "next": "Validate committed evidence, publish ready PR88 and let coordinator check hosted workflows and merge",
+  "files": [
+    "examples/model-builder-go/admitted-run/README.md",
+    "examples/model-builder-go/admitted-run/receiving-prompt.md",
+    "examples/model-builder-go/admitted-run/rubric.md",
+    "examples/model-builder-go/admitted-run/evidence.md",
+    "examples/model-builder-go/admitted-run/identities.json",
+    "tasks/CF-builder-admitted-run-v1-fresh-go-candidate.md"
+  ],
+  "validation": "Unchanged preparer matched 15 source and 5 exercise pins; full prompt and retained 11-call scope ledger reviewed. Plain and race exact-artifact runs each passed all 30 frozen literals and 3 isolation tests with zero skips/failures and no race diagnostics; source/28 receiving inputs/six-file frontier unchanged. Three separate admission-only negative controls blocked as frozen; no control compiled or executed. Coordinator and independent R07 private/public reviews clean at source5394; narrow result status update only. Pack, installer, JSON/link and whitespace checks passed; optional skills-ref unavailable. No unrelated native suites rerun for evidence-only change.",
+  "snapshot": {
+    "examples/model-builder-go/admitted-run/README.md": {
+      "blob": "7798912f7b0a3c464adca9d385c3a842d2969a82",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/admitted-run/receiving-prompt.md": {
+      "blob": "26c9592fe427289dd264ce217fbfce2765e91d23",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/admitted-run/rubric.md": {
+      "blob": "88690b49c2674bb622c014795b2663aa8821e4e1",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/admitted-run/evidence.md": {
+      "blob": "dc0997ac4c84943edb0d93e232bd7afd9974d1d5",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/admitted-run/identities.json": {
+      "blob": "e0b815882aa63ae1fd793c30fc79068a579d5eb4",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-admitted-run-v1-fresh-go-candidate.md": {
+      "blob": "1b4a6aa7d17d083c3f7448e06a157a41b4e70ee2",
+      "mode": "100644"
+    }
+  }
+}

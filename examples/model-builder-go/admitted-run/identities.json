@@ -1,0 +1,322 @@
+{
+  "formatVersion": "admitted-builder-observations/v1",
+  "scope": "one fictional FirstDesignDraft private Go trial",
+  "authority": "none",
+  "realUseAcceptance": "not-established",
+  "visualApproval": "not-established",
+  "historicalC06": "unchanged read-scope violation, not a clean pass",
+  "reviewedClaim": {
+    "commit": "7311c677da96bf0346e6cd40e0dbcc2e6225b36a",
+    "task": "CF-builder-admitted-run-v1",
+    "pullRequest": 88
+  },
+  "rubric": {
+    "commit": "e3193f7d7b117a84770aad3b05f624049ca74979",
+    "sha256": "15c0c8ed5ff3fb3dfb5f311eae8e0e0b82a8901935f4d8e86ac1caabeee12d10",
+    "authorship": "separate contributor before receiving documentation or builder exposure"
+  },
+  "tools": {
+    "sourceRevisionAtBuild": "e3193f7d7b117a84770aad3b05f624049ca74979",
+    "unchangedGoCodeBase": "6eb8049f7238d847caefe3450920ed7c599f9b9f",
+    "preparerSHA256": "d7d545169ce477c16ea86536bf3814d651f03433174ea2a90cd27745e4428aae",
+    "admissionSHA256": "306e778c314fff31b4b4d2d7609b1383f1bb8f8b9252399284947a61899acfe0",
+    "goVersion": "go1.27.3",
+    "goSHA256": "aa355b078a81158d418079a3f8c776719eb99cc6f527e39ffa3250c66566aafb",
+    "host": {
+      "goos": "darwin",
+      "goarch": "arm64"
+    },
+    "raceCompilerVersion": "Apple clang21.0.0 (clang-2100.1.1.101)",
+    "raceCompilerSHA256": "7def90dd8829726686213a747fc5bff1583df933dae5edc55d755479e0bfe00a"
+  },
+  "preparation": {
+    "outcome": "prepared-draft",
+    "executionStatus": "not-run",
+    "reviewStatus": "not-established",
+    "authority": "none",
+    "nativeReportOutcomes": [
+      "matched",
+      "matched",
+      "matched"
+    ],
+    "receiptSHA256": "b49aa6eeb6a060b0559e425791dd8ca44882a5f4bac0d7c4c0ae36556bdebb49",
+    "sourceInputs": [
+      {
+        "path": "skills/model-driven-design/examples/brief.md",
+        "sha256": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de",
+        "bytes": 3569,
+        "role": "requirements"
+      },
+      {
+        "path": "skills/model-driven-design/examples/model.json",
+        "sha256": "3e7b8c44c10940a7524161dd306d022019e8fc41e793a66a11771d6dd8621239",
+        "bytes": 2001,
+        "role": "model"
+      },
+      {
+        "path": "modeling/lifecycle/README.md",
+        "sha256": "26cc7d1ea82f6f09090d15b0572560bd891081505631483a2adb3ce402a754b0",
+        "bytes": 9893,
+        "role": "interface"
+      },
+      {
+        "path": "examples/model-builder-go/acceptance/README.md",
+        "sha256": "b4ec648c38dadd63dc9799f40d6183d3e464c9dc33b83302c6f6c171a8149103",
+        "bytes": 4971,
+        "role": "instructions"
+      },
+      {
+        "path": "examples/model-builder-go/acceptance/go.mod",
+        "sha256": "e31637eba9a06a2105c2a12b904457b50ad0c60defbbc7cafabeae8f68d4bc3c",
+        "bytes": 70,
+        "role": "harness"
+      },
+      {
+        "path": "examples/model-builder-go/acceptance/contract.go",
+        "sha256": "82b6dcd7a05d496a31c7431dce9b61bb572dd5f53b312418dc8ff72fb7a35b0a",
+        "bytes": 1111,
+        "role": "interface"
+      },
+      {
+        "path": "examples/model-builder-go/acceptance/acceptance_test.go",
+        "sha256": "eaf6078d5703f3e3664f41d0a19d68a7a66bafcfac310bfe5c91e72a7fe02518",
+        "bytes": 13371,
+        "role": "acceptance"
+      },
+      {
+        "path": "examples/model-builder-go/acceptance/rubric.md",
+        "sha256": "ec13d76787d6ce4976487d373c8f2d3587286bdb1f1b1716419b397b46569ce5",
+        "bytes": 7686,
+        "role": "rubric"
+      },
+      {
+        "path": "examples/model-builder-go/packet.md",
+        "sha256": "56ff2a75570000320520805fe734f8e9121c580db9ef0d3c89d1da7bbebf0fdf",
+        "bytes": 17261,
+        "role": "packet"
+      },
+      {
+        "path": "AGENTS.md",
+        "sha256": "4574ee25fe89b6658ae237f3f50648ef1e542c487a2c23d7ab2833696f9455eb",
+        "bytes": 7325,
+        "role": "instructions"
+      },
+      {
+        "path": "global-agents/AGENTS.md",
+        "sha256": "23e6023c3dae5a6e745def8b7f12335115da3982dfd94144697ca0f0dea3d122",
+        "bytes": 6167,
+        "role": "instructions"
+      },
+      {
+        "path": "workflows/model-driven-implementation.md",
+        "sha256": "85a88fec7dc8443c0cef099a9604ecdd685e00cf01166ebadd8d8b845df449d0",
+        "bytes": 10386,
+        "role": "instructions"
+      },
+      {
+        "path": "templates/model-driven/implementation-handoff.md",
+        "sha256": "24fe9f38e2c9a767f084071d24ebadf3db0ad60556adc3f52b60f27397413c80",
+        "bytes": 6393,
+        "role": "instructions"
+      },
+      {
+        "path": "templates/prompts/implement-from-model.md",
+        "sha256": "c3307cc80d2400001b455d491cfef0c99b37681230428aae88ab95697ae9ffe5",
+        "bytes": 4815,
+        "role": "instructions"
+      },
+      {
+        "path": "skills/project-memory/SKILL.md",
+        "sha256": "7fbde5e0a9b6bbb8303b16d9d3f753edadb6e4db6cd15873f93d26d5713c3a70",
+        "bytes": 8917,
+        "role": "instructions"
+      }
+    ],
+    "exerciseOriginals": [
+      {
+        "path": "README.md",
+        "sha256": "b4ec648c38dadd63dc9799f40d6183d3e464c9dc33b83302c6f6c171a8149103",
+        "bytes": 4971
+      },
+      {
+        "path": "go.mod",
+        "sha256": "e31637eba9a06a2105c2a12b904457b50ad0c60defbbc7cafabeae8f68d4bc3c",
+        "bytes": 70
+      },
+      {
+        "path": "contract.go",
+        "sha256": "82b6dcd7a05d496a31c7431dce9b61bb572dd5f53b312418dc8ff72fb7a35b0a",
+        "bytes": 1111
+      },
+      {
+        "path": "acceptance_test.go",
+        "sha256": "eaf6078d5703f3e3664f41d0a19d68a7a66bafcfac310bfe5c91e72a7fe02518",
+        "bytes": 13371
+      },
+      {
+        "path": "rubric.md",
+        "sha256": "ec13d76787d6ce4976487d373c8f2d3587286bdb1f1b1716419b397b46569ce5",
+        "bytes": 7686
+      }
+    ]
+  },
+  "receiving": {
+    "originalPromptSHA256": "c171e2a8aaad45df38baa356531c28230df93b64ccb88014538a7f7c86d9ef59",
+    "beforeDispatchClarification": "permit read/hash only of own newly created candidate.go",
+    "boundPromptSHA256": "c99db529a27d82f8b3932914c4a86c967d70af37cdc22cbb602719062845e62c",
+    "outerBootstrapSHA256": "b9b8b745b4528e763c380db49da39a11e2ec4c03ace6f63f16a18ab8cabac462",
+    "readableFiles": 28,
+    "parentMetadataEntries": 21,
+    "coordinatorReview": "clean",
+    "separateReview": "clean"
+  },
+  "builder": {
+    "nativeInvocationIdentifier": "/root/roadmap_review/fresh_go_builder",
+    "forkTurns": "none",
+    "authority": "edit-only plus own candidate readback/hash",
+    "retainedCallCount": 11,
+    "retainedCallExits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "ledgerSHA256": "a12b9cf3c444474e6ea2bb5a2085570c740576483e8bba8fb36ecf18b9c8589a",
+    "ledgerProvenance": "worker-retained argument objects, separately audited against grants; not OS telemetry",
+    "instructionDisplayTruncated": true,
+    "instructionDisplayFullyReread": true,
+    "recordedScopeDiscrepancies": 0,
+    "scopeLimit": "no complete system-call audit or proof of general reliability"
+  },
+  "candidate": {
+    "logicalPath": "exercise/candidate.go",
+    "sha256": "ca96d4053a5530d516890195016fbd45bf3c3298aefce7f3d5af02a1698fc47e",
+    "bytes": 1345,
+    "maintainedImplementation": false,
+    "coordinatorEntireSourceReview": "clean",
+    "separateEntireSourceReview": "clean"
+  },
+  "admission": {
+    "outcome": "matched",
+    "exit": 0,
+    "receiptSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c",
+    "directRegularFiles": 6,
+    "all20OriginalPinsUnchanged": true
+  },
+  "compileOnly": {
+    "exit": 0,
+    "candidateExecuted": false,
+    "artifactSHA256": "3b963be5eacbf7d1847a9672ecb062593b73f8ad6c17fc44368e8ee6fa5693e1",
+    "artifactBytes": 4506898,
+    "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "explicitRootGrant": true,
+    "externalProducts": true,
+    "replacementEnvironment": true,
+    "cgoEnabled": false,
+    "admissionBeforeAfterSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c"
+  },
+  "behavior": {
+    "exit": 0,
+    "artifactSHA256": "3b963be5eacbf7d1847a9672ecb062593b73f8ad6c17fc44368e8ee6fa5693e1",
+    "literalCasesPassed": 30,
+    "isolationTestsPassed": 3,
+    "allExpectedNamedTestsPassed": true,
+    "skips": 0,
+    "failures": 0,
+    "stdoutSHA256": "6bd5c54490b1f0e15bd485ff8bad234808209add8f62438cc8d5f32fd348fa81",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "admissionBeforeAfterSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c"
+  },
+  "raceCompileOnly": {
+    "exit": 0,
+    "artifactSHA256": "252b7335a191b471ee16eaadcec717ad1544560a470c8aaab5946700ea02cf73",
+    "artifactBytes": 5650658,
+    "candidateExecuted": false,
+    "cgoEnabled": true,
+    "explicitSeparateRootGrant": true,
+    "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "race": {
+    "exit": 0,
+    "artifactSHA256": "252b7335a191b471ee16eaadcec717ad1544560a470c8aaab5946700ea02cf73",
+    "literalCasesPassed": 30,
+    "isolationTestsPassed": 3,
+    "allExpectedNamedTestsPassed": true,
+    "skips": 0,
+    "failures": 0,
+    "raceDiagnostics": false,
+    "stdoutSHA256": "6bd5c54490b1f0e15bd485ff8bad234808209add8f62438cc8d5f32fd348fa81",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "admissionBeforeAfterSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c"
+  },
+  "negativeControls": [
+    {
+      "name": "extra-initializer",
+      "exit": 1,
+      "outcome": "blocked",
+      "candidateStatus": "matched",
+      "missingNames": [],
+      "unexpectedNames": [
+        "unreviewed.go"
+      ],
+      "nativeOutcome": "matched",
+      "receiptSHA256": "e15870550d140a6016dc9788efe04dfe64df68b06783f5e868c3ca89e8ca1b59",
+      "compiledOrExecuted": false
+    },
+    {
+      "name": "candidate-drift",
+      "exit": 1,
+      "outcome": "blocked",
+      "candidateStatus": "hash-mismatch",
+      "missingNames": [],
+      "unexpectedNames": [],
+      "nativeOutcome": "matched",
+      "receiptSHA256": "50a9d4d0845da0b9859abc4908fa23d118c48525aa9ccb7c1b0ba59fd4ddfabd",
+      "compiledOrExecuted": false
+    },
+    {
+      "name": "missing-original",
+      "exit": 1,
+      "outcome": "blocked",
+      "candidateStatus": "matched",
+      "missingNames": [
+        "contract.go"
+      ],
+      "unexpectedNames": [],
+      "nativeOutcome": "blocked",
+      "receiptSHA256": "a2383a6f1f44159eb5b54835426afe50166f0caff4e27873fe67c7252ab2ab78",
+      "compiledOrExecuted": false
+    }
+  ],
+  "positiveAfterControls": {
+    "original20PinsUnchanged": true,
+    "candidateUnchanged": true,
+    "regularFiles": 6,
+    "admissionSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c"
+  },
+  "finalEvidenceReview": {
+    "status": "passed",
+    "reviewedPublicSourceCommit": "5394b6c735ce09f0779b8bf864f90e17f82ed224",
+    "coordinator": "clean entire public and retained private artifact review",
+    "separateReviewer": "clean entire public and retained private artifact review",
+    "scope": "Separate-assistant review; not an OS audit, authenticated provenance or human product approval"
+  },
+  "limitations": [
+    "separate-assistant review is not human product approval",
+    "hashes bind supplied bytes, not authenticated authorship or host execution",
+    "private command history is attributed, not a complete OS audit",
+    "acceptance covers only the original valid typed fixture scope",
+    "race observations cover this run, not arbitrary concurrency",
+    "artifact hashes may vary across paths or hosts",
+    "no control candidate was compiled or executed"
+  ]
+}
