@@ -1,6 +1,6 @@
 ---
 id: CF-provider-reply-boundary-v1
-status: in-progress
+status: review
 owner: Codex provider reply boundary contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -104,3 +104,43 @@ that exact source and make a genuine new start for all final paths before editin
 the parity fixture. Existing production WIP is an explicit handoff from the first
 run. Preserve all original start/freeze/source bytes and keep the new independent
 file's SHA-256 unchanged. Final completion belongs to the amended run.
+
+
+## Implementation and observed validation
+
+Source `4cd7f4783ca403f4c38513c9361b524be76c094a` checks the bounded CLI turn
+sequence and well-formed assistant text. Fatal raw UTF-8 decoding retains BOM
+semantics and accepts valid split codepoints and literal replacement characters.
+The injected text-only Responses fallback remains compatible, with its original
+byte-encoding limit documented. Existing arguments, timeouts, cancellation,
+code-mode-disabled positive control and tool/error classifications remain checked.
+
+The independent test file was frozen in `ddc27f0` before production, SHA-256
+`3bc8e7d36798b68e21582383736d7f926953bd611f2886f0c1b2f93f3ce9df0f`.
+On old source, its 22 reported tests had six passes and 16 failures, with no skips
+or cancellations. All 22 now pass with the frozen bytes unchanged. The sole old
+fixture amendment adds turn.started to fakeCliJsonl; prompt literals, hashes and
+all other assertions remain unchanged. The reviewed amended source/new start
+precede that fixture edit; original abandoned-run history remains intact.
+
+Observed local Node v26.0.0 checks: full runtime passed 259/259 with no skips or
+cancellations, using pinned dependencies installed offline with scripts disabled.
+The three affected test files passed 58/58. Syntax, pack and whitespace checks
+passed; optional skills-ref is unavailable and reported skipped. A fresh reviewer
+independently passed 58/58, and the lead independently passed all 259 tests. Both
+reviewed exact `4cd7f47` without blocking findings. No actual CLI or provider was
+invoked by these fixtures, and no new live transport verification is claimed.
+
+Eight compiling mutants were rejected: accepting post-terminal items caused four
+reported failures, second starts three, repeated terminals two, late/repeated
+threads three, replacing malformed UTF-8 two, stripping BOM two, Responses lone
+surrogates two and CLI lone surrogates one. Restored source passed all 22 tests
+with the original frozen SHA-256 unchanged. Experiments used a separate disposable
+clone with invented transports and no credentials.
+
+Ordinary merge `89e6751` includes reviewed main `a6f5399` without changing any
+claimed provider, fixture, documentation or evidence byte. Fresh union checks
+passed 58/58 and pack/whitespace validation. The amended run completes against
+all final paths. Full committed-diff evidence validation follows the completion
+commit; hosted Node 24 CI and lead merge remain pending. Local completion does
+not declare integration or release the claim.
