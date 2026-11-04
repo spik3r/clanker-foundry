@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "6077f610-5055-4d9b-b736-ff577055bd6f",
+  "runId": "07a850b7-49e1-4abf-bc4c-2c7527ccdeff",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-workspace-byte-fidelity-v1",
+    "path": "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md",
+    "revision": "5dd369876723f82423c1111835404ec55b73e541",
+    "blob": "c17df4865af0120bdd91be511ff5ac08d4494158",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "39a048f941903ea790dc79c09fb3bc75625f4877b1bb865bce26d6c9e978e388"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/workspace-byte-fidelity-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/81",
+  "at": "2026-11-04T12:09:26.329Z",
+  "summary": "Approved bounded source byte fidelity repair; freeze independent literal workspace expectations before production edits",
+  "next": "Hand checkout to independent test author; freeze unchanged tests and observe old-code failures before implementing BOM-preserving decoding",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-byte-fidelity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md"
+  ]
+}

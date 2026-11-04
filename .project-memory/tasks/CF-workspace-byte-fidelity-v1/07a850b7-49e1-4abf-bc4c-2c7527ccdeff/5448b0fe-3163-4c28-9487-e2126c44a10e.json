@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "5448b0fe-3163-4c28-9487-e2126c44a10e",
+  "runId": "07a850b7-49e1-4abf-bc4c-2c7527ccdeff",
+  "kind": "complete",
+  "parents": [
+    "6077f610-5055-4d9b-b736-ff577055bd6f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-workspace-byte-fidelity-v1",
+    "path": "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md",
+    "revision": "5dd369876723f82423c1111835404ec55b73e541",
+    "blob": "c17df4865af0120bdd91be511ff5ac08d4494158",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "39a048f941903ea790dc79c09fb3bc75625f4877b1bb865bce26d6c9e978e388"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/workspace-byte-fidelity-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/81",
+  "at": "2026-11-04T12:13:53.640Z",
+  "summary": "Preserved initial BOM bytes in both workspace readers; frozen tests, full runtime suite and two decoder omission controls passed observed acceptance",
+  "next": "Commit result evidence, validate full diff against origin/main01b1878, push draftPR81 for independent exact-source review and hosted gates; integration lead alone merges",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-byte-fidelity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md"
+  ],
+  "validation": "Actual Node26.0.0 full runtime280/280 PASS, focused21/21 PASS before and after ordinary main01b merge; frozen SHAac016880 unchanged; old-code independent13pass8fail; syntax-valid omission mutants5fail and3fail, restored21/21; pack validator PASS (optional skills-ref absent); installer/modelresolver/wiring PASS; whitespace PASS. No actual provider/container; hosted Node24 and independent source review pending.",
+  "snapshot": {
+    "runtime/src/adapters.mjs": {
+      "blob": "732c9639105e0370b6995feeb4659196af87c974",
+      "mode": "100644"
+    },
+    "runtime/src/workspace.mjs": {
+      "blob": "3ca36ecd671ca3c81a2bcd429fe01aaafe17adca",
+      "mode": "100644"
+    },
+    "runtime/test/workspace-byte-fidelity.test.mjs": {
+      "blob": "6f8402539b3173d7fdf9d2db67c89c20f4fb6da9",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "33be2053aeeee7f4999f6e58367670559763d371",
+      "mode": "100644"
+    },
+    "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md": {
+      "blob": "4e2fbcf35dd1f8281fb1b54373bd1fb6faab888e",
+      "mode": "100644"
+    }
+  }
+}
