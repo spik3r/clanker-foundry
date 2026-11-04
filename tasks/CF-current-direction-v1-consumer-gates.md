@@ -1,6 +1,6 @@
 ---
 id: CF-current-direction-v1
-status: in-progress
+status: review
 owner: Foundry current direction contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -73,3 +73,32 @@ whitespace and full committed Project Memory validation. Obtain independent
 exact-source prose/link/scope review, record observed completion and send the exact
 final SHA/diff/checks to the coordinator for hosted checks and merge. No unrelated
 native suite or new experiment is required for this documentation-only change.
+
+
+## Observed result
+
+Source ab96112 added the 93-line current direction plan and a two-line README
+navigation paragraph. The coordinator and a separate reviewer read that exact
+draft with no material issue. The reviewer independently passed documentation
+validation and whitespace checks. Coordinator-requested wording commit 0eba5fd
+replaced five chat-specific lines with a durable statement that the near-term
+emphasis is a working assumption and no consumer/user/feature/route/threshold
+has been selected. The coordinator directly reviewed and approved that exact
+delta. No other reviewed plan content changed.
+
+The plan separates capability facts, unmeasured benefits and missing owner
+choices; preserves skill-pack primacy and bounded optional modeling; and recommends
+runtime maintenance pending a demonstrated dependency. It orders the consumer,
+maintained-feature/revision and independent-repeatability gates, with explicit
+stop criteria. Supporting runtime-status and cold-operator outcomes are described
+without creating claims, starting them or treating them as consumer value.
+No real user, feature, route or acceptance threshold was invented, and Q_use and
+human acceptance remain open. Dated evidence and existing claims are unchanged.
+
+The final documentation validator passed after the wording change, including
+relative-link checks. Optional skills-ref was unavailable and explicitly skipped.
+Whitespace checks passed. No native code, runtime configuration, test fixture or
+permission changed, so unrelated native tests were not rerun. Full committed
+Project Memory validation follows the completion commit. The contributor will
+publish a draft PR for coordinator hosted checks/review and merge; no downstream
+work starts before that merge, and the contributor has not merged anything.
