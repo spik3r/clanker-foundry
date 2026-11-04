@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "bb6301725cb43955d2bca409b2e231c37d8a31d0",
+  "id": "CF-review-cli-output-v1",
+  "path": "tasks/CF-review-cli-output-v1-closed-pipes.md",
+  "blob": "72c02bfb4528882ce4f3b26bc1d0857ae6a9485d",
+  "record": "---\nid: CF-review-cli-output-v1\nstatus: in-progress\nowner: Foundry review CLI output repair contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Preserve review command output-failure exits\n\n## Implementation claim\n\nBase: main at `249cf7434a43c4d1b0ab6f04b2f0d7d396b7c2ab`. Branch:\n`codex/review-cli-output-v1`. The coordinator approved this bounded local repair\nafter a current-main reproduction. The live open-PR endpoint showed no open PRs;\nunmerged branches and canonical claims were checked. The separate unpublished\npilot-guide claim remains untouched. Historical model-impact, intake and trace\ntasks remain unchanged. This claim reserves only the repair below, not their\nnative APIs or any unfinished original scope. Recheck live work before publishing.\n\nWrite only `modeling/lifecycle/cmd/modeldiff/main.go`,\n`modeling/lifecycle/cmd/modelintake/main.go`,\n`modeling/lifecycle/cmd/modeltraceimpact/main.go`, one new\n`modeling/lifecycle/clioutputacceptance/output_test.go`, this task, and its new\nimmutable Project Memory source/events. No other command, native package, source\npolicy, fixture, generated artifact, visual asset, runtime, README, workflow or\npermission changes. Publication and integration remain with the coordinator.\n\n## Observed defect and required behavior\n\nAll three selected commands document exit 3 for a failed or short report write.\nOn the base commit, a compiled command with valid input and a stdout pipe whose\nreader is already closed instead terminates with SIGPIPE, with no diagnostic.\nNormal report output succeeds. This is inconsistent process-level failure\nreporting, not successful delivery, corrupted report acceptance, a semantic model\nerror or an authorization bypass.\n\nIgnore SIGPIPE in the three process entrypoints, matching the existing newer\ncommands. Keep each run function, normal report bytes, input refusal, diagnostic\nprefix and existing exit meaning unchanged. A closed pipe must reach the existing\nwrite-failure branch, return exit 3 and emit its fixed output-failure diagnostic.\nDo not add input-dependent behavior or change library signal handling.\n\n## Acceptance and handoff\n\nRegister this reviewed pinned claim and record a genuine start before adding\ntests or production edits. A separate contributor writes the process acceptance\ntests before the fix. Build the real binaries with the installed Go toolchain;\ncheck normal output against the existing native API, invalid-input exit 2 with no\nstdout, and a real preclosed stdout pipe returning exit 3 with the exact fixed\ndiagnostic. Bound subprocess waits and preserve existing fixtures. The new tests\nmust fail on the unmodified base before the production edit and pass afterward.\n\nRun Go 1.27.3 offline focused and full race tests, vet, modelc validation/drift,\nrepository validation, installer regressions, formatting, whitespace and committed\nProject Memory checks. Keep scratch/caches outside the checkout. Record failures\nand environment limits accurately. Obtain independent exact-source review and\nreport the local commit and artifact before any publication. No candidate model,\nvisual review, worker dispatch, deployment or formal PR approval is included.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-review-cli-output-v1-closed-pipes.md",
+        "id": "CF-review-cli-output-v1",
+        "blob": "72c02bfb4528882ce4f3b26bc1d0857ae6a9485d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
