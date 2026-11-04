@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "e83b29f6-ae50-4f4e-a268-1d15b8888a5c",
+  "runId": "51b3f43b-a0e1-4e73-b368-b02458aefe9e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-merge-rehearsal-v1",
+    "path": "tasks/CF-custom-merge-rehearsal-v1-checked-execution.md",
+    "revision": "4c0ad64b58069ed6904448e7cd46f0d0b1e6f0e4",
+    "blob": "7688b43eba4b0c32fe614c774da25ce5f8ec9879",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "89a3ada1c374baaab794619e8db94f72dbec15a7ce68a7720af2eb3e1b23f568"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "cf-custom-merge-rehearsal-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T06:44:40.691Z",
+  "summary": "Start reviewed local custom merge rehearsal scope before independent fixtures or production edits",
+  "next": "Freeze independent ArchivePacket acceptance before production implementation",
+  "files": [
+    "modeling/lifecycle/custommergerehearsal/merge.go",
+    "modeling/lifecycle/custommergerehearsal/execute.go",
+    "modeling/lifecycle/custommergerehearsal/merge_test.go",
+    "modeling/lifecycle/custommergerehearsal/execute_test.go",
+    "modeling/lifecycle/custommergerehearsal/contract_test.go",
+    "modeling/lifecycle/custommergerehearsal/testdata/observations.json",
+    "modeling/lifecycle/custommergerehearsal/README.md",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main_test.go",
+    "tasks/CF-custom-merge-rehearsal-v1-checked-execution.md"
+  ]
+}
