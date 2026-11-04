@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "6240ecc7-61a6-4798-b008-17a7b3738503",
+  "runId": "9a909772-a488-4ba6-a7c1-a7e8e2cd0a6a",
+  "kind": "abandon",
+  "parents": [
+    "ac701346-b9ac-45b2-8032-d471ffd43007"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-reply-boundary-v1",
+    "path": "tasks/CF-provider-reply-boundary-v1-turn-and-text.md",
+    "revision": "ab125a22a720d9825f6c3ecc05a1de2ed5203cfc",
+    "blob": "a79be860d6f68e1a00d5b3fdee41ea346f956c1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "3dfb125b1ab417ac388487c58741230a66b2bc3516254dd4ce6129059feb8cca"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-reply-boundary-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/69",
+  "at": "2026-11-04T03:08:46.686Z",
+  "summary": "Original claim excludes old tests; stop without completion to publish the reviewed one-line fixture scope amendment",
+  "next": "Review and register amended canonical source, start a new full-scope run, then add only the missing turn.started fixture line",
+  "files": [
+    "runtime/src/providers.mjs",
+    "runtime/test/provider-reply-boundary.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md"
+  ]
+}

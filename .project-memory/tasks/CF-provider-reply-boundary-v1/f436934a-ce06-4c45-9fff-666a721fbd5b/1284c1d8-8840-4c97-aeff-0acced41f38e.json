@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "1284c1d8-8840-4c97-aeff-0acced41f38e",
+  "runId": "f436934a-ce06-4c45-9fff-666a721fbd5b",
+  "kind": "start",
+  "parents": [
+    "6240ecc7-61a6-4798-b008-17a7b3738503"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-reply-boundary-v1",
+    "path": "tasks/CF-provider-reply-boundary-v1-turn-and-text.md",
+    "revision": "bfecac874a76429f23615ebdddae7da54b3d7fb0",
+    "blob": "b98c9d3f96d14cdf4912d81b92d295f8052bbc91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c91ac79a2c43b3e6b13f344cc20b86780218c242182585166f318c1db276652a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-reply-boundary-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/69",
+  "at": "2026-11-04T03:09:32.760Z",
+  "summary": "Resume original WIP with reviewed one-line success-fixture framing amendment before editing the old fixture",
+  "next": "Prepend only missing turn.started, preserve all independent and prompt literals, then validate full final scope",
+  "files": [
+    "runtime/src/providers.mjs",
+    "runtime/test/provider-reply-boundary.test.mjs",
+    "runtime/test/provider-input-parity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md"
+  ]
+}

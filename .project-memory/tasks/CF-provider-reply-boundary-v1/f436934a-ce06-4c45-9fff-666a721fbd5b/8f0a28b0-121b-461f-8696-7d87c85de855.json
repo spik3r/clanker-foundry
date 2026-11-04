@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "8f0a28b0-121b-461f-8696-7d87c85de855",
+  "runId": "f436934a-ce06-4c45-9fff-666a721fbd5b",
+  "kind": "complete",
+  "parents": [
+    "1284c1d8-8840-4c97-aeff-0acced41f38e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-reply-boundary-v1",
+    "path": "tasks/CF-provider-reply-boundary-v1-turn-and-text.md",
+    "revision": "bfecac874a76429f23615ebdddae7da54b3d7fb0",
+    "blob": "b98c9d3f96d14cdf4912d81b92d295f8052bbc91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c91ac79a2c43b3e6b13f344cc20b86780218c242182585166f318c1db276652a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-reply-boundary-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/69",
+  "at": "2026-11-04T03:13:29.847Z",
+  "summary": "Require a completed bounded CLI turn and valid raw UTF8/assistant text while preserving transport controls and decoded-text fallback compatibility",
+  "next": "Commit immutable completion, validate full diff against actual main, push PR69 ready and let lead require hosted Node24 CI before merge",
+  "files": [
+    "runtime/src/providers.mjs",
+    "runtime/test/provider-reply-boundary.test.mjs",
+    "runtime/test/provider-input-parity.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md"
+  ],
+  "validation": "ActualNode26 full259/259, affected58/58 nofail/skip/cancel; independentfrozen22 nowpass afterbaseline6pass16fail;8compilingmutants rejected restored22pass; syntax pack whitespace pass; independentreviewer58 and leadfull259 exactsource4cd7f47 clean; union89e6751 sourcebytesunchanged and58pass; optional skills-ref unavailable; no liveproviders",
+  "snapshot": {
+    "runtime/src/providers.mjs": {
+      "blob": "f6165f665307b74da23e66e2ecd531372bde9729",
+      "mode": "100644"
+    },
+    "runtime/test/provider-reply-boundary.test.mjs": {
+      "blob": "dbaab6764549581afc870073b643c19117966188",
+      "mode": "100644"
+    },
+    "runtime/test/provider-input-parity.test.mjs": {
+      "blob": "df4248c0b0687c5819fbb71c24791e3a02c666a4",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "7ebea67bf5b6608c2b4049b72bdbd8b3de0fd685",
+      "mode": "100644"
+    },
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md": {
+      "blob": "739a5628a69a30fb6da4ee63d9ab64c33589400d",
+      "mode": "100644"
+    }
+  }
+}
