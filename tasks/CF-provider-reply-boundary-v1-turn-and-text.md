@@ -1,11 +1,22 @@
 ---
 id: CF-provider-reply-boundary-v1
-status: review
+status: done
 owner: Codex provider reply boundary contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Reject incomplete-turn text and malformed provider text
+
+## Integration result
+
+[PR69](https://github.com/spik3r/clanker-foundry/pull/69) merged as
+`82b62e61ac6038b4b1f4bfd39e19153d2fc2b74b` after coordinator and independent
+source review. All five hosted workflows passed on
+`78db4faef7135f723b89b15499d69bf8b3b219f1`, including Node 24 runtime checks.
+Both local full runtime runs passed 259 tests with no skips or failures. The
+frozen tests, one-line parity fixture correction and scope amendment history
+below remain intact. The completed claim reserves no further work. The documented
+text-only fallback limit and lack of new live-provider verification still apply.
 
 ## Implementation claim
 

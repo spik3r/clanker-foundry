@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "17e47ffc-be2e-4e7d-bbf7-1e87c6d2c2bf",
+  "runId": "d59dd8e1-69c8-46b9-a4da-c54c29b864c7",
+  "kind": "complete",
+  "parents": [
+    "62f3d384-75af-4383-b396-d230b82015df"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-reply-boundary-v1",
+    "path": "tasks/CF-provider-reply-boundary-v1-turn-and-text.md",
+    "revision": "bfecac874a76429f23615ebdddae7da54b3d7fb0",
+    "blob": "b98c9d3f96d14cdf4912d81b92d295f8052bbc91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c91ac79a2c43b3e6b13f344cc20b86780218c242182585166f318c1db276652a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-change-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T03:18:12.141Z",
+  "summary": "Record actual reviewed PR69 merge and release completed scope",
+  "next": "Independent batch closeout review and integration",
+  "files": [
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md"
+  ],
+  "validation": "All five hosted workflows success on 78db4fa including Node24 runtime; root full259 tests passed; closeout pack/whitespace passed",
+  "snapshot": {
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md": {
+      "blob": "d26e125dd613620a8d8383996ee740ccdca2901a",
+      "mode": "100644"
+    }
+  }
+}
