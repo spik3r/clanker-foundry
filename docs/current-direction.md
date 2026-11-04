@@ -31,11 +31,11 @@ independent usability remain unproven.
 
 ## Working assumption and owner decisions
 
-The working assumption is to investigate a usable model-to-code outcome next,
-while preserving the skill pack as the primary product. The optional priority
-question and actual-consumer question are unanswered. This is not an owner choice
-of user, feature, route or acceptance threshold. If that emphasis is wrong, revise
-this plan before committing to a consumer implementation.
+The near-term emphasis is a working assumption: investigate a usable model-to-code
+outcome while preserving the skill pack as the primary product. No actual consumer,
+user, feature, implementation route or acceptance threshold has yet been selected
+for this plan. If that emphasis is wrong, the owner should revise it before a
+consumer implementation is chosen.
 
 Before the first consumer milestone, answer these questions in the actual brief:
 
