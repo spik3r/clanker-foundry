@@ -1,6 +1,6 @@
 ---
 id: CF-check-preparation-eligibility-v1
-status: in-progress
+status: review
 owner: Foundry validation eligibility
 repositories: [spik3r/clanker-foundry]
 ---
@@ -66,3 +66,44 @@ whitespace and committed Project Memory validation against the actual PR base.
 Use disposable syntax-valid mutation controls to demonstrate the tests detect
 removed deadline or eligibility checks. Record only observed results and separate
 local results from hosted Node 24 CI. No live runtime activation is included.
+
+## Observed result
+
+The runner now prepares the owned callback input, then refreshes current attempt,
+worker, fence, cleanup state, result subject and specification identity and checks
+the current validation deadline. There is no await before starting the callback.
+Already recorded check skips and evidence enforcement after callback completion
+remain unchanged. Production changes are limited to the runner and README.
+
+Independent tests were frozen after the genuine start and before production at
+SHA-256 `02c0d49daff7777d90cf22dadc35ad3392c77bf918e2978223b41d1824d35afe`.
+The author observed two positive controls passing and seven semantic failures on
+old code. The integration lead separately confirmed old-code failure. Frozen
+bytes and all existing tests remain unchanged.
+
+Actual Node v26.0.0 passed all nine frozen tests. The cases cover a current owned
+input, exact-deadline refusal, cancellation or worker/fence/subject/specification
+changes during artifact preparation, the second check reaching its deadline after
+first evidence commits, and late-output refusal. Planned extra timing or recorded
+skip scenarios are not claimed as separate new observations. Independent source
+review confirmed the strict comparison and existing recorded-check skip path.
+
+The full pre-integration runtime suite passed 304/304 tests without failures,
+skips or cancellations. An ordinary merge incorporated main
+`a00494b771c726f2d51a89132978720ba76273b6` without conflicts or changes to this
+lane's runtime bytes. Afterward the combined eligibility and cancellation-trace
+checks passed 21/21. Existing trace pins and all merged trace paths remain intact.
+
+Six syntax-valid mutants in a disposable clone caused assertion failures: removed
+deadline check (two), attempt check (two), worker check (one), subject check (one),
+specification binding (one), or refreshed read (five). Restored source passed all
+nine tests. Repository validation, installer/model resolver/wiring regressions and
+whitespace checks passed; optional skills-ref is unavailable. Committed Project
+Memory validation follows this staged result and completion record.
+
+A separate reviewer found no issue in source `abebd8c` and independently passed
+the nine frozen tests. All callbacks and workspace data were invented; no real
+validation tools, provider or container was invoked. Local Node 26 results do not
+establish hosted Node 24 results. Exact-head hosted checks and final integration
+review remain required before the lead merges. This claim reserves only bounded
+review corrections and does not acquire held general recovery work.
