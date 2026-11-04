@@ -1,6 +1,6 @@
 ---
 id: CF-change-entrypoint-v1
-status: in-progress
+status: review
 owner: Foundry change entrypoint contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -74,3 +74,41 @@ Run focused and full Go 1.27.3 offline race tests, vet, modelc drift, repository
 validator, installer regressions, whitespace and committed Project Memory checks.
 Keep source frozen during full tests. Obtain separate exact-source review. Report
 what passed, failed or was not run; local matches do not authorize integration.
+
+## Local implementation result
+
+The command now prepares the existing native request from exact file bytes and
+an explicitly supplied candidate digest, then exposes separate check and execute
+routes. The standalone adapter uses the same extracted native CLI body without
+changing its behavior. Help names both execution routes. Only exact change
+execute adds cooperative cancellation to the operator binary. Native source
+packages, source inventories and frozen fixtures remain unchanged.
+
+A separate contributor froze acceptance in 71b8e6d before production changes,
+after independently checking the existing literal native outcomes. The tests
+cover exact file preservation, all file and wrapper bounds, refusal and output
+failures, execution-capability separation, native report parity, actual compiled
+matched/mismatched execution and closed stdout. Existing fixture SHA256 values
+remain 8b70e7b9658d124f3ce3f5987b7d20e73c305964801aa6b3989e9dc59cd4edc3
+for operator observations and
+d9b30467427539c02d3355724b0d9ac13c47f46360996b4dfcc660d1a96403e3 for
+change rehearsal observations.
+
+Go 1.27.3 offline full race tests passed: 75 tested packages, with two command
+packages compiling without local test files. Focused operator and standalone
+race tests, vet, gofmt, model validation, generated-artifact and trace drift,
+repository validator and whitespace checks passed. All three guide command
+blocks ran on the frozen invented example: preparation and check returned 0,
+execution returned 0 with both sides matched, candidateStarted true and cleanup
+removed. The receipt bound the unchanged prepared request hash.
+
+A separate source reviewer found no blocking issue and independently passed the
+non-executing preparation, routing, help, delivery and precancelled-context race
+tests. Actual OS SIGINT/SIGTERM delivery was not separately exercised; the exact
+signal wiring was reviewed. The installer regression stopped because GNU Stow
+is absent; no installation was attempted. Optional skills-ref is also absent.
+These limits are not a full installer or hosted-CI pass.
+
+This remains a local review handoff. No push, PR, formal approval, merge,
+deployment, worker activation or unrelated-system test was performed. Request
+assembly and matching examples confer no human approval or integration authority.

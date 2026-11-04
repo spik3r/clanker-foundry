@@ -11,17 +11,20 @@ const helpText = "Usage: foundry prepare --intake FILE --requirements FILE --mod
 	"       foundry proposal check|execute\n" +
 	"       foundry process json|svg\n" +
 	"       foundry inspect\n" +
-	"       foundry revisions\n\n" +
-	"All reports use the native tool contracts. Only proposal execute runs a candidate.\n"
+	"       foundry revisions\n" +
+	"       foundry change prepare --patch-request FILE --baseline-proposal FILE --candidate-suite FILE --candidate-manifest FILE --expected-candidate-digest HEX\n" +
+	"       foundry change check|execute\n\n" +
+	"All reports use the native tool contracts. Only proposal execute and change execute run candidates.\n"
 
 type runner func(context.Context, []string, io.Reader, io.Writer, io.Writer) int
 
 type capabilities struct {
 	prepare, review, check, execute, process, inspect, revisions runner
+	changePrepare, changeCheck, changeExecute                    runner
 }
 
 // Run preserves each native route's reports and status meanings. Only the
-// explicit proposal execute route receives the candidate-execution capability.
+// explicit proposal execute and change execute routes receive execution capabilities.
 func Run(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) int {
 	withoutContext := func(f func([]string, io.Reader, io.Writer, io.Writer) int) runner {
 		return func(_ context.Context, args []string, in io.Reader, out, diag io.Writer) int {
@@ -33,9 +36,15 @@ func Run(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) 
 			return RunProposal(ctx, append([]string{action}, args...), in, out, diag)
 		}
 	}
+	change := func(action string) runner {
+		return func(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) int {
+			return RunChange(ctx, append([]string{action}, args...), in, out, diag)
+		}
+	}
 	return runWith(ctx, args, in, out, diag, capabilities{
 		prepare: withoutContext(prepare), review: withoutContext(RunReview),
 		check: proposal("check"), execute: proposal("execute"),
+		changePrepare: withoutContext(prepareChange), changeCheck: change("check"), changeExecute: change("execute"),
 		process: withoutContext(RunProcess), inspect: withoutContext(RunInspection), revisions: withoutContext(runRevisionVersioned),
 	})
 }
@@ -66,6 +75,19 @@ func runWith(ctx context.Context, args []string, in io.Reader, out, diag io.Writ
 		}
 		// Native argument refusal happens before input or execution is admitted.
 		return RunProposal(ctx, args[1:], in, out, diag)
+	case "change":
+		if len(args) >= 2 && args[1] == "prepare" {
+			return c.changePrepare(ctx, args[2:], in, out, diag)
+		}
+		if len(args) == 2 {
+			switch args[1] {
+			case "check":
+				return c.changeCheck(ctx, nil, in, out, diag)
+			case "execute":
+				return c.changeExecute(ctx, nil, in, out, diag)
+			}
+		}
+		return RunChange(ctx, args[1:], in, out, diag)
 	case "process":
 		return c.process(ctx, args[1:], in, out, diag)
 	case "inspect":
