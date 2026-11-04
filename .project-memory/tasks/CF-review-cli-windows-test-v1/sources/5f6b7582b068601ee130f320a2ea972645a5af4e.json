@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5f6b7582b068601ee130f320a2ea972645a5af4e",
+  "id": "CF-review-cli-windows-test-v1",
+  "path": "tasks/CF-review-cli-windows-test-v1-executable-suffix.md",
+  "blob": "0f3ea7581b7caa4175a96419b787a3c93b3ff45a",
+  "record": "---\nid: CF-review-cli-windows-test-v1\nstatus: in-progress\nowner: Foundry CLI test portability contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Use an executable suffix in review CLI process tests\n\n## Implementation claim\n\nBase: current main `82b62e61ac6038b4b1f4bfd39e19153d2fc2b74b`.\nBranch: `codex/review-cli-windows-test-v1`.\n\nPR [#70](https://github.com/spik3r/clanker-foundry/pull/70) merged the closed-pipe\nrepair and process acceptance tests before a reviewed test portability correction\ncould be published. Current main contains that original test unchanged. The\nreviewed correction in `f96ebf14dde7518a152559b3d6e814d08f1d8256` directly follows\nthe published original head and adds an `.exe` suffix to each temporary binary.\nApply only that test hunk on current main, with a new task and genuine lifecycle\nevents. Do not import or rewrite the original task's evidence.\n\nThe coordinator assigned this follow-up after checking the merged PR. The only\nopen PR at preparation was #71, for a separate custom-change rehearsal. Existing\nclaims and source paths were inspected; this claim covers only the portability\ncorrection and its evidence.\n\nExact scope: `modeling/lifecycle/clioutputacceptance/output_test.go`, this task\nrecord, and new immutable Project Memory source/event files for this task.\nKeep test assertions, subprocess bounds, process inputs and production code\nunchanged. Publish a small draft follow-up; do not merge or force-push.\n\n## Acceptance and validation\n\nCommit this claim, register its pinned source, and record a genuine start before\nediting the test. The final test must match the independently reviewed test blob\nfrom `f96ebf14dde7518a152559b3d6e814d08f1d8256` exactly.\n\nRun Go 1.27.3 offline race tests for the process acceptance package and the three\naffected command packages, focused vet, formatting, repository validation,\nwhitespace and committed Project Memory validation. Cross-compile the acceptance\ntest and the three commands for Windows. Keep caches and binaries outside the\ncheckout. Native Windows execution is unavailable; compilation does not establish\nWindows runtime behavior. State that limit in the PR and report actual results.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-review-cli-windows-test-v1-executable-suffix.md",
+        "id": "CF-review-cli-windows-test-v1",
+        "blob": "0f3ea7581b7caa4175a96419b787a3c93b3ff45a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

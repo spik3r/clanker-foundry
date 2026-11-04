@@ -1,6 +1,6 @@
 ---
 id: CF-review-cli-windows-test-v1
-status: in-progress
+status: review
 owner: Foundry CLI test portability contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -42,3 +42,13 @@ whitespace and committed Project Memory validation. Cross-compile the acceptance
 test and the three commands for Windows. Keep caches and binaries outside the
 checkout. Native Windows execution is unavailable; compilation does not establish
 Windows runtime behavior. State that limit in the PR and report actual results.
+
+## Observed validation
+
+The corrected test matches the reviewed test blob from `f96ebf14` byte for byte.
+Go 1.27.3 offline race tests passed for the acceptance package and all three
+command packages on macOS, including all nine compiled-process cases. Focused
+vet, formatting, repository validation and whitespace checks passed. The
+acceptance test and all three commands cross-compiled for Windows amd64 as PE32+
+executables. Native Windows execution remains unverified. The optional
+`skills-ref` validator is unavailable locally. No production source was changed.
