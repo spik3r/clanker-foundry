@@ -1,0 +1,294 @@
+{
+  "formatVersion": "independent-bound-inventory-observations/v1",
+  "provenance": "Fabricated consistency observations and handwritten inventory references, not reducer execution.",
+  "vectors": [
+    {
+      "expected": {
+        "authority": "none",
+        "casesCompleted": 5,
+        "excluded": [],
+        "executionStatus": "not-established",
+        "formatVersion": "lifecycle-bound-assertion-inventory/v1",
+        "illegalTransition": [
+          {
+            "caseId": "C_terminal",
+            "entryPosition": 6,
+            "stepId": "t_terminal"
+          }
+        ],
+        "inputMatched": true,
+        "inputs": {
+          "modelDigest": "f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d",
+          "modelSHA256": "f5277780881c9a4e5634032415184aed6ca623948e0977574b3f711b897c6f9c",
+          "reportSHA256": "cf9c973f6b6c35dc54e90c07add6cf0daa8f341926b9edef667eecb2fece412c",
+          "scenarioDigest": "8c4261a4352001248b21c3a71a3b6ed892cc4a3d93f4f31b3d4bf13a96da49f2",
+          "suiteSHA256": "598aabdb63aed5a7c953ea323e4dd447912c377e64900cf10c8e191551e47270"
+        },
+        "invalidInput": [
+          {
+            "caseId": "C_invalid",
+            "entryPosition": 3,
+            "stepId": "i_invalid"
+          }
+        ],
+        "mode": "example-only",
+        "reviewStatus": "not-established",
+        "status": "caller-supplied-assertions",
+        "stepsExecuted": 7,
+        "transitions": [
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  }
+                ]
+              },
+              {
+                "id": "G_outcome",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  },
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 2,
+                    "stepId": "r_outcome"
+                  }
+                ]
+              },
+              {
+                "id": "G_revision",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  }
+                ]
+              }
+            ],
+            "id": "T_close",
+            "revisionLimit": [
+              {
+                "caseId": "C_limit",
+                "entryPosition": 5,
+                "stepId": "l_limit"
+              }
+            ],
+            "successes": [
+              {
+                "caseId": "C_success",
+                "entryPosition": 0,
+                "stepId": "s_close"
+              },
+              {
+                "caseId": "C_invalid",
+                "entryPosition": 4,
+                "stepId": "i_close"
+              }
+            ]
+          },
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": []
+              },
+              {
+                "id": "G_revision",
+                "refusals": []
+              }
+            ],
+            "id": "T_unused",
+            "revisionLimit": [],
+            "successes": []
+          }
+        ]
+      },
+      "id": "full-custom-inventory",
+      "model": "{\"formatVersion\":\"lifecycle-json/v1\",\"profileVersion\":\"lifecycle/v1\",\"id\":\"ParcelAssertionInventory\",\"initial\":\"Open\",\"states\":[{\"id\":\"Open\",\"label\":\"Open parcel\",\"terminal\":false},{\"id\":\"Done\",\"label\":\"Closed parcel\",\"terminal\":true}],\"requirements\":[{\"id\":\"R_revision\",\"text\":\"Require exact current revision.\"},{\"id\":\"R_outcome\",\"text\":\"Require a nonblank outcome.\"},{\"id\":\"R_actor\",\"text\":\"Require a nonblank actor.\"}],\"guards\":[{\"id\":\"G_revision\",\"requirement\":\"R_revision\",\"expr\":{\"op\":\"eq\",\"args\":[{\"ref\":\"task.revision\"},{\"ref\":\"command.expectedRevision\"}]}},{\"id\":\"G_outcome\",\"requirement\":\"R_outcome\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"task.outcome\"}]}},{\"id\":\"G_actor\",\"requirement\":\"R_actor\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"command.actor\"}]}}],\"transitions\":[{\"id\":\"T_unused\",\"from\":\"Open\",\"trigger\":\"park\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]},{\"id\":\"T_close\",\"from\":\"Open\",\"trigger\":\"close\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_outcome\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]}]}\n",
+      "report": "{\"authority\":\"none\",\"casesCompleted\":5,\"entries\":[{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_success\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"s_close\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_refuse\",\"command\":{\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"r_multi\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_refuse\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"3\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"r_outcome\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"caseId\":\"C_invalid\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"bogus\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"i_invalid\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"7\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_invalid\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"7\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"i_close\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"REVISION_LIMIT\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_limit\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"18446744073709551615\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"REVISION_LIMIT\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"l_limit\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"ILLEGAL_TRANSITION\"],\"task\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"transitionId\":\"\"},\"caseId\":\"C_terminal\",\"command\":{\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"ILLEGAL_TRANSITION\"],\"task\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"transitionId\":\"\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"matched\":true,\"stepId\":\"t_terminal\"}],\"formatVersion\":\"lifecycle-scenario-report/v1\",\"matched\":true,\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioDigest\":\"8c4261a4352001248b21c3a71a3b6ed892cc4a3d93f4f31b3d4bf13a96da49f2\",\"scenarioVersion\":\"lifecycle-scenarios/v1\",\"sourceDigest\":\"598aabdb63aed5a7c953ea323e4dd447912c377e64900cf10c8e191551e47270\",\"stepsExecuted\":7}\n",
+      "suite": "{\"cases\":[{\"id\":\"C_success\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"id\":\"s_close\"}]},{\"id\":\"C_refuse\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_multi\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"3\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_outcome\"}]},{\"id\":\"C_invalid\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"bogus\"},\"expected\":{\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"id\":\"i_invalid\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"7\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"id\":\"i_close\"}]},{\"id\":\"C_limit\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"18446744073709551615\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"REVISION_LIMIT\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"l_limit\"}]},{\"id\":\"C_terminal\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"ILLEGAL_TRANSITION\"],\"task\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"transitionId\":\"\"},\"id\":\"t_terminal\"}]}],\"formatVersion\":\"lifecycle-scenarios-json/v1\",\"id\":\"IndependentInventoryCases\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioVersion\":\"lifecycle-scenarios/v1\"}\n"
+    },
+    {
+      "expected": {
+        "authority": "none",
+        "casesCompleted": 2,
+        "excluded": [
+          {
+            "caseId": "C_invalid",
+            "entryPosition": 4,
+            "stepId": "i_close"
+          }
+        ],
+        "executionStatus": "not-established",
+        "formatVersion": "lifecycle-bound-assertion-inventory/v1",
+        "illegalTransition": [],
+        "inputMatched": false,
+        "inputs": {
+          "modelDigest": "f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d",
+          "modelSHA256": "f5277780881c9a4e5634032415184aed6ca623948e0977574b3f711b897c6f9c",
+          "reportSHA256": "4bd57f8413c8199914c7e27939fa9873bc213d39cc163c3806edf6908d529746",
+          "scenarioDigest": "804681b900f1183dda0d1a086146cc0befbec563a35d65c5cab6fc41538e5297",
+          "suiteSHA256": "0aed2820835864ecec451128f7d32c9015cc82e1640226d299e772d705bff7b2"
+        },
+        "invalidInput": [
+          {
+            "caseId": "C_invalid",
+            "entryPosition": 3,
+            "stepId": "i_invalid"
+          }
+        ],
+        "mode": "example-only",
+        "reviewStatus": "not-established",
+        "status": "caller-supplied-assertions",
+        "stepsExecuted": 5,
+        "transitions": [
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  }
+                ]
+              },
+              {
+                "id": "G_outcome",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  },
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 2,
+                    "stepId": "r_outcome"
+                  }
+                ]
+              },
+              {
+                "id": "G_revision",
+                "refusals": [
+                  {
+                    "caseId": "C_refuse",
+                    "entryPosition": 1,
+                    "stepId": "r_multi"
+                  }
+                ]
+              }
+            ],
+            "id": "T_close",
+            "revisionLimit": [],
+            "successes": [
+              {
+                "caseId": "C_success",
+                "entryPosition": 0,
+                "stepId": "s_close"
+              }
+            ]
+          },
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": []
+              },
+              {
+                "id": "G_revision",
+                "refusals": []
+              }
+            ],
+            "id": "T_unused",
+            "revisionLimit": [],
+            "successes": []
+          }
+        ]
+      },
+      "id": "mismatch-prefix-excludes-success",
+      "model": "{\"formatVersion\":\"lifecycle-json/v1\",\"profileVersion\":\"lifecycle/v1\",\"id\":\"ParcelAssertionInventory\",\"initial\":\"Open\",\"states\":[{\"id\":\"Open\",\"label\":\"Open parcel\",\"terminal\":false},{\"id\":\"Done\",\"label\":\"Closed parcel\",\"terminal\":true}],\"requirements\":[{\"id\":\"R_revision\",\"text\":\"Require exact current revision.\"},{\"id\":\"R_outcome\",\"text\":\"Require a nonblank outcome.\"},{\"id\":\"R_actor\",\"text\":\"Require a nonblank actor.\"}],\"guards\":[{\"id\":\"G_revision\",\"requirement\":\"R_revision\",\"expr\":{\"op\":\"eq\",\"args\":[{\"ref\":\"task.revision\"},{\"ref\":\"command.expectedRevision\"}]}},{\"id\":\"G_outcome\",\"requirement\":\"R_outcome\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"task.outcome\"}]}},{\"id\":\"G_actor\",\"requirement\":\"R_actor\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"command.actor\"}]}}],\"transitions\":[{\"id\":\"T_unused\",\"from\":\"Open\",\"trigger\":\"park\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]},{\"id\":\"T_close\",\"from\":\"Open\",\"trigger\":\"close\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_outcome\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]}]}\n",
+      "report": "{\"authority\":\"none\",\"casesCompleted\":2,\"entries\":[{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_success\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"s_close\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_refuse\",\"command\":{\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"r_multi\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_refuse\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"3\",\"review\":null,\"type\":\"close\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"r_outcome\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"caseId\":\"C_invalid\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"bogus\"},\"differences\":[],\"expected\":{\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"matched\":true,\"stepId\":\"i_invalid\"},{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"7\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_invalid\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"close\"},\"differences\":[\"task\"],\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"99\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"matched\":false,\"stepId\":\"i_close\"}],\"formatVersion\":\"lifecycle-scenario-report/v1\",\"matched\":false,\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioDigest\":\"804681b900f1183dda0d1a086146cc0befbec563a35d65c5cab6fc41538e5297\",\"scenarioVersion\":\"lifecycle-scenarios/v1\",\"sourceDigest\":\"0aed2820835864ecec451128f7d32c9015cc82e1640226d299e772d705bff7b2\",\"stepsExecuted\":5}\n",
+      "suite": "{\"cases\":[{\"id\":\"C_success\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"id\":\"s_close\"}]},{\"id\":\"C_refuse\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_multi\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"3\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_outcome\"}]},{\"id\":\"C_invalid\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"bogus\"},\"expected\":{\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"id\":\"i_invalid\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"99\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"id\":\"i_close\"}]},{\"id\":\"C_limit\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"18446744073709551615\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"REVISION_LIMIT\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"l_limit\"}]},{\"id\":\"C_terminal\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"ILLEGAL_TRANSITION\"],\"task\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"transitionId\":\"\"},\"id\":\"t_terminal\"}]}],\"formatVersion\":\"lifecycle-scenarios-json/v1\",\"id\":\"IndependentInventoryCases\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioVersion\":\"lifecycle-scenarios/v1\"}\n"
+    },
+    {
+      "expected": {
+        "authority": "none",
+        "casesCompleted": 0,
+        "excluded": [
+          {
+            "caseId": "C_success",
+            "entryPosition": 0,
+            "stepId": "s_close"
+          }
+        ],
+        "executionStatus": "not-established",
+        "formatVersion": "lifecycle-bound-assertion-inventory/v1",
+        "illegalTransition": [],
+        "inputMatched": false,
+        "inputs": {
+          "modelDigest": "f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d",
+          "modelSHA256": "f5277780881c9a4e5634032415184aed6ca623948e0977574b3f711b897c6f9c",
+          "reportSHA256": "9884daeaf885b99b8e20c600a10edf9d7272c6cab9aaaeba630d5463fae5633d",
+          "scenarioDigest": "dd3aadd1ee8a6d07373b1f2368dbae5a287c12cfc27086fd69a5afbfea3de76d",
+          "suiteSHA256": "2c2c18878c2d26a2c69c48911a75b0523f6b5d649c229ea3928f5cfd9c6ccab2"
+        },
+        "invalidInput": [],
+        "mode": "example-only",
+        "reviewStatus": "not-established",
+        "status": "caller-supplied-assertions",
+        "stepsExecuted": 1,
+        "transitions": [
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": []
+              },
+              {
+                "id": "G_outcome",
+                "refusals": []
+              },
+              {
+                "id": "G_revision",
+                "refusals": []
+              }
+            ],
+            "id": "T_close",
+            "revisionLimit": [],
+            "successes": []
+          },
+          {
+            "guards": [
+              {
+                "id": "G_actor",
+                "refusals": []
+              },
+              {
+                "id": "G_revision",
+                "refusals": []
+              }
+            ],
+            "id": "T_unused",
+            "revisionLimit": [],
+            "successes": []
+          }
+        ]
+      },
+      "id": "undeclared-expected-id-is-not-an-actual-link",
+      "model": "{\"formatVersion\":\"lifecycle-json/v1\",\"profileVersion\":\"lifecycle/v1\",\"id\":\"ParcelAssertionInventory\",\"initial\":\"Open\",\"states\":[{\"id\":\"Open\",\"label\":\"Open parcel\",\"terminal\":false},{\"id\":\"Done\",\"label\":\"Closed parcel\",\"terminal\":true}],\"requirements\":[{\"id\":\"R_revision\",\"text\":\"Require exact current revision.\"},{\"id\":\"R_outcome\",\"text\":\"Require a nonblank outcome.\"},{\"id\":\"R_actor\",\"text\":\"Require a nonblank actor.\"}],\"guards\":[{\"id\":\"G_revision\",\"requirement\":\"R_revision\",\"expr\":{\"op\":\"eq\",\"args\":[{\"ref\":\"task.revision\"},{\"ref\":\"command.expectedRevision\"}]}},{\"id\":\"G_outcome\",\"requirement\":\"R_outcome\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"task.outcome\"}]}},{\"id\":\"G_actor\",\"requirement\":\"R_actor\",\"expr\":{\"op\":\"nonempty\",\"args\":[{\"ref\":\"command.actor\"}]}}],\"transitions\":[{\"id\":\"T_unused\",\"from\":\"Open\",\"trigger\":\"park\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]},{\"id\":\"T_close\",\"from\":\"Open\",\"trigger\":\"close\",\"to\":\"Done\",\"guards\":[\"G_revision\",\"G_outcome\",\"G_actor\"],\"effects\":[{\"op\":\"set_state\"},{\"op\":\"increment_revision\"}]}]}\n",
+      "report": "{\"authority\":\"none\",\"casesCompleted\":0,\"entries\":[{\"actual\":{\"authority\":\"none\",\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"caseId\":\"C_success\",\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"differences\":[\"transitionId\"],\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_unseen_expectation\"},\"input\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"matched\":false,\"stepId\":\"s_close\"}],\"formatVersion\":\"lifecycle-scenario-report/v1\",\"matched\":false,\"mode\":\"example-only\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioDigest\":\"dd3aadd1ee8a6d07373b1f2368dbae5a287c12cfc27086fd69a5afbfea3de76d\",\"scenarioVersion\":\"lifecycle-scenarios/v1\",\"sourceDigest\":\"2c2c18878c2d26a2c69c48911a75b0523f6b5d649c229ea3928f5cfd9c6ccab2\",\"stepsExecuted\":1}\n",
+      "suite": "{\"cases\":[{\"id\":\"C_success\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"4\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"4\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-success\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"5\",\"state\":\"Done\"},\"transitionId\":\"T_unseen_expectation\"},\"id\":\"s_close\"}]},{\"id\":\"C_refuse\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"2\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_actor\",\"G_outcome\",\"G_revision\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_multi\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"3\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"G_outcome\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-refuse\",\"outcome\":\"  \",\"owner\":\"Keep\",\"revision\":\"3\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"r_outcome\"}]},{\"id\":\"C_invalid\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"6\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"bogus\"},\"expected\":{\"ok\":false,\"refusals\":[\"INVALID_INPUT\"],\"task\":null,\"transitionId\":\"\"},\"id\":\"i_invalid\"},{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"6\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":true,\"refusals\":[],\"task\":{\"acceptance\":null,\"id\":\"parcel-invalid\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"7\",\"state\":\"Done\"},\"transitionId\":\"T_close\"},\"id\":\"i_close\"}]},{\"id\":\"C_limit\",\"initial\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"steps\":[{\"command\":{\"actor\":\"Lee\",\"expectedRevision\":\"18446744073709551615\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"REVISION_LIMIT\"],\"task\":{\"acceptance\":[],\"id\":\"parcel-limit\",\"outcome\":\"ship\",\"owner\":null,\"revision\":\"18446744073709551615\",\"state\":\"Open\"},\"transitionId\":\"T_close\"},\"id\":\"l_limit\"}]},{\"id\":\"C_terminal\",\"initial\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"steps\":[{\"command\":{\"actor\":\"\",\"expectedRevision\":\"0\",\"review\":null,\"type\":\"close\"},\"expected\":{\"ok\":false,\"refusals\":[\"ILLEGAL_TRANSITION\"],\"task\":{\"acceptance\":null,\"id\":\"parcel-terminal\",\"outcome\":\"\",\"owner\":\"\",\"revision\":\"8\",\"state\":\"Done\"},\"transitionId\":\"\"},\"id\":\"t_terminal\"}]}],\"formatVersion\":\"lifecycle-scenarios-json/v1\",\"id\":\"IndependentInventoryCases\",\"modelDigest\":\"f505f18705154338297afc35705e85d7ea49903ebc03d61165ff5456163ae28d\",\"profileVersion\":\"lifecycle/v1\",\"scenarioVersion\":\"lifecycle-scenarios/v1\"}\n"
+    }
+  ]
+}
