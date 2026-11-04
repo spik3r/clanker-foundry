@@ -1,6 +1,6 @@
 ---
 id: CF-runtime-status-v1
-status: in-progress
+status: review
 owner: Foundry runtime status contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -164,3 +164,33 @@ observed correction and completion, and validate committed Project Memory agains
 the actual base. The final PR description must disclose the failed hosted check
 and bounded revert. All five workflows at the new final head must pass before
 the coordinator merges. No other source or policy change is authorized.
+
+## Final correction result
+
+The two AGENTS phrases were restored after the reviewed correction source and
+new genuine start. AGENTS now matches base `ffdce31` byte for byte, so the final
+PR changes only the two runtime documents, this task and immutable lifecycle
+records. All fifteen builder input hashes match the unchanged frozen manifest
+`6a87f4db69a9c43376b405aca0d1252a662a3a4cdc7496329f2b41fac2896032`.
+No source pin, policy, expectation or test was changed to pass validation.
+Standing-fact cleanup remains deferred because of the pinned dependency.
+
+Correction run `11d29315-3eb8-42e3-9901-f6a85169f8ae`, start
+`d7118138-7be4-44de-a7d6-a30f8d4f94b2`, pins reviewed source `2fce89e` and
+links the previous completion. It covers all four paths before the restore.
+Coordinator review of `5fdff62` confirmed the exact two-phrase reversal, base
+identity, all fifteen input hashes, original document continuity and genuine
+new-run chronology. Earlier immutable sources/events and completion remain
+unchanged. The previously reviewed `f18956d` documents are the final substantive
+content; no further document change followed their independent review.
+
+Installed Go 1.27.3, offline on the local host, passed
+`go test -race ./builderdemo ./cmd/modelbuilderdemo` after the restore.
+Repository documentation/link validation and staged/unstaged whitespace checks
+passed; optional skills-ref is unavailable. The frozen input manifest and all
+fifteen inputs were independently compared with their declared hashes. These
+focused checks address the observed drift failure, not a claim that the complete
+hosted suite has passed at the new head. Fresh successful results from all five
+workflows and final coordinator review are required before merge. This task ran
+no runtime suite, provider or Docker check. Final committed lifecycle validation
+is checked against actual main after this completion is committed.

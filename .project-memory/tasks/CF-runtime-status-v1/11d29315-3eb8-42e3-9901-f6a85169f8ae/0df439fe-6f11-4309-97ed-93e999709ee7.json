@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "0df439fe-6f11-4309-97ed-93e999709ee7",
+  "runId": "11d29315-3eb8-42e3-9901-f6a85169f8ae",
+  "kind": "complete",
+  "parents": [
+    "d7118138-7be4-44de-a7d6-a30f8d4f94b2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-status-v1",
+    "path": "tasks/CF-runtime-status-v1-current-history.md",
+    "revision": "2fce89e092feb7f49893fe227565aa413a07665a",
+    "blob": "82cc80bf94f22a9caa0a96309ab5b8780a61c75b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d156637bfa314e4f9a1a33e9413448c6ebcfb8c9a3783335d2e7120adc2d024e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-status-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/91",
+  "at": "2026-11-04T23:10:22.845Z",
+  "summary": "Restored the two project instruction phrases to frozen base after hosted Go failure; final substantive change is reviewed runtime documentation only, with all 15 builder pins preserved",
+  "next": "Commit final correction result/completion, validate full committed diff against actual main ffdce31, push draftPR91 with docs-only scope and disclosed failed-head correction; require all five new-head workflows before coordinator merge",
+  "files": [
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "AGENTS.md",
+    "tasks/CF-runtime-status-v1-current-history.md"
+  ],
+  "validation": "Exact installed Go1.27.3 offline race checks passed for builderdemo and cmd/modelbuilderdemo after restore. AGENTS exact base ffdce31; frozen manifest6a87f4db and all15 input hashes match unchanged. Documentation/link validator and whitespace passed; optional skills-ref unavailable. Root correction source5fdff62/delta/new-run review clean; final docs exact independently reviewed f18956d. Historical hosted failure41930444551 disclosed; fresh final all5 hosted checks pending. No runtime/provider/Docker checks run.",
+  "snapshot": {
+    "docs/deterministic-orchestration-plan.md": {
+      "blob": "7d4702f22c732b01e5efc4d9d79235901774c16b",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-rollout.md": {
+      "blob": "7f2a5d382307ab09c5d9a5ae54ecadcb3a6ac93c",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "c28ff18ffb08f45ac1abec5fa7646d74ffee1130",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-status-v1-current-history.md": {
+      "blob": "dc1fae7ebabb2e114663c467e57e93e42b7b5832",
+      "mode": "100644"
+    }
+  }
+}
