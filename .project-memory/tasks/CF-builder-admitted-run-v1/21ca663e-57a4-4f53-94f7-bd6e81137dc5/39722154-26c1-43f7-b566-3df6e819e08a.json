@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "39722154-26c1-43f7-b566-3df6e819e08a",
+  "runId": "21ca663e-57a4-4f53-94f7-bd6e81137dc5",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-admitted-run-v1",
+    "path": "tasks/CF-builder-admitted-run-v1-fresh-go-candidate.md",
+    "revision": "7311c677da96bf0346e6cd40e0dbcc2e6225b36a",
+    "blob": "bc713e49c1c6963deb5d85324748a600bfd55b52",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1de56dac958e5d29bdd8571e221d5ffab295830b42ba7b536e0fbe6cabc1421f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-admitted-run-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/88",
+  "at": "2026-11-04T21:50:15.962Z",
+  "summary": "Observe a fresh edit-only Go builder through reviewed prepared handoff, six-file admission and separately authorized compile and behavior gates",
+  "next": "Independent contributor freezes run rubric before receiving documents or builder exposure",
+  "files": [
+    "examples/model-builder-go/admitted-run/README.md",
+    "examples/model-builder-go/admitted-run/receiving-prompt.md",
+    "examples/model-builder-go/admitted-run/rubric.md",
+    "examples/model-builder-go/admitted-run/evidence.md",
+    "examples/model-builder-go/admitted-run/identities.json",
+    "tasks/CF-builder-admitted-run-v1-fresh-go-candidate.md"
+  ]
+}
