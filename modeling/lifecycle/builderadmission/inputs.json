@@ -1,0 +1,35 @@
+{
+  "formatVersion": "model-builder-inputs/v1",
+  "artifacts": [
+    {
+      "id": "frozen-0",
+      "role": "instructions",
+      "path": "README.md",
+      "sha256": "b4ec648c38dadd63dc9799f40d6183d3e464c9dc33b83302c6f6c171a8149103"
+    },
+    {
+      "id": "frozen-1",
+      "role": "harness",
+      "path": "go.mod",
+      "sha256": "e31637eba9a06a2105c2a12b904457b50ad0c60defbbc7cafabeae8f68d4bc3c"
+    },
+    {
+      "id": "frozen-2",
+      "role": "interface",
+      "path": "contract.go",
+      "sha256": "82b6dcd7a05d496a31c7431dce9b61bb572dd5f53b312418dc8ff72fb7a35b0a"
+    },
+    {
+      "id": "frozen-3",
+      "role": "acceptance",
+      "path": "acceptance_test.go",
+      "sha256": "eaf6078d5703f3e3664f41d0a19d68a7a66bafcfac310bfe5c91e72a7fe02518"
+    },
+    {
+      "id": "frozen-4",
+      "role": "rubric",
+      "path": "rubric.md",
+      "sha256": "ec13d76787d6ce4976487d373c8f2d3587286bdb1f1b1716419b397b46569ce5"
+    }
+  ]
+}
