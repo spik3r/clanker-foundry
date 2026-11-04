@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "840cda0b-6254-4a71-8f56-72f2b6a327af",
+  "runId": "4dab3bf9-ce63-474b-9bf5-765edb209a22",
+  "kind": "abandon",
+  "parents": [
+    "06741642-99d6-4312-8b22-9db6f03e59fa"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "763a91960833e23d858fde23d513bccd006de8cd",
+    "blob": "021393bc8b2d74be6578b0d4bc8c93cb969e8fff",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bdc2658642909a0034e0f14f182b095087e07ebdbc0594d0cffa9bdbac38e999"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:47:48.956Z",
+  "summary": "Revised catalog destination before further work; superseded by a new claim and run",
+  "next": "Pin the revised claim and restart",
+  "files": [
+    "README.md,docs/getting-started.md,docs/skills.md,tasks/CF-readme-navigation-v1-landing-page.md"
+  ]
+}

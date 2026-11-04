@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f2b1875f25d0a4caefa86f98fd767805285fc4ae",
+  "id": "CF-readme-navigation-v1",
+  "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+  "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+  "record": "---\nid: CF-readme-navigation-v1\nstatus: in-progress\nowner: README navigation contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reorganize the Foundry landing page\n\n## Implementation claim\n\nThe owner requested a concise, inviting README introducing installation and the\nmain areas of Foundry: skills, AGENTS.md, Project Memory, the model-driven\npipeline and orchestration. This local documentation lane starts from reviewed\nmain `4fe0611d032ea7060e9804b23634d1ec13c481a4`; it is not a published shared\nreservation. The merged pilot guide's README link is preserved. Existing claims\nand open work were inspected; the historical pilot guide claim described only a\nlocal proposal and its change was merged in #48.\n\nExact scope: `README.md`, new `docs/getting-started.md`, new `docs/skills.md`,\nthis task record, and new immutable Project Memory source/event files for this\ntask. Preserve useful install instructions and the skill catalog in focused\nguides; check links, commands, optional dependencies and capability limits\nagainst current implementation. Do not alter runtime, models, generated files,\nother task records or prior evidence.\n\n## Validation and handoff\n\nRun the repository validator, installer regressions, whitespace and full committed\ndiff Project Memory validation; independently review the documentation where\navailable. Report actual outcomes and limits. Normal branch publication and a\ndraft PR are authorized; merge and deployment are not part of this scope.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+        "id": "CF-readme-navigation-v1",
+        "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -1,271 +1,84 @@
-# Kai's Agent Skills
+# Clanker Foundry
 
-A small, modular engineering skill pack using the open Agent Skills `SKILL.md` format,
-plus the templates, workflows, and checklists that support it.
+Clanker Foundry is a small, opinionated engineering framework for AI coding
+agents: reusable skills, instructions and workflows that help people investigate,
+build and review changes with evidence. Start with the skill pack on its own, or
+explore the optional tools for task history, modeling and orchestration.
 
-## The model-driven pipeline
+## Get started
 
-Clanker Foundry is also developing a model-driven way to build software: use AI
-and people to clarify the intent, review an explicit model of the rules, then
-use repeatable tools to derive code and views and check them against independently
-written expectations. The model here is a structured design, not the AI itself.
-
-**Start with [the plain-language pipeline guide](docs/model-driven-pipeline.md).**
-It explains the ideal outcome, reasons for the approach, key concepts and a
-workshop analogy, with diagrams separating human, AI and non-AI tooling roles.
-It keeps the working lifecycle example distinct from future plans.
-Deterministic generation makes results reproducible; it does not make them correct.
-
-To try the current example, start with the [pilot testing guide](docs/model-driven-pilot-testing.md).
-See also the [lifecycle demo](modeling/lifecycle/README.md) and
-[step-by-step revision tutorial](modeling/lifecycle/tutorial/README.md).
-The skill pack and installation instructions below remain usable on their own;
-the example does not replace the separate orchestration runtime.
-
-## Repository layout
-
-| Path | Contents |
-|---|---|
-| `skills/` | The skill pack (see below) |
-| `agents/` | Ready-to-launch subagent profiles: explorer-researcher, architect-planner, builder-developer, reviewer-verifier |
-| `templates/` | Fill-in starting points: `prompts/`, `architecture-review/`, `adr/`, `pr/`, `project/` |
-| `workflows/` | Repeatable procedures, e.g. `bug-investigation.md` |
-| `checklists/` | Verification lists: `security.md`, `code-review.md` |
-| `docs/` | Framework and external-skill guidance |
-| `runtime/` | Optional single-host deterministic orchestration pilot with supervised read-only workers |
-| `modeling/lifecycle/` | Isolated model-to-Go example, generated views, independent acceptance checks and revision tutorial |
-| `scripts/stow.sh` | Stows skills, subagents, workflows, templates, checklists, and global instructions |
-| `global-agents/` | Tracked machine-wide `AGENTS.md`, setup guide, and tool wiring |
-| `AGENTS.md` | Repo instructions and conventions — the source of truth for agents (`CLAUDE.md` and `GEMINI.md` point at it) |
-
-## Included skills
-
-Short summaries below; each skill directory has its own `README.md` with detail
-on modes, behaviour, output, and example invocations.
-
-| Skill | Purpose | Default behaviour |
-|---|---|---|
-| [`engineer`](skills/engineer/README.md) | End-to-end investigation, planning, implementation and validation | May edit in implementation or repair mode |
-| [`review-change`](skills/review-change/README.md) | Independent PR, branch, commit or working-tree review | Read-only |
-| [`investigate-codebase`](skills/investigate-codebase/README.md) | Trace an unfamiliar code path or subsystem | Read-only |
-| [`architecture-review`](skills/architecture-review/README.md) | Assess boundaries, coupling, data, reliability, security and evolution | Read-only unless asked for a plan |
-| [`performance-investigation`](skills/performance-investigation/README.md) | Measure and isolate performance bottlenecks | Evidence-first; edits only for scoped experiments |
-| [`safe-refactor`](skills/safe-refactor/README.md) | Improve structure while preserving observable behaviour | Small edits with continuous validation |
-| [`adr`](skills/adr/README.md) | Create or update an Architecture Decision Record | Writes documentation only |
-| [`checkpoint`](skills/checkpoint/README.md) | Create, refresh, or resume durable handoffs (`checkpoints/`) across sessions and agents | Writes documentation only |
-| [`context-offload`](skills/context-offload/README.md) | Create a compact, replaceable `context.md` handoff for one active task | Writes documentation only |
-| [`task-management`](skills/task-management/README.md) | Scope, track and close work in the existing task store | Writes task records within the requested scope |
-| [`agent-coordination`](skills/agent-coordination/README.md) | Check shared claims, avoid overlap and transfer bounded work | Coordinates ownership; does not launch workers |
-| [`backlog-maintenance`](skills/backlog-maintenance/README.md) | Reconcile stale, duplicate or completed tasks with evidence | Reviews stay read-only; upkeep edits the agreed records |
-| [`project-memory`](skills/project-memory/README.md) | Record immutable v2 task/run history and verify fresh committed-change evidence | Records local implementation evidence; keeps ownership in canonical task records |
-| [`model-driven-design`](skills/model-driven-design/README.md) | Turn an idea into a strict model proposal and independent acceptance handoff | Clarifies by default; authorized drafts and review preparation only |
-| [`braindump-distiller`](skills/braindump-distiller/README.md) | Turn unstructured ideas into a phased plan or interactive checklist | Read-only unless asked to save a plan |
-| [`knowledge-note`](skills/knowledge-note/README.md) | Create or update connected notes in a knowledge base or vault | Edits only the named vault |
-| [`orchestrator`](skills/orchestrator/README.md) | Coordinate scoped subagents, current plans, ownership, and independent review | Delegates only when the task benefits from orchestration |
-| [`ui-verification`](skills/ui-verification/README.md) | Verify visible browser behaviour and relevant repeated or interrupted flows | Verifies within the approved environment; reports browser checks separately from fallbacks |
-| [`persistent-iteration`](skills/persistent-iteration/README.md) | Continue bounded work or monitoring until the requested outcome or time boundary | Continues only within authorised scope |
-
-## Suggested usage
-
-Examples:
-
-```text
-Use engineer in implementation mode to add ...
-Use engineer in validation mode on my current changes.
-Use review-change to review this branch against main. Do not edit files.
-Use investigate-codebase to trace how refunds flow from the API to Stripe.
-Use architecture-review on the authentication and authorisation boundaries.
-Use performance-investigation to diagnose the slow portfolio endpoint.
-Use safe-refactor to split this service without changing behaviour.
-Use adr to record our decision to use managed identity.
-Use checkpoint to write a handoff before I switch models.
-Use orchestrator to coordinate this feature across research, planning, implementation and review.
-Use ui-verification to check the changed browser flows and narrow-screen layout.
-Use persistent-iteration to watch this check run until it finishes.
-```
-
-`templates/prompts/` holds fill-in-the-blank versions of the most common requests.
-It includes an [`explain-code`](templates/prompts/explain-code.md) prompt for tracing
-unfamiliar code without editing it. [`workflows/feature-delivery.md`](workflows/feature-delivery.md)
-shows how to run the four agent profiles as a feature delivery pipeline.
-For reusable subagent profiles, see [agents/](agents/README.md):
-explorer-researcher, architect-planner, builder-developer, and independent
-reviewer-verifier.
-
-## Tasks and handoffs in your project
-
-Use the [task workflow guide](docs/task-workflows.md) to adopt task tracking, ownership
-and session handoffs in an existing or new project. Keep your current tracker, or
-start with task files in the code repository. The guide explains which record owns
-which state, how concurrent claims work, and when optional Project Memory adds value.
-No app template or separate backlog repository is required.
-
-## Installation
-
-### Quick start (recommended)
-
-Use GNU Stow to create every personal skill symlink and wire the shared global agent
-instructions. Keep this repository in a permanent location; do not run Stow from a
-temporary clone.
-
-1. Install GNU Stow with your system package manager. On macOS with Homebrew:
-
-   ```bash
-   brew install stow
-   ```
-
-2. Clone this repository, then enter it:
-
-   ```bash
-   git clone <repository-url> ~/code/clanker-foundry
-   cd ~/code/clanker-foundry
-   ```
-
-3. Review [scripts/stow.sh](scripts/stow.sh), then run it:
-
-   ```bash
-   scripts/stow.sh
-   ```
-
-4. Start a new agent session. For both `~/.agents/` and `~/.claude/`, the script has
-   installed `skills/`, `agents/`, `workflows/`, `templates/`, and `checklists/` as
-   symlinks to this repository. It has also stowed the tracked global instructions to
-   `~/.config/agents/AGENTS.md` and wired Codex, Claude Code, opencode, and Gemini CLI
-   to that canonical link.
-
-   The subagent profiles use portable model tiers. Resolve their current client-specific
-   model through `scripts/agent-model.sh <claude|codex> <agent-name>`; see the
-   [subagent model mapping](agents/README.md#model-selection).
-
-The script creates missing target directories and uses `stow --restow`, so it is safe
-to run again after pulling updates. Repository-only `docs/` and `scripts/` are not
-installed. The script may stop if an existing non-Stow file conflicts with a target;
-inspect and resolve the conflict rather than using Stow's `--adopt` option blindly.
-
-Older installs may have a copied `~/.config/agents/AGENTS.md`. If it matches the tracked
-file, the script moves it to `AGENTS.md.pre-stow` before creating the link. If it differs,
-the script stops so you can merge those local changes into `global-agents/AGENTS.md`.
-Commit and pull changes to the tracked file to share them across machines.
-
-### Project-scoped use
-
-The Stow script installs personal agent assets. For an asset that belongs only to one
-project, use the matching project directory, such as `.agents/skills/`,
-`.agents/workflows/`, or the equivalent `.claude/` path, and keep it under that
-project's version control.
-
-### One-off manual link
-
-For a temporary or single-skill installation, run these commands from this repository:
+The recommended install uses Git, Bash and GNU Stow. Keep the clone in a permanent
+location: installed assets are symlinks back to it. Review the
+[installation guide](docs/getting-started.md) and script before running them;
+the install links assets into both `~/.agents/` and `~/.claude/` and wires global
+instructions for supported clients.
 
 ```bash
-# Add one skill to Codex.
-ln -s "$PWD/skills/engineer" "$HOME/.agents/skills/engineer"
-
-# Remove that symlink later. `unlink` will not remove a directory.
-unlink "$HOME/.agents/skills/engineer"
-
-# Add one Claude Code subagent profile.
-ln -s "$PWD/agents/explorer-researcher.md" "$HOME/.claude/agents/explorer-researcher.md"
-
-# Remove that profile later.
-unlink "$HOME/.claude/agents/explorer-researcher.md"
+git clone https://github.com/spik3r/clanker-foundry.git ~/code/clanker-foundry
+cd ~/code/clanker-foundry
+cat scripts/stow.sh global-agents/wire-global-agents.sh  # review before installing
+scripts/stow.sh
 ```
 
-Do not manually replace a link managed by Stow; use `scripts/stow.sh` after changing
-the pack instead.
+Start a new agent session, then try a scoped request such as:
 
-## Recommended setup
+> Use `investigate-codebase` to trace how this request is handled. Do not edit files.
 
-Install these globally:
+The [getting-started guide](docs/getting-started.md) also covers project-scoped or
+single-skill use, conflicts and validation. Existing files can stop installation;
+inspect conflicts rather than blindly adopting them.
 
-- `engineer`
-- `review-change`
-- `investigate-codebase`
-- `safe-refactor`
-- `adr`
-- `checkpoint`
+## Find your way around
 
-Consider keeping these global but invoke them manually when needed:
+### Skills and working practices
 
-- `architecture-review`
-- `performance-investigation`
-- `orchestrator`
-- `ui-verification`
-- `persistent-iteration`
+[Skills](docs/skills.md) are self-contained procedures in the open `SKILL.md`
+format. For example, `engineer` supports implementation, while `review-change`
+and `investigate-codebase` default to read-only. The catalog has the full list,
+examples and suggested setup. [Workflows](workflows/) describe repeatable processes;
+[templates](templates/) and [checklists](checklists/) support their outputs and checks.
 
-Keep stack-specific workflows, commands and architecture rules in project-level skills or `AGENTS.md`.
+[Agent profiles](agents/README.md) outline explorer, planner, builder and independent
+reviewer roles. The [feature-delivery workflow](workflows/feature-delivery.md) shows
+how they can work together; the host still chooses and launches the models.
 
-For a machine-wide behaviour base shared by every project, see
-[`global-agents/`](global-agents/README.md).
+### Start with AGENTS.md
 
-## External skills
+A project's `AGENTS.md` holds its standing facts, rules and commands; skills hold
+repeatable procedures. This repository's [AGENTS.md](AGENTS.md) is its source of
+truth for agent instructions, with tool-specific pointers rather than copies.
+For a shared machine-wide base and a team baseline, see the
+[global agent guide](global-agents/README.md).
 
-See [useful external skills](docs/external-skills.md) for the official OpenAI curated
-`security-threat-model`, Caveman, and complementary skills from
-[mattpocock/skills](https://github.com/mattpocock/skills).
+### Tasks and Project Memory
 
-## Design notes
+The [task workflow guide](docs/task-workflows.md) explains ownership and handoffs
+using your existing tracker or task files. Optional
+[Project Memory](skills/project-memory/README.md) records pinned task sources and
+immutable local implementation events, linking completion declarations to staged
+content. It is evidence, not a claim lock, proof a test ran, or a replacement for
+the canonical task store. Foundry uses it for its own changes; consumers need not.
+The [format contract](skills/project-memory/FORMAT.md) covers compatibility and
+validation limits.
 
-- Each skill is self-contained. No skill depends on another skill being installed.
-- Review and investigation skills default to read-only.
-- The descriptions include explicit trigger boundaries so agents are less likely to invoke the wrong workflow.
-- The pack avoids scripts and tool allowlists to remain portable across compatible clients.
-- The skills complement `AGENTS.md`: global facts and standing rules belong in `AGENTS.md`; repeatable procedures belong in skills and workflows; reusable output shapes belong in templates; verification lists belong in checklists.
+### Model-driven pipeline
 
-## Validation
+What if a reviewed design could produce code and views that are checked against
+independent expectations? People and AI can clarify intent and draft a structured
+model; deterministic tools validate and translate the supported parts. The model
+is the design, not the AI. Repeatability does not prove correctness, so review and
+independent checks matter.
 
-Run the validator after any change:
+The [plain-language pipeline guide](docs/model-driven-pipeline.md) explains the
+motivation and future goal. To try what exists today, follow the
+[pilot testing guide](docs/model-driven-pilot-testing.md): a bounded task-lifecycle
+example, not a general app generator. It is separate from the runtime below.
 
-```bash
-scripts/validate.sh
-```
+### Orchestration
 
-It checks that the folders follow the Agent Skills open format:
-
-- directory name matches the `name`;
-- names use lowercase letters and hyphens;
-- each `SKILL.md` contains `name` and `description` frontmatter;
-- all skills remain well below the recommended 500-line limit;
-- each skill ships a `README.md`, model mappings are nonempty, shell scripts parse, and
-  every relative Markdown link in tracked or unignored untracked Markdown resolves on disk.
-  Inline links are checked; anchors, reference-style links, and paths in inline code are
-  outside this check.
-
-CI runs the same script on every push and pull request. When the `skills-ref` validator
-is installed, both the script and CI additionally run it per skill:
-
-```bash
-skills-ref validate ./skills/engineer
-```
-
-Installer regression tests run with:
-
-```bash
-bash tests/test-install.sh
-```
-
-## Project-memory v2
-
-The [Project Memory workflow](skills/project-memory/SKILL.md) now uses immutable
-per-task/per-run events and reviewed pinned source records. Task and repository
-identities are explicit; normal operation and validation do not fetch data or code.
-The [format and compatibility contract](skills/project-memory/FORMAT.md) describes
-fresh completion coverage, causal conflicts and offline validation.
-
-Existing v1 or unversioned JSONL history stays byte-preserved and read-only. It
-cannot satisfy fresh v2 coverage; there is no automatic migration or invented
-history. Review the documented source/claim setup before starting new work. Only
-register source records safe to copy into the target repository, especially when
-that repository is public. No private backlog access is required for generic use.
-
-## Pin a project baseline
-
-For team repositories, pin a reviewed baseline with the [submodule recipe in the global
-agent guide](global-agents/README.md#pinning-a-project-baseline). A missing pinned
-baseline is a setup error. Never commit secrets or local model overrides.
-
-The optional [managed orchestration runtime](runtime/README.md) adds typed tasks,
-explicit authority for new `CF-AUTO-` tasks, isolated file candidates and a Project
-Memory evidence bridge. See the [rollout guide](docs/deterministic-orchestration-rollout.md)
-for setup and verified limits. Existing task claims do not transfer.
+The optional [orchestration runtime](runtime/README.md) coordinates typed tasks,
+guarded transitions and supervised workers on a single host. It has explicit
+ownership, authority and isolation limits; existing task claims do not transfer
+automatically. Start with the runtime’s fake-worker demo and read the
+[rollout guide](docs/deterministic-orchestration-rollout.md) before enabling dispatch.
+Neither the runtime nor the model-driven example is required to use the skill pack.

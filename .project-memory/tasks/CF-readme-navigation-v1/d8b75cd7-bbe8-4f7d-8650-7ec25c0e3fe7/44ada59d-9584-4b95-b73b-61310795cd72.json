@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "44ada59d-9584-4b95-b73b-61310795cd72",
+  "runId": "d8b75cd7-bbe8-4f7d-8650-7ec25c0e3fe7",
+  "kind": "complete",
+  "parents": [
+    "ba667e44-7484-4aec-b590-f754471b1954"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "f2b1875f25d0a4caefa86f98fd767805285fc4ae",
+    "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bab182eb945a74ccf67e9a074503bd6e07803bf9502706524f04af8b5cf35250"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:49:46.698Z",
+  "summary": "Verified final documentation and corrected path-scoped evidence",
+  "next": "Review draft PR and hosted checks",
+  "files": [
+    "README.md",
+    "docs/getting-started.md",
+    "docs/skills.md",
+    "tasks/CF-readme-navigation-v1-landing-page.md"
+  ],
+  "validation": "scripts/validate.sh and full-diff whitespace check passed (skills-ref unavailable); manual links and repeat refusal passed in temporary HOME; independent review found no remaining blockers; installer regression stopped at missing GNU Stow after wiring checks.",
+  "snapshot": {
+    "README.md": {
+      "blob": "e843e5d0a9cf037f45989ee6b7e2ecec263f3c34",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "26408737b91085aa29cdc0ab3be756f2bc49b9ab",
+      "mode": "100644"
+    },
+    "docs/skills.md": {
+      "blob": "3aa749a45323c091d3d4671e7bbf9f04e5a33387",
+      "mode": "100644"
+    },
+    "tasks/CF-readme-navigation-v1-landing-page.md": {
+      "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+      "mode": "100644"
+    }
+  }
+}

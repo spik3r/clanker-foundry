@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "8bb56033-3205-47db-bda0-67c99196dc49",
+  "runId": "83e03fee-290d-46ff-b9bd-86215bdb167b",
+  "kind": "start",
+  "parents": [
+    "840cda0b-6254-4a71-8f56-72f2b6a327af"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "f2b1875f25d0a4caefa86f98fd767805285fc4ae",
+    "blob": "e9f5b024bf846ffe7b75387e1c53e02ef42303ee",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bab182eb945a74ccf67e9a074503bd6e07803bf9502706524f04af8b5cf35250"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:47:49.301Z",
+  "summary": "Reorganize the landing page with guides under docs",
+  "next": "Finish and verify the documentation",
+  "files": [
+    "README.md,docs/getting-started.md,docs/skills.md,tasks/CF-readme-navigation-v1-landing-page.md"
+  ]
+}

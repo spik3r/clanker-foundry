@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "a112e0e4-8dfc-45e6-bdd7-f55136c89922",
+  "runId": "4dab3bf9-ce63-474b-9bf5-765edb209a22",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-navigation-v1",
+    "path": "tasks/CF-readme-navigation-v1-landing-page.md",
+    "revision": "763a91960833e23d858fde23d513bccd006de8cd",
+    "blob": "021393bc8b2d74be6578b0d4bc8c93cb969e8fff",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bdc2658642909a0034e0f14f182b095087e07ebdbc0594d0cffa9bdbac38e999"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/readme-navigation-v1",
+  "pullRequest": null,
+  "at": "2026-11-03T00:46:39.612Z",
+  "summary": "Reorganize the landing page and preserve detailed installation and skill guidance",
+  "next": "Write and verify the documentation",
+  "files": [
+    "README.md,docs/getting-started.md,skills/README.md,tasks/CF-readme-navigation-v1-landing-page.md"
+  ]
+}
