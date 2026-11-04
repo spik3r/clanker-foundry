@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "32d99d0e-9c2a-4409-a265-0af54b8c8911",
+  "runId": "3966b4e3-28a7-4558-a670-97ea7d6fdd77",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-builder-go-v1",
+    "path": "tasks/CF-model-builder-go-v1-separated-agent-pilot.md",
+    "revision": "9ef21d78d02a55b8e5cc03688068fe31dfbdb637",
+    "blob": "9aea7f3d14358be5beaf4ecf32c33fc28f1cbea9",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "47b9c3b3f948e0ac11add3a19612b6e6721b0c9bf804416d81e3cc70ddcc319b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-builder-go-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T09:30:59.315Z",
+  "summary": "Freeze independent Go acceptance before a model-to-separate-builder exercise",
+  "next": "Author and independently review bounded Go contract and literal expectations",
+  "files": [
+    "workflows/model-driven-implementation.md,templates/model-driven/implementation-handoff.md,templates/prompts/implement-from-model.md,examples/model-builder-go/README.md,examples/model-builder-go/packet.md,examples/model-builder-go/evidence.md,examples/model-builder-go/acceptance/README.md,examples/model-builder-go/acceptance/go.mod,examples/model-builder-go/acceptance/contract.go,examples/model-builder-go/acceptance/acceptance_test.go,examples/model-builder-go/acceptance/rubric.md,tasks/CF-model-builder-go-v1-separated-agent-pilot.md"
+  ]
+}
