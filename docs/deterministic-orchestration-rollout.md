@@ -1,5 +1,31 @@
 # Managed execution rollout
 
+## Current status and evidence boundary
+
+Reviewed against main `ffdce31` on 5 November 2026. Provider transports, managed
+writable candidates, the evidence bridge and namespace decisions are implemented;
+see the [current implementation overlay](deterministic-orchestration-plan.md#current-implementation-status)
+and [runtime contracts](../runtime/README.md). The operating requirements below
+still apply. The [current direction](current-direction.md) prioritizes maintenance,
+not runtime expansion or activation.
+
+Historical hosted evidence is available beyond the original local record below.
+At [PR 88](https://github.com/spik3r/clanker-foundry/pull/88) head
+[`abf9bd67`](https://github.com/spik3r/clanker-foundry/commit/abf9bd670473be4b274f6c8d6e6265098f8aa5a6),
+all five workflows completed successfully. The
+[orchestration run](https://github.com/spik3r/clanker-foundry/actions/runs/41923934390)
+records successful runtime-test, pinned-image-load and actual Docker-smoke steps.
+The [workflow at that exact head](https://github.com/spik3r/clanker-foundry/blob/abf9bd670473be4b274f6c8d6e6265098f8aa5a6/.github/workflows/orchestration.yml)
+selects Node 24 and invokes `runtime/test/isolation-live.mjs` with the digest-pinned
+image. This is a hosted result at a named revision, not a new local smoke run or
+proof of every provider, host, recovery path or unattended operating condition.
+
+This reconciliation ran no provider or Docker check and establishes no current
+machine or credential state. It adds no direct Responses API live proof. Source,
+fixture and CI results do not activate a namespace, migrate existing claims or
+replace the owner's operating decision. One host, trusted local callers and one
+shared private database remain required; UNKNOWN outcomes need owner inspection.
+
 ## Scope and authority
 
 The selected scope is new `CF-AUTO-` tasks only. Existing `CF` records and claims
@@ -127,30 +153,35 @@ The bridge cannot prove a declared validation command ran. The trusted validator
 must record the observed result. It also cannot make SQLite and Git one atomic
 transaction; its journal makes uncertain outcomes visible and recoverable.
 
-## Verification record
+## Historical local verification record
+
+The original managed-integration check recorded the following local observations.
+They are retained results, not current machine checks.
 
 The signed-in Codex CLI completed the invented text smoke locally. The output was
 24 bytes with SHA-256 `105306f4e23c2f4981bcf24a1cb48dad3daefa1dcc491c946d038299a964f3bd`.
-No API key is configured, so the direct Responses transport has no live API proof.
+At that check, no API key was configured, so the direct Responses transport had
+no live API proof.
 
-Docker Desktop reports server version 27.5.1. The installed test image is
+Docker Desktop reported server version 27.5.1. The test image used was
 `node@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85`.
 The actual Docker smoke passed: the fixed capability probe confirmed UID 1000,
 read-only root, disabled networking and absent host/socket access. Two typed file
 operations produced one canonical plan artifact, followed by explicit owner
 promotion in the invented temporary repository. The host inspected termination
 before removing its containers.
-Remote CI has not run for this unpublished branch. No persistent operating
-namespace has been activated by a test fixture or the inactive configuration template.
+At that stage, remote CI had not run for the then-unpublished branch. Later hosted
+evidence is identified above. No persistent operating namespace was activated by
+those fixtures or the inactive configuration template.
 
-Final local validation passed under Node v24.22.2: 154 runtime tests and 143
+That final local validation passed under Node v24.22.2: 154 runtime tests and 143
 Project Memory/workflow regressions, with no skips. Pack and installer validation
 passed. A fresh-context reviewer rechecked the fixes and found no remaining
 material defect. The optional `skills-ref` tool is not installed; the pack validator
 reported that optional check as skipped. Committed evidence validation is recorded
 in the immutable completion records and checked after committing.
 
-## Follow-up: admitted limits and dispatch preflight
+## Historical follow-up: admitted limits and dispatch preflight
 
 A subsequent fresh review reproduced two gaps despite the earlier passing tests:
 65 dependency outputs exceeded the runner's 64-subject limit after acknowledgement,

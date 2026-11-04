@@ -1,29 +1,49 @@
 # Deterministic task execution: architecture and implementation plan
 
-Date: 2026-10-30. Reviewed base: `7a03b095eff59e76b98354673aec5d538ef76233`
-(`origin/main`, including task-workflow adoption PR #8). Previous review: `a25e642`.
+Original plan date: 2026-10-30. Reviewed base:
+`7a03b095eff59e76b98354673aec5d538ef76233` (`origin/main`, including
+task-workflow adoption PR #8). Previous review: `a25e642`.
 Planning task: [CF-deterministic-orchestration](../tasks/CF-deterministic-orchestration-plan.md).
-Status: architecture reference with an opt-in read-only pilot now implemented.
-The original planning change contained no runtime; the later implementation is
-described in [runtime/README.md](../runtime/README.md) and
-[ADR 0001](adr/0001-deterministic-runtime.md). No existing task store was migrated.
+Status: historical architecture reference with a current implementation overlay.
+The original planning change contained no runtime. Original decisions and dated
+observations below remain historical; they are not a new implementation backlog
+or an operating grant.
 
-## Implementation status
+## Current implementation status
 
-The owner authorized implementation after reviewing this plan. The pilot adds
-strict schemas, a pure evaluator, SQLite transactions/reservations, immutable
-artifacts, receipts/history/replay, durable outbox recovery, fake and injected
-text-only workers, reviewed snapshot proposals and generated views. A CLI demo
-exercises four simulated stages and explicit approvals; it makes no live provider
-call. Focused tests cover supported behavior; task records hold actual results.
+Source reviewed at main `ffdce31` on 5 November 2026. The optional single-host
+runtime now includes the following components; the [runtime README](../runtime/README.md)
+holds their detailed contracts.
 
-Phases 0-4 have a local implementation. Phase 5 supplies a provider-neutral
-text callback seam rather than a bundled vendor client or writable host adapter.
-Phase 6 supplies explicit snapshot intake/export and retains manual Project Memory
-preflight; no automatic bridge, live namespace cutover or consumer rollout occurred.
-Unattended writes, live provider validation and deployment remain outside the
-read-only pilot. The later phase table describes the broader target, not a claim
-that every integration has been enabled.
+| Implemented component | Source and boundary |
+| --- | --- |
+| Typed lifecycle and durable coordination | [Evaluator](../runtime/src/state.mjs), [store](../runtime/src/store.mjs) and [runner](../runtime/src/runner.mjs): guarded transitions, reservations, artifacts, receipts, replay and outbox dispatch. The CLI demo still uses fake workers. |
+| Provider transports | [Responses and Codex CLI adapters](../runtime/src/providers.mjs) supplement the injected text callback. The CLI is supervised transport, not an OS sandbox; provider text remains an external input. |
+| Isolated writable candidates | [Workspace](../runtime/src/workspace.mjs) and [host adapter](../runtime/src/isolation.mjs) apply bounded file plans. Managed dispatch requires namespace authority, evidence and per-attempt host checks. Promotion is a separate owner action, not staging or publication. |
+| Evidence and namespace authority | The [evidence bridge](../runtime/src/project-memory.mjs) binds genuine source/start records and checks completion coverage. [Authority verification](../runtime/src/authority.mjs) and the store require explicit pinned decisions and reviewed admissions for managed namespaces. Neither imports existing claims automatically. |
+
+These sources supersede the early absence-of-capability statements; their presence
+does not establish every phase 5/6 exit gate below or consumer adoption. The
+[rollout account](deterministic-orchestration-rollout.md) separates historical
+local and hosted checks from actual activation. The sample namespace remains
+inactive; a fixture, source merge or green CI run does not activate operating
+authority. No current local provider or Docker check was run for this reconciliation.
+
+The [current direction](current-direction.md) prioritizes runtime maintenance
+until a demonstrated consumer need establishes a dependency. This changes no
+rollout policy. Callers remain trusted local programs on one host sharing one
+private authority database; copied databases and independent manual writers are
+outside its fencing guarantee. UNKNOWN outcomes require owner inspection rather
+than automatic relaunch. Source and tests do not establish safe unattended operation.
+
+## Historical architecture proposal
+
+The sections through the original next action retain the planning baseline,
+recommendations, assumptions, findings and proposed phases. Paths, missing
+components and owner decisions stated there describe that baseline. Current
+implementation is summarized above; [ADR 0001](adr/0001-deterministic-runtime.md)
+and the later [managed decision](adr/0002-managed-execution.md) record the choices
+made afterward.
 
 ## Recommendation and changes to the previous proposal
 
@@ -54,9 +74,9 @@ Revise three parts of the earlier recommendation:
 
 ## Facts, assumptions and scope
 
-Facts: this repository is an asset pack with a local evidence CLI. There is no
-queue service, launch adapter, task-schema package or transactional assignment
-store. Its four agent roles already fit explore, plan, build and independent
+Facts at the planning baseline: this repository was an asset pack with a local
+evidence CLI. There was no queue service, launch adapter, task-schema package or
+transactional assignment store. Its four agent roles already fit explore, plan, build and independent
 review. Model tiers are separate from provider names in
 [the model mapping](../agents/README.md).
 
@@ -75,7 +95,7 @@ Out of scope: application implementation in this change, mandatory consumer
 rollout, arbitrary BPMN execution, distributed consensus, automatic publication,
 merge or deployment, and rewriting existing lifecycle history.
 
-## Current behavior and material findings
+## Historical baseline behavior and material findings
 
 | Finding | Evidence | Impact and action |
 |---|---|---|
@@ -299,10 +319,11 @@ References: [OMG MDA](https://www.omg.org/mda/),
 [fUML](https://www.omg.org/spec/FUML/1.5/About-FUML),
 [UTP](https://www.omg.org/spec/UTP2/2.2/About-UTP2).
 
-## Ordered implementation slices
+## Original ordered implementation slices
 
-Paths below are proposals, not files created by this planning change. Each slice
-needs its own bounded task/claim and genuine evidence lifecycle before edits.
+Paths below were proposals, not files created by the original planning change.
+Each slice needed its own bounded task/claim and genuine evidence lifecycle before
+edits.
 
 | Phase | Proposed scope and deliverable | Depends on | Observable exit gate |
 |---|---|---|---|
@@ -331,7 +352,7 @@ injection and adapter contract fixtures. Generated tests do not replace independ
 acceptance checks for guard correctness. Add CI only with the corresponding code;
 required branch protection is an owner decision, not a side effect of this plan.
 
-## Alternatives, open decisions and next action
+## Historical alternatives, open decisions and next action
 
 | Option | Benefit | Cost and recommendation |
 |---|---|---|
@@ -339,7 +360,7 @@ required branch protection is an owner decision, not a side effect of this plan.
 | Small bounded execution engine | Direct fit for current roles and explicit state rules | Requires persistence/recovery ownership; recommended incremental pilot |
 | Full BPMN/workflow engine | Existing execution tooling and richer process support | Larger dependency and operating surface; revisit when required features justify it |
 
-Owner decisions before runtime work: one host or several; runtime in this pack or
+Owner decisions posed before runtime work: one host or several; runtime in this pack or
 a separate repository; which store owns opted-in tasks; who may approve and
 transfer claims; which host can enforce capabilities; retry/rework budgets; what
 integration or deployment evidence each task requires. These do not prevent
@@ -350,13 +371,13 @@ The original planning run reported 142/143 lifecycle tests passing, with an
 that same fixture limitation on Node 24. The
 [fresh-context follow-up review](deterministic-orchestration-review.md) corrected
 the fixture using Git tree/index bytes, retaining its rejection assertion; all
-143 lifecycle tests now pass locally. New runtime tests, installer checks and
+143 lifecycle tests passed in that follow-up. Runtime tests, installer checks and
 independent adversarial review are recorded in the linked implementation tasks;
 they do not establish live provider or unattended-writer correctness. The existing
 lifecycle helper and its CI workflow remain unchanged; runtime tests have a
 separate CI workflow.
 
-Next action: owner review of the local pilot and its remaining provider/host,
+Original next action: owner review of the local pilot and its remaining provider/host,
 evidence-bridge and cutover decisions. Publication, tracker migration, unattended
 writes, merge and deployment require their own scope and authorization.
 

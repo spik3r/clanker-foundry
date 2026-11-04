@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "97cc12cb-ba35-48a7-9d65-fb771a1fade7",
+  "runId": "d87792f6-2d7d-45c1-ab29-ae4db81c2740",
+  "kind": "start",
+  "parents": [
+    "e4432984-668d-4ffc-a3bf-127e50f0ad34"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-status-v1",
+    "path": "tasks/CF-runtime-status-v1-current-history.md",
+    "revision": "c9e4df90cf837206781cfac83c2d15b818f11284",
+    "blob": "7a05b930f830b294cbd46f0491822ce6b7dcb937",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d156637bfa314e4f9a1a33e9413448c6ebcfb8c9a3783335d2e7120adc2d024e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-status-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/91",
+  "at": "2026-11-04T23:00:23.964Z",
+  "summary": "New reviewed four-path run carries docs authored under original genuine run and authorizes only two new project AGENTS standing-fact corrections",
+  "next": "Edit only two AGENTS factual phrases, validate full final scope and obtain independent delta/provenance review before completion",
+  "files": [
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "AGENTS.md",
+    "tasks/CF-runtime-status-v1-current-history.md"
+  ]
+}
