@@ -214,7 +214,7 @@ export function createReadOnlyWorkspaceAdapter({
       if (!committedBytes.equals(bytes)) fail('WORKSPACE_DIRTY', `Workspace bytes differ from pinned base: ${candidate}`);
       let content;
       try {
-        content = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
       } catch {
         fail('INVALID_UTF8', 'Workspace text must be valid UTF-8');
       }
