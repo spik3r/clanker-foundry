@@ -30,6 +30,8 @@ func runRevisionVersioned(args []string, in io.Reader, out, diag io.Writer) int 
 			report, err = revisioncheck.Check(raw)
 		case revisioncheck.RequestVersionV2:
 			report, err = revisioncheck.CheckV2(raw)
+		case revisioncheck.RequestVersionV3:
+			report, err = revisioncheck.CheckV3(raw)
 		default:
 			err = revisioncheck.ErrInvalid
 		}

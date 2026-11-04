@@ -202,6 +202,23 @@ remain visible independently, with no overall approval or readiness decision.
 Use the separate model-diff contract for complete model edits, and keep any later
 execution or integration decision separate from these declared comparisons.
 
+## Review full model changes beside those literals
+
+Send the same prepared snapshot fields with explicit
+`lifecycle-revision-check-request/v3` to `foundry revisions` to include the complete
+native model diff as well as all v2 observations. Decode `modelDiffReportJSON` and
+check its `modelDiffReportSHA256` against the exact report text. The native report
+lists changed model fields and direct transition links in both models. Retain the
+original model texts to review the actual changed values.
+
+A stale suite can leave the scenario comparison `not-checked` while the model
+diff still shows the changed design. Neither result repairs the other. Source
+hashes and canonical model digests answer different questions; a formatting-only
+source change can preserve canonical identity, while labels and requirements
+are part of the reviewed model. The native `reviewRequired` flag is not a human
+approval, a behavioral-equivalence claim or permission to execute. V1 and v2
+remain supported; the standalone `modelrevisioncheck` remains strict v1.
+
 ## Rehearse a reviewed design change against separate expectations
 
 For a custom change, the standalone [change rehearsal bridge](../modeling/lifecycle/changerehearsal/README.md)
