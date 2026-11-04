@@ -24,6 +24,7 @@ Exact write scope:
 - `runtime/src/adapters.mjs`
 - `runtime/src/runner.mjs`
 - New `runtime/test/artifact-retention.test.mjs`
+- New `runtime/test/artifact-retention-runner.test.mjs`, supplemental post-freeze runner identity and partial-persistence controls
 - `runtime/test/adapters.test.mjs`, only the deterministic FakeAdapter result/revocation case described below
 - `runtime/README.md`
 - This task and its immutable Project Memory source/events.
@@ -97,3 +98,14 @@ lead review, register this exact new source and record a genuine new start for
 the full final file scope before the old test edit. Existing uncommitted repair
 work is a handoff from that original run, not a newly invented implementation
 chronology. The new run must complete against all final staged content.
+
+
+## Supplemental runner controls
+
+Before the amended run starts, the lead also approved the separate new
+`runtime/test/artifact-retention-runner.test.mjs`. It checks exact assigned-attempt
+release after durable persistence, partial persistence failure, and two identical
+outputs where A remains UNKNOWN while B persists and releases only B's reference.
+These are explicit post-freeze controls added after the initial source work;
+they are not represented as part of the original nine independently frozen cases.
+Keep the original frozen file and its SHA-256 unchanged.
