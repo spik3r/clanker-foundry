@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "448fa701-3016-4c37-ac2c-0421607dff4d",
+  "runId": "c708ba5b-d5ff-4220-a920-dd2421391e7d",
+  "kind": "complete",
+  "parents": [
+    "47718bfe-a498-4452-9fdb-64ad20af5f48"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preflight-v1",
+    "path": "tasks/CF-builder-preflight-v1-pinned-inputs.md",
+    "revision": "4a3b9af60a417c325d3b4d3e65969d37ff40ade2",
+    "blob": "14c6e204682d359fe52145f0bc305c7a4ef42017",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d04a25714191e478063b2bcfc82810f2dfd22c83106eb0a38f6111b707a82799"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:26:17.985Z",
+  "summary": "Completed pinned-input preflight with reviewed root traversal correction and preserved independent acceptance",
+  "next": "Verify committed coverage and restore bundle; recheck current base and ownership before any separately authorized publication",
+  "files": [
+    "modeling/lifecycle/builderpreflight/check.go",
+    "modeling/lifecycle/builderpreflight/files.go",
+    "modeling/lifecycle/builderpreflight/check_test.go",
+    "modeling/lifecycle/builderpreflight/root_test.go",
+    "modeling/lifecycle/builderpreflight/README.md",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go",
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md"
+  ],
+  "validation": "Go 1.27.3 native race checks passed for selected preflight/CLI/strictjson tests and FIFO-only case; root regression four red failures became green; independent exact-source re-review found no remaining blocker; focused vet/build and real brief/model byte-change smoke passed; 143 Project Memory regressions, repository validator, formatting and whitespace passed; socket fixture denied by host; GNU Stow and optional skills-ref unavailable; no full-module or extra-platform qualification",
+  "snapshot": {
+    "modeling/lifecycle/builderpreflight/check.go": {
+      "blob": "4d3b76231928ebdd377e0437145921d1e6fa740b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/files.go": {
+      "blob": "358744fe83995bf1ec59fa1c1bde2e6d21d09396",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/check_test.go": {
+      "blob": "b85708e916fd6cc66904475166aac9fcca2af92f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/root_test.go": {
+      "blob": "e0e319e32f79d1d66df8a25d9b6297ace099efa8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/README.md": {
+      "blob": "735ea5c28dbc8dbff01445a69cbe42c871943743",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go": {
+      "blob": "f6d6817cbde5a1c1c5f6e126c852f7f926d5c35e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go": {
+      "blob": "ce9bf60fb983bf7a2e696164603522dd74726606",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md": {
+      "blob": "b957f793e63b5fc0a0359fd992cdae8c77215dbf",
+      "mode": "100644"
+    }
+  }
+}

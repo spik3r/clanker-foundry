@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "0df54010-9146-4378-9187-9744e73d8c7b",
+  "runId": "d268dbcf-21c0-4ee9-9da0-76deb5c4b9bf",
+  "kind": "complete",
+  "parents": [
+    "4975dd84-febc-4d95-a6b8-40438ea04665"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preflight-v1",
+    "path": "tasks/CF-builder-preflight-v1-pinned-inputs.md",
+    "revision": "4a3b9af60a417c325d3b4d3e65969d37ff40ade2",
+    "blob": "14c6e204682d359fe52145f0bc305c7a4ef42017",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d04a25714191e478063b2bcfc82810f2dfd22c83106eb0a38f6111b707a82799"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:41:20.029Z",
+  "summary": "Qualified preserved preflight history against main 5bd2c310 with unchanged reviewed implementation and actual Go handoff inputs",
+  "next": "Verify final committed coverage and restored bundle, report any later main changes, and await separate publication authority without rewriting reviewed commits",
+  "files": [
+    "modeling/lifecycle/builderpreflight/check.go",
+    "modeling/lifecycle/builderpreflight/files.go",
+    "modeling/lifecycle/builderpreflight/check_test.go",
+    "modeling/lifecycle/builderpreflight/root_test.go",
+    "modeling/lifecycle/builderpreflight/README.md",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go",
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md"
+  ],
+  "validation": "Actual final merge ed305d5c: all 83 native Go packages passed race with only known-denied socket subcase excluded; 2 additional packages compiled without tests; full-module vet/formatting/model validation/generated drift passed; 234 lifecycle/workflow/conformance regressions and 50-case 598-ordering graph check passed; pack and whitespace checks passed; independent integration source/scope/hash checks and eight-input Go packet byte smoke passed; Stow and optional skills-ref unavailable; runtime/schema/Docker and extra-platform stages not rerun",
+  "snapshot": {
+    "modeling/lifecycle/builderpreflight/check.go": {
+      "blob": "4d3b76231928ebdd377e0437145921d1e6fa740b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/files.go": {
+      "blob": "358744fe83995bf1ec59fa1c1bde2e6d21d09396",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/check_test.go": {
+      "blob": "b85708e916fd6cc66904475166aac9fcca2af92f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/root_test.go": {
+      "blob": "e0e319e32f79d1d66df8a25d9b6297ace099efa8",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderpreflight/README.md": {
+      "blob": "735ea5c28dbc8dbff01445a69cbe42c871943743",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go": {
+      "blob": "f6d6817cbde5a1c1c5f6e126c852f7f926d5c35e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go": {
+      "blob": "ce9bf60fb983bf7a2e696164603522dd74726606",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md": {
+      "blob": "ff6f67a1ca0cf6c5df8d41631071685ab6b5eaf9",
+      "mode": "100644"
+    }
+  }
+}
