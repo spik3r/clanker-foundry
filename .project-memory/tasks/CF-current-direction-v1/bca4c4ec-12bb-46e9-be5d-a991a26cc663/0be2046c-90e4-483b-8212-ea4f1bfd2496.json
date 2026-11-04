@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "0be2046c-90e4-483b-8212-ea4f1bfd2496",
+  "runId": "bca4c4ec-12bb-46e9-be5d-a991a26cc663",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-current-direction-v1",
+    "path": "tasks/CF-current-direction-v1-consumer-gates.md",
+    "revision": "b8189ce57733308d46fc206441c168e7f99fc69b",
+    "blob": "4ba240dabe44275b263f4f7cb0b7a347c57ab6ae",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f67711ce330b51e58cb01a8f0a7a3d8a202b31ca2cbbf6882ffe10a234860620"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/current-direction-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T22:43:14.351Z",
+  "summary": "Separate current capability, hypotheses and owner decisions in a consumer-gated direction plan",
+  "next": "Draft concise plan and navigation link, then obtain independent source review before completion",
+  "files": [
+    "docs/current-direction.md",
+    "README.md",
+    "tasks/CF-current-direction-v1-consumer-gates.md"
+  ]
+}
