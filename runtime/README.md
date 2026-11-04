@@ -161,11 +161,30 @@ configuration, outside task records and logs. Live checks are separate from unit
 passed locally; the direct API transport has no live verification without an API
 key. CLI integration disables do not constitute a universal no-tools sandbox.
 
-Each adapter instance allows 16 active invocations or undelivered outputs. Further
-invocations wait before calling the model. The runner persists output bytes and
-then calls `releaseArtifact(digest)`; custom callers must do the same. Identical
-output digests use reference counts, so one consumer cannot discard another's
-pending output.
+Each text or fake adapter instance allows 16 active invocations or undelivered
+outputs. Further invocations wait before calling the model. Each retained
+reference belongs to a captured attempt ID, worker ID and fencing token, even
+when output digests are identical. After each successful durable artifact write,
+the runner calls `releaseArtifact(digest, assignedAttempt)` for that exact owner.
+If a later write fails, only earlier persisted artifacts have been released;
+unpersisted output remains available while the launch outcome is UNKNOWN.
+
+A complete scoped release requires `attempt_id`, `worker_id` and `fencing_token`.
+Wrong, incomplete or repeated scoped releases return false without freeing
+another owner's reference. For compatibility, the one-argument
+`releaseArtifact(digest)` releases one retained reference in insertion order;
+custom callers using that interface remain responsible for choosing the correct
+output. An explicitly supplied invalid second argument does not use this fallback.
+
+After owner cancellation, matching full-identity revocation of a settled owned
+attempt discards only its remaining output reference and frees that capacity
+slot. Any supplied outer fencing token must also agree. An active or unsettled
+invocation cannot free a slot through revocation; settlement alone keeps its
+output until persistence or confirmed cleanup. Repeated cleanup cannot discard
+another attempt's identical output. Legacy text-adapter revocation by attempt ID
+alone keeps its stop/abort behavior but does not discard retained output; those
+callers must still release it explicitly. These rules keep temporary persistence
+faults from exhausting capacity after the owner has completed cleanup.
 
 The workspace reader allowlists exact paths, rejects symlinks, bounds total bytes
 and checks the pinned local Git revision. It is not a sandbox for arbitrary code

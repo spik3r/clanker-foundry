@@ -86,18 +86,36 @@ function createArtifactCapacity(limit = MAX_OUTSTANDING_ARTIFACTS) {
   });
 }
 
-function retainArtifact(artifacts, artifactDigest, content) {
-  const current = artifacts.get(artifactDigest);
-  if (current && current.content !== content) fail('ARTIFACT_DIGEST_COLLISION', 'One artifact digest maps to different content');
-  if (current) current.references += 1;
-  else artifacts.set(artifactDigest, { content, references: 1 });
+function attemptIdentity(attempt) {
+  return Object.freeze({ attempt_id: attempt.attempt_id, worker_id: attempt.worker_id,
+    fencing_token: attempt.fencing_token });
 }
 
-function releaseArtifactReference(artifacts, capacity, artifactDigest) {
+function sameAttempt(owned, supplied) {
+  return owned !== undefined && supplied !== null && typeof supplied === 'object' && !Array.isArray(supplied)
+    && typeof supplied.attempt_id === 'string' && typeof supplied.worker_id === 'string'
+    && Number.isSafeInteger(supplied.fencing_token) && supplied.fencing_token > 0
+    && owned.attempt_id === supplied.attempt_id && owned.worker_id === supplied.worker_id
+    && owned.fencing_token === supplied.fencing_token;
+}
+
+function retainArtifact(artifacts, artifactDigest, content, identity) {
+  const current = artifacts.get(artifactDigest);
+  if (current && current.content !== content) fail('ARTIFACT_DIGEST_COLLISION', 'One artifact digest maps to different content');
+  const owners = current?.owners ?? new Map();
+  if (owners.has(identity.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Attempt already retains this artifact');
+  // Each retained capacity slot has an owner even when output bytes are equal.
+  owners.set(identity.attempt_id, identity);
+  if (!current) artifacts.set(artifactDigest, { content, owners });
+}
+
+function releaseArtifactReference(artifacts, capacity, artifactDigest, identity, scoped = false) {
   const current = artifacts.get(artifactDigest);
   if (!current) return false;
-  current.references -= 1;
-  if (current.references === 0) artifacts.delete(artifactDigest);
+  const owned = scoped ? current.owners.get(identity?.attempt_id) : current.owners.values().next().value;
+  if (!owned || (scoped && !sameAttempt(owned, identity))) return false;
+  current.owners.delete(owned.attempt_id);
+  if (current.owners.size === 0) artifacts.delete(artifactDigest);
   capacity.release();
   return true;
 }
@@ -266,11 +284,12 @@ export function createTextModelAdapter({
   return Object.freeze({
     workerId,
     async runAttempt({ attempt, spec, inputSubjects = [] }) {
-      if (ownedAttempts.has(attempt.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Adapter already owns this attempt ID');
+      const identity = attemptIdentity(attempt);
+      if (ownedAttempts.has(identity.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Adapter already owns this attempt ID');
       const controller = new AbortController();
-      const ownedAttempt = { controller, workerId: attempt.worker_id, status: 'preparing' };
-      ownedAttempts.set(attempt.attempt_id, ownedAttempt);
-      pending.set(attempt.attempt_id, { controller });
+      const ownedAttempt = { controller, identity, artifactDigest: null, status: 'preparing' };
+      ownedAttempts.set(identity.attempt_id, ownedAttempt);
+      pending.set(identity.attempt_id, { controller });
       let releaseCapacity;
       let retained = false;
       try {
@@ -339,34 +358,47 @@ export function createTextModelAdapter({
           if (controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before invocation');
           return invoke(request, { signal: controller.signal });
         });
-        pending.set(attempt.attempt_id, { controller, invocation });
+        pending.set(identity.attempt_id, { controller, invocation });
         const output = await invocation;
         if (typeof output !== 'string') fail('INVALID_MODEL_OUTPUT', 'Text invocation must return a string');
         const bytes = Buffer.from(output, 'utf8');
         if (bytes.length > maxOutputBytes) fail('OUTPUT_TOO_LARGE', 'Worker output exceeds the configured byte limit');
-        const result = artifactResult({ attempt, spec, text: output });
-        retainArtifact(artifacts, result.artifacts[0].digest, output);
+        const result = artifactResult({ attempt: identity, spec, text: output });
+        retainArtifact(artifacts, result.artifacts[0].digest, output, identity);
+        ownedAttempt.artifactDigest = result.artifacts[0].digest;
         retained = true;
         return result;
       } finally {
-        pending.delete(attempt.attempt_id);
+        pending.delete(identity.attempt_id);
         ownedAttempt.status = 'settled';
         if (!retained) releaseCapacity?.();
       }
     },
     async getArtifact(artifactDigest) { return artifacts.get(artifactDigest)?.content ?? null; },
-    releaseArtifact(artifactDigest) { return releaseArtifactReference(artifacts, capacity, artifactDigest); },
-    async revokeCapabilities({ attempt_id, attempt }) {
+    releaseArtifact(artifactDigest, ...scope) {
+      return releaseArtifactReference(artifacts, capacity, artifactDigest, scope[0], scope.length > 0);
+    },
+    async revokeCapabilities({ attempt_id, fencing_token, attempt }) {
       const owned = ownedAttempts.get(attempt_id);
-      if (!owned || (attempt && owned.workerId !== attempt.worker_id)) {
+      const scoped = attempt !== undefined;
+      if (!owned || (scoped && !sameAttempt(owned.identity, attempt))
+        || (fencing_token !== undefined && fencing_token !== owned.identity.fencing_token)) {
         return { stopped: false, reason: 'This adapter cannot prove ownership of the attempt' };
       }
+      const discard = () => {
+        // A legacy ID-only stop does not authorize discarding retained output.
+        if (scoped) releaseArtifactReference(artifacts, capacity, owned.artifactDigest, owned.identity, true);
+      };
       const active = pending.get(attempt_id);
-      if (!active && owned.status === 'settled') return { stopped: true, reason: 'Owned invocation has settled' };
+      if (!active && owned.status === 'settled') {
+        discard();
+        return { stopped: true, reason: 'Owned invocation has settled' };
+      }
       if (!active) return { stopped: false, reason: 'Attempt state is unknown' };
       active.controller.abort();
       await Promise.resolve();
       if (pending.has(attempt_id)) return { stopped: false, reason: 'Invocation has not settled after abort' };
+      discard();
       return { stopped: true, reason: 'Invocation settled after abort' };
     },
   });
@@ -388,13 +420,16 @@ export class FakeAdapter {
   }
 
   async runAttempt({ attempt, spec }) {
-    if (this.activeAttempts.has(attempt.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Fake adapter already owns this attempt ID');
+    const identity = attemptIdentity(attempt);
+    if (this.activeAttempts.has(identity.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Fake adapter already owns this attempt ID');
     const ownedAttempt = {
-      worker_id: attempt.worker_id,
-      fencing_token: attempt.fencing_token,
+      worker_id: identity.worker_id,
+      fencing_token: identity.fencing_token,
+      identity,
+      artifactDigest: null,
       status: 'running',
     };
-    this.activeAttempts.set(attempt.attempt_id, ownedAttempt);
+    this.activeAttempts.set(identity.attempt_id, ownedAttempt);
     const releaseCapacity = await this.capacity.acquire();
     let retained = false;
     try {
@@ -403,15 +438,16 @@ export class FakeAdapter {
       const inputSummary = files.map(({ path: filePath, digest: fileDigest }) => `${filePath}:${fileDigest}`).join('\n');
       const text = inputSummary ? `${this.output}\n${inputSummary}` : this.output;
       if (Buffer.byteLength(text, 'utf8') > 1024 * 1024) fail('OUTPUT_TOO_LARGE', 'Fake output exceeds the 1MiB artifact limit');
-      const result = artifactResult({ attempt, spec, text });
-      retainArtifact(this.artifacts, result.artifacts[0].digest, text);
+      const result = artifactResult({ attempt: ownedAttempt.identity, spec, text });
+      retainArtifact(this.artifacts, result.artifacts[0].digest, text, ownedAttempt.identity);
+      ownedAttempt.artifactDigest = result.artifacts[0].digest;
       retained = true;
       ownedAttempt.status = 'settled';
-      this.calls.push({ type: 'run', attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token });
+      this.calls.push({ type: 'run', attempt_id: identity.attempt_id, fencing_token: identity.fencing_token });
       return result;
     } finally {
       if (!retained) {
-        this.activeAttempts.delete(attempt.attempt_id);
+        this.activeAttempts.delete(identity.attempt_id);
         releaseCapacity();
       }
     }
@@ -419,12 +455,11 @@ export class FakeAdapter {
 
   async revokeCapabilities({ attempt_id, fencing_token, attempt } = {}) {
     const current = this.activeAttempts.get(attempt_id);
-    if (!current || current.status !== 'settled' || !attempt || attempt.attempt_id !== attempt_id
-      || attempt.worker_id !== current.worker_id
-      || attempt.fencing_token !== current.fencing_token
-      || fencing_token !== current.fencing_token) {
+    if (!current || current.status !== 'settled' || !sameAttempt(current.identity, attempt)
+      || fencing_token !== current.identity.fencing_token) {
       return { stopped: false, reason: 'This adapter cannot prove ownership of the attempt' };
     }
+    releaseArtifactReference(this.artifacts, this.capacity, current.artifactDigest, current.identity, true);
     this.activeAttempts.delete(attempt_id);
     this.calls.push({ type: 'revoke', attempt_id, fencing_token });
     return { stopped: true, reason: 'Fake attempt stopped' };
@@ -434,7 +469,7 @@ export class FakeAdapter {
     return this.artifacts.get(artifactDigest)?.content ?? null;
   }
 
-  releaseArtifact(artifactDigest) {
-    return releaseArtifactReference(this.artifacts, this.capacity, artifactDigest);
+  releaseArtifact(artifactDigest, ...scope) {
+    return releaseArtifactReference(this.artifacts, this.capacity, artifactDigest, scope[0], scope.length > 0);
   }
 }

@@ -146,7 +146,7 @@ async function submitAttempt({ store, adapter, effect, claim, now, inputSubjects
         fail('INVALID_ARTIFACT_CONTENT', 'Adapter did not return a bounded artifact body');
       }
       store.putArtifact({ digest: artifact.digest, content });
-      if (typeof adapter.releaseArtifact === 'function') adapter.releaseArtifact(artifact.digest);
+      if (typeof adapter.releaseArtifact === 'function') adapter.releaseArtifact(artifact.digest, structuredClone(execution.attempt));
     }
   }
 
