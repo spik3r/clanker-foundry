@@ -1,6 +1,6 @@
 ---
 id: CF-runtime-status-v1
-status: in-progress
+status: review
 owner: Foundry runtime status contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -93,3 +93,44 @@ Project Memory validation against the actual PR base. Obtain independent exact
 source review, record only observed completion and publish the final reviewed
 candidate for hosted gates. No runtime suite or live smoke rerun is needed for
 this documentation-only scope.
+
+## Observed result
+
+The architecture plan now separates a current source-supported implementation
+overlay from its dated recommendations, assumptions, findings and phases. The
+rollout account preserves local smoke results, test counts and original decisions
+as historical observations, and links later hosted evidence without implying
+current machine readiness or operating activation. The two project AGENTS facts
+now describe the optional orchestration runtime and supervised workers; all
+validation, authority, managed-scope instructions and pointers remain unchanged.
+
+The contributor independently fetched the five successful workflows for PR 88
+head `abf9bd670473be4b274f6c8d6e6265098f8aa5a6` and the successful runtime job
+steps in orchestration run `41923934390`. The exact-head workflow was read from
+Git and selects Node 24, pinned-image loading and the actual Docker smoke. These
+are historical hosted observations. This documentation task ran no runtime suite,
+provider, Docker or current credential check and supplies no new direct API live
+proof or unattended-operation qualification.
+
+The original plan/rollout edits followed the genuine original start recorded
+above. Coordinator review requested two table precision corrections distinguishing
+low-level helpers from managed dispatch and managed namespaces from legacy use.
+Documentation source `f18956d` then received clean coordinator and separate review,
+including independent documentation validation and whitespace checks. Those
+reviewed document bytes remain unchanged in the final result.
+
+The later two AGENTS facts followed the explicit scope amendment, original-run
+checkpoint/abandonment and coordinator review of source `c9e4df9`. New run
+`d87792f6-2d7d-45c1-ab29-ae4db81c2740`, start event
+`97cc12cb-ba35-48a7-9d65-fb771a1fade7`, covered all four ordinary paths before
+the AGENTS edits. Source `dca028a` received clean coordinator and separate review
+of exactly those two edits and the immutable source/run chronology. The original
+run has no completion; the new completion fingerprints the full final scope
+without backdating or reattributing the earlier documentation edits.
+
+Repository documentation/link validation and staged/unstaged whitespace checks
+passed, including independent reviewer runs. Optional skills-ref is unavailable.
+Final committed Project Memory validation is checked after recording completion
+against the actual PR base. Exact-head hosted gates and final coordinator review
+remain required before merge. No runtime implementation, policy, configuration,
+activation, migration or held recovery work changed.

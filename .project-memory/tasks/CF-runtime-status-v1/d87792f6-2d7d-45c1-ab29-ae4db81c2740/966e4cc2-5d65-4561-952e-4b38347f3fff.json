@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "966e4cc2-5d65-4561-952e-4b38347f3fff",
+  "runId": "d87792f6-2d7d-45c1-ab29-ae4db81c2740",
+  "kind": "complete",
+  "parents": [
+    "97cc12cb-ba35-48a7-9d65-fb771a1fade7"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-status-v1",
+    "path": "tasks/CF-runtime-status-v1-current-history.md",
+    "revision": "c9e4df90cf837206781cfac83c2d15b818f11284",
+    "blob": "7a05b930f830b294cbd46f0491822ce6b7dcb937",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d156637bfa314e4f9a1a33e9413448c6ebcfb8c9a3783335d2e7120adc2d024e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-status-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/91",
+  "at": "2026-11-04T23:01:58.624Z",
+  "summary": "Reconciled current runtime implementation and historical evidence; corrected two project standing facts after separately reviewed scope amendment and genuine new start",
+  "next": "Commit completion, validate full committed diff against actual origin/main ffdce31, push draft PR91 for final metadata review and exact-head hosted gates; coordinator alone merges",
+  "files": [
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "AGENTS.md",
+    "tasks/CF-runtime-status-v1-current-history.md"
+  ],
+  "validation": "Documentation/link validator and whitespace checks passed; optional skills-ref unavailable. Original docs source f18956d and later two-fact/chronology source dca028a independently reviewed clean with own validator checks. Five successful PR88 historical workflows and runtime job41923934390 steps independently fetched; exact-head workflow Node24/Docker command inspected. No runtime suite, provider, Docker or current credential check run by this docs task. Original run abandoned without completion; new full four-path run covers final staged scope.",
+  "snapshot": {
+    "docs/deterministic-orchestration-plan.md": {
+      "blob": "7d4702f22c732b01e5efc4d9d79235901774c16b",
+      "mode": "100644"
+    },
+    "docs/deterministic-orchestration-rollout.md": {
+      "blob": "7f2a5d382307ab09c5d9a5ae54ecadcb3a6ac93c",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "bb15c9a45bbe4d35cc36d2bd30033d31e7648294",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-status-v1-current-history.md": {
+      "blob": "336d4f8baf65835d167c61eaa000ce1afe9b22db",
+      "mode": "100644"
+    }
+  }
+}
