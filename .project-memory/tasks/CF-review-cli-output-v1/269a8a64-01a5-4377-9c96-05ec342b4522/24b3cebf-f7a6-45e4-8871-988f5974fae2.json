@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "24b3cebf-f7a6-45e4-8871-988f5974fae2",
+  "runId": "269a8a64-01a5-4377-9c96-05ec342b4522",
+  "kind": "complete",
+  "parents": [
+    "09f4d3a4-77ff-4975-87ae-b46f3d0a468c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-cli-output-v1",
+    "path": "tasks/CF-review-cli-output-v1-closed-pipes.md",
+    "revision": "bb6301725cb43955d2bca409b2e231c37d8a31d0",
+    "blob": "72c02bfb4528882ce4f3b26bc1d0857ae6a9485d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d4984a6060102cebc7e3848f33da10eef2533926893bb33cb6fd82fea4d3ca09"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/review-cli-output-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T02:17:24.302Z",
+  "summary": "Preserve exit 3 and fixed diagnostics for three review CLIs with closed stdout; unchanged normal reports independently verified",
+  "next": "Coordinator reviews local artifact, rechecks live ownership and main, then decides publication and hosted qualification",
+  "files": [
+    "modeling/lifecycle/cmd/modeldiff/main.go",
+    "modeling/lifecycle/cmd/modelintake/main.go",
+    "modeling/lifecycle/cmd/modeltraceimpact/main.go",
+    "modeling/lifecycle/clioutputacceptance/output_test.go",
+    "tasks/CF-review-cli-output-v1-closed-pipes.md"
+  ],
+  "validation": "Go 1.27.3 offline full race: 73 tested packages passed and two no-test command packages compiled; focused four-package race passed independently; all nine compiled-process acceptance cases passed after failing only three closed pipes on baseline; before/after normal-output hashes unchanged; go vet, modelc validate/check, gofmt, repository validator, whitespace and 143 Project Memory regressions passed. Installer regression blocked by missing GNU Stow, optional skills-ref unavailable. Earlier temporary-disk and scratch VCS failures were resolved through isolated workspace scratch without source/test changes.",
+  "snapshot": {
+    "modeling/lifecycle/cmd/modeldiff/main.go": {
+      "blob": "e32566e20a7c87463edb9e0268958e0b974db642",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelintake/main.go": {
+      "blob": "25cbf01e73c030d91460ba52397668cfef386528",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modeltraceimpact/main.go": {
+      "blob": "1b48d6e8b5b54f8faddb2d1c674595fa2ef49364",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/clioutputacceptance/output_test.go": {
+      "blob": "ecb74758f2eaafc735f14616215f5bbf49ea29bc",
+      "mode": "100644"
+    },
+    "tasks/CF-review-cli-output-v1-closed-pipes.md": {
+      "blob": "b0cb0944d96eccf65129a27ac9bd010b801d0c23",
+      "mode": "100644"
+    }
+  }
+}
