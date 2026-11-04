@@ -1,6 +1,6 @@
 ---
 id: CF-builder-admitted-run-v1
-status: in-progress
+status: review
 owner: Foundry admitted builder trial contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -136,3 +136,63 @@ full committed Project Memory validation for the five new public artifacts.
 Do not rerun unrelated native suites merely to decorate this evidence-only change;
 run checks affected by any actual change. Obtain coordinator and independent final
 artifact/evidence review before publication and hosted checks. Root alone merges.
+
+
+## Observed result
+
+The separate rubric author froze R01–R07 in e3193f7d7b117a84770aad3b05f624049ca74979
+before prompt creation or builder exposure. Its bytes remain unchanged. The
+unchanged preparer produced a new private prepared-draft with three matched
+reports and fifteen source/five exercise copies matching their original pins.
+Both reviewers read the fully bound prompt before dispatch. A requested
+candidate-hash readback grant was clarified before the first worker received it;
+the initial ambiguous prompt was never dispatched.
+
+The actual fresh invocation used fork_turns none and edit-only authority. Its
+retained eleven tool-call argument objects were separately audited against the
+explicit input, metadata and sole candidate-write grants; no recorded scope
+discrepancy was found. An instruction display truncation was addressed by complete
+rereading before editing. That history is attributed, not an OS audit or general
+proof of independence. The native invocation/prompt identities are preserved.
+
+The fresh candidate is 1,345 bytes, SHA256
+ca96d4053a5530d516890195016fbd45bf3c3298aefce7f3d5af02a1698fc47e.
+It remains private, was not copied from an earlier candidate or generator, and
+was not added as another maintained evaluator. Both reviewers inspected the
+entire source and initializer before the coordinator authorized any build.
+Native admission matched the reviewed pin and exact six-file frontier.
+
+The separately authorized compile-only command exited 0 with empty output and
+produced plain artifact SHA256
+3b963be5eacbf7d1847a9672ecb062593b73f8ad6c17fc44368e8ee6fa5693e1.
+Only after its exact-artifact review did the coordinator authorize execution.
+All thirty original literals and three isolation tests passed, with zero skips
+or failures. The separate authorized race compile produced artifact SHA256
+252b7335a191b471ee16eaadcec717ad1544560a470c8aaab5946700ea02cf73.
+Its separately authorized full run also passed all thirty plus three, with zero
+skips/failures and no race diagnostics. Go1.27.3 was verified; race instrumentation
+used separately reviewed Apple clang/SDK resources. No code or initializer ran
+during either compile-only step. All products/caches/tmp stayed outside exercise.
+
+Three separate admission-only control copies each blocked with exit 1 as frozen:
+unreviewed initializer source, candidate byte drift under the old reviewed pin,
+and missing contract.go. Full native observations were retained. No control was
+compiled, imported or executed. The positive candidate, twenty original pins,
+all twenty-eight receiving inputs and six-file frontier remained unchanged.
+No original literal, pin, source, old evidence or private prompt was repaired.
+
+R07 private and public reviews are clean from the coordinator and separate
+reviewer. They reviewed all five public artifacts at source commit 5394b6c and
+identical bytes after ordinary main merge c14e017 through 8fd65b50de31374da721233cb99798247f61d5bf.
+The final narrow delta records that completed review and this task result.
+Pack, installer, JSON/link and whitespace checks passed. Optional skills-ref was
+unavailable and explicitly skipped. Full committed Project Memory validation
+follows the completion commit. No unrelated native suite was rerun for this
+evidence-only change; actual exercise executions and their output remain distinct.
+
+The public identities and evidence use logical paths and hashes, without private
+candidate code, executables or personal paths. Earlier C06 remains a historical
+read-scope violation. Q_use, visual approval and real-use acceptance stay open.
+This finite trial grants no integration, deployment, general agent reliability
+or OS containment claim. Root owns the final hosted checks and merge; this
+contributor has not merged or assigned a further product task.

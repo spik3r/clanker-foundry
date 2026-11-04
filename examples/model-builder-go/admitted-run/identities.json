@@ -304,8 +304,11 @@
     "admissionSHA256": "16bb9ec20804331bc999fc04452b897e3996b62b53e18c17bcf0f19ac4b6404c"
   },
   "finalEvidenceReview": {
-    "status": "not run",
-    "note": "R07 pending initial artifact/evidence review at document preparation; final outcome will be recorded before completion"
+    "status": "passed",
+    "reviewedPublicSourceCommit": "5394b6c735ce09f0779b8bf864f90e17f82ed224",
+    "coordinator": "clean entire public and retained private artifact review",
+    "separateReviewer": "clean entire public and retained private artifact review",
+    "scope": "Separate-assistant review; not an OS audit, authenticated provenance or human product approval"
   },
   "limitations": [
     "separate-assistant review is not human product approval",

@@ -97,7 +97,7 @@ hashed and reviewed before its own execution.
 | R05 normal behavior | Exact reviewed binary exit 0; all 30 literal cases and three isolation tests passed; zero skips/failures; stderr empty. |
 | R05 race | Separate reviewed race binary exit 0; all 30+3 passed; zero skips/failures and no race diagnostics. |
 | R06 admission-only negatives | All three intentionally blocked with exit 1; no control source compiled or executed. |
-| R07 evidence review | Pending initial review of this public record and retained artifacts at document preparation. Final review is required before completion. |
+| R07 evidence review | Coordinator and separate reviewer read all five public artifacts and retained private records; both reviews clean. This status update records those observed results. |
 
 The plain artifact SHA256 is
 `3b963be5eacbf7d1847a9672ecb062593b73f8ad6c17fc44368e8ee6fa5693e1`.
@@ -135,6 +135,13 @@ Its tests cover only the documented valid typed fixture inputs. Race observation
 cover this run, not arbitrary concurrency. No hash authenticates the source of a
 record, and separate-assistant review is not human product approval. Q_use, visual
 approval, real-use acceptance, integration and deployment remain open.
+
+Both final reviewers checked public source commit
+`5394b6c735ce09f0779b8bf864f90e17f82ed224` and the same artifact bytes after the
+ordinary main merge. Their private audit verified the binary/stream/receipt hashes,
+all 28 receiving-input pins, the six-file positive frontier and the three control
+trees. No candidate rerun was needed for that audit. This is separate-assistant
+review, not human product approval.
 
 The [identities record](identities.json) omits machine paths and private code while
 binding tools, source copies, prompts, candidate, receipts and test artifacts.
