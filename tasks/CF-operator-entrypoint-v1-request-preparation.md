@@ -1,11 +1,21 @@
 ---
 id: CF-operator-entrypoint-v1
-status: review
+status: done
 owner: Foundry operator entrypoint contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Prepare native review requests through one operator command
+
+## Integration result
+
+[PR63](https://github.com/spik3r/clanker-foundry/pull/63) merged as
+`54f19e1e0dc0026c571fcf28735b7890c1a74b17` after coordinator and independent
+source review. All five hosted workflows passed on
+`3ac7b00fff928448d67b6899b1a0fd504943172c`, including the full Go workflow.
+The local race, native compatibility, guide and custom-fixture results below
+remain the observed validation record. The completed claim reserves no further
+work. Preparation still grants no execution or integration authority.
 
 ## Implementation claim
 
