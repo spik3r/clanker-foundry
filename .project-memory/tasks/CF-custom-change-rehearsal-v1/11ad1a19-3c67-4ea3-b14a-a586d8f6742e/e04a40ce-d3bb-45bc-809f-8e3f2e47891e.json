@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "e04a40ce-d3bb-45bc-809f-8e3f2e47891e",
+  "runId": "11ad1a19-3c67-4ea3-b14a-a586d8f6742e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-change-rehearsal-v1",
+    "path": "tasks/CF-custom-change-rehearsal-v1-checked-execution.md",
+    "revision": "17b2c47b9805d0aabc227a2c32adb79a273d4298",
+    "blob": "e9bbf5e4047c1922f73925d5d37c123ed6693385",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "294376302f8e0f47dd6b1549b4cadd8bd0705404a4bdfea99c7a58ef62cdf2ec"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/custom-change-rehearsal-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/71",
+  "at": "2026-11-04T03:07:18.391Z",
+  "summary": "Rehearse a supplied patch with fixed baseline and candidate literals through existing native preflight and execution APIs",
+  "next": "Coordinator reviews published claim then separate contributor freezes behavioral inputs before production",
+  "files": [
+    "modeling/lifecycle/changerehearsal/change.go",
+    "modeling/lifecycle/changerehearsal/execute.go",
+    "modeling/lifecycle/changerehearsal/change_test.go",
+    "modeling/lifecycle/changerehearsal/execute_test.go",
+    "modeling/lifecycle/changerehearsal/contract_test.go",
+    "modeling/lifecycle/changerehearsal/testdata/observations.json",
+    "modeling/lifecycle/changerehearsal/README.md",
+    "modeling/lifecycle/cmd/modelchangerehearsal/main.go",
+    "modeling/lifecycle/cmd/modelchangerehearsal/main_test.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md"
+  ]
+}

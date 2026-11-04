@@ -201,3 +201,23 @@ repaired by this route. Questions, preflight statuses and other source compariso
 remain visible independently, with no overall approval or readiness decision.
 Use the separate model-diff contract for complete model edits, and keep any later
 execution or integration decision separate from these declared comparisons.
+
+## Rehearse a reviewed design change against separate expectations
+
+For a custom change, the standalone [change rehearsal bridge](../modeling/lifecycle/changerehearsal/README.md)
+accepts the original native patch request and baseline proposal request, a separately
+reviewed candidate suite/manifest, and an explicit expected candidate model digest.
+It derives the candidate from the native patch report instead of asking a script
+to copy or rebind that model. It preserves the supplied expectation bytes.
+
+Build `./cmd/modelchangerehearsal` from the trusted `modeling/lifecycle` checkout.
+Run `modelchangerehearsal check < request.json` and review its full patch and both
+native preflight receipts. This command does not compile or replay. When the local
+rehearsal is separately authorized, send the **same unchanged request** to
+`modelchangerehearsal execute`. Both preflights must be current. The baseline runs
+first; only a matched baseline with successful cleanup permits the candidate.
+A mismatch, failure or cancellation keeps the not-attempted side's check receipt.
+Inspect the full native receipts and actual command exit status; a side's
+`operation: execute` means the native executor was called, not that its child ran
+or matched. The report supplies no approval or integration decision. This separate
+command does not add a `foundry` route or replace revision v2's literal comparison.
