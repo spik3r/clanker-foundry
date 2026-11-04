@@ -1,11 +1,22 @@
 ---
 id: CF-custom-change-rehearsal-v1
-status: review
+status: done
 owner: Foundry custom change rehearsal contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Rehearse a supplied model change against independent literals
+
+## Integration result
+
+[PR71](https://github.com/spik3r/clanker-foundry/pull/71) merged as
+`ce8c21b9646df1b0e026883a7e11492ad42cde9c` after coordinator and independent
+source review. All five hosted workflows passed on
+`3a4f28c44327ef85f8459cabaf89dfebe8bc393f`, including the full Go workflow.
+The final local full race run passed 75 tested packages; the focused reviews,
+actual matched/mismatched receipts and frozen behavioral expectations below
+remain the observed validation record. The completed claim reserves no further
+work. Rehearsal results still grant no human approval or integration authority.
 
 ## Implementation claim
 

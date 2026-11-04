@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "40c31ad8-da35-42f4-9595-4f64508704a5",
+  "runId": "99867e57-f1b3-40d5-ada9-73c1d5be6091",
+  "kind": "complete",
+  "parents": [
+    "f4e6a52c-1b7b-4cd8-b3ef-db9083423f42"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-change-rehearsal-v1",
+    "path": "tasks/CF-custom-change-rehearsal-v1-checked-execution.md",
+    "revision": "17b2c47b9805d0aabc227a2c32adb79a273d4298",
+    "blob": "e9bbf5e4047c1922f73925d5d37c123ed6693385",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "294376302f8e0f47dd6b1549b4cadd8bd0705404a4bdfea99c7a58ef62cdf2ec"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-change-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T03:30:08.841Z",
+  "summary": "Record actual reviewed PR71 merge and release completed scope",
+  "next": "Independent batch closeout review and integration",
+  "files": [
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md"
+  ],
+  "validation": "All five hosted workflows success on 3a4f28c including fullGo; local full75 packages and independent focused races passed; closeout pack/whitespace passed",
+  "snapshot": {
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md": {
+      "blob": "feaadbc7d4b5f678a7f2af64c1b6f384c58bc0cf",
+      "mode": "100644"
+    }
+  }
+}

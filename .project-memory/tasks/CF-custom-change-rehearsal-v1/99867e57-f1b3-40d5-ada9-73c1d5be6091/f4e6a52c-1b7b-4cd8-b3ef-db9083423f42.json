@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f4e6a52c-1b7b-4cd8-b3ef-db9083423f42",
+  "runId": "99867e57-f1b3-40d5-ada9-73c1d5be6091",
+  "kind": "start",
+  "parents": [
+    "a64fb311-3fce-4705-8bdf-700170447c23"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-change-rehearsal-v1",
+    "path": "tasks/CF-custom-change-rehearsal-v1-checked-execution.md",
+    "revision": "17b2c47b9805d0aabc227a2c32adb79a273d4298",
+    "blob": "e9bbf5e4047c1922f73925d5d37c123ed6693385",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "294376302f8e0f47dd6b1549b4cadd8bd0705404a4bdfea99c7a58ef62cdf2ec"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-change-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T03:29:51.035Z",
+  "summary": "Record reviewed custom change rehearsal integration",
+  "next": "Record exact merge and observed hosted checks",
+  "files": [
+    "tasks/CF-custom-change-rehearsal-v1-checked-execution.md"
+  ]
+}
