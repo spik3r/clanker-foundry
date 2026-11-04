@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "1e1af03a-aa33-472a-aa3f-629c0665b1e9",
+  "runId": "ce8d0ae3-5b0f-4356-b44d-b98a5e36c285",
+  "kind": "abandon",
+  "parents": [
+    "63bd4b15-3fad-4190-bee2-f4b053fd9399"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preflight-v1",
+    "path": "tasks/CF-builder-preflight-v1-pinned-inputs.md",
+    "revision": "c37a8f4c7240de4902c1c82ed1faaf487bd3fb8b",
+    "blob": "51f5268de04f0d7653a0079000ac225881af1edb",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fc22c5ed630556d4684a4ccf9f8324c926d78a04af90ea74c66183ca0af808b8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:21:08.742Z",
+  "summary": "Independent review found root normalization can change the selected directory; initial passing acceptance is incomplete",
+  "next": "Expand the canonical test scope, freeze path-identity regressions, and correct root handling",
+  "files": [
+    "modeling/lifecycle/builderpreflight/check.go",
+    "modeling/lifecycle/builderpreflight/files.go",
+    "modeling/lifecycle/builderpreflight/check_test.go",
+    "modeling/lifecycle/builderpreflight/README.md",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go",
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md"
+  ]
+}

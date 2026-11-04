@@ -19,6 +19,7 @@ Exact maintained scope:
 - modeling/lifecycle/builderpreflight/check.go
 - modeling/lifecycle/builderpreflight/files.go
 - modeling/lifecycle/builderpreflight/check_test.go
+- modeling/lifecycle/builderpreflight/root_test.go
 - modeling/lifecycle/builderpreflight/README.md
 - modeling/lifecycle/cmd/modelbuilderpreflight/main.go
 - modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go
@@ -96,3 +97,16 @@ file contents. Closed-pipe output must use exit 3, not signal termination.
    race checks, vet, repository validation and committed Project Memory checks.
 4. Seek independent review of exact final source, record observations, and hand
    off the local branch and a selected-ref full-history bundle. No publication.
+
+## Review-discovered root boundary
+
+Independent review of the first implementation found that lexical cleaning of an
+absolute root can select a different directory across an ancestor symlink and
+`..`. It can also erase missing or non-directory components. The original 21
+independent acceptance entry points passed but did not cover these root names.
+Their frozen bytes remain unchanged. The first local run was stopped without
+completion coverage; the expanded scope adds only root_test.go before fixing
+this issue. A separate author will freeze root traversal regressions against
+the intended contract, verify failure on the unfixed implementation, and retain
+that chronology. The root must preserve the host's supplied path resolution;
+trailing separators may be trimmed only for checking a final symlink leaf.
