@@ -1,11 +1,23 @@
 ---
 id: CF-proposal-report-binding-v1
-status: review
+status: done
 owner: Foundry proposal report contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Bind captured candidate reports to original scenario literals
+
+## Integration result
+
+[PR56](https://github.com/spik3r/clanker-foundry/pull/56) merged as
+`2e2a190b629a983ba854d59ecc356274ec7e5a4f` after independent source review
+and all five hosted workflows passed on
+`e2c54705df6b6e486418a4a2de07899c1abce4bc`. The lead's full Go race run
+passed on the ordinary-merge union with current main; its tree
+`ecc7f2cb54752d029419ed5d92c793841201d9f7` matches the final merge.
+The historical local freeze provenance remains documented, rather than claimed
+as independently inspected public ancestry. The integrated scope is complete
+and reserves no further work.
 
 ## Publication preparation result
 
