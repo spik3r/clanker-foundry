@@ -1,8 +1,9 @@
 # Use the current model-driven review path
 
-This guide describes selected tools on reviewed main
-[`83007fa`](https://github.com/spik3r/clanker-foundry/commit/83007fa3083dc46add5f83e628d2aac30d1a972b),
-on **4 November 2026**. It is a practical entry point, not an exhaustive inventory.
+The native contracts below were checked against reviewed main
+[`2e2a190b`](https://github.com/spik3r/clanker-foundry/commit/2e2a190b629a983ba854d59ecc356274ec7e5a4f)
+on **4 November 2026**. The `foundry` entrypoint in this checkout prepares requests
+and exposes those contracts through one binary. This is a selected workflow.
 The [pipeline introduction](model-driven-pipeline.md) retains its earlier dated
 snapshot. The [pilot testing guide](model-driven-pilot-testing.md) provides longer
 fixed-example and custom-proposal exercises.
@@ -16,11 +17,11 @@ whether to execute or integrate. These tools do not generate a complete app.
 
 | Step | Tool and contract | What to review |
 |---|---|---|
-| Prepare a proposal | [Design skill](../skills/model-driven-design/SKILL.md), [profile catalog](../modeling/lifecycle/profilecatalog/README.md), [acceptance authoring](../modeling/lifecycle/acceptanceauthor/README.md) | Requirements, model, independently stated suite literals, manifest and open questions. Author labels do not authenticate independence. |
-| Correlate intake and proposal | [`modelreviewcheck`](../modeling/lifecycle/firstdesignreview/README.md) | Full native results, exact model/suite byte comparisons and retained questions. Exit 0 only means a report was produced. This check starts no candidate. |
-| Check or execute a proposal | [`modelproposal check\|execute`](../modeling/lifecycle/proposalreplay/README.md) | Check is non-executing preflight. Separately authorized execute compiles and invokes a candidate-bound runner and preserves its comparisons. |
-| Inspect a process view | [`modelprocess json\|svg`](../modeling/lifecycle/processview/README.md) | Declared guards, refusal paths, effect order, destination and canonical model identity. A rendered view does not establish execution or approval. |
-| Inspect carried observations | [`modelrehearsalinspect`](../modeling/lifecycle/rehearsalinspection/README.md) | Native report consistency and binding to carried suite literals. Invented consistent reports can pass; execution remains not established. |
+| Prepare a proposal | `foundry prepare` plus the [design skill](../skills/model-driven-design/SKILL.md), [profile catalog](../modeling/lifecycle/profilecatalog/README.md), [acceptance authoring](../modeling/lifecycle/acceptanceauthor/README.md) | Requirements, model, independently stated suite literals, manifest and open questions. Author labels do not authenticate independence. |
+| Correlate intake and proposal | [`foundry review`](../modeling/lifecycle/firstdesignreview/README.md) | Full native results, exact model/suite byte comparisons and retained questions. Exit 0 only means a report was produced. This check starts no candidate. |
+| Check or execute a proposal | [`foundry proposal check\|execute`](../modeling/lifecycle/proposalreplay/README.md) | Check is non-executing preflight. Separately authorized execute compiles and invokes a candidate-bound runner and preserves its comparisons. |
+| Inspect a process view | [`foundry process json\|svg`](../modeling/lifecycle/processview/README.md) | Declared guards, refusal paths, effect order, destination and canonical model identity. A rendered view does not establish execution or approval. |
+| Inspect carried observations | [`foundry inspect`](../modeling/lifecycle/rehearsalinspection/README.md) | Native report consistency and binding to carried suite literals. Invented consistent reports can pass; execution remains not established. |
 
 The process view is a review aid, with invalid input and illegal transitions
 outside its per-transition lanes. It makes no BPMN conformance claim. The
@@ -30,7 +31,8 @@ the existing orchestration evaluator; this design path does not dispatch workers
 ## Prepare private outputs and check a first design
 
 Use Bash, Python 3, Git and installed **Go 1.27.3** on a trusted, exclusive local
-checkout of the reviewed revision. Set `WORK_PARENT` to an authorized directory
+checkout containing the `foundry` entrypoint; the linked revision identifies the
+native contract baseline. Set `WORK_PARENT` to an authorized directory
 outside that checkout. The examples compile trusted tools and write only new
 private scratch files; the later execute and rehearsal commands also run generated
 Go. Local execution requires the operator's authority and is not an OS sandbox.
@@ -52,39 +54,44 @@ WORK="$(mktemp -d "$WORK_PARENT/foundry-current.XXXXXXXX")"
 mkdir "$WORK/tmp" "$WORK/cache"
 export ROOT WORK TMPDIR="$WORK/tmp" GOTMPDIR="$WORK/tmp" GOCACHE="$WORK/cache"
 cd "$ROOT/modeling/lifecycle"
-for tool in modelreviewcheck modelproposal modelprocess modelrehearsalinspect; do
-  go build -o "$WORK/$tool" "./cmd/$tool"
-done
-python3 -I - <<'PY'
-import json, os, pathlib
-root, work = pathlib.Path(os.environ['ROOT']), pathlib.Path(os.environ['WORK'])
-p = root / 'skills/model-driven-design/examples'
-text = lambda name: (p / name).read_bytes().decode('utf-8')
-intake = json.loads(text('intake.json'))
-intake['observed'] = dict(requirements=text('brief.md'), model=text('model.json'),
-                          scenarioSuite=text('suite.json'))
-proposal = dict(formatVersion='lifecycle-proposal-request/v1',
-                model=text('model.json'), suite=text('suite.json'), manifest=text('manifest.json'))
-encode = lambda value: json.dumps(value, ensure_ascii=False).encode('utf-8')
-intake_bytes, proposal_bytes = encode(intake), encode(proposal)
-(work / 'intake-request.json').write_bytes(intake_bytes)
-(work / 'proposal-request.json').write_bytes(proposal_bytes)
-wrapper = dict(formatVersion='lifecycle-first-design-review-request/v1',
-               intakeRequest=intake_bytes.decode('utf-8'),
-               proposalRequest=proposal_bytes.decode('utf-8'))
-(work / 'review-request.json').write_bytes(encode(wrapper))
+go build -o "$WORK/foundry" ./cmd/foundry
+"$WORK/foundry" prepare \
+  --intake "$ROOT/skills/model-driven-design/examples/intake.json" \
+  --requirements "$ROOT/skills/model-driven-design/examples/brief.md" \
+  --model "$ROOT/skills/model-driven-design/examples/model.json" \
+  --suite "$ROOT/skills/model-driven-design/examples/suite.json" \
+  --manifest "$ROOT/skills/model-driven-design/examples/manifest.json" > "$WORK/review-request.json"
+python3 -I - "$WORK/review-request.json" "$WORK/proposal-request.json" <<'PY'
+import json, pathlib, sys
+request = json.loads(pathlib.Path(sys.argv[1]).read_bytes())
+pathlib.Path(sys.argv[2]).write_bytes(request['proposalRequest'].encode('utf-8'))
 PY
-"$WORK/modelreviewcheck" < "$WORK/review-request.json" > "$WORK/review.json"
-"$WORK/modelproposal" check < "$WORK/proposal-request.json" > "$WORK/preflight.json"
+"$WORK/foundry" review < "$WORK/review-request.json" > "$WORK/review.json"
+"$WORK/foundry" proposal check < "$WORK/proposal-request.json" > "$WORK/preflight.json"
 printf 'Private results: %s\n' "$WORK"
 ```
 
-This constructs a new intake request with observations. Embedded brief, model,
-suite and manifest texts retain their original UTF-8 bytes, including line endings;
-they are not parsed and re-encoded. The fictional first-design input retains
-`Q_use`, its unanswered real-use question. A successful check does not answer it.
-For your own proposal, follow the handoff contract rather than importing this
-example's policy decisions.
+Preparation fills null observations in a new intake text and retains every source
+byte outside its `observed` value. Existing observations must exactly match the
+supplied files or preparation refuses. Brief, model, suite and manifest texts
+retain their original UTF-8 bytes, including line endings; declarations,
+dependencies and literal expectations are preserved. Source files are never
+rewritten. The small Python block extracts the unchanged native proposal request;
+it does not rebuild or normalize its artifacts.
+
+All five flags are required once. Preparation reads only their regular UTF-8 files,
+refusing symlink leaves and nonregular inputs. Intake is bounded at 4 MiB;
+requirements/model/suite at 1 MiB each; manifest at 64 KiB. The new native requests
+also retain their limits. Parent path aliases are allowed; the trusted host
+assumption does not protect against a hostile concurrent writer. Preparation
+checks the intake scaffold and assembles a request. Model meaning, suite validity,
+and manifest bindings are checked by the separate native review/preflight routes.
+
+The fictional input retains `Q_use`, its unanswered real-use question. A successful
+check does not answer it. For your own proposal, follow the handoff contract and
+supply your own five input files. Use `foundry help` for the route list. Native
+routes preserve standalone tool diagnostic prefixes and exit meanings; preparation
+uses exit 2 for refused input and exit 3 for failed or short request delivery.
 
 Read `review.json` completely: `modelComparison` and `suiteComparison` should
 both be `matches` for these unchanged files. Decode `intakeReport.intakeReportJSON`
@@ -97,8 +104,8 @@ model context, not a compiled candidate. Source hashes bind bytes, not provenanc
 ## Render the same model and decide separately about execution
 
 ```bash
-"$WORK/modelprocess" json < "$ROOT/skills/model-driven-design/examples/model.json" > "$WORK/process.json"
-"$WORK/modelprocess" svg < "$ROOT/skills/model-driven-design/examples/model.json" > "$WORK/process.svg"
+"$WORK/foundry" process json < "$ROOT/skills/model-driven-design/examples/model.json" > "$WORK/process.json"
+"$WORK/foundry" process svg < "$ROOT/skills/model-driven-design/examples/model.json" > "$WORK/process.svg"
 ```
 
 Inspect the SVG in a trusted native viewer at readable zoom. Check the header,
@@ -112,7 +119,7 @@ Only after separate authorization to execute the reviewed local candidate, run
 the saved request unchanged:
 
 ```bash
-"$WORK/modelproposal" execute < "$WORK/proposal-request.json" > "$WORK/replay.json"
+"$WORK/foundry" proposal execute < "$WORK/proposal-request.json" > "$WORK/replay.json"
 ```
 
 For this invented suite, the pre-existing nine case literals each have one step.
@@ -154,7 +161,7 @@ request = dict(formatVersion='lifecycle-rehearsal-inspection-request/v1', refere
                bundleBase64=base64.b64encode((work / 'rehearsal.json').read_bytes()).decode('ascii'))
 (work / 'inspection-request.json').write_bytes(json.dumps(request).encode('utf-8'))
 PY
-"$WORK/modelrehearsalinspect" < "$WORK/inspection-request.json" > "$WORK/inspection.json"
+"$WORK/foundry" inspect < "$WORK/inspection-request.json" > "$WORK/inspection.json"
 ```
 
 The reference identities come from the existing separately authored fixed
