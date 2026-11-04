@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "5c42b6b7-fa94-4f9d-b6f2-709c3a4cb2fe",
+  "runId": "bb79ad34-692b-4500-931f-e3d9e8e0fd62",
+  "kind": "complete",
+  "parents": [
+    "14da0a71-698a-4b24-a33a-313efef43c53"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-change-entrypoint-v1",
+    "path": "tasks/CF-change-entrypoint-v1-file-preserving-rehearsal.md",
+    "revision": "0ac3a37cbe214bcc2595461c52fc176516bf0ea1",
+    "blob": "1ae7683c881897071bbf8e74cf3336bdb6ec65bf",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "77a71ff9789f9b75574ac9603d72c4cca1fad5e9204a0042ac2fc9ef5300a896"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/change-entrypoint-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T04:06:51.143Z",
+  "summary": "Prepared native change requests with preserved bytes and explicit digest; exposed separate native check and execute routes; independent review found no blocking issue",
+  "next": "Coordinator local review and any separately authorized publication; installer regression still needs GNU Stow",
+  "files": [
+    "tasks/CF-change-entrypoint-v1-file-preserving-rehearsal.md",
+    "modeling/lifecycle/internal/operatorcli/change.go",
+    "modeling/lifecycle/internal/operatorcli/change_prepare.go",
+    "modeling/lifecycle/internal/operatorcli/change_contract_test.go",
+    "modeling/lifecycle/internal/operatorcli/change_dispatch_test.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "modeling/lifecycle/internal/operatorcli/contract_test.go",
+    "modeling/lifecycle/cmd/foundry/main.go",
+    "modeling/lifecycle/cmd/modelchangerehearsal/main.go",
+    "docs/model-driven-change-entrypoint.md"
+  ],
+  "validation": "Go1.27.3 offline go test -race -count=1 ./... passed 75 tested packages and two no-test commands; focused race, vet, gofmt, modelc validate/check, modeltrace check, validator and whitespace passed; guide prepare/check/execute matched frozen example; separate nonexecuting race review passed; installer stopped at missing GNU Stow, optional skills-ref absent; OS signal delivery not separately tested",
+  "snapshot": {
+    "tasks/CF-change-entrypoint-v1-file-preserving-rehearsal.md": {
+      "blob": "ccd98ffa2077102b909ed33fbbdfada531858dbc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/change.go": {
+      "blob": "dda48f03acf7d2a62e65b66c7d7320e24b0104d1",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/change_prepare.go": {
+      "blob": "46f65d707661f5fd14da2d2b8a6ac5364ec70f42",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/change_contract_test.go": {
+      "blob": "7b721df8ce800411117fbc6ecdeda9655cdc5411",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/change_dispatch_test.go": {
+      "blob": "aa224967720feb11cab481cb9dd0545e439fad75",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/dispatch.go": {
+      "blob": "b4f82db1c14e5b973559fa6c4a6abbd4faa92e93",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/contract_test.go": {
+      "blob": "eb9bbf880c4489864e887de2b89d48531e04af6c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundry/main.go": {
+      "blob": "4cca28d7d36d75b739fb6e23465c0c74f03de37b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelchangerehearsal/main.go": {
+      "blob": "00bd8bd86b91138a31505cfecbe9b9ddf39c95f8",
+      "mode": "100644"
+    },
+    "docs/model-driven-change-entrypoint.md": {
+      "blob": "41a3e838920db802510f40068e35ffcedefaba41",
+      "mode": "100644"
+    }
+  }
+}

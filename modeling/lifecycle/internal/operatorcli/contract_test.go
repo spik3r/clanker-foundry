@@ -207,7 +207,10 @@ func TestHelpAndUnknownRoutesDoNotReadInput(t *testing.T) {
 	c := vectors(t)
 	for _, args := range [][]string{nil, {"help"}, {"--help"}} {
 		code, out, diag := run(args, poisonReader{})
-		if code != 0 || string(out) != c.Help || diag != "" {
+		// The frozen v1 route lines stay intact; the new independent change
+		// contract checks the complete extended help and execution warning.
+		legacyRoutes := strings.SplitN(c.Help, "\n\n", 2)[0]
+		if code != 0 || !strings.HasPrefix(string(out), legacyRoutes+"\n") || diag != "" {
 			t.Fatal("help", code, diag)
 		}
 	}
