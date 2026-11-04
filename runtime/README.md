@@ -161,6 +161,31 @@ configuration, outside task records and logs. Live checks are separate from unit
 passed locally; the direct API transport has no live verification without an API
 key. CLI integration disables do not constitute a universal no-tools sandbox.
 
+The CLI reply boundary accepts one `turn.started`, active assistant/reasoning
+items and one `turn.completed` containing completed assistant text. It requires
+neither `item.started` nor item IDs. An optional single `thread.started` precedes
+the turn; `rate_limits.updated` metadata can appear before or after it. Second
+turns, repeated terminals and known items outside the active turn are refused
+with `PROVIDER_CLI_INVALID_OUTPUT`; incomplete EOF remains `PROVIDER_INCOMPLETE`.
+The exact existing code-mode-disabled item diagnostic is accepted only inside
+the active turn. Other tool/error refusals retain their existing classifications.
+The [official noninteractive example](https://developers.openai.com/codex/noninteractive)
+shows this basic event order without a mandatory item start. These additional
+sequencing rules are Foundry's bounded one-prompt acceptance contract, not an
+official complete Codex event validator.
+
+Both transports reject malformed raw UTF-8 rather than silently replacing bytes,
+and reject unpaired surrogates in decoded assistant text. Chunk boundaries,
+valid surrogate pairs and literal U+FFFD are preserved without normalization.
+The decoder retains a leading BOM for the existing JSON framing to inspect;
+it does not silently remove it. Malformed replies use fixed redacted errors:
+`PROVIDER_CLI_INVALID_OUTPUT` for CLI and `PROVIDER_INVALID_RESPONSE` for Responses.
+An injected fetch adapter exposing only `text()` remains supported with decoded
+string and byte-limit checks, but original wire encoding cannot be checked after
+that adapter decoded it. The standard raw-response reader performs the fatal
+UTF-8 check. These boundary tests use invented transports; they do not establish
+new live provider verification or expand the transport's authority.
+
 Each text or fake adapter instance allows 16 active invocations or undelivered
 outputs. Further invocations wait before calling the model. Each retained
 reference belongs to a captured attempt ID, worker ID and fencing token, even

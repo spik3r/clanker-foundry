@@ -22,6 +22,15 @@ function fail(code, message) {
   throw Object.assign(new Error(message), { code });
 }
 
+function decodeUtf8(bytes, code, message) {
+  try {
+    // Retain a BOM so the existing JSON parser still refuses it.
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+  } catch {
+    fail(code, message);
+  }
+}
+
 function boundedInteger(value, name, maximum) {
   if (!Number.isSafeInteger(value) || value < 1 || value > maximum) {
     fail('INVALID_ARGUMENT', `${name} must be between 1 and ${maximum}`);
@@ -68,6 +77,7 @@ function outputText(response, maxOutputBytes) {
       if (part?.type !== 'output_text' || typeof part.text !== 'string') {
         fail('PROVIDER_TOOL_ACTIVITY', 'Provider returned a non-text or tool output');
       }
+      if (!part.text.isWellFormed()) fail('PROVIDER_INVALID_RESPONSE', 'Provider returned malformed assistant text');
       pieces.push(part.text);
     }
     messages.push(pieces.join(''));
@@ -81,6 +91,8 @@ function outputText(response, maxOutputBytes) {
 async function readBoundedBody(response, limit) {
   if (!response.body?.getReader) {
     const text = await response.text();
+    // An injected text-only transport has already decoded its original bytes.
+    if (typeof text !== 'string' || !text.isWellFormed()) fail('PROVIDER_INVALID_RESPONSE', 'Provider returned invalid response text');
     if (Buffer.byteLength(text, 'utf8') > limit) fail('PROVIDER_RESPONSE_TOO_LARGE', 'Provider response exceeded the byte limit');
     return text;
   }
@@ -101,7 +113,7 @@ async function readBoundedBody(response, limit) {
   } finally {
     reader.releaseLock();
   }
-  return Buffer.concat(chunks, total).toString('utf8');
+  return decodeUtf8(Buffer.concat(chunks, total), 'PROVIDER_INVALID_RESPONSE', 'Provider returned invalid UTF-8');
 }
 
 /** OpenAI Responses API text transport. It exposes no tools and stores no response. */
@@ -298,7 +310,11 @@ function runChild({ executable, args, cwd, input, signal, timeoutMs, maxOutputBy
         finish(Object.assign(new Error('Codex CLI exited unsuccessfully'), { code: 'PROVIDER_CLI_EXIT' }));
         return;
       }
-      finish(null, Buffer.concat(stdout, stdoutBytes).toString('utf8'));
+      try {
+        finish(null, decodeUtf8(Buffer.concat(stdout, stdoutBytes), 'PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned invalid UTF-8'));
+      } catch (error) {
+        finish(error);
+      }
     });
     child.stdin.on('error', () => {});
     child.stdin.end(input);
@@ -308,28 +324,50 @@ function runChild({ executable, args, cwd, input, signal, timeoutMs, maxOutputBy
 function parseCodexJsonl(source, maxOutputBytes) {
   const lines = source.split('\n');
   let finalText = null;
-  let turnComplete = false;
+  let phase = 'before';
+  let threadStarted = false;
+  const invalidSequence = () => fail('PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned an invalid turn sequence');
   const allowedEvents = new Set(['thread.started', 'turn.started', 'item.started', 'item.completed', 'turn.completed', 'turn.failed', 'error', 'rate_limits.updated']);
   for (const line of lines) {
     if (!line.trim()) continue;
     let event;
     try { event = JSON.parse(line); } catch { fail('PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned invalid JSONL'); }
+    if (event === null || typeof event !== 'object' || Array.isArray(event)) fail('PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned invalid JSONL');
     if (!allowedEvents.has(event.type)) fail('PROVIDER_TOOL_ACTIVITY', 'Codex CLI returned an unexpected event');
     if (event.type === 'turn.failed' || event.type === 'error') fail('PROVIDER_CLI_FAILED', 'Codex CLI turn failed');
+    if (event.type === 'rate_limits.updated') continue;
+    if (event.type === 'thread.started') {
+      if (threadStarted || phase !== 'before') invalidSequence();
+      threadStarted = true;
+      continue;
+    }
+    if (event.type === 'turn.started') {
+      if (phase !== 'before') invalidSequence();
+      phase = 'active';
+      continue;
+    }
+    if (event.type === 'turn.completed') {
+      if (phase !== 'active') invalidSequence();
+      phase = 'completed';
+      continue;
+    }
     if (event.type === 'item.started' || event.type === 'item.completed') {
       const item = event.item;
-      if (event.type === 'item.completed' && item?.type === 'error' && item.message === CODE_MODE_DISABLED_DIAGNOSTIC) continue;
-      if (!item || !['agent_message', 'reasoning'].includes(item.type)) {
+      const disabledDiagnostic = event.type === 'item.completed' && item?.type === 'error' && item.message === CODE_MODE_DISABLED_DIAGNOSTIC;
+      if (!disabledDiagnostic && (!item || !['agent_message', 'reasoning'].includes(item.type))) {
         fail('PROVIDER_TOOL_ACTIVITY', 'Codex CLI attempted a non-text tool action');
       }
+      // One invocation accepts text only inside its one completed turn; an
+      // earlier terminal event cannot authorize later items or another turn.
+      if (phase !== 'active') invalidSequence();
+      if (disabledDiagnostic) continue;
       if (event.type === 'item.completed' && item.type === 'agent_message') {
-        if (typeof item.text !== 'string') fail('PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned malformed assistant text');
+        if (typeof item.text !== 'string' || !item.text.isWellFormed()) fail('PROVIDER_CLI_INVALID_OUTPUT', 'Codex CLI returned malformed assistant text');
         finalText = item.text;
       }
     }
-    if (event.type === 'turn.completed') turnComplete = true;
   }
-  if (!turnComplete || finalText === null) fail('PROVIDER_INCOMPLETE', 'Codex CLI did not return a completed text response');
+  if (phase !== 'completed' || finalText === null) fail('PROVIDER_INCOMPLETE', 'Codex CLI did not return a completed text response');
   if (Buffer.byteLength(finalText, 'utf8') > maxOutputBytes) fail('OUTPUT_TOO_LARGE', 'Provider output exceeds the configured byte limit');
   return finalText;
 }
