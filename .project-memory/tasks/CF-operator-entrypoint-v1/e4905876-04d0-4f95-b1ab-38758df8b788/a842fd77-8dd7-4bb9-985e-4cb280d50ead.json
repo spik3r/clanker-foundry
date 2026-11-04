@@ -1,0 +1,107 @@
+{
+  "formatVersion": 2,
+  "eventId": "a842fd77-8dd7-4bb9-985e-4cb280d50ead",
+  "runId": "e4905876-04d0-4f95-b1ab-38758df8b788",
+  "kind": "complete",
+  "parents": [
+    "c143f8db-ec59-435d-a217-cbe1c02d8a7c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-operator-entrypoint-v1",
+    "path": "tasks/CF-operator-entrypoint-v1-request-preparation.md",
+    "revision": "6a7dba0fa3b2db520c9c4046b9be026901182cb2",
+    "blob": "093216d50d34d51b30f78b25b3b0d7c278a9ec68",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "217c85138add6e185785078f6a78d11156edfae352af2f51235398e0f05f8667"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-entrypoint-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/63",
+  "at": "2026-11-04T00:03:14.506Z",
+  "summary": "Prepared byte-preserving native requests and shared CLI runners; coordinator and independent review approved source60953dc; existing native semantics retained",
+  "next": "Coordinator checks hosted CI and merges PR63",
+  "files": [
+    "modeling/lifecycle/internal/operatorcli/native.go",
+    "modeling/lifecycle/internal/operatorcli/prepare.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "modeling/lifecycle/internal/operatorcli/contract_test.go",
+    "modeling/lifecycle/internal/operatorcli/testdata/observations.json",
+    "modeling/lifecycle/internal/operatorcli/dispatch_test.go",
+    "modeling/lifecycle/internal/operatorcli/native_parity_test.go",
+    "modeling/lifecycle/cmd/foundry/main.go",
+    "modeling/lifecycle/cmd/modelreviewcheck/main.go",
+    "modeling/lifecycle/cmd/modelproposal/main.go",
+    "modeling/lifecycle/cmd/modelprocess/main.go",
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go",
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-operator-entrypoint-v1-request-preparation.md"
+  ],
+  "validation": "Go 1.27.3 offline full race passed72 tested packages plus2 compiled command packages; operator plus5 legacy race suites passed; six actual binary output/closed-pipe parity and FIFO checks passed; four unchanged guide Bash blocks passed; custom ParcelSeal prepare-review-explicit replay matched4 cases6 steps with unchanged input hashes; vet/modelc drift/gofmt/pack/installer/whitespace passed; optional skills-ref unavailable",
+  "snapshot": {
+    "modeling/lifecycle/internal/operatorcli/native.go": {
+      "blob": "a5b1daeecaa5386d4880f54887e82488681f1ebf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/prepare.go": {
+      "blob": "649c9537c2913160bfa9410e842ada20df39c374",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/dispatch.go": {
+      "blob": "5e4dcdcda6f41d7c1972f99f2a707a11da47e9a2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/contract_test.go": {
+      "blob": "409b1e0c7180b1bd64d4dfc3dd7044b4d68929a0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/testdata/observations.json": {
+      "blob": "1d3f7e1b2a996bbe653e16fbce8dc6b6c65ffefc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/dispatch_test.go": {
+      "blob": "f8ff5e16089bfb7a9cb4cf04450985374d3da529",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/native_parity_test.go": {
+      "blob": "19e4cf4e81295c6322ad5b6f3ec27b37c8662a81",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundry/main.go": {
+      "blob": "9478282eb2d3c3b860f7184249e4ec8939364c60",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelreviewcheck/main.go": {
+      "blob": "f144c291b0eb02d750a5b6fafd894fb589f272be",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelproposal/main.go": {
+      "blob": "e946fa5ad185bc73506ba8df3f86ff988b242199",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelprocess/main.go": {
+      "blob": "d561f614d0a0691ff302b0b9e241a7d69d6380f6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrehearsalinspect/main.go": {
+      "blob": "d6abaf3c6b661e5c1c52866a2523278eef16a3cf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelrevisioncheck/main.go": {
+      "blob": "1d81e03f5825fd3846f40b879f2b2883b6f997be",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "a528a362d47ccc036816087de43bc8e9cc834dcf",
+      "mode": "100644"
+    },
+    "tasks/CF-operator-entrypoint-v1-request-preparation.md": {
+      "blob": "bc39436a289c1dd31c9b89cf07fffa0af63390ab",
+      "mode": "100644"
+    }
+  }
+}
