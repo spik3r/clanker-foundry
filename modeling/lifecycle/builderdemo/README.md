@@ -41,7 +41,11 @@ subprocesses, tool probing and candidate execution are absent.
 absolute UTF-8 paths without control characters. The source and work-parent
 locations must exist as real directory leaves; final symlinks, including trailing
 slash spellings, are refused. Ancestor aliases retain the host's actual traversal
-through `..`. The work parent must resolve outside the source root. The Go path
+through `..`. The work parent must resolve outside the source root. This boundary
+compares the directory identities of the parent and its ancestors with the source,
+so case aliases cannot hide overlap. It reads ancestor metadata without enumerating
+directories and refuses a metadata failure. It does not fold path case or reject
+distinct directories merely because their names differ only in case. The Go path
 is recorded literally; preparation does not open it or verify its version.
 
 The standalone CLI takes exactly:

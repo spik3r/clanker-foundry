@@ -45,6 +45,28 @@ func physicalDirectory(path string, before os.FileInfo) (string, error) {
 	return physical, nil
 }
 
+// The path must already have its host traversal resolved. Compare identities
+// along its ancestors: EvalSymlinks need not normalize case or other aliases.
+func withinDirectory(path string, root os.FileInfo) (bool, error) {
+	for {
+		info, err := os.Stat(path)
+		if err != nil {
+			return false, err
+		}
+		if !info.IsDir() {
+			return false, ErrInvalid
+		}
+		if os.SameFile(info, root) {
+			return true, nil
+		}
+		parent := filepath.Dir(path)
+		if parent == path {
+			return false, nil
+		}
+		path = parent
+	}
+}
+
 func collect(root *os.Root, item artifact) ([]byte, error) {
 	blocked := func(reason string) ([]byte, error) {
 		return nil, fmt.Errorf("%w: collect %s: %s", ErrBlocked, item.Path, reason)

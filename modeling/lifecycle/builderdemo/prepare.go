@@ -103,16 +103,15 @@ func Prepare(sourceRoot, workParent, goBinary string) (Receipt, error) {
 	defer parent.Close()
 	// Resolve actual host traversal before comparing locations. Lexical cleaning
 	// of an ancestor alias followed by .. can select a different directory.
-	sourcePath, err := physicalDirectory(sourceRoot, sourceInfo)
-	if err != nil {
+	if _, err := physicalDirectory(sourceRoot, sourceInfo); err != nil {
 		return result, ErrInvalid
 	}
 	parentPath, err := physicalDirectory(workParent, parentInfo)
 	if err != nil {
 		return result, ErrInvalid
 	}
-	rel, err := filepath.Rel(sourcePath, parentPath)
-	if err != nil || rel == "." || rel != ".." && !strings.HasPrefix(rel, ".."+string(os.PathSeparator)) {
+	insideSource, err := withinDirectory(parentPath, sourceInfo)
+	if err != nil || insideSource {
 		return result, ErrInvalid
 	}
 	result = Receipt{

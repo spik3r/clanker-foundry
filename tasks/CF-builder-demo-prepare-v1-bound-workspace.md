@@ -1,6 +1,6 @@
 ---
 id: CF-builder-demo-prepare-v1
-status: in-progress
+status: review
 owner: Codex builder preparation boundary correction
 repositories: [spik3r/clanker-foundry]
 ---
@@ -205,3 +205,41 @@ tests and evidence remain byte-preserved. Main was still 882b5002 and no open PR
 was returned at the final source check. This additive branch remains local; no
 publication, merge or deployment occurred. Committed coverage and selected-ref
 full-history restoration are verified after the implementation commit.
+
+## PR review correction: directory identity boundary
+
+Independent PR review identified that differently cased spellings can survive
+EvalSymlinks on a case-insensitive filesystem. The previous filepath.Rel check
+then treated an alias of the source root or a descendant as outside the source.
+The native Mac reproduction used only new temporary fixtures containing the
+fixed public inputs. Five cases returned prepared-draft without error and grew
+each isolated source tree from 32 to 78 entries. They covered the root, a child,
+a deeper descendant and two inversions of the source spelling.
+
+The correction claim is pinned at 4cee7e93749e6d47b18f56876b61c5f51c8bc607.
+A genuine new start preceded the additional regression. Its failing version was
+committed before production edits at 7258f5289014b603284e2099707dd5344f76ca23;
+directory_boundary_test.go remains byte-identical to that version, with SHA-256
+fab6e3f15464f04a64ec74503a75688f396079ddf1904f8eec46f1ba8c561d23.
+The original manifest and both independently frozen acceptance files are unchanged.
+
+The corrected check walks metadata for the resolved output parent and its
+ancestors, comparing each directory identity with the source via os.SameFile.
+Equal identity or failed metadata rejects the location before input collection
+or output creation. It does not case-fold strings, enumerate directories or alter
+the existing symlink, host-traversal, receipt or incomplete-work contracts.
+
+Native Go 1.27.3 focused race tests passed for builderdemo and modelbuilderdemo:
+13 top-level tests and 24 including subtests passed. All five alias regressions
+ran and passed, including unchanged source paths and bytes after rejection.
+One positive control for distinct case-sensitive sibling directories skipped
+because this filesystem aliases those names. The control remains available to
+the existing hosted suite. Focused vet, formatting and repository validation
+passed. No full local build or additional platform setup was performed.
+
+This correction does not add an atomic snapshot, mount/hardlink provenance or
+hostile-writer guarantee. Concurrent replacement and post-creation I/O failure
+injection remain unqualified as stated above. The supplementary regression was
+written after the review finding; it does not replace the original independent
+acceptance or establish new builder execution authority. Publication, new hosted
+checks and independent review of the correction are the next coordinated steps.
