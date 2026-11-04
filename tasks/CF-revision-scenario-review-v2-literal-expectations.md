@@ -1,11 +1,21 @@
 ---
 id: CF-revision-scenario-review-v2
-status: review
+status: done
 owner: Foundry revision scenario review contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Show literal scenario changes beside revision review
+
+## Integration result
+
+[PR65](https://github.com/spik3r/clanker-foundry/pull/65) merged as
+`ad6fc76f80687669259c752188f7a8105a5ad2c5` after coordinator and independent
+source review. All five hosted workflows passed on
+`3bfb20147cef17f43ab3b18fd3ff8c9e26840658`, including the full Go workflow.
+The local full race and two independent focused race results below remain the
+observed validation record. Existing v1 behavior stays unchanged. The completed
+claim reserves no further work; the comparison grants no execution or approval.
 
 ## Implementation claim
 

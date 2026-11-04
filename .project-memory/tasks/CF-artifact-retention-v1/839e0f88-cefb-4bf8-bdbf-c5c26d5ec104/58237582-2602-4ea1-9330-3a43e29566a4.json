@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "58237582-2602-4ea1-9330-3a43e29566a4",
+  "runId": "839e0f88-cefb-4bf8-bdbf-c5c26d5ec104",
+  "kind": "start",
+  "parents": [
+    "e84a6a34-a55b-4497-b76f-5499df05ad44"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-artifact-retention-v1",
+    "path": "tasks/CF-artifact-retention-v1-settled-cleanup.md",
+    "revision": "0bf70d5aedac1bf9bb3323c34afc5d4f8c43784f",
+    "blob": "12c74279d0e2bd04817609fb08c8138473440518",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "90820d2a0961951b40e2fb7563e24aeb17b526cb267fb9d86957107b36384837"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/literal-retention-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T01:34:00.419Z",
+  "summary": "Record reviewed retention repair integration and release completed scope",
+  "next": "Record exact merge and observed hosted checks",
+  "files": [
+    "tasks/CF-artifact-retention-v1-settled-cleanup.md"
+  ]
+}
