@@ -1,11 +1,22 @@
 ---
 id: CF-artifact-retention-v1
-status: review
+status: done
 owner: Codex artifact retention contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Release abandoned output capacity after matching settled cleanup
+
+## Integration result
+
+[PR66](https://github.com/spik3r/clanker-foundry/pull/66) merged as
+`af7bdac44506184b0db485b33cc3cd03bfee6832` after coordinator and independent
+source review. All five hosted workflows passed on
+`9da4bb21b6c5762f959748bf1ac1ccfd35e3d4d0`, including the Node 24 runtime
+workflow. Both local full runtime runs passed 237 tests with no skips or failures.
+The frozen tests, narrow old assertion update and scope amendment chronology
+below remain unchanged. The completed claim reserves no further work. Unknown
+or unsettled output still requires the documented retention and cleanup handling.
 
 ## Implementation claim
 
