@@ -211,6 +211,13 @@ alone keeps its stop/abort behavior but does not discard retained output; those
 callers must still release it explicitly. These rules keep temporary persistence
 faults from exhausting capacity after the owner has completed cleanup.
 
+Both workspace readers preserve valid UTF-8 source bytes in returned text,
+including an initial BOM, CRLF and literal U+FFFD. Their digests hash the original
+bytes; re-encoding returned content as UTF-8 reproduces those bytes. Byte limits
+include the BOM. Malformed UTF-8 remains rejected without replacement or text
+normalization. Tests use invented callbacks and a fake candidate host; they do
+not establish provider execution or host isolation.
+
 The workspace reader allowlists exact paths, rejects symlinks, bounds total bytes
 and checks the pinned local Git revision. It is not a sandbox for arbitrary code
 or a guarantee against an untrusted concurrent filesystem writer. Use immutable

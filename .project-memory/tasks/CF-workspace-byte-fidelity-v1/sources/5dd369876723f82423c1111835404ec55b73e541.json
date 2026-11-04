@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5dd369876723f82423c1111835404ec55b73e541",
+  "id": "CF-workspace-byte-fidelity-v1",
+  "path": "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md",
+  "blob": "c17df4865af0120bdd91be511ff5ac08d4494158",
+  "record": "---\nid: CF-workspace-byte-fidelity-v1\nstatus: in-progress\nowner: Foundry workspace byte fidelity\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Preserve UTF-8 source bytes in workspace reads\n\n## Implementation claim\n\nThe user authorized the next implementation and review batch. The integration\nlead allocated this new bounded defect separately from historical completed\nisolation work and held general recovery work. This allocation does not transfer\nthose claims. Base `f16c94d456e89b7ee0680b91d13a44fb79be5556`, branch\n`codex/workspace-byte-fidelity-v1`. The isolated checkout had no staged, unstaged\nor untracked changes. The live open-PR check found only PR 79, whose documentation\nand example paths do not overlap this lane.\n\nExact scope:\n\n- `runtime/src/adapters.mjs`\n- `runtime/src/workspace.mjs`\n- `runtime/test/workspace-byte-fidelity.test.mjs` (new)\n- `runtime/README.md`\n- `tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md`\n- New immutable Project Memory source and event files for this task.\n\nBoth public workspace readers decode valid UTF-8 with a decoder that removes an\ninitial BOM, while reporting a digest of the original bytes. A temporary committed\nBOM source reproduced inconsistent returned content and digest in both readers.\nThe text adapter consequently refused its own reader's output with\n`INVALID_INPUT_DIGEST`, without invoking its callback.\n\nPreserve the initial BOM in decoded source content so re-encoding the returned\nstring reproduces the hashed bytes. Keep fatal UTF-8 decoding, existing malformed\ninput failure types, byte bounds, pinned revision checks and path checks. Original\nbytes, including the BOM, count toward limits. Do not normalize source text.\n\nThe lead reviews this published claim before source registration and genuine\nstart. Freeze independently authored literal tests after that start and before\nproduction edits. Preserve existing tests and historical evidence. No schema,\nstore, state, runner, provider, CLI, host-isolation or recovery changes are included.\nUse invented callbacks and a fake candidate host only; no real provider, container,\nnamespace activation, credentials or deployment is authorized. This lane may\npublish its draft PR and implementation; the integration lead alone merges.\n\n## Acceptance and validation plan\n\nCheck literal source bytes and digests for BOM-only and BOM-prefixed text, plain\ntext, multibyte text, CRLF and literal U+FFFD. Prove the read-only reader feeds the\ntext callback without digest refusal and that candidate reads preserve the same\ncontent through an invented isolated callback. Cover bounds that include BOM\nbytes and preserve malformed-UTF-8 refusal. Existing path, dirty-workspace and\ncancellation tests remain unchanged.\n\nObserve the frozen tests fail on the old code before implementation. Run the\nfocused tests and full runtime suite on the available Node 24-or-later host,\nrepository validation and whitespace checks. Independently remove either decoder\nfix in disposable copies to show that its respective tests detect the regression.\nValidate committed Project Memory evidence against the actual PR base. Record\nonly checks that ran and distinguish local Node results from hosted Node 24 CI.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-workspace-byte-fidelity-v1-preserve-source-bytes.md",
+        "id": "CF-workspace-byte-fidelity-v1",
+        "blob": "c17df4865af0120bdd91be511ff5ac08d4494158",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

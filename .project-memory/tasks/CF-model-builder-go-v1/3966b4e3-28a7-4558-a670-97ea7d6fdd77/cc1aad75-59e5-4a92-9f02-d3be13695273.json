@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "cc1aad75-59e5-4a92-9f02-d3be13695273",
+  "runId": "3966b4e3-28a7-4558-a670-97ea7d6fdd77",
+  "kind": "complete",
+  "parents": [
+    "e4f1862a-8e4a-4f8e-9d0e-abeed3ab77dd"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-builder-go-v1",
+    "path": "tasks/CF-model-builder-go-v1-separated-agent-pilot.md",
+    "revision": "9ef21d78d02a55b8e5cc03688068fe31dfbdb637",
+    "blob": "9aea7f3d14358be5beaf4ecf32c33fc28f1cbea9",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "47b9c3b3f948e0ac11add3a19612b6e6721b0c9bf804416d81e3cc70ddcc319b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-builder-go-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T10:01:58.580Z",
+  "summary": "Completed reviewed Go model-to-separate-builder local experiment with passing frozen behavior and explicit mixed control compliance",
+  "next": "Verify committed Project Memory and selected-ref bundle restore; no publication or real-use approval",
+  "files": [
+    "workflows/model-driven-implementation.md",
+    "templates/model-driven/implementation-handoff.md",
+    "templates/prompts/implement-from-model.md",
+    "examples/model-builder-go/README.md",
+    "examples/model-builder-go/packet.md",
+    "examples/model-builder-go/evidence.md",
+    "examples/model-builder-go/acceptance/README.md",
+    "examples/model-builder-go/acceptance/go.mod",
+    "examples/model-builder-go/acceptance/contract.go",
+    "examples/model-builder-go/acceptance/acceptance_test.go",
+    "examples/model-builder-go/acceptance/rubric.md",
+    "tasks/CF-model-builder-go-v1-separated-agent-pilot.md"
+  ],
+  "validation": "Independent literal and packet/source review passed; Go candidate 32a443ff22bf51480903cb3bf14d01482899b4ba276433818624cfb92b58d622 passed 30 literal cases and 3 isolation tests plus race run; 234 Project Memory regressions and existing authoringhandoff race test passed; pack and whitespace passed; six controls clean and C06 unsupported-extension refusal with retained read-scope deviation; installer and optional skills-ref not run",
+  "snapshot": {
+    "workflows/model-driven-implementation.md": {
+      "blob": "4d4680890f0c60867bb0898229bec618f304045c",
+      "mode": "100644"
+    },
+    "templates/model-driven/implementation-handoff.md": {
+      "blob": "495bdb2ca69b4bebc5ff12ff52fec1390a7fb518",
+      "mode": "100644"
+    },
+    "templates/prompts/implement-from-model.md": {
+      "blob": "10e0d1ce17c1358796ebb9658da6de674845ad04",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/README.md": {
+      "blob": "11e931e0dc68d6fcaea1b54aa8fcf7cebfce12fe",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/packet.md": {
+      "blob": "4e2c51be3d5743bed12e36f1f8d9cb612932d1f2",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/evidence.md": {
+      "blob": "9c70fa6150ce3b5e3cb82a4e32622bae82e1073c",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/acceptance/README.md": {
+      "blob": "d384b2860e55d7e5e1a3b6188f38f719717c9d79",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/acceptance/go.mod": {
+      "blob": "685d2a5f438cf6d37da349b1ca4518472e109a3c",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/acceptance/contract.go": {
+      "blob": "523a7f4a9ac0782f8c1d4ee6bd857554ed67c2af",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/acceptance/acceptance_test.go": {
+      "blob": "19d73dae7ab3fe019f1da07455a2f392f9443e7c",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/acceptance/rubric.md": {
+      "blob": "b47ecc63bb282345c9ebec045c1f58cce8dbe967",
+      "mode": "100644"
+    },
+    "tasks/CF-model-builder-go-v1-separated-agent-pilot.md": {
+      "blob": "011cc14052c4abda574e79f1e342444486727056",
+      "mode": "100644"
+    }
+  }
+}
