@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "9a46d10d66489a41d742b7c152bd1ccd1b795ac6",
+  "id": "CF-orchestration-trace-cancellation-v1",
+  "path": "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md",
+  "blob": "f39825d87c1bc237c8f98b33fbfd9406116f0913",
+  "record": "---\nid: CF-orchestration-trace-cancellation-v1\nstatus: in-progress\nowner: Foundry cancellation trace contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Trace owner cancellation, retained cleanup and retired fencing\n\n## Implementation claim\n\nOwner: Foundry cancellation trace contributor. Base: main at\n6eb8049f7238d847caefe3450920ed7c599f9b9f. Branch:\ncodex/orchestration-trace-cancellation-v1. Remote main was verified at this exact\nrevision; the live open-PR inventory was empty and remote branches showed no\ncancellation trace lane. The prior completion trace is done and reserves no work.\nThis local claim does not publish ownership or override a new competing owner.\n\nWrite only runtime/model-trace-v1/check.mjs, manifest.json, README.md,\nviews/state.dot, views/sequence.md, testdata/cancellation-oracle.json,\nruntime/test/model-trace-v1.test.mjs, this task and its new immutable Project\nMemory source/events. Preserve all existing oracle bytes and runtime producers.\nPreserve recovery-conformance, builder packet, preparation and admission work.\nNo store, runner, provider, dispatcher, evaluator implementation, other-system\ntest, publication, merge or deployment is authorized.\n\n## Bounded acceptance\n\nFreeze separately authored literal observations from static source and contract\nreading before implementation or replay. Cover owner cancellation without an\nattempt, active cancellation retaining resources and pending cleanup while\nretiring the fence, matching retired-token cleanup, unauthorized cancellation,\nstale cleanup token and post-cancellation submission. Compare full execution,\nexact event and inert effects or exact refusal code/message and unchanged inputs.\nKeep remaining commands/states explicitly unmapped; replace the old CANCEL\ncoverage mutation with a genuinely unmapped command. Add behavioral controls\nthat bypass source pins and detect cancellation/cleanup/fencing discrepancies.\n\nRun focused and full runtime tests, trace checker, repository/pack/installer\nchecks, whitespace and committed Project Memory evidence validation with the\nexisting toolchain and locked dependencies. Obtain independent exact-source\nreview; contributor separation supplies no human approval or universal proof.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md",
+        "id": "CF-orchestration-trace-cancellation-v1",
+        "blob": "f39825d87c1bc237c8f98b33fbfd9406116f0913",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
