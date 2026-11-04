@@ -25,10 +25,11 @@ general recovery conformance, live provider activation and deployment are exclud
 Exact scope:
 - `runtime/src/providers.mjs`
 - New `runtime/test/provider-reply-boundary.test.mjs`
+- `runtime/test/provider-input-parity.test.mjs`, only the missing turn.started line in fakeCliJsonl described below
 - `runtime/README.md`
 - This task and its immutable Project Memory source/events.
 
-Preserve existing tests, schemas, evaluator/store/runner/adapters, CLI operator
+Preserve all other existing test bytes, schemas, evaluator/store/runner/adapters, CLI operator
 routing, provider arguments/credentials, timeout/cancellation behavior and byte
 limits. Use invented fetch and child-process fixtures; no real provider call.
 
@@ -81,3 +82,25 @@ Run affected/full runtime tests on the actual local Node version (24 or later),
 mutation controls, syntax, pack, whitespace and full committed-diff Project Memory
 validation. Record actual results and limits; require hosted Node 24 CI and lead
 review before merge. No live provider result is claimed from injected fixtures.
+
+
+## Reviewed fixture scope amendment before edit
+
+The independent boundary tests were frozen in `ddc27f0` before production edits.
+They and the existing provider control tests pass on the WIP repair. The separate
+input-parity test's fakeCliJsonl fixture emits item.completed and turn.completed
+without turn.started. That fixture conflicts with the reviewed single-turn
+contract; accepting it would also accept the new no-start negative case.
+
+The lead independently read that fixture and approved exactly one change in
+`runtime/test/provider-input-parity.test.mjs`: prepend one turn.started JSONL
+frame to fakeCliJsonl. Preserve every prompt literal, hash, argument, environment
+assertion and other fixture byte. This corrects a success fixture's protocol
+framing without weakening the parser or its independent negative expectations.
+
+Checkpoint and abandon the original run without completion because its pinned
+claim excluded old tests. Publish this amended claim, obtain lead review, register
+that exact source and make a genuine new start for all final paths before editing
+the parity fixture. Existing production WIP is an explicit handoff from the first
+run. Preserve all original start/freeze/source bytes and keep the new independent
+file's SHA-256 unchanged. Final completion belongs to the amended run.
