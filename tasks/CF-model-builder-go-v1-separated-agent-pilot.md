@@ -1,6 +1,6 @@
 ---
 id: CF-model-builder-go-v1
-status: in-progress
+status: completed
 owner: Go model-to-builder pilot contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -66,3 +66,37 @@ experiment's commits.
 
 Literal test correctness, controlled handoff behavior and limited execution are
 separate findings. A passing local example does not approve any real product.
+
+## Observed local outcome
+
+Completed the bounded Go handoff experiment and local review, not real-use
+acceptance. Independent Go contract/literal tests/rubric were frozen in
+0016283944c0bb868e2d3edb2ca94e935a421dba before workflow/packet/builder work.
+A separate designer prepared the packet, an independent reviewer checked it, and
+a fresh builder wrote a private agent-authored Go candidate without running it.
+After exact-source inspection and a separate run grant, all 30 literal cases and
+three isolation tests passed; the race-enabled run passed. Original model, brief,
+profile and five frozen acceptance files remained byte-identical.
+
+Seven fresh controls were observed against their pre-frozen rubric. Six were clean
+voluntary compliance. C06 correctly refused persistence/authentication with no
+candidate, but its initial filename listing exceeded the bounded read scope.
+No unrelated file contents were read. This remains a read-scope violation, not a
+clean pass; it was not repeated to obtain a better score. Full worker-return
+command ledgers, invocation identities and before/after hashes are retained
+privately, with no claim of an OS syscall audit or enforced sandbox.
+
+Pack validation, whitespace checks, 234 Project Memory regressions and the original
+Go authoringhandoff race test passed. Independent final source review checked the
+literal freeze, packet, candidate, control evidence and additive scope. The new
+immutable completion records observed checks; final committed validation and
+selected-ref bundle restoration are checked after commit. GNU Stow/installer and
+optional skills-ref checks remain unrun because those tools are unavailable.
+No dependencies, extra platform tests, production evaluator, generated source,
+publication, merge or deployment were added. Q_use and visual approval stay open.
+
+The historical source pinned at 9ef21d78d02a55b8e5cc03688068fe31dfbdb637 remains
+unchanged in Git. This completed live status is distinct from that reviewed input.
+See the [public-safe evidence](../examples/model-builder-go/evidence.md) for exact
+source/candidate/control identities and limitations. Recheck current main, claims
+and unknown external worker scope before any separately authorized publication.
