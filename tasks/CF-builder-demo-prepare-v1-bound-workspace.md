@@ -1,6 +1,6 @@
 ---
 id: CF-builder-demo-prepare-v1
-status: in-progress
+status: review
 owner: Foundry builder demo preparation contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -125,3 +125,66 @@ Go toolchain, obtain independent exact-source review, and rehearse preparation
 against unchanged real inputs without writing or executing a candidate. Validate
 repository rules, Project Memory chronology, native tests, vet and formatting.
 Record observed limits and keep a local full-history handoff without publication.
+
+
+## Local qualification and retained limits
+
+The source claim was committed at c6c957f046a3082416e757dacd0b7e954c4baf7e.
+A genuine start preceded all implementation work. A separate acceptance author
+verified the 15 source hashes against baseline main, retained the eight original
+packet pins and froze the inventory and both test files in
+3bab7afbe6eb70a2d53d2f740672a2b0b69ed01b before production source was created.
+Their hashes remain unchanged:
+
+- inputs.json: 6a87f4db69a9c43376b405aca0d1252a662a3a4cdc7496329f2b41fac2896032
+- prepare_test.go: c5c262e666b4e3758964351e41fb1f6f518dbdcbf9379cf19958ba43fc6f7273
+- main_test.go: 831c90ff2fc576c1234b627d8856348142dd98ed6851cf66296dcc27725922ba
+
+Independent contract and exact-source reviews found no remaining implementation
+blocker. The final handoff explicitly distinguishes historical packet authority
+from current coordinator checks and specifies a replacing command environment.
+The walkthrough was corrected to check the native Go version under offline/local
+settings, and to name the module working directory for test commands.
+
+A real-input preparation rehearsal produced three matched native reports and a
+private 26-file workspace: 15 source copies, five frozen module copies and six
+handoff/evidence files. All original source bytes remained unchanged. A separate
+negative source with one added model newline returned exit 1, reported only that
+source mismatch and created no workspace. An actual closed stdout pipe returned
+exit 3 and retained the completed workspace path in its diagnostic. An independent
+receiving-coordinator reviewer checked only named inputs and found no contradiction
+between the brief, model, interface, 30 literal cases and isolation assertions.
+This is a reviewed preparation draft, not a fresh builder dispatch or approval.
+
+Native Go 1.27.3 checks passed: 87 tested module packages under race, with two more
+compiling without tests; full-module vet; formatting; model validation and generated
+drift; and the 12 new preparation/CLI test entry points. Permission-error cases ran
+as a non-root user. The existing Unix-socket fixture was explicitly excluded because
+this host previously denied its creation; no permission workaround was attempted.
+The first full race run failed the unchanged regeneration test on temporary-directory
+Git discovery. A dedicated valid local Git boundary for scratch corrected that
+environment issue; the focused rerun and repeated full suite passed without changing
+source, tests or Go's VCS checks. The failed log is retained separately.
+
+Repository validation and walkthrough shell syntax passed. All 234 Project Memory
+regressions passed, and its graph check matched 50 cases and 598 orderings with zero
+failed cases. GNU Stow and optional skills-ref are unavailable here; installer and
+optional skills-ref checks are not qualified. No runtime dependency installation,
+runtime/Docker rerun, extra-platform qualification or hosted CI is claimed.
+
+Concurrent replacement and post-creation I/O errors still lack deterministic fault
+injection. Source review is not an executed failure probe, atomic snapshot,
+hostile-writer defense, filesystem provenance check or sandbox guarantee. The
+preparer never verifies tool identity, live claims or historical author exposure.
+Before any later dispatch, the coordinator must supply the actual builder, current
+instructions/claim and exact trusted grants, verify the toolchain and formatter,
+bind compiler/standard-library reads and check the exclusive exercise frontier.
+The proposed Go build may read matching package files beyond a prior manifest.
+Q_use, visual approval and real-use acceptance remain open.
+
+No new model-builder candidate was written, compiled or executed. Repository tests
+exercise their existing compiler/replay fixtures separately. Original pilot sources,
+tests and evidence remain byte-preserved. Main was still 882b5002 and no open PR
+was returned at the final source check. This additive branch remains local; no
+publication, merge or deployment occurred. Committed coverage and selected-ref
+full-history restoration are verified after the implementation commit.

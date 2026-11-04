@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "6d4e256f-6aaf-4bd5-9c19-a140521dcc13",
+  "runId": "bea2a150-39fd-49ae-90c6-b9556c7ac5ad",
+  "kind": "complete",
+  "parents": [
+    "9a748a4c-6e1c-49f3-824e-9a9daa191dd3"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-demo-prepare-v1",
+    "path": "tasks/CF-builder-demo-prepare-v1-bound-workspace.md",
+    "revision": "c6c957f046a3082416e757dacd0b7e954c4baf7e",
+    "blob": "9e2851e63c52142952fafdcd4b99b141935afdc0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ecf01ae6ed09bfca3aad525e6fc8a36e3884ab0799434433320ea883626d0ce8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-handoff-integration-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T13:58:18.530Z",
+  "summary": "Prepared the fixed Go builder workspace with independently frozen acceptance and reviewed bound draft; preserved all original inputs and stopped before dispatch or candidate work",
+  "next": "Verify full committed coverage and selected-ref bundle restoration; coordinate any publication separately and retain current claim/toolchain/review/authority gates before dispatch",
+  "files": [
+    "modeling/lifecycle/builderdemo/inputs.json",
+    "modeling/lifecycle/builderdemo/prepare.go",
+    "modeling/lifecycle/builderdemo/files.go",
+    "modeling/lifecycle/builderdemo/handoff.go",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/builderdemo/README.md",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md"
+  ],
+  "validation": "Native Go 1.27.3 full race passed 87 packages plus 2 no-test packages with only known-denied socket subcase excluded; initial unrelated scratch Git discovery failure was retained and corrected by a private valid Git scratch boundary; full vet, formatting, model validation/drift, 234 Project Memory tests and 50-case/598-ordering graph check passed; independent source and receiving-draft reviews found no implementation blocker; real unchanged inputs, single-source drift and actual closed stdout passed; pack and shell syntax passed; Stow/skills-ref unavailable; no new candidate, runtime/Docker, hosted CI or other-platform qualification",
+  "snapshot": {
+    "modeling/lifecycle/builderdemo/inputs.json": {
+      "blob": "fc469672c29540e97e5f875307a70000e14184cf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/prepare.go": {
+      "blob": "fc7136ac2772d5e0ff27b5db6504a71dd4c79f7c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/files.go": {
+      "blob": "ccbae5f79e6eb47314d30cc60623e6ce56ce4068",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/handoff.go": {
+      "blob": "54cb21465bcb074ec0f897ded947dee985abfb2b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/prepare_test.go": {
+      "blob": "27086a67ffcd69d7a950c8ddfcd2b134b0bf38d7",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/README.md": {
+      "blob": "1c83b4f8968f4166abf58c090c1f236bb6e38846",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go": {
+      "blob": "b902399b2394d875f66411239024adeabc2942d6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go": {
+      "blob": "e350b2bd8086b6e6876b59c643d08f24ac452a6a",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/preparation.md": {
+      "blob": "3d81e5ca48119ffc503044ff9d95ddd241bde084",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md": {
+      "blob": "c6f1115c42bb875aeca51449ad1149ed400e01b9",
+      "mode": "100644"
+    }
+  }
+}
