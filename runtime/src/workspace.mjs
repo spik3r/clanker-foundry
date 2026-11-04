@@ -267,7 +267,7 @@ export async function createCandidateWorkspace({
       for (const filePath of paths) {
         const bytes = blobs.get(filePath);
         if (!bytes) fail('WORKSPACE_INPUT_MISSING', `Pinned input is missing: ${filePath}`);
-        output.push({ path: filePath, content: new TextDecoder('utf-8', { fatal: true }).decode(bytes), digest: sha256(bytes) });
+        output.push({ path: filePath, content: new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes), digest: sha256(bytes) });
       }
       return output;
     },
