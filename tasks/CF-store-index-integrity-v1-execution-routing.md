@@ -1,11 +1,21 @@
 ---
 id: CF-store-index-integrity-v1
-status: review
+status: done
 owner: Codex store index integrity contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Reject inconsistent indexed execution records before routing
+
+## Integration result
+
+[PR62](https://github.com/spik3r/clanker-foundry/pull/62) merged as
+`4b94df3838d2a6b5ed0de4d3dff59880fd6ba4d0` after independent source review
+and all five hosted workflows passed on
+`b55344e9bc6f203c2205d9882491f9edb29aff69`, including the Node 24 runtime
+workflow. The lead also passed the 23 frozen integrity tests; the builder's full
+local suite passed 225 tests. The completed claim reserves no further work.
+The documented linear scan cost and limited integrity scope remain unchanged.
 
 ## Implementation claim
 

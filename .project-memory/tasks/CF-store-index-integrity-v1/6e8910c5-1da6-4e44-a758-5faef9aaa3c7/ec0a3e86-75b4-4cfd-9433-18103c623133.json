@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "ec0a3e86-75b4-4cfd-9433-18103c623133",
+  "runId": "6e8910c5-1da6-4e44-a758-5faef9aaa3c7",
+  "kind": "start",
+  "parents": [
+    "8a273b4c-c9d2-4792-9bea-9fc1f318590a"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-store-index-integrity-v1",
+    "path": "tasks/CF-store-index-integrity-v1-execution-routing.md",
+    "revision": "ca0e7c19e799ca0c3af61bd5cef47d0ce18b1d88",
+    "blob": "08f482083735ad711b14df027d3525dafc0c293d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a9b4511c6e24e8ba30a9c71c01ecf3c8019c14ce6c4c9757ed36259c046e3196"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-wave-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T00:04:02.176Z",
+  "summary": "Record verified execution-index repair merge and release claim",
+  "next": "Close canonical task using observed hosted Node24 checks and merge",
+  "files": [
+    "tasks/CF-store-index-integrity-v1-execution-routing.md"
+  ]
+}

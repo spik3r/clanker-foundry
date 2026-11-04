@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "7a7b6762-e4f0-40f1-9b11-b2251499d85b",
+  "runId": "9bd382f9-4ba1-4d96-be94-099399c2e249",
+  "kind": "start",
+  "parents": [
+    "a842fd77-8dd7-4bb9-985e-4cb280d50ead"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-operator-entrypoint-v1",
+    "path": "tasks/CF-operator-entrypoint-v1-request-preparation.md",
+    "revision": "6a7dba0fa3b2db520c9c4046b9be026901182cb2",
+    "blob": "093216d50d34d51b30f78b25b3b0d7c278a9ec68",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "217c85138add6e185785078f6a78d11156edfae352af2f51235398e0f05f8667"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-wave-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T00:07:53.399Z",
+  "summary": "Record reviewed operator entrypoint integration",
+  "next": "Verify checks and record final integration result",
+  "files": [
+    "tasks/CF-operator-entrypoint-v1-request-preparation.md"
+  ]
+}
