@@ -211,17 +211,19 @@ test('fake adapter returns a deterministic result tied to read input bytes and r
   assert.equal(first.artifacts[0].digest, second.artifacts[0].digest);
   assert.equal(first.subject_digest, second.subject_digest);
   assert.notEqual(first.artifacts[0].digest, createHash('sha256').update('fake').digest('hex'));
+  assert.equal(await adapter.getArtifact(first.artifacts[0].digest), 'fake\ninput.txt:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
   assert.deepEqual(await adapter.revokeCapabilities({ attempt_id: attempt.attempt_id, fencing_token: attempt.fencing_token, attempt }), {
     stopped: true,
     reason: 'Fake attempt stopped',
   });
   assert.equal(adapter.activeAttempts.has(attempt.attempt_id), false);
+  assert.equal(await adapter.getArtifact(first.artifacts[0].digest), 'fake\ninput.txt:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
   assert.equal((await adapter.revokeCapabilities({
     attempt_id: secondAttempt.attempt_id,
     fencing_token: secondAttempt.fencing_token,
     attempt: secondAttempt,
   })).stopped, true);
-  assert.equal(await adapter.getArtifact(first.artifacts[0].digest), 'fake\ninput.txt:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
+  assert.equal(await adapter.getArtifact(first.artifacts[0].digest), null);
 });
 
 test('fake adapter confirms revocation only for the exact attempt it owns', async () => {
