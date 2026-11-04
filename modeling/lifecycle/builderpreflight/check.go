@@ -130,7 +130,7 @@ func Check(raw []byte, rootPath, manifestSHA256 string) ([]byte, error) {
 	if !filepath.IsAbs(rootPath) {
 		return nil, ErrInvalid
 	}
-	root, err := openRoot(filepath.Clean(rootPath))
+	root, err := openRoot(rootPath)
 	if err != nil {
 		return nil, ErrInvalid
 	}

@@ -1,6 +1,6 @@
 ---
 id: CF-builder-preflight-v1
-status: in-progress
+status: review
 owner: Foundry builder preflight contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -110,3 +110,43 @@ this issue. A separate author will freeze root traversal regressions against
 the intended contract, verify failure on the unfixed implementation, and retain
 that chronology. The root must preserve the host's supplied path resolution;
 trailing separators may be trimmed only for checking a final symlink leaf.
+
+## Local completion observations
+
+The initial two independently authored test files were frozen in
+b83e68040a8477f9950a29c96d78d12955de8229 before production source was written.
+Their SHA-256 values are 64368110b7f94378ea7e519f28d63a06f767f6c241ee82d51a942994249abdc1
+(check_test.go) and e66891574802731ee6789aaa811f77017d89cb002c8bf23279b8f4ca44cbd2b3
+(main_test.go). They remain unchanged. The separate root regression file was
+frozen with SHA-256 db832b915d331f45bef67a891f4f8f629018e6e3f662166501f8412f9c6cf04d;
+its four observed failures are retained in the red baseline before correction.
+The corrected source preserves host root traversal and passes those regressions.
+The original reviewer repeated the same probes and found no remaining source
+blocker. That is a bounded source review, not a real-use approval.
+
+Native installed Go 1.27.3 offline checks passed: the selected race suite covering
+all remaining tests in the two new packages and strictjson, a separate FIFO-only
+race run, focused vet, and CLI build. There are 24 new test entry points. The
+Unix-socket subcase is not qualified: the host denied fixture creation. It was
+retained as a recorded skip in the initial run and omitted from corrected runs;
+no permission workaround was attempted. Static size limits, access-time read
+observations, permission errors and the real closed-output process were exercised.
+Concurrent growth, identity replacement, partial artifact-read failure and a
+complete system-call audit remain untested beyond source review.
+
+The built corrected CLI matched byte-identical copies of the existing fictional
+brief and model (exit 0), then reported a newline-only model edit as a mismatch
+(exit 1) while retaining the same manifest pin and unchanged brief match. No
+candidate was compiled or executed. All 143 Project Memory lifecycle/workflow
+regressions, repository validation, formatting and whitespace checks passed.
+Installer regression stopped at its missing GNU Stow prerequisite. Optional
+skills-ref is unavailable. No other-platform or complete native-module suite
+qualification is claimed.
+
+A fresh public source check found main at
+4a52cf19a026e8f442d13031135a3e9e10bee8fa, including the merged Go pilot (79) and
+workspace byte-fidelity repair (81). The sole open PR was 80, the custom assertion
+inventory. Their full changed-path lists are disjoint from this task. This local
+branch remains based on f16c94d456e89b7ee0680b91d13a44fb79be5556; no merged-main
+union run or publication is claimed. Integration still needs a fresh ownership
+and current-base check. Completion evidence covers this local proposal only.

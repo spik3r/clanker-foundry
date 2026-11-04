@@ -10,6 +10,13 @@ import (
 )
 
 func openRoot(path string) (*os.Root, error) {
+	// Preserve host traversal through ancestor aliases and "..". filepath.Clean
+	// could select a different directory or erase a missing/non-directory parent.
+	// Trim only trailing separators, so Lstat still sees a final symlink leaf.
+	minimum := len(filepath.VolumeName(path)) + 1
+	for len(path) > minimum && os.IsPathSeparator(path[len(path)-1]) {
+		path = path[:len(path)-1]
+	}
 	before, err := os.Lstat(path)
 	if err != nil || !before.IsDir() || before.Mode()&os.ModeSymlink != 0 {
 		return nil, ErrInvalid

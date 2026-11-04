@@ -129,7 +129,10 @@ changed; do not refresh the expected digest just to turn the result green.
 ## Filesystem and observation limits
 
 The root must be absolute and its final component a real directory. Its ancestor
-aliases are allowed. Static symlinks in artifact components, including links to
+aliases are allowed. The supplied root keeps the host's path traversal semantics,
+including ancestor aliases followed by `..`; it is not lexically cleaned. Missing
+or non-directory components are not erased. Trailing separators are trimmed
+only to check for a symlink at the root leaf. Static symlinks in artifact components, including links to
 other files inside the root, are refused. Go's rooted filesystem API bounds named
 reads beneath the opened root; this is not a sandbox or an authority mechanism.
 Directory listings, globbing and fallback searches are not performed.
@@ -142,7 +145,11 @@ no explicit writes are made. A report can become stale immediately after a check
 Recheck exact inputs at the authorized builder boundary and separately inspect
 any later candidate before deciding whether to execute it.
 
-The independent tests were frozen before implementation. Run native checks with
+The initial independent tests were frozen before implementation. Independent
+review later exposed a root-normalization bug not covered by those cases. A
+separate frozen regression file reproduced the wrong-root matches and invalid
+root acceptances before the correction; the original tests stayed unchanged.
+Run native checks with
 `go test -race -count=1 ./builderpreflight ./cmd/modelbuilderpreflight` and
 `go vet ./builderpreflight ./cmd/modelbuilderpreflight`. The tests exercise static
 filesystem boundaries and a real closed output pipe. Access-time probes skip
