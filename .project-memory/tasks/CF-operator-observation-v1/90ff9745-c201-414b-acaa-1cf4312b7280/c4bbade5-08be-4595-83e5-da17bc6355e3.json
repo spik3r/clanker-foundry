@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "c4bbade5-08be-4595-83e5-da17bc6355e3",
+  "runId": "90ff9745-c201-414b-acaa-1cf4312b7280",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-operator-observation-v1",
+    "path": "tasks/CF-operator-observation-v1-public-path.md",
+    "revision": "a287d2bc4c6a8f876515b2c9d3a47687b1c65140",
+    "blob": "61a469a9dce71a4b4a309144def792708caf34ec",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c9f02f13be45ff7e6ed06d80ba2a3d216b826d7632d387124af8f4b8939f9fe1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-observation-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T22:53:38.616Z",
+  "summary": "Observe the unchanged public modeling path before any guide repairs",
+  "next": "Dispatch independently reviewed neutral fresh operator brief; preserve baseline observations",
+  "files": [
+    "docs/model-driven-current-workflow.md",
+    "README.md",
+    "tasks/CF-operator-observation-v1-public-path.md"
+  ]
+}
