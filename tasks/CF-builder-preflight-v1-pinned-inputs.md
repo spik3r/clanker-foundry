@@ -150,3 +150,42 @@ inventory. Their full changed-path lists are disjoint from this task. This local
 branch remains based on f16c94d456e89b7ee0680b91d13a44fb79be5556; no merged-main
 union run or publication is claimed. Integration still needs a fresh ownership
 and current-base check. Completion evidence covers this local proposal only.
+
+## Current-main integration qualification
+
+A subsequent local integration preserved every reviewed commit and used normal
+merges rather than rebasing or rewriting history. Verified main
+4a52cf19a026e8f442d13031135a3e9e10bee8fa first merged at
+a7dc2c852c6fc278b60fc5a65c0ea4a1151e21eb. The native race run passed 81 tested
+packages there. Main then advanced with the disjoint assertion inventory (80),
+so the final tested base is 5bd2c310ecc97015b07b5233bac78e5d1ef5381f, merged at
+ed305d5c25c9cab7336c4d74917210fc2a5b1f00. Later main movement is for publication
+review; this qualification does not promise an always-current branch.
+
+Independent integration inspection found the reviewed preflight commit and both
+main bases in the ancestry, no source or claim overlap, unchanged reviewed code
+and frozen tests, and all 42 imported paths identical to their main blobs/modes.
+The only changes relative to the final main base are this task's eight maintained
+paths and immutable evidence. A byte-only exercise using all eight original
+Go-packet source pins matched exact copies, detected only the deliberately changed
+model after a newline edit, and refused a stale manifest pin without a report.
+It did not compile or execute the private Go pilot candidate.
+
+On the final integrated code, Go 1.27.3 offline
+`go test -race -count=1 -p 2 -skip '^TestSpecialFilesDoNotBlock/socket$' ./...`
+passed all 83 tested native module packages, with two further packages compiling
+without tests. The one known host-denied Unix-socket fixture remains explicitly
+excluded; FIFO and the other preflight cases ran. This run includes the existing
+compiler/replay fixtures; it is distinct from execution of a private builder
+candidate. Full native-module vet, formatting, model validation, generated-drift
+checks and repository validation passed. All 234 Project Memory lifecycle,
+workflow and conformance tests passed; the separate graph check matched all 50
+cases and 598 orderings, with no failed cases and matching declared coverage.
+
+The installer remains unqualified here because GNU Stow is absent; optional
+skills-ref is absent. Runtime/schema and Docker isolation stages were not rerun;
+their imported source is unchanged from main, and runtime dependencies were not
+installed for this Go-only change. No extra-platform validation is claimed.
+These limits remain for hosted CI or the authorized publication host. There is no
+remaining reproduced preflight code or integration blocker. This is a locally
+qualified draft-publication candidate, not merge approval or permission to publish.
