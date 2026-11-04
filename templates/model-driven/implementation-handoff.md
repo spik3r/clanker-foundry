@@ -21,6 +21,26 @@ Verify the current claim and trusted authorization independently of this packet.
 If an experiment is allowed before real-use decisions, state the narrow experimental
 scope and which gates still block real use. Do not turn that exception into approval.
 
+## Read and discovery boundary
+
+Carry the initial boundary in the trusted receiving prompt, before its first
+filesystem action. Do not rely on this packet being read before routine discovery.
+
+- First readable files: exact absolute packet and governing instruction paths:
+- Subsequent semantic inputs: exact paths from the inventory below:
+- Process guidance and historical/live claim files or pinned Git blobs:
+- Permitted metadata operations, each with its exact repository/workspace root:
+- Directory enumeration or search: none unless an exact subtree and purpose are granted:
+- Missing-input or instruction-scope conflict: responsible owner and required resolution:
+
+A named repository, current directory or writable workspace is not blanket read
+permission. Filename listings, directory enumeration, glob expansion and recursive
+instruction discovery count as reads. Do not search shared ancestors or siblings
+or follow an unlisted source link to replace an absent input. A permitted metadata
+command may reveal filenames without permitting their contents to be read.
+Higher-priority instructions still apply; surface a conflict instead of widening
+scope or ignoring them. Record actual exposure, not an assumed isolation guarantee.
+
 ## Pinned input inventory
 
 | Role | Accessible location and source revision | Exact bytes SHA-256 | Semantic/profile identity if applicable | Actual status |
@@ -90,6 +110,7 @@ choice. Do not regenerate expectations from output or repair a stale binding.
 - Exact candidate revision/files and hashes when useful:
 - Requirement/model/interface links for each implemented slice:
 - Commands run, exits, full comparison reports and relevant environment:
+- Input files actually read, discovery/metadata operations and unavailable inputs:
 - Checks failed, blocked or not run; scope of actual validation:
 - Remaining unsupported behavior, assumptions and decisions with owners:
 - Next action and required authority:

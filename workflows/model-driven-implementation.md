@@ -15,6 +15,10 @@ a packet, branch, hash or local history entry does not acquire ownership.
 
 The coordinator and responsible decision owner name the outcome, target checkout,
 base revision, receiving builder and exact writable paths. Preserve existing work.
+Name the read boundary separately: semantic inputs, governing instruction files,
+historical/live claim sources and permitted metadata operations. Supply exact
+paths or explicitly bounded search subtrees. A repository or writable workspace
+name alone does not grant access to all its descendants.
 State which route is requested:
 
 - **Agent-written code:** the builder implements the pinned design and concrete
@@ -75,7 +79,7 @@ Make it sufficient for a fresh builder without private conversation history:
 4. Give a short ordered build plan and exact validation commands. Identify commands
    that compile tools, generate files or execute candidate code; do not hide a run
    behind a preparation label.
-5. Include target/source identities, write boundaries, frozen oracle provenance,
+5. Include target/source identities, read and write boundaries, frozen oracle provenance,
    known limitations and a precise return contract. Access through a URL is not
    proof the receiver can read it; verify access before transferring private files.
 
@@ -88,7 +92,25 @@ Keep review status distinct from the user's authority to conduct the named work.
 
 Use [the builder prompt](../templates/prompts/implement-from-model.md), the complete
 packet, original inputs and trusted instructions carrying the already granted
-scope. Name the writable workspace. The receiving agent verifies target revision,
+scope. Carry the initial read boundary in that receiving prompt, before the first
+filesystem action; putting it only inside an unread packet is too late. Name the
+packet and instruction files the worker may read first. The inherited working
+directory can be shared and is not a discovery root.
+
+Filename listings, directory enumeration, glob expansion and instruction-file
+discovery are reads too. Use only supplied paths and expressly granted metadata
+operations, anchored to their named repository or workspace. Do not search shared
+ancestors or sibling workspaces for instructions or substitute inputs. A permitted
+repository-scoped status command may expose filenames without granting permission
+to read those files' contents. If a subtree search is needed, state its exact root
+and purpose in the trusted scope rather than broadening access during discovery.
+
+If a required source is missing or inaccessible, stop affected work and request
+its exact location or revised scope. Applicable higher-priority instructions still
+govern; surface a scope conflict instead of ignoring them or silently widening
+the boundary. These instructions do not enforce an OS sandbox.
+
+Name the writable workspace. The receiving agent verifies target revision,
 existing changes, live claim and exact source/interface/case/harness identities
 before affected work. Read historical source bytes from the pinned Git blob, and
 check the current live claim separately. A later task-status change does not
@@ -120,7 +142,8 @@ independent review. Rerun affected checks after code changes. Never relabel an
 unrun, blocked or failed check as a pass.
 
 The builder returns changed files, requirement/model/interface links, actual
-commands and results, unrun checks, unsupported behavior, unresolved decisions
+commands and results, actual input exposure and discovery operations, unavailable
+inputs, unrun checks, unsupported behavior, unresolved decisions
 and the next owner/action. Independent review checks the final implementation and
 evidence. Local success does not authorize integration, publication or deployment.
 
