@@ -1,7 +1,7 @@
 ---
 id: CF-builder-demo-prepare-v1
-status: review
-owner: Foundry builder demo preparation contributor
+status: in-progress
+owner: Codex builder preparation boundary correction
 repositories: [spik3r/clanker-foundry]
 ---
 
@@ -22,6 +22,7 @@ Exact maintained scope:
 - modeling/lifecycle/builderdemo/files.go
 - modeling/lifecycle/builderdemo/handoff.go
 - modeling/lifecycle/builderdemo/prepare_test.go
+- modeling/lifecycle/builderdemo/directory_boundary_test.go
 - modeling/lifecycle/builderdemo/README.md
 - modeling/lifecycle/cmd/modelbuilderdemo/main.go
 - modeling/lifecycle/cmd/modelbuilderdemo/main_test.go
@@ -33,6 +34,16 @@ No changes to prior models, packet, acceptance, evidence, workflow, compiler,
 runtime, preflight, existing CLI routes or CI. No extra-platform work, dependency
 installation, candidate implementation/execution, publication, merge or deployment.
 
+The PR #84 correction is owned by the Codex builder preparation boundary
+contributor. Reproduce differently cased directory aliases on the native Mac,
+preserve the reproduction as an additional regression, and replace lexical
+containment with directory identity checks without changing the contract above.
+Keep the original frozen inventory and both original acceptance files unchanged.
+Production edits are limited to prepare.go and files.go, with the additional
+regression, README clarification, this task and immutable lifecycle records.
+Publication of the correction is separately coordinated; this claim grants no
+publication or execution authority.
+
 ## Ownership check
 
 GitHub main, open pull requests and builder/handoff branches were checked on
@@ -41,6 +52,12 @@ claims were inspected. The coordinator reported no verified active owner for
 this additive preparation lane and accepted this boundary before edits. Historical
 status labels and branch presence do not prove active ownership. This local claim
 does not acquire an external lock; recheck before publication.
+
+At correction start, PR #84 still has head
+cd2ca0d7995b3a81a425dd550b9b9197a8e97876 and main remains the baseline above.
+It is the only open PR, the worktree is clean, and the coordinator assigned this
+reported boundary defect to the correction owner. The prior run is complete
+with no conflicting Project Memory frontier.
 
 ## Prospective contract
 
