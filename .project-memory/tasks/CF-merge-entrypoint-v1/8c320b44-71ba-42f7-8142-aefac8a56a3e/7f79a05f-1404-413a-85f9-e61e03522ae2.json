@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "7f79a05f-1404-413a-85f9-e61e03522ae2",
+  "runId": "8c320b44-71ba-42f7-8142-aefac8a56a3e",
+  "kind": "complete",
+  "parents": [
+    "8e444bdc-56ce-4e6b-b1ab-542db5e2f7d2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-merge-entrypoint-v1",
+    "path": "tasks/CF-merge-entrypoint-v1-file-preserving-rehearsal.md",
+    "revision": "ad216d4bf76e1c0eebb14b87b51d58402fe2e71f",
+    "blob": "9713e1ca3246ffcd80d49ceb2b7de59d6186d749",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "73be8a41ceaec74748050ced8c5e9ea0137cd22a442b9dc08b0e03da795fa03c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "cf-merge-entrypoint-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T08:02:29.298Z",
+  "summary": "Added explicit file-preserving merge prepare/check/execute routes with unchanged native semantics and independent frozen acceptance; exact-source review passed",
+  "next": "Retain reviewed local result; publication and integration require separate authorization",
+  "files": [
+    "tasks/CF-merge-entrypoint-v1-file-preserving-rehearsal.md",
+    "modeling/lifecycle/internal/operatorcli/merge.go",
+    "modeling/lifecycle/internal/operatorcli/merge_prepare.go",
+    "modeling/lifecycle/internal/operatorcli/merge_contract_test.go",
+    "modeling/lifecycle/internal/operatorcli/merge_dispatch_test.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "modeling/lifecycle/internal/operatorcli/change_dispatch_test.go",
+    "modeling/lifecycle/cmd/foundry/main.go",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go",
+    "docs/model-driven-merge-entrypoint.md"
+  ],
+  "validation": "Go 1.27.3 offline focused race and full race passed 77 tested packages, 2 no-test packages; vet, modelc validate/check, gofmt, whitespace, guide prepare/check/execute, repository validator and agent-model resolver passed. Original clean-copy VCS failure resolved through initialized scratch parent with no source/test or stamping changes. GNU Stow installer and optional skills-ref unavailable. Independent review found no defects; socket probe denied at creation and stopped.",
+  "snapshot": {
+    "tasks/CF-merge-entrypoint-v1-file-preserving-rehearsal.md": {
+      "blob": "86c532b2479914dd95bdfd5525402eb377039201",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/merge.go": {
+      "blob": "43882ba6e11c8402588fc96f5225d6cad5f5f07a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/merge_prepare.go": {
+      "blob": "c2de19803bb2800310fba25c6b855772a9d1ca47",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/merge_contract_test.go": {
+      "blob": "62aa5e5bf75fe8cc76549d9fdf47339d152af946",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/merge_dispatch_test.go": {
+      "blob": "819168b835771c244b418dc775b7cf7cecb413bc",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/dispatch.go": {
+      "blob": "6d1aaf8e1fb12e7b23fc9e6073e0bfaf7e43b97a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/change_dispatch_test.go": {
+      "blob": "01e6326bcf2a0ccc2fe15e8b723ec06e2c7b7333",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundry/main.go": {
+      "blob": "587c3b9f9f9a614b2b9e83c0b09d927d43dff2fa",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go": {
+      "blob": "e7fe044a2711179533f9a3ff957de8e59a3c3f90",
+      "mode": "100644"
+    },
+    "docs/model-driven-merge-entrypoint.md": {
+      "blob": "44b219beee5ebbca888987b5ac09cc4a18705acd",
+      "mode": "100644"
+    }
+  }
+}
