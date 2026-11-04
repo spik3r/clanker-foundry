@@ -1,6 +1,6 @@
 ---
 id: CF-revision-scenario-review-v2
-status: in-progress
+status: review
 owner: Foundry revision scenario review contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -69,3 +69,41 @@ pack, installer, gofmt, whitespace and committed Project Memory validation.
 Review the exact source independently and hand the PR to the coordinator for
 hosted checks and integration. Record actual limitations; comparison is not
 correctness, authenticated review, execution evidence or authorization.
+
+## Review handoff
+
+The explicit v2 composition retains all four v1 native report texts/hashes and
+adds the original scenario comparison report or an explicit native refusal.
+The foundry-only adapter selects the declared request version. Existing Check,
+check.go, RunRevision/native.go, standalone CLI, help and old expected data remain
+byte-identical. No model/suite binding or expected literal is refreshed.
+
+A separate contributor authored twelve static vectors and froze them in cb87aeb
+before production. The harness compiled and passed native fixture controls using
+existing APIs before CheckV2 existed; its future assertions take a callback, which
+the new builder test supplies only after the freeze. The data SHA-256 remains
+274b0329ecbd039905d4042d38b5ce0e245e8cf8eed8798a4ace870026703387.
+This is separate-assistant authorship, not human independence or executed-test
+provenance inferred from a hash.
+
+Go 1.27.3 offline full race passed on exact source 1cd8f7f: 72 tested packages
+passed and two command packages compiled without local test files. Focused
+revision/operator/legacy CLI tests passed, including original v1 source pins and
+native output parity, concurrent read-only calls, version/strict-input controls,
+actual compiled v2 output/closed stdout and legacy v2 refusal. Native limit and
+unexpected-error classification were tested privately rather than claiming a
+corpus input reached an unavailable native-limit path.
+
+Vet, modelc drift, gofmt, pack validation, installer regressions and whitespace
+checks passed. Optional skills-ref is absent. An actual foundry revisions check
+of the frozen expected-task change reported modelChanged false, suiteChanged
+true, expected.task as the changed field and execution not-run. It performed no
+scenario replay, candidate build or visual review.
+
+The coordinator and separate reviewer approved exact source 1cd8f7f. Both also
+passed the focused three-package race checks independently. All frozen data and
+source pins remain unchanged. Comparison flags are declarations for review,
+not approval, correctness or execution evidence.
+
+Next: genuine immutable completion and committed evidence validation, then the
+coordinator checks hosted CI and integrates PR65.
