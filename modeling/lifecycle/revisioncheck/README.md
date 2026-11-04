@@ -108,3 +108,45 @@ go test -race -count=1 ./revisioncheck ./cmd/modelrevisioncheck
 
 The tool changes no native source policy, carrier format, runtime task, worker
 claim, deployment or production setting.
+
+## Explicit v2: inspect literal scenario changes
+
+`CheckV2` accepts the same snapshot fields under
+`lifecycle-revision-check-request/v2` and returns
+`lifecycle-revision-check-report/v2`. It retains all four original native report
+texts and hashes, then compares the actual proposal model/suite pairs through
+[`scenariodiff`](../scenariodiff/README.md). A changed expected task, refusal list,
+command, case order or step order can now be inspected beside the other revision
+observations. The native comparison identifies changed fields and IDs, not the
+complete literal payloads: keep the original suites for review.
+
+The added `scenarioDiff` object contains `status`, `reason`, `reportSHA256` and
+`reportJSON`. For `checked`, reason is null and the complete native encoded report
+and its byte hash are present. For `not-checked`, report and hash are null and
+reason is `native-input-refused` or `native-limit-refused`. These are native
+refusals, not a diagnosis distinguishing stale bindings from malformed suites.
+A refused comparison is never an unchanged comparison or a passing review.
+
+A stale manifest alone does not prevent comparison when both actual model/suite
+pairs pass native validation. A suite bound to another model is not repaired;
+its native comparison refusal is retained alongside the four original reports.
+Malformed original requests that fail v1 acceptance still reject the composition.
+Unexpected native failures and combined wrapper/output bounds also reject it.
+The existing 32 MiB request and 64 MiB report limits apply; the native comparison
+keeps its own narrower limits. Its limit-refusal classification is tested directly
+because current accepted side bounds do not produce that branch in the corpus.
+
+Original model/suite texts are inserted into the native comparison request only
+after native first-design checks accepted their strict JSON framing. No token
+compaction or expectation refresh occurs. Native scenario source hashes cover
+JSON tokens, excluding surrounding whitespace. The proposal preflight's suite
+source hash still identifies the complete original suite text, including final
+line endings. Report hashes identify encoded bytes, not authenticated provenance.
+
+Use `foundry revisions` with an explicitly versioned v2 request; no new flag or
+input-format guessing is used. A v1 request still produces the original v1 result.
+The standalone `modelrevisioncheck` and `Check` remain strict v1 interfaces and
+reject v2. No existing v1 source, output, help or expected fixture is changed.
+The v2 top-level authority, execution and review statuses remain unchanged.
+Complete model-edit review remains the separate [`modeldiff`](../impact/README.md)
+contract; the fifth report does not add a full model diff or infer behavior.

@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "43218b9e-96cd-4d09-ba13-ca2b473f443b",
+  "runId": "21d98f42-d1c4-4ecc-8d78-f5c89964f47f",
+  "kind": "complete",
+  "parents": [
+    "fe71d3ee-8c2c-41cc-8cda-274311678055"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-scenario-review-v2",
+    "path": "tasks/CF-revision-scenario-review-v2-literal-expectations.md",
+    "revision": "9636643ce589e626d5661aca43b7087b002abb1a",
+    "blob": "fe6e097285ba1bc96dde78136456241118557e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cbcc8855d4f58ad52665edc795bce007ca07e05598d9811b57958995b8205697"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-scenario-review-v2",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/65",
+  "at": "2026-11-04T01:22:24.525Z",
+  "summary": "Added explicit scenario comparison in revision v2 while retaining native v1 reports and source bytes; coordinator and independent review approved 1cd8f7f",
+  "next": "Coordinator checks hosted CI and integrates PR65",
+  "files": [
+    "modeling/lifecycle/revisioncheck/v2.go",
+    "modeling/lifecycle/revisioncheck/v2_test.go",
+    "modeling/lifecycle/revisioncheck/v2_contract_test.go",
+    "modeling/lifecycle/revisioncheck/testdata/v2-observations.json",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-revision-scenario-review-v2-literal-expectations.md"
+  ],
+  "validation": "Go 1.27.3 offline full race passed 72 tested packages plus 2 compiled command packages; focused revision/operator/legacy CLI race passed independently; frozen 12-vector native/report parity passed; concurrent, strict-version, private refusal-classifier and actual compiled closed-stdout controls passed; actual CLI fixture showed expected.task change with unchanged model and no execution; vet/modelc drift/gofmt/pack/installer/whitespace passed; optional skills-ref absent",
+  "snapshot": {
+    "modeling/lifecycle/revisioncheck/v2.go": {
+      "blob": "8a815164d0fc1c86be88cb4a0164d6e39af354bf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/v2_test.go": {
+      "blob": "32914da8f08ab0122268771cc46be25163a49cbb",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/v2_contract_test.go": {
+      "blob": "d15613b858df2bab1497b17522629697626d0e61",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/testdata/v2-observations.json": {
+      "blob": "ca479394753e125112534e94bbb3b91a0d8eca39",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/README.md": {
+      "blob": "8a77b42a1ac676431ae49b8d791f7dd6fad49947",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go": {
+      "blob": "a301be218b3f3a5458a6840ce4c8204355ec92ea",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go": {
+      "blob": "db41011f25cd06e559a85e924910c043c117d1c0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/dispatch.go": {
+      "blob": "0fee06877fa6fd633c9b34c9eb62f0d514e53161",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "73c619f396cb62e437cb7676be5af82bf214fba9",
+      "mode": "100644"
+    },
+    "tasks/CF-revision-scenario-review-v2-literal-expectations.md": {
+      "blob": "9ada719d35de2ef6456efb5fab671166a5252313",
+      "mode": "100644"
+    }
+  }
+}

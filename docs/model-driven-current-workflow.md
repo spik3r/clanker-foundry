@@ -181,3 +181,23 @@ Retain original inputs, full reports, actual command results and any visual
 review notes for the responsible reviewer. Decide the next engineering or
 integration step from those results and the unresolved requirements. Remove
 private scratch outputs when your retention policy permits.
+
+## Review changed scenario literals between two revisions
+
+For two prepared revisions, the [revision-check contract](../modeling/lifecycle/revisioncheck/README.md)
+accepts before/after first-design request texts, trace requirements and catalogs.
+Send `lifecycle-revision-check-request/v2` to `foundry revisions` to retain its four
+native review reports and add the existing native scenario-suite comparison.
+The request fields are the same as v1; only the explicit format version changes.
+The standalone `modelrevisioncheck` remains strict v1.
+
+Inspect `scenarioDiff.status` before reading its report. `checked` includes full
+native `reportJSON` text and `reportSHA256`; the native report identifies changed
+expected fields, inputs and ordering. Retain the original suites to inspect the
+actual literals. A stale manifest can coexist with a checked suite comparison.
+`not-checked` has null report/hash and a native input/limit refusal reason; it
+must not be treated as unchanged expectations. Stale suite bindings are never
+repaired by this route. Questions, preflight statuses and other source comparisons
+remain visible independently, with no overall approval or readiness decision.
+Use the separate model-diff contract for complete model edits, and keep any later
+execution or integration decision separate from these declared comparisons.
