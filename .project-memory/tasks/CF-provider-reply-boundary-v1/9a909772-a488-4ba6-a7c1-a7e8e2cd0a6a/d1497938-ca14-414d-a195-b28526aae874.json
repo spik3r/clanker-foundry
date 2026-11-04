@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "d1497938-ca14-414d-a195-b28526aae874",
+  "runId": "9a909772-a488-4ba6-a7c1-a7e8e2cd0a6a",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-provider-reply-boundary-v1",
+    "path": "tasks/CF-provider-reply-boundary-v1-turn-and-text.md",
+    "revision": "ab125a22a720d9825f6c3ecc05a1de2ed5203cfc",
+    "blob": "a79be860d6f68e1a00d5b3fdee41ea346f956c1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "3dfb125b1ab417ac388487c58741230a66b2bc3516254dd4ce6129059feb8cca"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-reply-boundary-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/69",
+  "at": "2026-11-04T03:05:24.657Z",
+  "summary": "Validate bounded one-turn CLI completion and provider UTF8/assistant text without changing existing transport controls",
+  "next": "Freeze independently authored boundary tests and observe baseline before production edits",
+  "files": [
+    "runtime/src/providers.mjs",
+    "runtime/test/provider-reply-boundary.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-provider-reply-boundary-v1-turn-and-text.md"
+  ]
+}
