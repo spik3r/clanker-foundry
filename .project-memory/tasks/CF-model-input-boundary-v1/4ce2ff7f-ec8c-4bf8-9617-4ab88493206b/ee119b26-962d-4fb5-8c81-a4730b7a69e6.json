@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "ee119b26-962d-4fb5-8c81-a4730b7a69e6",
+  "runId": "4ce2ff7f-ec8c-4bf8-9617-4ab88493206b",
+  "kind": "complete",
+  "parents": [
+    "98e20bf0-834b-43bc-87ac-bf61a965c6f5"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-input-boundary-v1",
+    "path": "tasks/CF-model-input-boundary-v1-first-read-scope.md",
+    "revision": "73e092f64aa6f8dfe76f05e957c8346778a758be",
+    "blob": "18f46f55ae46881cd3e6ab828312a62d0a146923",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5ab0e999878f0f253664896879dd8bcfdb68a219f76efbfe08329f85df6fc551"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-input-boundary-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T10:30:05.754Z",
+  "summary": "Made the first-read boundary explicit and recorded two independently reviewed fresh observations without replacing original C06",
+  "next": "Validate committed coverage and restore a local bundle; seek separate authority and check live claims before publication",
+  "files": [
+    "workflows/model-driven-implementation.md",
+    "templates/model-driven/implementation-handoff.md",
+    "templates/prompts/implement-from-model.md",
+    "examples/model-builder-go/input-boundary-rubric.md",
+    "examples/model-builder-go/input-boundary-retest.md",
+    "tasks/CF-model-input-boundary-v1-first-read-scope.md"
+  ],
+  "validation": "Independent R1 frozen before guide edits; C06R and exact missing-input observations satisfy R1 at worker-reported evidence level; original Go/C06/frozen bytes preserved; pack validation and whitespace passed; 143 lifecycle/workflow plus 91 conformance regressions passed; independent final-source review approved local completion; optional skills-ref unavailable; no Go behavior or other-platform rerun",
+  "snapshot": {
+    "workflows/model-driven-implementation.md": {
+      "blob": "08f2b9feda7efb17f1837f9ae3fbf1b221047c07",
+      "mode": "100644"
+    },
+    "templates/model-driven/implementation-handoff.md": {
+      "blob": "2d6c4238850f701c098367c58f1a16a0d7c87fcb",
+      "mode": "100644"
+    },
+    "templates/prompts/implement-from-model.md": {
+      "blob": "4ecbdfe0adc455faee0a3f6edc6f4b2215db126f",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/input-boundary-rubric.md": {
+      "blob": "961d8882509856da636f148ad336d0465abf72bd",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/input-boundary-retest.md": {
+      "blob": "2d6df70638a1e9fec05c51470cdaa9085945857d",
+      "mode": "100644"
+    },
+    "tasks/CF-model-input-boundary-v1-first-read-scope.md": {
+      "blob": "21e1e030ae29076f6309fc38db37235c0f8331a3",
+      "mode": "100644"
+    }
+  }
+}

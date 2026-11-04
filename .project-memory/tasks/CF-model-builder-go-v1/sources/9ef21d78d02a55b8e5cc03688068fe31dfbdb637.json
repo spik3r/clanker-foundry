@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "9ef21d78d02a55b8e5cc03688068fe31dfbdb637",
+  "id": "CF-model-builder-go-v1",
+  "path": "tasks/CF-model-builder-go-v1-separated-agent-pilot.md",
+  "blob": "9aea7f3d14358be5beaf4ecf32c33fc28f1cbea9",
+  "record": "---\nid: CF-model-builder-go-v1\nstatus: in-progress\nowner: Go model-to-builder pilot contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Carry a model blueprint to a separate Go builder\n\n## Implementation claim\n\nThe Go model-to-builder pilot contributor owns only additive generic handoff\nworkflow, template and prompt documents; an independently frozen Go test-only\ninterface, literal acceptance and rubric; a FirstDesignDraft worked packet; and\npublic-safe observed pilot evidence with this task's immutable Project Memory\nrecords. The bounded local experiment writes an agent-authored pure Go candidate\nin private disposable scratch, reviewed before authorized test execution.\n\nExact maintained scope:\n- workflows/model-driven-implementation.md\n- templates/model-driven/implementation-handoff.md\n- templates/prompts/implement-from-model.md\n- examples/model-builder-go/README.md\n- examples/model-builder-go/packet.md\n- examples/model-builder-go/evidence.md\n- examples/model-builder-go/acceptance/README.md\n- examples/model-builder-go/acceptance/go.mod\n- examples/model-builder-go/acceptance/contract.go\n- examples/model-builder-go/acceptance/acceptance_test.go\n- examples/model-builder-go/acceptance/rubric.md\n- tasks/CF-model-builder-go-v1-separated-agent-pilot.md\n- new immutable source/event files under this task ID\n\nNo existing model, generated implementation, compiler, runtime, adapter, CLI,\nagent role or skill policy changes. No production evaluator, generator substitute,\npublication, merge, deployment, dependency installation or extra-platform testing.\nThe existing FirstDesignDraft brief and model remain byte-preserved. The optional\nview remains uninspected; Q_use, visual approval and real-use acceptance stay open.\n\n## Source and ownership check\n\nGitHub main and open PRs were read on 2026-11-04 before this claim. Main is\nf16c94d456e89b7ee0680b91d13a44fb79be5556; no open PR was returned. The current tasks\ndirectory and relevant claims were checked. Historical in-progress task labels\nare not a declaration that their workers are active or idle. External worker\nscope is unknown; this is a disjoint additive local prototype, with a fresh check\nrequired before any later publication. It does not supersede another claim.\n\nThe earlier JavaScript experiment is separate exploration and does not satisfy\nthis Go pilot. This branch starts directly from the main commit above, not that\nexperiment's commits.\n\n## Ordered evidence plan\n\n1. Commit this claim, register its pinned source and record a genuine start.\n2. A fresh author uses only the existing brief, public Go profile and stable IDs\n   to freeze literal Go expectations and the seven-control rubric before builder\n   implementation. An independent reviewer checks meaning without a candidate.\n3. Prepare generic handoff documents and have a separate designer assemble an\n   exact-source packet. Review that packet before a fresh Go builder sees it.\n4. Review the bounded candidate, then run the frozen Go tests with local authority.\n   Exercise seven controls in fresh contexts and preserve actual outcomes.\n5. Validate the pack, relevant Project Memory regressions and committed evidence;\n   obtain independent exact-source review, record completion and make a local\n   selected-ref full-history bundle. No publication is authorized.\n\nLiteral test correctness, controlled handoff behavior and limited execution are\nseparate findings. A passing local example does not approve any real product.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-model-builder-go-v1-separated-agent-pilot.md",
+        "id": "CF-model-builder-go-v1",
+        "blob": "9aea7f3d14358be5beaf4ecf32c33fc28f1cbea9",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
