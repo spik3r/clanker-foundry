@@ -150,3 +150,49 @@ reject v2. No existing v1 source, output, help or expected fixture is changed.
 The v2 top-level authority, execution and review statuses remain unchanged.
 Complete model-edit review remains the separate [`modeldiff`](../impact/README.md)
 contract; the fifth report does not add a full model diff or infer behavior.
+
+## Explicit v3: retain the full model diff
+
+`CheckV3` and `foundry revisions` accept the same snapshot fields under
+`lifecycle-revision-check-request/v3`. The report version is
+`lifecycle-revision-check-report/v3`. It retains every v2 observation, including
+all five native report slots and hashes, then adds `modelDiffReportJSON` and
+`modelDiffReportSHA256`. These identify the complete encoded native
+[model diff](../impact/README.md), including its final newline. Decode that JSON
+text to inspect changed model fields and direct links in both revision graphs.
+
+The comparison uses the original proposal model texts after the v2 checks accept
+the input. It supplies an empty native bindings array: no scenario assertions are
+inferred from suites or trace catalogs. Model changes remain visible even when a
+stale suite makes `scenarioDiff.status` say `not-checked`. Stale manifests, missing
+observations, unresolved questions and other v2 results keep their own meanings.
+The comparison neither repairs those inputs nor replaces their refusal statuses.
+
+Model-diff source hashes identify embedded JSON values, excluding surrounding
+whitespace. Internal model spacing stays intact. The original full model text
+hashes remain in the retained proposal reports. Canonical-equal models can have
+different source hashes; even a label or requirement-text edit changes canonical
+identity. Native `changed` and `reviewRequired` flags do not distinguish behavioral
+from editorial changes, prove unaffected behavior or establish human approval.
+Keep the original model sources to inspect the complete values behind field names.
+
+The existing 32 MiB request and 64 MiB report limits apply, along with native
+model-diff bounds. A model-diff input refusal, output limit or unexpected failure
+rejects the entire v3 composition without a partial report; those failures use the
+existing invalid, limit and boundary categories. Unlike the optional scenario
+comparison's retained refusal, no successful v3 envelope omits the model diff.
+Report delivery can still fail after bytes have been written; inspect CLI exit
+status before using a redirected file.
+
+Version selection is explicit, not inferred from input content. `Check` and the
+standalone `modelrevisioncheck` stay strict v1; `CheckV2` stays strict v2. Existing
+v1/v2 request behavior and native report bytes remain unchanged. The new version
+performs no I/O, candidate compilation, scenario execution or approval. Its
+execution and review statuses remain `not-run` and `not-established`.
+
+The separately frozen v3 cases cover unchanged and formatting-only inputs, full
+state/requirement/guard edits and declared links in both graphs, stale evidence,
+strict refusals and preservation of every v2 report. Tests check native bytes and
+hashes alongside hand-stated changes, deterministic concurrent calls, no mutation,
+and actual compiled-command delivery and refusal behavior. These finite controls
+are not proof of independent-person authorship, provenance or arbitrary behavior.

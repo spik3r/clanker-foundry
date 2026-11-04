@@ -1,6 +1,6 @@
 ---
 id: CF-revision-model-review-v3
-status: in-progress
+status: review
 owner: Foundry revision model review contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -74,3 +74,36 @@ vet, model validation/drift, formatting, repository validator, installer regress
 whitespace and committed Project Memory checks. Report actual skipped or blocked
 checks. Obtain independent exact-source review. This report composition neither
 executes a candidate nor authenticates requirements, review or evidence provenance.
+
+## Local implementation and validation
+
+Independent assertions were frozen in `2044b8d` before production edits: eighteen
+vectors cover ten accepted inputs and eight malformed/refused inputs. The native
+check-only controls passed before implementation. The frozen corpus SHA-256 is
+`e0c892b4c65a295eba8ffb68257399317f2352a770b7b531fdb9391446df9098`;
+the contract harness SHA-256 is
+`8d5e996ad81f6f427f7f4259d2c395fc10796fced758ae896cda37f1b08b19b5`.
+Both files remain unchanged. Expected model edits and direct-link causes were
+stated before native observations, not copied from a new v3 report.
+
+V3 now preserves every v2 observation and retains the native model-diff bytes and
+hash. State, requirement and guard edits stay visible while their stale suites
+remain `not-checked`; model spacing and surrounding whitespace retain their
+separate source/canonical identities. The version adapter adds only explicit v3
+selection. The old unknown-version test marker changed from v3 to v99; its v1/v2
+behavior assertions and all old frozen files remain unchanged.
+
+Go 1.27.3 offline full race tests passed: 75 tested packages and two no-test
+command builds. Full vet, model validation, unchanged generated-artifact check,
+gofmt and repository validation passed. Focused tests also passed all frozen
+cases and actual compiled-command complete output, closed stdout exit 3 and
+legacy-v1 refusal. A separate exact-source reviewer found no blocking issue and
+independently passed focused race tests, vet, formatting and whitespace checks.
+No implementation source changed after that review or during aggregate checks.
+
+Installer regression reached its GNU Stow prerequisite and stopped because Stow
+is unavailable; it did not pass. Optional skills-ref was unavailable and skipped.
+No tool installation, additional platform testing, protected visual review,
+remote publication, formal PR approval, merge or deployment was performed.
+Committed Project Memory validation follows the completion commit. Publication,
+exact-remote-head checks and any integration decision remain with the coordinator.

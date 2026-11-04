@@ -55,7 +55,7 @@ func TestFoundryRevisionsSelectsExplicitV2AndKeepsLegacyV1(t *testing.T) {
 	if code := operatorcli.RunRevision(nil, bytes.NewReader(v2), &legacy, &diagnostic); code != 2 || legacy.Len() != 0 || diagnostic.String() != "modelrevisioncheck: request rejected\n" {
 		t.Fatal("legacy unexpectedly adopted v2", code, diagnostic.String())
 	}
-	q.FormatVersion = "lifecycle-revision-check-request/v3"
+	q.FormatVersion = "lifecycle-revision-check-request/v99"
 	unknown, _ := json.Marshal(q)
 	code, out, diag = run([]string{"revisions"}, bytes.NewReader(unknown))
 	if code != 2 || len(out) != 0 || diag != "modelrevisioncheck: request rejected\n" {

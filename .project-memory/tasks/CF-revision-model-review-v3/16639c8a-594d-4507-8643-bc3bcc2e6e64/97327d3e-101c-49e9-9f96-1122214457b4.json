@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "97327d3e-101c-49e9-9f96-1122214457b4",
+  "runId": "16639c8a-594d-4507-8643-bc3bcc2e6e64",
+  "kind": "complete",
+  "parents": [
+    "0a31d34e-a5d1-4198-b999-d6cf9a8c23d9"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-model-review-v3",
+    "path": "tasks/CF-revision-model-review-v3-native-model-diff.md",
+    "revision": "286ad97ee8165ab82702eec81fa6d05864014103",
+    "blob": "98ccb155b91df1f3279b9247e5b974c52b317058",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f59ffb83406ac23dd8053ae8342b5b301e2feb26450abb4c83e37e010dd9a926"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-model-review-v3",
+  "pullRequest": null,
+  "at": "2026-11-04T04:06:07.112Z",
+  "summary": "Added explicit v3 full native model diff beside preserved v2 revision evidence; independent exact-source review found no blocker",
+  "next": "Coordinator reviews local branch and bundle, authorizes publication and verifies exact remote head before integration",
+  "files": [
+    "modeling/lifecycle/revisioncheck/v3.go",
+    "modeling/lifecycle/revisioncheck/v3_test.go",
+    "modeling/lifecycle/revisioncheck/v3_contract_test.go",
+    "modeling/lifecycle/revisioncheck/testdata/v3-observations.json",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go",
+    "modeling/lifecycle/internal/operatorcli/revision_v3_test.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-revision-model-review-v3-native-model-diff.md"
+  ],
+  "validation": "Offline Go1.27.3 full race: 75 tested packages and two no-test builds passed; focused frozen/native/compiled CLI race checks passed; full vet, model validate/check, gofmt, repository validator and whitespace passed. Independent reviewer focused race/vet/format checks passed. Installer regression stopped at missing GNU Stow; optional skills-ref unavailable. No other-platform testing.",
+  "snapshot": {
+    "modeling/lifecycle/revisioncheck/v3.go": {
+      "blob": "6c17b012fd4ef60fec95029144f998e2520877a0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/v3_test.go": {
+      "blob": "15c73e657d60e09fbde8e6f9cfa2910f7292bef0",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/v3_contract_test.go": {
+      "blob": "7a327e5379d21f24ff55e3be24510e90074a28f9",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/testdata/v3-observations.json": {
+      "blob": "50d02ed3c3592e0d206ba3fb2c77eaadef419c57",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisioncheck/README.md": {
+      "blob": "357e2bd5cf3f44afe0df0cf48f1508edaf978bd1",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go": {
+      "blob": "4fff94b0a0c13021d98848d866bfe08211f2ab0c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go": {
+      "blob": "42826f3a8819393b1149d037f548006effefae8a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/internal/operatorcli/revision_v3_test.go": {
+      "blob": "d02147df5fc9928cdde88979d3ee6fe204a140e1",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "84448c473a5d52986942ff78b15b785b19062c09",
+      "mode": "100644"
+    },
+    "tasks/CF-revision-model-review-v3-native-model-diff.md": {
+      "blob": "d2c05d77ec1ce5f59d8cde109aefe43629bfe52b",
+      "mode": "100644"
+    }
+  }
+}
