@@ -102,7 +102,8 @@ export const excludedEnvironment = {
 };
 
 export const fakeResponsesBody = String.raw`{"status":"completed","output":[{"type":"message","role":"assistant","content":[{"type":"output_text","text":"invented-capture-ok"}]}]}`;
-export const fakeCliJsonl = String.raw`{"type":"item.completed","item":{"type":"agent_message","text":"invented-capture-ok"}}
+export const fakeCliJsonl = String.raw`{"type":"turn.started"}
+{"type":"item.completed","item":{"type":"agent_message","text":"invented-capture-ok"}}
 {"type":"turn.completed"}
 `;
 
