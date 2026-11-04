@@ -1,6 +1,6 @@
 ---
 id: CF-custom-assertion-inventory-v1
-status: in-progress
+status: review
 owner: Foundry custom assertion inventory contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -116,3 +116,48 @@ critical mapping/binding mutants in a separate disposable clone. Obtain both
 coordinator and independent exact-source review, publish final evidence, and
 hand off hosted checks and merge. No observed result establishes universal
 coverage, an execution origin or human approval.
+
+
+## Implementation result
+
+Product commit c77b38d adds only the new boundinventory package, standalone
+modelboundinventory command and their tests/README. Reviewed source
+eeb939018ffaf130bb7d6a8ad933fcb26b8e061f includes ordinary main merges through
+4a52cf19a026e8f442d13031135a3e9e10bee8fa. Those merges add no changes to the
+covered product bytes. Existing inventory/native APIs, qualified source pins,
+old tests/fixtures and foundry routes remain unchanged.
+
+Independent fixture commit fedd6553fe9ee66e1da06d3160583f6dbad7125e precedes
+production. Its contract and observations hashes remain 02d9e6bfd1727600575771921599216d57b217b64eb01a03de192a25d4a64c05
+and b8696125353e92d915f6f7dee7b0d1674f03b513ad660f174dca4b306ff8e563.
+The preproduction native-only race control compiled without future Check and
+passed before production. Its observations are fabricated consistency fixtures,
+not execution evidence. Coordinator and separate exact-source reviews are clean;
+both independently ran the new package and actual CLI race checks.
+
+Go1.27.3 full race passed on the unchanged reviewed source: 81 tested packages
+and two packages without tests. The checkout remained frozen throughout that
+run. Focused race, vet, modelc generated-artifact check, gofmt, pack, installer and
+whitespace checks passed. Optional skills-ref was unavailable and was explicitly
+skipped by the validator. Full committed Project Memory validation follows the
+completion commit; final hosted checks and merge belong to the coordinator.
+
+Four separate disposable-clone mutations compiled and failed frozen behavioral
+controls: dropping source/scenario binding, skipping expected literal comparison,
+including a mismatched entry in buckets, and omitting the unused transition.
+Failures identified incorrect output or accepted tampering, not setup or panic.
+Actual compiled CLI output matched all independent fields for the full supplied
+five-case/seven-entry report and both mismatch prefixes. All three exited zero
+because each produced a complete inventory; supplied matched/count facts do not
+establish that those fabricated reports came from execution. Closed stdout
+returned exit 3. Output includes the unused transition and empty guard buckets.
+
+Native decoding and model-binding errors remain ErrInvalid. Only successfully
+native-decoded source/scenario identity disagreements, including null source
+identity, become ErrBinding. Entire-report explanation precedes matched-only
+mapping, so undeclared actual links are rejected even at a mismatch, while a
+native-valid undeclared expected ID remains an excluded expectation.
+
+The next step is final hosted checks and coordinator merge. Empty reference
+buckets are not coverage conclusions, and hashes prove neither provenance nor
+approval. This contributor has not merged or assigned another product task.
