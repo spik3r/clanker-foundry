@@ -1,6 +1,6 @@
 ---
 id: CF-workspace-byte-fidelity-v1
-status: in-progress
+status: review
 owner: Foundry workspace byte fidelity
 repositories: [spik3r/clanker-foundry]
 ---
@@ -60,3 +60,29 @@ repository validation and whitespace checks. Independently remove either decoder
 fix in disposable copies to show that its respective tests detect the regression.
 Validate committed Project Memory evidence against the actual PR base. Record
 only checks that ran and distinguish local Node results from hosted Node 24 CI.
+
+## Observed result
+
+Both readers now retain the BOM while decoding valid UTF-8. Production changes
+are limited to the two decoder options and the runtime README explanation.
+The frozen test file remains unchanged at SHA-256
+`ac01688046674409fdd6360e17d5d1f6f41803f3f842f9b4302d643d5c3efd82`.
+The independent author committed it after the genuine start and before production
+edits. On the old code, 21 tests reported 13 passes and eight failures. The author
+corrected an oversized-blob harness case before freezing: two individually fitting
+blobs now test the candidate's combined bound without hitting Git's per-command
+buffer limit. No frozen expectations changed after implementation began.
+
+Actual Node v26.0.0 passed all 21 frozen tests and all 280 runtime tests, with no
+failures, skips or cancellations. In a disposable clone, removing only the
+read-only decoder fix caused five assertion failures; removing only the candidate
+decoder fix caused three. Both mutants passed syntax checks. Restoring both fixes
+passed all 21 tests. Repository validation, installer regressions and whitespace
+checks passed; optional skills-ref is unavailable. These tests used invented
+callbacks and a fake candidate host, with no real provider or container invocation.
+
+An ordinary merge incorporated main `01b18785e738d9cc656ea1fb622f8c9aad1b220a`
+without conflicts or changes to this lane's runtime bytes. Local Node results do
+not establish hosted Node 24 results. Independent review and exact-head hosted
+checks remain required before the integration lead merges. This implementation
+claim reserves no further changes beyond review corrections for this bounded task.
