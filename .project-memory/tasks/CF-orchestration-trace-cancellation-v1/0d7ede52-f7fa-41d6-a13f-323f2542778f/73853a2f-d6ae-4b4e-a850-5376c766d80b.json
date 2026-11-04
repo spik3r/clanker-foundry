@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "73853a2f-d6ae-4b4e-a850-5376c766d80b",
+  "runId": "0d7ede52-f7fa-41d6-a13f-323f2542778f",
+  "kind": "complete",
+  "parents": [
+    "f313fc14-c7fa-4461-85f8-576f65f9718f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-trace-cancellation-v1",
+    "path": "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md",
+    "revision": "9a46d10d66489a41d742b7c152bd1ccd1b795ac6",
+    "blob": "f39825d87c1bc237c8f98b33fbfd9406116f0913",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6d55e911449f9a76000c2f7f65a09db4937795f4d9631cdcfb251063bc29995b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-trace-cancellation-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T21:22:06.283Z",
+  "summary": "Added eight independently frozen cancellation observations, partial mappings and six mutation controls; exact implementation d892bd7 independently reviewed without findings",
+  "next": "Commit and validate full diff; local handoff to coordinating owner, no publication merge or deployment",
+  "files": [
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/cancellation-oracle.json",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md"
+  ],
+  "validation": "Node26.0.0; focused trace12/12 and checker passed; full runtime298/298 with disposable writable offline npm cache after initial297/298 host-cache write failure; Project Memory143/143; pack validator and installer/resolver passed; old oracle and producer bytes unchanged; whitespace passed; optional skills-ref unavailable",
+  "snapshot": {
+    "runtime/model-trace-v1/check.mjs": {
+      "blob": "6d1e4a73c45fc012ba162f6e7887d4063dfd1d9d",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/manifest.json": {
+      "blob": "d1d2299d7d83a6882a5a02c923c2bc6826f7c871",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/README.md": {
+      "blob": "d63c2ff65c45c69acab295b17028b724cf378c8b",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/views/state.dot": {
+      "blob": "232d0217ccab61e2c6bb1593d01b9828207c6262",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/views/sequence.md": {
+      "blob": "4d2043730be27254059cf77bb2962e9583c90f5d",
+      "mode": "100644"
+    },
+    "runtime/model-trace-v1/testdata/cancellation-oracle.json": {
+      "blob": "31ee1f9da5a43e45e8691be31eb7a931c7e33200",
+      "mode": "100644"
+    },
+    "runtime/test/model-trace-v1.test.mjs": {
+      "blob": "4a36deb9b8fd8450fb234f76d0fdf07a93f2bf0f",
+      "mode": "100644"
+    },
+    "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md": {
+      "blob": "4329aafa39286edd9c16ddf4266718d288825c5a",
+      "mode": "100644"
+    }
+  }
+}
