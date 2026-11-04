@@ -24,10 +24,11 @@ Exact write scope:
 - `runtime/src/adapters.mjs`
 - `runtime/src/runner.mjs`
 - New `runtime/test/artifact-retention.test.mjs`
+- `runtime/test/adapters.test.mjs`, only the deterministic FakeAdapter result/revocation case described below
 - `runtime/README.md`
 - This task and its immutable Project Memory source/events.
 
-Preserve existing tests, store/evaluator, schemas, CLI, CI, provider transports,
+Preserve all other existing test cases, store/evaluator, schemas, CLI, CI, provider transports,
 workspace host implementation and other recovery claims. Use invented callbacks
 and private temporary databases; no real provider, worker activation or deployment.
 
@@ -73,3 +74,26 @@ mutation controls, syntax, pack, whitespace and committed-diff Project Memory
 validation. Report the actual version and any environment limits; hosted Node 24
 checks remain a separate merge gate. No claim of universal host cleanup, automatic
 retry or arbitrary callback cancellation follows from this repair.
+
+
+## Reviewed scope amendment before the old test edit
+
+The first run froze nine independent tests in `acbe76f` before production edits.
+Those tests pass on the uncommitted repair. An existing FakeAdapter case in
+`runtime/test/adapters.test.mjs` revokes two settled attempts sharing one digest
+and then explicitly expects the artifact to remain. That single assertion
+contradicts the approved settled-discard contract and the new independent tests.
+
+The lead and independent reviewer read the original case and approved this exact
+update: retain its exact content assertion before the first revoke and between
+the two revokes, then expect null after the final matching cleanup. Do not change
+any other old assertion or case. This records the intentional behavior change,
+not a product workaround or removal of positive output checks.
+
+The first run was checkpointed and abandoned without completion because its
+pinned claim excluded old tests. Commit and publish this amended canonical source
+before editing that test; preserve all prior source/start/freeze bytes. After
+lead review, register this exact new source and record a genuine new start for
+the full final file scope before the old test edit. Existing uncommitted repair
+work is a handoff from that original run, not a newly invented implementation
+chronology. The new run must complete against all final staged content.
