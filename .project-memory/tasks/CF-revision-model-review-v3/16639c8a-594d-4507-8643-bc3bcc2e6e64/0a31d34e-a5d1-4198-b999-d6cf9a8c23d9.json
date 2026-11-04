@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "0a31d34e-a5d1-4198-b999-d6cf9a8c23d9",
+  "runId": "16639c8a-594d-4507-8643-bc3bcc2e6e64",
+  "kind": "start",
+  "parents": [
+    "edf76adf-abc6-4863-9b4b-ca8f24c15ec8"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-model-review-v3",
+    "path": "tasks/CF-revision-model-review-v3-native-model-diff.md",
+    "revision": "286ad97ee8165ab82702eec81fa6d05864014103",
+    "blob": "98ccb155b91df1f3279b9247e5b974c52b317058",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f59ffb83406ac23dd8053ae8342b5b301e2feb26450abb4c83e37e010dd9a926"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-model-review-v3",
+  "pullRequest": null,
+  "at": "2026-11-04T03:55:16.504Z",
+  "summary": "Add explicit v3 native model diff and advance existing unknown-version test marker only",
+  "next": "Freeze independent assertions, implement, validate and review",
+  "files": [
+    "modeling/lifecycle/revisioncheck/v3.go",
+    "modeling/lifecycle/revisioncheck/v3_test.go",
+    "modeling/lifecycle/revisioncheck/v3_contract_test.go",
+    "modeling/lifecycle/revisioncheck/testdata/v3-observations.json",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go",
+    "modeling/lifecycle/internal/operatorcli/revision_v3_test.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-revision-model-review-v3-native-model-diff.md"
+  ]
+}

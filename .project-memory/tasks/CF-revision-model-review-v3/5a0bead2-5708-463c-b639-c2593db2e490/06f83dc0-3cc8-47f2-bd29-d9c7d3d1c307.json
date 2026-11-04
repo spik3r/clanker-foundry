@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "06f83dc0-3cc8-47f2-bd29-d9c7d3d1c307",
+  "runId": "5a0bead2-5708-463c-b639-c2593db2e490",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-model-review-v3",
+    "path": "tasks/CF-revision-model-review-v3-native-model-diff.md",
+    "revision": "4f4704cfc8eafe1d452d5948a29745b38164bc75",
+    "blob": "fd53d11580529b410855b9f4dca43c2354510d38",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "899696dd676f6f8449df6f4323ca733ba2cc10860ad0996fff46e7847d91d86e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-model-review-v3",
+  "pullRequest": null,
+  "at": "2026-11-04T03:54:09.622Z",
+  "summary": "Add explicit v3 native model change evidence beside existing revision reports",
+  "next": "Freeze independent assertions before implementation, then validate and review",
+  "files": [
+    "modeling/lifecycle/revisioncheck/v3.go",
+    "modeling/lifecycle/revisioncheck/v3_test.go",
+    "modeling/lifecycle/revisioncheck/v3_contract_test.go",
+    "modeling/lifecycle/revisioncheck/testdata/v3-observations.json",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go",
+    "modeling/lifecycle/internal/operatorcli/revision_v3_test.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-revision-model-review-v3-native-model-diff.md"
+  ]
+}
