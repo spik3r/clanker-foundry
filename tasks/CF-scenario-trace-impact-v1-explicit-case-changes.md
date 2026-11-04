@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-trace-impact-v1
-status: in-progress
+status: completed
 owner: Scenario trace impact contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -232,3 +232,36 @@ model validation/drift, repository and installer checks, and committed lifecycle
 validation on the combined branch. Review the exact integration diff and confirm
 reviewed implementation blobs remain unchanged. Record the tested base, merge,
 final head and limitations; do not chase subsequent main movement.
+
+## Observed integration result
+
+One conflict-free normal local merge produced
+`6e70e00e8cc4423560cb7ab4447527e3412446b0`, with parents
+`4f00e402efed091e8da6604c079b49fc9f6d1d65` and pinned main
+`5bd2c310ecc97015b07b5233bac78e5d1ef5381f`. The tested merge tree is
+`14946e311f93f30da47daabd30e587a9ad247094`. No reviewed commit was rewritten,
+and no later main snapshot was fetched or merged.
+
+All eight reviewed package/command blobs still match
+`46350a2c0a9a7dd8c4eb769537a289c220a5f5f2`. Native dependency trees and fixture
+bytes are unchanged. The diff from pinned main contains only this task's package,
+command, task record and immutable lifecycle records.
+
+On the combined branch, Go 1.27.3 offline race tests passed for
+`scenariotraceimpact`, `cmd/modelscenariotraceimpact`, `scenariotrace`,
+`scenariodiff`, `traceimpact`, `boundinventory`, and `cmd/modelboundinventory`.
+Focused vet on all seven packages, model validation/drift, repository validation,
+installer regression tests and whitespace checks also passed. Optional
+`skills-ref` remained unavailable.
+
+Independent integration review found no blockers at the exact merge/tree above.
+It verified parent and reviewed-commit ancestry, unchanged reviewed blobs and
+native dependencies, bounded diff scope, and the new pinned source and genuine
+start before merging. Unrelated incoming work was inspected only through path
+and blob metadata. The final closeout changes only this task record and its new
+completion event; it makes no production or test edits.
+
+The original limitations remain: no direct injection of malformed native outputs,
+no aggregate full-module run, no hosted CI and no additional platform testing.
+No branch or PR was published. This is qualification against the one pinned base,
+not a claim about any later main state.
