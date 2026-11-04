@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "d7118138-7be4-44de-a7d6-a30f8d4f94b2",
+  "runId": "11d29315-3eb8-42e3-9901-f6a85169f8ae",
+  "kind": "start",
+  "parents": [
+    "966e4cc2-5d65-4561-952e-4b38347f3fff"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-status-v1",
+    "path": "tasks/CF-runtime-status-v1-current-history.md",
+    "revision": "2fce89e092feb7f49893fe227565aa413a07665a",
+    "blob": "82cc80bf94f22a9caa0a96309ab5b8780a61c75b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d156637bfa314e4f9a1a33e9413448c6ebcfb8c9a3783335d2e7120adc2d024e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-status-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/91",
+  "at": "2026-11-04T23:08:41.641Z",
+  "summary": "New correction run after prior completion: preserve reviewed docs and restore two AGENTS facts to pinned base after hosted builder baseline failure",
+  "next": "Restore only two own AGENTS phrases, verify exact base bytes and all frozen input pins, run focused Go and docs checks before new completion",
+  "files": [
+    "docs/deterministic-orchestration-plan.md",
+    "docs/deterministic-orchestration-rollout.md",
+    "AGENTS.md",
+    "tasks/CF-runtime-status-v1-current-history.md"
+  ]
+}

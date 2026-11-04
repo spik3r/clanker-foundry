@@ -9,7 +9,7 @@ Edit this file; never edit the pointers.
 A personal library of agent assets: skills in the open Agent Skills `SKILL.md` format,
 plus the templates, workflows, and checklists those skills draw on, plus a global
 `AGENTS.md` base and the wiring to share it across tools. An optional single-host
-orchestration runtime lives in `runtime/`; it is not required to use the
+read-only orchestration pilot lives in `runtime/`; it is not required to use the
 skills. Check links, paths, scripts and relevant runtime behavior before delivery.
 
 ## Layout
@@ -35,7 +35,7 @@ skills. Check links, paths, scripts and relevant runtime behavior before deliver
   walked item by item, with evidence, not skimmed.
 - `docs/` — framework and external-skill guidance.
 - `runtime/` — opt-in typed execution, transactional coordination and supervised
-  workers; see its README for authority and host limits.
+  read-only workers; see its README for authority and host limits.
 - `tasks/` — public-safe Foundry producer proposals and bounded claims. Do not copy
   confidential task sources from other repositories into this public pack.
 - `scripts/stow.sh` — GNU Stow installation script for skills, agents, workflows,
