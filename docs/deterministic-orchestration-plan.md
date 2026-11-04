@@ -19,8 +19,8 @@ holds their detailed contracts.
 | --- | --- |
 | Typed lifecycle and durable coordination | [Evaluator](../runtime/src/state.mjs), [store](../runtime/src/store.mjs) and [runner](../runtime/src/runner.mjs): guarded transitions, reservations, artifacts, receipts, replay and outbox dispatch. The CLI demo still uses fake workers. |
 | Provider transports | [Responses and Codex CLI adapters](../runtime/src/providers.mjs) supplement the injected text callback. The CLI is supervised transport, not an OS sandbox; provider text remains an external input. |
-| Isolated writable candidates | [Workspace](../runtime/src/workspace.mjs) and [host adapter](../runtime/src/isolation.mjs) apply bounded file plans behind managed authority, evidence and per-attempt host checks. Promotion is a separate owner action, not staging or publication. |
-| Evidence and namespace authority | The [evidence bridge](../runtime/src/project-memory.mjs) binds genuine source/start records and checks completion coverage. [Authority verification](../runtime/src/authority.mjs) and the store require explicit pinned namespace decisions and reviewed admissions. Neither imports existing claims automatically. |
+| Isolated writable candidates | [Workspace](../runtime/src/workspace.mjs) and [host adapter](../runtime/src/isolation.mjs) apply bounded file plans. Managed dispatch requires namespace authority, evidence and per-attempt host checks. Promotion is a separate owner action, not staging or publication. |
+| Evidence and namespace authority | The [evidence bridge](../runtime/src/project-memory.mjs) binds genuine source/start records and checks completion coverage. [Authority verification](../runtime/src/authority.mjs) and the store require explicit pinned decisions and reviewed admissions for managed namespaces. Neither imports existing claims automatically. |
 
 These sources supersede the early absence-of-capability statements; their presence
 does not establish every phase 5/6 exit gate below or consumer adoption. The
