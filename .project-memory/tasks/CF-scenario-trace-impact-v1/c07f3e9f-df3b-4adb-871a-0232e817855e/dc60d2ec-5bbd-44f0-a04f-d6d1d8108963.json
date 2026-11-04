@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "dc60d2ec-5bbd-44f0-a04f-d6d1d8108963",
+  "runId": "c07f3e9f-df3b-4adb-871a-0232e817855e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-trace-impact-v1",
+    "path": "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md",
+    "revision": "5c7ed4d3baa2f6931f11bc6b5219706178475b92",
+    "blob": "4008a9b39fc12fdef3f8d0b2345ae45e560a4114",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d017dbd84f7175304751879584482fca93c715843d733b76b019d92f320c362d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-trace-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:18:14.401Z",
+  "summary": "Compare explicit scenario links across validated revisions with retained native reports and no execution capability",
+  "next": "Freeze independent acceptance before production; implement and validate locally",
+  "files": [
+    "modeling/lifecycle/scenariotraceimpact/compare.go",
+    "modeling/lifecycle/scenariotraceimpact/project.go",
+    "modeling/lifecycle/scenariotraceimpact/types.go",
+    "modeling/lifecycle/scenariotraceimpact/compare_test.go",
+    "modeling/lifecycle/scenariotraceimpact/contract_test.go",
+    "modeling/lifecycle/scenariotraceimpact/README.md",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main.go",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main_test.go",
+    "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md"
+  ]
+}
