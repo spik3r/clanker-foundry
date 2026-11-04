@@ -1,0 +1,95 @@
+{
+  "formatVersion": "model-builder-inputs/v1",
+  "artifacts": [
+    {
+      "id": "source-1",
+      "role": "requirements",
+      "path": "skills/model-driven-design/examples/brief.md",
+      "sha256": "ab3d47aaacdcdc8d57c2cb8a9ab432c3f5c22c42b7df11b707b8af03f32eb5de"
+    },
+    {
+      "id": "source-2",
+      "role": "model",
+      "path": "skills/model-driven-design/examples/model.json",
+      "sha256": "3e7b8c44c10940a7524161dd306d022019e8fc41e793a66a11771d6dd8621239"
+    },
+    {
+      "id": "source-3",
+      "role": "interface",
+      "path": "modeling/lifecycle/README.md",
+      "sha256": "26cc7d1ea82f6f09090d15b0572560bd891081505631483a2adb3ce402a754b0"
+    },
+    {
+      "id": "source-4",
+      "role": "instructions",
+      "path": "examples/model-builder-go/acceptance/README.md",
+      "sha256": "b4ec648c38dadd63dc9799f40d6183d3e464c9dc33b83302c6f6c171a8149103"
+    },
+    {
+      "id": "source-5",
+      "role": "harness",
+      "path": "examples/model-builder-go/acceptance/go.mod",
+      "sha256": "e31637eba9a06a2105c2a12b904457b50ad0c60defbbc7cafabeae8f68d4bc3c"
+    },
+    {
+      "id": "source-6",
+      "role": "interface",
+      "path": "examples/model-builder-go/acceptance/contract.go",
+      "sha256": "82b6dcd7a05d496a31c7431dce9b61bb572dd5f53b312418dc8ff72fb7a35b0a"
+    },
+    {
+      "id": "source-7",
+      "role": "acceptance",
+      "path": "examples/model-builder-go/acceptance/acceptance_test.go",
+      "sha256": "eaf6078d5703f3e3664f41d0a19d68a7a66bafcfac310bfe5c91e72a7fe02518"
+    },
+    {
+      "id": "source-8",
+      "role": "rubric",
+      "path": "examples/model-builder-go/acceptance/rubric.md",
+      "sha256": "ec13d76787d6ce4976487d373c8f2d3587286bdb1f1b1716419b397b46569ce5"
+    },
+    {
+      "id": "guidance-1",
+      "role": "packet",
+      "path": "examples/model-builder-go/packet.md",
+      "sha256": "56ff2a75570000320520805fe734f8e9121c580db9ef0d3c89d1da7bbebf0fdf"
+    },
+    {
+      "id": "guidance-2",
+      "role": "instructions",
+      "path": "AGENTS.md",
+      "sha256": "4574ee25fe89b6658ae237f3f50648ef1e542c487a2c23d7ab2833696f9455eb"
+    },
+    {
+      "id": "guidance-3",
+      "role": "instructions",
+      "path": "global-agents/AGENTS.md",
+      "sha256": "23e6023c3dae5a6e745def8b7f12335115da3982dfd94144697ca0f0dea3d122"
+    },
+    {
+      "id": "guidance-4",
+      "role": "instructions",
+      "path": "workflows/model-driven-implementation.md",
+      "sha256": "85a88fec7dc8443c0cef099a9604ecdd685e00cf01166ebadd8d8b845df449d0"
+    },
+    {
+      "id": "guidance-5",
+      "role": "instructions",
+      "path": "templates/model-driven/implementation-handoff.md",
+      "sha256": "24fe9f38e2c9a767f084071d24ebadf3db0ad60556adc3f52b60f27397413c80"
+    },
+    {
+      "id": "guidance-6",
+      "role": "instructions",
+      "path": "templates/prompts/implement-from-model.md",
+      "sha256": "c3307cc80d2400001b455d491cfef0c99b37681230428aae88ab95697ae9ffe5"
+    },
+    {
+      "id": "guidance-7",
+      "role": "instructions",
+      "path": "skills/project-memory/SKILL.md",
+      "sha256": "7fbde5e0a9b6bbb8303b16d9d3f753edadb6e4db6cd15873f93d26d5713c3a70"
+    }
+  ]
+}

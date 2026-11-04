@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "aa3b48d9-e2c1-4f8d-bf7a-0de43df5bfa8",
+  "runId": "24e45767-5f83-457e-b5f3-a92ec3ecb868",
+  "kind": "start",
+  "parents": [
+    "6d4e256f-6aaf-4bd5-9c19-a140521dcc13"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-demo-prepare-v1",
+    "path": "tasks/CF-builder-demo-prepare-v1-bound-workspace.md",
+    "revision": "4cee7e93749e6d47b18f56876b61c5f51c8bc607",
+    "blob": "c14df865987fbc9e0497a535389c5b74ba269040",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1dfbbe7b6401da3ed131214a53c2fa7cbb92b960ed673303686c8ec6adcabce9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-handoff-integration-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/84",
+  "at": "2026-11-04T19:50:16.153Z",
+  "summary": "Reproduce native case-alias source overlap before correcting the identity boundary",
+  "next": "Freeze a failing regression, implement directory identity containment, and validate the unchanged preparation contract",
+  "files": [
+    "modeling/lifecycle/builderdemo/inputs.json",
+    "modeling/lifecycle/builderdemo/prepare.go",
+    "modeling/lifecycle/builderdemo/files.go",
+    "modeling/lifecycle/builderdemo/handoff.go",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/builderdemo/directory_boundary_test.go",
+    "modeling/lifecycle/builderdemo/README.md",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md"
+  ]
+}

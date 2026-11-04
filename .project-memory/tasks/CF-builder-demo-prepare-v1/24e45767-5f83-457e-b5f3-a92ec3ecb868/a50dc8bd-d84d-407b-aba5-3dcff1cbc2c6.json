@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "a50dc8bd-d84d-407b-aba5-3dcff1cbc2c6",
+  "runId": "24e45767-5f83-457e-b5f3-a92ec3ecb868",
+  "kind": "checkpoint",
+  "parents": [
+    "aa3b48d9-e2c1-4f8d-bf7a-0de43df5bfa8"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-demo-prepare-v1",
+    "path": "tasks/CF-builder-demo-prepare-v1-bound-workspace.md",
+    "revision": "4cee7e93749e6d47b18f56876b61c5f51c8bc607",
+    "blob": "c14df865987fbc9e0497a535389c5b74ba269040",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1dfbbe7b6401da3ed131214a53c2fa7cbb92b960ed673303686c8ec6adcabce9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-handoff-integration-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/84",
+  "at": "2026-11-04T19:51:42.967Z",
+  "summary": "Native case-insensitive fixture reproduced five source-root or descendant aliases accepted as prepared-draft; each changed 32 source entries to 78; case-sensitive distinct-sibling control skipped on this filesystem; original production remains unchanged",
+  "next": "Commit the failing supplementary regression, then replace lexical overlap checking with ancestor directory identity comparison",
+  "files": [
+    "modeling/lifecycle/builderdemo/inputs.json",
+    "modeling/lifecycle/builderdemo/prepare.go",
+    "modeling/lifecycle/builderdemo/files.go",
+    "modeling/lifecycle/builderdemo/handoff.go",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/builderdemo/directory_boundary_test.go",
+    "modeling/lifecycle/builderdemo/README.md",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md"
+  ]
+}

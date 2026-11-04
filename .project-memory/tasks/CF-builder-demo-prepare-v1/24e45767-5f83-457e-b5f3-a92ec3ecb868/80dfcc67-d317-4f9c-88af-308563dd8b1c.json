@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "80dfcc67-d317-4f9c-88af-308563dd8b1c",
+  "runId": "24e45767-5f83-457e-b5f3-a92ec3ecb868",
+  "kind": "complete",
+  "parents": [
+    "a50dc8bd-d84d-407b-aba5-3dcff1cbc2c6"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-demo-prepare-v1",
+    "path": "tasks/CF-builder-demo-prepare-v1-bound-workspace.md",
+    "revision": "4cee7e93749e6d47b18f56876b61c5f51c8bc607",
+    "blob": "c14df865987fbc9e0497a535389c5b74ba269040",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1dfbbe7b6401da3ed131214a53c2fa7cbb92b960ed673303686c8ec6adcabce9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-handoff-integration-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/84",
+  "at": "2026-11-04T19:53:56.541Z",
+  "summary": "Reject source-root and descendant aliases using filesystem directory identities while preserving original frozen acceptance and all preparation boundaries",
+  "next": "Validate committed lifecycle coverage, publish the fast-forward correction to PR 84, verify exact-head CI and obtain independent correction review before merge",
+  "files": [
+    "modeling/lifecycle/builderdemo/inputs.json",
+    "modeling/lifecycle/builderdemo/prepare.go",
+    "modeling/lifecycle/builderdemo/files.go",
+    "modeling/lifecycle/builderdemo/handoff.go",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/builderdemo/directory_boundary_test.go",
+    "modeling/lifecycle/builderdemo/README.md",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md"
+  ],
+  "validation": "Five native case-alias regressions first returned prepared-draft and added source entries on unchanged production; the same frozen supplementary regression now passes. Focused Go 1.27.3 race passed both preparation packages: 13 top-level and 24 total tests passed, one distinct-case sibling control skipped on this case-insensitive filesystem. Focused vet, formatting, pack validator and diff checks passed. Original manifest and both frozen test hashes unchanged; no candidate work, full local build, extra platform setup or hostile-writer qualification.",
+  "snapshot": {
+    "modeling/lifecycle/builderdemo/inputs.json": {
+      "blob": "fc469672c29540e97e5f875307a70000e14184cf",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/prepare.go": {
+      "blob": "a3cb33e9459c2a6a02c9de3789d270b7962fa940",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/files.go": {
+      "blob": "29317f87653760d37f61ad4f45e609f2fa766fb5",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/handoff.go": {
+      "blob": "54cb21465bcb074ec0f897ded947dee985abfb2b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/prepare_test.go": {
+      "blob": "27086a67ffcd69d7a950c8ddfcd2b134b0bf38d7",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/directory_boundary_test.go": {
+      "blob": "1ff14c91a4102d44b95d2a56d91209633ccca8a3",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/README.md": {
+      "blob": "9d41bfcae420cb9c06a8329e310e23bb21ed2ef2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go": {
+      "blob": "b902399b2394d875f66411239024adeabc2942d6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go": {
+      "blob": "e350b2bd8086b6e6876b59c643d08f24ac452a6a",
+      "mode": "100644"
+    },
+    "examples/model-builder-go/preparation.md": {
+      "blob": "3d81e5ca48119ffc503044ff9d95ddd241bde084",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md": {
+      "blob": "9386eab90dec6f90b050293ef2a1bc1529b6a519",
+      "mode": "100644"
+    }
+  }
+}
