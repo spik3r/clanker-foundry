@@ -36,7 +36,7 @@ func Run(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) 
 	return runWith(ctx, args, in, out, diag, capabilities{
 		prepare: withoutContext(prepare), review: withoutContext(RunReview),
 		check: proposal("check"), execute: proposal("execute"),
-		process: withoutContext(RunProcess), inspect: withoutContext(RunInspection), revisions: withoutContext(RunRevision),
+		process: withoutContext(RunProcess), inspect: withoutContext(RunInspection), revisions: withoutContext(runRevisionVersioned),
 	})
 }
 

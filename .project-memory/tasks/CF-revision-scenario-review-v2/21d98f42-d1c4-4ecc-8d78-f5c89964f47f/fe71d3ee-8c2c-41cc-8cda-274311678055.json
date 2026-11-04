@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "fe71d3ee-8c2c-41cc-8cda-274311678055",
+  "runId": "21d98f42-d1c4-4ecc-8d78-f5c89964f47f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-scenario-review-v2",
+    "path": "tasks/CF-revision-scenario-review-v2-literal-expectations.md",
+    "revision": "9636643ce589e626d5661aca43b7087b002abb1a",
+    "blob": "fe6e097285ba1bc96dde78136456241118557e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cbcc8855d4f58ad52665edc795bce007ca07e05598d9811b57958995b8205697"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/revision-scenario-review-v2",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/65",
+  "at": "2026-11-04T01:12:06.207Z",
+  "summary": "Add explicit v2 scenario comparison while preserving v1 source and native report bytes",
+  "next": "Coordinator reviews published claim; independent contributor freezes tests before implementation",
+  "files": [
+    "modeling/lifecycle/revisioncheck/v2.go",
+    "modeling/lifecycle/revisioncheck/v2_test.go",
+    "modeling/lifecycle/revisioncheck/v2_contract_test.go",
+    "modeling/lifecycle/revisioncheck/testdata/v2-observations.json",
+    "modeling/lifecycle/revisioncheck/README.md",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned.go",
+    "modeling/lifecycle/internal/operatorcli/revision_versioned_test.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "docs/model-driven-current-workflow.md",
+    "tasks/CF-revision-scenario-review-v2-literal-expectations.md"
+  ]
+}
