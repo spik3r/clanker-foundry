@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "8ec3d61d-f636-47ce-8d74-c0023d016cef",
+  "runId": "73f1b1a3-49d7-4314-b3a8-cc2d61e43956",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-trace-v1",
+    "path": "tasks/CF-scenario-trace-v1-bound-requirement-cases.md",
+    "revision": "07dcee070f63ef243cfe834a47583596720b39bd",
+    "blob": "66d51264dae09d36632cb0a5a01d7052406f630a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "df247fdd66a2f30a08ac79b650d50231be6d79e5644a3c3e979a72cea232f963"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-trace-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T05:09:17.834Z",
+  "summary": "Prepare independent literal scenario trace contract before implementation",
+  "next": "Freeze independent cases and precise report schema; coordinator reviews before production edits",
+  "files": [
+    "modeling/lifecycle/scenariotrace/check.go",
+    "modeling/lifecycle/scenariotrace/report.go",
+    "modeling/lifecycle/scenariotrace/report_binding.go",
+    "modeling/lifecycle/scenariotrace/check_test.go",
+    "modeling/lifecycle/scenariotrace/contract_test.go",
+    "modeling/lifecycle/scenariotrace/testdata/vectors.json",
+    "modeling/lifecycle/scenariotrace/README.md",
+    "modeling/lifecycle/cmd/modelscenariotrace/main.go",
+    "modeling/lifecycle/cmd/modelscenariotrace/main_test.go",
+    "tasks/CF-scenario-trace-v1-bound-requirement-cases.md"
+  ]
+}

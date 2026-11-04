@@ -100,11 +100,13 @@ remain arrays. Original texts, literals, declarations and input slices stay inta
 Limits: 32 MiB wrapper, 64 MiB encoded output; model/requirements/suite 1 MiB
 each, catalog 4 MiB, bindings 512 KiB, report 8 MiB, at most 4096 mapping pairs.
 Native stricter limits remain in force. Cap retained native trace JSON at 4 MiB.
-Use native strict parsing and explicit version selection, including duplicate,
-unknown, case-variant, missing/null, malformed Unicode and trailing-data refusal.
-Only `scenarioReport` permits null. Excess bounds return `ErrLimit`; invalid
-structure/native inputs return `ErrInvalid`; expected identity mismatch returns
-`ErrBinding`; unexpected encoding/native boundary failures return `ErrBoundary`.
+Use native strict parsing and explicit version selection for the wrapper and
+bindings, including duplicate, unknown, case-variant, missing/null, malformed
+Unicode and trailing-data refusal. Only wrapper `scenarioReport` permits null;
+embedded sources retain their native validation rules. Explicit route byte/count
+bounds return `ErrLimit`; invalid structure, native refusals and report consistency
+failures return `ErrInvalid`; mismatched valid bindings-document digest assertions
+return `ErrBinding`; unexpected encoding/native failures return `ErrBoundary`.
 Errors return no partial API bytes and must not echo input.
 
 The standalone CLI accepts no arguments or paths, reads bounded stdin, buffers
@@ -133,3 +135,58 @@ regressions and committed Project Memory validation. Record unavailable checks
 honestly. Obtain independent exact-source review before any delivery claim.
 No remote publication, formal PR approval, merge, deployment, cross-system
 testing, new tool installation or held visual review is part of this scope.
+
+## Frozen report field contract
+
+The independent acceptance harness fixes these exact top-level fields:
+`formatVersion`, `mode`, `authority`, `executionStatus`, `reviewStatus`,
+`reportStatus`, `inputs`, `traceReport`, `scenarioReport`, `links`,
+`requirements`, `cases`, `unlinkedRequirementIds`, `unlinkedScenarioCaseIds`.
+The fixed status strings remain those defined above. No extra verdict is added.
+
+- `inputs` contains `modelSHA256`, `modelDigest`, `requirementsSHA256`,
+  `requirementsDigest`, `catalogSHA256`, `suiteSHA256`, `scenarioDigest`,
+  `bindingsSHA256`. SHA256 fields bind original UTF-8 texts; digest fields are
+  the native normalized identities. Whitespace can change source hashes without
+  changing normalized identities.
+- `traceReport` contains `text` and `sha256`, preserving native `Report.JSON()`.
+- `scenarioReport` contains `text` and `sha256`, both null when absent. Otherwise
+  they preserve the exact supplied report text and its raw hash.
+- `links` contains objects with `requirementId` and `scenarioCaseId`, sorted by
+  requirement ID then case ID.
+- `requirements` contains every native requirement, sorted by ID, as
+  `{requirementId, scenarioCaseIds}`. Case references are lexically sorted.
+- `cases` contains every actual suite case in original suite order, as
+  `{scenarioCaseId, requirementIds, status, steps}`. Requirement IDs are sorted.
+  Every original step is retained in original order as `{stepId, entryPosition}`.
+  Positions are zero-based in the supplied report, or null for absent entries.
+- Both unlinked lists contain lexically sorted IDs. Empty lists remain arrays.
+
+Same original input gives byte-identical output. Reordered binding declarations
+produce the same sorted links/references, but their source hash still changes.
+Native trace labels and gaps are preserved in its retained text, not promoted
+by scenario observations.
+
+The strict wrapper/bindings rules do not redefine the embedded native formats.
+Only the wrapper's `scenarioReport` field permits null; native sources retain
+native nullability (for example owner, review, expected task and opaque catalog
+sections). The catalog reader checks its consumed fields, not all oracle-owned
+payload. Native-compatible extra catalog fields and null unused sections remain
+accepted. Every report identity, literal, flow or structural inconsistency is `ErrInvalid`,
+whether rejected by native decoding or by this route. `ErrBinding` applies only
+to valid digest assertions in the independent bindings document that do not
+match current inputs. Unknown mapping IDs and duplicate pairs are `ErrInvalid`.
+`ErrLimit` applies to this route's explicit byte/count caps, including retained
+native trace JSON; native internal limits or structural refusals are `ErrInvalid`.
+The accepted native report format is `lifecycle-scenario-report/v1`, and actual
+result envelopes must satisfy bound runner protocol checks. Reports with actual
+mode, authority or model digest mismatches are not accepted merely because a
+standalone native encoder can represent those mismatch diagnostics.
+
+The invented ParcelReview fixture deliberately differs from the generated
+example model. Its first case contains a matched expected refusal followed by a
+success, proving refusal retains the prior input even when actual task is null.
+A second-case mismatch leaves that completed first case matched and the third
+case unobserved. Its pending catalog declaration stays pending in every report.
+All supplied observations were fabricated without running a reducer, so even
+an internally consistent complete match must remain unauthenticated.
