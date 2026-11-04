@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "788a9c03-5a5f-4efe-84d9-8309939fc137",
+  "runId": "03e520bd-e76a-4b96-a580-7151706f6dcf",
+  "kind": "complete",
+  "parents": [
+    "61fa397e-773c-4a9a-8294-95925e7789fe"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-cli-windows-test-v1",
+    "path": "tasks/CF-review-cli-windows-test-v1-executable-suffix.md",
+    "revision": "5f6b7582b068601ee130f320a2ea972645a5af4e",
+    "blob": "0f3ea7581b7caa4175a96419b787a3c93b3ff45a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "64e106ce2d7a3c06691d5404761fa7b7149c7b2c09a182dde40d41210cebaf8c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/review-cli-windows-test-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T03:24:06.577Z",
+  "summary": "Use .exe filenames in the review CLI process tests; exact reviewed test blob preserved and no production source changed",
+  "next": "Validate the committed lifecycle and publish a small draft follow-up to PR70; no merge",
+  "files": [
+    "modeling/lifecycle/clioutputacceptance/output_test.go",
+    "tasks/CF-review-cli-windows-test-v1-executable-suffix.md"
+  ],
+  "validation": "Go 1.27.3 offline macOS race tests passed for clioutputacceptance and cmd/modeldiff, cmd/modelintake, cmd/modeltraceimpact, including all nine process cases; focused vet, gofmt, scripts/validate.sh and whitespace passed; acceptance tests and three commands cross-compiled for Windows amd64 as PE32+ executables. Native Windows execution unavailable; optional skills-ref unavailable.",
+  "snapshot": {
+    "modeling/lifecycle/clioutputacceptance/output_test.go": {
+      "blob": "d7ee1080535e0781ac994439be6535ee343474ee",
+      "mode": "100644"
+    },
+    "tasks/CF-review-cli-windows-test-v1-executable-suffix.md": {
+      "blob": "64b82c128cf30c01d3eed4a7205703e958a323a5",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "formatVersion": 2,
+  "eventId": "61fa397e-773c-4a9a-8294-95925e7789fe",
+  "runId": "03e520bd-e76a-4b96-a580-7151706f6dcf",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-cli-windows-test-v1",
+    "path": "tasks/CF-review-cli-windows-test-v1-executable-suffix.md",
+    "revision": "5f6b7582b068601ee130f320a2ea972645a5af4e",
+    "blob": "0f3ea7581b7caa4175a96419b787a3c93b3ff45a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "64e106ce2d7a3c06691d5404761fa7b7149c7b2c09a182dde40d41210cebaf8c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/review-cli-windows-test-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T03:22:35.747Z",
+  "summary": "Apply the reviewed executable suffix correction to process acceptance tests on current main",
+  "next": "Run focused native tests, Windows cross-compilation and repository validation; publish a draft follow-up",
+  "files": [
+    "modeling/lifecycle/clioutputacceptance/output_test.go",
+    "tasks/CF-review-cli-windows-test-v1-executable-suffix.md"
+  ]
+}

@@ -57,7 +57,9 @@ func TestReviewCommandOutput(t *testing.T) {
 			if err != nil || len(want) == 0 {
 				t.Fatalf("native report: %v, bytes %d", err, len(want))
 			}
-			bin := filepath.Join(t.TempDir(), tc.name)
+			// Windows resolves executable extensions even for absolute paths.
+			// The suffix is also harmless when running these binaries on Unix.
+			bin := filepath.Join(t.TempDir(), tc.name+".exe")
 			buildCtx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 			build := exec.CommandContext(buildCtx, filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-o", bin, "./cmd/"+tc.name)
