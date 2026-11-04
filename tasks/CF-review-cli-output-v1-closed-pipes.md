@@ -1,6 +1,6 @@
 ---
 id: CF-review-cli-output-v1
-status: in-progress
+status: review
 owner: Foundry review CLI output repair contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -54,5 +54,41 @@ Run Go 1.27.3 offline focused and full race tests, vet, modelc validation/drift,
 repository validation, installer regressions, formatting, whitespace and committed
 Project Memory checks. Keep scratch/caches outside the checkout. Record failures
 and environment limits accurately. Obtain independent exact-source review and
-report the local commit and artifact before any publication. No candidate model,
-visual review, worker dispatch, deployment or formal PR approval is included.
+report the local commit and artifact before any publication. This repair adds no
+model behavior or candidate-execution route. Existing full-suite execution tests
+remain separate validation. No visual review, worker dispatch, deployment or
+formal PR approval is included.
+
+## Local review observations
+
+A separate contributor froze the process tests in `09be2ec` before production
+edits, with SHA-256
+`096d559b3a9bbaa888fd8f02c08eccd644f085f3fe3cc42b543e57f749c4541c`.
+On unchanged production, the six complete-output and invalid-input controls
+passed; only the three closed-pipe controls failed, each with signal termination
+and no diagnostic. The assertions and test bytes stayed unchanged for the fix.
+
+The repair changes only process entrypoints. A separate read-only reviewer found
+no blocking issue and independently passed the four focused race packages,
+including all nine process cases. A second process probe compared original and
+fixed binaries: each complete stdout retained its exact original byte hash, and
+each closed pipe changed from SIGPIPE to exit 3 with its fixed diagnostic.
+
+The first aggregate race attempt exhausted the temporary filesystem before
+tests ran. A workspace-scratch rerun passed every tested package except the clean
+regeneration test, whose copied module could not obtain VCS status beneath an
+unusable ancestor repository marker. An initialized private scratch parent fixed
+that environment issue; the unchanged regeneration test then passed. No test,
+source policy or build check was weakened to accommodate either environment.
+
+Go vet, model validation and generated drift checks, formatting, repository
+validation, whitespace and all 143 Project Memory regressions passed. Installer
+regression stopped at its missing GNU Stow prerequisite; it did not complete.
+Optional skills-ref is unavailable. These local limits must remain visible in
+the handoff and later hosted qualification.
+
+The final full Go 1.27.3 offline race run passed all 73 tested packages, with two
+additional command packages compiling without local test files, using the valid
+private scratch parent and two-package build concurrency. This includes the
+unchanged clean-regeneration test. The repair is prepared locally for coordinator
+publication review; no remote branch or PR is claimed by this record.

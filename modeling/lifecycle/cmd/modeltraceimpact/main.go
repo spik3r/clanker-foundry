@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
 	"runtime"
+	"syscall"
 
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/compiler"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/traceimpact"
@@ -36,4 +38,8 @@ func run(args []string, in io.Reader, out, diagnostic io.Writer) int {
 	}
 	return 0
 }
-func main() { os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr)) }
+func main() {
+	// Let closed stdout reach the documented write-failure branch.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}
