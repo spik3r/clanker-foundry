@@ -35,14 +35,25 @@ before any execution. No request field selects a path, process or source root.
 
 ## Check, then separately authorize execution
 
-From a trusted checkout's `modeling/lifecycle` directory:
+From a trusted, exclusive checkout's `modeling/lifecycle` directory, choose a
+new private absolute directory **outside** the checkout for all artifacts. Supply
+its name yourself; `mkdir` must refuse if it already exists. Place the reviewed
+request at `$CHANGE_WORK/request.json` before checking it. Use the trusted local
+Go 1.27.3 toolchain; keep its actual binary directory on PATH for native children.
 
 ```bash
-go build -o /private/tmp/modelchangerehearsal ./cmd/modelchangerehearsal
-/private/tmp/modelchangerehearsal check < request.json > checked.json
+export CHANGE_WORK=/absolute/path/to/new-private-change-work
+mkdir -m 700 "$CHANGE_WORK"
+test "$(GOTOOLCHAIN=local go env GOVERSION)" = go1.27.3
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off go build \
+  -o "$CHANGE_WORK/modelchangerehearsal" ./cmd/modelchangerehearsal
+# Place the independently reviewed request at "$CHANGE_WORK/request.json".
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off "$CHANGE_WORK/modelchangerehearsal" check \
+  < "$CHANGE_WORK/request.json" > "$CHANGE_WORK/checked.json"
 # Review the original inputs and full patch/preflight reports first.
 # Only when this local rehearsal is authorized:
-/private/tmp/modelchangerehearsal execute < request.json > execution.json
+GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off "$CHANGE_WORK/modelchangerehearsal" execute \
+  < "$CHANGE_WORK/request.json" > "$CHANGE_WORK/execution.json"
 ```
 
 `check` invokes no compiler, child process or scenario replay. `execute` recomputes

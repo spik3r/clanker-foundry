@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -89,7 +90,10 @@ func TestActualBinaryOutputsAndClosedStdout(t *testing.T) {
 		t.Fatal(err)
 	}
 	binary := filepath.Join(t.TempDir(), "modelchangerehearsal")
-	build := exec.Command("go", "build", "-o", binary, "./cmd/modelchangerehearsal")
+	buildCtx, stopBuild := context.WithTimeout(context.Background(), 90*time.Second)
+	defer stopBuild()
+	build := exec.CommandContext(buildCtx, filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-o", binary, "./cmd/modelchangerehearsal")
+	build.WaitDelay = time.Second
 	build.Dir = root
 	if b, err := build.CombinedOutput(); err != nil {
 		t.Fatalf("build: %v %s", err, b)
