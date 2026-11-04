@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "9a8dd0f6-47b8-4525-82d6-14d0df5aad7f",
+  "runId": "51b3f43b-a0e1-4e73-b368-b02458aefe9e",
+  "kind": "complete",
+  "parents": [
+    "e83b29f6-ae50-4f4e-a268-1d15b8888a5c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-custom-merge-rehearsal-v1",
+    "path": "tasks/CF-custom-merge-rehearsal-v1-checked-execution.md",
+    "revision": "4c0ad64b58069ed6904448e7cd46f0d0b1e6f0e4",
+    "blob": "7688b43eba4b0c32fe614c774da25ce5f8ec9879",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "89a3ada1c374baaab794619e8db94f72dbec15a7ce68a7720af2eb3e1b23f568"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "cf-custom-merge-rehearsal-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T06:59:49.630Z",
+  "summary": "Complete locally reviewed four-stage custom merge rehearsal; no integration or publication",
+  "next": "Coordinator retains local result or obtains separate publication and integration authority; external private orchestration ownership remains unknown",
+  "files": [
+    "modeling/lifecycle/custommergerehearsal/merge.go",
+    "modeling/lifecycle/custommergerehearsal/execute.go",
+    "modeling/lifecycle/custommergerehearsal/merge_test.go",
+    "modeling/lifecycle/custommergerehearsal/execute_test.go",
+    "modeling/lifecycle/custommergerehearsal/contract_test.go",
+    "modeling/lifecycle/custommergerehearsal/testdata/observations.json",
+    "modeling/lifecycle/custommergerehearsal/README.md",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main_test.go",
+    "tasks/CF-custom-merge-rehearsal-v1-checked-execution.md"
+  ],
+  "validation": "Go1.27.3 offline focused race and full race passed 77 tested packages plus 2 no-test packages; vet, modelc validate/check, gofmt, whitespace, pack and agent-model regressions passed. Independent exact-source review cdcd29fd found no remaining issues and independently passed native positive/all four mismatch and boundary probes. Behavioral fixture unchanged; reviewed two-assertion native-label correction preceded bridge tests. Installer blocked by missing GNU Stow; optional skills-ref unavailable.",
+  "snapshot": {
+    "modeling/lifecycle/custommergerehearsal/merge.go": {
+      "blob": "648f73eb2336d345cf552f6176d361a12e5c26a3",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/execute.go": {
+      "blob": "2d5821a855c721420b4d00830fec61a5bafc3775",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/merge_test.go": {
+      "blob": "d5c9dfacfba24c61690e414803db1a34df81434b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/execute_test.go": {
+      "blob": "f89ee93390dde258e2a7d8d8e503115625bf15e2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/contract_test.go": {
+      "blob": "c6b474e7827558a0d556ee5cb3c887f910ed260f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/testdata/observations.json": {
+      "blob": "c46f3e30cbe0f6ac9358c2e86009d944b3e903ef",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/custommergerehearsal/README.md": {
+      "blob": "b4f52f3b2daecb8afff34a53f1ed5a3c7ddead8d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go": {
+      "blob": "49b429723a6d1b93783d92d92b96ee8b103ecbe1",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelmergerehearsal/main_test.go": {
+      "blob": "b064f90a463d07e5a1d7b3378662fd66087e732b",
+      "mode": "100644"
+    },
+    "tasks/CF-custom-merge-rehearsal-v1-checked-execution.md": {
+      "blob": "2b2f0e2349fd009fdd186ee32777072e08f7c5f6",
+      "mode": "100644"
+    }
+  }
+}

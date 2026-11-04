@@ -1,6 +1,6 @@
 ---
 id: CF-custom-merge-rehearsal-v1
-status: in-progress
+status: review
 owner: Foundry custom merge rehearsal contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -182,13 +182,53 @@ incorrect branch expectation or a discarded independent edit. A smaller check-on
 four-proposal bridge is a viable separate milestone if execution scope is rejected;
 it provides no behavioral evidence and must not be described as a rehearsal pass.
 
-## Current result
+## Local implementation result
 
-The coordinator reviewed this local contract. A fresh public recheck at
-2026-11-04 06:44 UTC found main unchanged at the stated base, 76 branch names
-without a custom-merge branch, and zero open PRs. The main task collection is
-unchanged; no overlapping public claim was observed. The external orchestration
-task remains inaccessible and its current work remains unknown.
-No fixture, production implementation, execution or publication has occurred.
-Next: commit/register this reviewed local claim, record genuine start, then freeze
-independently authored acceptance before production implementation.
+Local implementation source is cdcd29fdc3657968f33e7c86f3b5cf4278aaf07c.
+An independent source reviewer inspected that exact revision and reported no
+remaining findings. The reviewer independently ran actual native positive and all
+four mismatch paths plus framing, limits and source-byte probes, and confirmed
+unchanged hashes for all nine reviewed source, support-test, documentation and
+acceptance files. The implementation remains byte-identical to that reviewed source.
+
+The separate acceptance contributor froze invented ArchivePacket behavior before
+production in ff665b79ca3723a825d874e0fa8e763a2f338223. Initial source edits had
+begun when coordinator review found two assertions using the nested preflight
+replay label for the top-level native receipt. The independent contributor corrected
+only those assertions in 670096f4c39b14abdc926e0c3dfa4c83da39c73f, before any
+bridge test ran. No production accommodation or behavioral expectation change was
+made. The corrected contract SHA256 is
+0cfc28d393be36df85eecb6873b36647e83fac9f7c8f248eea6005704a5a434e.
+The original observations SHA256 remains
+0c1c99a345875a292d7add9e9b032d246266c01a62555f68ea84f7f7b467e93b.
+
+Go 1.27.3 offline validation passed on frozen source:
+
+- Focused race tests for custommergerehearsal and its compiled command passed.
+- Full go test -race -count=1 ./... passed 77 tested packages; two packages had
+  no test files. This includes actual four-stage matches, both orientations and
+  each mismatch stage with later stages suppressed.
+- Go vet, modelc validate/check, gofmt and whitespace checks passed. Generated
+  artifacts matched and the drift check wrote nothing.
+- Repository pack validation and agent-model resolver regressions passed.
+- Installer regression could not complete because GNU Stow is unavailable on this
+  host. Optional skills-ref validation was also unavailable. Neither was installed,
+  fetched, silently skipped as passed, or qualified by a previous lane's results.
+
+Synthetic cancellation, cleanup, malformed-receipt and partial-result controls
+establish sequence and honest retention only. Actual native/compiled-command runs
+separately establish the finite behavioral and report-delivery observations.
+No existing native sources, source policies, inventories, fixed fixtures, routing,
+runtime, workflows or unrelated task/evidence were changed.
+
+The coordinator's public recheck at 2026-11-04 06:58 UTC found main still at
+29ca17fb2d11b27e542556ad0dbb44497126a142, zero open PRs, and no competing public
+custom merge lane. The external orchestration task's current work remains unknown.
+This local claim does not clear that uncertainty or acquire its ownership.
+
+Local implementation is complete and awaiting separately authorized integration.
+No push, PR, merge, publication, deployment or worker activation occurred. Completion
+evidence records local work only; full committed Project Memory validation follows
+the result/evidence commit. The next action belongs to the coordinator: retain this
+local result or obtain any needed publication/integration authority. Rehearsal
+matches remain neither human approval nor authenticated execution evidence.
