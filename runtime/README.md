@@ -207,6 +207,18 @@ A refused dispatch keeps existing UNKNOWN handling, no automatic resume and
 separate owner cleanup or reconciliation. Tests use invented callbacks and fake
 workspaces, without a provider or container invocation.
 
+Before each new validation callback, the runner prepares owned execution, result
+and artifact inputs, then refreshes the same VALIDATING attempt, worker, fence,
+subject and specification identity with no pending cleanup. A fresh clock must
+be strictly before the validation deadline. There is no await between this final
+check and the callback. Changed eligibility retains
+`ATTEMPT_CHANGED_DURING_CHECKS`; expiry uses `ATTEMPT_EXPIRED` through existing
+UNKNOWN handling. Already recorded checks remain skipped. A callback already
+running may finish, but its evidence must still pass the existing deadline and
+revision checks. This does not stop running work, retry UNKNOWN outcomes or
+replace separate owner cleanup. Boundary tests use invented checks and private
+temporary stores, with no real validation tools, provider or container.
+
 Each text or fake adapter instance allows 16 active invocations or undelivered
 outputs. Further invocations wait before calling the model. Each retained
 reference belongs to a captured attempt ID, worker ID and fencing token, even

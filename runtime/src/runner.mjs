@@ -203,7 +203,7 @@ async function runChecks({ store, effect, checks, now }) {
     }
     if (current.validations.some((item) => item.check_id === checkId)) continue;
     const check = configuredCheck(checks, checkId);
-    const output = await check.run(Object.freeze({
+    const input = Object.freeze({
       execution: structuredClone(current),
       spec: structuredClone(current.spec),
       result: structuredClone(current.result),
@@ -213,7 +213,19 @@ async function runChecks({ store, effect, checks, now }) {
         if (typeof content !== 'string') fail('ARTIFACT_NOT_FOUND', 'Validation artifact is not available in the durable store');
         return { ...artifact, content };
       }) ?? [],
-    }));
+    });
+    const prepared = store.get(effect.execution_id);
+    if (!isCurrentAttempt(prepared, current.attempt.attempt_id, current.attempt.fencing_token, ['VALIDATING'])
+      || prepared.attempt.worker_id !== current.attempt.worker_id
+      || prepared.result?.subject_digest !== current.result.subject_digest
+      || prepared.spec_digest !== current.spec_digest
+      || digest(prepared.spec) !== current.spec_digest) {
+      return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_CHANGED_DURING_CHECKS' } };
+    }
+    if (Date.parse(timestamp(now)) >= Date.parse(prepared.validation_deadline)) {
+      fail('ATTEMPT_EXPIRED', 'Validation deadline expired before check invocation');
+    }
+    const output = await check.run(input);
     const verdict = typeof output === 'string' ? output : output?.verdict;
     const evidenceRef = typeof output === 'object' && typeof output.evidence_ref === 'string'
       ? output.evidence_ref
