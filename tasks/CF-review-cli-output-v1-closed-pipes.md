@@ -1,11 +1,22 @@
 ---
 id: CF-review-cli-output-v1
-status: review
+status: done
 owner: Foundry review CLI output repair contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Preserve review command output-failure exits
+
+## Integration result
+
+[PR70](https://github.com/spik3r/clanker-foundry/pull/70) merged as
+`a6f53991d4f439cc2a1b5e69d333d8d2b1e96ea9` after source review and all five
+hosted workflows passed on `9d20f63a7fe441722f67ec3103a5cdad75ef6588`.
+The coordinator independently passed the four affected race-test packages and
+reproduced only the three closed-pipe failures on the frozen preproduction
+commit. Normal-output and input-refusal controls stayed passing. Earlier local
+environment limits below remain historical observations, not current blockers.
+The integrated claim reserves no further work; native model behavior is unchanged.
 
 ## Implementation claim
 

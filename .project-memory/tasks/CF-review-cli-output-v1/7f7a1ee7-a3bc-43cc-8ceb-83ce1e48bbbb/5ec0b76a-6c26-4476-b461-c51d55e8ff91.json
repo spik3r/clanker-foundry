@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "5ec0b76a-6c26-4476-b461-c51d55e8ff91",
+  "runId": "7f7a1ee7-a3bc-43cc-8ceb-83ce1e48bbbb",
+  "kind": "complete",
+  "parents": [
+    "7ce37b64-42ee-42b9-94fd-4e3869449a48"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-cli-output-v1",
+    "path": "tasks/CF-review-cli-output-v1-closed-pipes.md",
+    "revision": "bb6301725cb43955d2bca409b2e231c37d8a31d0",
+    "blob": "72c02bfb4528882ce4f3b26bc1d0857ae6a9485d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d4984a6060102cebc7e3848f33da10eef2533926893bb33cb6fd82fea4d3ca09"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/provider-change-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T03:13:15.898Z",
+  "summary": "Record actual reviewed PR70 merge and release completed scope",
+  "next": "Independent batch closeout review and integration",
+  "files": [
+    "tasks/CF-review-cli-output-v1-closed-pipes.md"
+  ],
+  "validation": "All five hosted workflows success on 9d20f63; root four-package race and old three-negative/six-positive controls verified; closeout pack/whitespace passed",
+  "snapshot": {
+    "tasks/CF-review-cli-output-v1-closed-pipes.md": {
+      "blob": "f77836ce2195ec3ff4ca09ad962ea48cbd8d2a46",
+      "mode": "100644"
+    }
+  }
+}
