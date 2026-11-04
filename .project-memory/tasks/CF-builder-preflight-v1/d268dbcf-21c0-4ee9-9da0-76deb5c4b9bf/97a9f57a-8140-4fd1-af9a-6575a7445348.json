@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "97a9f57a-8140-4fd1-af9a-6575a7445348",
+  "runId": "d268dbcf-21c0-4ee9-9da0-76deb5c4b9bf",
+  "kind": "start",
+  "parents": [
+    "448fa701-3016-4c37-ac2c-0421607dff4d"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preflight-v1",
+    "path": "tasks/CF-builder-preflight-v1-pinned-inputs.md",
+    "revision": "4a3b9af60a417c325d3b4d3e65969d37ff40ade2",
+    "blob": "14c6e204682d359fe52145f0bc305c7a4ef42017",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d04a25714191e478063b2bcfc82810f2dfd22c83106eb0a38f6111b707a82799"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:30:22.662Z",
+  "summary": "Qualify the reviewed preflight against actual current main without rewriting its commits",
+  "next": "Merge verified main locally, run native integration and lifecycle checks, then report publication readiness without publishing",
+  "files": [
+    "modeling/lifecycle/builderpreflight/check.go",
+    "modeling/lifecycle/builderpreflight/files.go",
+    "modeling/lifecycle/builderpreflight/check_test.go",
+    "modeling/lifecycle/builderpreflight/root_test.go",
+    "modeling/lifecycle/builderpreflight/README.md",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main.go",
+    "modeling/lifecycle/cmd/modelbuilderpreflight/main_test.go",
+    "tasks/CF-builder-preflight-v1-pinned-inputs.md"
+  ]
+}
