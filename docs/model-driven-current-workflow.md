@@ -43,6 +43,9 @@ private scratch files; the later execute and rehearsal commands also run generat
 Go. Local execution requires the operator's authority and is not an OS sandbox.
 Keep real proposals and reports private as appropriate.
 
+Run the four fixed-example Bash blocks below in order in the same Bash session.
+Keep its shell options, exported variables and working directory between blocks.
+
 ```bash
 set -euo pipefail
 export GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off
