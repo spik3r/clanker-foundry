@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "0eb5c687-9fa8-4ba0-8eb7-925b4d78d337",
+  "runId": "c07f3e9f-df3b-4adb-871a-0232e817855e",
+  "kind": "complete",
+  "parents": [
+    "dc60d2ec-5bbd-44f0-a04f-d6d1d8108963"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-trace-impact-v1",
+    "path": "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md",
+    "revision": "5c7ed4d3baa2f6931f11bc6b5219706178475b92",
+    "blob": "4008a9b39fc12fdef3f8d0b2345ae45e560a4114",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d017dbd84f7175304751879584482fca93c715843d733b76b019d92f320c362d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-trace-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:36:53.745Z",
+  "summary": "Implemented and independently reviewed explicit requirement-to-scenario change comparison and stdin command; frozen acceptance preserved; local only.",
+  "next": "Commit reviewed staged paths and immutable completion, validate committed Project Memory diff, then return local branch to coordinator for review and any separately authorized publication.",
+  "files": [
+    "modeling/lifecycle/scenariotraceimpact/compare.go",
+    "modeling/lifecycle/scenariotraceimpact/project.go",
+    "modeling/lifecycle/scenariotraceimpact/types.go",
+    "modeling/lifecycle/scenariotraceimpact/compare_test.go",
+    "modeling/lifecycle/scenariotraceimpact/contract_test.go",
+    "modeling/lifecycle/scenariotraceimpact/README.md",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main.go",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main_test.go",
+    "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md"
+  ],
+  "validation": "Go 1.27.3 offline: five focused packages passed race tests; 29 frozen positive cases and strict refusals passed; concurrent buffers, native admission limits and compiled CLI complete/closed-pipe/read-failure checks passed. Focused vet, modelc validate/check, gofmt, repository validator, installer and whitespace checks passed. Independent exact-source review found no blockers. Optional skills-ref unavailable; boundary fault injection, full-module aggregate, hosted CI and other platforms not run.",
+  "snapshot": {
+    "modeling/lifecycle/scenariotraceimpact/compare.go": {
+      "blob": "4cdaddfc5654c6dfa2174836c59028f27520faff",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariotraceimpact/project.go": {
+      "blob": "38fab3105797ba1a7ea5e231edf353116b41b998",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariotraceimpact/types.go": {
+      "blob": "7fdc2ee5d9c6d75bcbdf1b41a493249572f11f18",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariotraceimpact/compare_test.go": {
+      "blob": "28aad5198a3ff1ef9f5e12923f68f66d3576e58a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariotraceimpact/contract_test.go": {
+      "blob": "68444c887741321180661cadf6808d99b067a301",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/scenariotraceimpact/README.md": {
+      "blob": "9e77aadaf06906d623747823c248fab61c04d918",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main.go": {
+      "blob": "b4ef3adc01619be6e44d61cdf071bcf4022d681f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main_test.go": {
+      "blob": "bf491ff874ff0461575dbd5b7cd10736e97d69fa",
+      "mode": "100644"
+    },
+    "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md": {
+      "blob": "36f0f9c3228d869c2b01ef5b15e3718be7e37a2d",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-trace-impact-v1
-status: in-progress
+status: completed
 owner: Scenario trace impact contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -68,11 +68,11 @@ model/suite/requirement/catalog identities across the composed reports.
 
 Retain all four exact native output texts and SHA-256 values: before trace, after
 trace, scenario diff and declared trace impact. Each retained record has exactly
-`requestSHA256`, `reportJSON`, `reportSHA256`. Native limits remain in force;
+`requestSHA256`, `reportJSON`, `reportSHA256`. Native limits remain in force.
 Before/after request hashes identify the original scenario-trace request texts;
 the comparison request hashes identify the exact constructed native requests.
 Cross-report identities agree within each side; before and after may differ.
-each trace output is additionally capped at 8 MiB and total encoded output at
+Each trace output is additionally capped at 8 MiB and total encoded output at
 128 MiB. Output is buffered, HTML escaping disabled and terminated with one LF.
 Preflight both constructed native comparison wrappers against their native input
 byte caps and return `ErrLimit` on excess. Other native admission restrictions,
@@ -166,3 +166,50 @@ generated-artifact validation/drift, repository validator, installer and committ
 Project Memory checks. Review exact final source independently. Keep private
 inputs out of Git. Record observed results and limitations without treating the
 new report as authority, execution evidence or proof of general correctness.
+
+## Observed local result
+
+Implemented the pure Go comparison package and stdin-only command in the claimed
+paths. They retain four native reports, compare explicit requirement/case links,
+project native case edits through each side's actual links, and separately flag
+changes to supplied observation layouts. Source formatting remains visible even
+when it produces no candidate. Execution and approval remain not established.
+
+The task source was pinned at `5c7ed4d3baa2f6931f11bc6b5219706178475b92`;
+the genuine start was committed at `c45dc0d`. An independent contributor authored
+29 positive vectors plus strict refusal, limit, retention and buffer checks before
+production existed. All native-only setup controls passed. Acceptance was frozen
+at `201eda9f4131dc56853009acc24d0603235ced75`, with SHA-256
+`c4fd6ab174cf619b24540a06bda70e1e456fc4f74d9cdc2f826d8811f6f92788`, and
+remained byte-identical through implementation and review.
+
+Observed on the local Mac with installed Go 1.27.3, offline module settings:
+
+- `go test -race -count=1 ./scenariotraceimpact ./cmd/modelscenariotraceimpact ./scenariotrace ./scenariodiff ./traceimpact` passed all five packages.
+- Compiled CLI cases passed for complete output, a closed stdout pipe and stdin
+  read failure; in-process checks passed for bounded reads, single writes and
+  short/failed delivery.
+- Native-valid input controls confirmed refusal at 513 catalog cases, an over-8
+  MiB retained trace report and an over-16 MiB constructed trace-impact request.
+- Focused `go vet` on the same five packages passed. New Go files are gofmt-clean.
+- `go run ./cmd/modelc validate` and `go run ./cmd/modelc check` passed; generated
+  artifacts matched without writes.
+- `bash scripts/validate.sh` and `bash tests/test-install.sh` passed. Optional
+  `skills-ref` was not installed, so its separate format check was skipped.
+- Whitespace checks passed; existing native packages and fixture bytes remained
+  unchanged.
+
+A fresh reviewer inspected all eight scoped package/command files and the relevant
+native contracts, finding no concrete blockers. Internal native-error mapping and
+cross-report boundary refusals were inspected without direct negative injection
+tests; ordinary public inputs cannot readily produce malformed native output.
+No aggregate full-module run or additional platform testing was performed.
+
+During this work main advanced to
+`5bd2c310ecc97015b07b5233bac78e5d1ef5381f` through the custom assertion inventory
+and workspace source-byte changes. Their changed paths do not overlap this task
+or its native dependencies; no open PR remained at the last metadata check. This
+branch keeps genuine ancestry from `01b18785e738d9cc656ea1fb622f8c9aad1b220a`.
+It has not been pushed, published, merged or run through hosted CI. The next step
+is coordinator review of this local branch and a fresh base/ownership check before
+any separately authorized publication.
