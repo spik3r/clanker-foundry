@@ -125,10 +125,26 @@ async function submitAttempt({ store, adapter, effect, claim, now, inputSubjects
     return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_CHANGED_AFTER_ACK' } };
   }
   store.verifyDispatch?.(effect.execution_id, attempt.attempt_id);
+  const assignedAttempt = structuredClone(execution.attempt);
+  const assignedSpecDigest = execution.spec_digest;
+  const beforeInvoke = () => {
+    const current = store.get(effect.execution_id);
+    if (!isCurrentAttempt(current, assignedAttempt.attempt_id, assignedAttempt.fencing_token, ['EXECUTING'])
+      || current.attempt.worker_id !== assignedAttempt.worker_id
+      || current.spec_digest !== assignedSpecDigest
+      || digest(current.spec) !== assignedSpecDigest) {
+      fail('ATTEMPT_CHANGED_BEFORE_INVOKE', 'Attempt eligibility changed before invocation');
+    }
+    store.verifyDispatch?.(effect.execution_id, assignedAttempt.attempt_id);
+    if (Date.parse(timestamp(now)) >= Date.parse(current.attempt.lease_deadline)) {
+      fail('ATTEMPT_EXPIRED', 'Attempt lease expired before invocation');
+    }
+  };
   const result = await adapter.runAttempt({
-    attempt: structuredClone(execution.attempt),
+    attempt: structuredClone(assignedAttempt),
     spec: structuredClone(execution.spec),
     inputSubjects,
+    beforeInvoke,
   });
   validate('WorkerResult', result);
   if (result.attempt_id !== attempt.attempt_id
