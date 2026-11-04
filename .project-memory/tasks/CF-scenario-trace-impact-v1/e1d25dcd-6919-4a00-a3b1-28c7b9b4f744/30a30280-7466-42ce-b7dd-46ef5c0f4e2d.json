@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "30a30280-7466-42ce-b7dd-46ef5c0f4e2d",
+  "runId": "e1d25dcd-6919-4a00-a3b1-28c7b9b4f744",
+  "kind": "start",
+  "parents": [
+    "0eb5c687-9fa8-4ba0-8eb7-925b4d78d337"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-scenario-trace-impact-v1",
+    "path": "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md",
+    "revision": "e6b0ba26c8f335c863e4957cda8d74d9fe654072",
+    "blob": "1c1e50b8b816bcf42263f8356517fc27699565ba",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "310f0036c3c8edb0ed4055cd5f57aed7b33190c08965e1e01fe907c2e8be4f0c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/scenario-trace-impact-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T12:40:30.883Z",
+  "summary": "Qualify the reviewed implementation through one normal local merge of main 5bd2c310ecc97015b07b5233bac78e5d1ef5381f without rewriting reviewed commits.",
+  "next": "Merge the pinned main snapshot, verify unchanged implementation and native dependencies, run relevant integration checks and independent merge review, then record local completion without publication.",
+  "files": [
+    "modeling/lifecycle/scenariotraceimpact/compare.go",
+    "modeling/lifecycle/scenariotraceimpact/project.go",
+    "modeling/lifecycle/scenariotraceimpact/types.go",
+    "modeling/lifecycle/scenariotraceimpact/compare_test.go",
+    "modeling/lifecycle/scenariotraceimpact/contract_test.go",
+    "modeling/lifecycle/scenariotraceimpact/README.md",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main.go",
+    "modeling/lifecycle/cmd/modelscenariotraceimpact/main_test.go",
+    "tasks/CF-scenario-trace-impact-v1-explicit-case-changes.md"
+  ]
+}
