@@ -1,0 +1,149 @@
+{
+  "formatVersion": "independent-builder-admission-observations/v1",
+  "provenance": "Opaque inert bytes and handwritten closed-frontier outcomes, never candidate compilation or execution.",
+  "manifestSHA256": "e4fac14e2196dee8dde00bb7e9101b3324cfd4f2f564850a71ca21b76bac9812",
+  "allowedNames": [
+    "README.md",
+    "acceptance_test.go",
+    "candidate.go",
+    "contract.go",
+    "go.mod",
+    "rubric.md"
+  ],
+  "cases": [
+    {
+      "id": "exact-six-opaque-bytes",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "matched",
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "empty-opaque-candidate",
+      "candidate": "",
+      "status": "matched",
+      "outcome": "matched",
+      "expectedPin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "id": "extra-initializer",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "extras": [
+        {
+          "name": "unreviewed.go",
+          "kind": "regular"
+        }
+      ],
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "all-extra-categories",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "extras": [
+        {
+          "name": ".hidden",
+          "kind": "regular"
+        },
+        {
+          "name": "_ignored.go",
+          "kind": "regular"
+        },
+        {
+          "name": "candidate_windows.go",
+          "kind": "regular"
+        },
+        {
+          "name": "candidate.test",
+          "kind": "regular"
+        },
+        {
+          "name": "extra.c",
+          "kind": "regular"
+        },
+        {
+          "name": "extra.s",
+          "kind": "regular"
+        },
+        {
+          "name": "embed.bin",
+          "kind": "regular"
+        },
+        {
+          "name": "go.work",
+          "kind": "regular"
+        }
+      ],
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "directory-is-not-an-ignored-cache",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "extras": [
+        {
+          "name": "cache",
+          "kind": "directory"
+        }
+      ],
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "extra-symlink",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "extras": [
+        {
+          "name": "alias.go",
+          "kind": "symlink"
+        }
+      ],
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "candidate-missing",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "missing",
+      "outcome": "blocked",
+      "remove": "candidate.go",
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "candidate-wrong-pin",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "hash-mismatch",
+      "outcome": "blocked",
+      "wrongPin": true,
+      "expectedPin": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "id": "candidate-symlink",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "refused",
+      "outcome": "blocked",
+      "candidateKind": "symlink",
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "missing-original",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "remove": "rubric.md",
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    },
+    {
+      "id": "changed-original",
+      "candidate": "Inert candidate bytes; this is not a Go implementation.\n",
+      "status": "matched",
+      "outcome": "blocked",
+      "changeOriginal": "README.md",
+      "expectedPin": "0243108f8aa5fb4913452a7dc18f70fdd902024cbe8a0faea688cb6b960cafee"
+    }
+  ]
+}

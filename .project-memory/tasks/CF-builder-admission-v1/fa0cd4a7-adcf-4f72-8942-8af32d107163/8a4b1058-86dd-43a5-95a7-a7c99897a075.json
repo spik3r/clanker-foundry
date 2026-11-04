@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "8a4b1058-86dd-43a5-95a7-a7c99897a075",
+  "runId": "fa0cd4a7-adcf-4f72-8942-8af32d107163",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-admission-v1",
+    "path": "tasks/CF-builder-admission-v1-closed-exercise.md",
+    "revision": "8a0d94a987af494eff37523b30959e507b57d37a",
+    "blob": "cd1f0a54aef75aadba3f9bbbea482b70b98aaf97",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a08461563b2a516495f81afd69605168afffe96e9512fd77b2616cff782f0c65"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-admission-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/86",
+  "at": "2026-11-04T20:39:08.439Z",
+  "summary": "Check complete six-file exercise frontier, independently pinned candidate and unchanged frozen originals without compiling or executing",
+  "next": "Independent contributor freezes literal manifest and filesystem cases before production",
+  "files": [
+    "modeling/lifecycle/builderadmission/check.go",
+    "modeling/lifecycle/builderadmission/files.go",
+    "modeling/lifecycle/builderadmission/inputs.json",
+    "modeling/lifecycle/builderadmission/check_test.go",
+    "modeling/lifecycle/builderadmission/contract_test.go",
+    "modeling/lifecycle/builderadmission/testdata/observations.json",
+    "modeling/lifecycle/builderadmission/README.md",
+    "modeling/lifecycle/cmd/modelbuilderadmission/main.go",
+    "modeling/lifecycle/cmd/modelbuilderadmission/main_test.go",
+    "tasks/CF-builder-admission-v1-closed-exercise.md"
+  ]
+}
