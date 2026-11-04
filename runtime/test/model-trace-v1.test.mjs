@@ -62,7 +62,7 @@ test('trace controls reject drift, omissions and dangling evidence', () => {
   const mutant = (change, expected) => { const copy = structuredClone(manifest); change(copy); assert.throws(() => verify(copy,files),expected); };
   mutant((m) => m.commands.pop(), /command inventory/);
   mutant((m) => m.states.push({id:'MADE_UP',coverage:'unmapped'}), /state inventory/);
-  mutant((m) => {m.commands.find((x) => x.id === 'CANCEL').coverage = 'partial';}, /command coverage/);
+  mutant((m) => {m.commands.find((x) => x.id === 'REVOKE_APPROVAL').coverage = 'partial';}, /command coverage/);
   mutant((m) => {m.requirements[0].schemaPointer = '#/$defs/Command/oneOf/1';}, /schema reference/);
   mutant((m) => {m.requirements[0].anchor = 'no such evaluator source';}, /source anchor/);
   mutant((m) => {m.requirements[0].caseIds = ['not_a_case'];}, /case reference/);
@@ -85,7 +85,8 @@ function assertDispatchCases(apply, cases = dispatchOracle.cases) {
     const before = structuredClone(input);
     const invoke = () => apply(input.current, input.command, input.context);
     if (c.expected.completion === 'return') {
-      const result = invoke();
+      let result;
+      assert.doesNotThrow(() => { result = invoke(); }, `${c.id}: successful return expected`);
       assert.deepEqual(result.execution, c.expected.execution, `${c.id}: execution`);
       assert.deepEqual(result.event, c.expected.event, `${c.id}: event`);
       assert.deepEqual(result.effects, c.expected.effects, `${c.id}: effects`);
@@ -209,6 +210,73 @@ test('completion observations detect independence, check, approval and cleanup g
     const mutated = source.replace(from, to).replace("'./contract.mjs'", JSON.stringify(contractURL));
     const module = await import(`data:text/javascript;base64,${Buffer.from(mutated).toString('base64')}`);
     const cases = completionOracle.cases.filter((c) => c.id === id);
+    assert.equal(cases.length, 1);
+    assert.throws(() => assertDispatchCases(module.evaluate, cases), {code: 'ERR_ASSERTION'}, `${id}: mutant escaped`);
+  }
+});
+
+const cancellationRaw = read(`${path}testdata/cancellation-oracle.json`);
+const cancellationOracle = JSON.parse(cancellationRaw);
+const cancellationPin = 'f2555364a4b53001c5e6dcfadf5822b2014c0e3fd1e26d14432eb714b681a044';
+
+test('frozen cancellation observations compare full outcomes and preserve inputs', () => {
+  assert.equal(createHash('sha256').update(cancellationRaw).digest('hex'), cancellationPin);
+  assert.deepEqual(cancellationOracle.cases.map((c) => c.id), [
+    'cancel_pending_without_attempt', 'cancel_active_retains_cleanup',
+    'cleanup_cancelled_released', 'cancel_worker_unauthorized',
+    'cancel_wrong_owner_unauthorized', 'cleanup_cancelled_stale_fence',
+    'submit_cancelled_retired_token', 'submit_cancelled_current_fence',
+  ]);
+  assertDispatchCases(evaluate, cancellationOracle.cases);
+  const byId = (id) => cancellationOracle.cases.find((c) => c.id === id);
+  // Connections compare independently frozen literals, never replay output.
+  assert.deepEqual(byId('cancel_pending_without_attempt').input.current,
+    dispatchOracle.cases.find((c) => c.id === 'assign_success').input.current);
+  assert.deepEqual(byId('cancel_active_retains_cleanup').input.current,
+    dispatchOracle.cases.find((c) => c.id === 'ack_success').expected.execution);
+  for (const id of ['cleanup_cancelled_released', 'cleanup_cancelled_stale_fence',
+    'submit_cancelled_retired_token', 'submit_cancelled_current_fence']) {
+    assert.deepEqual(byId(id).input.current, byId('cancel_active_retains_cleanup').expected.execution,
+      `${id}: disconnected frozen input`);
+  }
+});
+
+test('cancellation trace rejects mapping drift and preserves terminal cleanup distinctions', () => {
+  const mutant = (change, expected) => {
+    const copy = structuredClone(manifest); change(copy);
+    assert.throws(() => verify(copy, files), expected);
+  };
+  mutant((m) => { m.commands.find((c) => c.id === 'CANCEL').coverage = 'unmapped'; }, /command coverage/);
+  mutant((m) => { m.states.find((s) => s.id === 'CANCELLED').coverage = 'unmapped'; }, /state coverage/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-CANCEL-ACTIVE').caseIds = ['cleanup_cancelled_released']; }, /case command/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-CANCEL-WORKER').anchor = "authorized(context.role === 'worker' && context.actor_id === execution.attempt.worker_id);"; }, /guard outcome reference/);
+  mutant((m) => { m.requirements.find((r) => r.id === 'TR-SUBMIT-CANCELLED-RETIRED-TOKEN').expectedCode = 'STALE_ATTEMPT'; }, /requirement outcome/);
+  mutant((m) => { m.flows.find((f) => f.id === 'cancelled-cleanup').to = 'PENDING'; }, /flow reference/);
+  const views = render(manifest);
+  assert.match(views[`${path}views/sequence.md`], /confirmation uses the retired attempt token, not the advanced execution fence/);
+  assert.match(views[`${path}views/state.dot`], /CANCELLED \(partial; cleanup may remain\)/);
+  const drift = `${files[`${path}testdata/cancellation-oracle.json`]}\n`;
+  assert.throws(() => verify(manifest, {...files, [`${path}testdata/cancellation-oracle.json`]: drift}), /source pin/);
+});
+
+// These controls compile altered trusted source only in memory. They bypass pin
+// checking, preserve every producer byte and never deliver returned intents.
+test('cancellation observations detect authorization, retirement, release, cleanup and terminal mutants', async () => {
+  const source = read('runtime/src/state.mjs');
+  const contractURL = new URL('../src/contract.mjs', import.meta.url).href;
+  const mutations = [
+    ["authorized(); retire(); execution.state = kind === 'FAIL'", "authorized(true); retire(); execution.state = kind === 'FAIL'", 'cancel_worker_unauthorized'],
+    ["execution.fence += 1;\n        execution.cleanup_pending = true;", "execution.fence += 0;\n        execution.cleanup_pending = true;", 'cancel_active_retains_cleanup'],
+    ["execution.cleanup_pending = true;", "execution.cleanup_pending = true; execution.resources_held = false;", 'cancel_active_retains_cleanup'],
+    ['matchingAttempt(payload, false);', 'matchingAttempt(payload);', 'cleanup_cancelled_released'],
+    ['matchingAttempt(payload, false);', 'void payload;', 'cleanup_cancelled_stale_fence'],
+    ["!TERMINAL_STATES.includes(current.state) || kind === 'CLEANUP_CONFIRMED'", "current.state === 'CANCELLED' || !TERMINAL_STATES.includes(current.state) || kind === 'CLEANUP_CONFIRMED'", 'submit_cancelled_retired_token'],
+  ];
+  for (const [from, to, id] of mutations) {
+    assert.equal(source.split(from).length, 2, `${id}: unique mutation anchor`);
+    const mutated = source.replace(from, to).replace("'./contract.mjs'", JSON.stringify(contractURL));
+    const module = await import(`data:text/javascript;base64,${Buffer.from(mutated).toString('base64')}`);
+    const cases = cancellationOracle.cases.filter((c) => c.id === id);
     assert.equal(cases.length, 1);
     assert.throws(() => assertDispatchCases(module.evaluate, cases), {code: 'ERR_ASSERTION'}, `${id}: mutant escaped`);
   }
