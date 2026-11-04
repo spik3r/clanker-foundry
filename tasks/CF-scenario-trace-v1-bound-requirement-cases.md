@@ -190,3 +190,28 @@ A second-case mismatch leaves that completed first case matched and the third
 case unobserved. Its pending catalog declaration stays pending in every report.
 All supplied observations were fabricated without running a reducer, so even
 an internally consistent complete match must remain unauthenticated.
+
+### Acceptance fixture correction before qualification
+
+The first frozen vectors file (SHA256
+`c4f4a5391a57f1d2f9205530edf132e4ac29ee82eb8427bd013fab63c842cca3`)
+contained a construction defect in the fabricated `late` report. Reused Python
+success dictionaries retained shared task references through deep copying.
+Changing the second-case actual task outcome also changed the earlier matched
+entry's expected and actual outcomes. Native report consistency accepted that
+pair, but it did not match the original suite's earlier expected literal.
+
+Independent inspection of the original suite and report found only this earlier
+expected-literal discrepancy; matched and early report literals were intact.
+The prospective correction restores exactly `late.entries[1].expected.task.outcome`
+and `late.entries[1].actual.task.outcome` from `Fabricated mismatch` to the
+original suite literal `Seal café <&>`. The second-case actual mismatch, first
+case completion, counts, mappings and intended observation statuses are unchanged.
+
+Native-only controls now compare all supplied entries with the original ordered
+suite's case IDs, step IDs, commands, expectations and input chain, and check
+complete-match or first-mismatch-prefix counts. The strengthened control failed
+on the old literal before this correction. A named rejection test reconstructs
+the original two altered fields: that report must remain native-valid but be
+refused by the bridge as `ErrInvalid`. This changes no production acceptance
+policy and does not derive expected behavior from implementation output.

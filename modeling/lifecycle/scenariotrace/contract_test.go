@@ -84,6 +84,47 @@ func frozenRunner(t *testing.T, v frozenVectors) scenarios.Runner {
 	return r
 }
 
+// Check fixture literals directly against the original suite. Native report
+// decoding checks internal consistency, not whether expectations were replaced.
+func frozenSuitePrefix(s scenarios.Suite, p scenarios.Report) bool {
+	position, completed := 0, 0
+	for _, c := range s.Cases {
+		current := c.Initial
+		for _, step := range c.Steps {
+			if position >= len(p.Entries) {
+				return false
+			}
+			entry := p.Entries[position]
+			if entry.CaseID != c.ID || entry.StepID != step.ID || !reflect.DeepEqual(entry.Command, step.Command) || !reflect.DeepEqual(entry.Expected, step.Expected) || !reflect.DeepEqual(entry.Input, current) {
+				return false
+			}
+			position++
+			if !entry.Matched {
+				return !p.Matched && position == len(p.Entries) && p.StepsExecuted == position && p.CasesCompleted == completed
+			}
+			if entry.Actual.OK {
+				if entry.Actual.Task == nil {
+					return false
+				}
+				current = *entry.Actual.Task
+			}
+		}
+		completed++
+	}
+	return p.Matched && position == len(p.Entries) && p.StepsExecuted == position && p.CasesCompleted == completed
+}
+
+// Reconstruct the original aliasing defect as a native-valid negative control.
+func frozenReboundLate(t *testing.T, v frozenVectors) string {
+	t.Helper()
+	r := frozenObject(t, v.Reports["late"])
+	entry := r["entries"].([]any)[1].(map[string]any)
+	for _, key := range []string{"expected", "actual"} {
+		entry[key].(map[string]any)["task"].(map[string]any)["outcome"] = "Fabricated mismatch"
+	}
+	return frozenJSON(t, r)
+}
+
 // These controls use only pre-existing native APIs. They cannot invoke Check.
 func TestFrozenNativeControls(t *testing.T) {
 	v := frozenLoad(t)
@@ -123,10 +164,21 @@ func TestFrozenNativeControls(t *testing.T) {
 		if e != nil {
 			t.Fatalf("%s: %v", name, e)
 		}
+		if !frozenSuitePrefix(s, p) {
+			t.Fatalf("%s: report literals do not bind to original suite prefix", name)
+		}
 		if name == "late" && (p.CasesCompleted != 1 || p.StepsExecuted != 3 || p.Matched) {
 			t.Fatal("late fail-fast control")
 		}
 	}
+	bad, err := r.DecodeReport([]byte(frozenReboundLate(t, v)))
+	if err != nil {
+		t.Fatalf("rebound negative must remain native-valid: %v", err)
+	}
+	if frozenSuitePrefix(s, bad) {
+		t.Fatal("rebound negative unexpectedly binds to suite")
+	}
+
 }
 
 func runFrozenContract(t *testing.T, check func([]byte) ([]byte, error), classify func(error) string) {
@@ -446,6 +498,7 @@ func runFrozenContract(t *testing.T, check func([]byte) ([]byte, error), classif
 			refuse(t, raw, "invalid")
 		})
 	}
+	t.Run("report_rebound_prior_matched_expectation", func(t *testing.T) { refuse(t, frozenJSON(t, request(frozenReboundLate(t, v))), "invalid") })
 	for _, kind := range []string{"model", "scenario", "source", "null_source", "expected", "command", "initial", "chain", "omitted", "extra", "reordered", "counts", "after_mismatch"} {
 		t.Run("report_"+kind, func(t *testing.T) {
 			r := frozenObject(t, v.Reports["matched"])
