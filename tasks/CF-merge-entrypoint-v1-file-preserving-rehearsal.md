@@ -1,6 +1,6 @@
 ---
 id: CF-merge-entrypoint-v1
-status: in-progress
+status: review
 owner: Foundry merge entrypoint contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -109,3 +109,49 @@ gofmt, repository validation, installer checks, whitespace and committed Project
 Memory checks. Record actual passes, failures and unavailable checks. Keep source
 frozen during full qualification and obtain independent exact-source review.
 No other-system testing, downloads, publication, push, PR, merge or deployment.
+
+## Local implementation result
+
+Implementation source is 0ee9f24a2c0de0b020cfc8926096e829926cf35b. A separate
+exact-source reviewer found no defects, verified the former standalone runner
+body is unchanged except its name, and confirmed unchanged native sources,
+policies and fixtures. The reviewer also passed 40 randomized all-nine-file
+preparations with shuffled flags, Unicode/control bytes and input nonmutation,
+and refused FIFO leaves in all nine positions. A Unix-socket probe was blocked
+at socket creation by host permissions; it was not retried and is not a pass.
+
+Independent acceptance froze before production in
+e608a52bb8b5e3f24ac37dd785a4c3fa3787adc7. Its two files remain unchanged:
+
+- merge_contract_test.go SHA256:
+  7a7d7c604f1e7cdf453e4aa1a2e31155d44274be4429e6efc64be982b56f56d7.
+- merge_dispatch_test.go SHA256:
+  fa392293ad875023e11092ccfe190b8b5e449b57bdca4a57382d2856af7e6a92.
+
+An initial exact-wire test rejected HTML escaping by the preexisting generic
+preparation helper. Only the new merge preparer changed to native non-HTML-escaped
+encoding; acceptance literals and existing helpers stayed unchanged.
+
+Final offline Go 1.27.3 validation passed focused race tests, all 77 tested module
+packages under go test -race -count=1 ./... (two packages have no tests), go vet,
+modelc validate/check with no generated drift, gofmt and whitespace checks. The
+documented prepare/check/execute shell sequence also passed with the unchanged
+independent ArchivePacket inputs and separately frozen candidate digest.
+
+The first full race run failed only the existing clean-copy reproducibility
+test because the host exposed an empty ancestor .git directory. The isolated
+test scratch parent was initialized as a normal local Git repository; focused
+reproducibility and the full race suite then passed without source changes,
+test changes, disabled VCS stamping or relaxed checks.
+
+Repository pack validation and agent-model resolver regressions passed. Installer
+regressions could not complete because GNU Stow is unavailable. Optional skills-ref
+validation was unavailable. Neither tool was installed or reported as passed.
+
+The public recheck at 2026-11-04 08:00 UTC found main still at the recorded base
+and no open PRs. The external worker remains unknown. Local implementation is
+complete and awaits separately authorized publication/integration. No source
+inventory, native policy, runtime, frozen fixture or unrelated lane changed.
+Completion evidence describes local work only; committed Project Memory validation
+follows this result/evidence commit. Rehearsal results do not establish hostile
+writer isolation, rollback, human review or authority to execute elsewhere.
