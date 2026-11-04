@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-trace-v1
-status: in-progress
+status: review
 owner: Foundry scenario trace contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -215,3 +215,46 @@ on the old literal before this correction. A named rejection test reconstructs
 the original two altered fields: that report must remain native-valid but be
 refused by the bridge as `ErrInvalid`. This changes no production acceptance
 policy and does not derive expected behavior from implementation output.
+
+## Local implementation and validation
+
+The pure API and standalone `modelscenariotrace` command now implement the frozen
+contract. Explicit mapping assertions bind the original requirements, catalog
+and suite bytes to the accepted model identity. Native trace gaps remain intact.
+Optional supplied observations are checked against original suite literals and
+ordered input flow, without invoking a reducer or establishing execution.
+
+The original independent freeze is commit `a0aff9b`; the documented fixture
+correction is `d6f9fa5`. The final contract harness SHA256 is
+`4720700fe072cc8c04783b25e1732e2509be9ebe4be9c9fd744bbc8ae304571c`,
+and the final vector SHA256 is
+`d1cdf2104026ac831d747269a48ff0e7118b8bab0ad25f2f8c917840899f8dd1`.
+The corrected files stayed unchanged through implementation qualification.
+
+Offline Go 1.27.3 full race tests passed: 77 tested packages plus two command
+packages without test files. Full vet, model validation, unchanged generated
+artifact checks, formatting and repository validation passed. Focused race and
+22,184 fuzz executions passed. Actual compiled CLI checks cover complete output,
+closed stdout exit 3 and stdin read failure exit 4. Independent reviewers found
+no blocking source issue and separately passed focused race/vet and adversarial
+report checks, including truncated complete-case prefixes, final-case mismatch,
+nil/empty distinctions, stale source identity and exact report-text retention.
+Reviewed implementation hashes stayed unchanged during aggregate qualification.
+
+The first aggregate attempt stopped in the existing clean-regeneration test
+because a copied scratch module could not obtain VCS status from its temporary
+parent. The unchanged test passed with a fresh valid disposable Git boundary;
+the complete aggregate then passed with that same scratch configuration. No
+test, VCS-stamping setting, source policy or access control was weakened.
+
+Installer regression reached its GNU Stow prerequisite and stopped because
+Stow is unavailable; it did not pass. Optional skills-ref was unavailable and
+skipped. No installation, other-system testing, protected visual review, remote
+publication, formal PR approval, merge or deployment was performed.
+
+A manual invented-report check retained one matched case, one mismatched case,
+one later unobserved case and an unlinked requirement, while preserving native
+pending-catalog gaps. Execution and review remained `not-established`. These
+results are consistency checks, not model correctness or provenance evidence.
+Committed Project Memory validation and a restorable local bundle complete this
+handoff. Publication and integration remain separate coordinator decisions.
