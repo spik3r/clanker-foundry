@@ -1,6 +1,6 @@
 ---
 id: CF-builder-admission-v1
-status: in-progress
+status: review
 owner: Foundry builder admission contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -132,3 +132,55 @@ whitespace and full committed Project Memory validation. Freeze all checkout
 writes during full race source-snapshot guards. Obtain coordinator and independent
 exact-source review, record observed completion and hand off hosted checks and
 merge. Keep unobserved failure paths and platform limits explicit.
+
+
+## Implementation result
+
+Product commit 2bb425d adds the new read-only package and standalone command,
+with their own tests and README. Reviewed source a0dd18602a582e5ae38ed0024fa0e854c6c7ffe2
+includes the ordinary disjoint main merge through f8aabdc6a4df5473ba84b59b1d8c87be0fc05f61.
+No existing preflight/preparer/native source, old frozen inputs, operator route or
+qualification pin changed. The preparer's fifteen original pins remain intact.
+
+Independent freeze b89b5a6 preceded production and compiled its native-only
+manifest proof without future Check. Its manifest SHA256 remains
+e4fac14e2196dee8dde00bb7e9101b3324cfd4f2f564850a71ca21b76bac9812;
+contract a46e651a0ae7f596e0eb3c0d97fac854001c941a65f5af8a95f3aaa1204ab5a4;
+observations 29bf0e0edda998fc987f1cec4fca08f039efa7ae74f3548ab2751657be2308a1.
+No frozen expectation was changed during implementation.
+
+The bounded census requires observed EOF before claiming completeness, and a
+second census verifies the finite frontier after content reads. On hosts where
+an absent exact original basename still resolves to an unexpected alias, Check
+returns ErrBoundary before the native preflight can read that alias. Ordinary
+missing originals retain full native missing reports. An absent exact candidate
+is never read through another spelling. This narrow boundary refinement was
+reviewed before implementation and documented without changing native APIs.
+
+Go1.27.3 full race passed with all checkout writes frozen: 89 tested packages
+and two packages without tests. Focused race, vet, modelc generated-artifact
+check, gofmt, pack, installer and whitespace passed. Optional skills-ref was
+unavailable and explicitly skipped. The coordinator and separate reviewer both
+reviewed exact source and independently passed both focused package race tests.
+Full committed Project Memory validation follows the completion commit.
+
+Four compiling disposable-clone mutations were detected by frozen controls:
+bypassing unexpected-child admission, candidate hash assertion, frozen-original
+preflight outcome, or candidate regular-leaf check. Failures showed incorrect
+outcomes/observations, not setup errors or executed candidate initializers.
+
+A separate actual CLI integration used the unchanged preparer, copied the opaque
+independent candidate bytes, then admitted the private exercise. It returned
+matched/exit 0 with six children. Adding an unreviewed Go initializer file returned
+blocked/exit 1 with seven children while native named-file preflight still matched.
+Changing candidate bytes while retaining its independent pin returned blocked/
+exit 1 and hash-mismatch with six children. Full native receipt hashes were
+checked. No exercise candidate, initializer or acceptance module was compiled,
+imported or executed. Only trusted checker/preparer binaries were built and run.
+
+Special-file checks and actual CLI closed-stdout delivery passed on this host.
+Permission probes can skip where privileges bypass mode bits; other hosts and
+hostile concurrent replacement remain unqualified. Byte/frontier admission is
+not code review, authenticated authorship, Go validity, execution or build
+permission. The next step is coordinator hosted checks and merge; this contributor
+has not merged or assigned another product task.

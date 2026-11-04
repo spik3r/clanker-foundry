@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "7e5c4d6d-ed44-41c4-8e57-e2c13f0b2f82",
+  "runId": "fa0cd4a7-adcf-4f72-8942-8af32d107163",
+  "kind": "complete",
+  "parents": [
+    "8a4b1058-86dd-43a5-95a7-a7c99897a075"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-admission-v1",
+    "path": "tasks/CF-builder-admission-v1-closed-exercise.md",
+    "revision": "8a0d94a987af494eff37523b30959e507b57d37a",
+    "blob": "cd1f0a54aef75aadba3f9bbbea482b70b98aaf97",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a08461563b2a516495f81afd69605168afffe96e9512fd77b2616cff782f0c65"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-admission-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/86",
+  "at": "2026-11-04T20:55:54.214Z",
+  "summary": "Added read-only closed six-file exercise admission with independent candidate pin and full native original-file preflight",
+  "next": "Validate committed evidence, publish ready PR86, coordinator checks hosted workflows and merges",
+  "files": [
+    "modeling/lifecycle/builderadmission/check.go",
+    "modeling/lifecycle/builderadmission/files.go",
+    "modeling/lifecycle/builderadmission/inputs.json",
+    "modeling/lifecycle/builderadmission/check_test.go",
+    "modeling/lifecycle/builderadmission/contract_test.go",
+    "modeling/lifecycle/builderadmission/testdata/observations.json",
+    "modeling/lifecycle/builderadmission/README.md",
+    "modeling/lifecycle/cmd/modelbuilderadmission/main.go",
+    "modeling/lifecycle/cmd/modelbuilderadmission/main_test.go",
+    "tasks/CF-builder-admission-v1-closed-exercise.md"
+  ],
+  "validation": "Go1.27.3 full race passed 89 tested packages and 2 no-test packages with checkout frozen. Focused race, actual CLI/preparer integration and closed-output checks passed; no exercise candidate was compiled or executed. Four compiling admission/pin/leaf mutants detected in disposable clone. Vet, modelc check, gofmt, pack, installer and whitespace passed; optional skills-ref unavailable. Coordinator and independent exact-source reviews clean; three frozen author files unchanged.",
+  "snapshot": {
+    "modeling/lifecycle/builderadmission/check.go": {
+      "blob": "a047cc38b94e954688400a547ad30806061a0f32",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/files.go": {
+      "blob": "ee92fcb872865315997fc83628fa9c925d53d254",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/inputs.json": {
+      "blob": "3b8aea75f7e73a261ca3e74eb639c06f6991a683",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/check_test.go": {
+      "blob": "326c4e3f140f17b364f81d2b406bef025292b8d6",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/contract_test.go": {
+      "blob": "abd002bd68afae3fde61797638b8e0f9f1db876f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/testdata/observations.json": {
+      "blob": "df29238bedad4d1e6de35fda30e1cd653b5e7df3",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderadmission/README.md": {
+      "blob": "15c35b21b6f6e1bbd9534df1fc9e7308c9f9e6df",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderadmission/main.go": {
+      "blob": "6dcbace1665a4036a730b08bcc8682d0bad0972e",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderadmission/main_test.go": {
+      "blob": "4111173f6707b59d7ea6adbaa21b8b35fbdcb79b",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-admission-v1-closed-exercise.md": {
+      "blob": "3b9b73f745326881e4eb166518488d6db167d7f8",
+      "mode": "100644"
+    }
+  }
+}
