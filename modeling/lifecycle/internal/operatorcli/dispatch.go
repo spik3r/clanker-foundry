@@ -13,18 +13,21 @@ const helpText = "Usage: foundry prepare --intake FILE --requirements FILE --mod
 	"       foundry inspect\n" +
 	"       foundry revisions\n" +
 	"       foundry change prepare --patch-request FILE --baseline-proposal FILE --candidate-suite FILE --candidate-manifest FILE --expected-candidate-digest HEX\n" +
-	"       foundry change check|execute\n\n" +
-	"All reports use the native tool contracts. Only proposal execute and change execute run candidates.\n"
+	"       foundry change check|execute\n" +
+	"       foundry merge prepare --merge-request FILE --base-suite FILE --base-manifest FILE --left-suite FILE --left-manifest FILE --right-suite FILE --right-manifest FILE --candidate-suite FILE --candidate-manifest FILE --expected-candidate-digest HEX\n" +
+	"       foundry merge check|execute\n\n" +
+	"All reports use the native tool contracts. Only proposal execute, change execute and merge execute run candidates.\n"
 
 type runner func(context.Context, []string, io.Reader, io.Writer, io.Writer) int
 
 type capabilities struct {
 	prepare, review, check, execute, process, inspect, revisions runner
 	changePrepare, changeCheck, changeExecute                    runner
+	mergePrepare, mergeCheck, mergeExecute                       runner
 }
 
 // Run preserves each native route's reports and status meanings. Only the
-// explicit proposal execute and change execute routes receive execution capabilities.
+// explicit proposal execute, change execute and merge execute routes receive execution capabilities.
 func Run(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) int {
 	withoutContext := func(f func([]string, io.Reader, io.Writer, io.Writer) int) runner {
 		return func(_ context.Context, args []string, in io.Reader, out, diag io.Writer) int {
@@ -41,10 +44,16 @@ func Run(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) 
 			return RunChange(ctx, append([]string{action}, args...), in, out, diag)
 		}
 	}
+	merge := func(action string) runner {
+		return func(ctx context.Context, args []string, in io.Reader, out, diag io.Writer) int {
+			return RunMerge(ctx, append([]string{action}, args...), in, out, diag)
+		}
+	}
 	return runWith(ctx, args, in, out, diag, capabilities{
 		prepare: withoutContext(prepare), review: withoutContext(RunReview),
 		check: proposal("check"), execute: proposal("execute"),
 		changePrepare: withoutContext(prepareChange), changeCheck: change("check"), changeExecute: change("execute"),
+		mergePrepare: withoutContext(prepareMerge), mergeCheck: merge("check"), mergeExecute: merge("execute"),
 		process: withoutContext(RunProcess), inspect: withoutContext(RunInspection), revisions: withoutContext(runRevisionVersioned),
 	})
 }
@@ -88,6 +97,19 @@ func runWith(ctx context.Context, args []string, in io.Reader, out, diag io.Writ
 			}
 		}
 		return RunChange(ctx, args[1:], in, out, diag)
+	case "merge":
+		if len(args) >= 2 && args[1] == "prepare" {
+			return c.mergePrepare(ctx, args[2:], in, out, diag)
+		}
+		if len(args) == 2 {
+			switch args[1] {
+			case "check":
+				return c.mergeCheck(ctx, nil, in, out, diag)
+			case "execute":
+				return c.mergeExecute(ctx, nil, in, out, diag)
+			}
+		}
+		return RunMerge(ctx, args[1:], in, out, diag)
 	case "process":
 		return c.process(ctx, args[1:], in, out, diag)
 	case "inspect":

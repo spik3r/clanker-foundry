@@ -86,19 +86,19 @@ func TestChangeInvalidNativeShapesRefuseWithoutReadingInput(t *testing.T) {
 	}
 }
 
-func TestChangeHelpNamesBothExecutionRoutesWithoutGrantingCapabilities(t *testing.T) {
-	want := "Usage: foundry prepare --intake FILE --requirements FILE --model FILE --suite FILE --manifest FILE\n" +
+func TestChangeHelpPreservesExistingRoutesWithoutGrantingCapabilities(t *testing.T) {
+	wantPrefix := "Usage: foundry prepare --intake FILE --requirements FILE --model FILE --suite FILE --manifest FILE\n" +
 		"       foundry review\n" +
 		"       foundry proposal check|execute\n" +
 		"       foundry process json|svg\n" +
 		"       foundry inspect\n" +
 		"       foundry revisions\n" +
 		"       foundry change prepare --patch-request FILE --baseline-proposal FILE --candidate-suite FILE --candidate-manifest FILE --expected-candidate-digest HEX\n" +
-		"       foundry change check|execute\n\n" +
-		"All reports use the native tool contracts. Only proposal execute and change execute run candidates.\n"
+		"       foundry change check|execute\n"
+	// The merge contract separately freezes complete help and all execution routes.
 	for _, args := range [][]string{nil, {"help"}, {"--help"}} {
 		var out, diag bytes.Buffer
-		if code := runWith(context.Background(), args, unreadableInput{}, &out, &diag, capabilities{}); code != 0 || diag.Len() != 0 || out.String() != want {
+		if code := runWith(context.Background(), args, unreadableInput{}, &out, &diag, capabilities{}); code != 0 || diag.Len() != 0 || !strings.HasPrefix(out.String(), wantPrefix) {
 			t.Fatal("honest execution help", code, diag.String(), out.String())
 		}
 	}
