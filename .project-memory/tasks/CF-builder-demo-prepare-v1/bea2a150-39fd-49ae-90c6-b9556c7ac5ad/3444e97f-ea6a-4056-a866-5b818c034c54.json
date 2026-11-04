@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "3444e97f-ea6a-4056-a866-5b818c034c54",
+  "runId": "bea2a150-39fd-49ae-90c6-b9556c7ac5ad",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-demo-prepare-v1",
+    "path": "tasks/CF-builder-demo-prepare-v1-bound-workspace.md",
+    "revision": "c6c957f046a3082416e757dacd0b7e954c4baf7e",
+    "blob": "9e2851e63c52142952fafdcd4b99b141935afdc0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ecf01ae6ed09bfca3aad525e6fc8a36e3884ab0799434433320ea883626d0ce8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/builder-handoff-integration-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T13:37:09.616Z",
+  "summary": "Freeze independent preparation acceptance before production code",
+  "next": "Review and commit literal source pins and acceptance, then implement bounded workspace preparation",
+  "files": [
+    "modeling/lifecycle/builderdemo/inputs.json",
+    "modeling/lifecycle/builderdemo/prepare.go",
+    "modeling/lifecycle/builderdemo/files.go",
+    "modeling/lifecycle/builderdemo/handoff.go",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/builderdemo/README.md",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-demo-prepare-v1-bound-workspace.md"
+  ]
+}
