@@ -229,7 +229,7 @@ func TestIndependentCheckAndOrientation(t *testing.T) {
 				t.Fatal("missing preflight")
 			}
 			var n proposalreplay.Receipt
-			if e = json.Unmarshal([]byte(*s.ReceiptJSON), &n); e != nil || n.Outcome != "checked" || n.CandidateStarted || n.Replay != "not-run" {
+			if e = json.Unmarshal([]byte(*s.ReceiptJSON), &n); e != nil || n.Outcome != "checked" || n.CandidateStarted || n.Replay != "not-requested" || n.Preflight.Replay != "not-run" {
 				t.Fatal("check executed or lost native preflight")
 			}
 		}
@@ -501,7 +501,7 @@ func TestIndependentActualFourStageReplayAndMismatches(t *testing.T) {
 					t.Fatal(e)
 				}
 				if wantOp == "check" {
-					if n.CandidateStarted || n.Replay != "not-run" {
+					if n.CandidateStarted || n.Replay != "not-requested" || n.Preflight.Replay != "not-run" {
 						t.Fatal("suppressed stage ran")
 					}
 					continue
