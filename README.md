@@ -5,6 +5,8 @@ agents: reusable skills, instructions and workflows that help people investigate
 build and review changes with evidence. Start with the skill pack on its own, or
 explore the optional tools for task history, modeling and orchestration.
 
+See the [current direction and consumer gates](docs/current-direction.md) for priorities and open decisions.
+
 ## Get started
 
 The recommended install uses Git, Bash and GNU Stow. Keep the clone in a permanent
