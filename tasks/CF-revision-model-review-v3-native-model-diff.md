@@ -22,7 +22,8 @@ with the coordinator.
 Write only new `modeling/lifecycle/revisioncheck/v3.go`, `v3_test.go`,
 `v3_contract_test.go`, `testdata/v3-observations.json`;
 `modeling/lifecycle/revisioncheck/README.md`;
-`modeling/lifecycle/internal/operatorcli/revision_versioned.go` and new
+`modeling/lifecycle/internal/operatorcli/revision_versioned.go`, the single
+unknown-version literal in `revision_versioned_test.go`, and new
 `revision_v3_test.go`; `docs/model-driven-current-workflow.md`; this task and its
 new immutable Project Memory source/events. Preserve v1/v2 implementation and
 fixtures, native model/scenario/trace packages, standalone modelrevisioncheck,
@@ -53,6 +54,8 @@ invalid/limit/boundary categories. Preserve the wrapper's existing 32 MiB reques
 and 64 MiB output bounds and all narrower native bounds. `foundry revisions`
 selects v3 only by explicit formatVersion in its existing version adapter.
 Existing v1/v2 routes and the strict-v1 standalone command stay unchanged.
+The existing route test uses v3 as its unknown-version example; advance only that
+literal to v99. Its v1/v2 assertions and frozen fixtures remain unchanged.
 
 ## Acceptance and handoff
 
