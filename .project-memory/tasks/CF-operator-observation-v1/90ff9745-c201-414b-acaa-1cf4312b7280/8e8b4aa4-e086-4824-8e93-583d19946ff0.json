@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "8e8b4aa4-e086-4824-8e93-583d19946ff0",
+  "runId": "90ff9745-c201-414b-acaa-1cf4312b7280",
+  "kind": "complete",
+  "parents": [
+    "c4bbade5-08be-4595-83e5-da17bc6355e3"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-operator-observation-v1",
+    "path": "tasks/CF-operator-observation-v1-public-path.md",
+    "revision": "a287d2bc4c6a8f876515b2c9d3a47687b1c65140",
+    "blob": "61a469a9dce71a4b4a309144def792708caf34ec",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c9f02f13be45ff7e6ed06d80ba2a3d216b826d7632d387124af8f4b8939f9fe1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/operator-observation-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T23:10:50.142Z",
+  "summary": "Observed two fresh public-path operators, repaired navigation and session guidance, and verified unchanged fixed blocks in one strict coordinator session",
+  "next": "Commit reviewed task/results and completion, validate full diff against actual main, open draft PR for exact-head hosted gates and coordinator merge",
+  "files": [
+    "docs/model-driven-current-workflow.md",
+    "README.md",
+    "tasks/CF-operator-observation-v1-public-path.md"
+  ],
+  "validation": "Baseline and repeat fresh agents each observed four documented block exits0; direct README navigation observed after prose repair. Baseline wrapper EOF and repeat missing strict options retained separately. Coordinator strict one-session four unchanged blocks all exit0 with options recorded; nine-case replay matched and inspector baseline2/2 candidate4/6, native visual unavailable/no retry. Initial coordinator build retained346B host warnings; separate inspection assumption failure retained. Pack, installer/model resolver/wiring and whitespace passed; optional skills-ref absent. Root and separate source/evidence reviews clean through0f28; no model/code/pin/expectation changes, no human/product/OS-audit claim.",
+  "snapshot": {
+    "docs/model-driven-current-workflow.md": {
+      "blob": "e999c6bba13dfe0d1b2055e4cbbd4c762a3b1182",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "28481e8f072be03cd0fe2d3fc6526dfc6acbc8c1",
+      "mode": "100644"
+    },
+    "tasks/CF-operator-observation-v1-public-path.md": {
+      "blob": "d357dc7d3a5b7094afadfd08917ff4a9ae2ae585",
+      "mode": "100644"
+    }
+  }
+}

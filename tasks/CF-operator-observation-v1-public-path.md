@@ -1,6 +1,6 @@
 ---
 id: CF-operator-observation-v1
-status: in-progress
+status: review
 owner: Foundry public-path operator audit contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -75,3 +75,60 @@ Obtain coordinator and another reviewer's source/evidence review, all five exact
 hosted workflow results and coordinator merge before another work wave. Completion
 covers this bounded documentation audit only, not the consumer milestones in the
 current direction plan.
+
+## Observed result
+
+The baseline public docs/tools matched main ffdce31; the author branch added only
+this reviewed claim/start before execution. The coordinator reviewed each neutral
+brief before two separate fork_turns none operator invocations. Both received the
+installed toolchain, offline environment and fixed-fictional execution authority.
+That supplied setup is not evidence of public prerequisite discoverability.
+
+The first operator reached the current guide through README, pilot guide and
+pipeline introduction. All four unchanged fixed-example blocks eventually returned 0.
+Its private wrapper initially failed a pause-read with EOF after the first two blocks;
+it restored exported variables, cwd and strict Bash options to continue. This was
+an instrumentation failure, not a documented-command failure. The raw failure
+and continuation remain retained.
+
+The repaired README links directly to the current guide. Its introduction now
+separates the four actually exercised examples from unrun optional routes and
+identifies main ffdce31/5 November 2026 separately from the original 2e2a190b
+native-contract baseline, which predates foundry. No command block changed.
+
+The second fresh operator went directly from README to the current guide and
+observed all four blocks returning 0 again. Its separate shells restored variables
+and cwd but did not retain the first block's strict shell options for blocks 2–4.
+Those block-level exits and complete artifacts are observed; separate per-command
+exit proof is not claimed. That automation-context friction prompted the only
+later guide addition: keep the four blocks in the same Bash session.
+
+A separately authorized coordinator verification then used one strict Bash
+session, recording errexit, nounset and pipefail before every unchanged block.
+All four blocks and the session exited 0. Initial build stderr retained two host
+xcodebuild warnings (346 bytes); later block stderr files were empty. A subsequent
+inspection assertion incorrectly assumed all stderr was empty and failed; that
+inspection error was retained, corrected in the observation and caused no rerun
+or documented-command change. This was not a third fresh-operator observation.
+
+All three runs retained matching model/suite comparisons, non-executing preflight,
+actual proposal replay matching nine cases/nine steps with candidate exit 0 and
+cleanup removed, and rehearsal inspection showing baseline 2/2 and candidate 4/6.
+The inspector still reports execution not-established. No behavioral mismatch,
+expectation edit or undocumented product-command correction was observed.
+
+The first browser file-URL viewing attempt was policy-denied; no workaround or
+retry occurred. Native visual review stayed unavailable in all runs. Optional
+revision/custom routes, human acceptance, Q_use and real-use choices remain open.
+Raw blocks, outputs, command/environment observations and failures stay private.
+Retained action histories are attributed and have disclosed bookkeeping-argument
+limits, not complete OS audits. This is an agent workflow observation, not a human
+usability study, real consumer, measured benefit or integration approval.
+
+The coordinator reviewed prose source c332567 and the later same-session delta
+0f28c9d against retained observations. A separate reviewer checked the final prose,
+repeat/coordinator artifacts and disclosed limits; both reviews were clean.
+Repository validation, installer/model resolver/wiring regressions and whitespace
+passed. Optional skills-ref was unavailable. Committed Project Memory validation
+is checked after the genuine completion commit. Exact hosted checks and final
+coordinator review remain required before merge. No further experiment is claimed.
