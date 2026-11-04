@@ -7,10 +7,10 @@ runtime behavior. It calls the existing evaluator only in tests; no dispatcher,
 provider, worker, store or candidate model is started.
 
 The manifest marks ADMIT, ASSIGN, ACKNOWLEDGE, SUBMIT, RECORD_VALIDATION,
-RECORD_APPROVAL, ACCEPT_STAGE and CLEANUP_CONFIRMED as `partial`, alongside
-PENDING, ASSIGNED, EXECUTING, VALIDATING and COMPLETED. Every other schema command
-and state remains `unmapped`. Partial does not mean every guard or outcome is
-represented. Cancellation, rework, approval revocation, retries, failure and the
+RECORD_APPROVAL, ACCEPT_STAGE, CANCEL and CLEANUP_CONFIRMED as `partial`, alongside
+PENDING, ASSIGNED, EXECUTING, VALIDATING, COMPLETED and CANCELLED. Every other
+schema command and state remains `unmapped`. Partial does not mean every guard or outcome is
+represented. Rework, approval revocation, retries, failure and the
 full second-stage review workflow remain outside this trace.
 
 The original five cases cover admission and missing/false dependency and resource
@@ -41,6 +41,18 @@ unregistered approval, owner identity and cleanup confirmation. The observations
 supply declared validation and approval records; they do not execute real checks,
 authenticate a validator or approver, confirm a process stopped, or change the
 runtime's authority rules.
+
+The additive [cancellation observations](testdata/cancellation-oracle.json) cover
+owner cancellation from PENDING without an attempt and from EXECUTING with an
+active attempt. Without an attempt, cancellation leaves the fence unchanged and
+returns no intent. Active cancellation advances the fence, retains the attempt,
+held resources and pending cleanup, and returns only a revocation intent. Owner
+cleanup uses the retired attempt token, clears the attempt and resources, and
+preserves CANCELLED and the advanced fence. The advanced execution fence refuses
+as a cleanup token. Assigned-worker and unrelated-owner cancellation refuse.
+Post-cancellation submissions with either token refuse at the terminal guard,
+before live-attempt checks. These finite observations do not cover cancellation
+from every nonterminal state or prove physical cleanup or process termination.
 
 ## Review and check
 
@@ -78,11 +90,12 @@ contract and fixtures before deliberately revising this trace.
 
 ## What the evidence means
 
-The [original frozen observations](testdata/README.md), dispatch observations
-and completion observations were written by separate assistant contributors from static source
-and contract reading before the corresponding trace implementation. The original
-five-case and twelve-case corpora are unchanged. Both extensions compare the full
-execution, exact event and effects or refusal code/message, plus unchanged inputs.
+The [original frozen observations](testdata/README.md), dispatch observations,
+completion observations and cancellation observations were written by separate
+assistant contributors from static source and contract reading before the
+corresponding trace implementation. The original five-case, twelve-case and
+eighteen-case corpora are unchanged. The extensions compare the full execution,
+exact event and effects or refusal code/message, plus unchanged inputs.
 The expected cases were not derived from prior runs. This is separate-assistant
 authorship, not independent-person review or an oracle independent of the
 evaluator's intended semantics.
@@ -100,6 +113,17 @@ fencing. Their frozen refusal observations must disagree after those mutations
 compile. The connected success inputs are also checked against the previous
 frozen post-state, starting with the original submitted execution. Neither
 control derives expected results from actual replay.
+
+The eight cancellation observations were frozen before implementation and replay
+in commit `18e24d4`; their SHA-256 is
+`f2555364a4b53001c5e6dcfadf5822b2014c0e3fd1e26d14432eb714b681a044`.
+Six additional in-memory mutations weaken cancellation authorization, fence
+retirement, resource retention, retired-token cleanup, cleanup fencing and the
+terminal guard. Each compiles before the frozen comparisons must disagree.
+The terminal mutation exposes ILLEGAL_TRANSITION after bypassing the earlier
+terminal guard; it tests refusal precedence rather than successful submission.
+Connected frozen inputs bind cancellation to the earlier admitted/acknowledged
+states and cleanup and late submissions to the frozen cancelled state.
 
 Pins bind this reviewed snapshot to exact bytes and make drift visible; they do
 not authenticate source or show that a linked test ran. The test-name and source

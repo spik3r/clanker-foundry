@@ -5,6 +5,8 @@ REFUSED is an outcome marker, not a runtime state. Every invented refusal leaves
 
 COMPLETED does not release resources: acceptance retires the attempt and emits only a revocation intent. Explicit CLEANUP_CONFIRMED releases the retired attempt and resources. Nonfinal acceptance advances to PENDING while cleanup is still pending.
 
+CANCEL without an attempt returns no effect and leaves the fence unchanged. Active cancellation retains resources and the retired attempt, advances the fence and returns only a revocation intent. CANCELLED remains terminal after cleanup; confirmation uses the retired attempt token, not the advanced execution fence.
+
 1. **ADMIT**: NONE → PENDING (return).
    - **TR-ADMIT**: A valid invented read-only admission produces a PENDING record without effects. Fixtures: admit_read_only_pending.
 2. **ASSIGN**: PENDING → REFUSED (throw).
@@ -54,9 +56,23 @@ COMPLETED does not release resources: acceptance retires the attempt and emits o
 16. **CLEANUP_CONFIRMED**: COMPLETED → REFUSED (throw).
    - **TR-CLEANUP-STALE-FENCE**: Cleanup confirmation with the advanced live fence rather than the retired attempt token refuses. Fixtures: cleanup_stale_fence.
    - **TR-CLEANUP-NOT-PENDING**: A repeated cleanup confirmation after cleanup has cleared refuses. Fixtures: cleanup_not_pending.
+17. **CANCEL**: PENDING → CANCELLED (return).
+   - **TR-CANCEL-PENDING**: Owner cancellation without an attempt reaches CANCELLED without cleanup, resources, a fence increment or effect intent. Fixtures: cancel_pending_without_attempt.
+18. **CANCEL**: EXECUTING → CANCELLED (return).
+   - **TR-CANCEL-ACTIVE**: Owner cancellation of EXECUTING work advances the fence, retains the retired attempt and held resources, marks cleanup pending and returns only a revocation intent. Fixtures: cancel_active_retains_cleanup.
+19. **CLEANUP_CONFIRMED**: CANCELLED → CANCELLED (return).
+   - **TR-CLEANUP-CANCELLED**: Owner cleanup confirmation with the retired token releases resources and the attempt while preserving CANCELLED and the advanced fence. Fixtures: cleanup_cancelled_released.
+20. **CANCEL**: EXECUTING → REFUSED (throw).
+   - **TR-CANCEL-WORKER**: The assigned worker cannot cancel the execution. Fixtures: cancel_worker_unauthorized.
+   - **TR-CANCEL-WRONG-OWNER**: An owner-role actor with the wrong accountable-owner identity cannot cancel. Fixtures: cancel_wrong_owner_unauthorized.
+21. **CLEANUP_CONFIRMED**: CANCELLED → REFUSED (throw).
+   - **TR-CLEANUP-CANCELLED-STALE-FENCE**: Cleanup using the advanced execution fence instead of the retained attempt token refuses and preserves pending cleanup and resources. Fixtures: cleanup_cancelled_stale_fence.
+22. **SUBMIT**: CANCELLED → REFUSED (throw).
+   - **TR-SUBMIT-CANCELLED-RETIRED-TOKEN**: Submission after cancellation using the retired token refuses at the terminal guard before attempt checks. Fixtures: submit_cancelled_retired_token.
+   - **TR-SUBMIT-CANCELLED-CURRENT-FENCE**: Submission after cancellation using the advanced execution fence also refuses at the terminal guard. Fixtures: submit_cancelled_current_fence.
 
-Commands not modeled: REVOKE_APPROVAL, REQUEST_CHANGES, RETRYABLE_ERROR, TIMEOUT, RETRY_TIMER, BLOCK, RESOLVE, FAIL, CANCEL.
+Commands not modeled: REVOKE_APPROVAL, REQUEST_CHANGES, RETRYABLE_ERROR, TIMEOUT, RETRY_TIMER, BLOCK, RESOLVE, FAIL.
 
-States not modeled: RETRY_WAIT, BLOCKED, FAILED, CANCELLED.
+States not modeled: RETRY_WAIT, BLOCKED, FAILED.
 
 Partial entries do not claim all guards, outcomes, transitions, effects or ordering have been modeled.

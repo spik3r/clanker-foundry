@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "f313fc14-c7fa-4461-85f8-576f65f9718f",
+  "runId": "0d7ede52-f7fa-41d6-a13f-323f2542778f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-orchestration-trace-cancellation-v1",
+    "path": "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md",
+    "revision": "9a46d10d66489a41d742b7c152bd1ccd1b795ac6",
+    "blob": "f39825d87c1bc237c8f98b33fbfd9406116f0913",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6d55e911449f9a76000c2f7f65a09db4937795f4d9631cdcfb251063bc29995b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/orchestration-trace-cancellation-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T21:16:34.832Z",
+  "summary": "Freeze independently authored cancellation observations then extend the existing bounded trace",
+  "next": "Freeze literal oracle before implementation and replay",
+  "files": [
+    "runtime/model-trace-v1/check.mjs",
+    "runtime/model-trace-v1/manifest.json",
+    "runtime/model-trace-v1/README.md",
+    "runtime/model-trace-v1/views/state.dot",
+    "runtime/model-trace-v1/views/sequence.md",
+    "runtime/model-trace-v1/testdata/cancellation-oracle.json",
+    "runtime/test/model-trace-v1.test.mjs",
+    "tasks/CF-orchestration-trace-cancellation-v1-bounded-fencing.md"
+  ]
+}
