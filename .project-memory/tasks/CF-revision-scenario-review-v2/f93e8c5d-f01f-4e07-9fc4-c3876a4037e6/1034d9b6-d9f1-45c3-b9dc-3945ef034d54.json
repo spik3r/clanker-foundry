@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "1034d9b6-d9f1-45c3-b9dc-3945ef034d54",
+  "runId": "f93e8c5d-f01f-4e07-9fc4-c3876a4037e6",
+  "kind": "start",
+  "parents": [
+    "43218b9e-96cd-4d09-ba13-ca2b473f443b"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-revision-scenario-review-v2",
+    "path": "tasks/CF-revision-scenario-review-v2-literal-expectations.md",
+    "revision": "9636643ce589e626d5661aca43b7087b002abb1a",
+    "blob": "fe6e097285ba1bc96dde78136456241118557e06",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cbcc8855d4f58ad52665edc795bce007ca07e05598d9811b57958995b8205697"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/literal-retention-closeout",
+  "pullRequest": null,
+  "at": "2026-11-04T01:26:23.589Z",
+  "summary": "Record reviewed revision v2 integration and release its completed scope",
+  "next": "Record exact PR merge and observed hosted validation",
+  "files": [
+    "tasks/CF-revision-scenario-review-v2-literal-expectations.md"
+  ]
+}
