@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "98e20bf0-834b-43bc-87ac-bf61a965c6f5",
+  "runId": "4ce2ff7f-ec8c-4bf8-9617-4ab88493206b",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-input-boundary-v1",
+    "path": "tasks/CF-model-input-boundary-v1-first-read-scope.md",
+    "revision": "73e092f64aa6f8dfe76f05e957c8346778a758be",
+    "blob": "18f46f55ae46881cd3e6ab828312a62d0a146923",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5ab0e999878f0f253664896879dd8bcfdb68a219f76efbfe08329f85df6fc551"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-input-boundary-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T10:10:09.267Z",
+  "summary": "Freeze independent read-boundary retest acceptance before guidance corrections",
+  "next": "Review C06 diagnosis and freeze first-read and missing-input acceptance",
+  "files": [
+    "workflows/model-driven-implementation.md",
+    "templates/model-driven/implementation-handoff.md",
+    "templates/prompts/implement-from-model.md",
+    "examples/model-builder-go/input-boundary-rubric.md",
+    "examples/model-builder-go/input-boundary-retest.md",
+    "tasks/CF-model-input-boundary-v1-first-read-scope.md"
+  ]
+}
