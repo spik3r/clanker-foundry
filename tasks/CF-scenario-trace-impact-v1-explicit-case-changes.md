@@ -1,6 +1,6 @@
 ---
 id: CF-scenario-trace-impact-v1
-status: completed
+status: in-progress
 owner: Scenario trace impact contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -31,8 +31,12 @@ Write only:
 
 Existing native packages, fixtures, operator dispatch, builder manifest work,
 pilot evidence, runtime, workflows, policies, CI and protected artifacts remain
-outside the write scope. Do not publish, merge, install tools or expand platform
-testing. Keep the result local for independent review.
+outside the write scope. Do not publish, merge remote PRs, install tools or expand
+platform testing. Keep the result local for independent review. The coordinator
+subsequently authorized one normal local merge of current main for integration
+qualification, preserving all reviewed commits and avoiding repeated base updates.
+That integration imports existing main history without authoring changes to its
+unrelated files.
 
 ## Contribution to the workflow
 
@@ -210,6 +214,21 @@ During this work main advanced to
 and workspace source-byte changes. Their changed paths do not overlap this task
 or its native dependencies; no open PR remained at the last metadata check. This
 branch keeps genuine ancestry from `01b18785e738d9cc656ea1fb622f8c9aad1b220a`.
-It has not been pushed, published, merged or run through hosted CI. The next step
-is coordinator review of this local branch and a fresh base/ownership check before
-any separately authorized publication.
+At this first completion it had not been pushed, published, merged or run through
+hosted CI. The next step was coordinator review of this local branch and a fresh
+base/ownership check before any separately authorized publication.
+
+## Local integration qualification claim
+
+Qualify reviewed implementation `46350a2c0a9a7dd8c4eb769537a289c220a5f5f2` by
+one ordinary local merge of main snapshot
+`5bd2c310ecc97015b07b5233bac78e5d1ef5381f`. An SSH fetch confirmed this base.
+The upstream changes are disjoint from the task paths and native dependencies;
+repository instructions are unchanged. Do not rebase, amend reviewed commits or
+publish. Preserve the frozen acceptance bytes and original native fixtures.
+
+Rerun focused race tests and vet for the comparison, command and native packages,
+model validation/drift, repository and installer checks, and committed lifecycle
+validation on the combined branch. Review the exact integration diff and confirm
+reviewed implementation blobs remain unchanged. Record the tested base, merge,
+final head and limitations; do not chase subsequent main movement.
