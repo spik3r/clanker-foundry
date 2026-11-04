@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "7d103f26-a912-48f2-adc4-678e0094d757",
+  "runId": "0a570f0a-cb12-4fc7-bf8f-f3c22cfde81f",
+  "kind": "complete",
+  "parents": [
+    "80da5d59-2a30-42f8-9d96-8861bf1958bb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dispatch-preparation-eligibility-v1",
+    "path": "tasks/CF-dispatch-preparation-eligibility-v1-final-guard.md",
+    "revision": "82f0fb770bc5a6092e7e2e46bfeb3e5233bb56e7",
+    "blob": "0babb3c2dda72799dee5b2fd1dafab91dae97c03",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "67c33a3129b8f6299d2ff4d298c6065813f24e65e99c6965ddc172c886a92587"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/dispatch-preparation-eligibility-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/85",
+  "at": "2026-11-04T20:44:10.843Z",
+  "summary": "Added final synchronous eligibility checks before prepared callbacks and isolated workspace execution; frozen expectations and full runtime checks passed",
+  "next": "Commit observed result and completion, validate committed diff against current origin/main, publish draft PR85 for independent exact-source review and hosted checks; integration lead alone merges",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/src/isolation.mjs",
+    "runtime/test/dispatch-preparation-eligibility.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-dispatch-preparation-eligibility-v1-final-guard.md"
+  ],
+  "validation": "Actual Node v26.0.0: focused 15/15 and full runtime 295/295 passed without skips or cancellations. Frozen test SHA 1f1643dd unchanged. Old code: 3 passed, 12 failed. Eight syntax-valid omission/return mutants detected by assertions; restored 15/15 passed. Repository validator, installer/model resolver/wiring regressions and whitespace passed; optional skills-ref unavailable. No real provider or container. Separate independent review and hosted Node 24 checks pending.",
+  "snapshot": {
+    "runtime/src/runner.mjs": {
+      "blob": "80d9c55c1d05470bc26665fb4a3e1c0fb78c6903",
+      "mode": "100644"
+    },
+    "runtime/src/adapters.mjs": {
+      "blob": "5667e7cee68ad6145d73d631d264832287ba77a3",
+      "mode": "100644"
+    },
+    "runtime/src/isolation.mjs": {
+      "blob": "28853f52aefa3710562f5f28b41ddbe9ec7b68ff",
+      "mode": "100644"
+    },
+    "runtime/test/dispatch-preparation-eligibility.test.mjs": {
+      "blob": "fd9e8a2fa9745702f642ca62eda2eaff5f43c9bf",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "27c9d47b8d8267b5193ae0cdf6d111a1f6a74777",
+      "mode": "100644"
+    },
+    "tasks/CF-dispatch-preparation-eligibility-v1-final-guard.md": {
+      "blob": "f1085b231ed9d07a4252a0ea3df9cd8b4e4bf911",
+      "mode": "100644"
+    }
+  }
+}

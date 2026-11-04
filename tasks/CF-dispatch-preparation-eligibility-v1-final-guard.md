@@ -1,6 +1,6 @@
 ---
 id: CF-dispatch-preparation-eligibility-v1
-status: in-progress
+status: review
 owner: Foundry dispatch eligibility
 repositories: [spik3r/clanker-foundry]
 ---
@@ -74,3 +74,37 @@ Use disposable mutation controls that remove individual eligibility boundaries;
 report only syntax-valid mutants detected by assertions. Preserve frozen test
 bytes and all historical evidence. Distinguish local results from hosted Node 24
 checks and leave merge to the lead after independent review.
+
+## Observed result
+
+The runner now supplies a final synchronous assertion, and the text, fake and
+isolated adapters call it at the claimed boundaries. It refreshes attempt, worker,
+fence and specification identity, dispatch authority and lease time. The isolated
+adapter checks again before starting workspace execution after provider output.
+Direct callers may omit the assertion. Invalid guard results are refused without
+awaiting them or invoking arbitrary thenables; native Promise rejection is consumed.
+Existing UNKNOWN handling and separate owner cleanup remain in place.
+
+The independently authored test file was frozen before production at SHA-256
+`1f1643dddf689d445e74de6af5f241e7ee961161bf4a23cdd5f6a3d884a5dd60`.
+The author observed three passes and 12 failures on old code; the integration lead
+separately confirmed the old-code failure. An initial missing dependency prevented
+loading before the author installed pinned dependencies offline; that load failure
+is not counted as a behavioral regression. Frozen expectations remain unchanged.
+
+Actual Node v26.0.0 passed all 15 frozen tests and the full 295-test runtime suite,
+with no failures, skips or cancellations. Repository validation, installer/model
+resolver/wiring regressions and whitespace checks passed. Optional skills-ref is
+unavailable. Eight syntax-valid mutants in a disposable clone caused assertion
+failures: omitting the runner guard (six), text guard (five), fake guard (four),
+isolated invocation guard (two), isolated apply guard (one), lease guard (two),
+fresh dispatch guard (two), or synchronous-return restriction (three). Restored
+source passed all 15 tests. No frozen test or existing test was edited.
+
+These observations use invented callbacks and fake workspace operations; no real
+provider or container was invoked. They do not prove revocation of running work
+or atomic cancellation across processes. The integration lead reviewed production
+source `7e05bb6` without requesting corrections. Separate independent review and
+exact-head hosted Node 24 checks remain required before the lead merges. Local
+Node 26 results do not establish hosted CI results. This completed implementation
+claim reserves only bounded review corrections, not held general recovery work.
