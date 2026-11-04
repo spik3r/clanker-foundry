@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "80da5d59-2a30-42f8-9d96-8861bf1958bb",
+  "runId": "0a570f0a-cb12-4fc7-bf8f-f3c22cfde81f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dispatch-preparation-eligibility-v1",
+    "path": "tasks/CF-dispatch-preparation-eligibility-v1-final-guard.md",
+    "revision": "82f0fb770bc5a6092e7e2e46bfeb3e5233bb56e7",
+    "blob": "0babb3c2dda72799dee5b2fd1dafab91dae97c03",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "67c33a3129b8f6299d2ff4d298c6065813f24e65e99c6965ddc172c886a92587"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/dispatch-preparation-eligibility-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/85",
+  "at": "2026-11-04T20:38:13.381Z",
+  "summary": "Approved final synchronous dispatch eligibility checks after preparation; freeze independent deferred-boundary tests before production edits",
+  "next": "Hand checkout exclusively to independent reviewer for frozen tests and observed old-code failures; wait root freeze approval before production",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/src/adapters.mjs",
+    "runtime/src/isolation.mjs",
+    "runtime/test/dispatch-preparation-eligibility.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-dispatch-preparation-eligibility-v1-final-guard.md"
+  ]
+}

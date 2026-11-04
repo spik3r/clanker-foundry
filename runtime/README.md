@@ -186,6 +186,27 @@ that adapter decoded it. The standard raw-response reader performs the fatal
 UTF-8 check. These boundary tests use invented transports; they do not establish
 new live provider verification or expand the transport's authority.
 
+Owned text, fake and isolated adapters accept an optional `beforeInvoke()` host
+assertion on `runAttempt`. The runner supplies it to refresh the same EXECUTING
+attempt, worker, fence and specification identity, require no pending cleanup,
+refresh dispatch authority and check the current clock strictly before the lease
+deadline. Text and isolated adapters check inside the queued callback after
+preparation and capacity waits, with no await between the check and invocation.
+The fake adapter checks after its reads before creating a result. The isolated
+adapter checks again before starting workspace execution after provider output.
+
+A guard succeeds only by returning undefined. Throws refuse that work boundary;
+invalid guards or nonundefined returns use `INVALID_INVOCATION_GUARD`. Returned
+Promises are refused without awaiting them; their rejections are consumed, while
+arbitrary thenables are not invoked. Changed attempts use
+`ATTEMPT_CHANGED_BEFORE_INVOKE`; expired leases use `ATTEMPT_EXPIRED`. Direct
+callers that omit the guard keep their existing behavior. Custom adapters must
+call a supplied guard themselves at their actual work boundaries. This assertion
+does not stop work already running or make cancellation atomic across processes.
+A refused dispatch keeps existing UNKNOWN handling, no automatic resume and
+separate owner cleanup or reconciliation. Tests use invented callbacks and fake
+workspaces, without a provider or container invocation.
+
 Each text or fake adapter instance allows 16 active invocations or undelivered
 outputs. Further invocations wait before calling the model. Each retained
 reference belongs to a captured attempt ID, worker ID and fencing token, even

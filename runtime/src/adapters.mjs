@@ -3,7 +3,7 @@ import { constants as fsConstants } from 'node:fs';
 import { lstat, open, realpath } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import path from 'node:path';
-import { promisify } from 'node:util';
+import { promisify, types } from 'node:util';
 import { digest, RUNTIME_LIMITS } from './contract.mjs';
 
 const DEFAULT_OUTPUT_LIMIT = 32 * 1024;
@@ -14,6 +14,18 @@ const execFileAsync = promisify(execFile);
 
 function fail(code, message) {
   throw Object.assign(new Error(message), { code });
+}
+
+/** Check an optional host assertion without yielding before the work boundary. */
+export function assertInvocationGuard(beforeInvoke) {
+  if (beforeInvoke === undefined) return;
+  if (typeof beforeInvoke !== 'function') fail('INVALID_INVOCATION_GUARD', 'Invocation guard must be a synchronous assertion');
+  const result = beforeInvoke();
+  if (result !== undefined) {
+    // Consume native Promise rejection without awaiting it or assimilating a thenable.
+    if (types.isPromise(result)) Promise.prototype.then.call(result, undefined, () => {});
+    fail('INVALID_INVOCATION_GUARD', 'Invocation guard must return only undefined');
+  }
 }
 
 function boundedInteger(value, name, maximum) {
@@ -283,7 +295,7 @@ export function createTextModelAdapter({
 
   return Object.freeze({
     workerId,
-    async runAttempt({ attempt, spec, inputSubjects = [] }) {
+    async runAttempt({ attempt, spec, inputSubjects = [], beforeInvoke }) {
       const identity = attemptIdentity(attempt);
       if (ownedAttempts.has(identity.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Adapter already owns this attempt ID');
       const controller = new AbortController();
@@ -356,6 +368,7 @@ export function createTextModelAdapter({
         ownedAttempt.status = 'invoking';
         const invocation = Promise.resolve().then(() => {
           if (controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before invocation');
+          assertInvocationGuard(beforeInvoke);
           return invoke(request, { signal: controller.signal });
         });
         pending.set(identity.attempt_id, { controller, invocation });
@@ -419,7 +432,7 @@ export class FakeAdapter {
     this.capacity = createArtifactCapacity();
   }
 
-  async runAttempt({ attempt, spec }) {
+  async runAttempt({ attempt, spec, beforeInvoke }) {
     const identity = attemptIdentity(attempt);
     if (this.activeAttempts.has(identity.attempt_id)) fail('DUPLICATE_ATTEMPT', 'Fake adapter already owns this attempt ID');
     const ownedAttempt = {
@@ -434,6 +447,7 @@ export class FakeAdapter {
     let retained = false;
     try {
       const files = await this.readFiles(this.inputPaths);
+      assertInvocationGuard(beforeInvoke);
       // Include stable input digests so test results are tied to the bytes actually read.
       const inputSummary = files.map(({ path: filePath, digest: fileDigest }) => `${filePath}:${fileDigest}`).join('\n');
       const text = inputSummary ? `${this.output}\n${inputSummary}` : this.output;

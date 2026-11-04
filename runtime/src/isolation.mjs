@@ -3,6 +3,7 @@ import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { canonical, digest, parseJSON } from './contract.mjs';
 import { validateWorkspacePlan } from './workspace.mjs';
+import { assertInvocationGuard } from './adapters.mjs';
 
 const execFileAsync = promisify(execFile);
 const DEFAULT_IMAGE = 'node@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85';
@@ -355,7 +356,7 @@ export function createIsolatedAdapter({ workerId, invoke, workspace, inputPaths 
   const owned = new Map();
   return Object.freeze({
     workerId,
-    async runAttempt({ attempt, spec, inputSubjects = [] }) {
+    async runAttempt({ attempt, spec, inputSubjects = [], beforeInvoke }) {
       if (!attempt || attempt.worker_id !== workerId || attempt.attempt_id !== workspace.attempt_id
         || attempt.workspace !== workspace.workspace || !Array.isArray(attempt.capabilities) || !attempt.capabilities.includes('write')) {
         fail('ATTEMPT_IDENTITY_MISMATCH', 'Assigned attempt does not match the isolated workspace or write capability');
@@ -387,6 +388,7 @@ export function createIsolatedAdapter({ workerId, invoke, workspace, inputPaths 
           files, inputSubjects }));
         record.invocation = Promise.resolve().then(() => {
           if (record.controller.signal.aborted) fail('ATTEMPT_ABORTED', 'Attempt was revoked before provider invocation');
+          assertInvocationGuard(beforeInvoke);
           return invoke(request, { signal: record.controller.signal });
         });
         const output = await record.invocation;
@@ -398,6 +400,7 @@ export function createIsolatedAdapter({ workerId, invoke, workspace, inputPaths 
         validateWorkspacePlan(plan);
         const content = canonical(plan);
         if (Buffer.byteLength(content, 'utf8') > MAX_PLAN_BYTES) fail('INVALID_WORKSPACE_PLAN', 'Canonical workspace plan exceeds its artifact limit');
+        assertInvocationGuard(beforeInvoke);
         dockerInvocationStarted = true;
         record.status = 'running';
         const summary = await workspace.applyPlan(plan, proof);
