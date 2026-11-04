@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "8e444bdc-56ce-4e6b-b1ab-542db5e2f7d2",
+  "runId": "8c320b44-71ba-42f7-8142-aefac8a56a3e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-merge-entrypoint-v1",
+    "path": "tasks/CF-merge-entrypoint-v1-file-preserving-rehearsal.md",
+    "revision": "ad216d4bf76e1c0eebb14b87b51d58402fe2e71f",
+    "blob": "9713e1ca3246ffcd80d49ceb2b7de59d6186d749",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "73be8a41ceaec74748050ced8c5e9ea0137cd22a442b9dc08b0e03da795fa03c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "cf-merge-entrypoint-v1",
+  "pullRequest": null,
+  "at": "2026-11-04T07:45:15.002Z",
+  "summary": "Freeze independent acceptance before the bounded merge operator entrypoint implementation",
+  "next": "Independent contributor authors and commits acceptance, then implement and qualify unchanged native routing",
+  "files": [
+    "tasks/CF-merge-entrypoint-v1-file-preserving-rehearsal.md",
+    "modeling/lifecycle/internal/operatorcli/merge.go",
+    "modeling/lifecycle/internal/operatorcli/merge_prepare.go",
+    "modeling/lifecycle/internal/operatorcli/merge_contract_test.go",
+    "modeling/lifecycle/internal/operatorcli/merge_dispatch_test.go",
+    "modeling/lifecycle/internal/operatorcli/dispatch.go",
+    "modeling/lifecycle/internal/operatorcli/change_dispatch_test.go",
+    "modeling/lifecycle/cmd/foundry/main.go",
+    "modeling/lifecycle/cmd/modelmergerehearsal/main.go",
+    "docs/model-driven-merge-entrypoint.md"
+  ]
+}
