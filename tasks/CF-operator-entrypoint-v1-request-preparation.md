@@ -1,6 +1,6 @@
 ---
 id: CF-operator-entrypoint-v1
-status: in-progress
+status: review
 owner: Foundry operator entrypoint contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -75,3 +75,53 @@ whitespace checks. Verify the shorter guide commands on a custom fixture and
 record actual outcomes. Obtain independent exact-source review, record genuine
 completion and validate committed evidence. The coordinator checks hosted CI
 and owns integration. No managed dispatch or permission change follows.
+
+## Review handoff
+
+The `foundry` binary now prepares the existing first-design request and exposes
+all five native command families through shared CLI runners. Old adapters keep
+their run signatures, test-facing revision classifier and signal setup. The new
+main ignores SIGPIPE on every route and installs cancellation handling only for
+proposal commands, matching their existing contract. Preparation leaves source
+files untouched and changes only the new intake's observed value.
+
+A separate contributor froze preparation bytes and native compatibility checks
+in a304226 before production. Their initial test harness referenced a private
+native report type and did not compile; independent correction 1bd3f97 uses a
+local test DTO without changing assertions or expected data. The original data
+SHA-256 remains 8b70e7b9658d124f3ce3f5987b7d20e73c305964801aa6b3989e9dc59cd4edc3.
+A builder-owned wrapper-bound test initially used input below the bound; its
+corrected fixture now measures both nested requests below their bounds and the
+outer request above 8 MiB before checking refusal. No product fix or frozen
+expectation change was made for that test mistake.
+
+Exact source 60953dc passed Go 1.27.3 full offline race tests: 72 tested packages
+passed and two command packages compiled without local test files. The operator
+suite also builds and runs the new binary and all five standalone binaries,
+compares complete native outputs and checks actual closed stdout, fixed
+refusals and FIFO admission. Focused operator and five legacy CLI race suites,
+vet, modelc drift, gofmt, pack validation, installer regressions and whitespace
+checks passed. Optional skills-ref is unavailable. Main's store-only change was
+merged normally and changed no task-covered Go or guide bytes.
+
+All four revised guide Bash blocks ran unchanged in private scratch. Review
+retained unresolved questions and not-run status; separately invoked replay
+matched nine cases/nine steps with cleanup removed. The separate fixed carrier
+inspection reported baseline two cases/two steps and candidate four cases/six
+steps, with execution not established. No new visual inspection is claimed.
+
+A separate custom ParcelSeal preparation/review flow retained original UTF-8 and
+CRLF inputs and separately replayed four cases/six steps with cleanup removed.
+All five input hashes stayed unchanged. Its first execution attempt refused at
+the toolchain gate before candidate start; selecting the installed Go 1.27.3
+binary on PATH allowed the unchanged request to pass. This was an environment
+correction, not a native policy change or an expectation update.
+
+The coordinator and independent reviewer approved exact source 60953dc; the
+reviewer independently passed the operator and five legacy race suites. Native
+APIs, old tests, generated artifacts, source policies and runtime implementation
+are unchanged by this task. Candidate execution stays explicit; request assembly
+or matching output establishes no human approval or integration authority.
+
+Next: genuine completion, committed evidence validation, coordinator review of
+hosted checks and integration of PR63.
