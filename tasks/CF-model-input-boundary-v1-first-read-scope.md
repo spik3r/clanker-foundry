@@ -1,6 +1,6 @@
 ---
 id: CF-model-input-boundary-v1
-status: in-progress
+status: completed
 owner: Blueprint input-boundary follow-up contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -19,9 +19,9 @@ a later compliant observation must not erase or replace that violation.
 The original Go branch, bundle, model, candidate, five frozen acceptance files
 and seven control results remain unchanged. On 4 November 2026 GitHub main was
 still `f16c94d456e89b7ee0680b91d13a44fb79be5556` with no open pull requests. The
-Go pilot owner is being consulted about this small follow-up frontier. External
-worker scope remains unknown. This local branch is not a shared reservation or
-permission to publish, merge, install tools or test another platform.
+Go pilot owner confirmed the earlier lane was complete with no ongoing writes
+and no conflict with this separate follow-up. External worker scope remains
+unknown. This local branch is not a shared reservation or permission to publish, merge, install tools or test another platform.
 
 Exact scope:
 - `workflows/model-driven-implementation.md`
@@ -85,3 +85,21 @@ Review final source independently, run pack/whitespace checks and relevant
 Project Memory validation/regressions, verify original pilot and frozen Go bytes
 unchanged, and preserve a clean local bundle. Record actual fresh-context findings,
 their limits and any unrun checks. No publication or new platform test follows.
+
+## Result
+
+The three generic guides now carry an explicit first-read and subsequent input
+boundary. Independent R1 was committed before those changes. Two fresh read-only
+observations satisfy that rubric at the disclosed worker-reported evidence level:
+the original unsupported request was refused without forbidden discovery in its
+ledger, and an exact missing `contract.go` was reported without fallback search
+or substitution. See the [separate result](../examples/model-builder-go/input-boundary-retest.md).
+
+Both trials preserved their inputs and left the four named candidate/build/cache/
+temporary outputs absent. Original C06 remains a violation; the original Go
+branch, bundle, frozen cases and evidence are unchanged. These observations do
+not establish causal repair, sandbox enforcement, human acceptance or product
+readiness. Pack/whitespace checks and 234 Project Memory regressions passed;
+optional skills-ref was unavailable. No Go behavioral rerun or other-platform
+test was performed. The local result requires a separate publication decision
+and a fresh check of current ownership before integration.
