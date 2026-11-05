@@ -30,6 +30,10 @@ The [getting-started guide](docs/getting-started.md) also covers project-scoped 
 single-skill use, conflicts and validation. Existing files can stop installation;
 inspect conflicts rather than blindly adopting them.
 
+For a reusable team baseline without global installation, use the
+[project-local setup](docs/project-shared-base.md): pin `.agent-baseline`, keep a
+short project overlay and link only the skills you select.
+
 ## Find your way around
 
 ### Skills and working practices

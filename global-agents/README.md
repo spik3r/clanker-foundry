@@ -49,9 +49,10 @@ Nothing reads that path natively yet, so wire each tool to it:
 - **Codex** reads `~/.codex/AGENTS.md` as its global layer, then merges repo files on
   top. Symlink it to the canonical file.
 - **Claude Code** reads `~/.claude/CLAUDE.md` as global user memory and supports
-  `@path` imports (absolute paths, up to 4 hops). Add one import line pointing at the
-  canonical file — use an import rather than a symlink so Claude-only memory can still
-  live below it. Note `~` is not expanded in imports; the path must be absolute.
+  `@path` imports (relative or absolute paths, up to 4 hops). The wiring script uses
+  an absolute import so Claude-only memory can still live below it. Current Claude
+  documentation also supports home-relative imports; see
+  [memory imports](https://code.claude.com/docs/en/memory).
 - **opencode** reads `~/.config/opencode/AGENTS.md` as its global layer. Symlink it.
 - **Gemini CLI** reads `~/.gemini/GEMINI.md`. Symlink it to the canonical file.
 - **Other tools** take the same treatment: a symlink where the tool reads a fixed
@@ -59,8 +60,10 @@ Nothing reads that path natively yet, so wire each tool to it:
 
 Per project: a repo's own `AGENTS.md` is picked up automatically and layers on top
 (Codex and opencode read it natively; for Claude Code a project `CLAUDE.md` containing
-`@AGENTS.md` does the same; Gemini reads `GEMINI.md`, so point that at `AGENTS.md`
-too). Keep project files short — stack, commands, local conventions — and let them
+`@AGENTS.md` imports the project file; Gemini supports `@./AGENTS.md` in
+`GEMINI.md`). A prose pointer is not an automatic import. Verify the effective
+context in each client rather than assuming that a reference loaded another file.
+Keep project files short — stack, commands, local conventions — and let them
 lean on the global base for everything generic. See
 `templates/project/project-agents.md` for a starter.
 
@@ -74,8 +77,8 @@ lean on the global base for everything generic. See
    overrides the global base where they differ.
 4. Verify each tool picked it up — see below.
 
-On a single-tool machine (e.g. a Claude-only work laptop), run just that tool's part
-of the script; the rest is only needed where that tool is used.
+The installer wires all supported clients; it has no single-client flag. For a
+project-local choice without global changes, use the shared-base setup below.
 
 ## Verifying it loaded
 
@@ -86,23 +89,25 @@ option; see the [official AGENTS.md guidance](https://learn.chatgpt.com/docs/age
 
 **Claude Code** — run `/memory` inside a session: it lists the loaded memory files,
 their paths, and load order. Because the base comes in by `@` import, it shows up as
-part of the expanded `~/.claude/CLAUDE.md` — if it is missing there, the import path
-is wrong (use an absolute path; `~` is not expanded). `/context` shows how much of the
-window it consumes. At the file level:
+part of the expanded `~/.claude/CLAUDE.md`. If it is missing, inspect the import
+path and client configuration. `/context` shows how much of the window it consumes.
+At the file level:
 
 ```bash
 cat ~/.claude/CLAUDE.md            # should contain the @<absolute path> import line
 cat ~/.config/agents/AGENTS.md     # the canonical file the import resolves to
 ```
 
-**opencode / Gemini CLI** — the check is the symlink itself:
+**opencode / Gemini CLI** — inspect the symlink first:
 
 ```bash
 ls -l ~/.config/opencode/AGENTS.md ~/.gemini/GEMINI.md   # both point at the canonical file
 ```
 
-Then start a session in any repo and confirm behaviour that only the global file would
-produce (e.g. the writing rules).
+Then check the effective context in a fresh session. Gemini CLI provides
+`/memory show` and `/memory reload`; see its
+[context documentation](https://geminicli.com/docs/cli/gemini-md/). A link existing
+on disk does not prove that the client loaded it.
 
 ## Updating
 
@@ -112,30 +117,12 @@ share changes. Never edit the per-tool links.
 
 ## Pinning a project baseline
 
-Teams that need a reviewable, versioned baseline can add this repository as a Git
-submodule under `.agent-baseline` at an explicitly reviewed commit:
+For a reviewed project pin instead of personal installation, follow the
+[shared-base setup guide](../docs/project-shared-base.md). It uses a Git submodule
+at `.agent-baseline`, a project-owned overlay and selected relative skill links.
+The guide covers existing instructions, clean clones, CI, updates, customization
+and client discovery checks. No global files are changed.
 
-```bash
-git submodule add <repository-url> .agent-baseline
-git -C .agent-baseline checkout <reviewed-commit>
-git add .gitmodules .agent-baseline
-```
-
-Keep the project root `AGENTS.md` short. Tell agents to read
-`.agent-baseline/global-agents/AGENTS.md`, then add stack-specific rules. Clone and CI
-must initialize submodules, including existing clones:
-
-```bash
-git submodule update --init --recursive
-```
-
-Update only after review:
-
-```bash
-git -C .agent-baseline fetch origin
-git -C .agent-baseline checkout <new-reviewed-commit>
-git add .agent-baseline
-```
-
-Missing `.agent-baseline` is a setup error. This keeps one baseline copy at an explicit
-revision while project instructions remain local.
+Use `.agent-baseline/global-agents/AGENTS.md` as the reusable base. Foundry's root
+`AGENTS.md` describes work on this repository and must not become a consumer's
+instruction file. The project setup helper and `--check` never advance the pin.

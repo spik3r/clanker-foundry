@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "db2e85f1-0df0-40a7-8f4f-9e9260129d0b",
+  "runId": "7275706f-c9ec-430a-bc13-acb96fbce0a3",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-shared-base-v1",
+    "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+    "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+    "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e7221b6cf3b45aa06d21de21a4dc8f349014bef7903ecc35bb8ce9311fbd81c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-shared-base",
+  "pullRequest": null,
+  "at": "2026-11-05T21:32:19.009Z",
+  "summary": "Implement pinned project-local baseline wiring and safe read-only verification",
+  "next": "Implement helper, regression checks and reuse documentation",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "templates/project/shared-agents.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "docs/project-shared-base.md",
+    "docs/getting-started.md",
+    "global-agents/README.md",
+    "global-agents/AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    ".github/workflows/validate.yml",
+    "tasks/CF-project-shared-base-v1-reusable-setup.md"
+  ]
+}

@@ -1,8 +1,9 @@
 # Global Agent Instructions
 
-These instructions apply to every repository unless overridden by a project-level AGENTS.md.
-
-When project instructions conflict with this file, follow the project instructions unless they reduce correctness, safety or accuracy.
+These are reusable defaults, whether loaded globally or through a pinned project
+baseline. Project-specific instructions override these defaults within the client's
+instruction hierarchy. This file does not authorize actions outside the user's
+requested scope or override higher-priority instructions.
 
 Preserve unrelated working tree changes. Do not rewrite, discard, or format files outside
 the requested scope. Keep credentials, tokens, private keys, and personal data out of

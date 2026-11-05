@@ -40,6 +40,10 @@ skills. Check links, paths, scripts and relevant runtime behavior before deliver
   confidential task sources from other repositories into this public pack.
 - `scripts/stow.sh` — GNU Stow installation script for skills, agents, workflows,
   templates, checklists, and global instructions.
+- `scripts/project-setup.sh` — project-local wiring and read-only verification for
+  consumers with a pinned `.agent-baseline` submodule; see the
+  [shared-base guide](docs/project-shared-base.md). Never install this root
+  `AGENTS.md` into consumers; their reusable defaults live in `global-agents/AGENTS.md`.
 - `global-agents/` — the tracked machine-wide global `AGENTS.md`, a setup guide, and
   `wire-global-agents.sh` to point Codex, Claude Code, opencode, and Gemini CLI at
   one canonical file.
@@ -80,6 +84,10 @@ different filename get a pointer, not a copy:
 - `GEMINI.md` — a one-line pointer telling the agent to read `AGENTS.md`.
 - Codex, opencode — no file needed; they read `AGENTS.md` directly.
 
+The Gemini pointer here is a prose instruction, not an automatic import. A file
+reference alone does not prove context was loaded; check the actual client session.
+The consumer setup helper writes explicit imports for Claude Code and Gemini CLI.
+
 The same pattern applies one level up: `global-agents/` holds one canonical global
 file, and each tool's user-level path symlinks or imports to it. Copies drift;
 pointers do not. When adding a new tool to this repo, add a pointer file or a
@@ -102,6 +110,8 @@ names, `SKILL.md` under 500 lines, a `README.md` per skill, nonempty model mappi
 shell syntax, pointer files, and every relative Markdown link in tracked or unignored
 untracked Markdown. It also runs `skills-ref validate` when that tool is installed. CI
 runs the validator and installer regression tests on every push and pull request.
+For project setup changes, also run `bash tests/test-project-setup.sh`; it checks
+conflict preservation, read-only verification, clean clones and pin updates.
 
 For runtime changes, use Node 24 or later, install pinned dependencies with
 `npm ci --prefix runtime --ignore-scripts`, and run `npm test --prefix runtime`.
