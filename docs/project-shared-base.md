@@ -11,6 +11,11 @@ Foundry's root `AGENTS.md` as your project's instructions: it governs maintenanc
 of this pack, including its own task store and validation rules. Project Memory,
 modeling and orchestration remain separate, optional choices.
 
+Treat the shared base as reusable defaults. Keep project-specific rules in the
+consumer overlay and resolve their precedence within the client's instruction
+hierarchy. Neither the base nor the overlay expands the user's authorization or
+overrides higher-priority instructions.
+
 ## First setup
 
 Run from the root of your consumer Git repository. Review the upstream revision
@@ -168,3 +173,9 @@ as it changes. This project setup needs neither Stow nor a global installation; 
 reviewed gitlink controls the team's base. Using both can introduce duplicate skills
 or different global defaults, so inspect client context rather than assuming identical
 behavior. Do not run Stow from a project's `.agent-baseline` as part of this recipe.
+
+## Maintaining the setup helper
+
+For changes to Foundry's project setup, run `bash scripts/validate.sh` and
+`bash tests/test-project-setup.sh` from the Foundry checkout. The setup regressions
+cover conflict preservation, read-only checks, clean clones and pin updates.

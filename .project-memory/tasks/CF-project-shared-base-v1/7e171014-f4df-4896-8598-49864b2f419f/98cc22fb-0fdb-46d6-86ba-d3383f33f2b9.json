@@ -1,0 +1,43 @@
+{
+  "formatVersion": 2,
+  "eventId": "98cc22fb-0fdb-46d6-86ba-d3383f33f2b9",
+  "runId": "7e171014-f4df-4896-8598-49864b2f419f",
+  "kind": "start",
+  "parents": [
+    "9180ba8e-9e4c-4fee-b299-9e3611e03e81"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-shared-base-v1",
+    "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+    "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+    "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e7221b6cf3b45aa06d21de21a4dc8f349014bef7903ecc35bb8ce9311fbd81c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-shared-base",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/93",
+  "at": "2026-11-05T23:22:09.996Z",
+  "summary": "Restore the two frozen instruction inputs while retaining consumer guidance in docs and template",
+  "next": "Verify frozen hashes, setup regressions and Go suite, then complete and update draft PR",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "templates/project/shared-agents.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "docs/project-shared-base.md",
+    "docs/getting-started.md",
+    "global-agents/README.md",
+    "global-agents/AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    ".github/workflows/validate.yml",
+    "tasks/CF-project-shared-base-v1-reusable-setup.md"
+  ]
+}

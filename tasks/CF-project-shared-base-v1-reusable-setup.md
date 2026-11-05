@@ -69,3 +69,33 @@ import parsing. This code/documentation mismatch was not exercised in Claude and
 is outside this project-local change. The global installer is unchanged. The new
 consumer imports use relative paths without spaces; consumer checkout directories
 containing spaces are covered by the shell regression tests.
+
+## Frozen-input compatibility correction
+
+PR #93 at `9a15d87982118726d76365bc06253be7501d90e4` passed the hosted
+validation, Project Memory conformance, model authoring and orchestration workflows.
+The Go workflow failed because builder-demo tests read the live instruction files
+against frozen input hashes. A local Go 1.27.3 race-enabled run reproduced failures
+in `builderdemo` and `cmd/modelbuilderdemo` before the correction.
+
+The reviewed correction restores `AGENTS.md` and `global-agents/AGENTS.md` exactly
+from baseline `c99d96d2ee8515cf6b847f3a009b85b95dd5c558`. All 15 original input
+hashes now match. Client discovery and precedence guidance stays in the shared-base
+guide and consumer template. The frozen manifests, modeling code, acceptance tests
+and historical evidence remain unchanged. A genuine new Project Memory run records
+this additive correction without rewriting the original commits; final validation
+results are recorded below and in its completion event.
+
+The full Go 1.27.3 race suite passed with a physical temporary directory
+(`TMPDIR=/private/tmp/foundry-shared-base-go-tmp`), followed by `go vet ./...`,
+`modelc validate` and `modelc check`; modeling files remained unchanged. The first
+full local run used macOS's aliased `/var` temporary directory and failed unchanged
+path-comparison tests in `builderdemo` and `proposalreplay`, comparing `/var` with
+`/private/var`. Targeted builder tests and the full suite passed on the physical
+path without changing test code or assertions. This host condition remains visible
+in the validation record rather than being reported as an unconditional local pass.
+
+The pack validator, new-script ShellCheck, project setup safety/clean-clone/update
+regressions, existing installer/model-resolver regressions and 143/143 Project
+Memory/workflow tests passed again. Optional `skills-ref` remains unavailable.
+All 15 frozen input hashes match, including the two restored instruction files.

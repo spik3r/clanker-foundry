@@ -4,6 +4,8 @@ Read `.agent-baseline/global-agents/AGENTS.md` before applying the project rules
 If the baseline is missing, initialize the pinned submodule before implementation.
 This prose instruction requires an explicit agent read; it is not a file import.
 Project rules override the reusable defaults within the client's instruction hierarchy.
+Neither the base nor this overlay expands the user's authorization or overrides
+higher-priority instructions.
 Do not apply `.agent-baseline/AGENTS.md`: it governs work on Foundry itself.
 
 ## Project facts and commands
