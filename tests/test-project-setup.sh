@@ -191,4 +191,132 @@ test -f .agents/foundry-skills
 test ! -s .agents/foundry-skills
 setup --check
 
+# A locally configured FSMonitor command must not run during helper queries.
+cat > "$test_root/fsmonitor-hook" <<'HOOK'
+#!/bin/sh
+: > "$FS_MONITOR_MARKER"
+printf 'token\000/\000'
+HOOK
+chmod +x "$test_root/fsmonitor-hook"
+export FS_MONITOR_MARKER="$test_root/fsmonitor-executed"
+git config core.fsmonitor "$test_root/fsmonitor-hook"
+git -C .agent-baseline config core.fsmonitor "$test_root/fsmonitor-hook"
+# Prove the fixture is effective before checking the helper's command override.
+GIT_OPTIONAL_LOCKS=0 git -C .agent-baseline status --porcelain >/dev/null
+test -f "$FS_MONITOR_MARKER"
+rm "$FS_MONITOR_MARKER"
+snapshot > "$test_root/before"
+setup
+setup --check
+test ! -e "$FS_MONITOR_MARKER"
+snapshot > "$test_root/after"
+cmp "$test_root/before" "$test_root/after"
+git config --unset core.fsmonitor
+git -C .agent-baseline config --unset core.fsmonitor
+
+# Execute the guide's actual first Bash block in each section without adding shell
+# options to the extracted code: the published block must enforce its own failures.
+guide_snippet() {
+  awk -v heading="$1" '
+    $0 == heading { section = 1; next }
+    section && /^## / { exit }
+    section && $0 == "```bash" { code = 1; next }
+    code && $0 == "```" { exit }
+    code { print }
+  ' "$repo_dir/docs/project-shared-base.md"
+}
+setup_example="$(guide_snippet '## First setup')"
+update_example="$(guide_snippet '## Updates and customizations')"
+test -n "$setup_example"
+test -n "$update_example"
+guide_source='https://github.com/spik3r/clanker-foundry.git'
+guide_placeholder='<full-reviewed-commit-id>'
+[[ "$setup_example" == *"$guide_source"* ]]
+[[ "$setup_example" == *"$guide_placeholder"* ]]
+[[ "$update_example" == *"$guide_placeholder"* ]]
+
+# A fixture-only wrapper records any invocation, including read-only --check.
+# The actual implementation and all snippet commands still run unchanged.
+mv "$baseline/scripts/project-setup.sh" "$baseline/scripts/project-setup-implementation.sh"
+cat > "$baseline/scripts/project-setup.sh" <<'WRAPPER'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$GUIDE_HELPER_LOG"
+exec bash "$(dirname "${BASH_SOURCE[0]}")/project-setup-implementation.sh" "$@"
+WRAPPER
+git -C "$baseline" add scripts
+git -C "$baseline" -c user.name=Test -c user.email=test@example.invalid commit -qm 'guide invocation fixture'
+guide_pin="$(git -C "$baseline" rev-parse HEAD)"
+git -C "$baseline" -c user.name=Test -c user.email=test@example.invalid commit --allow-empty -qm 'different default tip'
+default_pin="$(git -C "$baseline" rev-parse HEAD)"
+test "$guide_pin" != "$default_pin"
+missing_pin=0000000000000000000000000000000000000000
+short_pin="${guide_pin:0:12}"
+export GUIDE_HELPER_LOG="$test_root/guide-helper.log"
+
+run_guide() {
+  local snippet="$1" pin="$2"
+  snippet="${snippet//"$guide_source"/\"$baseline\"}"
+  snippet="${snippet//"$guide_placeholder"/$pin}"
+  printf '%s\n' "$snippet" > "$test_root/guide-example.sh"
+  # Only the fixture's local transport is enabled; no global config is changed.
+  GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=protocol.file.allow GIT_CONFIG_VALUE_0=always \
+    bash "$test_root/guide-example.sh" > "$test_root/guide-output" 2>&1
+}
+reject_guide() {
+  rm -f "$GUIDE_HELPER_LOG"
+  if run_guide "$@"; then
+    cat "$test_root/guide-output" >&2
+    printf 'FAIL  guide accepted pin: %s\n' "$2" >&2; exit 1
+  fi
+  test ! -e "$GUIDE_HELPER_LOG"
+}
+assert_pin() {
+  test "$(git -C .agent-baseline rev-parse --verify HEAD)" = "$1"
+  test "$(git ls-files --stage -- .agent-baseline)" = "$(printf '160000 %s 0\t.agent-baseline' "$1")"
+}
+for bad_pin in "$missing_pin" "$short_pin"; do
+  git init -q "$test_root/guide-rejected-$bad_pin"
+  cd "$test_root/guide-rejected-$bad_pin"
+  reject_guide "$setup_example" "$bad_pin"
+  test ! -e AGENTS.md
+  test ! -e .agents
+  test ! -e .claude
+done
+
+git init -q "$test_root/guide consumer with spaces"
+cd "$test_root/guide consumer with spaces"
+run_guide "$setup_example" "$guide_pin"
+assert_pin "$guide_pin"
+test "$(cat "$GUIDE_HELPER_LOG")" = engineer
+test -f .agents/skills/engineer/SKILL.md
+test -f .claude/skills/engineer/SKILL.md
+git add .gitmodules .agent-baseline .agents .claude AGENTS.md CLAUDE.md GEMINI.md
+git -c user.name=Test -c user.email=test@example.invalid commit -qm 'guide consumer'
+
+# Create the reviewed update after setup so the guide must fetch it first.
+printf '\nGuide fixture update.\n' >> "$baseline/skills/engineer/SKILL.md"
+git -C "$baseline" add skills/engineer/SKILL.md
+git -C "$baseline" -c user.name=Test -c user.email=test@example.invalid commit -qm 'reviewed guide update'
+update_pin="$(git -C "$baseline" rev-parse HEAD)"
+for bad_pin in "$missing_pin" "${update_pin:0:12}"; do
+  prior_index="$(git write-tree)"
+  reject_guide "$update_example" "$bad_pin"
+  assert_pin "$guide_pin"
+  test "$(git write-tree)" = "$prior_index"
+  test -z "$(git status --porcelain)"
+done
+# Even with a valid available commit, a blocked checkout must stop before --check.
+printf '\nLocal baseline edit.\n' >> .agent-baseline/skills/engineer/SKILL.md
+cp .agent-baseline/skills/engineer/SKILL.md "$test_root/local-skill"
+prior_index="$(git write-tree)"
+reject_guide "$update_example" "$update_pin"
+assert_pin "$guide_pin"
+test "$(git write-tree)" = "$prior_index"
+cmp "$test_root/local-skill" .agent-baseline/skills/engineer/SKILL.md
+git -C .agent-baseline restore -- skills/engineer/SKILL.md
+run_guide "$update_example" "$update_pin"
+assert_pin "$update_pin"
+test "$(cat "$GUIDE_HELPER_LOG")" = --check
+printf '%s\n' 'PASS  actual guide snippets reject unavailable/abbreviated pins, preserve failed updates, and set exact reviewed pins'
+
 printf '%s\n' 'PASS  project shared-base safety, clean-clone and update regressions'

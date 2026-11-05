@@ -23,12 +23,27 @@ and scripts before running code from them. Choose a full commit ID that includes
 `scripts/project-setup.sh`; do not substitute a moving branch for the review.
 
 ```bash
-reviewed_commit='<full-reviewed-commit-id>'
-git submodule add https://github.com/spik3r/clanker-foundry.git .agent-baseline
-git -C .agent-baseline checkout --detach "$reviewed_commit"
-git add .gitmodules .agent-baseline
-bash .agent-baseline/scripts/project-setup.sh engineer
+(
+  set -eu
+  reviewed_commit='<full-reviewed-commit-id>'
+  [[ "$reviewed_commit" =~ ^[0-9a-f]{40}$ ]] || {
+    printf '%s\n' 'Use the full 40-character lowercase reviewed commit ID.' >&2
+    exit 1
+  }
+  git submodule add https://github.com/spik3r/clanker-foundry.git .agent-baseline
+  test "$(git -C .agent-baseline rev-parse --verify "$reviewed_commit^{commit}")" = "$reviewed_commit"
+  git -C .agent-baseline checkout --detach "$reviewed_commit"
+  test "$(git -C .agent-baseline rev-parse --verify HEAD)" = "$reviewed_commit"
+  git add .gitmodules .agent-baseline
+  bash .agent-baseline/scripts/project-setup.sh engineer
+)
 ```
+
+Run the whole block in Bash, including the parentheses. The subshell stops at a
+failed command without changing your shell's options. It rejects abbreviated IDs,
+requires the exact commit object, and verifies the checked-out HEAD before running
+setup. A failed first setup may leave a cloned submodule and staged metadata;
+inspect those before retrying, and do not run the helper from an unverified pin.
 
 The helper creates only project-local files:
 
@@ -106,7 +121,9 @@ Do not silently fall back to an unrelated global installation.
 `--check` is read-only: it verifies the staged pin, submodule configuration, clean
 baseline, required instruction lines, selection and links. It does not initialize
 anything, repair missing links or prove a client loaded the files. Run it after
-cloning, changing the selection or reviewing a baseline update.
+cloning, changing the selection or reviewing a baseline update. Its Git queries
+disable FSMonitor for that invocation, so an existing local `core.fsmonitor`
+command is not run. Local and global Git settings are unchanged.
 
 ## Updates and customizations
 
@@ -114,13 +131,27 @@ Review upstream changes, including changes to instructions and selected skills.
 Then stage the new pin in a normal project pull request:
 
 ```bash
-new_reviewed_commit='<full-reviewed-commit-id>'
-git -C .agent-baseline fetch origin
-git -C .agent-baseline checkout --detach "$new_reviewed_commit"
-git add .agent-baseline
-bash .agent-baseline/scripts/project-setup.sh --check
-git diff --cached --submodule=log
+(
+  set -eu
+  new_reviewed_commit='<full-reviewed-commit-id>'
+  [[ "$new_reviewed_commit" =~ ^[0-9a-f]{40}$ ]] || {
+    printf '%s\n' 'Use the full 40-character lowercase reviewed commit ID.' >&2
+    exit 1
+  }
+  git -C .agent-baseline fetch origin
+  test "$(git -C .agent-baseline rev-parse --verify "$new_reviewed_commit^{commit}")" = "$new_reviewed_commit"
+  git -C .agent-baseline checkout --detach "$new_reviewed_commit"
+  test "$(git -C .agent-baseline rev-parse --verify HEAD)" = "$new_reviewed_commit"
+  git add .agent-baseline
+  bash .agent-baseline/scripts/project-setup.sh --check
+  git diff --cached --submodule=log
+)
 ```
+
+This whole Bash block also stops on failure. An invalid or unavailable commit
+leaves the previous checkout and staged gitlink intact and never runs the checker.
+If the new commit is available but its wiring fails verification, inspect the
+staged update and reconcile it before committing; the block does not roll it back.
 
 Commit the gitlink update and have collaborators run the initialization command
 again after pulling. Setup never advances the pin. The project overlay is copied
@@ -178,4 +209,7 @@ behavior. Do not run Stow from a project's `.agent-baseline` as part of this rec
 
 For changes to Foundry's project setup, run `bash scripts/validate.sh` and
 `bash tests/test-project-setup.sh` from the Foundry checkout. The setup regressions
-cover conflict preservation, read-only checks, clean clones and pin updates.
+cover conflict preservation, read-only checks, local FSMonitor suppression, clean
+clones and pin updates. They also execute the first setup and update blocks above
+against a local fixture, including unavailable and abbreviated pins and failed
+updates that must preserve the prior pin.

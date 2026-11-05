@@ -13,9 +13,9 @@ case "${1:-}" in
   --check) check=true; shift ;;
 esac
 
-# Read-only Git queries must not refresh the index or fetch missing objects.
+# Read-only Git queries must not refresh the index, fetch objects or run FSMonitor.
 export GIT_OPTIONAL_LOCKS=0 GIT_NO_LAZY_FETCH=1 GIT_NO_REPLACE_OBJECTS=1
-git_local() { git -c protocol.allow=never "$@"; }
+git_local() { git -c protocol.allow=never -c core.fsmonitor=false "$@"; }
 root="$(pwd -P)"
 top="$(git_local rev-parse --show-toplevel 2>/dev/null)" || fail 'Run inside a Git repository.'
 [ "$root" = "$top" ] || fail 'Run at the consumer repository root.'

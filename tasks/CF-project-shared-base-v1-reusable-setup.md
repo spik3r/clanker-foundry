@@ -99,3 +99,29 @@ The pack validator, new-script ShellCheck, project setup safety/clean-clone/upda
 regressions, existing installer/model-resolver regressions and 143/143 Project
 Memory/workflow tests passed again. Optional `skills-ref` remains unavailable.
 All 15 frozen input hashes match, including the two restored instruction files.
+
+## Reviewed-pin and local-hook correction
+
+The guide's original setup block continued after checkout of an unavailable commit
+failed, then ran setup from the default branch and returned success. A regression
+executing the actual published block reproduced this before the correction. The
+setup and update blocks now run in Bash subshells that stop on failure, require a
+full lowercase 40-character commit ID, verify the commit object before checkout,
+and compare HEAD with that exact ID before staging or running the helper.
+
+The regressions extract the blocks directly from the shared-base guide and substitute only
+the fixture URL and reviewed pin. They cover unavailable and abbreviated pins,
+setup at a reviewed commit different from the default tip, a fetched update, and
+preserving the previous HEAD and staged gitlink after failed updates. A conflicting
+local edit also blocks checkout without running the checker or discarding the edit.
+
+Separately, a local Git `core.fsmonitor` command was observed running during the
+helper's status query despite its offline and optional-lock flags. This requires
+an already configured local command; the observation does not establish a remote
+exploit. Helper Git calls now override `core.fsmonitor=false` for the invocation.
+A fixture first proves its local hook runs under ordinary Git status, then verifies
+setup and read-only checking suppress it while preserving configuration and Git
+metadata. No global settings, frozen inputs or historical evidence were changed.
+
+A genuine new Project Memory run records this continuation. Final observed checks
+are recorded in its completion event.
