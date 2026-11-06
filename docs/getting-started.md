@@ -52,10 +52,12 @@ Commit and pull changes to the tracked file to share them across machines.
 
 ### Project-scoped use
 
-The Stow script installs personal agent assets. For an asset that belongs only to one
-project, use the matching project directory, such as `.agents/skills/`,
-`.agents/workflows/`, or the equivalent `.claude/` path, and keep it under that
-project's version control.
+For a team or a single project, use the [pinned shared-base setup](project-shared-base.md).
+It keeps a reviewed `.agent-baseline` submodule, a short local instruction overlay
+and selected relative skill links under project version control. It makes no
+home-directory changes and requires no Stow installation. Workflows, templates and
+checklists can be referenced through the submodule; placing them in a client-named
+directory does not itself guarantee discovery.
 
 ### One-off manual link
 

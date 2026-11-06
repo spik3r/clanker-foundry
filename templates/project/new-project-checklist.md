@@ -6,8 +6,10 @@ Work top to bottom. Skip items with a recorded reason, not silently.
 
 - [ ] Repo created with a licence and `.gitignore` for the stack
 - [ ] `README.md` from `templates/project/project-readme.md`
-- [ ] `AGENTS.md` from `templates/project/project-agents.md`
-- [ ] If sharing a baseline, follow the pinned submodule recipe in [`global-agents/README.md`](../../global-agents/README.md)
+- [ ] Choose instruction setup: the [pinned project setup](../../docs/project-shared-base.md)
+  creates its short overlay, or copy `templates/project/project-agents.md` for standalone use
+- [ ] Initialize submodules in clean clones and CI; check the pin and selected links
+- [ ] Confirm each client loads the intended instructions and selected skills
 - [ ] Tool-specific pointer files if the team uses them: `CLAUDE.md`, `GEMINI.md` (both point at `AGENTS.md` — one source of truth)
 - [ ] Dependency pinning chosen (lockfile committed)
 

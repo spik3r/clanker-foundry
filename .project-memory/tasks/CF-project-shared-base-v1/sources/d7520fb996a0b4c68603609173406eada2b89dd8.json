@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+  "id": "CF-project-shared-base-v1",
+  "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+  "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+  "record": "---\nid: CF-project-shared-base-v1\nstatus: in-progress\nowner: Astra implementation agent\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reusable project-local shared base\n\n## Implementation claim\n\nImplement a project-local setup and read-only verification helper for a reviewed\nGit submodule at `.agent-baseline`, a short project-owned instruction overlay and\nselected portable skill links. Cover setup, clean clones, updates, customization,\nclient discovery limits and the distinction from personal Stow installation.\nReview nearby instructions for accuracy and maintainability. Add safety regression\ntests and CI coverage; run the pack validator and a clean consumer trial.\n\nScope: `scripts/project-setup.sh`, `tests/test-project-setup.sh`,\n`templates/project/shared-agents.md`, `templates/project/project-agents.md`,\n`templates/project/new-project-checklist.md`, `docs/project-shared-base.md`,\n`docs/getting-started.md`, `global-agents/README.md`, `global-agents/AGENTS.md`,\n`AGENTS.md`, `README.md`, `.github/workflows/validate.yml`, and this task record.\nPreserve all other claims and legacy evidence. No machine-wide installation,\nruntime or modeling change, merge, deployment, or protection change is included.\n\nThis public-safe local claim records the requested implementation. Publication\nrequires the coordinator's ownership and authorization check. The implementation\nuses an isolated checkout to preserve the active source checkout.\n\n## Acceptance\n\n- Reject wrong pins, invalid skill names, destination conflicts and symlink parents\n  before creating links or instruction files; repeat setup without overwrites.\n- Verification is read-only and detects missing baseline files or selected links.\n- Consumer instructions use only the reusable base, never Foundry's root rules.\n- Record observed checks and committed Project Memory evidence for review.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+        "id": "CF-project-shared-base-v1",
+        "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

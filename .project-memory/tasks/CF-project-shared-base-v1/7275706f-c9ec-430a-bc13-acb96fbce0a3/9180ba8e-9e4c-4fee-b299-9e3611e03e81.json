@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "9180ba8e-9e4c-4fee-b299-9e3611e03e81",
+  "runId": "7275706f-c9ec-430a-bc13-acb96fbce0a3",
+  "kind": "complete",
+  "parents": [
+    "c7136573-2dd2-44cc-861f-dfbbb2e7364b"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-shared-base-v1",
+    "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+    "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+    "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e7221b6cf3b45aa06d21de21a4dc8f349014bef7903ecc35bb8ce9311fbd81c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-shared-base",
+  "pullRequest": null,
+  "at": "2026-11-05T21:40:10.788Z",
+  "summary": "Implemented reviewed project-local baseline wiring, selected skill links, reuse docs and safety regressions; preserved global installer behavior",
+  "next": "Commit exact staged result and immutable evidence, validate against origin/main, then coordinator review and separately managed publication; no merge or deploy",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "templates/project/shared-agents.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "docs/project-shared-base.md",
+    "docs/getting-started.md",
+    "global-agents/README.md",
+    "global-agents/AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    ".github/workflows/validate.yml",
+    "tasks/CF-project-shared-base-v1-reusable-setup.md"
+  ],
+  "validation": "scripts/validate.sh PASS (optional skills-ref unavailable); shellcheck scripts/project-setup.sh tests/test-project-setup.sh PASS; bash tests/test-project-setup.sh PASS including read-only snapshots, conflicts, clean clone and staged update; bash tests/test-install.sh PASS including agent-model regressions; node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs PASS 143/143 after updating the expected additional CI step; git diff --check and git diff --cached --check PASS. macOS Bash 3.2, Node 26, Git 2.54. Live clients and hosted Linux CI not run.",
+  "snapshot": {
+    "scripts/project-setup.sh": {
+      "blob": "958c627e9977a6b433bde859ba7dbf1a38faa127",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "a9722100c318ce419ae7e02b44dbf5a6cb5d51e0",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "4249098ef7ea4a78fbec860a908ece9e6a476f09",
+      "mode": "100644"
+    },
+    "templates/project/shared-agents.md": {
+      "blob": "bbca74c442a6f9f5bff99e32d1db2e8a1462431a",
+      "mode": "100644"
+    },
+    "templates/project/project-agents.md": {
+      "blob": "945796602c6fa2281e5094bc26c99f5ecaa9e2b6",
+      "mode": "100644"
+    },
+    "templates/project/new-project-checklist.md": {
+      "blob": "15a6a15b63b5e73e4cb27f64bcc54ae06cc7eaa9",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "e10ef55adbaed874f6031b5ebb745097141c112a",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "cdb91182cf5888e028e026987a5e41d979bb3029",
+      "mode": "100644"
+    },
+    "global-agents/README.md": {
+      "blob": "d4494d89f5e9df40f70624b700404954c9be7a05",
+      "mode": "100644"
+    },
+    "global-agents/AGENTS.md": {
+      "blob": "005aea8391b133480940d56351495b60b1ccd0f1",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "861215b2af5ca8e342b794af0ed19353a08500e4",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "fe3d1d072c8325a78d9999556a41690941ad1e94",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "7c917bc1cb593d6538c924f4ba4b886c1d58fce3",
+      "mode": "100644"
+    },
+    "tasks/CF-project-shared-base-v1-reusable-setup.md": {
+      "blob": "b4f3289fa5c3845de0d114996ecc8994f2011944",
+      "mode": "100644"
+    }
+  }
+}

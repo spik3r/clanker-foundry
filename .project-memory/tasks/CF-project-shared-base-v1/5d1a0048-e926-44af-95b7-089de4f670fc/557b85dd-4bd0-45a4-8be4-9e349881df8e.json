@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "557b85dd-4bd0-45a4-8be4-9e349881df8e",
+  "runId": "5d1a0048-e926-44af-95b7-089de4f670fc",
+  "kind": "complete",
+  "parents": [
+    "c4daf442-0077-4488-87a3-af046381a352"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-shared-base-v1",
+    "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+    "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+    "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e7221b6cf3b45aa06d21de21a4dc8f349014bef7903ecc35bb8ce9311fbd81c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-shared-base",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/93",
+  "at": "2026-11-05T23:58:19.413Z",
+  "summary": "Published Bash examples now stop on command failures, reject abbreviated pins and verify the exact commit before executing setup/check; actual-guide regressions preserve old HEAD and gitlink on unavailable pins and blocked checkouts. Helper queries suppress already configured local FSMonitor commands without changing settings.",
+  "next": "Commit this additive correction, validate committed lifecycle coverage, update authorized draft PR93 and monitor its new-head CI; no merge",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "templates/project/shared-agents.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "docs/project-shared-base.md",
+    "docs/getting-started.md",
+    "global-agents/README.md",
+    "global-agents/AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    ".github/workflows/validate.yml",
+    "tasks/CF-project-shared-base-v1-reusable-setup.md"
+  ],
+  "validation": "Observed: the new actual-guide test first reproduced the old unavailable-pin checkout failure followed by successful helper execution; the new FSMonitor fixture first failed before the per-command override. Final /bin/bash tests/test-project-setup.sh passed on macOS Bash3.2, covering the original safety/clean-clone/update tests plus actual guide unavailable/abbreviated pins, exact non-default setup, fetched update, failed-update HEAD/index preservation and conflicting local-edit preservation. ShellCheck passed for both scripts. bash scripts/validate.sh passed (optional skills-ref unavailable). bash tests/test-install.sh passed. node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs passed 143/143. Full Go1.27.3 go test -race -count=1 ./... passed with TMPDIR=/private/tmp/foundry-shared-base-go-tmp and offline caches; gofmt, go vet ./..., modelc validate, modelc check and no-modeling-diff check passed. All 15 frozen input SHA256 hashes match; all 482 pre-existing Project Memory files are byte-identical. No frozen inputs, legacy evidence or original commits changed. Hosted checks for this new commit remain to run; live client loading was not tested.",
+  "snapshot": {
+    "scripts/project-setup.sh": {
+      "blob": "4b213ff077edf72db89ec88835b0e97f95bd8905",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "33d574d1a3b70e561d5d881587415b0ad3948928",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "4249098ef7ea4a78fbec860a908ece9e6a476f09",
+      "mode": "100644"
+    },
+    "templates/project/shared-agents.md": {
+      "blob": "73f4dc127a3679a3719165859e6a05983425cb5e",
+      "mode": "100644"
+    },
+    "templates/project/project-agents.md": {
+      "blob": "945796602c6fa2281e5094bc26c99f5ecaa9e2b6",
+      "mode": "100644"
+    },
+    "templates/project/new-project-checklist.md": {
+      "blob": "15a6a15b63b5e73e4cb27f64bcc54ae06cc7eaa9",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "5c582ccb7d642819ea5a38619dfa11c905f7fe82",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "cdb91182cf5888e028e026987a5e41d979bb3029",
+      "mode": "100644"
+    },
+    "global-agents/README.md": {
+      "blob": "d4494d89f5e9df40f70624b700404954c9be7a05",
+      "mode": "100644"
+    },
+    "global-agents/AGENTS.md": {
+      "blob": "fa560a827759bc421f87323e568838e1f8b23869",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "c28ff18ffb08f45ac1abec5fa7646d74ffee1130",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "fe3d1d072c8325a78d9999556a41690941ad1e94",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "7c917bc1cb593d6538c924f4ba4b886c1d58fce3",
+      "mode": "100644"
+    },
+    "tasks/CF-project-shared-base-v1-reusable-setup.md": {
+      "blob": "f4186d9efeab7532c22c58a8c1709b0cf07a8cb4",
+      "mode": "100644"
+    }
+  }
+}
