@@ -279,6 +279,50 @@ func TestCompilerExactBoundaries(t *testing.T) {
 		{"bytes-1048576", bytesAtLimit, true, ""},
 		{"bytes-1048577", append(append([]byte{}, bytesAtLimit...), ' '), false, "invalid model bytes"},
 	}
+	// Execute only these two maximum-size outputs. Keep the literal expectations
+	// separate from the schema builders rather than interpreting the model again.
+	nestedValue := func(arrays int, leaf string) string {
+		return strings.Repeat("[", arrays) + leaf + strings.Repeat("]", arrays)
+	}
+	wideValue := func(first, last string) string {
+		var fields []string
+		for i := range 128 {
+			value := `[[["x"]]]`
+			if i == 0 {
+				value = first
+			} else if i == 127 {
+				value = last
+			}
+			if value != "" {
+				fields = append(fields, fmt.Sprintf(`"p%03d":%s`, i, value))
+			}
+		}
+		return "{" + strings.Join(fields, ",") + "}"
+	}
+	t.Run("nodes-512-execution", func(t *testing.T) {
+		checkGeneratedLiterals(t, encode(properties(128, 1)), []profileCase{
+			{wideValue(`[["x"]]`, `[[["x"]]]`), true},
+			{wideValue(`[]`, `[]`), true},
+			{wideValue("", `[[["x"]]]`), false},
+			{wideValue(`[["x"]]`, ""), false},
+			{wideValue(`[[false]]`, `[[["x"]]]`), false},
+			{wideValue(`[["x"]]`, `[[[false]]]`), false},
+			{wideValue(`[["x"]]`, `[[["x",false]]]`), false},
+			{`[]`, false},
+		})
+	})
+	t.Run("schema-depth-32-execution", func(t *testing.T) {
+		checkGeneratedLiterals(t, schema32, []profileCase{
+			{nestedValue(31, `"x"`), true},
+			{`[]`, true},
+			{nestedValue(30, `[]`), true},
+			{nestedValue(31, `false`), false},
+			{nestedValue(30, `["x",false]`), false},
+			{nestedValue(30, `"x"`), false},
+			{nestedValue(32, `"x"`), false},
+			{`null`, false},
+		})
+	})
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			dir := t.TempDir()
