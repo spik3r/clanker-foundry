@@ -1,0 +1,232 @@
+[
+  {
+    "id": "minimal",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true}",
+    "valid": true
+  },
+  {
+    "id": "empty-id",
+    "rawJson": "{\"id\":\"\",\"enabled\":true}",
+    "valid": true
+  },
+  {
+    "id": "all-fields",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"label\":\"a\",\"tags\":[\"x\",\"\"],\"flags\":[true,false],\"meta\":{\"region\":\"\",\"archived\":false}}",
+    "valid": true
+  },
+  {
+    "id": "empty-arrays",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":[],\"flags\":[]}",
+    "valid": true
+  },
+  {
+    "id": "optional-label-empty",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"label\":\"\"}",
+    "valid": true
+  },
+  {
+    "id": "extra-fields",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"ignored\":{\"arbitrary\":[null,3,\"x\"]}}",
+    "valid": true
+  },
+  {
+    "id": "extra-numeric-overflow",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"ignored\":1e999}",
+    "valid": true
+  },
+  {
+    "id": "extra-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"ignored\":null}",
+    "valid": true
+  },
+  {
+    "id": "nested-extra",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":{\"region\":\"r\",\"ignored\":13}}",
+    "valid": true
+  },
+  {
+    "id": "prototype-extra",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"__proto__\":{\"polluted\":true},\"constructor\":null}",
+    "valid": true
+  },
+  {
+    "id": "unicode",
+    "rawJson": "{\"id\":\"雪🌳\",\"enabled\":true,\"label\":\"\\u0000\"}",
+    "valid": true
+  },
+  {
+    "id": "null-root",
+    "rawJson": "null",
+    "valid": false
+  },
+  {
+    "id": "array-root",
+    "rawJson": "[]",
+    "valid": false
+  },
+  {
+    "id": "string-root",
+    "rawJson": "\"x\"",
+    "valid": false
+  },
+  {
+    "id": "boolean-root",
+    "rawJson": "true",
+    "valid": false
+  },
+  {
+    "id": "numeric-root",
+    "rawJson": "3",
+    "valid": false
+  },
+  {
+    "id": "missing-both",
+    "rawJson": "{}",
+    "valid": false
+  },
+  {
+    "id": "missing-id",
+    "rawJson": "{\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "missing-enabled",
+    "rawJson": "{\"id\":\"x\"}",
+    "valid": false
+  },
+  {
+    "id": "id-null",
+    "rawJson": "{\"id\":null,\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "id-number",
+    "rawJson": "{\"id\":1,\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "id-boolean",
+    "rawJson": "{\"id\":false,\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "id-array",
+    "rawJson": "{\"id\":[],\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "id-object",
+    "rawJson": "{\"id\":{},\"enabled\":true}",
+    "valid": false
+  },
+  {
+    "id": "enabled-false",
+    "rawJson": "{\"id\":\"x\",\"enabled\":false}",
+    "valid": false
+  },
+  {
+    "id": "enabled-number",
+    "rawJson": "{\"id\":\"x\",\"enabled\":1}",
+    "valid": false
+  },
+  {
+    "id": "enabled-string",
+    "rawJson": "{\"id\":\"x\",\"enabled\":\"true\"}",
+    "valid": false
+  },
+  {
+    "id": "enabled-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":null}",
+    "valid": false
+  },
+  {
+    "id": "label-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"label\":null}",
+    "valid": false
+  },
+  {
+    "id": "label-number",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"label\":0}",
+    "valid": false
+  },
+  {
+    "id": "tags-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":null}",
+    "valid": false
+  },
+  {
+    "id": "tags-string",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":\"x\"}",
+    "valid": false
+  },
+  {
+    "id": "tags-null-item",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":[\"x\",null]}",
+    "valid": false
+  },
+  {
+    "id": "tags-number-item",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":[1]}",
+    "valid": false
+  },
+  {
+    "id": "tags-nested-array",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"tags\":[[]]}",
+    "valid": false
+  },
+  {
+    "id": "flags-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"flags\":null}",
+    "valid": false
+  },
+  {
+    "id": "flags-number",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"flags\":[true,1]}",
+    "valid": false
+  },
+  {
+    "id": "flags-string",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"flags\":[\"false\"]}",
+    "valid": false
+  },
+  {
+    "id": "meta-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":null}",
+    "valid": false
+  },
+  {
+    "id": "meta-array",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":[]}",
+    "valid": false
+  },
+  {
+    "id": "region-missing",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":{}}",
+    "valid": false
+  },
+  {
+    "id": "region-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":{\"region\":null}}",
+    "valid": false
+  },
+  {
+    "id": "archived-null",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":{\"region\":\"r\",\"archived\":null}}",
+    "valid": false
+  },
+  {
+    "id": "archived-string",
+    "rawJson": "{\"id\":\"x\",\"enabled\":true,\"meta\":{\"region\":\"r\",\"archived\":\"false\"}}",
+    "valid": false
+  },
+  {
+    "id": "duplicate-key-last-valid",
+    "rawJson": "{\"id\":null,\"id\":\"x\",\"enabled\":true}",
+    "valid": true
+  },
+  {
+    "id": "duplicate-key-last-invalid",
+    "rawJson": "{\"id\":\"x\",\"id\":null,\"enabled\":true}",
+    "valid": false
+  }
+]
