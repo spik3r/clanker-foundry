@@ -1,7 +1,7 @@
 ---
 id: CF-agent-model-duplicate-keys
 category: tooling
-status: in-progress
+status: done
 owner: Foundry implementation
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -85,3 +85,24 @@ competing lane; record facts rather than infer completion from age. Run the pack
 validator, whitespace checks and committed lifecycle validation for the final
 metadata-only change. Qualify and publish any closeout PR only under its separate
 coordinator assignment; this claim does not itself authorize a remote action.
+## Integration closeout
+
+PR13 merged on 1 November 2026 as
+`f81e07366ba8ddbf174763368307654f6b282dfc`, an ancestor of reviewed main
+`8b9d9617a24d0666aba7231068d74e0d0c6d6b55`. All five paths fingerprinted by the final
+implementation completion retain their accepted blobs and modes at that main.
+At that reviewed main, before this metadata-closeout run, the task's sole
+implementation frontier was completion
+`719112e5-38f2-4a20-9a8e-b952ad4f1329`. The final PR head was
+`7af5d65f8b9f66cad5c5e59ab85f1ea61f59560c`. The PR records independent Linux and
+native macOS/BSD-awk review plus successful exact-head hosted checks after the NUL
+correction. These are retained implementation results, not new executions by the
+metadata closeout.
+
+The coordinator records the integrated duplicate/malformed/NUL mapping outcome
+as done and releases only that completed implementation scope. Historical
+implementation text and every prior immutable source/event remain intact. The
+separate profile-Markdown CRLF finding is not implemented or claimed by this
+closeout. Any follow-on needs its own accepted bounded claim and genuine start.
+
+Integration evidence: [PR13](https://github.com/spik3r/clanker-foundry/pull/13).
