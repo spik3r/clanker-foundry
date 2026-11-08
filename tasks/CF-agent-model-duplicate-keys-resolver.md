@@ -60,3 +60,28 @@ Use invented shared/local fixtures and raw output-file checks. Verify the exact
 candidate independently on Linux and native macOS/BSD awk before treating the
 portability finding as resolved. Keep the existing PR draft; no approval, merge
 or deployment is part of this follow-up.
+
+## Coordinator closeout claim
+
+Owner: Foundry coordinator, for the integration record only. The original
+implementation owner and claims above remain historical provenance. Base:
+`8b9d9617a24d0666aba7231068d74e0d0c6d6b55`. Intended local branch:
+`local/resolver-integration-closeout-20261108`. Recheck the current canonical task,
+main, open work and the final PR13 evidence before using this bounded scope.
+
+Record the already merged duplicate/malformed/NUL mapping outcome and close only
+that completed implementation scope. Exact writable paths are this task record
+and new immutable source/event files for `CF-agent-model-duplicate-keys` only.
+Do not edit resolver code, tests, mappings, defaults, other tasks, prior source
+snapshots, prior events or legacy ledger bytes. No CRLF profile implementation,
+new resolver claim, provider/client execution, installation or settings change
+belongs to this closeout. No receiving implementation owner is assigned here.
+
+Independently review this claim before committing its source. Register that exact
+reviewed source and make a genuine new start under this claim before changing
+status or adding the closeout result. Preserve every previous immutable record.
+Verify PR13 integration, current source identity and absence of a visible
+competing lane; record facts rather than infer completion from age. Run the pack
+validator, whitespace checks and committed lifecycle validation for the final
+metadata-only change. Qualify and publish any closeout PR only under its separate
+coordinator assignment; this claim does not itself authorize a remote action.
