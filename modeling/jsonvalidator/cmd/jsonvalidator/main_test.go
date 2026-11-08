@@ -3,9 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -40,6 +43,151 @@ func TestDeterminismAndSavedOutput(t *testing.T) {
 			t.Fatalf("generated drift in %s", item.name)
 		}
 	}
+}
+
+func TestCLI(t *testing.T) {
+	// Build the real entry point: go run would replace the program's exit status.
+	binary := filepath.Join(t.TempDir(), "jsonvalidator.exe")
+	build := exec.CommandContext(t.Context(), filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-o", binary, ".")
+	if output, err := build.CombinedOutput(); err != nil {
+		t.Fatalf("build CLI: %v\n%s", err, output)
+	}
+	model, err := filepath.Abs("../../testdata/sample/model.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	run := func(t *testing.T, args []string, wantExit int, wantError string) {
+		t.Helper()
+		command := exec.CommandContext(t.Context(), binary, args...)
+		var stdout, stderr bytes.Buffer
+		command.Stdout, command.Stderr = &stdout, &stderr
+		err := command.Run()
+		exit := 0
+		if err != nil {
+			var exitError *exec.ExitError
+			if !errors.As(err, &exitError) {
+				t.Fatalf("run CLI: %v", err)
+			}
+			exit = exitError.ExitCode()
+		}
+		if exit != wantExit {
+			t.Errorf("exit = %d, want %d; stderr: %s", exit, wantExit, &stderr)
+		}
+		if stdout.Len() != 0 {
+			t.Errorf("unexpected stdout: %s", &stdout)
+		}
+		if wantExit == 0 && stderr.Len() != 0 {
+			t.Errorf("unexpected stderr: %s", &stderr)
+		} else if wantExit != 0 && (stderr.Len() == 0 || !strings.Contains(stderr.String(), wantError)) {
+			t.Errorf("stderr = %q, want a diagnostic containing %q", stderr.String(), wantError)
+		}
+	}
+	for _, form := range []string{"flags", "reversed-equals", "empty-terminator"} {
+		t.Run(form, func(t *testing.T) {
+			out := filepath.Join(t.TempDir(), "generated")
+			args := []string{"-model", model, "-out", out}
+			if form == "reversed-equals" {
+				args = []string{"-out=" + out, "-model=" + model}
+			} else if form == "empty-terminator" {
+				args = append(args, "--")
+			}
+			run(t, args, 0, "")
+			entries, err := os.ReadDir(out)
+			if err != nil || len(entries) != 2 {
+				t.Fatalf("generated directory: entries = %v, err = %v", entries, err)
+			}
+			for _, name := range []string{"validator.go", "validator.ts"} {
+				got, err := os.ReadFile(filepath.Join(out, name))
+				if err != nil {
+					t.Fatal(err)
+				}
+				want, err := os.ReadFile(filepath.Join("../../testdata/sample", name))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !bytes.Equal(got, want) {
+					t.Errorf("CLI generated drift in %s", name)
+				}
+			}
+		})
+	}
+	for _, name := range []string{
+		"missing-both", "missing-model", "missing-out", "empty-model", "empty-out",
+		"unknown-flag", "missing-flag-value", "leading-positional", "between-flags",
+		"trailing-positional", "after-terminator", "positionals-only",
+	} {
+		t.Run(name, func(t *testing.T) {
+			out := filepath.Join(t.TempDir(), "generated")
+			args := []string{"-model", model, "-out", out}
+			diagnostic := "use -model MODEL -out NEW_DIRECTORY"
+			switch name {
+			case "missing-both":
+				args = nil
+			case "missing-model":
+				args = []string{"-out", out}
+			case "missing-out":
+				args = []string{"-model", model}
+			case "empty-model":
+				args = []string{"-model=", "-out", out}
+			case "empty-out":
+				args = []string{"-model", model, "-out="}
+			case "unknown-flag":
+				args = append(args, "-unknown")
+				diagnostic = "flag provided but not defined: -unknown"
+			case "missing-flag-value":
+				args = []string{"-model", model, "-out"}
+				diagnostic = "flag needs an argument: -out"
+			case "leading-positional":
+				args = append([]string{"extra"}, args...)
+			case "between-flags":
+				args = []string{"-model", model, "extra", "-out", out}
+			case "trailing-positional":
+				args = append(args, "extra")
+			case "after-terminator":
+				args = append(args, "--", "extra")
+			case "positionals-only":
+				args = []string{model, out}
+			}
+			run(t, args, 2, diagnostic)
+			if _, err := os.Lstat(out); !os.IsNotExist(err) {
+				t.Errorf("usage error created output: %v", err)
+			}
+		})
+	}
+	for _, name := range []string{"missing-model-file", "invalid-model"} {
+		t.Run(name, func(t *testing.T) {
+			dir := t.TempDir()
+			input, out := filepath.Join(dir, "model.json"), filepath.Join(dir, "generated")
+			if name == "invalid-model" {
+				if err := os.WriteFile(input, []byte("null"), 0600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			run(t, []string{"-model", input, "-out", out}, 1, "")
+			if _, err := os.Lstat(out); !os.IsNotExist(err) {
+				t.Errorf("input error created output: %v", err)
+			}
+		})
+	}
+	t.Run("existing-output", func(t *testing.T) {
+		out := t.TempDir()
+		for _, name := range []string{"validator.go", "validator.ts", "keep.txt"} {
+			if err := os.WriteFile(filepath.Join(out, name), []byte("keep "+name), 0600); err != nil {
+				t.Fatal(err)
+			}
+		}
+		run(t, []string{"-model", model, "-out", out}, 1, out)
+		entries, err := os.ReadDir(out)
+		if err != nil || len(entries) != 3 {
+			t.Fatalf("existing directory changed: entries = %v, err = %v", entries, err)
+		}
+		for _, name := range []string{"validator.go", "validator.ts", "keep.txt"} {
+			got, err := os.ReadFile(filepath.Join(out, name))
+			if err != nil || string(got) != "keep "+name {
+				t.Errorf("existing %s changed: data = %q, err = %v", name, got, err)
+			}
+		}
+	})
 }
 
 func TestSupportedShapes(t *testing.T) {

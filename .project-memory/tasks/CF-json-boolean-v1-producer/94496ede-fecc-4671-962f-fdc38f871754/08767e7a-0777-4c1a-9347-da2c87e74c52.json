@@ -1,0 +1,44 @@
+{
+  "formatVersion": 2,
+  "eventId": "08767e7a-0777-4c1a-9347-da2c87e74c52",
+  "runId": "94496ede-fecc-4671-962f-fdc38f871754",
+  "kind": "start",
+  "parents": [
+    "73fb480c-f07c-441c-a13e-ebdf05795b5f"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-boolean-v1-producer",
+    "path": "tasks/CF-json-boolean-v1-producer-standalone-validators.md",
+    "revision": "94908bab8edb672af4119abfe604574322c48714",
+    "blob": "9917ec0e48222412056c33ebe7769085962c5243",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "cdc576143c3dfdd087a0e9e3141e3c83e005e2fe6b54bc9f0a4066ecaeddd773"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/json-validator-cli-local-20261108",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/94",
+  "at": "2026-11-07T23:47:02.848Z",
+  "summary": "Retain bounded real-process CLI acceptance tests in the existing test file; revalidate all original producer paths for full-PR coverage",
+  "next": "Add tests, run producer and repository checks, and complete locally; no remote mutation",
+  "files": [
+    "tasks/CF-json-boolean-v1-producer-standalone-validators.md",
+    ".github/workflows/json-validator-go.yml",
+    "modeling/jsonvalidator/go.mod",
+    "modeling/jsonvalidator/toolchain.json",
+    "modeling/jsonvalidator/README.md",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/profile_test.go",
+    "modeling/jsonvalidator/testdata/sample/model.json",
+    "modeling/jsonvalidator/testdata/sample/cases.json",
+    "modeling/jsonvalidator/testdata/sample/validator.go",
+    "modeling/jsonvalidator/testdata/sample/validator.ts",
+    "modeling/jsonvalidator/verify/acceptance_test.go",
+    "modeling/jsonvalidator/verify/typescript.mjs"
+  ]
+}
