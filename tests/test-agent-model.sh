@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Isolated regression tests for scripts/agent-model.sh.
 #
-# Every case runs a copy of the resolver inside a temporary fixture repository
-# with invented mapping files. The real checkout, HOME and any local override are
-# never read, and no model provider is called.
+# Cases copy the resolver and tracked profiles into temporary fixture repositories.
+# Mapping error cases use invented files. Real HOME and local overrides are never
+# read, and no model provider is called.
 #
 # Usage: tests/test-agent-model.sh [resolver-path]
 # Pass another resolver path to run the same cases against it, for example a
@@ -17,7 +17,9 @@ trap 'rm -rf "$test_root"' EXIT
 
 export HOME="$test_root/home"
 export XDG_CONFIG_HOME="$test_root/config"
-mkdir -p "$HOME" "$XDG_CONFIG_HOME"
+export CODEX_HOME="$test_root/codex"
+export TMPDIR="$test_root/tmp"
+mkdir -p "$HOME" "$XDG_CONFIG_HOME" "$CODEX_HOME" "$TMPDIR"
 
 fixture="$test_root/repo"
 mkdir -p "$fixture/scripts" "$fixture/agents"
@@ -54,7 +56,9 @@ expect_model() {
   local name="$1" expected="$2"
   shift 2
   run "$@"
-  if [[ $status -ne 0 || "$out" != "$expected" || -n "$err" ]]; then
+  printf '%s\n' "$expected" > "$test_root/expected"
+  if [[ $status -ne 0 || "$out" != "$expected" || -s "$test_root/err" ]] ||
+      ! cmp -s "$test_root/expected" "$test_root/out"; then
     fail "$name: expected '$expected' and exit 0, got exit $status, stdout '$out', stderr '$err'"
   fi
 }
@@ -215,6 +219,30 @@ expect_error 'profile without tier' 1 'No model tier in' claude fixture-none
 run claude
 [[ $status -eq 2 && -z "$out" ]] || fail "missing argument: expected usage exit 2, got $status"
 
+# Only a terminal CR from a CRLF line ending is ignored; tier grammar is unchanged.
+while IFS='|' read -r name content; do
+  for ending in '\n' '\r\n'; do
+    printf '%b%b' "$content" "$ending" > "$fixture/agents/fixture-invalid.md"
+    expect_error "profile $name ending $ending" 1 'No model tier in' claude fixture-invalid
+  done
+done <<'PROFILE_CASES'
+unquoted|Suggested model tier: fast
+single quoted|Suggested model tier: 'fast'
+double quoted|Suggested model tier: "fast"
+unclosed|Suggested model tier: `fast
+extra backtick|Suggested model tier: ``fast`
+suffix|Suggested model tier: `fast` suffix
+trailing space|Suggested model tier: `fast`\040
+leading space| Suggested model tier: `fast`
+extra prefix space|Suggested model tier:  `fast`
+PROFILE_CASES
+# shellcheck disable=SC2016
+printf 'Suggested model tier: `%s`\r\r\n' fast > "$fixture/agents/fixture-invalid.md"
+expect_error 'profile two terminal CR bytes' 1 'No model tier in' claude fixture-invalid
+# shellcheck disable=SC2016
+printf 'Suggested model tier: `fa\rst`\n' > "$fixture/agents/fixture-invalid.md"
+expect_error 'profile internal CR is not stripped' 1 $'No model mapping for claude.fa\rst' claude fixture-invalid
+
 # The tracked defaults still resolve to the documented models.
 defaults="$test_root/defaults"
 mkdir -p "$defaults/scripts" "$defaults/agents"
@@ -235,6 +263,53 @@ codex architect-planner gpt-5.6-terra
 codex reviewer-verifier gpt-5.6-terra
 codex builder-developer gpt-5.6-sol
 EOF
+
+# Exercise both line endings using the actual shipped declarations. Normalize only
+# the copied line ending, so this also works when the test checkout itself is CRLF.
+representations="$test_root/representations"
+for ending in lf crlf; do
+  mkdir -p "$representations/$ending/scripts" "$representations/$ending/agents"
+  cp "$resolver" "$representations/$ending/scripts/agent-model.sh"
+  cp "$repo_dir/agents/model-map.conf" "$representations/$ending/agents/"
+done
+for agent in explorer-researcher architect-planner reviewer-verifier builder-developer; do
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line%$'\r'}"
+    printf '%s\n' "$line" >> "$representations/lf/agents/$agent.md"
+    printf '%s\r\n' "$line" >> "$representations/crlf/agents/$agent.md"
+  done < "$repo_dir/agents/$agent.md"
+done
+for ending in lf crlf; do
+  fixture="$representations/$ending"
+  while read -r client agent expected; do
+    expect_model "$ending default $client $agent" "$expected" "$client" "$agent"
+  done <<'EOF'
+claude explorer-researcher haiku
+claude architect-planner sonnet
+claude reviewer-verifier sonnet
+claude builder-developer opus
+codex explorer-researcher gpt-5.6-terra
+codex architect-planner gpt-5.6-terra
+codex reviewer-verifier gpt-5.6-terra
+codex builder-developer gpt-5.6-sol
+EOF
+done
+
+# CRLF profile support must not alter mapping overrides, fallback or CRLF refusal.
+fixture="$representations/crlf"
+shared="$fixture/agents/model-map.conf"
+local_map="$fixture/agents/model-map.local.conf"
+printf 'claude.fast=invented-shared\nclaude.balanced=invented-shared-balanced\n' > "$shared"
+printf 'claude.fast=invented-local\n' > "$local_map"
+expect_model 'CRLF profile local overrides shared' invented-local claude explorer-researcher
+expect_model 'CRLF profile partial local falls back' invented-shared-balanced claude architect-planner
+rm -f "$local_map"
+expect_model 'CRLF profile no local file' invented-shared claude explorer-researcher
+printf 'claude.fast=invented-local\r\n' > "$local_map"
+expect_error 'CRLF local mapping with CRLF profile' 1 'agents/model-map.local.conf:1: expected' claude explorer-researcher
+rm -f "$local_map"
+printf 'claude.fast=invented-shared\r\n' > "$shared"
+expect_error 'CRLF shared mapping with CRLF profile' 1 'agents/model-map.conf:1: expected' claude explorer-researcher
 
 if [[ $failures -gt 0 ]]; then
   printf '%d agent model resolver check(s) failed\n' "$failures" >&2

@@ -29,6 +29,8 @@ esac
 tier="$(awk '
   /^Suggested model tier: / {
     tier = $0
+    # Git may check out Markdown profiles with CRLF line endings.
+    sub(/\r$/, "", tier)
     sub(/^Suggested model tier: /, "", tier)
     tick = sprintf("%c", 96)
     if (tier ~ "^" tick "[^" tick "]+" tick "$") {
