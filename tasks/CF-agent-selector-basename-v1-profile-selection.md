@@ -1,6 +1,6 @@
 ---
 id: CF-agent-selector-basename-v1
-status: in-progress
+status: review
 owner: Foundry profile selector contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -74,3 +74,11 @@ evidence. Obtain final independent review before publishing an implementation
 draft PR. Verify the actual remote commit and hosted checks separately; scratch
 results do not establish that those stages passed. No release, deployment, client
 launch, provider call or change to held PR101 is included.
+
+## Implementation receipt
+
+The maintained implementation uses the reviewed basename guard and isolated
+regression cases. The genuine source revision precedes the recorded start and
+these edits. This claim remains in review until final validation, independent
+implementation review and hosted checks have been examined. No release or
+deployment is implied, and the separate PR101 remains unchanged.

@@ -219,6 +219,26 @@ expect_error 'profile without tier' 1 'No model tier in' claude fixture-none
 run claude
 [[ $status -eq 2 && -z "$out" ]] || fail "missing argument: expected usage exit 2, got $status"
 
+# Profile selection takes a single nonempty basename, never a path. These files
+# are invented fixtures; the parent-path target stays inside the disposable repo.
+mkdir -p "$fixture/agents/nested"
+# shellcheck disable=SC2016
+printf 'Suggested model tier: `fast`\n' > "$fixture/outside.md"
+# shellcheck disable=SC2016
+printf 'Suggested model tier: `fast`\n' > "$fixture/agents/nested/profile.md"
+# shellcheck disable=SC2016
+printf 'Suggested model tier: `fast`\n' > "$fixture/agents/.md"
+for selector in ../outside ./fixture-fast nested/profile ..//outside '' /absolute; do
+  expect_error "path-shaped or empty profile '$selector'" 2 'Usage:' claude "$selector"
+done
+
+# Do not introduce a new naming grammar for existing flat profile basenames.
+for name in fixture-fast fixture_name fixture.name 'fixture space'; do
+  # shellcheck disable=SC2016
+  printf 'Suggested model tier: `fast`\n' > "$fixture/agents/$name.md"
+  expect_model "flat profile basename '$name'" invented-a claude "$name"
+done
+
 # Only a terminal CR from a CRLF line ending is ignored; tier grammar is unchanged.
 while IFS='|' read -r name content; do
   for ending in '\n' '\r\n'; do

@@ -21,6 +21,11 @@ case "$client" in
   *) usage ;;
 esac
 
+# A profile selector is one basename, not a path relative to agents/.
+case "$agent" in
+  ''|*/*) usage ;;
+esac
+
 [[ -f "$profile" ]] || {
   printf 'Unknown agent profile: %s\n' "$agent" >&2
   exit 2

@@ -19,6 +19,10 @@ Profiles specify a portable tier, not a vendor model name: `fast`, `balanced`, o
 current defaults are Claude `haiku` / `sonnet` / `opus` and Codex
 `gpt-5.6-terra` / `gpt-5.6-terra` / `gpt-5.6-sol`.
 
+Supply a nonempty profile basename without the `.md` suffix. Empty selectors
+and forward-slash paths, such as `../profile` or `nested/profile`, are usage
+errors rejected before profile lookup. Other basename spelling remains unchanged.
+
 Resolve the preferred concrete model before launching an agent:
 
 ```bash

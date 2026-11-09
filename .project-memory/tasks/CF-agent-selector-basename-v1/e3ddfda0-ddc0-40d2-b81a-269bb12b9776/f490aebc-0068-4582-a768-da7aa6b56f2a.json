@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "f490aebc-0068-4582-a768-da7aa6b56f2a",
+  "runId": "e3ddfda0-ddc0-40d2-b81a-269bb12b9776",
+  "kind": "complete",
+  "parents": [
+    "1edb68f5-cba5-44f6-82ed-edd92061d39e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-selector-basename-v1",
+    "path": "tasks/CF-agent-selector-basename-v1-profile-selection.md",
+    "revision": "239fb5889e98bb317ed695ba98c00280f3db2d35",
+    "blob": "fb9a85623ae828b0e06a6e9e4d74974732fed572",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e3fb7ccb834fb473d1c0f5043ec1c63613d04b43f87999eaaa346a177d86c9b3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-selector-basename-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T23:49:14.996Z",
+  "summary": "Reject empty or slash-containing profile selectors before lookup and retain other basename spellings",
+  "next": "Obtain independent final implementation review, publish the reviewed draft, and verify actual remote commit and hosted checks",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "agents/README.md",
+    "tasks/CF-agent-selector-basename-v1-profile-selection.md"
+  ],
+  "validation": "PASS bash syntax for resolver and tests; PASS full isolated resolver suite including six rejection and four compatibility cases; PASS repository validator and whitespace. ShellCheck and optional skills-ref unavailable locally, not run. Independent candidate probes passed before maintained adoption; final implementation review and hosted checks pending.",
+  "snapshot": {
+    "scripts/agent-model.sh": {
+      "blob": "c8299f809a5f3d322f3cb8ad152dc2cfa626f736",
+      "mode": "100755"
+    },
+    "tests/test-agent-model.sh": {
+      "blob": "6c4ac1c156e42fc991c667905918cc5a3451dbf9",
+      "mode": "100755"
+    },
+    "agents/README.md": {
+      "blob": "07ad663813286acfe2fea8b4dd2a778e36267f5c",
+      "mode": "100644"
+    },
+    "tasks/CF-agent-selector-basename-v1-profile-selection.md": {
+      "blob": "1a91a79a80a3f9d798de6292b85ba42d3a5e77a3",
+      "mode": "100644"
+    }
+  }
+}
