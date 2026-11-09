@@ -79,6 +79,20 @@ baseline changes, invalid names, missing skills, symlink parents and conflicting
 destinations fail before any wiring is created. Do not run concurrent setup writers.
 Filesystem errors can still interrupt creation; inspect and rerun after fixing them.
 
+For `.gitmodules`, matching the staged file means exact bytes or one narrow
+representation change: if the staged blob contains no CR or NUL bytes, every LF
+may become one CRLF pair in the working file. All other bytes and whether the last
+line has a terminator must remain unchanged. This also accepts an exact manual LF-to-CRLF
+conversion without requiring a Git attribute. Mixed endings, extra or missing
+newlines, changed comments or values, and other conversions are not accepted by
+this allowance. Exact raw bytes retain the previous checks, including later Git
+configuration parsing. This is not general Windows or encoding support.
+
+The comparison does not run Git clean/smudge filters, textconv or external diff,
+rewrite files, or rely on Git reporting the file clean. It preserves staged
+regular-file and baseline-pin checks. Missing staged objects and failed stream
+commands reject the representation fallback; the exact-byte route is unchanged.
+
 ## Existing project instructions
 
 Setup preserves existing instructions. It stops if an existing `AGENTS.md` lacks

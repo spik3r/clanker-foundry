@@ -16,6 +16,43 @@ esac
 # Read-only Git queries must not refresh the index, fetch objects or run FSMonitor.
 export GIT_OPTIONAL_LOCKS=0 GIT_NO_LAZY_FETCH=1 GIT_NO_REPLACE_OBJECTS=1
 git_local() { git -c protocol.allow=never -c core.fsmonitor=false "$@"; }
+
+emit_crlf() {
+  local LC_ALL=C line=''
+  while :; do
+    line=''
+    if IFS= read -r line; then
+      printf '%s\r\n' "$line" || return 1
+    else
+      printf '%s' "$line" || return 1
+      return 0
+    fi
+  done
+}
+
+matches_staged_modules() {
+  local raw_blob entry staged_blob stripped_blob crlf_blob
+  raw_blob="$(git_local hash-object --no-filters .gitmodules)" || return 1
+  entry="$(git_local ls-files --stage -- .gitmodules)" || return 1
+  case "$entry" in
+    "$(printf '100644 %s 0\t.gitmodules' "$raw_blob")"|"$(printf '100755 %s 0\t.gitmodules' "$raw_blob")") return 0 ;;
+  esac
+
+  staged_blob="$(git_local rev-parse --verify :.gitmodules)" || return 1
+  case "$entry" in
+    "$(printf '100644 %s 0\t.gitmodules' "$staged_blob")"|"$(printf '100755 %s 0\t.gitmodules' "$staged_blob")") ;;
+    *) return 1 ;;
+  esac
+  # Eligibility only: the unchanged hash proves no CR or NUL was removed before
+  # Bash reads the staged bytes. The stripped stream is not an accepted conversion.
+  stripped_blob="$(git_local cat-file blob "$staged_blob" | LC_ALL=C tr -d '\000\015' | git_local hash-object --no-filters --stdin)" || return 1
+  [ "$stripped_blob" = "$staged_blob" ] || return 1
+  # Read the immutable blob again, preserving every byte except LF -> CRLF and
+  # retaining an unterminated final line. pipefail keeps producer failures visible.
+  crlf_blob="$(git_local cat-file blob "$staged_blob" | emit_crlf | git_local hash-object --no-filters --stdin)" || return 1
+  [ "$crlf_blob" = "$raw_blob" ]
+}
+
 root="$(pwd -P)"
 top="$(git_local rev-parse --show-toplevel 2>/dev/null)" || fail 'Run inside a Git repository.'
 [ "$root" = "$top" ] || fail 'Run at the consumer repository root.'
@@ -28,12 +65,7 @@ head="$(git_local -C "$baseline" rev-parse --verify HEAD)"
 [ "$pin" = "$(printf '160000 %s 0\t.agent-baseline' "$head")" ] \
   || fail 'Baseline HEAD must match the staged gitlink. Review the pin, then git add .agent-baseline.'
 [ -f .gitmodules ] && [ ! -L .gitmodules ] || fail 'Missing regular .gitmodules.'
-modules_blob="$(git_local hash-object --no-filters .gitmodules)"
-modules_entry="$(git_local ls-files --stage -- .gitmodules)"
-case "$modules_entry" in
-  "$(printf '100644 %s 0\t.gitmodules' "$modules_blob")"|"$(printf '100755 %s 0\t.gitmodules' "$modules_blob")") ;;
-  *) fail '.gitmodules must match its staged regular file. Review and stage it first.' ;;
-esac
+matches_staged_modules || fail '.gitmodules must match its staged regular file. Review and stage it first.'
 module_key=''
 while IFS=' ' read -r key value; do
   if [ "$value" = .agent-baseline ]; then

@@ -1,6 +1,6 @@
 ---
 id: CF-reviewed-fixes-adoption-v1
-status: in-progress
+status: review
 owner: astra-foundry-reliability-integration
 repositories: [spik3r/clanker-foundry]
 ---
@@ -257,12 +257,47 @@ or merge. No protection change, release, deployment, provider execution, actual
 client load, global installation, resolver implementation, profile CRLF work,
 or PR94 state change belongs to this task.
 
+## Local integration result
+
+The actual published claim source is
+[`9f312b3e6297daa78979e22d49a2f52399020a71`](https://github.com/spik3r/clanker-foundry/commit/9f312b3e6297daa78979e22d49a2f52399020a71),
+whose sole parent is the verified main recorded above. Its exact source and
+registration were independently reviewed. A genuine integration start under that
+source preceded adoption of all eleven product paths. Their bytes and modes match
+the accepted table unchanged. The original three local task records and nine
+local source/event files were not imported. Every current-main task/evidence
+record, including the integrated resolver closeout, is preserved.
+
+Observed checks on the adopted code passed on Linux, Bash 5.2.37 and Node 24.22.1,
+using invented temporary HOME, XDG_CONFIG_HOME, CODEX_HOME and Git configuration:
+
+- `bash scripts/validate.sh`: pack conventions, shell syntax and Markdown links.
+- `bash tests/test-validate.sh`: 92 literal Markdown-path checks.
+- `bash tests/test-stow-preflight.sh`: 12 recording-seam ordering cases. These do
+  not establish real GNU Stow acceptance.
+- `bash tests/test-agent-model.sh`: existing resolver regressions.
+- `bash tests/test-project-setup.sh`: the full maintained setup, guide-snippet,
+  strict representation, filter, promisor and failure controls on Git 2.52.0
+  and Git 2.47.3.
+- `node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs`:
+  143 passed, with zero failures or skips.
+- `node --test tests/project-memory-conformance.test.mjs`: 91 passed, with zero
+  failures or skips. The separate conformance `check` also passed.
+- Explicit Bash syntax checks for the ten maintained shell entrypoints and
+  whitespace checks passed.
+
+GNU Stow is unavailable locally, so the full installer was not run. ShellCheck
+and optional skills-ref are unavailable; optional skills-ref was explicitly
+skipped by the pack validator. No tool was installed. Native macOS/BSD/Bash 3.2,
+Windows and actual client loading remain untested. These current local results
+do not replace exact-candidate hosted installer/shared-base qualification.
+
 ## Current state
 
-Coordinator adoption and receiving-owner acceptance are recorded for this bounded
-outcome. The active canonical claim is proposed for independent review before
-publication; the scratch copy reserves nothing. No integration has started and
-no current hosted acceptance exists. The original artifacts remain accepted only
-within their recorded limits. Next: independently review these exact source bytes,
-then refresh shared state and, only if still clear, publish and verify the actual
-new canonical source before registration and a genuine start.
+The adoption is in review, not done. Only its claim source is published; the
+eleven product changes remain local. Exact-diff review, genuine completion and
+full committed validation must precede the later reviewed draft publication.
+Real GNU Stow/full-installer/shared-base checks on verified push and PR checkouts,
+all applicable required checks, and the separate promotion/normal-merge decision
+remain mandatory. The actual source pin and immutable history must remain in
+ancestry. No product acceptance is inferred from source-only CI.

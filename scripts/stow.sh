@@ -13,6 +13,29 @@ if ! command -v stow >/dev/null 2>&1; then
   exit 1
 fi
 
+global_target="${XDG_CONFIG_HOME:-$HOME/.config}/agents"
+canon="$global_target/AGENTS.md"
+backup="$canon.pre-stow"
+
+check_global_migration() {
+  if [ -e "$canon" ] && [ ! -L "$canon" ]; then
+    if ! cmp -s "$repo_dir/global-agents/AGENTS.md" "$canon"; then
+      printf 'Cannot stow global instructions: %s contains local changes.\n' "$canon" >&2
+      printf '%s\n' 'Merge those changes into global-agents/AGENTS.md, then move the existing file and rerun.' >&2
+      return 1
+    fi
+
+    if [ -e "$backup" ] || [ -L "$backup" ]; then
+      printf 'Cannot migrate global instructions: backup already exists at %s.\n' "$backup" >&2
+      return 1
+    fi
+  fi
+}
+
+# Reject known legacy-copy conflicts before installing shared assets. Other Stow
+# conflicts can still leave a partial installation; this is not a transaction.
+check_global_migration
+
 stow_package() {
   local target="$1"
   local package="$2"
@@ -38,20 +61,9 @@ done
 # Stow the tracked global instructions as the canonical user-level file. Migrate
 # the old copied file only when it still matches the repository; never hide local
 # edits. The package ignore file keeps its README and wiring script repo-local.
-global_target="${XDG_CONFIG_HOME:-$HOME/.config}/agents"
-canon="$global_target/AGENTS.md"
 if [ -e "$canon" ] && [ ! -L "$canon" ]; then
-  if ! cmp -s "$repo_dir/global-agents/AGENTS.md" "$canon"; then
-    printf 'Cannot stow global instructions: %s contains local changes.\n' "$canon" >&2
-    printf '%s\n' 'Merge those changes into global-agents/AGENTS.md, then move the existing file and rerun.' >&2
-    exit 1
-  fi
-
-  backup="$canon.pre-stow"
-  if [ -e "$backup" ] || [ -L "$backup" ]; then
-    printf 'Cannot migrate global instructions: backup already exists at %s.\n' "$backup" >&2
-    exit 1
-  fi
+  # Recheck after the shared-package calls, and keep the actual move late.
+  check_global_migration
   mv "$canon" "$backup"
   printf 'Moved the matching legacy copy to %s.\n' "$backup"
 fi
