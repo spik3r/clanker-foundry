@@ -7,7 +7,144 @@ repositories: [spik3r/clanker-foundry]
 
 # Adopt and qualify three reviewed Foundry fixes
 
-## Integration claim
+This task retains the original byte-exact adoption as attributed history. The
+successor claim and sequence below govern the proposed test correction. They
+permit one explicit exception to the original inventory, not a broader rewrite.
+The original source, events, product inventory and checks remain preserved.
+
+## Successor test-correction claim
+
+Owner and integration owner: `astra-foundry-reliability-integration`, continuing
+the same task and receiving-owner responsibility. The coordinator assigned this
+bounded correction after independent hosted review; the owner accepts it.
+No new task identity, ownership transfer or unrelated scope is introduced.
+
+Verified current main: `c08604c5f9eebd412af02e95fb06d7846a9f51e2`, tree
+`d45d6adae50015117d38bb221d77cfa879847b67`. Actual published adoption head:
+`e80a74a478206466087eac099ed21a064baae30a`, tree
+`486508815693e299dec29b125008d453348d9d03`, with sole parent and original
+canonical source `9f312b3e6297daa78979e22d49a2f52399020a71`.
+Continue branch `astra/reviewed-fixes-adoption-v1` and
+[draft PR96](https://github.com/spik3r/clanker-foundry/pull/96). Refresh these
+identities and shared ownership before publication; reconcile material changes.
+
+The sole writable product path is `tests/test-project-setup.sh`, preserving mode
+`100755`. Correct only the two trace-absence assertions and the Git lookup/export
+site identified below. Accept only grep status 1 as absence in a readable trace,
+including a legitimate empty file. Reject a forbidden match (status 0), missing
+or unreadable input, and every other grep/read error. Capture the status without
+letting a negated command bypass failure handling. Preserve the positive
+lazy-fetch control and actual Git-command checks. Separate the Git lookup
+assignment from export so lookup failure propagates before the fixture continues.
+Keep Bash 3.2-compatible syntax; this is not native-platform qualification.
+
+The accepted eleven-blob table below remains the exact original adoption
+inventory at `e80a74a...`. After independent acceptance, this successor permits
+replacing only its `tests/test-project-setup.sh` blob with the bounded correction.
+The other ten product blobs and every product mode must remain byte-for-byte
+unchanged. No production script, workflow, dependency or other test may change.
+
+The only other mutable project file is this same canonical task. New immutable
+source/start/completion records may be added only under
+`.project-memory/tasks/CF-reviewed-fixes-adoption-v1/`; preserve every existing
+source, event, task record and legacy ledger. Do not amend prior events or import
+old unpublished contributor metadata. No profile-CRLF payload or PR94 state
+change is included. No workflow weakening, local tool installation, local Go
+aggregate, provider/client action, promotion, merge or deployment is included.
+
+Fresh lifecycle coverage must name all twelve original non-metadata PR paths:
+
+- `tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md`
+- `.github/workflows/validate.yml`
+- `docs/getting-started.md`
+- `docs/project-shared-base.md`
+- `scripts/project-setup.sh`
+- `scripts/stow.sh`
+- `scripts/validate.sh`
+- `tests/project-memory-workflow.test.mjs`
+- `tests/test-install.sh`
+- `tests/test-project-setup.sh`
+- `tests/test-stow-preflight.sh`
+- `tests/test-validate.sh`
+
+This coverage scope does not authorize edits to the ten frozen product files.
+The new terminal completion must fingerprint all twelve final paths because the
+latest frontier must cover the full diff against main; the previous completion
+cannot supply missing coverage. Retain its original source and causal history.
+At preparation, this successor is a source proposal only: no successor pin,
+registration, new run or maintained correction has been created.
+
+## Successor validation and publication sequence
+
+1. Independently review the exact successor task text, one-product write scope,
+   twelve-path coverage and preserved inventory. After acceptance, refresh main,
+   PR head and ownership. Publish only the reviewed canonical-task delta in a
+   source commit whose sole parent is the actual accepted PR head. Keep PR96
+   draft; this intermediate source-only checkpoint is not final qualified coverage.
+2. Read back and independently verify the actual new source SHA, tree, sole parent
+   and exact task bytes before registration. Materialize real ancestry and
+   register that actual pin with source identity `spik3r/clanker-foundry`.
+   Explicitly select the new source and `Successor test-correction claim` when
+   recording a genuine new start with code identity `spik3r/clanker-foundry`,
+   PR96 and all twelve paths. The helper must link the start to the prior terminal
+   completion. No maintained product edit may precede this start.
+3. Apply only the bounded test correction. Run the corrected full shared-base
+   suite and relevant clean, readable nonmatching/empty trace controls, independent
+   raw/fallback forbidden-record mutations, missing/unreadable/read-error controls
+   and injected Git lookup-status propagation with both admitted Git versions,
+   2.52.0 and 2.47.3. Retain qualification on the actual hosted Git version in step 5
+   and record that version. If the stronger assertions expose a production behavior
+   gap on an admitted version, retain the failure and stop this test-only scope
+   for a separate scope/compatibility decision. Do not weaken assertions or silently
+   change `scripts/project-setup.sh`. Run pack validation, Bash syntax and whitespace.
+   Preserve existing positive controls and disclose unavailable tools and native
+   platforms. Test in invented isolated homes; do not install tools or run a local
+   Go aggregate.
+4. Freeze the exact corrected test/task diff and observed results for independent
+   correction review. After acceptance, stage named final paths, generate genuine
+   completion with all twelve final fingerprints, stage only the new additive
+   metadata, and commit. Validate the full committed diff against fresh actual
+   main with explicit code/source identities `spik3r/clanker-foundry`; obtain
+   independent committed-coverage review before corrected product publication.
+5. Publish the accepted correction on the same draft, retaining both original and
+   successor source pins. Update its description to distinguish original exact
+   adoption from the later test-only correction. Verify actual remote head/tree,
+   complete diff and current PR base/merge checkout. Obtain fresh existing push
+   and PR workflows on that exact final head, including actual ShellCheck, real
+   Stow/full installer/shared-base, pack/Markdown, lifecycle/committed evidence
+   and every other existing workflow. Require successful corrected ShellCheck
+   execution without suppressing diagnostics or changing the advisory job policy.
+   Inspect real logs and skips; old-head green results do not qualify a new head.
+6. Keep the task in review and PR96 draft pending independent exact-head hosted
+   acceptance and a separate promotion/normal-merge decision. Preserve both source
+   pins and all immutable history in ancestry; do not squash or rebase it away.
+   Any later canonical edit requires genuine fresh coverage and requalification.
+   Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unclaimed.
+
+## Published adoption and review findings
+
+The original byte-exact adoption is published at `e80a74a...`, not at the different
+local review commit `55db6d00db9c56c08f1ee0c1b33a43c681163946`. Its task and genuine
+source/start/completion evidence are preserved. Independent review accepted the
+actual source, full tree, complete diff and chronology.
+
+All ten original-head push/PR workflows completed successfully. Logs verify real
+Stow 2.4.1, full installer, shared-base and PR committed coverage at push checkout
+`e80a74a478206466087eac099ed21a064baae30a` and PR merge checkout
+`a882b80dfd6583137f10833508cfee0a778b31e0`. Optional skills-ref was absent and
+explicitly skipped. Workflow-level success did not override the advisory
+ShellCheck failures at original test lines 403/406 (SC2251) and 414 (SC2155).
+
+Independent whole-suite mutation checks proved that forbidden `child_start`
+records in the two traces did not fail the original suite. Separate controls
+confirmed that the lookup/export form masked injected lookup status 73. Disposable
+corrected controls accepted readable nonmatching and empty traces, rejected
+forbidden records and read errors, and propagated lookup failure. Those controls
+inform this proposal; they are not a maintained correction or new-head acceptance.
+No production defect was demonstrated. The original hosted results remain
+attributed evidence, but the assertion gap prevents promotion until corrected.
+
+## Original integration claim (historical)
 
 Owner and integration owner: `astra-foundry-reliability-integration`. Accept the
 coordinator's bounded handoff for a distinct shared integration and qualification
@@ -30,7 +167,7 @@ publication, and verify the shared claim after publication. Reuse a matching
 shared adoption task if one appears; this ID is not reserved by the scratch copy.
 Stop and coordinate any new conflicting work rather than assuming exclusivity.
 
-## Ownership and qualification sequence decision
+## Original ownership and qualification sequence decision (historical)
 
 The coordinator accepted the completed local handoffs from Foundry installer
 contributor (`CF-global-migration-preflight-v1`), Foundry pack-validation contributor
@@ -128,12 +265,13 @@ checks, 12 recording-seam preflight cases, resolver and shared-base suites,
 143 lifecycle/workflow and 91 conformance tests, 230 CRLF controls and 12 interaction
 controls. These are attributed historical results at the local composition, not
 new execution on an adoption candidate. The Stow recording seam proves ordering,
-not real GNU Stow acceptance. Full installer/native/client/hosted acceptance of
-this adoption candidate remains outstanding.
+not real GNU Stow acceptance. At that original preparation stage, full
+installer/native/client/hosted acceptance of the adoption remained outstanding.
 
-## Exact write scope
+## Original adoption inventory (historical)
 
-Adopt only these eleven product paths, with the exact Git blob and mode shown:
+The original adoption used these eleven exact product blobs and modes. The
+successor permits only its named test correction; the other ten remain frozen:
 
 | Path | Mode | Accepted blob |
 | --- | --- | --- |
@@ -180,12 +318,13 @@ trigger, permission, check and assertion. No further CI change is needed.
   of a stage-0 regular blob without CR/NUL. Preserve EOF, byte/mode checks,
   fail-closed command errors, filter/FSMonitor suppression, no fetch and no writes.
   Do not claim general normalization or Windows support.
-- Verify every adopted blob/mode against the table and every other main entry
-  against the current base. Review the complete diff and all existing ownership
-  scopes, not just the newly added task. A product change requires new scope/review;
-  it cannot be silently folded into this byte-exact adoption.
+- Preserve the original adopted blobs/modes as attributed inventory. For the
+  successor, verify the separately reviewed corrected test blob, the ten frozen
+  product blobs/modes and every other main entry against the current base. Review
+  the complete diff and all ownership scopes. No further product change may be
+  silently folded into the adoption or its bounded successor.
 
-## Honest lifecycle and publication sequence
+## Original lifecycle and publication sequence (historical)
 
 1. Independently review this exact active-claim proposal and its recorded handoff,
    receiving-owner acceptance, disjoint scopes and hosted-first decision. Refresh
@@ -257,7 +396,7 @@ or merge. No protection change, release, deployment, provider execution, actual
 client load, global installation, resolver implementation, profile CRLF work,
 or PR94 state change belongs to this task.
 
-## Local integration result
+## Original local integration result
 
 The actual published claim source is
 [`9f312b3e6297daa78979e22d49a2f52399020a71`](https://github.com/spik3r/clanker-foundry/commit/9f312b3e6297daa78979e22d49a2f52399020a71),
@@ -294,10 +433,13 @@ do not replace exact-candidate hosted installer/shared-base qualification.
 
 ## Current state
 
-The adoption is in review, not done. Only its claim source is published; the
-eleven product changes remain local. Exact-diff review, genuine completion and
-full committed validation must precede the later reviewed draft publication.
-Real GNU Stow/full-installer/shared-base checks on verified push and PR checkouts,
-all applicable required checks, and the separate promotion/normal-merge decision
-remain mandatory. The actual source pin and immutable history must remain in
-ancestry. No product acceptance is inferred from source-only CI.
+PR96 remains draft and this task remains in review. Its original byte-exact
+adoption and hosted executions are verified, but the confirmed test-assertion
+gap requires the bounded successor above before promotion. At proposal
+preparation, no successor source, new run or maintained correction exists.
+Independent successor-source review and actual pin publication/readback must
+precede registration, genuine start and the test edit. Exact correction review,
+fresh twelve-path completion, committed validation and exact-new-head hosted
+requalification remain required. No prior green result qualifies that new head.
+Promotion, normal merge and release remain separate later decisions. Preserve
+both source pins, immutable history, unrelated owners and native/client limits.
