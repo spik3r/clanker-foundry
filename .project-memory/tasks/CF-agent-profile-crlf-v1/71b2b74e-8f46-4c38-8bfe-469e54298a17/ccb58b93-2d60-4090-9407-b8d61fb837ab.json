@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "ccb58b93-2d60-4090-9407-b8d61fb837ab",
+  "runId": "71b2b74e-8f46-4c38-8bfe-469e54298a17",
+  "kind": "start",
+  "parents": [
+    "b4399f3f-7004-4a12-bf28-ad60185ba02a"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-profile-crlf-v1",
+    "path": "tasks/CF-agent-profile-crlf-v1-model-resolution.md",
+    "revision": "e26d8c0452a41f1b8cd41fc2554d641d53561e90",
+    "blob": "62ada757af25101ab6c73e4fcfec97a4bc5b5b39",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c53a8c56f967cb00f4996b918133b1f346c9001e1cf07de19cbf69d6a5db2894"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-profile-crlf-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T08:20:16.244Z",
+  "summary": "Record the verified PR98 normal integration and bounded canonical closeout; preserve both unchanged resolver products and all prior history.",
+  "next": "Update only the canonical task with integrated evidence and retained limits, run available checks, then obtain independent precompletion review.",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md"
+  ]
+}

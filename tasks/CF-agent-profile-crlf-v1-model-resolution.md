@@ -1,6 +1,6 @@
 ---
 id: CF-agent-profile-crlf-v1
-status: review
+status: done
 owner: astra-foundry-profile-crlf
 repositories: [spik3r/clanker-foundry]
 ---
@@ -281,3 +281,81 @@ macOS/BSD-awk/Bash 3.2, Windows, client/provider or new-product hosted acceptanc
 is claimed. Independent implementation review and separately assigned draft
 publication/hosted qualification remain required before integration. All earlier
 task/history and out-of-scope products remain unchanged.
+
+## Integration closeout
+
+[PR98](https://github.com/spik3r/clanker-foundry/pull/98) merged normally as
+[`d368cc4ad2739fc47a439b592898577da387752f`](https://github.com/spik3r/clanker-foundry/commit/d368cc4ad2739fc47a439b592898577da387752f),
+with tree `01e8046e1239b0038f0b994c049feaa0b1d8e18b`. Its ordered parents are
+prior main `6606c5d073815cc19f4745d0f280e4ff8a1aa78f` and accepted profile head
+[`53b1992e76fa687c772b0c8a6c8e7389b7e659a6`](https://github.com/spik3r/clanker-foundry/commit/53b1992e76fa687c772b0c8a6c8e7389b7e659a6).
+The actual canonical source
+[`e26d8c0452a41f1b8cd41fc2554d641d53561e90`](https://github.com/spik3r/clanker-foundry/commit/e26d8c0452a41f1b8cd41fc2554d641d53561e90),
+its snapshot and both original lifecycle events remain in normal merge ancestry.
+No squash, rebase or history rewrite occurred.
+
+Fresh closeout inspection at main
+`6d3998bd88e4624e6e67de556d8f144127a39bd1`, tree
+`c99823d04630954f3d9846e35fcec40b3c0b7dcb`, confirms that source, accepted head
+and PR98 merge remain ancestors. The two integrated product blobs remain
+`d8dcca5316ee9d37b29baa7c5defe302dc77bf81` and
+`215c00de00838ec8f3190e6ffa37aed39f4946f2`, both mode `100755`, as recorded
+above. The original completion `b4399f3f-7004-4a12-bf28-ad60185ba02a` and its
+three fingerprints are preserved. This closeout does not edit either product.
+
+### Accepted hosted qualification
+
+Independent review accepted twelve push/PR workflows and sixteen jobs at head
+`53b1992e76fa687c772b0c8a6c8e7389b7e659a6` and current-base test merge
+`bbc9610ae00cc58a3fb10dccc4f2ae11fbbaf169`. The
+[PR validation](https://github.com/spik3r/clanker-foundry/actions/runs/42564547760)
+ran real GNU Stow/full installer and resolver checks, pack and Markdown-path
+checks, strict metadata/shared-base regressions, and successful ShellCheck.
+Its [committed-evidence job](https://github.com/spik3r/clanker-foundry/actions/runs/42564547760/job/128988089494)
+validated three changed paths and two new events against actual base
+`6606c5d073815cc19f4745d0f280e4ff8a1aa78f`.
+
+All six separate push workflows and eight jobs passed on actual merged main
+`d368cc4ad2739fc47a439b592898577da387752f`, attempt 1:
+
+- [Validation](https://github.com/spik3r/clanker-foundry/actions/runs/42566773474).
+- [Project Memory conformance](https://github.com/spik3r/clanker-foundry/actions/runs/42566773553).
+- [Model authoring](https://github.com/spik3r/clanker-foundry/actions/runs/42566773489).
+- [Orchestration](https://github.com/spik3r/clanker-foundry/actions/runs/42566773466).
+- [Model lifecycle Go](https://github.com/spik3r/clanker-foundry/actions/runs/42566773505).
+- [JSON validator Go](https://github.com/spik3r/clanker-foundry/actions/runs/42566773527).
+
+Every actual-main checkout and complete job log was inspected. Executed results
+include GNU Stow 2.4.1/full installer and resolver checks, ShellCheck 0.11.0,
+92 Markdown-path cases, 143 lifecycle/workflow tests, 91 conformance tests and
+the graph check, two schema tests, 307 runtime tests and Docker-inspected
+isolation. Both Go workflows passed their race/vet/formatting and generated
+checks; the JSON-validator workflow also passed 46 synthetic TypeScript cases.
+The twelve installer-ordering seam cases remain distinct from real Stow tests.
+The pull-request-only committed-evidence step was skipped on push; only the
+premerge PR job above supplies that committed-coverage execution. Optional
+skills-ref was absent and skipped. These are retained hosted Linux results,
+not newly run checks for this metadata-only closeout.
+
+### Completed scope and remaining limits
+
+The bounded profile-record terminal-CR correction is integrated and recorded as
+done. The owner remains `astra-foundry-profile-crlf` as provenance. Effective
+shared release of only this completed outcome occurs when this canonical
+closeout is independently reviewed and integrated. The historical claim and
+local implementation result above retain their original phase-specific wording.
+No older resolver, reliability-integration or other owner's scope is reopened,
+acquired or released.
+
+This task-only closeout requires a genuine new run under the existing published
+source, final fingerprints for this task and both unchanged product paths,
+committed validation against the actual base, and fresh applicable exact-head/
+current-base hosted qualification. Prior green results do not qualify a new
+canonical head. Later publication starts as draft; integration must preserve
+the original source pin and every immutable record through a normal merge.
+
+Native macOS/BSD awk/Bash 3.2, Windows, whole-pack CRLF, installed-client loading
+and provider behavior remain unqualified. The accepted task excluded those
+claims; this closeout does not convert Linux checks into native qualification.
+No local installation, release artifact, deployment or client/provider action
+is claimed. Later platform work requires its own agreed scope and environment.

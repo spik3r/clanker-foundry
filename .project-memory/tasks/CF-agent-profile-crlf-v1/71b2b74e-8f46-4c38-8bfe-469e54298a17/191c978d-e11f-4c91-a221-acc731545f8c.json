@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "191c978d-e11f-4c91-a221-acc731545f8c",
+  "runId": "71b2b74e-8f46-4c38-8bfe-469e54298a17",
+  "kind": "complete",
+  "parents": [
+    "ccb58b93-2d60-4090-9407-b8d61fb837ab"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-profile-crlf-v1",
+    "path": "tasks/CF-agent-profile-crlf-v1-model-resolution.md",
+    "revision": "e26d8c0452a41f1b8cd41fc2554d641d53561e90",
+    "blob": "62ada757af25101ab6c73e4fcfec97a4bc5b5b39",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c53a8c56f967cb00f4996b918133b1f346c9001e1cf07de19cbf69d6a5db2894"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-profile-crlf-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T08:38:37.025Z",
+  "summary": "Record the integrated PR98 profile-CRLF outcome and bounded canonical closeout while preserving original source, claims, products and immutable history.",
+  "next": "Validate the complete ordinary commit against actual main and obtain independent final review before separately assigned draft publication and new hosted qualification.",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md"
+  ],
+  "validation": "Linux Node 24.22.1, Git 2.52.0, Bash 5.2.37 and mawk 1.3.4: exact independently accepted task/start tree reproduced; pack validator, maintained resolver regression, both shell syntax checks, staged/working whitespace and all 143 lifecycle/workflow tests passed with zero failures/skips. Source snapshot, original event history and product bytes/modes are unchanged. Maintained parsing retains pinned claim c53a8c56 separately from the pre-existing live-section digest f7b69d99; genuine start uses the original published source. This task-only closeout records verified PR98 normal merge and retained premerge/actual-main hosted results, not new hosted acceptance of this metadata. Optional skills-ref and local GNU Stow/ShellCheck unavailable; no local installer, Go compilation, native macOS/Bash 3.2, Windows, whole-pack CRLF, client/provider or deployment qualification. Full committed-diff validation and independent final review follow this completion and commit.",
+  "snapshot": {
+    "scripts/agent-model.sh": {
+      "blob": "d8dcca5316ee9d37b29baa7c5defe302dc77bf81",
+      "mode": "100755"
+    },
+    "tests/test-agent-model.sh": {
+      "blob": "215c00de00838ec8f3190e6ffa37aed39f4946f2",
+      "mode": "100755"
+    },
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md": {
+      "blob": "0a7bf13d9ba3e6fa0fd730407cc94c3296fcd736",
+      "mode": "100644"
+    }
+  }
+}
