@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "b4399f3f-7004-4a12-bf28-ad60185ba02a",
+  "runId": "54032a58-9b4f-4713-95f9-104341def4cd",
+  "kind": "complete",
+  "parents": [
+    "99fbe7e3-d5c4-473b-aae3-3175f6199b18"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-profile-crlf-v1",
+    "path": "tasks/CF-agent-profile-crlf-v1-model-resolution.md",
+    "revision": "e26d8c0452a41f1b8cd41fc2554d641d53561e90",
+    "blob": "62ada757af25101ab6c73e4fcfec97a4bc5b5b39",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c53a8c56f967cb00f4996b918133b1f346c9001e1cf07de19cbf69d6a5db2894"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-profile-crlf-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T00:20:02.156Z",
+  "summary": "Resolve exact shipped profile tiers with either LF or CRLF Markdown while preserving mapping and grammar safeguards.",
+  "next": "Validate the full committed diff against actual main, then independently review the frozen local implementation before separately assigned draft publication and hosted qualification.",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md"
+  ],
+  "validation": "Linux Bash 5.2.37/mawk 1.3.4: expanded maintained resolver suite passed; unchanged baseline resolver produced exactly 13 expected new CRLF-dependent failures; original suite passed on baseline and candidate. Clean Git proof: baseline LF 8 pass, CRLF 8 expected failures, repeated LF 8 pass; candidate LF 8 pass, CRLF 8 pass, repeated LF 8 pass; old maintained suite on baseline CRLF failed exactly 8 defaults, new suite passed on both corrected checkouts. Exact raw profile LF-to-CRLF bytes, fixed resolver/map bytes and all clean statuses verified. Existing mapping assertions remain intact, including CRLF mapping refusal, duplicate/malformed/NUL safeguards, data-only parsing, override/fallback and empty stdout on errors; 20 grammar controls passed. Both changed shell syntax checks, LF pack validation and staged/unstaged whitespace checks passed. Optional skills-ref, local ShellCheck/GNU Stow and native/client/provider/new-product hosted qualification were unavailable or not run; no full Go test run.",
+  "snapshot": {
+    "scripts/agent-model.sh": {
+      "blob": "d8dcca5316ee9d37b29baa7c5defe302dc77bf81",
+      "mode": "100755"
+    },
+    "tests/test-agent-model.sh": {
+      "blob": "215c00de00838ec8f3190e6ffa37aed39f4946f2",
+      "mode": "100755"
+    },
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md": {
+      "blob": "b70db136ed1c0b2cad49319cb9f3d9fe9ef8a034",
+      "mode": "100644"
+    }
+  }
+}

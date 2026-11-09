@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "99fbe7e3-d5c4-473b-aae3-3175f6199b18",
+  "runId": "54032a58-9b4f-4713-95f9-104341def4cd",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-profile-crlf-v1",
+    "path": "tasks/CF-agent-profile-crlf-v1-model-resolution.md",
+    "revision": "e26d8c0452a41f1b8cd41fc2554d641d53561e90",
+    "blob": "62ada757af25101ab6c73e4fcfec97a4bc5b5b39",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c53a8c56f967cb00f4996b918133b1f346c9001e1cf07de19cbf69d6a5db2894"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-profile-crlf-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T00:13:31.782Z",
+  "summary": "Handle one terminal CR in Markdown profile tiers and preserve mapping safeguards with isolated LF/CRLF regressions.",
+  "next": "Implement only the accepted resolver and test changes, obtain red/green and clean-checkout evidence, then complete and submit the exact local diff for independent review.",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tasks/CF-agent-profile-crlf-v1-model-resolution.md"
+  ]
+}
