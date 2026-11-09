@@ -26,7 +26,7 @@ test('workflow retains push, pull request and manual triggers', () => {
   assert.equal(workflow.slice(0, workflow.indexOf('jobs:')).trim(), 'name: validate\n\non:\n  push:\n  pull_request:\n  workflow_dispatch:');
   assert.doesNotMatch(workflow, /pull_request_target:|workflow_run:/);
 });
-test('pack validator and installer checks remain and include project setup regressions', () => {
+test('pack validator and installer checks remain and include pack and project setup regressions', () => {
   assert.equal(job('validate'), `  validate:
     runs-on: ubuntu-latest
     steps:
@@ -35,6 +35,8 @@ test('pack validator and installer checks remain and include project setup regre
         run: sudo apt-get update && sudo apt-get install -y stow
       - name: Run pack validator
         run: bash scripts/validate.sh
+      - name: Run pack validator regression tests
+        run: bash tests/test-validate.sh
       - name: Run installer regression tests
         run: bash tests/test-install.sh
       - name: Run project shared-base regression tests

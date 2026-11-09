@@ -214,6 +214,246 @@ cmp "$test_root/before" "$test_root/after"
 git config --unset core.fsmonitor
 git -C .agent-baseline config --unset core.fsmonitor
 
+# Exercise the complete helper, not an extracted comparison function. All blob
+# writes, configured commands and fault injection below belong to these fixtures.
+(
+  accept_without_changes() {
+    snapshot > "$test_root/metadata-before"
+    setup "$@" > "$test_root/metadata-output" 2>&1
+    snapshot > "$test_root/metadata-after"
+    cmp "$test_root/metadata-before" "$test_root/metadata-after"
+  }
+  metadata_origin="$test_root/metadata origin"
+  git init -q "$metadata_origin"
+  cd "$metadata_origin"
+  git -c protocol.file.allow=always submodule add -q "$baseline" .agent-baseline
+  printf '.gitmodules text eol=lf\n' > .gitattributes
+  git add .gitattributes .gitmodules .agent-baseline
+  setup engineer
+  git add AGENTS.md CLAUDE.md GEMINI.md .agents .claude
+  git -c user.name=Test -c user.email=test@example.invalid commit -qm 'LF metadata consumer'
+  git -c protocol.file.allow=always clone -q --recurse-submodules . "$test_root/metadata LF clone"
+  cd "$test_root/metadata LF clone"
+  accept_without_changes --check
+  test -z "$(git status --porcelain)"
+  cd "$metadata_origin"
+  printf '.gitmodules text eol=crlf\n' > .gitattributes
+  git add .gitattributes
+  git -c user.name=Test -c user.email=test@example.invalid commit -qm 'CRLF metadata checkout'
+  git -c protocol.file.allow=always clone -q --recurse-submodules . "$test_root/metadata CRLF clone"
+  cd "$test_root/metadata CRLF clone"
+  git ls-files --eol -- .gitmodules | grep -q 'i/lf.*w/crlf'
+  test -z "$(git status --porcelain)"
+  accept_without_changes --check
+  git add .gitmodules
+  accept_without_changes --check
+
+  # The same Git-produced CRLF metadata also permits ordinary first setup.
+  rm AGENTS.md CLAUDE.md GEMINI.md .agents/foundry-skills
+  unlink .agents/skills/engineer
+  unlink .claude/skills/engineer
+  cp .gitmodules "$test_root/metadata-preserved"
+  setup engineer
+  cmp .gitmodules "$test_root/metadata-preserved"
+  accept_without_changes --check
+
+  # Construct LF and CRLF expectations independently from the production stream.
+  # The two line-ending arguments allow deliberate mixed or unterminated cases.
+  write_modules() {
+    printf '# %s%s[submodule ".agent-baseline"]%s\tpath = %s%s\turl = %s%s' \
+      "$5" "$1" "$1" "$3" "$1" "$4" "$2" > "$6"
+  }
+  lf=$'\n'; crlf=$'\r\n'
+  staged="$test_root/metadata-staged"
+  working="$test_root/metadata-working"
+  stage_modules() {
+    modules_oid="$(git hash-object --no-filters -w "$staged")"
+    git update-index --add --cacheinfo "${1:-100644}" "$modules_oid" .gitmodules
+  }
+  native="$(printf 'native \200\377\303\251 \\ %%')"
+  for ending in final missing extra; do
+    stage_end="$lf"; work_end="$crlf"
+    case "$ending" in missing) stage_end=''; work_end='' ;; extra) stage_end="$lf$lf$lf"; work_end="$crlf$crlf$crlf" ;; esac
+    write_modules "$lf" "$stage_end" .agent-baseline "$baseline" "$native" "$staged"
+    write_modules "$crlf" "$work_end" .agent-baseline "$baseline" "$native" "$working"
+    stage_modules
+    cp "$working" .gitmodules
+    accept_without_changes --check
+  done
+  write_modules "$lf" "$lf" .agent-baseline "$baseline" original "$staged"
+  write_modules "$crlf" "$crlf" .agent-baseline "$baseline" original "$working"
+  stage_modules 100755
+  cp "$working" .gitmodules
+  accept_without_changes --check
+  stage_modules
+
+  for eol in "$lf" "$crlf"; do
+    for change in url path comment whitespace; do
+      url="$baseline"; path=.agent-baseline; comment=original
+      case "$change" in url) url='../different-source' ;; path) path=other-baseline ;; comment) comment=changed ;; whitespace) comment='original ' ;; esac
+      write_modules "$eol" "$eol" "$path" "$url" "$comment" .gitmodules
+      reject_without_changes --check
+    done
+  done
+  for ending in "$lf" $'\r' $'\r\r\n' ''; do
+    write_modules "$crlf" "$ending" .agent-baseline "$baseline" original .gitmodules
+    reject_without_changes --check
+  done
+  for extra in nul extra newline bom native; do
+    cp "$working" .gitmodules
+    case "$extra" in
+      nul) printf '\000' >> .gitmodules ;;
+      extra) printf x >> .gitmodules ;;
+      newline) printf '\r\n' >> .gitmodules ;;
+      bom) { printf '\357\273\277'; cat "$working"; } > .gitmodules ;;
+      native) write_modules "$crlf" "$crlf" .agent-baseline "$baseline" "$(printf '\377')" .gitmodules ;;
+    esac
+    reject_without_changes --check
+  done
+  # A staged CR or NUL cannot be discarded to gain fallback eligibility.
+  cp "$staged" "$test_root/metadata-normal"
+  cp "$working" "$staged"
+  stage_modules
+  cp "$working" .gitmodules
+  accept_without_changes --check # Existing exact-CRLF behavior stays unchanged.
+  cp "$test_root/metadata-normal" .gitmodules
+  reject_without_changes --check
+  cp "$test_root/metadata-normal" "$staged"
+  printf '# NUL\000\n' >> "$staged"
+  stage_modules
+  cp "$working" .gitmodules
+  reject_without_changes --check
+  cp "$test_root/metadata-normal" "$staged"
+  stage_modules
+
+  # Do not narrow a conflicting index listing to one selected entry.
+  git update-index --cacheinfo 160000 "$(git -C .agent-baseline rev-parse HEAD)" .gitmodules
+  reject_without_changes --check
+  git update-index --force-remove .gitmodules
+  reject_without_changes --check
+  printf '100644 %s 1\t.gitmodules\n100644 %s 2\t.gitmodules\n' "$modules_oid" "$modules_oid" | git update-index --index-info
+  reject_without_changes --check
+  git update-index --force-remove .gitmodules
+  stage_modules
+  mv .gitmodules "$test_root/metadata-link-target"
+  ln -s "$test_root/metadata-link-target" .gitmodules
+  reject_without_changes --check
+  unlink .gitmodules
+  cp "$working" .gitmodules
+
+  # An effective clean filter can hide changed values even from --no-textconv
+  # diff. The helper must neither trust that result nor run configured commands.
+  export MODULES_FILTER_MARKER="$test_root/metadata-filter-marker"
+  export MODULES_FILTER_SOURCE="$staged"
+  cat > "$test_root/metadata-command" <<'COMMAND'
+#!/bin/sh
+printf '%s\n' invoked >> "$MODULES_FILTER_MARKER"
+cat "$MODULES_FILTER_SOURCE"
+COMMAND
+  chmod +x "$test_root/metadata-command"
+  printf '.gitmodules filter=metadata diff=metadata\n' > .git/info/attributes
+  git config filter.metadata.clean "\"$test_root/metadata-command\""
+  git config filter.metadata.smudge "\"$test_root/metadata-command\""
+  git config diff.metadata.textconv "\"$test_root/metadata-command\""
+  git config diff.external "\"$test_root/metadata-command\""
+  write_modules "$lf" "$lf" .agent-baseline ../unreviewed original .gitmodules
+  test "$(git hash-object --path=.gitmodules .gitmodules)" = "$modules_oid"
+  git diff --quiet --no-ext-diff --no-textconv -- .gitmodules
+  test -s "$MODULES_FILTER_MARKER"
+  rm "$MODULES_FILTER_MARKER"
+  reject_without_changes --check
+  test ! -e "$MODULES_FILTER_MARKER"
+  cp "$working" .gitmodules
+  git config filter.metadata.process "\"$test_root/metadata-command\""
+  accept_without_changes --check
+  test ! -e "$MODULES_FILTER_MARKER"
+  rm .git/info/attributes
+  for key in filter.metadata.clean filter.metadata.smudge filter.metadata.process diff.metadata.textconv diff.external; do git config --unset "$key"; done
+
+  # Replacement refs must not alter the staged object used for comparison.
+  replacement="$(printf 'not the reviewed metadata\n' | git hash-object -w --stdin)"
+  git replace "$modules_oid" "$replacement"
+  accept_without_changes --check
+  git replace -d "$modules_oid" >/dev/null
+
+  # A real local promisor can supply the absent blob. Prove lazy fetch works in
+  # a separate control copy, then require raw equality to retain its old result
+  # and fallback to fail without any child process or repository write.
+  promisor="$test_root/metadata-promisor.git"
+  git init -q --bare "$promisor"
+  write_modules "$lf" "$lf" .agent-baseline "$baseline" promisor "$staged"
+  write_modules "$crlf" "$crlf" .agent-baseline "$baseline" promisor "$working"
+  missing_oid="$(git -C "$promisor" hash-object --no-filters -w "$staged")"
+  git -C "$promisor" update-ref refs/fixture/metadata "$missing_oid"
+  git update-index --cacheinfo 100644 "$missing_oid" .gitmodules
+  git config remote.fixture.url "$promisor"
+  git config remote.fixture.promisor true
+  git config extensions.partialClone fixture
+  git config protocol.file.allow always
+  test ! -e ".git/objects/${missing_oid:0:2}/${missing_oid:2}"
+  cp -R . "$test_root/metadata-lazy-control"
+  (
+    unset GIT_NO_LAZY_FETCH GIT_ALLOW_PROTOCOL
+    GIT_TRACE2_EVENT="$test_root/metadata-fetch-control.trace" git -C "$test_root/metadata-lazy-control" cat-file blob "$missing_oid" > "$test_root/metadata-fetched"
+  )
+  cmp "$staged" "$test_root/metadata-fetched"
+  grep -q '"event":"child_start"' "$test_root/metadata-fetch-control.trace"
+  cp "$staged" .gitmodules
+  GIT_TRACE2_EVENT="$test_root/metadata-raw.trace" accept_without_changes --check
+  trace_status=0
+  grep -q '"event":"child_start"' "$test_root/metadata-raw.trace" || trace_status=$?
+  if [ "$trace_status" -ne 1 ]; then
+    printf 'FAIL  raw trace contains a child process or cannot be read (grep status %s)\n' "$trace_status" >&2
+    exit 1
+  fi
+  cp "$working" .gitmodules
+  GIT_TRACE2_EVENT="$test_root/metadata-fallback.trace" reject_without_changes --check
+  trace_status=0
+  grep -q '"event":"child_start"' "$test_root/metadata-fallback.trace" || trace_status=$?
+  if [ "$trace_status" -ne 1 ]; then
+    printf 'FAIL  fallback trace contains a child process or cannot be read (grep status %s)\n' "$trace_status" >&2
+    exit 1
+  fi
+  test ! -e ".git/objects/${missing_oid:0:2}/${missing_oid:2}"
+  git config --unset extensions.partialClone
+  git config --remove-section remote.fixture
+  git config --unset protocol.file.allow
+  stage_modules
+
+  # Valid output followed by a producer/hash/query error must not become success.
+  METADATA_REAL_GIT="$(command -v git)"
+  export METADATA_REAL_GIT
+  export METADATA_FAULT_COUNT="$test_root/metadata-fault-count"
+  mkdir "$test_root/metadata-fault-bin"
+  cat > "$test_root/metadata-fault-bin/git" <<'FAULT'
+#!/usr/bin/env bash
+set -u
+kind=''
+case " $* " in
+  *" cat-file blob "*) kind=cat ;;
+  *" hash-object --no-filters --stdin "*) kind=hash ;;
+  *" ls-files --stage -- .gitmodules "*) kind=entry ;;
+esac
+if [ "$kind" = "$METADATA_FAULT_KIND" ]; then
+  count=0
+  if [ -f "$METADATA_FAULT_COUNT" ]; then read -r count < "$METADATA_FAULT_COUNT"; fi
+  count=$((count + 1)); printf '%s\n' "$count" > "$METADATA_FAULT_COUNT"
+  "$METADATA_REAL_GIT" "$@" || exit $?
+  if [ "$count" -eq "$METADATA_FAULT_WHICH" ]; then exit 73; fi
+  exit 0
+fi
+exec "$METADATA_REAL_GIT" "$@"
+FAULT
+  chmod +x "$test_root/metadata-fault-bin/git"
+  for fault in cat:1 cat:2 hash:1 hash:2 entry:1; do
+    rm -f "$METADATA_FAULT_COUNT"
+    METADATA_FAULT_KIND="${fault%:*}" METADATA_FAULT_WHICH="${fault#*:}" \
+      PATH="$test_root/metadata-fault-bin:$PATH" reject_without_changes --check
+    test -s "$METADATA_FAULT_COUNT"
+  done
+  printf 'PASS  strict metadata representation, effective filters, promisor and failure controls (%s)\n' "$(git --version)"
+)
+
 # Execute the guide's actual first Bash block in each section without adding shell
 # options to the extracted code: the published block must enforce its own failures.
 guide_snippet() {
