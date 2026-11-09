@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "d1275be4-9dcf-47c4-822d-e87fdb024892",
+  "runId": "eedd7151-13a0-4736-947a-439e86a4c04d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-requirement-change-v1",
+    "path": "tasks/CF-json-requirement-change-v1-maintained-regression.md",
+    "revision": "e3a7566db5760b6dcf62f523154537f7fa1dec18",
+    "blob": "3b125ab204cc8e38b3d1a2106fd8966ae97472c3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f07924706c353de796cd785960fcf28f6eeb2e96cfc6d96e0d5256f38e3c1afa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/json-requirement-change-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T20:53:18.230Z",
+  "summary": "Retain independently reviewed optional-to-required-to-constant JSON validator regression",
+  "next": "Implement the bounded test and documentation, then validate",
+  "files": [
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go",
+    "modeling/jsonvalidator/README.md",
+    "tasks/CF-json-requirement-change-v1-maintained-regression.md"
+  ]
+}

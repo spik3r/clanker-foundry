@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "cfa808fc-af1c-41fa-bcab-d0188d2cd2dd",
+  "runId": "eedd7151-13a0-4736-947a-439e86a4c04d",
+  "kind": "complete",
+  "parents": [
+    "d1275be4-9dcf-47c4-822d-e87fdb024892"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-requirement-change-v1",
+    "path": "tasks/CF-json-requirement-change-v1-maintained-regression.md",
+    "revision": "e3a7566db5760b6dcf62f523154537f7fa1dec18",
+    "blob": "3b125ab204cc8e38b3d1a2106fd8966ae97472c3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f07924706c353de796cd785960fcf28f6eeb2e96cfc6d96e0d5256f38e3c1afa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/json-requirement-change-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T20:57:13.804Z",
+  "summary": "Retained independently reviewed narrowing cases in both emitted languages with CLI provenance and restoration checks",
+  "next": "Commit evidence, validate the full committed diff, publish a draft PR and obtain independent exact-source and hosted review",
+  "files": [
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go",
+    "modeling/jsonvalidator/README.md",
+    "tasks/CF-json-requirement-change-v1-maintained-regression.md"
+  ],
+  "validation": "Focused regression passed (4 subtests, 33 literals per emitted language); full Go1.27.3 race tests and vet passed; Go formatting passed; Node24.22.1 TypeScript acceptance 46/46 passed; repository validator and whitespace passed; optional skills-ref unavailable. CLI/generated-Go children are not race-instrumented.",
+  "snapshot": {
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go": {
+      "blob": "df467cc931f7cfba38531c9b6dd93981bd019811",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/README.md": {
+      "blob": "efdafb7f4365d8b7867050bed0b2f26c280ad476",
+      "mode": "100644"
+    },
+    "tasks/CF-json-requirement-change-v1-maintained-regression.md": {
+      "blob": "37fc6f2a52d8c91ccf0a4f1b1aa11f37b9423c16",
+      "mode": "100644"
+    }
+  }
+}

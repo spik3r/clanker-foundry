@@ -1,6 +1,6 @@
 ---
 id: CF-json-requirement-change-v1
-status: in-progress
+status: review
 owner: Foundry requirement-change regression contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -69,3 +69,39 @@ actual head and report local and hosted checks separately. An independent
 reviewer checks the literal expectations before execution and the exact final
 source before integration. No result in this source is a claim that those
 future checks have already run.
+
+## Observed implementation
+
+The published source is `e3a7566db5760b6dcf62f523154537f7fa1dec18`.
+Its actual Git commit was fetched and verified before registration and a genuine
+start. An independent reviewer approved the eleven literal rows and all three
+models against the written profile before any generated execution.
+
+The focused test executes 33 literal expectations in each emitted language,
+checks four real CLI generations, verifies exact raw-model hash declarations,
+preserves every earlier output and restores both original files byte for byte.
+It reuses the existing emitted-language helper without changing it. The README
+describes this coverage and the producer's already merged state. Production
+code, profile semantics, frozen fixtures and workflows remain unchanged.
+
+Observed local checks passed with Go 1.27.3 and Node 24.22.1, using an isolated
+writable build cache with downloads disabled:
+
+- Focused `TestGeneratedRequirementChanges`: all four subtests passed; reported
+  test runtime 1.92 seconds, 8.91 seconds including cold compilation.
+- Full module `go test -race -count=1 ./...`: both packages passed; command
+  package 10.59 seconds and 20.76 seconds total wall time including compilation.
+- `go vet ./...`, Go formatting and the existing TypeScript acceptance passed;
+  all 46 frozen TypeScript cases retained their original corpus hash.
+- Repository validation and whitespace checks passed. Optional `skills-ref`
+  was unavailable and explicitly skipped.
+
+Initial setup attempts executed no tests: an external timing executable was
+absent, then Go's default HOME cache was read-only. Shell timing and an explicit
+task-local writable cache resolved those setup issues without access changes.
+The CLI and generated-Go child processes are not race-instrumented by the outer
+race run. Node transformation is not `tsc`, browser or consumer acceptance.
+
+Final committed-evidence validation, independent exact-source review and hosted
+checks are reported separately after publication. This task remains in review;
+no merge, tagged release, deployment or consumer activation is asserted.
