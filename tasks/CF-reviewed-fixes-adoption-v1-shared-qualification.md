@@ -1,16 +1,16 @@
 ---
 id: CF-reviewed-fixes-adoption-v1
-status: review
+status: done
 owner: astra-foundry-reliability-integration
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Adopt and qualify three reviewed Foundry fixes
 
-This task retains the original byte-exact adoption as attributed history. The
-successor claim and sequence below govern the proposed test correction. They
-permit one explicit exception to the original inventory, not a broader rewrite.
-The original source, events, product inventory and checks remain preserved.
+This task retains the original byte-exact adoption and bounded test correction
+as attributed history. The selected successor claim remains unchanged; its scope,
+twelve-path coverage, source and history restrictions still apply. The Integration
+closeout below records the accepted merged outcome and remaining platform limits.
 
 ## Successor test-correction claim
 
@@ -482,7 +482,7 @@ Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unqualified.
 Fresh actual hosted Git, ShellCheck, Stow/full installer/shared-base and all other
 existing workflows remain required on the final corrected head.
 
-## Current state
+## Precompletion state (historical)
 
 The bounded correction and factual task update are local and ready for exact-diff
 review. PR96 remains draft at the published successor source; the correction has
@@ -496,3 +496,103 @@ production behavior gap on an admitted version still stops this test-only scope
 for a separate compatibility decision, without weakening assertions or changing
 production scripts. Promotion and normal merge remain separate decisions;
 preserve both source pins, immutable history and all unrelated scopes.
+
+## Integration closeout
+
+[PR96](https://github.com/spik3r/clanker-foundry/pull/96) merged normally at
+`2026-11-09T02:52:39Z` as
+[`a43f03b75a58f6c4636f6482f189f9d946b517c8`](https://github.com/spik3r/clanker-foundry/commit/a43f03b75a58f6c4636f6482f189f9d946b517c8),
+with accepted tree `529d150b80db1bb3973dd1ea45fdbfceb22ceb20`. Its ordered parents
+are prior main `c08604c5f9eebd412af02e95fb06d7846a9f51e2` and actual corrected head
+[`8ad9765bd480f65afa9013a73b5f562e8c6cf848`](https://github.com/spik3r/clanker-foundry/commit/8ad9765bd480f65afa9013a73b5f562e8c6cf848).
+The actual merged tree, all 1,238 leaves/modes and source ancestry were independently
+verified. No squash, rebase or history rewrite occurred.
+
+The corrected head's sole parent is actual successor source
+[`6e824dc675245794dbabb9118d9348966f45abc1`](https://github.com/spik3r/clanker-foundry/commit/6e824dc675245794dbabb9118d9348966f45abc1),
+whose parent is original adoption `e80a74a478206466087eac099ed21a064baae30a`,
+whose parent is original source
+[`9f312b3e6297daa78979e22d49a2f52399020a71`](https://github.com/spik3r/clanker-foundry/commit/9f312b3e6297daa78979e22d49a2f52399020a71).
+Both published source pins and every prior immutable record remain in main.
+The unpublished contributor chain remains local provenance, not published ancestry.
+
+At that integrated main, all twelve fingerprints of final correction completion
+`b3a8439f-1e6b-4835-b9b4-98b52371319b` match the accepted tree. The corrected
+`tests/test-project-setup.sh` blob is `69a0509b3edb31e63bec28d1970ceb984c793c6c`,
+mode `100755`; the other ten products and every product mode retain the original
+adoption inventory. The original and successor source snapshots, both starts,
+both completions, all 586 task/evidence entries inherited from the pre-adoption
+base and unrelated content are preserved. The correction changed only test
+assertions and lookup-status handling; no production defect was demonstrated.
+
+### Accepted hosted qualification before merge
+
+Independent review accepted all ten push/PR workflows and fourteen actual jobs
+at corrected head `8ad9765...` and current-base PR checkout
+`60288afbbb95eb0a18111c5b188ecb14cc796d0b`. That checkout has the accepted tree
+and ordered parents `c08604c5...` then `8ad9765...`.
+[Push validation](https://github.com/spik3r/clanker-foundry/actions/runs/42551074667)
+and [PR validation](https://github.com/spik3r/clanker-foundry/actions/runs/42551079397)
+executed successful ShellCheck, real GNU Stow/full installer, resolver, pack,
+Markdown and strict shared-base checks on hosted Git 2.56.0.
+[PR committed validation](https://github.com/spik3r/clanker-foundry/actions/runs/42551079397/job/128946576824)
+passed against the stated base with twelve covered paths and four new events,
+using the sole latest completion rather than a union with the old completion.
+Conformance, schema, orchestration/Docker and existing Go workflow checks also
+passed. These are executed premerge results, not runs on the later merge commit.
+
+### Accepted qualification on actual merged main
+
+All five ordinary main-push workflows and seven jobs completed successfully on
+actual merge `a43f03b75a58f6c4636f6482f189f9d946b517c8`, attempt 1:
+
+- [Validate](https://github.com/spik3r/clanker-foundry/actions/runs/42553305809).
+- [Project Memory conformance](https://github.com/spik3r/clanker-foundry/actions/runs/42553305843).
+- [Model authoring contract](https://github.com/spik3r/clanker-foundry/actions/runs/42553305779).
+- [Orchestration](https://github.com/spik3r/clanker-foundry/actions/runs/42553305806).
+- [Model lifecycle Go](https://github.com/spik3r/clanker-foundry/actions/runs/42553305770).
+
+Independent inspection of every job log confirmed the actual merge checkout,
+executed steps and results: ShellCheck 0.11.0; real GNU Stow 2.4.1; full installer,
+resolver, twelve preflight cases and strict shared-base checks on Git 2.56.0;
+pack and 92 Markdown-path cases; 143 lifecycle/workflow tests; 91 conformance tests
+plus their check; two schema tests; 307 runtime tests plus Docker isolation; and
+the existing Go 1.27.3 race tests, vet, model validation and generated-artifact
+checks. No failure was hidden by advisory ShellCheck policy.
+
+The committed-PR-validation step was correctly skipped on this push event. The
+accepted premerge PR run supplies its actual committed-coverage result; the skip
+is not another successful coverage execution. Optional skills-ref absence remains
+an explicit pack-tool skip. No workflow rerun or setting change was needed.
+
+### Completed scope and remaining limits
+
+The integrated installer preflight, literal Markdown filename and strict
+`.gitmodules` CRLF adoption, including its bounded test correction, is recorded
+as done. The owner remains `astra-foundry-reliability-integration` as provenance.
+Effective shared release of only this completed scope occurs when this canonical
+closeout is independently reviewed and integrated. This does not release or
+acquire profile-CRLF, PR94, resolver or any other owner's outcome.
+
+Historical local limits and failures remain attributed above. The original
+advisory ShellCheck failures and false-pass assertions were corrected rather
+than erased. The intermediate source-only
+[PR committed-evidence failure](https://github.com/spik3r/clanker-foundry/actions/runs/42546893048/job/128933711891)
+was caused by the changed task lacking fresh final completion evidence; it is
+not a failure of the accepted corrected head or merged main. No original event
+has been rewritten to claim later execution.
+
+This closeout changes only task metadata. Its publication still requires a genuine
+new run under the unchanged published successor claim, all twelve final
+task/product fingerprints, current committed validation and fresh exact-head/
+current-base hosted qualification. All eleven product blobs/modes and old
+evidence must remain unchanged; prior green results alone do not qualify a new
+canonical head. Any later integration must preserve both source pins and all
+immutable history through a normal merge.
+
+Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unqualified.
+No release artifact, deployment, global installation or provider/client action
+is claimed. The separate resolver's native obligation and unrelated ownership
+remain untouched. Any production behavior gap exposed on an admitted Git version
+still requires a separate compatibility decision, without weakening assertions
+or silently broadening the product scope.

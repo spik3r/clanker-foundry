@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "8e84c806-60bc-43be-8acf-e93e4346712e",
+  "runId": "6c6d9e17-192a-47fb-8dc2-ee5c698ebbf2",
+  "kind": "complete",
+  "parents": [
+    "8bbd854c-7925-4001-883f-b4010d6ee833"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewed-fixes-adoption-v1",
+    "path": "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    "revision": "6e824dc675245794dbabb9118d9348966f45abc1",
+    "blob": "cf4ac92a6a6f3d31e7bf94e03c4ebb16fd436b09",
+    "claim": {
+      "heading": "Successor test-correction claim",
+      "digest": "e5f804eb9fc75b1184c6cd167e2e80c9732956d5121f54406044bd86a1092cf2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/reviewed-fixes-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T03:28:01.213Z",
+  "summary": "Recorded the accepted PR96 normal integration and actual-main qualification in the canonical task. Preserved all eleven product blobs and modes, both source pins, both claim digests and all prior evidence. The reviewed task closes only the completed adoption and test-correction scope when this canonical closeout is separately integrated.",
+  "next": "Commit normally with verified actual main a43f03b75a58f6c4636f6482f189f9d946b517c8 as sole parent and validate the full committed diff with explicit same-repository identities. Obtain independent committed review before any separate draft closeout publication; require fresh exact-head/current-base hosted qualification and a separate normal integration decision. Preserve both source pins and all prior history. No effective shared release before reviewed canonical integration and readback.",
+  "files": [
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    ".github/workflows/validate.yml",
+    "docs/getting-started.md",
+    "docs/project-shared-base.md",
+    "scripts/project-setup.sh",
+    "scripts/stow.sh",
+    "scripts/validate.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "tests/test-install.sh",
+    "tests/test-project-setup.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-validate.sh"
+  ],
+  "validation": "Observed metadata-phase checks on the exact final task content passed: bash scripts/validate.sh, Bash syntax for the ten maintained root entrypoints, working/index/full main-relative whitespace, maintained source and claim parsing, causal status, exact tree/blob/mode comparison and preservation of all existing task/evidence records. Independent precompletion review repeated applicable checks and accepted the same twelve final fingerprints. Optional skills-ref was absent and explicitly skipped. Behavioral suites were not rerun for this task-only delta. The independently accepted premerge ten-workflow/fourteen-job qualification at actual 8ad9765bd480f65afa9013a73b5f562e8c6cf848 and its current-base merge, plus five-workflow/seven-job main-push qualification at a43f03b75a58f6c4636f6482f189f9d946b517c8, remain retained evidence rather than new local executions. Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unqualified. No product edits, local installation or local Go aggregate. Full committed validation, independent committed review and fresh closeout-head/current-base hosted qualification remain next gates.",
+  "snapshot": {
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md": {
+      "blob": "aa93ce41e9961f75bb5bc1e584b358bcd7d4d014",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "52484b793f6c262d91fa647c65303f86c952b1fd",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "d80b771ce89d1bc7bdd22666a82346888df9ccd1",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "991a51343b86e5313d48c0518f908f09802555ba",
+      "mode": "100644"
+    },
+    "scripts/project-setup.sh": {
+      "blob": "7f5f830cbb12b445444d1199def295dce600b87c",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "2e1abf65100e8ac04c04d1ce94d0cd542c776bed",
+      "mode": "100755"
+    },
+    "scripts/validate.sh": {
+      "blob": "67d44f33fb7f048053c30b1802117caa9c50f21b",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "c2d80545b71c22ea0ec1323a541fb6e73e01a753",
+      "mode": "100644"
+    },
+    "tests/test-install.sh": {
+      "blob": "af703148bc4826894350449bb0438e49e4ce8f80",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "69a0509b3edb31e63bec28d1970ceb984c793c6c",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "e964d86329763b9bef5f4fdeaaa8645e628c4aa6",
+      "mode": "100755"
+    },
+    "tests/test-validate.sh": {
+      "blob": "1395316d9d7f29c0ea510df3d0d842e2065accb0",
+      "mode": "100755"
+    }
+  }
+}
