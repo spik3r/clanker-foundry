@@ -1,0 +1,75 @@
+{
+  "profile": "json-boolean/v1",
+  "root": {
+    "type": "object",
+    "additionalProperties": true,
+    "properties": [
+      {
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "enabled",
+        "required": true,
+        "schema": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      {
+        "name": "label",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "tags",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "name": "flags",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "boolean"
+          }
+        }
+      },
+      {
+        "name": "meta",
+        "required": false,
+        "schema": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": [
+            {
+              "name": "region",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "archived",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

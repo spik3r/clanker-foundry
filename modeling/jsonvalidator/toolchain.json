@@ -1,0 +1,6 @@
+{
+  "go": "1.27.3",
+  "nodeMajor": 24,
+  "profile": "json-boolean/v1",
+  "generatorInterface": "jsonvalidator/v1"
+}
