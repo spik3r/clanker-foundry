@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "416726c8-8c58-49c9-91dd-65b648576900",
+  "runId": "2980533c-f967-486c-a5be-7667ba0a1c63",
+  "kind": "start",
+  "parents": [
+    "719112e5-38f2-4a20-9a8e-b952ad4f1329"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "d0a019051cd4d1225fac9c93fee41240fe2532ed",
+    "blob": "89918ef7f412308eded58e8c917b8e7828aa5cfe",
+    "claim": {
+      "heading": "Coordinator closeout claim",
+      "digest": "88b64a8dfe2f94126f693a6f3d80fc5705c95945bb8a7c71ad511c54736245c1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "local/resolver-integration-closeout-20261108",
+  "pullRequest": null,
+  "at": "2026-11-08T23:06:14.305Z",
+  "summary": "Record verified integration of the completed PR13 resolver mapping scope without changing product code.",
+  "next": "Apply the reviewed metadata-only closeout result, validate it, and record observed completion.",
+  "files": [
+    "tasks/CF-agent-model-duplicate-keys-resolver.md"
+  ]
+}

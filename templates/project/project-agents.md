@@ -11,8 +11,9 @@ Delete this guidance section after copying.
 
 # <Project name>
 
-If this project pins `.agent-baseline`, read `.agent-baseline/global-agents/AGENTS.md`
-before applying local rules. A missing pinned baseline is a setup error.
+If adopting a pinned baseline, use `scripts/project-setup.sh` from that baseline
+and its short overlay template instead. Otherwise remove this paragraph. A prose
+reference is not an automatic import; confirm the files your client actually loads.
 
 <One sentence: what this repo is.>
 
@@ -60,7 +61,8 @@ services running, say how to start them.
 
 Keep task status and ownership in the canonical record; link from handoffs and PRs.
 Remove this section if the project does not need tracked work. See the pack's
-[task workflow guide](../../docs/task-workflows.md) for adoption choices.
+[task workflow guide](https://github.com/spik3r/clanker-foundry/blob/main/docs/task-workflows.md)
+for adoption choices; this link also works after copying the template.
 
 ## Boundaries
 

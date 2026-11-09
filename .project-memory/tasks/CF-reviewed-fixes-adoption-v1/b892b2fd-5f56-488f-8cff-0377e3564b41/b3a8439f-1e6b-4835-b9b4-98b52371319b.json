@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "b3a8439f-1e6b-4835-b9b4-98b52371319b",
+  "runId": "b892b2fd-5f56-488f-8cff-0377e3564b41",
+  "kind": "complete",
+  "parents": [
+    "373124b9-1c32-4421-ad71-13e141500850"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewed-fixes-adoption-v1",
+    "path": "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    "revision": "6e824dc675245794dbabb9118d9348966f45abc1",
+    "blob": "cf4ac92a6a6f3d31e7bf94e03c4ebb16fd436b09",
+    "claim": {
+      "heading": "Successor test-correction claim",
+      "digest": "e5f804eb9fc75b1184c6cd167e2e80c9732956d5121f54406044bd86a1092cf2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/reviewed-fixes-adoption-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/96",
+  "at": "2026-11-09T02:20:06.909Z",
+  "summary": "Corrected the two shared-base trace-absence assertions to accept only grep status 1 and separated Git lookup from export. Preserved the other ten adopted product blobs, both published source pins and all prior evidence.",
+  "next": "Commit and validate the full committed main-relative diff with explicit same-repository identities, then obtain independent committed-coverage review before corrected publication to draft PR96. Require fresh final-head/current-base hosted qualification; any admitted-version production gap stops the test-only scope. Keep task in review and preserve both source pins for a separate normal-merge decision.",
+  "files": [
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    ".github/workflows/validate.yml",
+    "docs/getting-started.md",
+    "docs/project-shared-base.md",
+    "scripts/project-setup.sh",
+    "scripts/stow.sh",
+    "scripts/validate.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "tests/test-install.sh",
+    "tests/test-project-setup.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-validate.sh"
+  ],
+  "validation": "Observed on the unchanged reviewed final task/product content: corrected full bash tests/test-project-setup.sh passed separately with Git 2.52.0 and 2.47.3, with ordinary-Git positive controls preserved and no production gap. Four disposable full-suite forbidden-child_start mutations were rejected at the intended guard. Twenty-eight isolated exact-guard probes accepted readable clean/empty traces and rejected forbidden evidence, missing/directory paths, four real permission-denied reads and injected grep status 3. Four exact lookup probes passed, including injected status 73 before export or continuation. Pack validation with final task text, ten-entrypoint Bash syntax and whitespace passed. Independent exact-diff review repeated both full clean suites, four full-suite mutations and thirty-two probes and accepted the same twelve fingerprints. Linux Bash 5.2.37, Node 24.22.1 and invented isolated homes. These are local results, not final hosted qualification. ShellCheck, GNU Stow/full installer and optional skills-ref unavailable locally; skills-ref explicitly skipped. Fresh exact-head/current-base hosted Git, ShellCheck, Stow/full installer/shared-base and all existing workflow gates remain required. Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unqualified. No installation or local Go aggregate.",
+  "snapshot": {
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md": {
+      "blob": "90e548396c13b22265c1dcc8566266d76932de5a",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "52484b793f6c262d91fa647c65303f86c952b1fd",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "d80b771ce89d1bc7bdd22666a82346888df9ccd1",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "991a51343b86e5313d48c0518f908f09802555ba",
+      "mode": "100644"
+    },
+    "scripts/project-setup.sh": {
+      "blob": "7f5f830cbb12b445444d1199def295dce600b87c",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "2e1abf65100e8ac04c04d1ce94d0cd542c776bed",
+      "mode": "100755"
+    },
+    "scripts/validate.sh": {
+      "blob": "67d44f33fb7f048053c30b1802117caa9c50f21b",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "c2d80545b71c22ea0ec1323a541fb6e73e01a753",
+      "mode": "100644"
+    },
+    "tests/test-install.sh": {
+      "blob": "af703148bc4826894350449bb0438e49e4ce8f80",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "69a0509b3edb31e63bec28d1970ceb984c793c6c",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "e964d86329763b9bef5f4fdeaaa8645e628c4aa6",
+      "mode": "100755"
+    },
+    "tests/test-validate.sh": {
+      "blob": "1395316d9d7f29c0ea510df3d0d842e2065accb0",
+      "mode": "100755"
+    }
+  }
+}

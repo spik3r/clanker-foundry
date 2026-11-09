@@ -1,7 +1,7 @@
 ---
 id: CF-agent-model-duplicate-keys
 category: tooling
-status: in-progress
+status: done
 owner: Foundry implementation
 repositories: [spik3r/clanker-foundry]
 depends_on: []
@@ -60,3 +60,49 @@ Use invented shared/local fixtures and raw output-file checks. Verify the exact
 candidate independently on Linux and native macOS/BSD awk before treating the
 portability finding as resolved. Keep the existing PR draft; no approval, merge
 or deployment is part of this follow-up.
+
+## Coordinator closeout claim
+
+Owner: Foundry coordinator, for the integration record only. The original
+implementation owner and claims above remain historical provenance. Base:
+`8b9d9617a24d0666aba7231068d74e0d0c6d6b55`. Intended local branch:
+`local/resolver-integration-closeout-20261108`. Recheck the current canonical task,
+main, open work and the final PR13 evidence before using this bounded scope.
+
+Record the already merged duplicate/malformed/NUL mapping outcome and close only
+that completed implementation scope. Exact writable paths are this task record
+and new immutable source/event files for `CF-agent-model-duplicate-keys` only.
+Do not edit resolver code, tests, mappings, defaults, other tasks, prior source
+snapshots, prior events or legacy ledger bytes. No CRLF profile implementation,
+new resolver claim, provider/client execution, installation or settings change
+belongs to this closeout. No receiving implementation owner is assigned here.
+
+Independently review this claim before committing its source. Register that exact
+reviewed source and make a genuine new start under this claim before changing
+status or adding the closeout result. Preserve every previous immutable record.
+Verify PR13 integration, current source identity and absence of a visible
+competing lane; record facts rather than infer completion from age. Run the pack
+validator, whitespace checks and committed lifecycle validation for the final
+metadata-only change. Qualify and publish any closeout PR only under its separate
+coordinator assignment; this claim does not itself authorize a remote action.
+## Integration closeout
+
+PR13 merged on 1 November 2026 as
+`f81e07366ba8ddbf174763368307654f6b282dfc`, an ancestor of reviewed main
+`8b9d9617a24d0666aba7231068d74e0d0c6d6b55`. All five paths fingerprinted by the final
+implementation completion retain their accepted blobs and modes at that main.
+At that reviewed main, before this metadata-closeout run, the task's sole
+implementation frontier was completion
+`719112e5-38f2-4a20-9a8e-b952ad4f1329`. The final PR head was
+`7af5d65f8b9f66cad5c5e59ab85f1ea61f59560c`. The PR records independent Linux and
+native macOS/BSD-awk review plus successful exact-head hosted checks after the NUL
+correction. These are retained implementation results, not new executions by the
+metadata closeout.
+
+The coordinator records the integrated duplicate/malformed/NUL mapping outcome
+as done and releases only that completed implementation scope. Historical
+implementation text and every prior immutable source/event remain intact. The
+separate profile-Markdown CRLF finding is not implemented or claimed by this
+closeout. Any follow-on needs its own accepted bounded claim and genuine start.
+
+Integration evidence: [PR13](https://github.com/spik3r/clanker-foundry/pull/13).

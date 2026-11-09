@@ -15,8 +15,12 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y stow
       - name: Run pack validator
         run: bash scripts/validate.sh
+      - name: Run pack validator regression tests
+        run: bash tests/test-validate.sh
       - name: Run installer regression tests
         run: bash tests/test-install.sh
+      - name: Run project shared-base regression tests
+        run: bash tests/test-project-setup.sh
 
   # Read-only evidence check. Required-status configuration is a separate owner decision.
   project-memory:

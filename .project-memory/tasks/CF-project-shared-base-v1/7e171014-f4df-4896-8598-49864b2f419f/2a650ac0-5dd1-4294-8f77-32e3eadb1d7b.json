@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "2a650ac0-5dd1-4294-8f77-32e3eadb1d7b",
+  "runId": "7e171014-f4df-4896-8598-49864b2f419f",
+  "kind": "complete",
+  "parents": [
+    "98cc22fb-0fdb-46d6-86ba-d3383f33f2b9"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-shared-base-v1",
+    "path": "tasks/CF-project-shared-base-v1-reusable-setup.md",
+    "revision": "d7520fb996a0b4c68603609173406eada2b89dd8",
+    "blob": "bcb3c34cbbcd6bd9e6559dcc020d6acc65f33d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e7221b6cf3b45aa06d21de21a4dc8f349014bef7903ecc35bb8ce9311fbd81c9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-shared-base",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/93",
+  "at": "2026-11-05T23:29:14.317Z",
+  "summary": "Restored both frozen instruction inputs and retained shared-base guidance in consumer docs and template",
+  "next": "Commit additive correction, validate committed lifecycle evidence, update authorized draft PR 93 and monitor CI; no merge",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "templates/project/shared-agents.md",
+    "templates/project/project-agents.md",
+    "templates/project/new-project-checklist.md",
+    "docs/project-shared-base.md",
+    "docs/getting-started.md",
+    "global-agents/README.md",
+    "global-agents/AGENTS.md",
+    "AGENTS.md",
+    "README.md",
+    ".github/workflows/validate.yml",
+    "tasks/CF-project-shared-base-v1-reusable-setup.md"
+  ],
+  "validation": "All 15 frozen builder inputs match baseline c99d96d. Pack validator, ShellCheck for new scripts, setup safety/clean-clone/update tests and installer/model-resolver tests PASS. Project Memory/workflow tests 143/143 PASS. Go 1.27.3 full race suite, vet, modelc validate and modelc check PASS with physical TMPDIR=/private/tmp/foundry-shared-base-go-tmp; modeling tree unchanged. Initial default macOS /var temporary-root run failed unchanged builderdemo and proposalreplay path comparisons against /private/var; physical-path targeted and full reruns passed without test changes. Optional skills-ref unavailable; hosted follow-up CI pending.",
+  "snapshot": {
+    "scripts/project-setup.sh": {
+      "blob": "958c627e9977a6b433bde859ba7dbf1a38faa127",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "a9722100c318ce419ae7e02b44dbf5a6cb5d51e0",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "4249098ef7ea4a78fbec860a908ece9e6a476f09",
+      "mode": "100644"
+    },
+    "templates/project/shared-agents.md": {
+      "blob": "73f4dc127a3679a3719165859e6a05983425cb5e",
+      "mode": "100644"
+    },
+    "templates/project/project-agents.md": {
+      "blob": "945796602c6fa2281e5094bc26c99f5ecaa9e2b6",
+      "mode": "100644"
+    },
+    "templates/project/new-project-checklist.md": {
+      "blob": "15a6a15b63b5e73e4cb27f64bcc54ae06cc7eaa9",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "0b854a24a843b7d7c8137a3c8570911cc3440c3e",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "cdb91182cf5888e028e026987a5e41d979bb3029",
+      "mode": "100644"
+    },
+    "global-agents/README.md": {
+      "blob": "d4494d89f5e9df40f70624b700404954c9be7a05",
+      "mode": "100644"
+    },
+    "global-agents/AGENTS.md": {
+      "blob": "fa560a827759bc421f87323e568838e1f8b23869",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "c28ff18ffb08f45ac1abec5fa7646d74ffee1130",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "fe3d1d072c8325a78d9999556a41690941ad1e94",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "7c917bc1cb593d6538c924f4ba4b886c1d58fce3",
+      "mode": "100644"
+    },
+    "tasks/CF-project-shared-base-v1-reusable-setup.md": {
+      "blob": "99eed883e1485fc6e932472ae6f4be00a9c54ef6",
+      "mode": "100644"
+    }
+  }
+}

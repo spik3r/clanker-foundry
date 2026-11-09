@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "4dd633a7-c79b-479f-851e-1b2fe8e1f682",
+  "runId": "1c6911af-6915-47ea-978c-af1b7357005e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewed-fixes-adoption-v1",
+    "path": "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    "revision": "9f312b3e6297daa78979e22d49a2f52399020a71",
+    "blob": "3066dc10b7a375ff0aea83d63cbd2a1b65a60cf8",
+    "claim": {
+      "heading": "Integration claim",
+      "digest": "952ce348f0d53d322d4b77db89f50257cea79578c7d1fa77d38e3871430480cd"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/reviewed-fixes-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T00:14:59.272Z",
+  "summary": "Integrate the eleven reviewed installer, Markdown-path and project-metadata fixes unchanged on the verified published adoption source.",
+  "next": "Verify exact product identities, run bounded local integration checks, finalize task results and obtain independent exact-diff review before completion.",
+  "files": [
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    ".github/workflows/validate.yml",
+    "docs/getting-started.md",
+    "docs/project-shared-base.md",
+    "scripts/project-setup.sh",
+    "scripts/stow.sh",
+    "scripts/validate.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "tests/test-install.sh",
+    "tests/test-project-setup.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-validate.sh"
+  ]
+}

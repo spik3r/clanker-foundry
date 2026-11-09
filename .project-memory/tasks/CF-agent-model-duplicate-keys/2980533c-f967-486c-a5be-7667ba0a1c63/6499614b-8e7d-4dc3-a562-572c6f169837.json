@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "6499614b-8e7d-4dc3-a562-572c6f169837",
+  "runId": "2980533c-f967-486c-a5be-7667ba0a1c63",
+  "kind": "complete",
+  "parents": [
+    "416726c8-8c58-49c9-91dd-65b648576900"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-model-duplicate-keys",
+    "path": "tasks/CF-agent-model-duplicate-keys-resolver.md",
+    "revision": "d0a019051cd4d1225fac9c93fee41240fe2532ed",
+    "blob": "89918ef7f412308eded58e8c917b8e7828aa5cfe",
+    "claim": {
+      "heading": "Coordinator closeout claim",
+      "digest": "88b64a8dfe2f94126f693a6f3d80fc5705c95945bb8a7c71ad511c54736245c1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "local/resolver-integration-closeout-20261108",
+  "pullRequest": null,
+  "at": "2026-11-08T23:06:52.374Z",
+  "summary": "Recorded verified PR13 integration and the bounded metadata-only closeout; no product change.",
+  "next": "Independently review the exact committed closeout before separately authorized publication and integration; no effective shared release yet.",
+  "files": [
+    "tasks/CF-agent-model-duplicate-keys-resolver.md"
+  ],
+  "validation": "bash scripts/validate.sh passed; optional skills-ref unavailable and skipped. git diff --check and git diff --cached --check passed. Exact reviewed final task SHA-256 and claim digests verified. All pre-existing non-task paths and immutable metadata remain unchanged. Committed lifecycle validation follows this commit.",
+  "snapshot": {
+    "tasks/CF-agent-model-duplicate-keys-resolver.md": {
+      "blob": "463e9786d60b07699c8dd113778d11eab5677834",
+      "mode": "100644"
+    }
+  }
+}

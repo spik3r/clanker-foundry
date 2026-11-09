@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "8bf67e2b-b373-4d7a-812c-2944645461a8",
+  "runId": "1c6911af-6915-47ea-978c-af1b7357005e",
+  "kind": "complete",
+  "parents": [
+    "4dd633a7-c79b-479f-851e-1b2fe8e1f682"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewed-fixes-adoption-v1",
+    "path": "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    "revision": "9f312b3e6297daa78979e22d49a2f52399020a71",
+    "blob": "3066dc10b7a375ff0aea83d63cbd2a1b65a60cf8",
+    "claim": {
+      "heading": "Integration claim",
+      "digest": "952ce348f0d53d322d4b77db89f50257cea79578c7d1fa77d38e3871430480cd"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/reviewed-fixes-adoption-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T00:30:55.628Z",
+  "summary": "Adopted the eleven reviewed installer, literal Markdown-path and strict project-metadata fixes unchanged; preserved the published source and all inherited task history.",
+  "next": "Commit and validate the full committed diff against actual main with explicit code/source identities; obtain independent committed-coverage review before later draft publication. Verify exact push/PR checkouts and hosted installer/shared-base gates before a separate promotion and history-preserving normal-merge decision. Keep the task in review.",
+  "files": [
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    ".github/workflows/validate.yml",
+    "docs/getting-started.md",
+    "docs/project-shared-base.md",
+    "scripts/project-setup.sh",
+    "scripts/stow.sh",
+    "scripts/validate.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "tests/test-install.sh",
+    "tests/test-project-setup.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-validate.sh"
+  ],
+  "validation": "Passed on the exact staged final content: bash scripts/validate.sh; bash tests/test-validate.sh (92); bash tests/test-stow-preflight.sh (12 recording-seam ordering cases, not real Stow); bash tests/test-agent-model.sh; bash tests/test-project-setup.sh on Git 2.52.0 and 2.47.3; node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs (143 passed, zero failed/skipped); node --test tests/project-memory-conformance.test.mjs (91 passed, zero failed/skipped); node modeling/project-memory-conformance/check.mjs check; ten-entrypoint Bash syntax and whitespace. Independent exact-diff review accepted the unchanged final fingerprints. Linux Bash 5.2.37, Node 24.22.1 and invented isolated homes. GNU Stow/full installer was not run locally; ShellCheck and optional skills-ref unavailable, skills-ref explicitly skipped. Exact-candidate hosted Stow/full-installer/shared-base qualification and applicable required checks remain mandatory. Native macOS/BSD/Bash 3.2, Windows and actual client loading remain untested. No installation or Go aggregate.",
+  "snapshot": {
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md": {
+      "blob": "5daa85e151966488156b2de8b0642ba9dc836550",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "52484b793f6c262d91fa647c65303f86c952b1fd",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "d80b771ce89d1bc7bdd22666a82346888df9ccd1",
+      "mode": "100644"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "991a51343b86e5313d48c0518f908f09802555ba",
+      "mode": "100644"
+    },
+    "scripts/project-setup.sh": {
+      "blob": "7f5f830cbb12b445444d1199def295dce600b87c",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "2e1abf65100e8ac04c04d1ce94d0cd542c776bed",
+      "mode": "100755"
+    },
+    "scripts/validate.sh": {
+      "blob": "67d44f33fb7f048053c30b1802117caa9c50f21b",
+      "mode": "100755"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "c2d80545b71c22ea0ec1323a541fb6e73e01a753",
+      "mode": "100644"
+    },
+    "tests/test-install.sh": {
+      "blob": "af703148bc4826894350449bb0438e49e4ce8f80",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "bc89d016a742c100bc083ed873742cac3f33682a",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "e964d86329763b9bef5f4fdeaaa8645e628c4aa6",
+      "mode": "100755"
+    },
+    "tests/test-validate.sh": {
+      "blob": "1395316d9d7f29c0ea510df3d0d842e2065accb0",
+      "mode": "100755"
+    }
+  }
+}
