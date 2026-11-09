@@ -1,6 +1,6 @@
 ---
 id: CF-agent-profile-crlf-v1
-status: in-progress
+status: review
 owner: astra-foundry-profile-crlf
 repositories: [spik3r/clanker-foundry]
 ---
@@ -234,3 +234,50 @@ evidence and test plan for independent review. It does not itself authorize
 source publication, shared reservation, registration, start, product edits or
 PR transitions. Later execution and integration require the coordinator's
 explicit assignment; this canonical text does not grant authority.
+
+## Local implementation result
+
+The two-file correction is ready for independent implementation review, not
+integrated or published as a product change. It uses the actual published task
+source `e26d8c0452a41f1b8cd41fc2554d641d53561e90`, based on main
+`c08604c5f9eebd412af02e95fb06d7846a9f51e2`. Registration and a genuine start
+preceded implementation edits.
+
+The resolver removes one terminal CR from the copied Markdown tier record before
+the existing matcher. The mapping reader and remainder of the resolver are
+unchanged. The maintained test adds both representations of the four actual
+shipped profiles, exact success-output checks, malformed tier controls and CRLF
+profile override/fallback/map-refusal checks. All previous mapping safeguard
+assertions and tracked-default checks remain intact.
+
+Observed on Linux with Bash 5.2.37, mawk 1.3.4, Git 2.52.0 and Node 24.22.1:
+
+- The original maintained suite passes against both baseline and correction.
+- The expanded maintained suite passes against the correction. Against the
+  unchanged exact-base resolver it fails exactly 13 new checks: eight CRLF
+  defaults, three CRLF-profile override/fallback successes and two mapping-error
+  diagnostics reached only after a valid CRLF profile is recognized.
+- Separate clean Git LF/CRLF checkouts reproduce all eight baseline CRLF
+  failures and all eight corrected CRLF successes. Both versions pass eight LF
+  calls before and after the CRLF controls. The original suite fails exactly
+  its eight default checks on baseline CRLF; the new suite passes in both
+  corrected checkouts. All four checkouts remain clean, with identical
+  resolver/map bytes across representations and exact LF-to-CRLF profile bytes.
+- Twenty malformed/unchanged-grammar controls pass, including two terminal CR
+  bytes and an internal CR that must not be stripped. Mapping-file CRLF rejection,
+  duplicate/malformed/NUL refusal, data-only parsing and validation before output
+  remain covered by the maintained suite.
+- LF pack validation and whitespace checks pass. Both changed shell files pass
+  syntax checks through the pack validator. Optional skills-ref is unavailable.
+
+The tested product blobs, both mode `100755`, are
+`d8dcca5316ee9d37b29baa7c5defe302dc77bf81` for the resolver and
+`215c00de00838ec8f3190e6ffa37aed39f4946f2` for its test. Genuine completion records
+the final staged product/task fingerprints; full committed lifecycle validation
+follows that commit.
+
+GNU Stow and ShellCheck are unavailable locally. No full installer, native
+macOS/BSD-awk/Bash 3.2, Windows, client/provider or new-product hosted acceptance
+is claimed. Independent implementation review and separately assigned draft
+publication/hosted qualification remain required before integration. All earlier
+task/history and out-of-scope products remain unchanged.
