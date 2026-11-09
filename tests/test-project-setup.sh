@@ -400,10 +400,20 @@ COMMAND
   grep -q '"event":"child_start"' "$test_root/metadata-fetch-control.trace"
   cp "$staged" .gitmodules
   GIT_TRACE2_EVENT="$test_root/metadata-raw.trace" accept_without_changes --check
-  ! grep -q '"event":"child_start"' "$test_root/metadata-raw.trace"
+  trace_status=0
+  grep -q '"event":"child_start"' "$test_root/metadata-raw.trace" || trace_status=$?
+  if [ "$trace_status" -ne 1 ]; then
+    printf 'FAIL  raw trace contains a child process or cannot be read (grep status %s)\n' "$trace_status" >&2
+    exit 1
+  fi
   cp "$working" .gitmodules
   GIT_TRACE2_EVENT="$test_root/metadata-fallback.trace" reject_without_changes --check
-  ! grep -q '"event":"child_start"' "$test_root/metadata-fallback.trace"
+  trace_status=0
+  grep -q '"event":"child_start"' "$test_root/metadata-fallback.trace" || trace_status=$?
+  if [ "$trace_status" -ne 1 ]; then
+    printf 'FAIL  fallback trace contains a child process or cannot be read (grep status %s)\n' "$trace_status" >&2
+    exit 1
+  fi
   test ! -e ".git/objects/${missing_oid:0:2}/${missing_oid:2}"
   git config --unset extensions.partialClone
   git config --remove-section remote.fixture
@@ -411,7 +421,8 @@ COMMAND
   stage_modules
 
   # Valid output followed by a producer/hash/query error must not become success.
-  export METADATA_REAL_GIT="$(command -v git)"
+  METADATA_REAL_GIT="$(command -v git)"
+  export METADATA_REAL_GIT
   export METADATA_FAULT_COUNT="$test_root/metadata-fault-count"
   mkdir "$test_root/metadata-fault-bin"
   cat > "$test_root/metadata-fault-bin/git" <<'FAULT'

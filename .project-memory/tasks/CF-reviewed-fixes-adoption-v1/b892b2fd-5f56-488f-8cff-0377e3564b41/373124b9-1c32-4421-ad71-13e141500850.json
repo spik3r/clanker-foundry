@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "373124b9-1c32-4421-ad71-13e141500850",
+  "runId": "b892b2fd-5f56-488f-8cff-0377e3564b41",
+  "kind": "start",
+  "parents": [
+    "8bf67e2b-b373-4d7a-812c-2944645461a8"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-reviewed-fixes-adoption-v1",
+    "path": "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    "revision": "6e824dc675245794dbabb9118d9348966f45abc1",
+    "blob": "cf4ac92a6a6f3d31e7bf94e03c4ebb16fd436b09",
+    "claim": {
+      "heading": "Successor test-correction claim",
+      "digest": "e5f804eb9fc75b1184c6cd167e2e80c9732956d5121f54406044bd86a1092cf2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/reviewed-fixes-adoption-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/96",
+  "at": "2026-11-09T01:57:58.555Z",
+  "summary": "Correct only shared-base test trace-absence assertions and Git lookup status handling; preserve the other ten adopted product blobs and all prior evidence.",
+  "next": "Run corrected full shared-base and adversarial controls on Git 2.52.0 and 2.47.3. Stop for a scope decision on any admitted-version production gap; otherwise obtain exact-diff review before completion.",
+  "files": [
+    "tasks/CF-reviewed-fixes-adoption-v1-shared-qualification.md",
+    ".github/workflows/validate.yml",
+    "docs/getting-started.md",
+    "docs/project-shared-base.md",
+    "scripts/project-setup.sh",
+    "scripts/stow.sh",
+    "scripts/validate.sh",
+    "tests/project-memory-workflow.test.mjs",
+    "tests/test-install.sh",
+    "tests/test-project-setup.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-validate.sh"
+  ]
+}

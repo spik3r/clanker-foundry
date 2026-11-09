@@ -431,15 +431,68 @@ skipped by the pack validator. No tool was installed. Native macOS/BSD/Bash 3.2,
 Windows and actual client loading remain untested. These current local results
 do not replace exact-candidate hosted installer/shared-base qualification.
 
+## Local successor correction result
+
+The independently verified successor source is
+[`6e824dc675245794dbabb9118d9348966f45abc1`](https://github.com/spik3r/clanker-foundry/commit/6e824dc675245794dbabb9118d9348966f45abc1),
+with actual adoption `e80a74a...` as its sole parent. Its exact registration was
+independently checked. A genuine new twelve-path start explicitly selected this
+source, the successor claim and PR96, linked to the prior terminal completion,
+and preceded the maintained correction.
+
+Only `tests/test-project-setup.sh` changed as a product, at the two trace guards
+and the assignment/export site. Its corrected local blob is
+`69a0509b3edb31e63bec28d1970ceb984c793c6c`, mode `100755`. Each trace guard now
+accepts only grep status 1 and fails on matches or inspection errors. The Git
+lookup assignment precedes export. The other ten product blobs/modes, production
+scripts, workflows and all old source/events remain unchanged. The original
+eleven-blob table remains attributed adoption history, not the corrected test's
+new fingerprint.
+
+Observed local checks on Linux and Bash 5.2.37 passed:
+
+- The corrected full `bash tests/test-project-setup.sh` suite passed separately
+  with Git 2.52.0 and Git 2.47.3. Ordinary-Git positive controls were retained;
+  no outer no-lazy-fetch or no-replacement environment suppressed those controls.
+  No production behavior gap was exposed on either admitted version.
+- Four disposable whole-suite mutations injected forbidden `child_start` records
+  into raw and fallback traces independently, once per admitted Git version.
+  Every mutated suite exited 1 at the intended guard, with grep status 0, before
+  the strict-metadata and final PASS messages.
+- Twenty-eight isolated trace probes exercised the exact maintained guard blocks
+  in both Git environments: readable nonmatching and empty traces were accepted;
+  forbidden records, missing paths, directories, genuinely unreadable files and
+  injected grep status 3 were rejected. All four unreadable-file controls actually
+  produced grep status 2 with permission-denied diagnostics; these are distinct
+  from missing-path/directory errors and injected status controls.
+- Four lookup probes exercised the exact assignment/export sequence in both Git
+  environments. Successful lookup continued; injected failure exited 73 before
+  continuation. These isolated controls do not claim a real Git lookup failure
+  occurred in the clean suites.
+- Pack validation, explicit syntax checks for all ten maintained shell
+  entrypoints and whitespace checks passed. Pack validation was also checked
+  with the final task text.
+
+These checks use invented isolated HOME/XDG/CODEX/TMPDIR values and Git
+configuration. Full-suite mutations and isolated Bash probes are distinguished
+above; they are not identical forms of coverage. ShellCheck, GNU Stow and optional
+skills-ref remain unavailable locally. Optional skills-ref was explicitly skipped
+by the pack validator. No tool was installed and no local Go aggregate ran.
+Native macOS/BSD/Bash 3.2, Windows and actual client loading remain unqualified.
+Fresh actual hosted Git, ShellCheck, Stow/full installer/shared-base and all other
+existing workflows remain required on the final corrected head.
+
 ## Current state
 
-PR96 remains draft and this task remains in review. Its original byte-exact
-adoption and hosted executions are verified, but the confirmed test-assertion
-gap requires the bounded successor above before promotion. At proposal
-preparation, no successor source, new run or maintained correction exists.
-Independent successor-source review and actual pin publication/readback must
-precede registration, genuine start and the test edit. Exact correction review,
-fresh twelve-path completion, committed validation and exact-new-head hosted
-requalification remain required. No prior green result qualifies that new head.
-Promotion, normal merge and release remain separate later decisions. Preserve
-both source pins, immutable history, unrelated owners and native/client limits.
+The bounded correction and factual task update are local and ready for exact-diff
+review. PR96 remains draft at the published successor source; the correction has
+not been published. No new completion or implementation commit has been recorded.
+Independent correction review must precede genuine completion for all twelve
+final fingerprints, committed validation and independent coverage review.
+Corrected publication then requires fresh exact-head/current-base hosted
+qualification, including successful ShellCheck and the actual hosted Git version.
+No old-head or source-only green result qualifies this correction. Any later
+production behavior gap on an admitted version still stops this test-only scope
+for a separate compatibility decision, without weakening assertions or changing
+production scripts. Promotion and normal merge remain separate decisions;
+preserve both source pins, immutable history and all unrelated scopes.
