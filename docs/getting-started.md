@@ -48,6 +48,9 @@ existing non-Stow file conflicts with a target; inspect and resolve the conflict
 Older installs may have a copied `${XDG_CONFIG_HOME:-$HOME/.config}/agents/AGENTS.md`. If it matches the tracked
 file, the script moves it to `AGENTS.md.pre-stow` before creating the link. If it differs,
 the script stops so you can merge those local changes into `global-agents/AGENTS.md`.
+A differing legacy copy or an already occupied backup path for a matching copy is
+rejected before any Stow call. The script rechecks before the late migration; this
+does not make installation transactional or protect against concurrent changes.
 Commit and pull changes to the tracked file to share them across machines.
 
 ### Project-scoped use

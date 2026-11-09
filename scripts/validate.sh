@@ -135,13 +135,15 @@ info "== Relative links =="
 # Extract Markdown links, skip external/anchor/mail, resolve the rest on disk.
 # Inline-code paths and reference-style links are outside this check's scope.
 list_md() {
-  git ls-files --cached --others --exclude-standard -- '*.md' 2>/dev/null \
-    || find . -type f -name '*.md' -not -path './.git/*'
+  # NUL records preserve literal paths instead of Git's quoted display names.
+  git ls-files -z --cached --others --exclude-standard -- '*.md' 2>/dev/null \
+    || find . -type f -name '*.md' -not -path './.git/*' -print0
 }
-while IFS= read -r md; do
+while IFS= read -r -d '' md; do
   [ -f "$md" ] || continue
-  dir="$(dirname "$md")"
-  grep -oE '\]\([^)]+\)' "$md" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
+  # Command substitution would strip trailing newlines from a parent directory.
+  case "$md" in */*) dir="${md%/*}" ;; *) dir=. ;; esac
+  grep -oE '\]\([^)]+\)' -- "$md" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
     case "$target" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
     path="${target%%#*}"
     [ -z "$path" ] && continue
