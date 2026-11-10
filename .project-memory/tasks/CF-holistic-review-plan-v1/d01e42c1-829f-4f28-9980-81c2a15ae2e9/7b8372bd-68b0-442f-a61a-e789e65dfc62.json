@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "7b8372bd-68b0-442f-a61a-e789e65dfc62",
+  "runId": "d01e42c1-829f-4f28-9980-81c2a15ae2e9",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-holistic-review-plan-v1",
+    "path": "tasks/CF-holistic-review-plan-v1-repository-assessment.md",
+    "revision": "f856c06f8e4482b935c0be8b162036ed3f15053f",
+    "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "871de4c69e02292630d55d8cd02a28dda59f9ba433a141aee186f9fcca98247d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/holistic-improvement-plan",
+  "pullRequest": null,
+  "at": "2026-11-10T23:14:30.676Z",
+  "summary": "Review latest main and write prioritized repository assessment",
+  "next": "Inspect product paths and validation, then draft plan",
+  "files": [
+    "docs/holistic-improvement-plan.md"
+  ]
+}

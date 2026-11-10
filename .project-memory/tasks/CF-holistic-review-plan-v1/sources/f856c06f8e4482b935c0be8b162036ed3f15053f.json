@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f856c06f8e4482b935c0be8b162036ed3f15053f",
+  "id": "CF-holistic-review-plan-v1",
+  "path": "tasks/CF-holistic-review-plan-v1-repository-assessment.md",
+  "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+  "record": "---\nid: CF-holistic-review-plan-v1\nstatus: in-progress\nowner: Codex planning contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Review the current repository and propose the next changes\n\n## Implementation claim\n\nThe user requested a holistic review of the latest `origin/main`, a plan for\nimprovements and missing functionality, and a pull request for review. The claim\nis limited to a new assessment in `docs/holistic-improvement-plan.md`, this task\nrecord and new immutable Project Memory files. It changes no product code,\nexisting direction, runtime authority, task ownership or active pull requests.\n\nBase the assessment on the fetched `origin/main` revision, current documentation,\nsource layout, checks and open pull requests. Separate observed facts from\nrecommendations. Prioritize work with acceptance evidence and name dependencies\nand decisions that need an owner. Do not turn proposals into implementation\nclaims. Run the repository validator and whitespace checks, then publish a PR for\nreview without merging it.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-holistic-review-plan-v1-repository-assessment.md",
+        "id": "CF-holistic-review-plan-v1",
+        "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
