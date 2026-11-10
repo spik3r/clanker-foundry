@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "8459f54b-2dd4-4378-b505-e913ccad8453",
+  "runId": "fbc77bde-4dc9-4feb-9216-7ae6954b2394",
+  "kind": "complete",
+  "parents": [
+    "8b7e8434-02aa-42cf-b67e-00bb99e6a488"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-holistic-review-plan-v1",
+    "path": "tasks/CF-holistic-review-plan-v1-repository-assessment.md",
+    "revision": "f856c06f8e4482b935c0be8b162036ed3f15053f",
+    "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "871de4c69e02292630d55d8cd02a28dda59f9ba433a141aee186f9fcca98247d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/holistic-improvement-plan",
+  "pullRequest": null,
+  "at": "2026-11-10T23:16:15.063Z",
+  "summary": "Plan and source task are committed at reviewed head; scope includes both changed paths",
+  "next": "Commit final immutable events, rerun full validation and publish PR",
+  "files": [
+    "docs/holistic-improvement-plan.md",
+    "tasks/CF-holistic-review-plan-v1-repository-assessment.md"
+  ],
+  "validation": "Full committed validation found task source missing from prior completion; final scope corrected; repository validator and whitespace checks passed",
+  "snapshot": {
+    "docs/holistic-improvement-plan.md": {
+      "blob": "731e16ff7788616dec4f818b2ab8aa0547d48f67",
+      "mode": "100644"
+    },
+    "tasks/CF-holistic-review-plan-v1-repository-assessment.md": {
+      "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+      "mode": "100644"
+    }
+  }
+}
