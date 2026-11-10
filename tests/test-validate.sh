@@ -6,6 +6,7 @@ set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 validator="${1:-$repo_dir/scripts/validate.sh}"
+bash "$repo_dir/tests/test-model-map-validation.sh" "$validator"
 test_root="$(mktemp -d)"
 trap 'rm -rf "$test_root"' EXIT
 

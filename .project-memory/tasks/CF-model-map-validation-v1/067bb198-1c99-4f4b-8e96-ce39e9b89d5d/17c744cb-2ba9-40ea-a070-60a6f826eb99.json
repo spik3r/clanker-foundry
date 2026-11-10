@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "17c744cb-2ba9-40ea-a070-60a6f826eb99",
+  "runId": "067bb198-1c99-4f4b-8e96-ce39e9b89d5d",
+  "kind": "complete",
+  "parents": [
+    "f06359cc-8135-40b4-9437-a86068e03418"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-map-validation-v1",
+    "path": "tasks/CF-model-map-validation-v1-pack-gate.md",
+    "revision": "82eca44cb169183b4cabe53c9e251902645eeaee",
+    "blob": "8e035e0259e0485f20bcd9e2e012e981a0d5fe67",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "54fc435a37aadbbf20d1a6335661e57653a16dd482603d2fdb33dd21e31dd8af"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/model-map-validation-v1",
+  "pullRequest": null,
+  "at": "2026-11-10T11:44:44.352Z",
+  "summary": "Reject unresolved map formats, duplicate/empty maps and failed map reads without exposing values",
+  "next": "Commit, verify full source/evidence diff, independently review exact tree, publish draft and inspect actual-head hosted CI",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-model-map-validation.sh",
+    "tests/test-validate.sh",
+    "tasks/CF-model-map-validation-v1-pack-gate.md"
+  ],
+  "validation": "Author and independent reviewer pass 47 model-map cases, 92 filename checks through the combined suite, exact original 92-case filename suite against candidate, Bash syntax, pack validation and whitespace. Baseline fails 58 assertions across the new 47 cases. Fresh twelve-case parity probe closes all ten false passes with two valid controls preserved. Final comment-only SC2016 annotation independently reviewed; combined suites and pack validation rerun. Optional skills-ref unavailable. ShellCheck, native Bash3.2/BSD and heavy aggregates not run locally.",
+  "snapshot": {
+    "scripts/validate.sh": {
+      "blob": "848251ddbdaa94c90cc072e4c5e43b01c863ea22",
+      "mode": "100755"
+    },
+    "tests/test-model-map-validation.sh": {
+      "blob": "d11dd2984533572945e08260e13d032604393960",
+      "mode": "100755"
+    },
+    "tests/test-validate.sh": {
+      "blob": "7b455610c5e4bb0343b18c7fd289baba41411421",
+      "mode": "100755"
+    },
+    "tasks/CF-model-map-validation-v1-pack-gate.md": {
+      "blob": "8e035e0259e0485f20bcd9e2e012e981a0d5fe67",
+      "mode": "100644"
+    }
+  }
+}

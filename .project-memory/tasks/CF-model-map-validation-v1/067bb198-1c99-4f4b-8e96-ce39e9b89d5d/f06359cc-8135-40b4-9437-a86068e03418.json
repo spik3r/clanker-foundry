@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "f06359cc-8135-40b4-9437-a86068e03418",
+  "runId": "067bb198-1c99-4f4b-8e96-ce39e9b89d5d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-map-validation-v1",
+    "path": "tasks/CF-model-map-validation-v1-pack-gate.md",
+    "revision": "82eca44cb169183b4cabe53c9e251902645eeaee",
+    "blob": "8e035e0259e0485f20bcd9e2e012e981a0d5fe67",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "54fc435a37aadbbf20d1a6335661e57653a16dd482603d2fdb33dd21e31dd8af"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/model-map-validation-v1",
+  "pullRequest": null,
+  "at": "2026-11-10T11:38:16.718Z",
+  "summary": "Reject invalid model maps in the pack gate using the established resolver format",
+  "next": "Implement focused map validation and finite isolated regressions, then independently review",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-model-map-validation.sh",
+    "tests/test-validate.sh",
+    "tasks/CF-model-map-validation-v1-pack-gate.md"
+  ]
+}
