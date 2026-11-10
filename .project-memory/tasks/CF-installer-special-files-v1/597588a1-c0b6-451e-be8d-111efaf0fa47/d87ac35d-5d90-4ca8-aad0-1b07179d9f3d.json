@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "d87ac35d-5d90-4ca8-aad0-1b07179d9f3d",
+  "runId": "597588a1-c0b6-451e-be8d-111efaf0fa47",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-installer-special-files-v1",
+    "path": "tasks/CF-installer-special-files-v1-preflight.md",
+    "revision": "bcea8f5a16fe3ba64b411b9aeac03a07846ba174",
+    "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8f1f190d9f34ea8c727b2af28a7dcd25b826dc6851fc87c322d4d9dd0d3dd057"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/installer-special-files-v1",
+  "pullRequest": null,
+  "at": "2026-11-10T11:14:38.173Z",
+  "summary": "Apply the reviewed installer special-file guards after verifying the actual published task source",
+  "next": "Copy exact reviewed product bytes, rerun lightweight validation, review and publish accurate new implementation history",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-install.sh",
+    "tasks/CF-installer-special-files-v1-preflight.md"
+  ]
+}

@@ -29,8 +29,8 @@ check_conflicts() {
   check_link_target "$gemini_dir/GEMINI.md" "file"
 
   local claude="$claude_dir/CLAUDE.md"
-  if [ -L "$claude" ] || [ -d "$claude" ]; then
-    printf 'Cannot wire %s: existing symlink or directory cannot receive an import.\n' "$claude" >&2
+  if [ -L "$claude" ] || { [ -e "$claude" ] && [ ! -f "$claude" ]; }; then
+    printf 'Cannot wire %s: existing target must be a regular file, not a symlink.\n' "$claude" >&2
     return 1
   fi
 }
