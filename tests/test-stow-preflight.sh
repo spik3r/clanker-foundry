@@ -7,6 +7,21 @@ test_root="$(mktemp -d)"
 trap 'rm -rf "$test_root"' EXIT
 
 mkdir -p "$test_root/bin"
+REAL_CMP="$(command -v cmp)"
+export REAL_CMP
+# A broken preflight must fail finitely, not open a FIFO and hang this suite.
+cat > "$test_root/bin/cmp" <<'CMP'
+#!/usr/bin/env bash
+set -euo pipefail
+for argument in "$@"; do
+  if [ "$argument" = "$STOW_CANON" ] && [ ! -f "$argument" ] && [ ! -L "$argument" ]; then
+    printf '%s\n' 'nonregular canonical target' >> "$CMP_TRACE"
+    exit 72
+  fi
+done
+exec "$REAL_CMP" "$@"
+CMP
+chmod +x "$test_root/bin/cmp"
 cat > "$test_root/bin/stow" <<'STOW'
 #!/usr/bin/env bash
 # Test-owned seam. It never creates package links or invokes GNU Stow.
@@ -19,6 +34,7 @@ if [ "$(wc -l < "$STOW_TRACE" | tr -d ' ')" -eq 1 ]; then
     fail-first) exit 72 ;;
     edit-canonical) printf 'late synthetic edit\n' >> "$STOW_CANON" ;;
     create-backup) printf 'late synthetic backup\n' > "$STOW_CANON.pre-stow" ;;
+    replace-with-fifo) rm "$STOW_CANON"; mkfifo "$STOW_CANON" ;;
   esac
 fi
 # Stop before wiring: reaching this boundary is not a successful installation.
@@ -34,12 +50,14 @@ new_case() {
   export XDG_CONFIG_HOME="$case_root/config"
   export CODEX_HOME="$case_root/codex"
   export STOW_TRACE="$case_root/stow-calls"
+  export CMP_TRACE="$case_root/cmp-calls"
   export STOW_CANON="$XDG_CONFIG_HOME/agents/AGENTS.md"
   export STOW_MODE=record
   backup="$STOW_CANON.pre-stow"
   mkdir -p "$HOME" "$(dirname "$STOW_CANON")"
   cp "$repo_dir/global-agents/AGENTS.md" "$STOW_CANON"
   : > "$STOW_TRACE"
+  : > "$CMP_TRACE"
 }
 
 run_installer() {
@@ -170,4 +188,47 @@ cmp "$repo_dir/global-agents/AGENTS.md" "$STOW_CANON"
 grep -qxF 'late synthetic backup' "$backup"
 grep -qF 'backup already exists' "$case_root/stderr"
 
-printf '%s\n' 'PASS  12 installer ordering cases (recording seam, not GNU Stow acceptance)'
+for kind in fifo directory; do
+  new_case "nonregular-canonical-$kind"
+  rm "$STOW_CANON"
+  case "$kind" in
+    fifo) mkfifo "$STOW_CANON" ;;
+    directory) mkdir "$STOW_CANON"; printf 'keep\n' > "$STOW_CANON/keep" ;;
+  esac
+  run_installer 1
+  grep -qF 'is not a regular file.' "$case_root/stderr"
+  assert_calls 0
+  assert_no_shared_targets
+  assert_no_backup
+  test ! -e "$CODEX_HOME"
+  test ! -s "$CMP_TRACE"
+  case "$kind" in
+    fifo) test -p "$STOW_CANON" ;;
+    directory) grep -qxF keep "$STOW_CANON/keep" ;;
+  esac
+done
+
+new_case claude-fifo
+mkdir -p "$HOME/.claude"
+mkfifo "$HOME/.claude/CLAUDE.md"
+run_installer 1
+grep -qF 'existing target must be a regular file' "$case_root/stderr"
+assert_calls 0
+assert_no_backup
+test ! -e "$HOME/.agents"
+test ! -e "$CODEX_HOME"
+test ! -e "$XDG_CONFIG_HOME/opencode"
+test ! -e "$HOME/.gemini"
+test -p "$HOME/.claude/CLAUDE.md"
+test ! -s "$CMP_TRACE"
+
+new_case late-canonical-fifo
+export STOW_MODE=replace-with-fifo
+run_installer 1
+grep -qF 'is not a regular file.' "$case_root/stderr"
+assert_calls 10
+assert_no_backup
+test -p "$STOW_CANON"
+test ! -s "$CMP_TRACE"
+
+printf '%s\n' 'PASS  16 installer ordering cases (recording seam, not GNU Stow acceptance)'

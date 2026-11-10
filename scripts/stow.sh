@@ -19,6 +19,11 @@ backup="$canon.pre-stow"
 
 check_global_migration() {
   if [ -e "$canon" ] && [ ! -L "$canon" ]; then
+    if [ ! -f "$canon" ]; then
+      printf 'Cannot stow global instructions: %s is not a regular file.\n' "$canon" >&2
+      return 1
+    fi
+
     if ! cmp -s "$repo_dir/global-agents/AGENTS.md" "$canon"; then
       printf 'Cannot stow global instructions: %s contains local changes.\n' "$canon" >&2
       printf '%s\n' 'Merge those changes into global-agents/AGENTS.md, then move the existing file and rerun.' >&2

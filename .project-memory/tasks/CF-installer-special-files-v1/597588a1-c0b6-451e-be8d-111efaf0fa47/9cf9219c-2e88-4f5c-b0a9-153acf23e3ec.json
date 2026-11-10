@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "9cf9219c-2e88-4f5c-b0a9-153acf23e3ec",
+  "runId": "597588a1-c0b6-451e-be8d-111efaf0fa47",
+  "kind": "complete",
+  "parents": [
+    "d87ac35d-5d90-4ca8-aad0-1b07179d9f3d"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-installer-special-files-v1",
+    "path": "tasks/CF-installer-special-files-v1-preflight.md",
+    "revision": "bcea8f5a16fe3ba64b411b9aeac03a07846ba174",
+    "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8f1f190d9f34ea8c727b2af28a7dcd25b826dc6851fc87c322d4d9dd0d3dd057"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/installer-special-files-v1",
+  "pullRequest": null,
+  "at": "2026-11-10T11:15:51.021Z",
+  "summary": "Apply identical reviewed installer guards with genuine evidence bound to the actual published task source",
+  "next": "Commit, validate full diff, independently review exact source/evidence, publish identical final tree through authorized connector and create a draft PR",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-install.sh",
+    "tasks/CF-installer-special-files-v1-preflight.md"
+  ],
+  "validation": "All six non-metadata files match independently accepted proposal blobs and modes. Author and independent reviewer reran five-file Bash syntax, nine wiring cases (23 helper invocations), sixteen installer-ordering cases and whitespace checks, all pass. Author reran pack validation, pass with optional skills-ref unavailable. Original baseline negative controls and original twelve-case ordering acceptance remain earlier proposal evidence, not re-executed here. Heavy local tests held. GNU Stow, ShellCheck, native-platform, hosted and socket checks unrun.",
+  "snapshot": {
+    "global-agents/wire-global-agents.sh": {
+      "blob": "5e66ae4c09af0805514edba9e09c194f616351fa",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "94880bafadcf814bf68a46fc1ef590b8e0be717e",
+      "mode": "100755"
+    },
+    "tests/test-wire-preflight.sh": {
+      "blob": "55050cc8d875cb4cc2ff36a6b2eb517193359317",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "1d3ce8e9ad44057dd2210341fab0342c8c9f9078",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "4b6b431e520c431fe560d4e0732332ea8fbb0752",
+      "mode": "100755"
+    },
+    "tasks/CF-installer-special-files-v1-preflight.md": {
+      "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+      "mode": "100644"
+    }
+  }
+}

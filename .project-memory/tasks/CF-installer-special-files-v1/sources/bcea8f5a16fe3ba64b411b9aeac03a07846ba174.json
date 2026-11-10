@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "bcea8f5a16fe3ba64b411b9aeac03a07846ba174",
+  "id": "CF-installer-special-files-v1",
+  "path": "tasks/CF-installer-special-files-v1-preflight.md",
+  "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+  "record": "---\nid: CF-installer-special-files-v1\nstatus: in-progress\nowner: astra-foundry-installer-special-files\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject special-file instruction targets before installation\n\n## Implementation claim\n\nOwner: `astra-foundry-installer-special-files`. This bounded lane follows the\ncoordinator's assignment of independent Foundry improvements. Main was verified\nas `7778beb4038f081ca0f36415a286811e8627fac6`; open PRs 101 and 102 do not overlap\nthis scope. The completed installer adoption remains attributed to its original\nowner. Its existing records, source pins and events must remain unchanged.\n\nThe wiring preflight accepts a FIFO as Claude's instruction target. The wiring\noperation then blocks on it after creating a Codex link. Stow's canonical-file\nmigration check likewise blocks when comparing the source with a FIFO. Reject\nexisting nonregular instruction files before reads, writes or Stow calls.\n\nWritable product scope:\n\n- `global-agents/wire-global-agents.sh`\n- `scripts/stow.sh`\n- `tests/test-wire-preflight.sh` (new focused regression suite)\n- `tests/test-stow-preflight.sh`\n- `tests/test-install.sh` (only invoke the new focused suite)\n- This canonical task at `tasks/CF-installer-special-files-v1-preflight.md`\n- New immutable source/event files under\n  `.project-memory/tasks/CF-installer-special-files-v1/`\n\nKeep absent targets and regular-file migration/import behavior. Continue to\nreject Claude symlinks and directories. Preserve accepted canonical symlink\nhandling and known backup conflict behavior. Do not read from or overwrite FIFO,\nsocket or device targets while deciding whether they are safe. This is an\nexisting-target preflight, not a race-free transaction or filesystem confinement.\nNo permissions, dependency, workflow, profile selector, setup-helper, runtime,\nprovider, client-launch, global installation, PR 101/102 state, merge or deployment\nchange is included. Existing denied actions and the shared heavy-test hold remain.\n\n## Validation and delivery\n\nIndependently review this public-safe source, commit it, verify its pinned bytes,\nregister it and record a genuine v2 start before product edits. Inspect live\nclaims before edits and preserve every existing lifecycle record and legacy byte.\n\nUse isolated temporary homes and invented file contents. Cover FIFO rejection,\nno new links or Stow calls on preflight failure, nonregular canonical targets,\nregular-file append/migration and rerun compatibility, and existing symlink and\ndirectory rules. Add deterministic read/write seams or bounded subprocess\ntimeouts so a regression cannot hang CI. Run the new tests against the unchanged\nbaseline as a negative control, preserve all existing assertions, and run the\nexisting focused installer-ordering suite, shell syntax, pack validation and\nwhitespace checks. Run real GNU Stow acceptance only if already available; do not\ninstall tools or treat a seam as real Stow acceptance. Keep heavy aggregate tests\non hold, and disclose ShellCheck, native-platform or hosted checks not run.\n\nReview the exact final diff independently, record completion only with observed\nchecks, commit the new evidence with the final implementation, and validate the\nfull committed diff against the verified main. New publication may proceed only\nwithin the current user authorization and as a draft. Verify remote ancestry and\ntree and current exact-head CI separately before claiming hosted qualification.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-installer-special-files-v1-preflight.md",
+        "id": "CF-installer-special-files-v1",
+        "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

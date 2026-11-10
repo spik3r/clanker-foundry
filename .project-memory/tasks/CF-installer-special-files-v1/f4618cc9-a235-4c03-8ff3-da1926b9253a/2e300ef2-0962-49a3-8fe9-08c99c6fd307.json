@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "2e300ef2-0962-49a3-8fe9-08c99c6fd307",
+  "runId": "f4618cc9-a235-4c03-8ff3-da1926b9253a",
+  "kind": "complete",
+  "parents": [
+    "72132af4-c30a-458f-9065-20f746a55fb3"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-installer-special-files-v1",
+    "path": "tasks/CF-installer-special-files-v1-preflight.md",
+    "revision": "bcea8f5a16fe3ba64b411b9aeac03a07846ba174",
+    "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8f1f190d9f34ea8c727b2af28a7dcd25b826dc6851fc87c322d4d9dd0d3dd057"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/installer-special-files-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/103",
+  "at": "2026-11-10T19:22:39.277Z",
+  "summary": "Appended explicit owner-approved integration update to the canonical task; all five product/test blobs and all existing evidence remain unchanged",
+  "next": "Review and publish exact successor tree, verify final-head hosted CI and current base, update PR description, then integrate PR 103 through an authorized normal merge",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-install.sh",
+    "tasks/CF-installer-special-files-v1-preflight.md"
+  ],
+  "validation": "Fresh Bash syntax for five product/test files passed; nine wiring cases with 23 helper invocations passed; sixteen installer-ordering cases passed; pack validation passed with optional skills-ref unavailable; git diff --check passed. Six prior-head PR workflows passed at e9edad31413161cfbe29f627b72a6297c7e25994, including hosted real GNU Stow and ShellCheck, but new-head hosted CI remains pending. Heavy local tests remain held. Native macOS/Bash 3.2, Windows and socket/device fixtures were not run.",
+  "snapshot": {
+    "global-agents/wire-global-agents.sh": {
+      "blob": "5e66ae4c09af0805514edba9e09c194f616351fa",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "94880bafadcf814bf68a46fc1ef590b8e0be717e",
+      "mode": "100755"
+    },
+    "tests/test-wire-preflight.sh": {
+      "blob": "55050cc8d875cb4cc2ff36a6b2eb517193359317",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "1d3ce8e9ad44057dd2210341fab0342c8c9f9078",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "4b6b431e520c431fe560d4e0732332ea8fbb0752",
+      "mode": "100755"
+    },
+    "tasks/CF-installer-special-files-v1-preflight.md": {
+      "blob": "0ce28b14d6e70669b13e888d5c35e45421db40a5",
+      "mode": "100644"
+    }
+  }
+}
