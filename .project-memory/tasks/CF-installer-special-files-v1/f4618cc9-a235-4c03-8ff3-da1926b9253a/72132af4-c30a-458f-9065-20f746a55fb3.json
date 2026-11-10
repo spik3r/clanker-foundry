@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "72132af4-c30a-458f-9065-20f746a55fb3",
+  "runId": "f4618cc9-a235-4c03-8ff3-da1926b9253a",
+  "kind": "start",
+  "parents": [
+    "9cf9219c-2e88-4f5c-b0a9-153acf23e3ec"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-installer-special-files-v1",
+    "path": "tasks/CF-installer-special-files-v1-preflight.md",
+    "revision": "bcea8f5a16fe3ba64b411b9aeac03a07846ba174",
+    "blob": "edc4f036cd2e63980610a843ff0724483c1014be",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8f1f190d9f34ea8c727b2af28a7dcd25b826dc6851fc87c322d4d9dd0d3dd057"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/installer-special-files-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/103",
+  "at": "2026-11-10T19:22:20.478Z",
+  "summary": "Record owner-approved integration scope for PR 103, preserving implementation and all prior evidence",
+  "next": "Append authorization update, validate unchanged implementation and task record, publish reviewed successor evidence, then verify exact-head checks before authorized integration",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "tests/test-install.sh",
+    "tasks/CF-installer-special-files-v1-preflight.md"
+  ]
+}

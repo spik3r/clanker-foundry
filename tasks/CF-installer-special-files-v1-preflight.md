@@ -62,3 +62,11 @@ checks, commit the new evidence with the final implementation, and validate the
 full committed diff against the verified main. New publication may proceed only
 within the current user authorization and as a draft. Verify remote ancestry and
 tree and current exact-head CI separately before claiming hosted qualification.
+
+## Integration authorization update
+
+The repository owner subsequently authorized updating this task record and
+merging PR #103 after its checks pass. This approval supersedes only the earlier
+draft-only delivery restriction and merge exclusion for this PR. Product scope
+and all unrelated exclusions remain unchanged. Before merging, independently
+verify the final published head, current base, review state and successful checks.
