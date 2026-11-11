@@ -1,0 +1,29 @@
+{
+  "formatVersion": 2,
+  "eventId": "7871b1f1-9596-441d-8480-b83bb853986c",
+  "runId": "e8a20e06-ff80-48a7-a4e2-bbbabc1e0869",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preparation-guide-v1",
+    "path": "tasks/CF-builder-preparation-guide-v1-split-source-roots.md",
+    "revision": "e217fec9e18446baabda02dd39802c4373eb59fc",
+    "blob": "f9eee58a913f8e2584f51cd719742d586849c004",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a00e3713c9a664be38f6528995af020d00dfb7d04644354f05a15ad7a6cd5fd5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/builder-preparation-guide-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T17:01:48.016Z",
+  "summary": "Separate reviewed tool checkout from historical input checkout without changing frozen inputs",
+  "next": "Reproduce frozen original-route expectations before guide correction",
+  "files": [
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-preparation-guide-v1-split-source-roots.md"
+  ]
+}

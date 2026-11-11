@@ -14,17 +14,27 @@ through Stow does not install this example, native tool or Go toolchain.
 
 ## Build the trusted preparation tool
 
-Use an explicitly located trusted checkout, installed native Go 1.27.3 and an
-existing authorized output parent outside the checkout. These commands compile
-the preparation tool only. They do not compile the frozen acceptance module or
-run a candidate. Substitute the three absolute host locations before use.
+Use two explicitly authorized checkouts: `TOOL_ROOT` at reviewed tool revision
+`2630845592b1b0fe28d7e2b862ce8da608501fe0`, and `INPUT_ROOT` at the frozen input
+revision `882b5002bd4dc70b4be0060e5e5668d1faa8bbdd`. The input revision predates
+the preparer and cannot build it. The tool revision's changed root instructions
+correctly fail the old input pins; do not refresh those pins or use test snapshots
+as replacement inputs. Historical instructions are frozen exercise data, never
+current operational authority. Current instructions, live claims and target state
+still govern this preparation and any later handoff.
+
+Use installed native Go 1.27.3 and an existing authorized private output parent
+outside both checkouts. These commands compile the preparation tool only. They
+do not compile the frozen acceptance module or run a candidate. Substitute the
+four absolute host locations and run the block in one Bash session.
 
 ```bash
 set -euo pipefail
-ROOT=/exact/trusted/clanker-foundry
+TOOL_ROOT=/exact/trusted/tool-checkout
+INPUT_ROOT=/exact/authorized/historical-input-checkout
 WORK_PARENT=/exact/authorized/private-output-parent
 GO=/exact/installed/go1.27.3/bin/go
-: "${ROOT:?}" "${WORK_PARENT:?}" "${GO:?}"
+: "${TOOL_ROOT:?}" "${INPUT_ROOT:?}" "${WORK_PARENT:?}" "${GO:?}"
 export GOTOOLCHAIN=local GOWORK=off GOENV=off GOFLAGS= GOPROXY=off GOSUMDB=off
 "$GO" version
 test "$("$GO" env GOVERSION)" = go1.27.3
@@ -33,10 +43,10 @@ SETUP="$(mktemp -d "$WORK_PARENT/foundry-builder-setup.XXXXXXXX")"
 mkdir "$SETUP/tool-cache" "$SETUP/tool-tmp" "$SETUP/tool-modcache"
 export GOCACHE="$SETUP/tool-cache" GOTMPDIR="$SETUP/tool-tmp" TMPDIR="$SETUP/tool-tmp"
 export GOMODCACHE="$SETUP/tool-modcache"
-cd "$ROOT/modeling/lifecycle"
+cd "$TOOL_ROOT/modeling/lifecycle"
 "$GO" build -o "$SETUP/modelbuilderdemo" ./cmd/modelbuilderdemo
 "$SETUP/modelbuilderdemo" prepare \
-  --root "$ROOT" --work-parent "$SETUP" --go "$GO" > "$SETUP/preparation.json"
+  --root "$INPUT_ROOT" --work-parent "$SETUP" --go "$GO" > "$SETUP/preparation.json"
 printf 'Preparation receipt: %s\n' "$SETUP/preparation.json"
 ```
 

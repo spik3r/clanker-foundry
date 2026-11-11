@@ -1,6 +1,6 @@
 ---
 id: CF-builder-preparation-guide-v1
-status: in-progress
+status: review
 owner: Foundry builder preparation guide contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -76,3 +76,38 @@ Publish only the tested complete final branch as a draft PR. Verify remote
 head/tree, committed evidence and clean worktree. Fresh independent review and
 exact-head hosted CI remain separate gates; this implementation phase does not
 mark Ready, merge, deploy, change held PRs or enable any managed runtime.
+
+## Observed result
+
+The coordinator independently reviewed the claim before source commit
+e217fec9e18446baabda02dd39802c4373eb59fc was created through GitHub, fetched
+and byte-verified. Registration and a genuine start preceded route checks and
+guide edits. Live main remained the named tool revision; the only open PRs were
+unrelated held work. No claim-only branch was published.
+
+Both original-block checks returned exit 1 as expected. Current tool-root inputs
+produced a blocked receipt with only AGENTS.md mismatched and no workspace.
+The historical input checkout lacked cmd/modelbuilderdemo, so its build stopped
+before preparation. The corrected block ran in one strict Bash session with only
+four host-path substitutions and native Go 1.27.3 under its offline settings.
+It returned prepared-draft with three matched reports, 15 exact input copies,
+five exact module copies, 26 files total and no candidate or executable in the
+prepared workspace. Saved reports matched the complete receipt. Both source
+checkouts remained clean. Manifest and historical instruction hashes matched the
+prospective contract; no input pins, fixtures or production paths changed.
+
+A separate private input copy with only historical AGENTS.md replaced by current
+bytes returned exit 1, retained the full blocked report, identified only that
+mismatch and created no workspace. Original blocks, substituted blocks, receipts,
+logs and verification checks remain private. These are informed author route
+checks, not a fresh operator trial, independent acceptance or measured benefit.
+No builder invocation, candidate compilation or candidate execution occurred.
+
+Existing focused race suites passed on Go 1.27.3: 28 tests including subtests
+passed, with five case-alias subcases skipped on this case-sensitive filesystem.
+Focused vet, repository/link validation, block shell syntax and whitespace checks
+passed. GNU Stow and optional skills-ref were unavailable; installer and optional
+format acceptance are not claimed. No full lifecycle suite or cross-platform
+qualification was run locally. Full committed Project Memory validation follows
+completion. Fresh independent review and exact-head hosted CI remain separate
+integration gates. Q_use, visual and real-use acceptance remain open.

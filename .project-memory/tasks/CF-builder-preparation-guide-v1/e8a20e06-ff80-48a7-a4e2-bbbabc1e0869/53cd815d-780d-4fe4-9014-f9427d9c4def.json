@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "53cd815d-780d-4fe4-9014-f9427d9c4def",
+  "runId": "e8a20e06-ff80-48a7-a4e2-bbbabc1e0869",
+  "kind": "complete",
+  "parents": [
+    "7871b1f1-9596-441d-8480-b83bb853986c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-preparation-guide-v1",
+    "path": "tasks/CF-builder-preparation-guide-v1-split-source-roots.md",
+    "revision": "e217fec9e18446baabda02dd39802c4373eb59fc",
+    "blob": "f9eee58a913f8e2584f51cd719742d586849c004",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a00e3713c9a664be38f6528995af020d00dfb7d04644354f05a15ad7a6cd5fd5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/builder-preparation-guide-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T17:03:39.205Z",
+  "summary": "Clarified distinct trusted tool and frozen input checkouts; exact documented preparation route verified without builder execution",
+  "next": "Validate committed coverage, publish complete draft, verify remote head/tree; independent review and hosted CI remain separate gates, no Ready or merge",
+  "files": [
+    "examples/model-builder-go/preparation.md",
+    "tasks/CF-builder-preparation-guide-v1-split-source-roots.md"
+  ],
+  "validation": "Original current-root exit1 blocked only AGENTS with no workspace; historical build exit1 missing target; corrected strict-session Go1.27.3 route prepared-draft, 15 inputs/five module copies exact, three reports matched, no candidate; changed instruction copy exit1 no workspace; clean sources and unchanged manifest/pins; focused race28 passed/five alias skips; focused vet, repository/link, Bash syntax and whitespace passed; GNU Stow and optional skills-ref unavailable; full module/visual/real-use not claimed",
+  "snapshot": {
+    "examples/model-builder-go/preparation.md": {
+      "blob": "8623cb1b198c7b6928554b6832eea1d46f66148d",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-preparation-guide-v1-split-source-roots.md": {
+      "blob": "4f2a54819d21f7b91f9c27e3cb09d82f2b8e6f32",
+      "mode": "100644"
+    }
+  }
+}
