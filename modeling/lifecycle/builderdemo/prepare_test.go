@@ -74,7 +74,11 @@ func fixture(t *testing.T) string {
 	_, m := inventory(t)
 	root := t.TempDir()
 	for _, a := range m.Artifacts {
-		b := read(t, filepath.Join("../../..", a.Path))
+		input := filepath.Join("../../..", a.Path)
+		if a.Path == "AGENTS.md" {
+			input = "testdata/AGENTS-882b5002.txt"
+		}
+		b := read(t, input)
 		if digest(b) != a.SHA256 {
 			t.Fatalf("baseline drift: %s", a.Path)
 		}
@@ -483,5 +487,64 @@ func TestPhysicalParentOverlapAndAncestorAlias(t *testing.T) {
 	want, e := os.Stat(parent)
 	if e != nil || !os.SameFile(info, want) {
 		t.Fatal("workspace created under wrong host target", ws, e)
+	}
+}
+
+// This supplements, rather than rewrites, the original frozen acceptance.
+func TestHistoricalInstructionsReplayAndChangedInstructionsRefuse(t *testing.T) {
+	historical := read(t, "testdata/AGENTS-882b5002.txt")
+	if digest(historical) != "4574ee25fe89b6658ae237f3f50648ef1e542c487a2c23d7ab2833696f9455eb" {
+		t.Fatal("historical instruction snapshot changed")
+	}
+	current := read(t, "../../../AGENTS.md")
+	mutated := append(append([]byte{}, historical...), []byte("\nfixture-only mutation\n")...)
+	cases := []struct {
+		name    string
+		input   []byte
+		allowed bool
+	}{
+		{"historical", historical, true},
+		// Eligibility follows the existing byte pin, not whether a source is
+		// called current. Restoring the exact old bytes would be eligible too.
+		{"current", current, bytes.Equal(current, historical)},
+		{"mutated", mutated, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root, parent := fixture(t), t.TempDir()
+			target := filepath.Join(root, "AGENTS.md")
+			if !bytes.Equal(read(t, target), historical) {
+				t.Fatal("fixture did not replay historical instructions")
+			}
+			if e := os.WriteFile(target, tc.input, 0600); e != nil {
+				t.Fatal(e)
+			}
+			r, e := builderdemo.Prepare(root, parent, "/not/a/real/go")
+			got := receipt(t, r)
+			if tc.allowed {
+				if e != nil {
+					t.Fatal(e)
+				}
+				envelope(t, got, "prepared-draft")
+				workspace, ok := got["workspace"].(string)
+				if !ok || !bytes.Equal(read(t, filepath.Join(workspace, "inputs", "AGENTS.md")), historical) {
+					t.Fatal("prepared instructions differ from the historical snapshot")
+				}
+			} else {
+				if !errors.Is(e, builderdemo.ErrBlocked) {
+					t.Fatalf("changed instructions were not blocked: %v", e)
+				}
+				envelope(t, got, "blocked")
+				if got["workspace"] != nil || got["handoffPath"] != nil || got["inputsReport"] != nil || got["exerciseReport"] != nil {
+					t.Fatal("output before source validation", got)
+				}
+				empty(t, parent)
+			}
+			raw, _ := inventory(t)
+			compareReport(t, got["sourceReport"], raw, root)
+			if !bytes.Equal(read(t, target), tc.input) {
+				t.Fatal("preparation rewrote the instruction input")
+			}
+		})
 	}
 }

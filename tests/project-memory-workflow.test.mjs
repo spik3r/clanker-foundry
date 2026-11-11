@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, chmodSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync, chmodSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { runInNewContext } from 'node:vm';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const workflow = readFileSync(join(root, '.github/workflows/validate.yml'), 'utf8');
@@ -22,10 +23,129 @@ const step = (name) => {
   return memory.slice(start, next === -1 ? memory.length : next);
 };
 
-test('workflow retains push, pull request and manual triggers', () => {
-  assert.equal(workflow.slice(0, workflow.indexOf('jobs:')).trim(), 'name: validate\n\non:\n  push:\n  pull_request:\n  workflow_dispatch:');
-  assert.doesNotMatch(workflow, /pull_request_target:|workflow_run:/);
+const workflowNames = [
+  'json-validator-go', 'model-authoring-contract', 'model-lifecycle-go',
+  'orchestration', 'project-memory-conformance', 'tui-model-go', 'validate',
+];
+const groupExpression = "${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}-{1}', github.run_id, github.run_attempt) }}";
+const cancelExpression = "${{ github.event_name == 'pull_request' }}";
+
+// Assert the maintained header's exact bounded syntax, not a general YAML parser.
+// YAML syntax and unchanged job bodies are also checked during workflow review.
+const topLevelBlock = (source, key) => {
+  const lines = source.split('\n');
+  const starts = lines.flatMap((line, i) => line.startsWith(`${key}:`) ? [i] : []);
+  assert.equal(starts.length, 1, `expected one ${key} block`);
+  const end = lines.findIndex((line, i) => i > starts[0] && /^\S/.test(line));
+  return lines.slice(starts[0], end === -1 ? undefined : end).join('\n').trimEnd();
+};
+const triggers = (source, manual) => {
+  const block = topLevelBlock(source, 'on');
+  assert.equal(block, `on:
+  push:
+    branches: [main]
+    tags: ['**']
+  pull_request:${manual ? '\n  workflow_dispatch:' : ''}`);
+  return block;
+};
+const concurrency = (source) => {
+  const block = topLevelBlock(source, 'concurrency');
+  assert.equal(block, `concurrency:\n  group: ${groupExpression}\n  cancel-in-progress: ${cancelExpression}`);
+  return {
+    group: block.match(/^  group: (.+)$/m)[1],
+    cancel: block.match(/^  cancel-in-progress: (.+)$/m)[1],
+  };
+};
+// These fixed expressions use the common boolean/format subset of Actions and
+// JavaScript. This checks configured values, not GitHub's scheduler execution.
+const evaluate = (expression, github) => expression.replace(/\$\{\{ (.*?) \}\}/g, (_, body) =>
+  String(runInNewContext(body, {
+    github,
+    format: (pattern, ...args) => pattern.replace(/\{(\d+)\}/g, (_, i) => String(args[Number(i)])),
+  }, { timeout: 1000 })));
+const context = (workflow, event_name, overrides = {}) => ({
+  workflow, event_name, run_id: 100, run_attempt: 1, ref: 'refs/heads/main',
+  event: { pull_request: { number: 17, head: { repo: { fork: false } } } },
+  ...overrides,
 });
+const scheduled = (block, event) => {
+  const events = [...block.matchAll(/^  (\w+):$/gm)].map((match) => match[1]);
+  if (!events.includes(event.event_name)) return false;
+  if (event.event_name !== 'push') return true;
+  const branches = block.match(/^    branches: \[([^\]]+)\]$/m)[1].split(',').map((s) => s.trim());
+  const tags = block.match(/^    tags: \['([^']+)'\]$/m)[1];
+  return event.ref.startsWith('refs/heads/') ? branches.includes(event.ref.slice(11)) :
+    event.ref.startsWith('refs/tags/') && tags === '**';
+};
+
+test('all maintained workflows have scheduling coverage', () => {
+  assert.deepEqual(readdirSync(join(root, '.github/workflows')).filter((name) => /\.ya?ml$/.test(name)).sort(),
+    workflowNames.map((name) => `${name}.yml`).sort());
+});
+for (const name of workflowNames) {
+  const source = readFileSync(join(root, '.github/workflows', `${name}.yml`), 'utf8');
+  const manual = name !== 'project-memory-conformance';
+  test(`${name}: scoped push, unfiltered PR and unchanged manual entrypoint`, () => {
+    assert.equal(topLevelBlock(source, 'name'), `name: ${name}`);
+    triggers(source, manual);
+    assert.doesNotMatch(source, /pull_request_target:|workflow_run:/);
+  });
+  test(`${name}: trigger scenarios retain main, all tags, forks and manual inventory`, () => {
+    const block = triggers(source, manual);
+    const cases = [
+      ['main push', context(name, 'push'), true],
+      ['feature push', context(name, 'push', { ref: 'refs/heads/feature/change' }), false],
+      ['release branch push', context(name, 'push', { ref: 'refs/heads/release/v1' }), false],
+      ['tag push', context(name, 'push', { ref: 'refs/tags/v1.2.3' }), true],
+      ['slash tag push', context(name, 'push', { ref: 'refs/tags/release/v1.2.3' }), true],
+      ['PR', context(name, 'pull_request', { ref: 'refs/pull/17/merge' }), true],
+      ['fork PR', context(name, 'pull_request', { event: { pull_request: { number: 18, head: { repo: { fork: true } } } } }), true],
+      ['manual main', context(name, 'workflow_dispatch'), manual],
+      ['manual feature', context(name, 'workflow_dispatch', { ref: 'refs/heads/feature/change' }), manual],
+      ['manual tag', context(name, 'workflow_dispatch', { ref: 'refs/tags/release/v1' }), manual],
+      ['privileged PR event', context(name, 'pull_request_target'), false],
+    ];
+    for (const [label, event, expected] of cases) assert.equal(scheduled(block, event), expected, label);
+  });
+  test(`${name}: only same-workflow, same-PR runs share a cancelling group`, () => {
+    const { group, cancel } = concurrency(source);
+    const pr = context(name, 'pull_request', { sha: 'newer-commit' });
+    const firstGroup = evaluate(group, pr);
+    assert.equal(firstGroup, `${name}-pr-17`);
+    assert.equal(evaluate(cancel, pr), 'true');
+    for (const later of [
+      { run_id: 101 }, { run_attempt: 2 },
+      // Rerunning an older commit joins this same group too. This policy does
+      // not promise newest-commit ordering or distinguish reruns by SHA.
+      { run_id: 99, run_attempt: 2, sha: 'older-commit' },
+    ]) assert.equal(evaluate(group, { ...pr, ...later }), firstGroup);
+    assert.notEqual(evaluate(group, context(name, 'pull_request', { event: { pull_request: { number: 18 } } })), firstGroup);
+    for (const other of workflowNames.filter((candidate) => candidate !== name)) {
+      assert.notEqual(evaluate(group, { ...pr, workflow: other }), firstGroup);
+    }
+  });
+  test(`${name}: main, tag and manual runs neither cancel nor share pending groups`, () => {
+    const { group, cancel } = concurrency(source);
+    const groups = new Set();
+    const events = [
+      context(name, 'push'),
+      context(name, 'push', { ref: 'refs/tags/release/v1' }),
+      context(name, 'workflow_dispatch'),
+      context(name, 'workflow_dispatch', { ref: 'refs/heads/feature/change' }),
+    ];
+    for (const [index, event] of events.entries()) {
+      for (const attempt of [1, 2]) {
+        const run = { ...event, run_id: 100 + index, run_attempt: attempt };
+        assert.equal(evaluate(cancel, run), 'false');
+        const actual = evaluate(group, run);
+        assert.equal(actual, `${name}-run-${100 + index}-${attempt}`);
+        assert.ok(!groups.has(actual), `pending-run collision: ${actual}`);
+        groups.add(actual);
+        assert.notEqual(actual, evaluate(group, context(name, 'pull_request')));
+      }
+    }
+  });
+}
 test('pack validator and installer checks remain and include pack and project setup regressions', () => {
   assert.equal(job('validate'), `  validate:
     runs-on: ubuntu-latest

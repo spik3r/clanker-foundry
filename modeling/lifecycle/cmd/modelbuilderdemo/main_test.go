@@ -32,7 +32,11 @@ func cliSource(t *testing.T) string {
 		if e := os.MkdirAll(filepath.Dir(p), 0700); e != nil {
 			t.Fatal(e)
 		}
-		if e := os.WriteFile(p, cliRead(t, filepath.Join("../../../..", a.Path)), 0600); e != nil {
+		input := filepath.Join("../../../..", a.Path)
+		if a.Path == "AGENTS.md" {
+			input = "../../builderdemo/testdata/AGENTS-882b5002.txt"
+		}
+		if e := os.WriteFile(p, cliRead(t, input), 0600); e != nil {
 			t.Fatal(e)
 		}
 	}
@@ -201,5 +205,59 @@ func TestCLIIncompleteExitFour(t *testing.T) {
 	got := cliJSON(t, out.Bytes())
 	if got["outcome"] != "incomplete" || got["workspace"] != nil {
 		t.Fatal(got)
+	}
+}
+
+// Historical replay is test data selection, not a current-source exemption.
+func TestCLIHistoricalInstructionsReplayAndChangedInstructionsRefuse(t *testing.T) {
+	historical := cliRead(t, "../../builderdemo/testdata/AGENTS-882b5002.txt")
+	current := cliRead(t, "../../../../AGENTS.md")
+	mutated := append(append([]byte{}, historical...), []byte("\nfixture-only mutation\n")...)
+	cases := []struct {
+		name    string
+		input   []byte
+		allowed bool
+	}{
+		{"historical", historical, true},
+		{"current", current, bytes.Equal(current, historical)},
+		{"mutated", mutated, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root, parent := cliSource(t), t.TempDir()
+			target := filepath.Join(root, "AGENTS.md")
+			if !bytes.Equal(cliRead(t, target), historical) {
+				t.Fatal("CLI fixture did not replay historical instructions")
+			}
+			if e := os.WriteFile(target, tc.input, 0600); e != nil {
+				t.Fatal(e)
+			}
+			var out, diag bytes.Buffer
+			code := run(cliArgs(root, parent), &out, &diag)
+			got := cliJSON(t, out.Bytes())
+			if got["executionStatus"] != "not-run" || got["authority"] != "none" {
+				t.Fatal("unexpected execution or authority", got)
+			}
+			if tc.allowed {
+				if code != 0 || diag.Len() != 0 || got["outcome"] != "prepared-draft" {
+					t.Fatalf("historical preparation: exit=%d diag=%s report=%v", code, &diag, got)
+				}
+				workspace, ok := got["workspace"].(string)
+				if !ok || !bytes.Equal(cliRead(t, filepath.Join(workspace, "inputs", "AGENTS.md")), historical) {
+					t.Fatal("CLI prepared instructions differ from the historical snapshot")
+				}
+			} else {
+				if code != 1 || got["outcome"] != "blocked" || got["workspace"] != nil || got["handoffPath"] != nil || got["sourceReport"] == nil || got["inputsReport"] != nil || got["exerciseReport"] != nil {
+					t.Fatalf("changed instructions: exit=%d report=%v", code, got)
+				}
+				entries, e := os.ReadDir(parent)
+				if e != nil || len(entries) != 0 {
+					t.Fatalf("blocked CLI wrote output: %v %v", entries, e)
+				}
+			}
+			if !bytes.Equal(cliRead(t, target), tc.input) {
+				t.Fatal("CLI preparation rewrote the instruction input")
+			}
+		})
 	}
 }

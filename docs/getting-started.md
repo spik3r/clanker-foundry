@@ -120,8 +120,9 @@ It checks that the folders follow the Agent Skills open format:
   Inline links are checked; anchors, reference-style links, and paths in inline code are
   outside this check.
 
-CI runs the same script on every push and pull request. When the `skills-ref` validator
-is installed, both the script and CI additionally run it per skill:
+CI runs the same script on pull requests, pushes to `main`, all tag pushes and
+manual runs. Other branch pushes wait for a pull request. When the `skills-ref`
+validator is installed, both the script and CI additionally run it per skill:
 
 ```bash
 skills-ref validate ./skills/engineer

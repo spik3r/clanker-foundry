@@ -1,6 +1,6 @@
 ---
 id: CF-ci-scheduling-v1
-status: in-progress
+status: review
 owner: Foundry CI scheduling contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -87,3 +87,52 @@ that read AGENTS.md, whitespace checks, and full committed Project Memory
 validation. Run additional existing suites where practical. Report unavailable
 GNU Stow or optional skills-ref honestly; hosted CI remains a separate gate.
 Do not claim live tag, manual, fork or supersession execution without observing it.
+
+## Observed local result
+
+The reviewed source was created as `dd1cb32d9940dcf382b94e28910ffaa262ece3b3`,
+fetched and verified before registration and the genuine start. No claim-only
+branch was pushed. The original workflow suite passed 10 tests. The expanded
+suite was frozen before workflow edits at SHA-256
+`f63b4a988543b7474fcb0d521007b3d08f0e5486136a1279dc716375c52a6316`:
+28 scheduling cases then failed on the old headers; all 38 now pass unchanged.
+The existing job, security, shell-command and helper assertions remain present.
+
+All seven workflows now retain unfiltered PR coverage and their original manual
+entrypoints, run push CI on main and all tags, and group only PR runs for
+cancellation. Non-PR groups include run ID and attempt. Generic PR concurrency
+also includes manual reruns of older commits; it does not order runs by newest
+commit. Static scenario tests are not live scheduler evidence.
+
+PyYAML 6.0.3 BaseLoader with duplicate-key refusal parsed all seven workflows.
+All nine job bodies and all permission bytes match base. A separate parsed
+trigger model passed 63 cases; nine disposable schedule mutations were caught.
+Combined memory/workflow/conformance tests passed 262/262. Runtime tests passed
+321/321 after exporting the task-local npm cache for nested npm commands; the
+initial run failed only because nested npm pack used the unavailable default
+cache. Authoring tests passed 2/2. Repository validation, 47 model-map cases,
+92 path cases, shared-base regressions and installer/wiring preflights passed.
+The preflight seams do not establish GNU Stow acceptance.
+
+The current AGENTS schedule wording exposed a frozen historical builder-test
+input dependency. The separately reviewed and sourced
+[fixture prerequisite](CF-builder-fixture-inputs-v1-historical-instructions.md)
+is included without changing its production rules or old hashes. Its focused
+race tests pass on the final instruction bytes. Broad lifecycle race validation
+was attempted with available Go 1.27.4 and refused exact Go 1.27.3 requirements;
+Go vet and formatting passed, while modelc validate also refused that version
+and the subsequent drift check was not reached. The unchanged hosted job must
+supply exact Go 1.27.3 acceptance. GNU Stow, ShellCheck, actionlint and optional
+skills-ref were unavailable locally and are not claimed as passed.
+
+Fresh prepublication checks still found main
+`30756603f16f3e4fe9216c40389d6d0df024218a` and only nonoverlapping held PR101 and
+PR110. The optional branch-rules API route was unsupported by the connector;
+it was not retried. Branch inventory, main protection details and rulesets were
+read through supported routes. No repository settings changed.
+
+Editing is finished. Stage only the scoped paths, record both genuine
+completions, validate the full committed diff and publish a qualified draft.
+Independent exact-source review and exact-head hosted CI remain separate gates.
+No live tag, manual, fork or supersession run, runner-time saving, Ready
+transition, merge, runtime activation or provider execution is claimed.

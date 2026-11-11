@@ -1,6 +1,6 @@
 ---
 id: CF-builder-fixture-inputs-v1
-status: in-progress
+status: review
 owner: Foundry test fixture maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -82,3 +82,36 @@ Project Memory validation for both tasks. Recheck the existing broader local
 results on final relevant bytes. Do not present available Go 1.27.4 validation as
 full Go 1.27.3 lifecycle acceptance. The unchanged hosted job must supply that
 exact-pin result before integration.
+
+## Observed local result
+
+The separately reviewed source was created as
+`4b7691ac9df28eaa829969c200905d2cfc077877`, parented by the actual first source,
+fetched and verified before its own registration/start. The new snapshot is
+byte-identical to the original Git object and still has the manifest's original
+SHA-256. No production file or historical event was edited.
+
+The supplemental API and CLI expectations were frozen before either fixture
+reader changed, at SHA-256 `3d7e6405a0c71618e0580f120d92e4e2a69c3e2d598557d7c014d24e511d6870`
+and `16ffd867c8a76edde5dd57b35696bd1ff92de38531135f5c6cf11eaac70410d9`
+respectively. All six subcases failed with the old fixture readers. Redirecting
+only the root instruction artifact made them pass without changing those
+supplemental assertion bytes. The original acceptance file contents remain
+identical after removing the two input-selection changes and appended tests.
+All fifteen artifact pins and the complete original manifest remain unchanged.
+
+Both affected package race suites and vet passed on Go 1.27.4: 16 top-level and
+28 total passed tests, plus five existing case-insensitive alias subcases skipped
+on this case-sensitive host. Actual changed current instructions and deliberately
+mutated bytes remained blocked with no prepared output or source rewrite; the
+historical fixture prepared exact copied bytes. A separate disposable replay
+with current instructions restored to their historical bytes also passed both
+supplemental suites. This demonstrates the original equality rule in both
+states, not a special permission for current inputs.
+
+Formatting, repository validation and the unchanged frozen scheduling suite
+passed. Exact Go 1.27.3 full lifecycle acceptance and fresh independent review
+remain hosted integration gates. This test-only prerequisite adds no builder
+execution, production fallback, refreshed pin or current-source exemption.
+Editing is finished; record completion, validate both tasks' committed coverage
+and hand off the qualified combined draft for independent review.

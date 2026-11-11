@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "15f83e73-580c-4717-8504-e1a75e7798cf",
+  "runId": "5ebb1e3f-319c-4adb-a889-820ba6e8e872",
+  "kind": "complete",
+  "parents": [
+    "f8ba7ff5-cbb1-4c6e-9793-a005e52620b0"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-fixture-inputs-v1",
+    "path": "tasks/CF-builder-fixture-inputs-v1-historical-instructions.md",
+    "revision": "4b7691ac9df28eaa829969c200905d2cfc077877",
+    "blob": "81915aa04567c84fa6c9f86e22984522771f8a5f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "eca651cf1c65125ed6b0b8ad650e178152631a122da464950f796e14d66f6606"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/ci-scheduling-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T13:27:09.128Z",
+  "summary": "Isolated historical root instructions in test data; original pins/assertions and production behavior preserved; changed current inputs still refuse",
+  "next": "Validate both tasks committed coverage, publish combined draft and obtain fresh independent exact-source review plus exact-pin hosted CI",
+  "files": [
+    "modeling/lifecycle/builderdemo/testdata/AGENTS-882b5002.txt",
+    "modeling/lifecycle/builderdemo/testdata/README.md",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "tasks/CF-builder-fixture-inputs-v1-historical-instructions.md"
+  ],
+  "validation": "Original snapshot4574ee25 and manifest6a87f4db verified; all15 pins unchanged; six frozen supplemental cases failed on old helpers then passed unchanged; Go1.27.4 focused race suites16 top-level/28 passed with five existing case-alias skips; focused vet/format pass; restored-current-equals-historical disposable control passes; repository validation and frozen scheduling38/38 pass; exact Go1.27.3 full lifecycle hosted gate still required",
+  "snapshot": {
+    "modeling/lifecycle/builderdemo/testdata/AGENTS-882b5002.txt": {
+      "blob": "c28ff18ffb08f45ac1abec5fa7646d74ffee1130",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/testdata/README.md": {
+      "blob": "ec96a9ad7197b8db139a10be0a7509828af0e315",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/builderdemo/prepare_test.go": {
+      "blob": "b3b0dba9edb878e0a65e7c2ef4b5ab9a8ea676ed",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go": {
+      "blob": "cfc756697167e0ba106f9e2e630e34dbe5c4ce3b",
+      "mode": "100644"
+    },
+    "tasks/CF-builder-fixture-inputs-v1-historical-instructions.md": {
+      "blob": "1b3434e559ea119396fd6a406ab246e5795d2ff7",
+      "mode": "100644"
+    }
+  }
+}
