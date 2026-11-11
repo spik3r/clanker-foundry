@@ -14,16 +14,46 @@ err()  { printf 'FAIL  %s\n' "$1" >&2; echo x >> "$failures"; }
 info() { printf '%s\n' "$1"; }
 
 check_model_map() {
-  local file="$1"
-  [ -f "$file" ] || { err "$file: missing"; return; }
-  awk -F= '
-    /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
-    NF != 2 || $1 !~ /^(claude|codex)\.(fast|balanced|flagship)$/ || $2 ~ /^[[:space:]]*$/ {
-      print NR
+  local file="$1" prefix nul_line diagnostics diagnostic
+  [ -f "$file" ] || { err "$file: missing or not a regular file"; return; }
+  # Check before awk: BSD awk treats NUL as a string terminator. Comments and
+  # otherwise ignored bytes must obey the same NUL rule as the model resolver.
+  if LC_ALL=C IFS= read -r -d '' prefix < "$file"; then
+    nul_line="$(printf '%s' "$prefix" | LC_ALL=C wc -l)"
+    err "$file:$((nul_line + 1)): NUL byte is not allowed"
+    return
+  fi
+  if ! diagnostics="$(LC_ALL=C awk -v label="$file" '
+    function bad(message) {
+      printf "%s:%d: %s\n", label, NR, message
+      failed = 1
+      exit
     }
-  ' "$file" | while IFS= read -r line; do
-    err "$file:$line: invalid or empty model mapping"
-  done
+    /^[[:space:]]*(#|$)/ { next }
+    {
+      eq = index($0, "=")
+      name = substr($0, 1, eq - 1)
+      value = substr($0, eq + 1)
+      if (eq == 0 || name !~ /^(claude|codex)\.(fast|balanced|flagship)$/ ||
+          value !~ /^[[:graph:]]+$/ || index(value, "=")) {
+        bad("invalid or empty model mapping")
+      }
+      if (name in first_line) {
+        bad("duplicate key " name " (first defined on line " first_line[name] ")")
+      }
+      first_line[name] = NR
+      entries++
+    }
+    END {
+      if (!failed && entries == 0) printf "%s: no model mappings\n", label
+    }
+  ' "$file")"; then
+    err "$file: could not read model mappings"
+    return
+  fi
+  if [ -n "$diagnostics" ]; then
+    while IFS= read -r diagnostic; do err "$diagnostic"; done <<< "$diagnostics"
+  fi
 }
 
 # Read a single-line frontmatter field from a file's leading `---` block.
@@ -75,7 +105,7 @@ info "== Agent profiles =="
 valid_tiers="fast balanced flagship"
 map_file="agents/model-map.conf"
 check_model_map "$map_file"
-if [ -e agents/model-map.local.conf ]; then
+if [ -e agents/model-map.local.conf ] || [ -L agents/model-map.local.conf ]; then
   check_model_map agents/model-map.local.conf
 fi
 model_tier() {
