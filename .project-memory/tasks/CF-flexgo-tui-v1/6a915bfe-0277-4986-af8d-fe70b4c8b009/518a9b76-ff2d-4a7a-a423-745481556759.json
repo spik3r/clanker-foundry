@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "518a9b76-ff2d-4a7a-a423-745481556759",
+  "runId": "6a915bfe-0277-4986-af8d-fe70b4c8b009",
+  "kind": "complete",
+  "parents": [
+    "b02a7995-340c-4e74-93c5-4832ab303488"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "8bca0e1d5c7e000bc8a8ecf9c73f65c4065ecf0c",
+    "blob": "1dff7884c6b8121a15ccfd5732116847141c088c",
+    "claim": {
+      "heading": "Coordinator closeout claim",
+      "digest": "51caeb4c82a81c2097dcd3cb1a1b7db7c66b0aa4f42b1fd4a2eaccb6b21cd5a5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/tui-reload-offsets-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:18:54.478Z",
+  "summary": "Closed verified merged PR107 implementation and released only its bounded scope; immutable history preserved",
+  "next": "Validate committed closeout; start separately reviewed status-resize maintenance claim",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md"
+  ],
+  "validation": "Verified merged PR107 and ancestry of cb507d1 in main6fbc4a6; GitHub reports nine passing checks on both commits; only unrelated draft PR101 open; scripts/validate.sh and staged/unstaged whitespace checks passed; optional skills-ref unavailable",
+  "snapshot": {
+    "tasks/CF-flexgo-tui-v1-model-compiler.md": {
+      "blob": "7dbcd1c3e64de7701f72727dbcb57a3a9582f1ef",
+      "mode": "100644"
+    }
+  }
+}

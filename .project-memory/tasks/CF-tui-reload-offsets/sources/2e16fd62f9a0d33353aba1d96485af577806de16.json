@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "2e16fd62f9a0d33353aba1d96485af577806de16",
+  "id": "CF-tui-reload-offsets",
+  "path": "tasks/CF-tui-reload-offsets-status-resize.md",
+  "blob": "7e71ea0f4ed945c2b1777f8b48e7c885d68b05b7",
+  "record": "---\nid: CF-tui-reload-offsets\nstatus: in-progress\nowner: Foundry TUI maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Clamp retained browser offsets during status displays\n\n## Implementation claim\n\nOwner: Foundry TUI maintenance contributor. Branch\n`fix/tui-reload-offsets-20261111`, reviewed main base\n`6fbc4a6b3accd558188dd2444e47e29d21894211`. The integration lead reviewed this\nbounded follow-on after PR107 and PR108 merged. The completed CF-flexgo-tui-v1\nowner is reconciled in its canonical record; previous history remains immutable.\nThe current open-PR check found only unrelated draft PR101. This local claim is\nnot a runtime namespace decision or shared lock.\n\nExact scope:\n\n- `modeling/tui/templates/state.go.tmpl`\n- `modeling/tui/acceptance/browser_test.go.txt`\n- `modeling/tui/README.md`\n- This task and its new immutable Project Memory source/event files.\n\nFirst reproduce through generated acceptance whether Loading or Failed between\nsupported viewport expansion and shrinking resurrects an old scroll offset.\nCompare that result with the documented clamping contract before choosing a fix.\nPreserve ordinary same-size reload positions rather than resetting every status\ntransition. If confirmed, retain only the last Ready list/detail extents so that\nsupported resizes can clamp offsets while a status is shown, without retaining\nold record content. Tiny viewports must continue to freeze offsets.\n\nPreserve selected identity, focus, selected-row visibility on Ready, atomic\nsnapshot validation, captive help, empty-ready behavior and changed-ID resets.\nCover both statuses, repeated/interrupted transitions, partial list clamping,\nexpansion and shrinking, same-size retention, rejected snapshots, and both\nbaseline and changed generated models. Do not derive expected values from the\nstate/layout implementation. Document the precise status/scroll behavior.\n\nDo not change Flexgo core or the held prototype, other modeling profiles,\nruntime code, providers, scanner configuration, production, namespace activation,\ndeployment or PR101 readiness. No new features or component extraction. Publish\na draft after local validation; independent review and hosted CI are separate\ngates, and this worker must not mark ready or merge.\n\n## Validation plan\n\nCommit this reviewed public-safe source, register it and record a genuine start\nbefore implementation edits. Record the generated old-code failure, then run the\nnew focused regressions and full compiler/generated acceptance with race checks\non patched Go 1.27.4. Run compiler/generated vet, formatting, pack validation,\nwhitespace checks and committed Project Memory validation against actual main.\nUse isolated synthetic fixtures and task-local build caches. Report unrun manual\nterminal visual checks and any blocked checks precisely. Preserve all existing\nsource/event and legacy-ledger bytes.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-tui-reload-offsets-status-resize.md",
+        "id": "CF-tui-reload-offsets",
+        "blob": "7e71ea0f4ed945c2b1777f8b48e7c885d68b05b7",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

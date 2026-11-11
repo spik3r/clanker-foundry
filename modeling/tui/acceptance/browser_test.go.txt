@@ -428,3 +428,173 @@ func TestAcceptanceDetailAndHelpScrollClamp(t *testing.T) {
 		t.Fatal("closing help lost prior focus")
 	}
 }
+
+func offsets(t *testing.T, m Model, list, detail int) {
+	t.Helper()
+	if m.browser.state.listOffset != list || m.browser.state.detailOffset != detail {
+		t.Fatalf("offsets = (%d, %d), want (%d, %d)", m.browser.state.listOffset, m.browser.state.detailOffset, list, detail)
+	}
+}
+
+func replace(t *testing.T, m Model, snapshot Snapshot) Model {
+	t.Helper()
+	next, err := m.Replace(snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return next
+}
+
+func TestAcceptanceStatusResizeDoesNotRestoreDetailOffset(t *testing.T) {
+	for _, statuses := range [][]Status{{Loading}, {Failed}, {Loading, Failed, Loading}, {Failed, Loading, Failed}} {
+		for _, help := range []bool{false, true} {
+			t.Run(fmt.Sprintf("statuses=%v/help=%t", statuses, help), func(t *testing.T) {
+				m := size(t, newModel(t, rows(1)), 24, 6)
+				m = press(t, m, "enter")
+				for repeat := 0; repeat < 3; repeat++ {
+					m = press(t, m, "G")
+					if help {
+						m = press(t, m, "?")
+						m = press(t, m, "G")
+					}
+					for _, status := range statuses {
+						m = replace(t, m, Snapshot{Status: status, Message: "Reload marker"})
+						m = size(t, m, 120, 40)
+						m = size(t, m, 1, 1)
+						if help {
+							for _, k := range []string{"q", "ctrl+c", "tab", "enter", "G"} {
+								m = press(t, m, k)
+							}
+						}
+						m = size(t, m, 24, 6)
+					}
+					m = replace(t, m, Snapshot{Status: Ready, Records: rows(1)})
+					selected(t, m, "id-00")
+					offsets(t, m, 0, 0)
+					if m.browser.state.focus != detailPane || m.browser.state.helpOpen != help {
+						t.Fatal("status/resize cycle changed focus or help capture")
+					}
+					if help {
+						if m.browser.state.helpOffset != 0 {
+							t.Fatal("expanded help restored its old offset")
+						}
+						m = press(t, m, "esc")
+					}
+					first := "Name: Row-00"
+					if os.Getenv("TUI_ACCEPTANCE_VARIANT") == "changed" {
+						first = "Status: active"
+					}
+					if !strings.Contains(plain(m), first) {
+						t.Fatalf("first detail line missing after status/resize cycle: %q", plain(m))
+					}
+					bounds(t, m, 24, 6)
+				}
+			})
+		}
+	}
+}
+
+func TestAcceptanceStatusRetainsScrollUntilViewportClamps(t *testing.T) {
+	bottom := 1
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") == "changed" {
+		bottom = 0
+	}
+	for _, status := range []Status{Loading, Failed} {
+		t.Run(fmt.Sprint(status), func(t *testing.T) {
+			m := size(t, newModel(t, rows(6)), 24, 6)
+			for i := 0; i < 3; i++ {
+				m = press(t, m, "j")
+			}
+			m = press(t, m, "enter")
+			m = press(t, m, "G")
+			offsets(t, m, 2, bottom)
+			for repeat := 0; repeat < 3; repeat++ {
+				m = replace(t, m, Snapshot{Status: status})
+				offsets(t, m, 2, bottom)
+				m = size(t, m, 24, 6)
+				m = size(t, m, 1, 1)
+				for _, k := range []string{"j", "k", "G", "g", "tab", "enter", "esc"} {
+					m = press(t, m, k)
+				}
+				m = size(t, m, 24, 6)
+				offsets(t, m, 2, bottom)
+				selected(t, m, "id-03")
+				bad, err := m.Replace(Snapshot{Status: status, Records: []Record{{ID: "dup"}, {ID: "dup"}}})
+				if err == nil || !reflect.DeepEqual(bad, m) {
+					t.Fatal("rejected snapshot changed retained state")
+				}
+				m = replace(t, m, Snapshot{Status: Ready, Records: rows(6)})
+				offsets(t, m, 2, bottom)
+			}
+			// Status-snapshot records are not a new Ready geometry. Six old
+			// list rows in a five-row viewport clamp offset two to one.
+			m = replace(t, m, Snapshot{Status: status, Records: rows(100), Message: "Host status marker"})
+			m = size(t, m, 120, 9)
+			offsets(t, m, 1, 0)
+			if !strings.Contains(plain(m), "Host status marker") || strings.Contains(plain(m), "Row-") {
+				t.Fatal("status displayed record contents")
+			}
+			m = replace(t, m, Snapshot{Status: status})
+			m = size(t, m, 1, 1)
+			offsets(t, m, 1, 0)
+			m = size(t, m, 24, 6)
+			offsets(t, m, 1, 0)
+			m = replace(t, m, Snapshot{Status: Ready, Records: rows(6)})
+			// Showing selected row three in two rows legitimately needs
+			// list offset two again. Detail offset must stay clamped.
+			offsets(t, m, 2, 0)
+			selected(t, m, "id-03")
+			if m.browser.state.focus != detailPane {
+				t.Fatal("status navigation changed pane focus")
+			}
+			m = press(t, m, "esc")
+			if !strings.Contains(plain(m), "> Row-03") {
+				t.Fatal("restored selection is not visible")
+			}
+			bounds(t, m, 24, 6)
+		})
+	}
+}
+
+func TestAcceptanceReloadGeometryFollowsReadySnapshot(t *testing.T) {
+	for _, status := range []Status{Loading, Failed} {
+		for _, change := range []string{"same-id", "removed-id", "empty-ready"} {
+			t.Run(fmt.Sprintf("status=%d/%s", status, change), func(t *testing.T) {
+				r := rows(8)
+				m := size(t, newModel(t, r), 24, 6)
+				m = press(t, m, "G")
+				m = press(t, m, "enter")
+				m = press(t, m, "G")
+				next := []Record{r[0], r[1], r[2], r[7]}
+				id := "id-07"
+				if change != "same-id" {
+					next, id = r[:4], "id-03"
+					if change == "empty-ready" {
+						m = replace(t, m, Snapshot{Status: Ready})
+						m = replace(t, m, Snapshot{Status: status, Records: r})
+						selected(t, m, "")
+						offsets(t, m, 0, 0)
+					}
+				}
+				m = replace(t, m, Snapshot{Status: Ready, Records: next})
+				if change != "same-id" {
+					selected(t, m, "id-00")
+					offsets(t, m, 0, 0)
+					m = press(t, m, "esc")
+					m = press(t, m, "G")
+					m = press(t, m, "enter")
+				}
+				selected(t, m, id)
+				m = replace(t, m, Snapshot{Status: status})
+				// The latest Ready has four rows, not the original eight.
+				// Three visible rows leave a maximum list offset of one.
+				m = size(t, m, 120, 7)
+				offsets(t, m, 1, 0)
+				m = size(t, m, 24, 6)
+				m = replace(t, m, Snapshot{Status: Ready, Records: next})
+				selected(t, m, id)
+				offsets(t, m, 2, 0)
+			})
+		}
+	}
+}

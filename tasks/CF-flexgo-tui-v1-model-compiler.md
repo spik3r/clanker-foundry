@@ -1,6 +1,6 @@
 ---
 id: CF-flexgo-tui-v1
-status: in-progress
+status: completed
 owner: Foundry Flexgo implementation
 repositories: [spik3r/clanker-foundry]
 ---
@@ -28,3 +28,40 @@ application sources, Flexgo core, existing lifecycle profiles, or unrelated work
 Run focused model/compiler tests, generated behavior acceptance tests, formatting,
 Go vet, repository validation and committed project-memory validation. Keep
 unrun terminal visual checks explicit. Publish a draft PR; do not merge or deploy.
+
+## Coordinator closeout claim
+
+Owner: Foundry maintenance coordinator, for this integration record only. The
+implementation owner and claim above remain historical provenance. Reviewed base:
+`6fbc4a6b3accd558188dd2444e47e29d21894211`. Local branch:
+`fix/tui-reload-offsets-20261111`.
+
+Record the already merged PR107 outcome and release only its completed bounded
+implementation scope. Writable paths are this task record and new immutable
+source/event files for `CF-flexgo-tui-v1`. Do not change code, tests, other task
+records, previous snapshots/events or legacy ledger bytes in this closeout run.
+Independently review this claim before committing its source, register that exact
+source, and record a genuine start before changing status or adding the result.
+Check current main, PR107 integration and visible competing work, then run pack,
+whitespace and committed Project Memory validation. Any follow-on maintenance
+needs a separate reviewed claim and start; this closeout grants no runtime,
+provider, production or deployment authority.
+
+## Integration closeout
+
+PR107 merged on 11 November 2026 as
+`cb507d19068161dfb114d9cc983b8363a6ba64ee`, an ancestor of reviewed main
+`6fbc4a6b3accd558188dd2444e47e29d21894211`. Its final implementation head was
+`1ef91397aeafe270adebdf12d91f0f28d7d7a5f9`. The sole implementation frontier was
+completion `26c8bc0b-07e3-441b-8b08-274b3c3efd58`, with no competing heads.
+The GitHub checks API reports all nine checks passed for both that merge and the
+reviewed main. These are observed hosted results, not newly executed tests of the
+original implementation. The open-PR check found only unrelated draft PR101.
+
+The coordinator records the bounded implementation as complete and releases its
+implementation scope. Historical owner text and every immutable source/event
+remain intact. Follow-on status/resize maintenance requires its own reviewed
+claim and start. This closeout neither reopens the separate Flexgo prototype nor
+changes its restrictions, and does not mark PR101 ready.
+
+Integration evidence: [PR107](https://github.com/spik3r/clanker-foundry/pull/107).

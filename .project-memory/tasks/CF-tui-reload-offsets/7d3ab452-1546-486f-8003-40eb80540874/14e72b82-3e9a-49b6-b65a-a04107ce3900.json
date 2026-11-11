@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "14e72b82-3e9a-49b6-b65a-a04107ce3900",
+  "runId": "7d3ab452-1546-486f-8003-40eb80540874",
+  "kind": "complete",
+  "parents": [
+    "cc91f022-4f70-486c-abe6-95507b05ce0b"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-reload-offsets",
+    "path": "tasks/CF-tui-reload-offsets-status-resize.md",
+    "revision": "2e16fd62f9a0d33353aba1d96485af577806de16",
+    "blob": "7e71ea0f4ed945c2b1777f8b48e7c885d68b05b7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a5e2ecf29a0faffb81632604f36ef0b82054a5072ed7591257749575127c0854"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/tui-reload-offsets-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:25:52.530Z",
+  "summary": "Clamped list/detail offsets through status resizes using only last Ready extents; ordinary reload and tiny behavior preserved",
+  "next": "Validate committed diff, publish complete draft series and verify exact remote head/tree and hosted checks; parent owns independent review and integration",
+  "files": [
+    "tasks/CF-tui-reload-offsets-status-resize.md",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/README.md"
+  ],
+  "validation": "Unchanged baseline race suite passed; new acceptance failed 16 base and 8 changed-model cases on old template before the fix; same acceptance bytes pass final compiler/CLI and both generated race suites; 16 focused base cases, short tests, compiler/generated vet, gofmt, pack validation, 143 Project Memory tests, 92 path checks, 47 model-map cases, setup/model/wiring/installer-seam checks and whitespace passed. GNU Stow, manual terminal/color and local live scanner not run. Hosted CI and independent review pending.",
+  "snapshot": {
+    "tasks/CF-tui-reload-offsets-status-resize.md": {
+      "blob": "be4eca7bb842ac2ff3ef0a6c40888a4f2d09e088",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "4dac4418732957e9d8c0b037c4c258bd9c4f3f84",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/browser_test.go.txt": {
+      "blob": "8c43b959cd0ca6caa7dbc5dab6010f86561a722e",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "f3e98efb219d1a523a5803e7a4b69d7248200635",
+      "mode": "100644"
+    }
+  }
+}
