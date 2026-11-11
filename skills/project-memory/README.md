@@ -30,9 +30,10 @@ Run the tests:
 
 `node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs`
 
-Foundry's `project-memory` CI job runs those tests on pushes, pull requests and
-manual runs. Pull requests also validate the full committed diff using the real
-PR base SHA and explicit code/source repository identities. The source here is a
+Foundry's `project-memory` CI job runs those tests on pull requests, pushes to
+`main`, all tag pushes and manual runs. Other branch pushes wait for a pull
+request. Pull requests also validate the full committed diff using the real PR
+base SHA and explicit code/source repository identities. The source here is a
 reviewed task committed in Foundry itself. Consumers with another canonical task
 repository must configure its identity in their own workflow.
 
