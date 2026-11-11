@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "bd847ec5-a740-4e23-9c8c-d394ed8c9f27",
+  "runId": "48071514-d83e-4934-a21e-edb264880d5d",
+  "kind": "complete",
+  "parents": [
+    "d850fde2-ec16-490d-b7c8-effd671e2936"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-core-guide-v1",
+    "path": "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md",
+    "revision": "90bb1233fa055a2c0ad2b3d81c6136bf817a33d8",
+    "blob": "6493fc249cf2aa0f923d0721a95e5f5ca24fb618",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5b3ab648ea95f1552e175fb132eb56eeadf83791da0383ed57b13bac3fae414b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "docs/core-overview-pipeline-examples",
+  "pullRequest": null,
+  "at": "2026-11-11T00:53:01.990Z",
+  "summary": "Simplified core navigation and documented actual model-to-code responsibilities with checked examples",
+  "next": "Publish draft PR and verify actual remote head, committed evidence and hosted CI",
+  "files": [
+    "README.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md"
+  ],
+  "validation": "Pack and relative-link validation passed; git diff --check passed; embedded JSON equals existing model; offline Go 1.27.3 decode/generation passed with repeatable bytes; six explicit behavior cases plus three generated structural tests passed; independent factual review passed. Optional skills-ref unavailable. Full runtime and installer suites not rerun for docs-only scope.",
+  "snapshot": {
+    "README.md": {
+      "blob": "0a3aa1fa9831677c370597e6fa71e9faa91d0c5f",
+      "mode": "100644"
+    },
+    "docs/model-driven-pipeline.md": {
+      "blob": "609846ba8ef0e868f2d3ac7efed70e5727ca5a06",
+      "mode": "100644"
+    },
+    "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md": {
+      "blob": "2b5bf2b1cafbd08377596673b4b6dbd8d7e6a62d",
+      "mode": "100644"
+    }
+  }
+}
