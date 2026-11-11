@@ -1,6 +1,6 @@
 ---
 id: CF-check-completion-revision-v1
-status: in-progress
+status: review
 owner: Foundry check completion contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -50,3 +50,59 @@ runner. Run focused tests and the full runtime suite on Node 24 or later,
 repository validation, installer regressions, whitespace checks and committed
 Project Memory validation against actual main. Preserve old evidence and record
 only observed results. Local checks do not establish hosted CI or integration.
+
+## Observed implementation and checks
+
+Published source commit `e951dda5567561e7cb9596df25cee9d545778ed8` was fetched and
+its tree compared with the prepared local source before registration and the
+genuine start. Git CLI publication lacked credentials; the GitHub connector
+published the same tree. The local preparation commit is not published ancestry.
+
+The real-store regression confirmed that owner approval, approval revocation,
+and another check's evidence can advance the revision during the callback and
+cause a valid result to become UNKNOWN with REVISION_CONFLICT. The final eight
+regressions on the old runner pass the unchanged-work positive control and fail
+seven expectations: three result-preservation cases and four precise refusal
+outcomes. These tests are implementation-authored, not an independent oracle.
+Initial fixture corrections fixed an invalid reason identifier and compared
+persisted evidence without object-prototype differences; final test bytes were
+rerun against the old source before reporting these results.
+
+The runner now reloads execution after the callback and checks the original
+attempt, fence, worker, subject and specification before using the latest revision.
+The evidence remains bound to the checked input. A concurrent result for the same
+check is not replaced: existing duplicate-evidence validation refuses it.
+Cancellation and replacement retain UNKNOWN; deadlines remain strict. A later
+race between the refreshed read and transactional command still fails closed
+through the store's revision check. No callback is automatically retried.
+
+Observed on Node v24.22.1 and Git 2.52.0:
+
+- All eight new regressions and all 31 focused runner/check tests passed.
+- Full runtime suite: 315 passed, zero failures, skips or cancellations.
+- Project Memory and workflow suites: 143 passed, no skips or cancellations.
+- Repository validation passed; optional skills-ref is unavailable.
+- Pack validator passed 92 path checks and 47 model-map cases.
+- Project setup, model resolver, nine wiring-preflight cases and sixteen
+  installer-ordering cases passed.
+- Full installer acceptance stopped because GNU Stow is absent. Preflight and
+  recording-seam passes do not establish actual GNU Stow installation behavior.
+- Syntax and whitespace checks passed. Committed lifecycle validation is run
+  after recording completion and committing the exact tested content.
+
+## Security review scope
+
+The threat considered is a late callback attaching old evidence to an execution
+whose authority or subject changed, or losing a valid result merely because a
+separate owner decision arrived. Tests exercise real durable commands and replay,
+with invented callback data and private temporary databases. Current state,
+attempt, fence, worker, subject, specification, cleanup and transactional revision
+guards remain explicit. Existing validator registration, independent identity,
+duplicate evidence, timestamp and deadline checks still execute in the evaluator.
+
+No authentication surface, role permissions, dependency, secret, schema, SQL,
+network endpoint, upload, logging or deployment configuration changes. Web,
+password, session-cookie, TLS, personal-data and backup controls are outside this
+local callback correction. No private data or credentials are added to the diff.
+Independent review and exact-head hosted CI remain integration gates owned by the
+lead; local completion does not authorize activation or deployment.

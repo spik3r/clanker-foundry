@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "678ca70f-61e6-4f6f-9739-c1d209647f59",
+  "runId": "ce59b438-3785-4b45-a490-19939037ab39",
+  "kind": "complete",
+  "parents": [
+    "f1c896c4-c234-491f-9a34-f12bbac38a15"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-check-completion-revision-v1",
+    "path": "tasks/CF-check-completion-revision-v1-concurrent-approval.md",
+    "revision": "e951dda5567561e7cb9596df25cee9d545778ed8",
+    "blob": "277b33023916b6ac740eb07184a463b3baa52945",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "383248eacd01be8062997e5b4fdb13aa3b21402a92895d5ed73031717e8f99f3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/runtime-recovery-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T11:57:04.008Z",
+  "summary": "Preserve current check results across concurrent owner approvals while fencing changed identities",
+  "next": "Commit exact tested content, validate committed evidence, publish draft PR for independent review and exact-head CI; lead alone merges",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/check-completion-revision.test.mjs",
+    "tasks/CF-check-completion-revision-v1-concurrent-approval.md"
+  ],
+  "validation": "Node v24.22.1: new regressions 8/8, focused runner/check suites 31/31, full runtime 315/315, Project Memory/workflow 143/143; final old-source regression 1 pass and 7 expected failures; repository validator, 92 pack path cases, 47 model-map cases, project setup, agent model resolver, wiring and installer preflight passed. Full installer stopped at absent GNU Stow; optional skills-ref unavailable. Syntax and whitespace passed.",
+  "snapshot": {
+    "runtime/src/runner.mjs": {
+      "blob": "b2f779773beab1015c531dd441c607bc8c6212ae",
+      "mode": "100644"
+    },
+    "runtime/test/check-completion-revision.test.mjs": {
+      "blob": "df400e68b4ecb9fb39b13a9855f448db2ff89711",
+      "mode": "100644"
+    },
+    "tasks/CF-check-completion-revision-v1-concurrent-approval.md": {
+      "blob": "bb8a340afdb5e092d02361ad4be7c8b511e2aad7",
+      "mode": "100644"
+    }
+  }
+}

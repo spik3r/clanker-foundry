@@ -233,6 +233,16 @@ async function runChecks({ store, effect, checks, now }) {
     if (!['PASS', 'FAIL', 'INCONCLUSIVE'].includes(verdict)) fail('INVALID_CHECK_RESULT', `Check ${checkId} returned an invalid verdict`);
     if (evidenceRef.length < 1 || evidenceRef.length > 128) fail('INVALID_CHECK_RESULT', `Check ${checkId} returned an invalid evidence reference`);
 
+    // An approval or another check may advance the revision while this check runs.
+    // Refresh only the command revision; its evidence must retain the checked identity.
+    const completed = store.get(effect.execution_id);
+    if (!isCurrentAttempt(completed, current.attempt.attempt_id, current.attempt.fencing_token, ['VALIDATING'])
+      || completed.attempt.worker_id !== current.attempt.worker_id
+      || completed.result?.subject_digest !== current.result.subject_digest
+      || completed.spec_digest !== current.spec_digest
+      || digest(completed.spec) !== current.spec_digest) {
+      return { status: 'UNKNOWN', receipt: { status: 'ATTEMPT_CHANGED_DURING_CHECKS' } };
+    }
     const at = timestamp(now);
     const evidence = {
       check_id: check.check_id,
@@ -249,7 +259,7 @@ async function runChecks({ store, effect, checks, now }) {
       evidence_ref: evidenceRef,
     };
     validate('ValidationEvidence', evidence);
-    const command = commandFor(effect, `validation:${checkId}`, current, at, 'RECORD_VALIDATION', { evidence });
+    const command = commandFor(effect, `validation:${checkId}`, completed, at, 'RECORD_VALIDATION', { evidence });
     store.execute(command, { actor_id: check.runner_id, role: 'validator' });
   }
   return { status: 'DELIVERED', receipt: { status: 'CHECKS_RECORDED', check_ids: effect.payload.check_ids } };
