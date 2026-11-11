@@ -1,6 +1,6 @@
 ---
 id: CF-store-crash-regressions-v1
-status: in-progress
+status: review
 owner: Foundry store crash regression contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -106,3 +106,49 @@ only the approved harness and rerun its validation before completion.
 SIGKILL qualifies process-crash behavior only, not host power loss, disk corruption,
 busy-timeout exhaustion, multi-host storage or exactly-once provider execution.
 This change does not establish rollout, consumer acceptance or measured benefit.
+
+
+## Observed result
+
+The coordinator separately reviewed the source before GitHub source commit
+85700166571a17ddea80073ea9d6ef38f3f9ede5 was created, fetched and verified
+against the approved bytes. Registration and a genuine start preceded maintained
+test/helper edits. Main remained d1bb80cc2dad0d9e66f4fcaeb880192e450580af;
+114 prior task frontiers were single completed records, and the coordinator
+confirmed no runtime overlap. The three existing open PRs were untouched.
+
+Four tests now preserve the frozen outcomes. Children open before their explicit
+go signal, report transaction-entry and actual COMMIT boundaries, and never
+invoke a provider. Parent reads verify the complete prior or committed row set.
+Before-COMMIT transaction-local rows match the later successful retry exactly.
+The contention marker proves attempted entry while the writer owns the lock;
+it does not measure residence inside SQLite's native busy handler. Receipt
+comparisons normalize JSON representation without dropping fields.
+
+On Linux x64 with Node 24.22.1, all four tests passed three consecutive runs:
+3.429s, 2.704s and 2.729s. Two separate suite processes also passed concurrently,
+4/4 each, in 2.928s and 2.963s. The original first run passed 4/4 before diagnostic
+and cleanup tightening. Existing store/integrity tests passed 61/61 in 67.639s.
+The full runtime suite passed 325/325 in 73.456s with no skips. Pinned dependencies
+were installed with scripts disabled and offline mode using a private npm cache.
+These timings are observations, not performance guarantees. Wait-for-marker,
+paused-child, child-watchdog and per-test limits are 10s, 20s, 25s and 40s.
+
+Four disposable negative controls failed at their intended checks: a bypassed
+COMMIT hook reported the missing requested boundary; premature commit broke the
+prior-row snapshot assertion; altered duplicate receipt content differed from
+the committed original; omitted acknowledgment persistence retained CLAIMED
+instead of DELIVERED. A pristine disposable copy then passed 4/4 in 2.994s.
+Initial disposable copies omitted a transitive Project Memory import and failed
+at module loading. Those setup failures are retained separately and are not
+negative-control evidence; the corrected copies produced the results above.
+No production file in the maintained checkout was changed. Original independent
+proof script/expectation hashes still match, and no crash-fixture directories
+remained after the runs, including the deliberately failed controls.
+
+Repository validation, both new files' Node syntax and whitespace checks passed.
+Optional skills-ref is unavailable; GNU Stow installer acceptance and other OS
+qualification were not run locally. Full committed Project Memory validation and
+remote head/tree verification follow completion. Fresh independent exact-head
+review and hosted CI remain separate gates. This draft does not claim a source
+bug, provider execution, power-loss durability, real-use acceptance or activation.

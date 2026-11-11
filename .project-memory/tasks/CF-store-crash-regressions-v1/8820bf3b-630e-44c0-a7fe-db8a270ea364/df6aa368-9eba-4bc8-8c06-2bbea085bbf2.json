@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "df6aa368-9eba-4bc8-8c06-2bbea085bbf2",
+  "runId": "8820bf3b-630e-44c0-a7fe-db8a270ea364",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-store-crash-regressions-v1",
+    "path": "tasks/CF-store-crash-regressions-v1-process-boundaries.md",
+    "revision": "85700166571a17ddea80073ea9d6ef38f3f9ede5",
+    "blob": "7a65975da474a96c7892a7e5960940021aed3974",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "69fa94c53e905a6d94075be4f820b27e32ee3496342b11934761bd4f6b67790b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "test/store-crash-regressions-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T18:02:38.080Z",
+  "summary": "Preserve reviewed process-crash persistence contracts with deterministic test-local barriers",
+  "next": "Implement four frozen contracts and validate positive and disposable negative controls",
+  "files": [
+    "runtime/test/store-crash.test.mjs",
+    "runtime/test/helpers/store-crash-child.mjs",
+    "tasks/CF-store-crash-regressions-v1-process-boundaries.md"
+  ]
+}
