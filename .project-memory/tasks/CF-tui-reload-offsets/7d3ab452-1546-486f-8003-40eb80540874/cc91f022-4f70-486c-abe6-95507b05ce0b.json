@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "cc91f022-4f70-486c-abe6-95507b05ce0b",
+  "runId": "7d3ab452-1546-486f-8003-40eb80540874",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-reload-offsets",
+    "path": "tasks/CF-tui-reload-offsets-status-resize.md",
+    "revision": "2e16fd62f9a0d33353aba1d96485af577806de16",
+    "blob": "7e71ea0f4ed945c2b1777f8b48e7c885d68b05b7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a5e2ecf29a0faffb81632604f36ef0b82054a5072ed7591257749575127c0854"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/tui-reload-offsets-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:21:03.853Z",
+  "summary": "Reproduce and correct offset resurrection during Loading or Failed resize cycles while preserving normal reload retention",
+  "next": "Run new generated acceptance against unchanged template before selecting and implementing the bounded correction",
+  "files": [
+    "tasks/CF-tui-reload-offsets-status-resize.md",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/README.md"
+  ]
+}
