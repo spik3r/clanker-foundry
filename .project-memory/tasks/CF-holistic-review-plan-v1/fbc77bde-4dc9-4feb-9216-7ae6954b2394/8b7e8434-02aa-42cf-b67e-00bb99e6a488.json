@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "8b7e8434-02aa-42cf-b67e-00bb99e6a488",
+  "runId": "fbc77bde-4dc9-4feb-9216-7ae6954b2394",
+  "kind": "start",
+  "parents": [
+    "3c20db27-5c36-4fff-8241-e609ae7bbecc"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-holistic-review-plan-v1",
+    "path": "tasks/CF-holistic-review-plan-v1-repository-assessment.md",
+    "revision": "f856c06f8e4482b935c0be8b162036ed3f15053f",
+    "blob": "30da4f1cb7f9d48b5be70e4756a2267fcc445484",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "871de4c69e02292630d55d8cd02a28dda59f9ba433a141aee186f9fcca98247d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/holistic-improvement-plan",
+  "pullRequest": null,
+  "at": "2026-11-10T23:16:14.954Z",
+  "summary": "Extend final evidence scope to include the task source added in this PR",
+  "next": "Validate both changed content paths",
+  "files": [
+    "docs/holistic-improvement-plan.md",
+    "tasks/CF-holistic-review-plan-v1-repository-assessment.md"
+  ]
+}
