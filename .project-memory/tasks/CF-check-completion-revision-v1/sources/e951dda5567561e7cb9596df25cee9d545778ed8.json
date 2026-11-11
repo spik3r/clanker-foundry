@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "e951dda5567561e7cb9596df25cee9d545778ed8",
+  "id": "CF-check-completion-revision-v1",
+  "path": "tasks/CF-check-completion-revision-v1-concurrent-approval.md",
+  "blob": "277b33023916b6ac740eb07184a463b3baa52945",
+  "record": "---\nid: CF-check-completion-revision-v1\nstatus: in-progress\nowner: Foundry check completion contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Preserve completed checks across concurrent owner approvals\n\n## Implementation claim\n\nOwner: Foundry check completion contributor. Branch\n`fix/runtime-recovery-20261111`, reviewed main base\n`cb507d19068161dfb114d9cc983b8363a6ba64ee`. The integration lead authorized one\nbounded runtime correctness fix after reviewing the candidate and its scope.\nThe isolated checkout began clean. The live open-PR check found only unrelated\nPR101; existing completed runtime work reserves no competing implementation.\nThis local claim is not a shared lock or a runtime namespace decision.\n\nExact scope:\n\n- `runtime/src/runner.mjs`\n- New `runtime/test/check-completion-revision.test.mjs`\n- This task and its new immutable Project Memory source and event files.\n\nThe current check runner captures an execution revision before awaiting its\ncallback and uses that revision when recording the result. Reproduce whether a\nconcurrent valid owner approval discards an otherwise current passing result as\nREVISION_CONFLICT. Implement only if the real-store reproduction confirms it.\n\nRefresh execution after the callback, require the same validating attempt,\nworker, fence, subject and specification with no cleanup, and then use its current\nrevision for the evidence command. Keep original result identity, strict deadline\nenforcement, duplicate-evidence refusal and unknown-outcome handling. Do not\nrerun callbacks automatically. Cover concurrent approval, another validation,\ncancellation/replacement, and expiry using invented callbacks and private\nthrowaway stores.\n\nDo not change evaluator semantics, store APIs, schema, adapters, providers, CLI,\nTUI/Flexgo, namespace configuration, activation, existing claims or held general\nrecovery work. No live provider, container or production deployment is included.\nThe integration lead owns independent review and merge. This lane may publish its\nbranch and draft PR after local validation, without marking PR101 ready.\n\n## Validation plan\n\nCommit this prospective source, register it and record a genuine start before\nimplementation edits. Observe old-code regression failures before changing the\nrunner. Run focused tests and the full runtime suite on Node 24 or later,\nrepository validation, installer regressions, whitespace checks and committed\nProject Memory validation against actual main. Preserve old evidence and record\nonly observed results. Local checks do not establish hosted CI or integration.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-check-completion-revision-v1-concurrent-approval.md",
+        "id": "CF-check-completion-revision-v1",
+        "blob": "277b33023916b6ac740eb07184a463b3baa52945",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

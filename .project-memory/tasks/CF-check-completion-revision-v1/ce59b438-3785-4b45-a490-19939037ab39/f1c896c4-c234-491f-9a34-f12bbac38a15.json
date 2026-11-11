@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f1c896c4-c234-491f-9a34-f12bbac38a15",
+  "runId": "ce59b438-3785-4b45-a490-19939037ab39",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-check-completion-revision-v1",
+    "path": "tasks/CF-check-completion-revision-v1-concurrent-approval.md",
+    "revision": "e951dda5567561e7cb9596df25cee9d545778ed8",
+    "blob": "277b33023916b6ac740eb07184a463b3baa52945",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "383248eacd01be8062997e5b4fdb13aa3b21402a92895d5ed73031717e8f99f3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/runtime-recovery-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T11:51:40.913Z",
+  "summary": "Reproduce and fix discarded check results after concurrent approval",
+  "next": "Observe old-code failure, refresh eligibility after check completion and validate",
+  "files": [
+    "runtime/src/runner.mjs",
+    "runtime/test/check-completion-revision.test.mjs",
+    "tasks/CF-check-completion-revision-v1-concurrent-approval.md"
+  ]
+}
