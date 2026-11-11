@@ -1,0 +1,57 @@
+name: tui-model-go
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  record-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: modeling/tui
+    env:
+      GOTOOLCHAIN: local
+      GOMAXPROCS: '2'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.4'
+          check-latest: false
+          cache: false
+      - name: Check compiler formatting
+        run: test -z "$(gofmt -l .)"
+      - name: Compile and exercise generated browser and model change
+        run: go test -race -count=1 -p=1 ./...
+      - name: Check compiler
+        run: go vet ./...
+      - name: Scan compiler and generated dependency graphs
+        run: |
+          set -euo pipefail
+          test "$(go env GOVERSION)" = go1.27.4
+          scanner_dir="$RUNNER_TEMP/tui-govulncheck"
+          mkdir -p "$scanner_dir"
+          GOBIN="$scanner_dir" go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+          output=$(mktemp -d)
+          go run ./cmd/tuic examples/browser.json "$output/catalog"
+          compiler_dir="$PWD"
+          for target in linux/amd64 darwin/arm64 windows/amd64; do
+            echo "Source vulnerability scan: $target"
+            for module_dir in "$compiler_dir" "$output/catalog"; do
+              (
+                cd "$module_dir"
+                GOOS="${target%/*}" GOARCH="${target#*/}" CGO_ENABLED=0 \
+                  GOFLAGS=-mod=readonly "$scanner_dir/govulncheck" ./...
+              )
+            done
+          done
+      - name: Check repository drift
+        run: git diff --exit-code

@@ -1,0 +1,430 @@
+package recordbrowser
+
+// Copied unchanged into both generated models. No layout/state implementation
+// helpers are used to calculate expected outcomes.
+import (
+	tea "charm.land/bubbletea/v2"
+	"fmt"
+	"github.com/charmbracelet/x/ansi"
+	"os"
+	"reflect"
+	"strings"
+	"testing"
+	"unicode"
+	"unicode/utf8"
+)
+
+func rows(n int) []Record {
+	r := make([]Record, n)
+	for i := range r {
+		r[i] = Record{ID: fmt.Sprintf("id-%02d", i), Name: fmt.Sprintf("Row-%02d", i), Status: "active", Description: "Description marker " + strings.Repeat("long description ", 30)}
+	}
+	return r
+}
+func newModel(t *testing.T, r []Record) Model {
+	t.Helper()
+	m, e := New(r)
+	if e != nil {
+		t.Fatal(e)
+	}
+	return m
+}
+func update(t *testing.T, m Model, msg tea.Msg) (Model, tea.Cmd) {
+	t.Helper()
+	v, c := m.Update(msg)
+	n, ok := v.(Model)
+	if !ok {
+		t.Fatalf("unexpected model %T", v)
+	}
+	return n, c
+}
+func size(t *testing.T, m Model, w, h int) Model {
+	t.Helper()
+	m, c := update(t, m, tea.WindowSizeMsg{Width: w, Height: h})
+	if c != nil {
+		t.Fatal("resize command")
+	}
+	return m
+}
+func key(t *testing.T, m Model, k string) (Model, tea.Cmd) {
+	t.Helper()
+	v := tea.KeyPressMsg{}
+	switch k {
+	case "tab":
+		v.Code = tea.KeyTab
+	case "enter":
+		v.Code = tea.KeyEnter
+	case "esc":
+		v.Code = tea.KeyEscape
+	case "pgdown":
+		v.Code = tea.KeyPgDown
+	case "pgup":
+		v.Code = tea.KeyPgUp
+	case "ctrl+c":
+		v.Code = 'c'
+		v.Mod = tea.ModCtrl
+	default:
+		v.Code = []rune(k)[0]
+		v.Text = k
+	}
+	return update(t, m, v)
+}
+func press(t *testing.T, m Model, k string) Model {
+	t.Helper()
+	m, c := key(t, m, k)
+	if c != nil {
+		t.Fatalf("unexpected command for %q", k)
+	}
+	return m
+}
+func plain(m Model) string { return ansi.Strip(m.View().Content) }
+func selected(t *testing.T, m Model, id string) {
+	t.Helper()
+	if m.browser.state.selectedID != id {
+		t.Fatalf("selected %q, want %q", m.browser.state.selectedID, id)
+	}
+}
+func bounds(t *testing.T, m Model, w, h int) {
+	t.Helper()
+	v := m.View()
+	if !v.AltScreen {
+		t.Fatal("alternate screen absent")
+	}
+	s := ansi.Strip(v.Content)
+	if s == "" {
+		return
+	}
+	if !utf8.ValidString(s) {
+		t.Fatal("invalid UTF-8")
+	}
+	lines := strings.Split(s, "\n")
+	if len(lines) > h {
+		t.Fatalf("height %d > %d: %q", len(lines), h, s)
+	}
+	for _, l := range lines {
+		if ansi.StringWidth(l) > w {
+			t.Fatalf("width > %d: %q", w, l)
+		}
+	}
+}
+func TestAcceptanceModelDrivenResponsiveView(t *testing.T) {
+	m := newModel(t, rows(2))
+	if m.View().Content != "" || m.Init() != nil {
+		t.Fatal("render/command before size")
+	}
+	wide, title, listWidth := 80, "Catalog", 28
+	changed := os.Getenv("TUI_ACCEPTANCE_VARIANT") == "changed"
+	if changed {
+		wide, title, listWidth = 100, "Changed catalog", 32
+	}
+	m = size(t, m, wide, 12)
+	v := plain(m)
+	for _, s := range []string{title, "Records", "Details", "Name: Row-00", "Status: active"} {
+		if !strings.Contains(v, s) {
+			t.Fatalf("missing %q: %q", s, v)
+		}
+	}
+	if changed {
+		if strings.Contains(v, "Description:") || strings.Index(v, "Status: active") > strings.Index(v, "Name: Row-00") {
+			t.Fatal("changed detail fields/order ignored")
+		}
+	} else {
+		if !strings.Contains(v, "Description:") || strings.Index(v, "Name: Row-00") > strings.Index(v, "Status: active") {
+			t.Fatal("base detail fields/order wrong")
+		}
+	}
+	for _, line := range strings.Split(v, "\n") {
+		if i := strings.Index(line, "Details"); i >= 0 {
+			col := ansi.StringWidth(line[:i])
+			if col < listWidth+1 || col > listWidth+5 {
+				t.Fatalf("detail column %d does not reflect list width %d", col, listWidth)
+			}
+		}
+	}
+	for _, d := range [][2]int{{wide - 1, 12}, {wide, 11}, {24, 6}, {23, 6}, {24, 5}, {1, 1}, {0, 0}, {160, 40}, {wide, 12}} {
+		m = size(t, m, d[0], d[1])
+		bounds(t, m, d[0], d[1])
+		selected(t, m, "id-00")
+		if d[0] >= 24 && d[1] >= 6 && (d[0] < wide || d[1] < 12) && strings.Contains(plain(m), "Name: Row-00") {
+			t.Fatal("narrow list shows details")
+		}
+	}
+}
+func TestAcceptanceIdentityFocusAndCaptiveHelp(t *testing.T) {
+	m := size(t, newModel(t, rows(30)), 120, 12)
+	m = press(t, m, "j")
+	m = press(t, m, "j")
+	m = press(t, m, "enter")
+	selected(t, m, "id-02")
+	if m.browser.state.focus != detailPane {
+		t.Fatal("enter did not focus detail")
+	}
+	for repeat := 0; repeat < 3; repeat++ {
+		for _, d := range [][2]int{{24, 6}, {120, 12}, {1, 1}, {80, 11}, {100, 12}} {
+			m = size(t, m, d[0], d[1])
+			bounds(t, m, d[0], d[1])
+			selected(t, m, "id-02")
+			if m.browser.state.focus != detailPane {
+				t.Fatal("resize lost focus")
+			}
+			m = press(t, m, "?")
+			if !m.browser.state.helpOpen {
+				t.Fatal("help not open")
+			}
+			for _, k := range []string{"q", "ctrl+c", "tab", "enter", "1", "2", "3", "4"} {
+				m = press(t, m, k)
+				selected(t, m, "id-02")
+				if !m.browser.state.helpOpen || m.browser.state.focus != detailPane {
+					t.Fatalf("help failed to capture %s", k)
+				}
+			}
+			m = press(t, m, "esc")
+			if m.browser.state.helpOpen {
+				t.Fatal("help did not close")
+			}
+		}
+	}
+	m = size(t, m, 120, 12)
+	m = press(t, m, "esc")
+	if m.browser.state.focus != listPane {
+		t.Fatal("escape did not focus list")
+	}
+	before := m
+	for _, k := range []string{"1", "2", "3", "4"} {
+		m = press(t, m, k)
+		if !reflect.DeepEqual(before, m) {
+			t.Fatalf("fixture key %s changed model", k)
+		}
+	}
+	for _, k := range []string{"q", "ctrl+c"} {
+		_, c := key(t, m, k)
+		if c == nil {
+			t.Fatal("missing quit command")
+		}
+		if _, ok := c().(tea.QuitMsg); !ok {
+			t.Fatal("incorrect quit command")
+		}
+	}
+}
+func TestAcceptancePagingMatchesVisibleViewport(t *testing.T) {
+	for _, d := range [][2]int{{24, 6}, {120, 12}, {120, 20}} {
+		m := size(t, newModel(t, rows(40)), d[0], d[1])
+		visible := 0
+		v := plain(m)
+		for i := 0; i < 40; i++ {
+			if strings.Contains(v, fmt.Sprintf("Row-%02d", i)) {
+				visible++
+			}
+		}
+		if visible < 1 {
+			t.Fatal("no visible list rows")
+		}
+		m = press(t, m, "pgdown")
+		selected(t, m, fmt.Sprintf("id-%02d", visible))
+		if !strings.Contains(plain(m), fmt.Sprintf("Row-%02d", visible)) {
+			t.Fatal("paged selection not visible")
+		}
+		m = press(t, m, "pgup")
+		selected(t, m, "id-00")
+		m = press(t, m, "G")
+		selected(t, m, "id-39")
+		if !strings.Contains(plain(m), "Row-39") {
+			t.Fatal("end selection not visible")
+		}
+		m = press(t, m, "j")
+		selected(t, m, "id-39")
+		m = press(t, m, "g")
+		m = press(t, m, "k")
+		selected(t, m, "id-00")
+	}
+}
+func TestAcceptanceReplacementAtomicityAndOwnership(t *testing.T) {
+	r := rows(4)
+	m := size(t, newModel(t, r), 120, 12)
+	r[0].Name = "caller mutation"
+	if strings.Contains(plain(m), "caller mutation") {
+		t.Fatal("New aliases caller slice")
+	}
+	m = press(t, m, "j")
+	m = press(t, m, "enter")
+	replacement := []Record{r[3], r[1], r[0]}
+	next, e := m.Replace(Snapshot{Status: Ready, Records: replacement})
+	if e != nil {
+		t.Fatal(e)
+	}
+	selected(t, next, "id-01")
+	if next.browser.state.focus != detailPane {
+		t.Fatal("replacement lost focus")
+	}
+	replacement[1].Name = "replacement mutation"
+	if strings.Contains(plain(next), "replacement mutation") {
+		t.Fatal("Replace aliases caller slice")
+	}
+	for _, status := range []Status{Loading, Failed} {
+		pending, e := next.Replace(Snapshot{Status: status, Message: "Host status marker"})
+		if e != nil {
+			t.Fatal(e)
+		}
+		selected(t, pending, "id-01")
+		if !strings.Contains(plain(pending), "Host status marker") {
+			t.Fatal("host message missing")
+		}
+		restored, e := pending.Replace(Snapshot{Status: Ready, Records: []Record{r[1], r[3]}})
+		if e != nil {
+			t.Fatal(e)
+		}
+		selected(t, restored, "id-01")
+		if restored.browser.state.focus != detailPane {
+			t.Fatal("status transition lost focus")
+		}
+	}
+	removed, e := next.Replace(Snapshot{Status: Ready, Records: []Record{r[3], r[0]}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	selected(t, removed, "id-03")
+	bad := []Snapshot{{Status: Status(99)}, {Status: Ready, Records: []Record{{ID: ""}}}, {Status: Ready, Records: []Record{{ID: "dup"}, {ID: "dup"}}}, {Status: Loading, Records: []Record{{ID: "dup"}, {ID: "dup"}}}, {Status: Ready, Message: strings.Repeat("x", 4097)}, {Status: Ready, Records: []Record{{ID: "valid", Name: strings.Repeat("x", 4097)}}}, {Status: Ready, Records: rows(4097)}}
+	for i, s := range bad {
+		before := plain(next)
+		got, e := next.Replace(s)
+		if e == nil {
+			t.Fatalf("invalid snapshot %d accepted", i)
+		}
+		if !reflect.DeepEqual(got, next) || plain(next) != before {
+			t.Fatalf("invalid snapshot %d mutated model", i)
+		}
+	}
+	empty, e := next.Replace(Snapshot{Status: Ready})
+	if e != nil {
+		t.Fatal(e)
+	}
+	selected(t, empty, "")
+	for _, k := range []string{"j", "k", "G", "g", "pgup", "pgdown", "enter", "tab"} {
+		empty = press(t, empty, k)
+		selected(t, empty, "")
+	}
+}
+func TestAcceptanceSafeTextAndGraphemeClipping(t *testing.T) {
+	hostile := "A\x1b[2J\x1b[31mB\x1b[0m\x1b]52;c;YWJj\aC\rD\tE\x00F\bG"
+	m := newModel(t, []Record{{ID: "safe", Name: hostile, Description: hostile, Status: hostile}})
+	for _, d := range [][2]int{{24, 6}, {120, 12}, {1, 1}} {
+		m = size(t, m, d[0], d[1])
+		for _, k := range []string{"enter", "?", "esc"} {
+			m = press(t, m, k)
+			raw := m.View().Content
+			if strings.Contains(raw, "\x1b[2J") || strings.Contains(raw, "\x1b]52") {
+				t.Fatal("host escape injected")
+			}
+			for _, r := range plain(m) {
+				if unicode.IsControl(r) && r != '\n' {
+					t.Fatalf("host control U+%04X survived", r)
+				}
+			}
+			bounds(t, m, d[0], d[1])
+		}
+	}
+	// Use a combining-sequence base absent from UI labels so every surviving
+	// payload rune, including an orphaned base, is an unambiguous failure.
+	for _, unit := range []string{"Ω\u0301", "👩‍💻", "界"} {
+		m := newModel(t, []Record{{ID: "unicode", Name: strings.Repeat(unit, 80)}})
+		for _, w := range []int{24, 25, 26, 27, 28, 29, 80, 100} {
+			m = size(t, m, w, 12)
+			bounds(t, m, w, 12)
+			for _, line := range strings.Split(plain(m), "\n") {
+				rest := strings.ReplaceAll(line, unit, "")
+				for _, r := range unit {
+					if strings.ContainsRune(rest, r) {
+						t.Fatalf("partial grapheme %q: %q", unit, line)
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestAcceptanceDetailAndHelpScrollClamp(t *testing.T) {
+	m := size(t, newModel(t, rows(1)), 24, 6)
+	m = press(t, m, "enter")
+	selected(t, m, "id-00")
+	// At the minimum supported size the visible pane has two content rows.
+	wantBottom := 1
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") == "changed" {
+		wantBottom = 0
+	}
+	m = press(t, m, "pgdown")
+	if m.browser.state.detailOffset != wantBottom {
+		t.Fatalf("detail page offset = %d, want %d", m.browser.state.detailOffset, wantBottom)
+	}
+	for _, k := range []string{"j", "G", "G"} {
+		m = press(t, m, k)
+		if m.browser.state.detailOffset != wantBottom {
+			t.Fatalf("detail bottom action %q changed valid offset", k)
+		}
+	}
+	// A single-record list is already at both boundaries. Attempting to move
+	// selection must not reset the scroll position of that same record.
+	m = press(t, m, "tab")
+	for _, k := range []string{"j", "k", "G", "g"} {
+		m = press(t, m, k)
+		selected(t, m, "id-00")
+		if m.browser.state.detailOffset != wantBottom {
+			t.Fatalf("selection boundary %q reset detail offset", k)
+		}
+	}
+	m = press(t, m, "enter")
+	m = size(t, m, 120, 40)
+	if m.browser.state.detailOffset != 0 {
+		t.Fatal("expanded detail viewport did not clamp to zero")
+	}
+	m = size(t, m, 24, 6)
+	if m.browser.state.detailOffset != 0 {
+		t.Fatal("shrinking resurrected old detail offset")
+	}
+	m = press(t, m, "G")
+	m = press(t, m, "pgup")
+	if m.browser.state.detailOffset != 0 {
+		t.Fatal("detail page up did not reach first line")
+	}
+	m = press(t, m, "?")
+	m = press(t, m, "G")
+	if m.browser.state.helpOffset <= 0 {
+		t.Fatal("help did not scroll beyond initial viewport")
+	}
+	bottom := m.browser.state.helpOffset
+	for _, k := range []string{"G", "j"} {
+		m = press(t, m, k)
+		if m.browser.state.helpOffset != bottom {
+			t.Fatal("help bottom boundary changed offset")
+		}
+	}
+	m = size(t, m, 1, 1)
+	for _, k := range []string{"j", "pgdown", "G", "q", "ctrl+c", "tab", "enter"} {
+		m = press(t, m, k)
+		selected(t, m, "id-00")
+		if !m.browser.state.helpOpen || m.browser.state.focus != detailPane {
+			t.Fatalf("tiny help failed to capture %q", k)
+		}
+		bounds(t, m, 1, 1)
+	}
+	m = size(t, m, 120, 40)
+	if m.browser.state.helpOffset != 0 {
+		t.Fatal("expanded help did not clamp to zero")
+	}
+	m = size(t, m, 24, 6)
+	if m.browser.state.helpOffset != 0 {
+		t.Fatal("shrinking resurrected old help offset")
+	}
+	m = press(t, m, "pgdown")
+	if m.browser.state.helpOffset != 2 {
+		t.Fatalf("help page offset = %d, want two visible lines", m.browser.state.helpOffset)
+	}
+	m = press(t, m, "pgup")
+	if m.browser.state.helpOffset != 0 {
+		t.Fatal("help page up did not return to first line")
+	}
+	m = press(t, m, "esc")
+	selected(t, m, "id-00")
+	if m.browser.state.helpOpen || m.browser.state.focus != detailPane {
+		t.Fatal("closing help lost prior focus")
+	}
+}

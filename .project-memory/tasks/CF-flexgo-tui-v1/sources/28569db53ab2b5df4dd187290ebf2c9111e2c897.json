@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+  "id": "CF-flexgo-tui-v1",
+  "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+  "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+  "record": "---\nid: CF-flexgo-tui-v1\nstatus: in-progress\nowner: Foundry Flexgo implementation\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Compile a bounded record-browser model to Flexgo\n\n## Implementation claim\n\nThe Foundry Flexgo implementation owns `modeling/tui/`, its dedicated CI workflow,\nand a link from the current workflow guide. Build a strict semantic profile for a\nread-only record browser, deterministic Go source generation using the existing\npublic responsive-browser proposal, and independent acceptance checks. The model\nselects typed record fields, identity, summary and ordered details, labels, and\nexplicit responsive breakpoints. Applications supply records; models cannot run\ncommands, access files or inject source code. Preserve selection, focus, scrolling\nand captive help across resize and data replacement.\n\nThe first result must compile and exercise a generated browser, including a model\nchange without hand-editing generated output. This is a bounded prototype, not a\ngeneral UI language or a released Flexgo component API. Do not change private\napplication sources, Flexgo core, existing lifecycle profiles, or unrelated work.\n\n## Checks\n\nRun focused model/compiler tests, generated behavior acceptance tests, formatting,\nGo vet, repository validation and committed project-memory validation. Keep\nunrun terminal visual checks explicit. Publish a draft PR; do not merge or deploy.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+        "id": "CF-flexgo-tui-v1",
+        "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

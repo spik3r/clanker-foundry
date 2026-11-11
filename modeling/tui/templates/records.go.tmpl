@@ -1,0 +1,39 @@
+package recordbrowser
+
+import "fmt"
+
+// Record is the model's typed application data. Values are displayed as plain text.
+type Record struct {
+[[[range .Fields]]] [[[.ID]]] string
+[[[end]]]}
+
+// Status selects the current host-supplied data state.
+type Status uint8
+const (
+ Ready Status = iota
+ Loading
+ Failed
+)
+
+// Snapshot replaces the browser data atomically. Loading and Failed retain selection.
+type Snapshot struct {
+ Status Status
+ Records []Record
+ Message string
+}
+
+func recordsData(next Snapshot) (data,error) {
+ if next.Status > Failed { return data{},fmt.Errorf("invalid status") }
+ if len(next.Records)>4096 || len(next.Message)>4096 { return data{},fmt.Errorf("snapshot exceeds record or message limit") }
+ d:=data{status:status(next.Status),message:next.Message,items:make([]item,0,len(next.Records))}
+ bytes:=len(next.Message)
+ for _,record:=range next.Records {
+ [[[range .Fields]]]if len(record.[[[.ID]]])>4096 { return data{},fmt.Errorf("field exceeds 4096 bytes") }; bytes+=len(record.[[[.ID]]])
+ [[[end]]]if bytes>1048576 { return data{},fmt.Errorf("snapshot exceeds 1 MiB text budget") }
+  d.items=append(d.items,item{id:record.[[[.Identity]]],label:record.[[[.Summary]]],details:[]string{
+ [[[range $id := .Details]]][[[range $.Fields]]][[[if eq .ID $id]]][[[quote .Label]]] + ": " + record.[[[.ID]]],
+ [[[end]]][[[end]]][[[end]]]
+ }})
+ }
+ return d,nil
+}

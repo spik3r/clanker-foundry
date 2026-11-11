@@ -1,0 +1,147 @@
+{
+  "formatVersion": 2,
+  "eventId": "fd67a298-bd46-476b-b638-a9465b69517f",
+  "runId": "e759fce6-c9f9-4d80-a86d-2bb0590cd784",
+  "kind": "complete",
+  "parents": [
+    "cc9db7de-9181-4063-a348-0849f254ceb3"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+    "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "889d0cfce3fefd9d0c8cd2ed5924bfb6c4dcac1c539fb09f704c5d9fdb612758"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/flexgo-tui-model-v1",
+  "pullRequest": null,
+  "at": "2026-11-11T04:09:22.515Z",
+  "summary": "Implemented bounded semantic model and deterministic importable Flexgo browser generation with typed host data and synthetic demo",
+  "next": "Review draft PR and hosted checks; do not merge or claim downstream adoption",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "modeling/tui/go.mod",
+    "modeling/tui/model.go",
+    "modeling/tui/model_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/examples/browser.json",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/go.mod.tmpl",
+    "modeling/tui/templates/go.sum.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    ".github/workflows/tui-model-go.yml",
+    "docs/model-driven-current-workflow.md",
+    "modeling/tui/templates/demo_main.go.tmpl",
+    "modeling/tui/cmd/tuic/main_test.go"
+  ],
+  "validation": "PASS: Go formatting; go test -race -count=1 -p=1 -timeout=5m ./... in modeling/tui (includes both independently asserted generated model variants); go vet ./...; generated package and demo compile and go vet; scripts/validate.sh (skills-ref absent, optional check skipped). PASS: interactive Mac PTY resize/help/focus/quit smoke. Independent source review found no blocking defects. Pixel/color visual review and downstream application adoption remain outside this slice.",
+  "snapshot": {
+    "tasks/CF-flexgo-tui-v1-model-compiler.md": {
+      "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+      "mode": "100644"
+    },
+    "modeling/tui/go.mod": {
+      "blob": "6357977f72e4fe6a004209b5bcb4a83065120835",
+      "mode": "100644"
+    },
+    "modeling/tui/model.go": {
+      "blob": "36eb7eb1d39df68cbea1600905c9bfb357178fe8",
+      "mode": "100644"
+    },
+    "modeling/tui/model_test.go": {
+      "blob": "1952006455a81f4464eb515f03fcb5c7c666f812",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler.go": {
+      "blob": "2357ea7f7e4e294b78277396c0e6495bb3ed5694",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler_test.go": {
+      "blob": "c09dc7dfac4c106eb14abaadd53261dd348ff91e",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "f40f42b4d0691794071acf69f0d0c6339a24161a",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "fa9e0b26a901841cc4f4d650c4e48728268ee5f2",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser.json": {
+      "blob": "6c280421717e6c44500cea2e9f1f8da51863e711",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main.go": {
+      "blob": "b9b95a81ddeaaef73c032799dec329d11df027ca",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "a2a595f6e06eb9618d935d15e76071b5ca692d51",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "caf6364c7a74c709722d4e6220bed1e1218fe485",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/layout.go.tmpl": {
+      "blob": "ea84355653f9e0e551d2793539eb8ebe442ef61e",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "90779c2c8fa98ecf87099edfaea9c1d4f8687be5",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/keys.go.tmpl": {
+      "blob": "0f0f8af1e06935bdba8653282f3b46b0c9bb1485",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/records.go.tmpl": {
+      "blob": "dfb3660f29692bc8273631bffef317b05b2c97ba",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/go.mod.tmpl": {
+      "blob": "1b657b1d343679567ed9e11d7a1ae4068f3fb9d0",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/go.sum.tmpl": {
+      "blob": "22e8a03e9285377e2e8b870b541ea49ceff21e80",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/browser_test.go.txt": {
+      "blob": "563ad87eb9b824db681fa9ad7e659c72f5b16555",
+      "mode": "100644"
+    },
+    ".github/workflows/tui-model-go.yml": {
+      "blob": "9d996d23c3ad13ff40654e03ec1586b40c0fe9ee",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "9cf12d448a1373966f60186b482ba4480aaee030",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/demo_main.go.tmpl": {
+      "blob": "9706246e019f58a805bb9380f6e758fa93be7eb3",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main_test.go": {
+      "blob": "7530ee4686ba01ed08a694c7431a0486249e1bf8",
+      "mode": "100644"
+    }
+  }
+}

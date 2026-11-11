@@ -1,0 +1,21 @@
+package main
+
+import (
+ "fmt"
+ "os"
+ tea "charm.land/bubbletea/v2"
+ browser "example.com/generated/recordbrowser"
+)
+
+func main(){
+ records:=make([]browser.Record,40)
+ for i:=range records{
+  records[i]=browser.Record{
+ [[[range .Fields]]][[[.ID]]]:[[[quote .Label]]] + fmt.Sprintf(" %02d",i+1),
+ [[[end]]]
+ }
+ }
+ m,err:=browser.New(records)
+ if err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
+ if _,err:=tea.NewProgram(m).Run();err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
+}

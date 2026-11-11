@@ -1,0 +1,44 @@
+package recordbrowser
+
+type variant int
+
+const (
+	minimumWidth  = [[[.Layout.NarrowWidth]]]
+	minimumHeight = [[[.Layout.NarrowHeight]]]
+	wideWidth     = [[[.Layout.WideWidth]]]
+	wideHeight    = [[[.Layout.WideHeight]]]
+)
+
+const (
+	tiny variant = iota
+	narrow
+	wide
+)
+
+type layout struct {
+	width, height              int
+	bodyHeight, contentRows    int
+	listWidth, detailWidth, gap int
+	variant                    variant
+}
+
+func plan(width, height int) layout {
+	p := layout{width: max(0, width), height: max(0, height)}
+	if p.width < minimumWidth || p.height < minimumHeight {
+		return p
+	}
+	p.variant = narrow
+	p.bodyHeight = p.height - 3
+	p.contentRows = p.bodyHeight - 1
+	p.listWidth, p.detailWidth = p.width, p.width
+	if p.width >= wideWidth && p.height >= wideHeight {
+		p.variant = wide
+		p.listWidth, p.gap = [[[.Layout.ListWidth]]], 1
+		p.detailWidth = p.width - p.listWidth - p.gap
+	}
+	return p
+}
+
+func clampOffset(offset, lines, rows int) int {
+	return min(max(0, offset), max(0, lines-rows))
+}

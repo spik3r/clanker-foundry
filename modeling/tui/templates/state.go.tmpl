@@ -1,0 +1,183 @@
+package recordbrowser
+
+import (
+	"fmt"
+	"slices"
+)
+
+type status int
+
+const (
+	ready status = iota
+	loading
+	failed
+)
+
+type item struct {
+	id, label string
+	details   []string
+}
+
+type data struct {
+	status  status
+	items   []item
+	message string
+}
+
+type pane int
+
+const (
+	listPane pane = iota
+	detailPane
+)
+
+type state struct {
+	selectedID                          string
+	focus                               pane
+	listOffset, detailOffset, helpOffset int
+	helpOpen                            bool
+}
+
+type browser struct {
+	data  data
+	state state
+}
+
+func (b browser) replaceData(next data, p layout) (browser, error) {
+	if next.status < ready || next.status > failed {
+		return b, fmt.Errorf("unknown data status: %d", next.status)
+	}
+	ids := make(map[string]bool, len(next.items))
+	next.items = slices.Clone(next.items)
+	for i, row := range next.items {
+		if row.id == "" || ids[row.id] {
+			return b, fmt.Errorf("record %d needs a unique nonempty ID", i)
+		}
+		ids[row.id] = true
+		next.items[i].details = slices.Clone(row.details)
+	}
+	b.data = next
+	b.state = b.state.normalize(next, p)
+	return b, nil
+}
+
+func (s state) selectedIndex(d data) int {
+	if d.status != ready {
+		return -1
+	}
+	return slices.IndexFunc(d.items, func(row item) bool { return row.id == s.selectedID })
+}
+
+func (s state) normalize(d data, p layout) state {
+	if d.status == ready {
+		idx := s.selectedIndex(d)
+		if idx < 0 {
+			s.selectedID = ""
+			s.listOffset, s.detailOffset = 0, 0
+			if len(d.items) > 0 {
+				s.selectedID, idx = d.items[0].id, 0
+			}
+		}
+		if p.variant != tiny && idx >= 0 {
+			s.listOffset = clampOffset(s.listOffset, len(d.items), p.contentRows)
+			if idx < s.listOffset {
+				s.listOffset = idx
+			} else if idx >= s.listOffset+p.contentRows {
+				s.listOffset = idx - p.contentRows + 1
+			}
+			s.detailOffset = clampOffset(s.detailOffset, len(d.items[idx].details), p.contentRows)
+		}
+	}
+	if p.variant != tiny {
+		s.helpOffset = clampOffset(s.helpOffset, len(helpLines(s, d)), p.contentRows)
+	}
+	return s
+}
+
+func (b browser) resize(p layout) browser {
+	b.state = b.state.normalize(b.data, p)
+	return b
+}
+
+func (b browser) update(a action, p layout) browser {
+	s := b.state
+	if s.helpOpen {
+		switch a {
+		case closeAction, helpAction:
+			s.helpOpen = false
+		default:
+			if p.variant != tiny {
+				s.helpOffset = scroll(s.helpOffset, a, len(helpLines(s, b.data)), p.contentRows)
+			}
+		}
+		b.state = s
+		return b
+	}
+	if a == helpAction {
+		s.helpOpen, s.helpOffset = true, 0
+		b.state = s
+		return b
+	}
+	idx := s.selectedIndex(b.data)
+	if p.variant == tiny || idx < 0 {
+		return b
+	}
+
+	switch a {
+	case nextPaneAction, prevPaneAction:
+		if s.focus == listPane {
+			s.focus = detailPane
+		} else {
+			s.focus = listPane
+		}
+	case openAction:
+		s.focus = detailPane
+	case closeAction:
+		s.focus = listPane
+	default:
+		if s.focus == detailPane {
+			s.detailOffset = scroll(s.detailOffset, a, len(b.data.items[idx].details), p.contentRows)
+		} else {
+			next := idx
+			switch a {
+			case upAction:
+				next--
+			case downAction:
+				next++
+			case pageUpAction:
+				next -= p.contentRows
+			case pageDownAction:
+				next += p.contentRows
+			case topAction:
+				next = 0
+			case bottomAction:
+				next = len(b.data.items) - 1
+			}
+			next = min(max(0, next), len(b.data.items)-1)
+			if next != idx {
+				s.selectedID = b.data.items[next].id
+				s.detailOffset = 0
+			}
+		}
+	}
+	b.state = s.normalize(b.data, p)
+	return b
+}
+
+func scroll(offset int, a action, lines, rows int) int {
+	switch a {
+	case upAction:
+		offset--
+	case downAction:
+		offset++
+	case pageUpAction:
+		offset -= rows
+	case pageDownAction:
+		offset += rows
+	case topAction:
+		offset = 0
+	case bottomAction:
+		offset = max(0, lines-rows)
+	}
+	return clampOffset(offset, lines, rows)
+}

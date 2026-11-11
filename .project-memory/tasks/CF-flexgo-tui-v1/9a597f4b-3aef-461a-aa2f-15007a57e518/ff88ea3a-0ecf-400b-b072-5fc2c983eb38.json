@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "ff88ea3a-0ecf-400b-b072-5fc2c983eb38",
+  "runId": "9a597f4b-3aef-461a-aa2f-15007a57e518",
+  "kind": "start",
+  "parents": [
+    "fd67a298-bd46-476b-b638-a9465b69517f"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+    "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "889d0cfce3fefd9d0c8cd2ed5924bfb6c4dcac1c539fb09f704c5d9fdb612758"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/flexgo-tui-model-v1",
+  "pullRequest": null,
+  "at": "2026-11-11T04:20:00.941Z",
+  "summary": "Address reviewed dependency advisory and add pinned generated-target vulnerability scans",
+  "next": "Requalify both generated variants and obtain independent review",
+  "files": [
+    "modeling/tui/templates/go.mod.tmpl",
+    "modeling/tui/templates/go.sum.tmpl",
+    ".github/workflows/tui-model-go.yml",
+    "modeling/tui/README.md"
+  ]
+}

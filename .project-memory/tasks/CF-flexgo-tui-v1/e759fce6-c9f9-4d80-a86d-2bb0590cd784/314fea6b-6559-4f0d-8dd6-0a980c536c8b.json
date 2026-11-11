@@ -1,0 +1,50 @@
+{
+  "formatVersion": 2,
+  "eventId": "314fea6b-6559-4f0d-8dd6-0a980c536c8b",
+  "runId": "e759fce6-c9f9-4d80-a86d-2bb0590cd784",
+  "kind": "checkpoint",
+  "parents": [
+    "d8849ea2-b809-4d2f-b357-c5dcf0e7038c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+    "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "889d0cfce3fefd9d0c8cd2ed5924bfb6c4dcac1c539fb09f704c5d9fdb612758"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/flexgo-tui-model-v1",
+  "pullRequest": null,
+  "at": "2026-11-11T03:37:04.635Z",
+  "summary": "Strict model and emitter implementation in progress; define template and acceptance paths",
+  "next": "Adapt reviewed public browser source and run generated acceptance",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "modeling/tui/go.mod",
+    "modeling/tui/model.go",
+    "modeling/tui/model_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/examples/browser.json",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/go.mod.tmpl",
+    "modeling/tui/templates/go.sum.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    ".github/workflows/tui-model-go.yml",
+    "docs/model-driven-current-workflow.md"
+  ]
+}

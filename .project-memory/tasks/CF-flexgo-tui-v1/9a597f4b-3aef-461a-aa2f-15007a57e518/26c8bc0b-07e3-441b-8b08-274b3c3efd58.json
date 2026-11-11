@@ -1,0 +1,147 @@
+{
+  "formatVersion": 2,
+  "eventId": "26c8bc0b-07e3-441b-8b08-274b3c3efd58",
+  "runId": "9a597f4b-3aef-461a-aa2f-15007a57e518",
+  "kind": "complete",
+  "parents": [
+    "607e46af-32dd-43ea-a618-be09826fc3a9"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+    "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "889d0cfce3fefd9d0c8cd2ed5924bfb6c4dcac1c539fb09f704c5d9fdb612758"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/flexgo-tui-model-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/107",
+  "at": "2026-11-11T04:23:16.262Z",
+  "summary": "Pin x/sys v0.44.0 and add normal-exit pinned govulncheck CI for compiler and generated Linux Darwin Windows source graphs",
+  "next": "Independent final review and new-head hosted checks; no merge claim",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "modeling/tui/go.mod",
+    "modeling/tui/model.go",
+    "modeling/tui/model_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/examples/browser.json",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/go.mod.tmpl",
+    "modeling/tui/templates/go.sum.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    ".github/workflows/tui-model-go.yml",
+    "docs/model-driven-current-workflow.md",
+    "modeling/tui/templates/demo_main.go.tmpl",
+    "modeling/tui/cmd/tuic/main_test.go"
+  ],
+  "validation": "PASS: both generated variants and compiler/CLI go test -race -count=1 -p=1 -timeout=5m ./...; go vet; repository validator; formatting/diff checks. PASS: existing govulncheck v1.9.0 normal-text scans of compiler and fresh generated output for linux/amd64 darwin/arm64 windows/amd64, all exit0 and zero reachable vulnerable symbols. The x/sys GO-2026-5024 advisory is eliminated. Local Go1.27.0 still reports non-reachable stdlib package/module advisories; CI is pinned to verified released Go1.27.4 and must qualify that patched toolchain on this new head. No local toolchain installation or global update.",
+  "snapshot": {
+    "tasks/CF-flexgo-tui-v1-model-compiler.md": {
+      "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+      "mode": "100644"
+    },
+    "modeling/tui/go.mod": {
+      "blob": "6357977f72e4fe6a004209b5bcb4a83065120835",
+      "mode": "100644"
+    },
+    "modeling/tui/model.go": {
+      "blob": "36eb7eb1d39df68cbea1600905c9bfb357178fe8",
+      "mode": "100644"
+    },
+    "modeling/tui/model_test.go": {
+      "blob": "1952006455a81f4464eb515f03fcb5c7c666f812",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler.go": {
+      "blob": "2357ea7f7e4e294b78277396c0e6495bb3ed5694",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler_test.go": {
+      "blob": "c09dc7dfac4c106eb14abaadd53261dd348ff91e",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "72f9f2252de0a22278fdb107b5d49dbf2688847b",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "fa9e0b26a901841cc4f4d650c4e48728268ee5f2",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser.json": {
+      "blob": "6c280421717e6c44500cea2e9f1f8da51863e711",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main.go": {
+      "blob": "b9b95a81ddeaaef73c032799dec329d11df027ca",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "a2a595f6e06eb9618d935d15e76071b5ca692d51",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "caf6364c7a74c709722d4e6220bed1e1218fe485",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/layout.go.tmpl": {
+      "blob": "ea84355653f9e0e551d2793539eb8ebe442ef61e",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "90779c2c8fa98ecf87099edfaea9c1d4f8687be5",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/keys.go.tmpl": {
+      "blob": "0f0f8af1e06935bdba8653282f3b46b0c9bb1485",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/records.go.tmpl": {
+      "blob": "dfb3660f29692bc8273631bffef317b05b2c97ba",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/go.mod.tmpl": {
+      "blob": "bcd2633f72d80e77e33197bcc702cc9a6923533d",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/go.sum.tmpl": {
+      "blob": "45cc93de1b3aa39fbfa9df51147a9cd136617e0b",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/browser_test.go.txt": {
+      "blob": "563ad87eb9b824db681fa9ad7e659c72f5b16555",
+      "mode": "100644"
+    },
+    ".github/workflows/tui-model-go.yml": {
+      "blob": "ecc2b9021b6522c97fd4a0d0b4ec1a34503c2038",
+      "mode": "100644"
+    },
+    "docs/model-driven-current-workflow.md": {
+      "blob": "9cf12d448a1373966f60186b482ba4480aaee030",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/demo_main.go.tmpl": {
+      "blob": "9706246e019f58a805bb9380f6e758fa93be7eb3",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main_test.go": {
+      "blob": "7530ee4686ba01ed08a694c7431a0486249e1bf8",
+      "mode": "100644"
+    }
+  }
+}

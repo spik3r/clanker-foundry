@@ -1,0 +1,100 @@
+package recordbrowser
+
+import (
+	"slices"
+	"strings"
+)
+
+type action int
+
+const (
+	noAction action = iota
+	quitAction
+	helpAction
+	closeAction
+	nextPaneAction
+	prevPaneAction
+	openAction
+	upAction
+	downAction
+	pageUpAction
+	pageDownAction
+	topAction
+	bottomAction
+)
+
+type binding struct {
+	action action
+	keys   []string
+}
+
+var bindings = []binding{
+	{quitAction, []string{"q", "ctrl+c"}},
+	{helpAction, []string{"?"}},
+	{closeAction, []string{"esc"}},
+	{nextPaneAction, []string{"tab"}},
+	{prevPaneAction, []string{"shift+tab"}},
+	{openAction, []string{"enter"}},
+	{upAction, []string{"k", "up"}},
+	{downAction, []string{"j", "down"}},
+	{pageUpAction, []string{"pgup", "ctrl+b"}},
+	{pageDownAction, []string{"pgdown", "ctrl+f"}},
+	{topAction, []string{"home", "g"}},
+	{bottomAction, []string{"end", "G"}},
+}
+
+func actionFor(key string) action {
+	for _, binding := range bindings {
+		if slices.Contains(binding.keys, key) {
+			return binding.action
+		}
+	}
+	return noAction
+}
+
+func keyFor(a action) string {
+	for _, binding := range bindings {
+		if binding.action == a {
+			return binding.keys[0]
+		}
+	}
+	return ""
+}
+
+func allKeysFor(a action) string {
+	for _, binding := range bindings {
+		if binding.action == a {
+			return strings.Join(binding.keys, "/")
+		}
+	}
+	return ""
+}
+
+func helpLines(s state, d data) []string {
+	lines := []string{
+		keyFor(closeAction) + "/" + keyFor(helpAction) + " close help",
+		keyFor(upAction) + "/" + keyFor(downAction) + " scroll help",
+		keyFor(pageUpAction) + "/" + keyFor(pageDownAction) + " page help",
+		keyFor(topAction) + "/" + keyFor(bottomAction) + " help ends",
+		"Other keys are captured.",
+		"After closing help:",
+		allKeysFor(quitAction) + " quit",
+	}
+	if s.selectedIndex(d) >= 0 {
+		lines = append(lines,
+			keyFor(nextPaneAction)+" next pane",
+			keyFor(prevPaneAction)+" previous pane",
+			keyFor(openAction)+" details; "+keyFor(closeAction)+" list",
+		)
+		verb := "select record"
+		if s.focus == detailPane {
+			verb = "scroll details"
+		}
+		lines = append(lines,
+			keyFor(upAction)+"/"+keyFor(downAction)+" "+verb,
+			keyFor(pageUpAction)+"/"+keyFor(pageDownAction)+" page",
+			keyFor(topAction)+"/"+keyFor(bottomAction)+" first/last",
+		)
+	}
+	return lines
+}
