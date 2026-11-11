@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "607e46af-32dd-43ea-a618-be09826fc3a9",
+  "runId": "9a597f4b-3aef-461a-aa2f-15007a57e518",
+  "kind": "checkpoint",
+  "parents": [
+    "ff88ea3a-0ecf-400b-b072-5fc2c983eb38"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "28569db53ab2b5df4dd187290ebf2c9111e2c897",
+    "blob": "686e51177bfcae6fe03bb2d54388a1bb6b12cd82",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "889d0cfce3fefd9d0c8cd2ed5924bfb6c4dcac1c539fb09f704c5d9fdb612758"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/flexgo-tui-model-v1",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/107",
+  "at": "2026-11-11T04:23:15.988Z",
+  "summary": "Requalified complete PR scope after reviewed x/sys security pin and scanner CI update",
+  "next": "Commit final security follow-up and verify hosted patched-toolchain scans",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "modeling/tui/go.mod",
+    "modeling/tui/model.go",
+    "modeling/tui/model_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/examples/browser.json",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/go.mod.tmpl",
+    "modeling/tui/templates/go.sum.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    ".github/workflows/tui-model-go.yml",
+    "docs/model-driven-current-workflow.md",
+    "modeling/tui/templates/demo_main.go.tmpl",
+    "modeling/tui/cmd/tuic/main_test.go"
+  ]
+}

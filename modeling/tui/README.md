@@ -11,7 +11,8 @@ network client, database, editable form or general widget tree.
 
 ## Try the supplied model
 
-Use Go 1.27 or later. From this directory:
+Use a current patched Go release (CI uses Go 1.27.4; the compiler language
+minimum is Go 1.27). From this directory:
 
 ```sh
 output=$(mktemp -d)
@@ -97,6 +98,20 @@ They check both baseline and changed models, typed records, help/focus/selection
 replacement, status recovery, clipping and viewport bounds. The source templates
 are not themselves Go files; each emitted Go file is parsed/formatted during
 compilation and then compiled in the generated acceptance suite.
+
+CI also runs pinned `govulncheck` v1.9.0 on Go 1.27.4 for both this compiler and
+a freshly generated module, using Linux/amd64, Darwin/arm64 and Windows/amd64
+source graphs. Normal scanner exit status gates reachable vulnerable symbols;
+module-only advisories still need review. Cross-target source analysis does not
+claim that a native Windows or Linux application was executed. Models cannot
+change imports, so one generated baseline covers the dependency graph.
+
+The generated `golang.org/x/sys` pin is v0.44.0, addressing
+[GO-2026-5024](https://pkg.go.dev/vuln/GO-2026-5024). The prior v0.43.0 scan reported
+that Windows-package advisory but no reachable vulnerable symbol in this browser.
+The patch removes that known vulnerable version rather than relying on current
+unreachability. Keep the build toolchain patched as well; a language-version
+minimum in `go.mod` is not a security-update policy.
 
 These checks do not replace manual review of colors and interactive resizing in a
 real terminal, a downstream application trial, or a second-use productivity
