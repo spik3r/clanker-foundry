@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "90bb1233fa055a2c0ad2b3d81c6136bf817a33d8",
+  "id": "CF-readme-core-guide-v1",
+  "path": "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md",
+  "blob": "6493fc249cf2aa0f923d0721a95e5f5ca24fb618",
+  "record": "---\nid: CF-readme-core-guide-v1\nstatus: in-progress\nowner: Foundry documentation editor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Clarify core navigation and the model-driven pipeline\n\n## Implementation claim\n\nThe documentation editor owns this bounded documentation change on\n`docs/core-overview-pipeline-examples`, from reviewed main\n`7d248947b6b367950988dcc88274358830719c0f`.\n\nExact scope: `README.md`, `docs/model-driven-pipeline.md`, this task record and\nnew immutable Project Memory source/event files for this task. The owner requested\nfour clearly separated core sections above getting started: pipeline,\norchestration, skills and Project Memory, each with one concise explanation and\none detailed guide link. Reduce competing navigation links.\n\nExplain human and AI responsibilities versus deterministic tools, the actual\nJSON model content, how its typed representation produces executable state-machine\ncode, and a small accurate example. Distinguish the implemented bounded generators\nand agent-written route from the future idea-to-product goal. Preserve independent\nexpectations, review and authorization boundaries. Do not change implementation,\nmodels, generated files, tests, workflows, runtime authority or earlier evidence.\n\nCurrent main and open pull requests were checked before claiming these paths.\nNo open documentation PR for this request was found. Existing model-map,\nagent-selector and JSON regression work remains separate.\n\n## Verification and handoff\n\nReview this public-safe claim before registration and record a genuine start\nbefore implementation edits. Check documentation against current source, compare\nthe example with the existing model, and validate/generate its supported shape\nwith the pinned offline Go toolchain where available. Run pack/link validation,\nwhitespace checks and full committed Project Memory validation. Arrange an\nindependent read-only factual and clarity review of the final docs.\n\nPublish a draft pull request when the reviewed checks pass, verify the actual\nremote head and report hosted CI separately. Preserve the source commit ancestry.\nNo merge, release, deployment, consumer activation or runtime dispatch is in scope.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md",
+        "id": "CF-readme-core-guide-v1",
+        "blob": "6493fc249cf2aa0f923d0721a95e5f5ca24fb618",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

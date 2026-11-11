@@ -1,235 +1,254 @@
 # Clanker Foundry: from an idea to checked software
 
-Historical introduction: the capability table below describes 1 November 2026 at
-`2c23031f`. For the supported review path on 4 November 2026, see the
-[current workflow guide](model-driven-current-workflow.md).
+**People decide what the software should do. AI helps make that design explicit.
+Ordinary programs turn supported designs into code and diagrams. Independent
+checks test whether the result does what was intended.**
 
-**The idea:** people and AI work out what software should do; a reviewed,
-structured design makes the rules explicit; repeatable tools turn those rules
-into code and diagrams; independent tests check whether the result does what
-was intended.
-
-This is the direction we are building toward, not a claim that Foundry can
-already turn any idea into a finished app. A small task-lifecycle example works
-today. The broader pipeline still needs integration and review.
-
-## What would the ideal finished experience look like?
-
-A person describes the outcome, constraints and examples of success or failure.
-AI helps turn that brief into explicit requirements and a proposed design, asking
-about gaps rather than silently deciding. People review the meaning. Tools then
-produce the supported code and views and run checks against independently stated
-expectations. People review the evidence and authorize integration or ask for
-changes.
-
-The ideal result is **working software with an understandable, versioned account
-of what it should do, why it behaves that way and what was actually checked**.
-Changing a requirement should reveal which rules, outputs and evidence need
-attention, instead of leaving code, diagrams and old approvals out of step.
-This is the intended end state, not functionality fully delivered today, and not
-a promise to generate every part of an application without engineering work.
-
-## Why try this approach?
-
-A request like "finish a task only after review" leaves questions: who may
-review, what exactly was reviewed, and does that review survive a later edit?
-Putting an explicit model between the conversation and code is intended to:
-
-- **Expose assumptions early:** review a rule before it is buried in code.
-- **Reduce drift:** derive code and explanatory views from the same accepted rules.
-- **Make changes easier to inspect:** retain versions and show which evidence is
-  stale, rather than treating an earlier pass as valid forever.
-- **Use AI where judgment helps:** exploring and drafting, while fixed programs
-  handle repeatable translation and comparisons.
-- **Make errors easier to challenge:** compare results with independent
-  expectations instead of letting generated code define its own success.
-
-These are reasons to test the approach, not measured claims of lower cost, fewer
-bugs or faster delivery. Modeling also adds work and deliberately limits what the
-current tools can express.
-
-## The few concepts to know
-
-| Concept | Plain meaning |
-|---|---|
-| **Intent and requirements** | The outcome we want and concrete conditions it must meet. Questions and trade-offs stay visible. |
-| **Model** | A precise design written as data. In today's example it lists states, allowed moves, conditions and effects. This is not the AI language model. |
-| **Semantic profile and validation** | The small set of rules the tools understand, plus checks that the design uses them consistently. For example, a transition cannot point at a nonexistent state. A valid design can still be the wrong design. |
-| **Generator** | A program that translates an accepted model into code and other files. Today's implementation target is a small Go transition function, not an entire app. |
-| **Views and traceability** | Diagrams, tables and links that help people follow requirements through model elements and tests. A link explains a connection; it does not prove the requirement is met. |
-| **Independent acceptance tests** | Examples of what must succeed or be refused, with expected results written from the requirements rather than copied from generated code or a test run. |
-| **Version binding and change impact** | Record which model and files evidence refers to. When they change, flag stale evidence and show declared connections for review rather than quietly reusing an old approval. |
-
-Internally, the generator uses a **typed intermediate representation (IR)**: the
-model's meaning separated from its file format. JSON is the current input format,
-not the long-term definition of the design language. Any future format adapter
-must preserve the supported meaning or reject what it cannot represent.
+This guide describes the bounded tools in [main at `7d248947`](https://github.com/spik3r/clanker-foundry/commit/7d248947b6b367950988dcc88274358830719c0f),
+reviewed on 11 November 2026. They do not turn an arbitrary idea into a finished
+application. The [current workflow guide](model-driven-current-workflow.md) has
+the supported commands and their review and execution boundaries.
 
 ## Who does what?
 
+| Responsibility | People and AI | Deterministic tools |
+|---|---|---|
+| **Decide the behavior** | People supply goals, constraints and policy choices; AI helps ask questions and find gaps. | Cannot decide what the user wants or whether a policy is appropriate. |
+| **Describe the design** | AI or a person drafts a model; people review its meaning and unresolved choices. | Check the supported format, types, references and rules. |
+| **Produce implementation** | AI can write surrounding application code, or a separately reviewed candidate from a model. | Existing generators translate supported model constructs into code and views. |
+| **Check the result** | Expected outcomes are authored and independently reviewed against the requirements. | Run checks, compare actual results with those expectations and flag stale bindings. |
+| **Accept and integrate** | People review the evidence and authorize the next step. | A passing report does not grant approval or deployment authority. |
+
+AI can invoke the programs, but the programs do not ask an AI how to parse a
+model, evaluate a guard or generate a supported transition. AI drafting is not
+deterministic. AI-written test cases are proposals until their expectations have
+been checked independently of the implementation.
+
 ![Human goals and constraints feed AI-assisted clarification and drafting; reviewed models go to non-AI validation, generation and test tools; people review evidence and authorize the next step.](assets/pipeline-roles.png)
 
-The rows summarize responsibilities, not every execution step or approval gate.
-The final reviewed result requires independent checks and human authorization,
-not just generation. This is a future target, not a fully connected service
-available today.
+The image summarizes the intended division of work, not a fully connected service
+available today. Independent checks and human authorization remain necessary.
 
-**Human input** supplies goals, constraints, real examples and choices.
-**AI work** helps clarify and draft requirements, models, tests and
-surrounding code; its output remains a proposal. **Work outside AI** uses ordinary
-programs to validate the supported model, generate artifacts, compare test results
-and detect stale evidence. AI may invoke those tools, but does not replace their
-algorithms or decide that a failing check passed.
+## What is the model, exactly?
 
-AI-drafted acceptance cases are proposals, not independent evidence by themselves.
-Their expected results need independent checking against the requirements, not
-copying from the generator's output. Humans remain responsible for reviewing the
-meaning and making the authorization decisions.
+Here, **model means a software design written as structured data**, not the AI
+language model. The current lifecycle input is a UTF-8 JSON file with the format
+`lifecycle-json/v1` and semantic profile `lifecycle/v1`. The profile defines the
+small set of meanings the tools support.
 
-## The end-to-end goal
+A lifecycle model contains:
 
-The lower integration step is a goal, not a capability supplied by the current
-lifecycle demo. The two testing paths are deliberately separate:
+- **States and an initial state:** where a task can be, such as `Draft` or `Ready`.
+- **Requirements:** identified statements of intended behavior, written for review.
+- **Guards:** executable conditions linked to requirements, such as a nonblank actor.
+- **Transitions:** a source state, command, destination, required guards and ordered
+  effects such as setting the state and increasing the revision.
 
-```text
-Human intent + decisions (AI helps clarify and draft)
-                         |
-                 Reviewed requirements
-                    /               \
-                   v                 v
-          Reviewed model       Independent expected results
-                   |                 |  (from requirements)
-          Validate + generate        |
-                   |                 |
-       Code, views, structural tests |
-                   |                 |
-                   +--------+--------+
-                            v
-                 Run checks + independent review
-                            |
-             Explicit authorization to integrate
-                            |
-             Goal: usable software + review evidence
-                            |
-                Feedback -> revise and check again
-```
+Requirement text is not executable prose. A requirement only affects the generated
+behavior through the supported guards and effects that express it. Review must
+check that those rules really capture the intended requirement.
 
-Humans own the intent, trade-offs and authorization. AI can help ask questions,
-draft a model, suggest cases, write surrounding code and review changes. Those
-suggestions are not automatically accepted. Deterministic tools handle the
-bounded translation and comparison steps; they do not decide what the user wants.
+The profile uses a fixed task/command/review data shape and a small vocabulary:
+`eq`, `ne`, `nonempty`, `absent`, `all` and `any`, plus three allowed effects.
+It cannot describe arbitrary application fields, UI, database queries or API calls.
+An editor schema helps with JSON authoring; Go semantic validation remains
+authoritative. See the [lifecycle profile and limits](../modeling/lifecycle/README.md).
 
-**Determinism improves reproducibility, not correctness.** The same accepted
-model and pinned generator/toolchain should produce the same bytes. A wrong rule
-or a generator bug can be reproduced perfectly. Tests generated from that same
-rule may share the mistake, so independent expectations, code review and checks
-that deliberately introduce faults remain essential. AI drafting itself is not
-claimed to be deterministic.
+### A complete small example
 
-## An analogy: a workshop building a bookshelf
-
-Imagine saying, "I want a shelf that fits this alcove and holds these books."
-The brief is the **idea and requirements**. A measured cutting-and-assembly plan
-is the **model**. A programmed cutting machine is the **generator**. Cut parts
-are the **generated code**, and the assembled shelf is the **implementation**.
-Measuring the finished shelf against the alcove and checking it with the intended
-books are **acceptance tests** chosen from the original brief, not from whatever
-the cutting machine happened to produce.
+The existing [FirstDesignDraft model](../skills/model-driven-design/examples/model.json)
+expresses this fictional rule: **submit a draft only when it has a named actor,
+an outcome, at least one acceptance criterion and the current expected revision.**
 
 ```text
-Human customer: "Fit this space; hold these books"       [idea]
-             |
-Human designer + AI drafting assistant
-             |
-Reviewed dimensions and assembly plan                   [model]
-             |
-Programmed cutter + fixed settings                      [generator]
-             |
-Parts -> builders assemble the shelf                    [implementation]
-             |
-Independent inspector checks fit and intended load      [tests]
-             |
-Human customer accepts it, or asks for a revision
+                    submit
+Draft ───────────────────────────────────> Ready (terminal)
+       all four guards pass:
+       actor + outcome + criteria + revision
+
+       any guard fails: keep the original task
 ```
 
-The plan can also produce an assembly picture and parts list: different views of
-one design. But a perfectly repeatable cutter still makes the wrong shelf if the
-plan has the wrong width. The analogy stops there: software also needs checks for
-security, integration and conditions that a small model does not describe.
+This is the same complete model, with more compact formatting:
 
-## What is actually merged today?
+```json
+{
+  "formatVersion": "lifecycle-json/v1",
+  "profileVersion": "lifecycle/v1",
+  "id": "FirstDesignDraft",
+  "initial": "Draft",
+  "states": [
+    {"id": "Draft", "label": "Draft", "terminal": false},
+    {"id": "Ready", "label": "Ready", "terminal": true}
+  ],
+  "requirements": [
+    {"id": "R_actor", "text": "Submission actor is nonblank."},
+    {"id": "R_criteria", "text": "At least one acceptance criterion is supplied."},
+    {"id": "R_outcome", "text": "The proposed outcome is nonblank."},
+    {"id": "R_revision", "text": "The command names the exact current revision."}
+  ],
+  "guards": [
+    {"id": "G_actor", "requirement": "R_actor", "expr": {
+      "op": "nonempty", "args": [{"ref": "command.actor"}]}},
+    {"id": "G_criteria", "requirement": "R_criteria", "expr": {
+      "op": "nonempty", "args": [{"ref": "task.acceptance"}]}},
+    {"id": "G_outcome", "requirement": "R_outcome", "expr": {
+      "op": "nonempty", "args": [{"ref": "task.outcome"}]}},
+    {"id": "G_revision", "requirement": "R_revision", "expr": {
+      "op": "eq", "args": [
+        {"ref": "task.revision"}, {"ref": "command.expectedRevision"}]}}
+  ],
+  "transitions": [{
+    "id": "T_submit", "from": "Draft", "trigger": "submit", "to": "Ready",
+    "guards": ["G_actor", "G_criteria", "G_outcome", "G_revision"],
+    "effects": [{"op": "set_state"}, {"op": "increment_revision"}]
+  }]
+}
+```
 
-This snapshot describes [main at `2c23031f`](https://github.com/spik3r/clanker-foundry/commit/2c23031f6fcfcab267828d072201abce504f613f),
-including the lifecycle tutorial, on 1 November 2026. It distinguishes source in
-main from local proposals; it is not a deployment or production-readiness claim.
+`T_submit` says which move is allowed; its guards say when; its effects say what
+changes. `set_state` uses the transition's `to` value. This example does not assign
+an owner or authenticate the actor. `Ready` is terminal in this two-state example;
+the larger lifecycle demo gives it outgoing transitions instead.
 
-| Merged building block | What it does, and its boundary |
+### How that JSON becomes executable behavior
+
+**The model already describes a state machine.** A fixed compiler translates that
+description into executable state-machine code; it does not invent the rules.
+The model is input to the generator, not a program that becomes a new generator.
+
+```text
+Reviewed JSON model                         [design as data]
+        |
+Strict JSON decoder + semantic validation   [ordinary Go code]
+        |
+Typed, normalized model in memory (IR)       [same design, structured Go values]
+        |                         |
+Fixed Go compiler             View renderers
+        |                         |
+Transition(task, command)     State SVG, decision table, trace
++ derived structural tests
+```
+
+1. **Decode and validate.** The JSON adapter rejects malformed or unsupported
+   input and builds a typed intermediate representation (IR). Semantic checks
+   reject mistakes such as a missing target state, unknown guard, wrong operand
+   type or two transitions for the same state and command.
+2. **Normalize the accepted design.** Supported unordered collections get a stable
+   order; ordered effects retain theirs. JSON is one file format for this IR, not
+   its definition. No general-purpose format importer is included.
+3. **Generate code and views.** The compiler emits Go guard functions, state/command
+   branches and effects. For `T_submit`, it tests all four guards and, on success,
+   copies the task, sets `State` to `Ready` and increments `Revision` once. The
+   generated package exposes `Transition(Task, Command) Result`. View renderers
+   project the same IR; trace hashes bind output files to model/build identities.
+4. **Compile, exercise and review separately.** Emitting code does not run it.
+   Execute reviewed code only within the authorized workflow, then compare it
+   with independent expectations. Application integration is a further step.
+
+The generated function accepts typed Go values, not raw JSON requests. Its fixed
+runtime also checks input bounds and revision overflow; modeled guards are not the
+only possible refusals. It returns a result and a task copy, without persistence,
+network calls, worker dispatch or real review authority.
+
+For example, start with a valid `Draft` task at revision `0`, a nonblank outcome,
+one criterion and no owner. Submit with actor `author-1` and expected revision `0`:
+
+| Change to that input | Expected result |
 |---|---|
-| [Lifecycle model and compiler](../modeling/lifecycle/README.md) | Validates a small, explicit state-machine profile and generates a Go transition function, state SVG, decision table, structural tests and artifact trace. It is an isolated example, not a scheduler. |
-| [Authoring schema](../modeling/lifecycle/authoring/README.md) | Helps editors and AI draft the JSON shape. Go semantic validation remains authoritative; a schema pass is not enough. |
-| [Design intake](../modeling/lifecycle/intake/README.md) | Records intent, decisions, open questions, declared artifact identities and supplied byte observations. It checks consistency, not model validity, authorship or approval. |
-| [Acceptance authoring](../modeling/lifecycle/acceptanceauthor/README.md) and [scenario replay](../modeling/lifecycle/scenarios/README.md) | Bind hand-written literal expectations to a model and compare actual runs with them. They do not rewrite expectations to make failures pass. |
-| [Requirements trace](../modeling/lifecycle/traceability/README.md) and [change review](../modeling/lifecycle/impact/README.md) | Expose declared links, coverage gaps and model differences. They do not prove correctness, test execution or behavioral equivalence. |
-| [Revision tutorial](../modeling/lifecycle/tutorial/README.md) | Connects existing tools in a disposable copy and demonstrates stale evidence, explicit expectation review and replay after a model revision. It is a worked example, not an automated product workflow. |
+| None | Accepted: a new task in `Ready` at revision `1`; content and owner preserved. |
+| Actor is whitespace | Refused with `G_actor`; task unchanged. |
+| Acceptance list is empty | Refused with `G_criteria`; task unchanged. |
+| Expected revision is `1` instead | Refused with `G_revision`; task unchanged. |
+| Task is already `Ready` | Refused with `ILLEGAL_TRANSITION`; task unchanged. |
 
-The separate [agent skill pack](../README.md) and [orchestration runtime](../runtime/README.md)
-help organize engineering work. They are not generated by this lifecycle model;
-the demo does not activate workers or replace their authority rules.
+The [separate literal scenario suite](../skills/model-driven-design/examples/suite.json)
+contains these kinds of accepted and refused cases. A test passes when the actual
+result matches its expectation, including an expected refusal. Do not replace a
+failing expectation with whatever the implementation happened to return.
 
-**Still outside this merged snapshot:** the full idea-to-product experience,
-general model import, production integration and packaged qualification evidence.
-Automatic approval is not the goal: authorization remains a separate decision.
-Local or unmerged work on an intake/model bridge, review packs, model
-patches, qualification/export and downstream handoff is not counted as delivered
-here. A separate process-view lane is exploring a BPMN-inspired view; that is not
-merged BPMN support. These are directions or proposals, not promises of their
-final design.
+For source-level detail, follow the [JSON adapter](../modeling/lifecycle/jsonformat/json.go),
+[typed IR and validator](../modeling/lifecycle/model/ir.go) and
+[Go compiler](../modeling/lifecycle/compiler/generate.go). The fixed `modelc` demo
+reads its own `examples/lifecycle.json`; it does not accept arbitrary input paths.
+Use the current workflow guide for the five-file FirstDesignDraft proposal above.
 
-## A small lifecycle example
+## Two ways to implement a reviewed design
 
-A task can move through this invented lifecycle:
+**Deterministic generation:** an existing compiler implements the constructs its
+profile supports. The lifecycle generator produces the small Go transition
+function above. A separate [JSON validator generator](../modeling/jsonvalidator/README.md)
+uses `json-boolean/v1` to emit Go and TypeScript boolean predicates for already-parsed
+JSON values. For example, its sample requires a string `id` and `enabled: true`:
+`{"id":"task-1","enabled":true}` passes, while the same input with `enabled: false`
+fails. That profile is separate from the lifecycle model and its authoring schema;
+it is not a general JSON Schema implementation or an application generator.
+
+**Agent-written implementation:** a reviewed model can instead be a blueprint for
+an AI builder to write code, followed by independent source review and checks.
+The [Go builder exercise](../examples/model-builder-go/README.md) and its
+[admitted trial](../examples/model-builder-go/admitted-run/evidence.md) demonstrate
+this route for one fictional pure function. That writing step is AI work, not
+fixed generation, and the trial does not establish general reliability or a
+maintained consumer feature.
+
+Neither route generates an entire application. Engineers still need to handle
+whatever lies outside the chosen profile, such as storage, authentication, APIs,
+UI and integration, with their own requirements and tests.
+
+## Why keep the design separate from code?
+
+Think of building a bookshelf. The requested space and load are the requirements.
+A measured cutting-and-assembly plan is the model. A programmed cutter is the
+generator. The cut parts are generated code; builders still assemble the shelf.
+An independent inspector checks it against the original space and load, not just
+against the cutter's output.
 
 ```text
-Draft -> Ready -> InProgress -> InReview -> Done
-                     ^            |
-                     +-- rework --+
+Customer's needs -> reviewed plan -> programmed cutter -> parts + assembly
+        |                                                       |
+        +---------------- independent fit/load checks -----------+
 ```
 
-The arrows are not unconditional. Starting requires a named actor compatible
-with the owner. Approval requires a distinct reviewer and a review bound to the
-current task, revision, task content and model. Rework makes an old review stale.
-These are checks on supplied example data, not authentication of real reviewers.
+One plan can also produce a parts list and an assembly picture, just as one model
+can produce code and views. But a perfectly repeatable cutter makes the wrong
+shelf if the plan has the wrong width.
 
-The [tutorial](../modeling/lifecycle/tutorial/README.md) makes one smaller change:
-`prepare`, the move from Draft to Ready, initially allows a blank actor; the
-revised model requires a nonblank actor. Reviewers state the expected refusal
-before running the revised code. Old evidence is flagged as stale, not counted
-as a completed test. After review and regeneration in the disposable copy, new
-runs must refuse the blank actor while still accepting a named actor. Expected
-refusal is a passing test comparison, not a successful state transition.
+**Determinism gives reproducibility, not correctness.** The same accepted model
+and pinned generator/toolchain should produce the same bytes. A wrong rule or a
+generator bug can be repeated perfectly. Derived tests may share the same mistake,
+so independently stated expectations and review remain essential.
 
-That is the intended loop in miniature: clarify a rule, change its model, inspect
-the consequences, explicitly review the expected outcomes, then rerun the checks.
+Changing a requirement means reviewing the model, regenerating affected outputs
+and checking expectations again. Source hashes identify exact bytes; canonical
+model digests identify normalized design content. Binding and comparison tools
+can flag stale evidence and declared changes, but they do not prove provenance,
+behavioral equivalence or approval. The [revision tutorial](../modeling/lifecycle/tutorial/README.md)
+shows this with a change that starts refusing a blank actor.
 
-## Where UML, SysML, BPMN, UTP and fUML fit
+## What exists now, and what is still the goal?
 
-These standards offer useful modeling concepts, but they are not interchangeable:
+**Implemented, within bounded profiles:** model decoding and validation; lifecycle
+Go generation and views; separate Go/TypeScript JSON predicates; preparation,
+comparison and replay tools; and a fictional agent-written Go exercise. These are
+building blocks and examples, with separate review and execution steps.
 
-- [UML](https://www.omg.org/uml/) describes software and system structure and
-  behavior. A UML-style picture alone does not define an executable application.
-- [SysML](https://www.omg.org/spec/SysML/2.0/Language/PDF) models systems, including
-  requirements, structure, behavior and verification. Using requirement links
-  does not by itself make a tool SysML-conformant.
-- [BPMN](https://www.omg.org/bpmn/) describes business processes and their flow.
-  A BPMN-inspired picture is not BPMN interchange or a conforming execution engine.
-- [UTP](https://www.omg.org/spec/UTP2/2.2), the UML Testing Profile, provides test
-  modeling concepts. It does not make expected results independent or correct.
-- [fUML](https://www.omg.org/spec/FUML/1.5/PDF) defines execution semantics for a
-  specified subset of UML, not arbitrary UML diagrams. Our custom state-machine
-  generator is not an fUML implementation.
+**Still to establish:** a real consumer's accepted feature, its surrounding
+application integration, independent operator repeatability and evidence that the
+extra modeling work is worthwhile. The [current direction](current-direction.md)
+defines those consumer gates. A green fictional replay does not close them.
 
-Today's lifecycle format is a deliberately small custom profile. It claims no
-UML, SysML, BPMN, UTP or fUML conformance. Adopting any of them would require an
-explicit version and subset, a reviewed semantic mapping, refusal of unsupported
-constructs and separate conformance checks. The near-term point is simpler:
-**make intent inspectable, translation repeatable, and checking independent.**
+The ideal outcome is **working software with a versioned account of what it should
+do, why it behaves that way and what was actually checked**. Reduced drift, clearer
+review, lower cost and fewer defects are reasons to test the approach, not measured
+benefits promised by the current tools.
+
+The lifecycle profile and views claim no UML, SysML, BPMN, UTP or fUML conformance.
+Those standards offer useful concepts, but adopting one would require an explicit
+subset, semantic mapping and separate conformance checks.
+
+Skills, Project Memory and the optional orchestration runtime help organize the
+engineering work around this pipeline. They are separate components, not generated
+outputs or automatically connected stages. Start with the
+[current workflow guide](model-driven-current-workflow.md) to try the supported
+modeling path, or return to the [four core parts](../README.md#four-core-parts).

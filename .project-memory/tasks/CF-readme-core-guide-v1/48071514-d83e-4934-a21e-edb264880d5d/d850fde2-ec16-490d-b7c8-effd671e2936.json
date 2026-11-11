@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "d850fde2-ec16-490d-b7c8-effd671e2936",
+  "runId": "48071514-d83e-4934-a21e-edb264880d5d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-core-guide-v1",
+    "path": "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md",
+    "revision": "90bb1233fa055a2c0ad2b3d81c6136bf817a33d8",
+    "blob": "6493fc249cf2aa0f923d0721a95e5f5ca24fb618",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5b3ab648ea95f1552e175fb132eb56eeadf83791da0383ed57b13bac3fae414b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "docs/core-overview-pipeline-examples",
+  "pullRequest": null,
+  "at": "2026-11-11T00:49:40.880Z",
+  "summary": "Clarify core navigation and actual model-to-code responsibilities with a checked example",
+  "next": "Edit both guides, independently review and validate",
+  "files": [
+    "README.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-readme-core-guide-v1-navigation-and-model-examples.md"
+  ]
+}

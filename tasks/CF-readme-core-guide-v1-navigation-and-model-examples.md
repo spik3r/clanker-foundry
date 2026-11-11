@@ -1,6 +1,6 @@
 ---
 id: CF-readme-core-guide-v1
-status: in-progress
+status: review
 owner: Foundry documentation editor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -42,3 +42,26 @@ independent read-only factual and clarity review of the final docs.
 Publish a draft pull request when the reviewed checks pass, verify the actual
 remote head and report hosted CI separately. Preserve the source commit ancestry.
 No merge, release, deployment, consumer activation or runtime dispatch is in scope.
+
+## Result and observed checks
+
+The main README now presents four distinct core sections before setup, with one
+sentence and one guide link each. The pipeline guide explains actual human/AI/tool
+responsibilities, the complete existing FirstDesignDraft JSON, typed IR and fixed
+Go generation, concrete outcomes, the separate JSON predicate and agent-written
+routes, and the limits of current demonstrations.
+
+Independent read-only review found no blocking factual or clarity issues.
+The embedded JSON exactly matches the existing model as data. Offline Go 1.27.3
+accepted it and emitted identical code/tests twice; six explicit accepted/refused
+cases and the three generated structural tests passed in a disposable module.
+Pack/link validation and whitespace checks passed. Optional skills-ref was not
+installed. No product code, model, generated artifact, test or workflow changed;
+full runtime and installer regressions were not rerun for this documentation edit.
+
+The reviewed task source was published as
+`90bb1233fa055a2c0ad2b3d81c6136bf817a33d8` and checked through Git before this
+checkout registered it and recorded its genuine start. An earlier local-only
+preparation encountered missing Git CLI push credentials and was preserved without
+implementation edits. The GitHub connector publishes this branch; its actual
+remote head, committed evidence and hosted checks are verified separately.
