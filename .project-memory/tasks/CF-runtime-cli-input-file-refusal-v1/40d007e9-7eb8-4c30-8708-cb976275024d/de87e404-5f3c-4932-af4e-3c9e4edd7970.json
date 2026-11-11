@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "de87e404-5f3c-4932-af4e-3c9e4edd7970",
+  "runId": "40d007e9-7eb8-4c30-8708-cb976275024d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-cli-input-file-refusal-v1",
+    "path": "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md",
+    "revision": "8376cc468cc3331d346a3faca926c97e44488aac",
+    "blob": "22d5672695d984dc466dd6337d98e24b6f0a4055",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "727dd166175a99334f83e62a65291387e16e32b96a804f0fa62fbb568eaa802d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-cli-input-file-refusal",
+  "pullRequest": null,
+  "at": "2026-11-11T12:26:03.452Z",
+  "summary": "Fix prompt refusal of CLI JSON special-file inputs under the reviewed claim",
+  "next": "Implement descriptor-safe nonblocking open and bounded regression checks",
+  "files": [
+    "runtime/src/cli.mjs",
+    "runtime/test/cli.test.mjs",
+    "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md"
+  ]
+}

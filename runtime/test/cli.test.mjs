@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { realpathSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { realpathSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,7 +9,10 @@ import { openStore } from '../src/store.mjs';
 import { taskSpec } from './fixtures.mjs';
 
 const cli = fileURLToPath(new URL('../src/cli.mjs', import.meta.url));
-const run = (...args) => spawnSync(process.execPath, [cli, ...args], { encoding: 'utf8' });
+const runWithTimeout = (timeout, ...args) => spawnSync(process.execPath, [cli, ...args], {
+  encoding: 'utf8', timeout, killSignal: 'SIGKILL',
+});
+const run = (...args) => runWithTimeout(30_000, ...args);
 
 test('CLI simulates all four stages with approval, cleanup, persistence and replay', (t) => {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'foundry-cli-')));
@@ -44,6 +47,61 @@ test('CLI rejects invalid commands and duplicate JSON without echoing input secr
   assert.doesNotMatch(output.stderr, /test-secret-value/);
   assert.equal(run('command').status, 1);
   assert.equal(run('--help').status, 0);
+});
+
+test('CLI accepts regular JSON and refuses special inputs without waiting for a FIFO writer', (t) => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'foundry-cli-input-')));
+  t.after(() => rmSync(root, { force: true, recursive: true }));
+  const file = join(root, 'valid.json');
+  writeFileSync(file, JSON.stringify(taskSpec));
+  const valid = run('validate', 'TaskSpec', file);
+  assert.equal(valid.error, undefined);
+  assert.equal(valid.status, 0, valid.stderr);
+
+  const directory = run('validate', 'TaskSpec', root);
+  assert.equal(directory.error, undefined);
+  assert.equal(directory.status, 1);
+  if (process.platform !== 'win32') assert.match(directory.stderr, /INVALID_INPUT_FILE/);
+
+  if (process.platform === 'win32') return;
+  const link = join(root, 'linked.json');
+  symlinkSync(file, link);
+  const linked = run('validate', 'TaskSpec', link);
+  assert.equal(linked.error, undefined);
+  assert.equal(linked.status, 1);
+
+  const fifo = join(root, 'input.fifo');
+  const created = spawnSync('mkfifo', [fifo], { encoding: 'utf8', timeout: 2_000, killSignal: 'SIGKILL' });
+  assert.equal(created.error, undefined);
+  assert.equal(created.status, 0, created.stderr);
+  const refused = runWithTimeout(2_000, 'validate', 'TaskSpec', fifo);
+  assert.equal(refused.error, undefined, refused.error?.message);
+  assert.equal(refused.status, 1);
+  assert.match(refused.stderr, /INVALID_INPUT_FILE/);
+});
+
+test('CLI retains its exact input-size boundary and UTF-8 refusal', (t) => {
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'foundry-cli-size-')));
+  t.after(() => rmSync(root, { force: true, recursive: true }));
+  const file = join(root, 'input.json');
+  const validJson = JSON.stringify(taskSpec);
+  const padding = ' '.repeat(1_048_576 - Buffer.byteLength(validJson));
+  writeFileSync(file, validJson + padding);
+  const boundary = run('validate', 'TaskSpec', file);
+  assert.equal(boundary.error, undefined);
+  assert.equal(boundary.status, 0, boundary.stderr);
+
+  writeFileSync(file, validJson + padding + ' ');
+  const tooLarge = run('validate', 'TaskSpec', file);
+  assert.equal(tooLarge.error, undefined);
+  assert.equal(tooLarge.status, 1);
+  assert.match(tooLarge.stderr, /INVALID_INPUT_FILE/);
+
+  writeFileSync(file, Buffer.from([0xff]));
+  const invalidUtf8 = run('validate', 'TaskSpec', file);
+  assert.equal(invalidUtf8.error, undefined);
+  assert.equal(invalidUtf8.status, 1);
+  assert.match(invalidUtf8.stderr, /^orchestration: ERR_ENCODING_INVALID_ENCODED_DATA$/m);
 });
 
 test('demo refuses a nonempty authority without dispatching its real pending work', (t) => {
