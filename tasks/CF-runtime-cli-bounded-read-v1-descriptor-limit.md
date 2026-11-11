@@ -1,11 +1,20 @@
 ---
 id: CF-runtime-cli-bounded-read-v1
-status: proposed
+status: in-progress
 owner: Foundry runtime CLI maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
 
 # Bound runtime CLI input reads
+
+## Implementation handoff
+
+The bounded read and regression tests are committed on
+`codex/runtime-cli-bounded-read-v1` for pull request review. The focused CLI
+tests and all 322 runtime tests passed. A disposable run of the new regression
+against the original main read path failed as expected after a 2 MiB read.
+Repository validation and independent review found no remaining issue. The
+pull request has not been marked ready or merged.
 
 ## Implementation claim
 
