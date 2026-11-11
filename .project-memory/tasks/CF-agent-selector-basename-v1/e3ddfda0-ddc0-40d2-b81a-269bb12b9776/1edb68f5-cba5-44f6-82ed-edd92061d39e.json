@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "1edb68f5-cba5-44f6-82ed-edd92061d39e",
+  "runId": "e3ddfda0-ddc0-40d2-b81a-269bb12b9776",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-agent-selector-basename-v1",
+    "path": "tasks/CF-agent-selector-basename-v1-profile-selection.md",
+    "revision": "239fb5889e98bb317ed695ba98c00280f3db2d35",
+    "blob": "fb9a85623ae828b0e06a6e9e4d74974732fed572",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e3fb7ccb834fb473d1c0f5043ec1c63613d04b43f87999eaaa346a177d86c9b3"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "astra/agent-selector-basename-v1",
+  "pullRequest": null,
+  "at": "2026-11-09T23:49:01.028Z",
+  "summary": "Reject empty and forward-slash profile selectors without changing other basename spelling or resolver behavior",
+  "next": "Apply independently reviewed candidate and run syntax, resolver and repository validation",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "agents/README.md",
+    "tasks/CF-agent-selector-basename-v1-profile-selection.md"
+  ]
+}
