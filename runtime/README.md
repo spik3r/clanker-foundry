@@ -296,8 +296,11 @@ node runtime/src/cli.mjs replay /absolute/private-directory/authority.sqlite
 `expectedRepository` and `expectedRevision`. `source` is a reviewed Project Memory
 source snapshot, not a tracker URL. The importer checks the exact pin, task/code
 identity, claim shape and accountable review before emitting `mode: PROPOSAL`.
-The returned proposal is not an automatically admitted command. A hash-valid
-snapshot does not authenticate the remote source or prove current ownership;
+It refuses source statuses `done`, `closed`, `cancelled`, `complete` and
+`completed` with `SOURCE_NOT_ACTIONABLE`; `in-progress` and `review` can still
+produce proposals. The returned proposal is not an automatically admitted
+command. Managed admission separately requires current `in-progress` status.
+A hash-valid snapshot does not authenticate the remote source or prove current ownership;
 the operator must review those facts. No backlog text is copied into the proposal.
 
 Project Memory remains the repository's separate implementation-evidence process.
