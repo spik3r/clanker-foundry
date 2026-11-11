@@ -28,3 +28,21 @@ application sources, Flexgo core, existing lifecycle profiles, or unrelated work
 Run focused model/compiler tests, generated behavior acceptance tests, formatting,
 Go vet, repository validation and committed project-memory validation. Keep
 unrun terminal visual checks explicit. Publish a draft PR; do not merge or deploy.
+
+## Coordinator closeout claim
+
+Owner: Foundry maintenance coordinator, for this integration record only. The
+implementation owner and claim above remain historical provenance. Reviewed base:
+`6fbc4a6b3accd558188dd2444e47e29d21894211`. Local branch:
+`fix/tui-reload-offsets-20261111`.
+
+Record the already merged PR107 outcome and release only its completed bounded
+implementation scope. Writable paths are this task record and new immutable
+source/event files for `CF-flexgo-tui-v1`. Do not change code, tests, other task
+records, previous snapshots/events or legacy ledger bytes in this closeout run.
+Independently review this claim before committing its source, register that exact
+source, and record a genuine start before changing status or adding the result.
+Check current main, PR107 integration and visible competing work, then run pack,
+whitespace and committed Project Memory validation. Any follow-on maintenance
+needs a separate reviewed claim and start; this closeout grants no runtime,
+provider, production or deployment authority.
