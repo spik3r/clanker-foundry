@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "1151e109-c20c-4c44-985e-a213128ffd71",
+  "runId": "8820bf3b-630e-44c0-a7fe-db8a270ea364",
+  "kind": "complete",
+  "parents": [
+    "df6aa368-9eba-4bc8-8c06-2bbea085bbf2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-store-crash-regressions-v1",
+    "path": "tasks/CF-store-crash-regressions-v1-process-boundaries.md",
+    "revision": "85700166571a17ddea80073ea9d6ef38f3f9ede5",
+    "blob": "7a65975da474a96c7892a7e5960940021aed3974",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "69fa94c53e905a6d94075be4f820b27e32ee3496342b11934761bd4f6b67790b"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "test/store-crash-regressions-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T18:07:32.440Z",
+  "summary": "Four deterministic process-crash persistence regressions preserve existing contracts without production changes",
+  "next": "Validate committed coverage; publish complete draft and verify remote head/tree; fresh independent review and hosted CI remain required, no Ready or merge",
+  "files": [
+    "runtime/test/store-crash.test.mjs",
+    "runtime/test/helpers/store-crash-child.mjs",
+    "tasks/CF-store-crash-regressions-v1-process-boundaries.md"
+  ],
+  "validation": "Node24.22.1 Linux: four tests pass three repeats and two concurrent suites; four intended negative controls fail; pristine copy4/4; existing store61/61; full runtime325/325; repository, syntax, whitespace and cleanup checks pass; original proof hashes unchanged; optional skills-ref and installer unavailable locally; no cross-platform or power-loss qualification",
+  "snapshot": {
+    "runtime/test/store-crash.test.mjs": {
+      "blob": "38fd120a5a8bf914b7f39316ad562b24b417665a",
+      "mode": "100644"
+    },
+    "runtime/test/helpers/store-crash-child.mjs": {
+      "blob": "3db1deaf8b5fd61403aeebb8a816f7054c2744d8",
+      "mode": "100644"
+    },
+    "tasks/CF-store-crash-regressions-v1-process-boundaries.md": {
+      "blob": "1e9345926e1533c9084f2557089bc94a576f822d",
+      "mode": "100644"
+    }
+  }
+}
