@@ -1,6 +1,6 @@
 ---
 id: CF-flexgo-tui-v1
-status: in-progress
+status: completed
 owner: Foundry Flexgo implementation
 repositories: [spik3r/clanker-foundry]
 ---
@@ -46,3 +46,22 @@ Check current main, PR107 integration and visible competing work, then run pack,
 whitespace and committed Project Memory validation. Any follow-on maintenance
 needs a separate reviewed claim and start; this closeout grants no runtime,
 provider, production or deployment authority.
+
+## Integration closeout
+
+PR107 merged on 11 November 2026 as
+`cb507d19068161dfb114d9cc983b8363a6ba64ee`, an ancestor of reviewed main
+`6fbc4a6b3accd558188dd2444e47e29d21894211`. Its final implementation head was
+`1ef91397aeafe270adebdf12d91f0f28d7d7a5f9`. The sole implementation frontier was
+completion `26c8bc0b-07e3-441b-8b08-274b3c3efd58`, with no competing heads.
+The GitHub checks API reports all nine checks passed for both that merge and the
+reviewed main. These are observed hosted results, not newly executed tests of the
+original implementation. The open-PR check found only unrelated draft PR101.
+
+The coordinator records the bounded implementation as complete and releases its
+implementation scope. Historical owner text and every immutable source/event
+remain intact. Follow-on status/resize maintenance requires its own reviewed
+claim and start. This closeout neither reopens the separate Flexgo prototype nor
+changes its restrictions, and does not mark PR101 ready.
+
+Integration evidence: [PR107](https://github.com/spik3r/clanker-foundry/pull/107).
