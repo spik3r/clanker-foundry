@@ -246,3 +246,11 @@ Inspect the full native receipts and actual command exit status; a side's
 `operation: execute` means the native executor was called, not that its child ran
 or matched. The report supplies no approval or integration decision. This separate
 command does not add a `foundry` route or replace revision v2's literal comparison.
+
+## Bounded responsive TUI compiler
+
+The separate [record-browser compiler](../modeling/tui/README.md) accepts a small
+semantic UI model and emits a typed, responsive Flexgo/Bubble Tea browser and a
+synthetic runnable demo. It covers a read-only list/detail view, not general app
+or UI generation. Its independent tests include a changed breakpoint and detail
+order. Application data, actions and downstream acceptance remain host-owned.

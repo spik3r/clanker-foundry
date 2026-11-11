@@ -1,0 +1,41 @@
+package recordbrowser
+
+import tea "charm.land/bubbletea/v2"
+
+// Model implements tea.Model. Host applications own data fetching and commands.
+type Model struct {
+ browser browser
+ width,height int
+ sized bool
+}
+
+// New creates a browser with a ready snapshot. Duplicate or empty IDs are rejected.
+func New(records []Record) (Model,error) { return (Model{}).Replace(Snapshot{Status:Ready,Records:records}) }
+
+// Replace validates and copies a snapshot. On error the original model is returned.
+func (m Model) Replace(next Snapshot) (Model,error) {
+ d,err:=recordsData(next);if err!=nil{return m,err}
+ b,err:=m.browser.replaceData(d,plan(m.width,m.height));if err!=nil{return m,err}
+ m.browser=b;return m,nil
+}
+func (m Model) Init() tea.Cmd{return nil}
+func (m Model) Update(msg tea.Msg)(tea.Model,tea.Cmd){
+ switch msg:=msg.(type){
+ case tea.WindowSizeMsg:
+  m.width,m.height,m.sized=max(0,msg.Width),max(0,msg.Height),true
+  m.browser=m.browser.resize(plan(m.width,m.height))
+ case tea.KeyPressMsg:
+  return m.handle(actionFor(msg.String()))
+ }
+ return m,nil
+}
+func(m Model)handle(a action)(Model,tea.Cmd){
+ p:=plan(m.width,m.height)
+ if m.browser.state.helpOpen{m.browser=m.browser.update(a,p);return m,nil}
+ if a==quitAction{return m,tea.Quit}
+ m.browser=m.browser.update(a,p);return m,nil
+}
+func(m Model)View()tea.View{
+ text:="";if m.sized{text=m.browser.render(plan(m.width,m.height),theme{color:true})}
+ v:=tea.NewView(text);v.AltScreen=true;return v
+}

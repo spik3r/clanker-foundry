@@ -1,0 +1,221 @@
+package recordbrowser
+
+import (
+	"fmt"
+	"image/color"
+	"strings"
+	"unicode"
+
+	"charm.land/lipgloss/v2"
+	"github.com/charmbracelet/x/ansi"
+
+	"github.com/spik3r/flexgo"
+)
+
+type tone int
+
+const (
+	normalTone tone = iota
+	headingTone
+	selectedTone
+	mutedTone
+)
+
+type theme struct{ color bool }
+
+func (t theme) background() color.Color {
+	if t.color {
+		return lipgloss.Color("#202638")
+	}
+	return nil
+}
+
+func (t theme) line(text string, width int, kind tone) string {
+	if width <= 0 {
+		return ""
+	}
+	// Data is plain text, never terminal commands or caller-owned styling.
+	text = strings.ToValidUTF8(text, "�")
+	text = strings.Map(func(r rune) rune {
+		if unicode.IsControl(r) {
+			return ' '
+		}
+		return r
+	}, ansi.Strip(text))
+	text = ansi.Truncate(text, width, "…")
+	text += strings.Repeat(" ", max(0, width-ansi.StringWidth(text)))
+	if !t.color {
+		return text
+	}
+	style := lipgloss.NewStyle().Background(t.background()).Foreground(lipgloss.Color("#d3d9e8"))
+	switch kind {
+	case headingTone:
+		style = style.Bold(true).Foreground(lipgloss.Color("#a7c5ff"))
+	case selectedTone:
+		style = style.Background(lipgloss.Color("#384f72")).Bold(true)
+	case mutedTone:
+		style = style.Foreground(lipgloss.Color("#9daac3"))
+	}
+	return style.Render(text)
+}
+
+func (t theme) block(lines []string, width, height int) string {
+	if width <= 0 || height <= 0 {
+		return ""
+	}
+	out := make([]string, height)
+	for row := range out {
+		text := ""
+		if row < len(lines) {
+			text = lines[row]
+		}
+		out[row] = t.line(text, width, normalTone)
+	}
+	return strings.Join(out, "\n")
+}
+
+func panel(title string, lines []string, offset, selected int, t theme) *flexgo.Node {
+	return &flexgo.Node{
+		Flex:       1,
+		Background: t.background(),
+		View: func(width, height int) string {
+			if width <= 0 || height <= 0 {
+				return ""
+			}
+			out := make([]string, height)
+			out[0] = t.line(title, width, headingTone)
+			for row := 1; row < height; row++ {
+				idx := offset + row - 1
+				text, kind := "", normalTone
+				if idx >= 0 && idx < len(lines) {
+					text = lines[idx]
+					if idx == selected {
+						kind = selectedTone
+					}
+				}
+				out[row] = t.line(text, width, kind)
+			}
+			return strings.Join(out, "\n")
+		},
+	}
+}
+
+func (b browser) tree(p layout, t theme) *flexgo.Node {
+	if p.variant == tiny {
+		minimum := fmt.Sprintf("Minimum: %dx%d", minimumWidth, minimumHeight)
+		lines := []string{"Resize to continue", minimum, keyFor(helpAction) + " help  " + keyFor(quitAction) + " quit"}
+		if b.state.helpOpen {
+			lines = []string{"Help open: " + keyFor(closeAction) + "/" + keyFor(helpAction) + " closes", minimum}
+		}
+		return &flexgo.Node{View: func(w, h int) string { return t.block(lines, w, h) }, Background: t.background()}
+	}
+
+	s := b.state
+	var body *flexgo.Node
+	idx := s.selectedIndex(b.data)
+	switch {
+	case s.helpOpen:
+		body = panel("[Help]", helpLines(s, b.data), s.helpOffset, -1, t)
+	case idx < 0:
+		title, message := "Empty", b.data.message
+		switch b.data.status {
+		case loading:
+			title = "Loading"
+			if message == "" {
+				message = "Loading records..."
+			}
+		case failed:
+			title = "Error"
+			if message == "" {
+				message = "Could not load records."
+			}
+		default:
+			if message == "" {
+				message = "No records."
+			}
+		}
+		body = panel(title, []string{message}, 0, -1, t)
+	default:
+		labels := make([]string, len(b.data.items))
+		for i, row := range b.data.items {
+			prefix := "  "
+			if i == idx {
+				prefix = "> "
+			}
+			labels[i] = prefix + row.label
+		}
+		listTitle, detailTitle := [[[quote .ListLabel]]], [[[quote .DetailLabel]]]
+		if s.focus == listPane {
+			listTitle = "[" + listTitle + "]"
+		} else {
+			detailTitle = "[" + detailTitle + "]"
+		}
+		listTitle += fmt.Sprintf(" %d/%d", idx+1, len(labels))
+		list := panel(listTitle, labels, s.listOffset, idx, t)
+		details := panel(detailTitle, b.data.items[idx].details, s.detailOffset, -1, t)
+		if p.variant == wide {
+			list.Width = p.listWidth
+			body = &flexgo.Node{Flex: 1, Dir: flexgo.Row, Gap: p.gap, Background: t.background(), Children: []*flexgo.Node{list, details}}
+		} else if s.focus == detailPane {
+			body = details
+		} else {
+			body = list
+		}
+	}
+
+	mode, focus := "narrow", [[[quote .ListLabel]]]
+	if p.variant == wide {
+		mode = "wide"
+	}
+	if s.focus == detailPane {
+		focus = [[[quote .DetailLabel]]]
+	}
+	if idx < 0 {
+		focus = "Status"
+	}
+	if s.helpOpen {
+		focus = "Help"
+	}
+	line := func(text string, kind tone) *flexgo.Node {
+		return &flexgo.Node{
+			Height: 1, Background: t.background(),
+			View: func(w, h int) string {
+				if h <= 0 {
+					return ""
+				}
+				return t.line(text, w, kind)
+			},
+		}
+	}
+	return &flexgo.Node{
+		Dir: flexgo.Col, Background: t.background(),
+		Children: []*flexgo.Node{
+			line([[[quote .Title]]], headingTone),
+			line(mode+" | focus: "+focus, mutedTone),
+			body,
+			line(footer(s, b.data, p), mutedTone),
+		},
+	}
+}
+
+func footer(s state, d data, p layout) string {
+	if s.helpOpen {
+		return keyFor(downAction) + "/" + keyFor(upAction) + " scroll " + keyFor(closeAction) + "/" + keyFor(helpAction) + " close"
+	}
+	global := keyFor(helpAction) + " help " + keyFor(quitAction) + " quit"
+	if s.selectedIndex(d) < 0 {
+		return global
+	}
+	text := keyFor(nextPaneAction) + " pane " + global
+	if p.width >= wideWidth {
+		text = keyFor(downAction) + "/" + keyFor(upAction) + " move  " + text
+	}
+	return text
+}
+
+func (b browser) render(p layout, t theme) string {
+	if p.width <= 0 || p.height <= 0 {
+		return ""
+	}
+	return b.tree(p, t).Render(p.width, p.height)
+}
