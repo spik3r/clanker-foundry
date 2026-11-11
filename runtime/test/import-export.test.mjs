@@ -16,16 +16,27 @@ function source(status = 'in-progress') {
 const args = () => ({ source: source(), spec: taskSpec, reviewedBy: 'operator',
   expectedRepository: 'example/tasks', expectedRevision: revision });
 
-test('a reviewed pinned source produces a proposal without copying the backlog or claim text', () => {
-  const input = args();
-  const before = structuredClone(input);
-  const result = importReviewedTask(input);
-  assert.equal(result.mode, 'PROPOSAL');
-  assert.equal(result.source.revision, revision);
-  assert.equal(result.source.claim.heading, 'Implementation claim');
-  assert.equal(Object.hasOwn(result.source, 'record'), false);
-  assert.deepEqual(input, before);
-});
+for (const status of ['in-progress', 'review']) {
+  test(`a reviewed ${status} source produces a proposal without copying the backlog or claim text`, () => {
+    const input = { ...args(), source: source(status) };
+    const before = structuredClone(input);
+    const result = importReviewedTask(input);
+    assert.equal(result.mode, 'PROPOSAL');
+    assert.equal(result.source.revision, revision);
+    assert.equal(result.source.claim.heading, 'Implementation claim');
+    assert.equal(Object.hasOwn(result.source, 'record'), false);
+    assert.deepEqual(input, before);
+  });
+}
+
+for (const status of ['done', 'closed', 'cancelled', 'complete', 'completed']) {
+  test(`import refuses terminal source status ${status} without changing the input`, () => {
+    const input = { ...args(), source: source(status) };
+    const before = structuredClone(input);
+    assert.throws(() => importReviewedTask(input), { code: 'SOURCE_NOT_ACTIONABLE' });
+    assert.deepEqual(input, before);
+  });
+}
 
 test('import rejects stale provenance, mismatched identity, missing review and terminal sources', () => {
   for (const changes of [

@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "4cf69fc2-2efb-4f5b-ac79-1cda9fd41bcb",
+  "runId": "44121a60-9bea-4f54-88ab-c45f8de7cf42",
+  "kind": "complete",
+  "parents": [
+    "c1012252-eecf-4430-8a69-78106de36018"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-terminal-imports-v1",
+    "path": "tasks/CF-runtime-terminal-imports-v1-completed-aliases.md",
+    "revision": "49d8c9dfd32587e0a037956ee7436f13867bb75f",
+    "blob": "bdf6f42d37de1171854c506b939fce057c3047fd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "faaf9eeb8f2ee7f91d36e53c13ea5f918ead0b7782e9a0c5e7c6163aa393d7a2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/runtime-terminal-task-imports-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:48:49.221Z",
+  "summary": "Reject exact complete/completed proposal sources while preserving active/review proposals and managed-admission authority",
+  "next": "Validate the committed diff, publish a draft, then obtain fresh independent review and exact-head CI; integration lead alone handles Ready or merge",
+  "files": [
+    "runtime/src/import-export.mjs",
+    "runtime/test/import-export.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-runtime-terminal-imports-v1-completed-aliases.md"
+  ],
+  "validation": "Node 24.22.1: frozen importer baseline 7 pass/2 fail only complete/completed; unchanged full runtime baseline 315/315; final focused importer/authority/CLI/consumer-shadow 35/35; final full runtime 321/321; Project Memory/workflow 143/143; pack validator, syntax, whitespace, frozen test hash, 47 model-map/92 validator-path cases and project-setup regressions passed. Installer prechecks passed 9 wiring-target/16 ordering cases, but full installer acceptance was blocked by absent GNU Stow; optional skills-ref unavailable. No live provider, Docker isolation or activation run. Hosted CI pending.",
+  "snapshot": {
+    "runtime/src/import-export.mjs": {
+      "blob": "efae740fa106280afd2ab15b3637824629bc9f40",
+      "mode": "100644"
+    },
+    "runtime/test/import-export.test.mjs": {
+      "blob": "85451bedf069520cfc2ae904106ce449a1f1ed3f",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "c7d4666693c6806ed51f883232606d3fe85e08cd",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-terminal-imports-v1-completed-aliases.md": {
+      "blob": "0b54d77e8f7c53ef0de5f9966787bd46f97bca5b",
+      "mode": "100644"
+    }
+  }
+}

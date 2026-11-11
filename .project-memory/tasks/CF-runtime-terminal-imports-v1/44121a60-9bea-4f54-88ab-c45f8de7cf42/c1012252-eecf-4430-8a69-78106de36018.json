@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "c1012252-eecf-4430-8a69-78106de36018",
+  "runId": "44121a60-9bea-4f54-88ab-c45f8de7cf42",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-terminal-imports-v1",
+    "path": "tasks/CF-runtime-terminal-imports-v1-completed-aliases.md",
+    "revision": "49d8c9dfd32587e0a037956ee7436f13867bb75f",
+    "blob": "bdf6f42d37de1171854c506b939fce057c3047fd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "faaf9eeb8f2ee7f91d36e53c13ea5f918ead0b7782e9a0c5e7c6163aa393d7a2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/runtime-terminal-task-imports-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:45:51.995Z",
+  "summary": "Reject complete and completed proposal sources without changing managed admission or other statuses",
+  "next": "Freeze and observe the two alias regressions on the old importer, implement the minimal guard, validate and publish a draft for review",
+  "files": [
+    "runtime/src/import-export.mjs",
+    "runtime/test/import-export.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-runtime-terminal-imports-v1-completed-aliases.md"
+  ]
+}

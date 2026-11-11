@@ -1,6 +1,6 @@
 ---
 id: CF-runtime-terminal-imports-v1
-status: in-progress
+status: review
 owner: Foundry importer maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -58,3 +58,40 @@ Node 24 runtime suite, repository validation, whitespace checks and full committ
 Project Memory validation against current main. Use invented fixtures and a
 task-local npm cache. Record only observed checks and preserve the real local
 source/start chronology when publishing the completed series.
+
+## Observed result
+
+The maintained guard adds only `complete` and `completed` to the existing exact
+terminal-status refusal. The intake guide lists all five refused statuses and
+keeps the separate managed-admission requirement explicit. No authority code or
+existing task/history changed.
+
+After separate claim review, source object
+`49d8c9dfd32587e0a037956ee7436f13867bb75f` was created through the GitHub connector,
+fetched and verified against the reviewed tree before registration and the real
+start. No branch ref was published at that stage. Local source preparation
+`00018f0988ff0f3e42f9a6fd13e606d9f81a16e7` is not remote ancestry.
+
+The frozen importer tests have SHA-256
+`ad904a96f854024600d0e0148d3dfe4c58ca7c3760d08527a4435de6b4aa6a59`.
+They first failed only `complete` and `completed` against the old importer
+(7 passed, 2 failed). Those exact test bytes passed after the guard change.
+The unchanged full runtime baseline passed 315/315 tests.
+
+Observed final checks on Node 24.22.1:
+
+- Focused importer, authority, CLI and consumer-shadow tests passed 35/35.
+- Full runtime tests passed 321/321, with no failures, skips or cancellations.
+- Project Memory and workflow regressions passed 143/143.
+- Repository validator, JavaScript syntax and whitespace checks passed.
+- Validator regressions passed 47 model-map and 92 path cases.
+- Project shared-base safety, clean-clone and update regressions passed.
+- Installer prechecks passed nine wiring-target and 16 ordering cases, but the
+  installer suite then stopped because GNU Stow is unavailable. Full installer
+  acceptance is not claimed. Optional `skills-ref` is also unavailable.
+
+No live provider, Docker isolation or runtime activation was run. Hosted checks
+remain separate from these local results. Final content is complete for review;
+this claim reserves no further implementation edits. Next: commit fresh immutable
+completion, validate the full committed diff, publish the completed draft series,
+and obtain fresh independent review and exact-head CI before any integration.
