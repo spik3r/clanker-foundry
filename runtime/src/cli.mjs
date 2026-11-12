@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { constants, openSync, fstatSync, readFileSync, closeSync, mkdtempSync, realpathSync } from 'node:fs';
+import { constants, openSync, fstatSync, readSync, closeSync, mkdtempSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -29,13 +29,20 @@ Demo uses fake workers only. No command publishes, merges, deploys or migrates t
 function fail(code, message = code) { throw Object.assign(new Error(message), { code }); }
 
 function readWire(path) {
-  const fd = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  const fd = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const stat = fstatSync(fd);
     if (!stat.isFile() || stat.size > 1_048_576) fail('INVALID_INPUT_FILE');
-    const bytes = readFileSync(fd);
-    if (bytes.length > 1_048_576) fail('INVALID_INPUT_FILE');
-    return parseJSON(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+    const limit = 1_048_576;
+    const bytes = Buffer.allocUnsafe(limit + 1);
+    let length = 0;
+    while (length < bytes.length) {
+      const count = readSync(fd, bytes, length, Math.min(65_536, bytes.length - length), null);
+      if (count === 0) break;
+      length += count;
+    }
+    if (length > limit) fail('INVALID_INPUT_FILE');
+    return parseJSON(new TextDecoder('utf-8', { fatal: true }).decode(bytes.subarray(0, length)));
   } finally { closeSync(fd); }
 }
 

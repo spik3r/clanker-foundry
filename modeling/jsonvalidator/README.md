@@ -51,6 +51,14 @@ execute object items, nested arrays and later-element failures in both languages
 from the written profile before the generic emitter was adapted. An independent review checked every expectation against the profile and found
 no semantic mismatch. These finite cases are not a proof over all inputs.
 
+The maintained requirement-change regression follows one synthetic boolean field
+from optional to required to required-and-true. Eleven fixed literals per revision
+execute in both emitted languages, including the values each change must refuse
+and behavior that must stay unchanged. The real CLI output is checked against
+that executed source and each model's exact hash. Earlier outputs stay unchanged;
+restoring the original model must reproduce both original output files byte for
+byte. This producer regression is not consumer acceptance.
+
 The Node check transforms the generated TypeScript with Node's built-in type
 transformation. It is an execution check, not `tsc`, a frontend build or browser
 acceptance. Its experimental-transform warning is expected on the tested Node
@@ -73,7 +81,7 @@ toolchain, preserve generated-file provenance, add regeneration/drift checks and
 qualify the actual call site. Synthetic producer checks do not establish any
 consumer's accepted behavior or universal Go/TypeScript equivalence.
 
-This draft candidate has no published producer release or consumer activation.
-Independent exact-source review and observed hosted checks remain separate
-merge gates. The [producer task](../../tasks/CF-json-boolean-v1-producer-standalone-validators.md)
-records the proposed scope and local chronology.
+This merged producer has no published tagged release or consumer activation.
+The [producer task](../../tasks/CF-json-boolean-v1-producer-standalone-validators.md)
+records its reviewed scope, validation and integration history. Later changes
+still need independent exact-source review and observed hosted checks.
