@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "2874e960-10c8-4e67-bd8a-f48c2473a3d1",
+  "runId": "0291b7e6-f5ae-4ea5-b9be-f8a47120f854",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-jsonvalidator-v1",
+    "path": "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md",
+    "revision": "36af570443b6d38848a823bce02543e55bb14e81",
+    "blob": "ef9edfd8b3aed1d7ccab2fe6cd37627e3b2e20a3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "599365719b1fd57fa33263399f1b5600a99305412e013c892898fc70d1309b41"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:48:55.707Z",
+  "summary": "Make jsonvalidator conform to generator contract v1 and register it",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/json-validator-go.yml",
+    "modeling/gencontract/generators.json",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/README.md",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go",
+    "modeling/jsonvalidator/testdata/sample/foundry-manifest.json",
+    "modeling/jsonvalidator/testdata/sample/validator.go",
+    "modeling/jsonvalidator/testdata/sample/validator.ts",
+    "modeling/jsonvalidator/verify/acceptance_test.go",
+    "modeling/jsonvalidator/verify/typescript.mjs",
+    "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md"
+  ]
+}

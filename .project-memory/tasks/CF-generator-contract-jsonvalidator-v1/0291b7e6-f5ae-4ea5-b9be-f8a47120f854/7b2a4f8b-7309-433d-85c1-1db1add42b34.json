@@ -1,0 +1,97 @@
+{
+  "formatVersion": 2,
+  "eventId": "7b2a4f8b-7309-433d-85c1-1db1add42b34",
+  "runId": "0291b7e6-f5ae-4ea5-b9be-f8a47120f854",
+  "kind": "complete",
+  "parents": [
+    "2874e960-10c8-4e67-bd8a-f48c2473a3d1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-jsonvalidator-v1",
+    "path": "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md",
+    "revision": "36af570443b6d38848a823bce02543e55bb14e81",
+    "blob": "ef9edfd8b3aed1d7ccab2fe6cd37627e3b2e20a3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "599365719b1fd57fa33263399f1b5600a99305412e013c892898fc70d1309b41"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:49:28.413Z",
+  "summary": "jsonvalidator implements validate, generate and check per contract v1, emits a manifest, carries the canonical digest in its hash constants and is registered in the conformance harness; sample output regenerated",
+  "next": "Open PR, watch CI, merge; then lifecyclegen",
+  "files": [
+    ".github/workflows/json-validator-go.yml",
+    "modeling/gencontract/generators.json",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/README.md",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go",
+    "modeling/jsonvalidator/testdata/sample/foundry-manifest.json",
+    "modeling/jsonvalidator/testdata/sample/validator.go",
+    "modeling/jsonvalidator/testdata/sample/validator.ts",
+    "modeling/jsonvalidator/verify/acceptance_test.go",
+    "modeling/jsonvalidator/verify/typescript.mjs",
+    "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md"
+  ],
+  "validation": "Coordinator, Go 1.27.4: modeling/jsonvalidator gofmt -l . empty, go vet clean, go test -race -count=1 ./... ok; node verify/typescript.mjs exit 0 on Node 22 (CI uses 24); modeling/gencontract go test -race ok with jsonvalidator registered. Subagent reported the same checks passing on Go 1.27.3 and the README regenerate-and-diff showing no difference. scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/json-validator-go.yml": {
+      "blob": "eb64419e54c3b9540e29548fb6d8d129e1b092d2",
+      "mode": "100644"
+    },
+    "modeling/gencontract/generators.json": {
+      "blob": "ebd74946ead7079ad8e33f9f09a875ccefe48af2",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/PROFILE.md": {
+      "blob": "bd9b61173f86b3a5ae517b1ce3d1f0dad7700fea",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/README.md": {
+      "blob": "57ee2e8325b60a90824f03e1ef8ffab27058039c",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go": {
+      "blob": "53402209c2d9e361fcd0941a0dc3c6ef8b711373",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/main_test.go": {
+      "blob": "906519f23c6781b666cd9596d4b92d9feb7d1e5e",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/requirement_change_test.go": {
+      "blob": "5489c5af2de9e075be494bf176282fae1c7c6de0",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/testdata/sample/foundry-manifest.json": {
+      "blob": "8ac948eaace0b7bf1003b2501eb20abfda36bf62",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/testdata/sample/validator.go": {
+      "blob": "ac30aba6ba18cf4a9e3a8bbc5ffa5f9e50a29dc3",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/testdata/sample/validator.ts": {
+      "blob": "237ea95cf38c252150957f50dd577eba4d3742b5",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/verify/acceptance_test.go": {
+      "blob": "99b1eca752fe47ecadd4ea46d3a45027195af731",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/verify/typescript.mjs": {
+      "blob": "f810e8c5b47e0d7a19f5f074531c41bdf780866c",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md": {
+      "blob": "99c1a5ba2a7e7097cf4ba6d5b28ebdceade852a5",
+      "mode": "100644"
+    }
+  }
+}

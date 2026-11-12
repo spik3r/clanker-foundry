@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "36af570443b6d38848a823bce02543e55bb14e81",
+  "id": "CF-generator-contract-jsonvalidator-v1",
+  "path": "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md",
+  "blob": "ef9edfd8b3aed1d7ccab2fe6cd37627e3b2e20a3",
+  "record": "---\nid: CF-generator-contract-jsonvalidator-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bring the JSON boolean validator generator into generator contract v1\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is part 3 of step 1\nin the [generator pipeline plan](../docs/generator-pipeline-plan.md).\n\nScope: `modeling/jsonvalidator/` gains the contract's `validate`, `generate`\nand `check` commands, the contract manifest, the contract header on both\nemitted files and a documented canonical encoding in which property order is\nnot significant. The emitted model hash constants carry the canonical digest.\nThe old `-model` and `-out` flag form is removed. Committed sample output is\nregenerated. `jsonvalidator` joins `modeling/gencontract/generators.json`. The\n`json-validator-go` workflow lines that invoke the generator change to the new\nform. Also this task record and new immutable Project Memory files.\n\nExclusions: no change to which JSON values the generated predicates accept or\nrefuse, to any literal case expectation, to the conformance harness code, the\ncontract text or any other generator.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/jsonvalidator` and\n`modeling/gencontract`, the Node TypeScript check, the repository validator,\nwhitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-contract-jsonvalidator-v1-conformance.md",
+        "id": "CF-generator-contract-jsonvalidator-v1",
+        "blob": "ef9edfd8b3aed1d7ccab2fe6cd37627e3b2e20a3",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -50,6 +50,38 @@ sparse arrays, functions and explicit `undefined`, are outside the contract.
 Alternative typed Go maps and slices are also outside it.
 
 The predicate gives no transport or error policy and no first-error result.
-The TypeScript return type remains `boolean`, not a type predicate. The model
-source hash changes if any model byte changes, including whitespace or property
-order. This version does not claim semantic normalization across source files.
+The TypeScript return type remains `boolean`, not a type predicate. The generator follows the [Foundry generator contract v1](../CONTRACT.md).
+
+## Canonical model and digest
+
+`canonicalSHA256` is the SHA-256 of this canonical encoding of the parsed model:
+compact JSON with no insignificant whitespace, no trailing newline, and members
+in a fixed order.
+
+- The top level is `{"profile":"json-boolean/v1","root":NODE}`.
+- String: `{"type":"string"}`.
+- Boolean: `{"type":"boolean"}`, or `{"type":"boolean","const":true}` (or
+  `false`) when a constant is declared.
+- Array: `{"type":"array","items":NODE}`.
+- Object: `{"type":"object","additionalProperties":true,"properties":[...]}`,
+  with each property written as `{"name":"x","required":true,"schema":NODE}`.
+  Properties are sorted by name in byte order.
+
+Not significant, so they do not change the digest or the emitted bytes: JSON
+whitespace, the order of members within the top-level object and within every
+node and property object, `\u` escapes in strings, and the order of properties
+within an object. Property order is not significant because the predicate is a
+conjunction of independent per-property checks; no property's result depends on
+another's, so the result is the same in any order. The emitter writes
+properties, and so numbers nodes, in canonical order, so models with the same
+canonical digest produce identical files.
+
+Significant: the profile, every node type, every property name, `required`, the
+presence and value of `const` (an absent `const` differs from `true` or `false`),
+array `items`, and the nesting of nodes. Duplicate keys, unknown members and
+other refused input never reach the digest.
+
+`sourceSHA256` in the identity line hashes the exact model bytes and does
+change with whitespace or ordering. The emitted `ModelSHA256` and
+`MODEL_SHA256` constants carry the canonical digest, not the source digest,
+because emitted bytes may not depend on source bytes.
