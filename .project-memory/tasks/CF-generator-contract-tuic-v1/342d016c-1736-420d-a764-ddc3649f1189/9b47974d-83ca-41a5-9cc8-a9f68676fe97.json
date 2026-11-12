@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "9b47974d-83ca-41a5-9cc8-a9f68676fe97",
+  "runId": "342d016c-1736-420d-a764-ddc3649f1189",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-tuic-v1",
+    "path": "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md",
+    "revision": "a98a8d8052cb53ff0ff7412135b61070a5e2569d",
+    "blob": "d06cddb4e8c76b309382a1691861a9a018a5d23d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f9ec4a5544a7f8bb75a52cc6e263febd8ffbbc3e6cf88953af5c5dce6405682e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:41:30.862Z",
+  "summary": "Make tuic conform to generator contract v1 and register it",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/tui-model-go.yml",
+    "modeling/gencontract/generators.json",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/cmd/tuic/main_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md"
+  ]
+}

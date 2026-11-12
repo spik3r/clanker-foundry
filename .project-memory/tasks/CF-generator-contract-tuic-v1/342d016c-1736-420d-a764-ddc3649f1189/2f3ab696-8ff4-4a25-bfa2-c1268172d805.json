@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "2f3ab696-8ff4-4a25-bfa2-c1268172d805",
+  "runId": "342d016c-1736-420d-a764-ddc3649f1189",
+  "kind": "complete",
+  "parents": [
+    "9b47974d-83ca-41a5-9cc8-a9f68676fe97"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-tuic-v1",
+    "path": "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md",
+    "revision": "a98a8d8052cb53ff0ff7412135b61070a5e2569d",
+    "blob": "d06cddb4e8c76b309382a1691861a9a018a5d23d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f9ec4a5544a7f8bb75a52cc6e263febd8ffbbc3e6cf88953af5c5dce6405682e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:42:07.372Z",
+  "summary": "tuic implements validate, generate and check per contract v1, emits foundry-manifest.json in place of trace.json and is registered in the conformance harness",
+  "next": "Open PR, watch CI, merge; then jsonvalidator",
+  "files": [
+    ".github/workflows/tui-model-go.yml",
+    "modeling/gencontract/generators.json",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/cmd/tuic/main_test.go",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md"
+  ],
+  "validation": "Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok including generated browser acceptance; modeling/gencontract go test -race -count=1 ./... ok with tuic registered. scripts/validate.sh PASS (skills-ref skipped). Terminal visual check not run. Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/tui-model-go.yml": {
+      "blob": "e63dbbef1f3968fba3767180e3e6fa2f74e77c7f",
+      "mode": "100644"
+    },
+    "modeling/gencontract/generators.json": {
+      "blob": "d18d52b65e242b6b9c6f2383395df959544e2dc6",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "cb318225993641964652f7e8527f8562bd90a498",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "8b36507782f6c14fdd5f49b0bb1c29047d5fa5a0",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main.go": {
+      "blob": "e18e0d61411bcb95c6e53d122ca599b4cbbb98c9",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main_test.go": {
+      "blob": "6008d9bbe715b836b38d84ce3720dd6acc1adc50",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler.go": {
+      "blob": "bf33b503fa3e6193dbbaf4bcd65a9624d7a7b900",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler_test.go": {
+      "blob": "d6e88124dffc9fa0e4e992cde785ea8074694195",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "07beb8b7ae81b76212a7d4cc8a278ae75adb230d",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "75d5cc2dcd148fb594091d2f84bb736d9731f2ee",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md": {
+      "blob": "42a2c4038294ff55c378f353c85a0d6a3cdd4111",
+      "mode": "100644"
+    }
+  }
+}

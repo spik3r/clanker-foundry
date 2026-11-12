@@ -47,7 +47,7 @@ jobs:
           mkdir -p "$scanner_dir"
           GOBIN="$scanner_dir" go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
           output=$(mktemp -d)
-          go run ./cmd/tuic examples/browser.json "$output/catalog"
+          go run ./cmd/tuic generate examples/browser.json "$output/catalog"
           compiler_dir="$PWD"
           for target in linux/amd64 darwin/arm64 windows/amd64; do
             echo "Source vulnerability scan: $target"

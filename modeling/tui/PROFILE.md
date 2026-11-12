@@ -40,7 +40,23 @@ and input larger than 32 KiB are rejected. Go validation is authoritative.
 
 Compilation normalizes field declarations by ID but retains detail order. It
 emits a fixed package name and fixed relative file names, formatted Go source,
-pinned dependencies, normalized model and a SHA-256 artifact manifest. It does
+pinned dependencies, normalized model and a `foundry-manifest.json` integrity
+record (generator `tuic` 1.0.0, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
+
+## Canonical encoding
+
+`canonicalSHA256` is the SHA-256 of the normalized model as the compiler writes
+it to `model.json`, without the final newline. The encoding is Go's
+`encoding/json` indented with two spaces (default escaping of `<`, `>` and `&`),
+members in the order `formatVersion`, `profileVersion`, `id`, `title`, `fields`,
+`identity`, `summary`, `details`, `listLabel`, `detailLabel`, `layout`. Each field
+is `id` then `label`; `layout` is `narrowWidth`, `narrowHeight`, `wideWidth`,
+`wideHeight`, `listWidth`. `fields` is sorted by `id`.
+
+JSON whitespace, member order in the source and the order of `fields` do not
+change the digest. The order of `details` does. Emitted bytes depend only on the
+canonical model and the generator version, not on source bytes, file names or
+paths.

@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a98a8d8052cb53ff0ff7412135b61070a5e2569d",
+  "id": "CF-generator-contract-tuic-v1",
+  "path": "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md",
+  "blob": "d06cddb4e8c76b309382a1691861a9a018a5d23d",
+  "record": "---\nid: CF-generator-contract-tuic-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bring the record-browser generator into generator contract v1\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is part 2 of step 1\nin the [generator pipeline plan](../docs/generator-pipeline-plan.md).\n\nScope: `modeling/tui/` gains the contract's `validate`, `generate` and `check`\ncommands, the contract manifest in place of `trace.json`, the contract header\non emitted Go files and a documented canonical encoding. The old positional\n`tuic MODEL OUT` form is removed. `tuic` joins\n`modeling/gencontract/generators.json`. The `tui-model-go` workflow line that\ninvokes the generator changes to the new form. Also this task record and new\nimmutable Project Memory files.\n\nExclusions: no change to the record-browser profile's meaning, the generated\nbrowser's behaviour, the conformance harness code, the contract text or any\nother generator.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/tui` and\n`modeling/gencontract`, the repository validator, whitespace check and committed\nProject Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-contract-tuic-v1-record-browser-conformance.md",
+        "id": "CF-generator-contract-tuic-v1",
+        "blob": "d06cddb4e8c76b309382a1691861a9a018a5d23d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
