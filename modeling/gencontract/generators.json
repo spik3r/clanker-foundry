@@ -14,6 +14,13 @@
       "module": "modeling/tui",
       "package": "./cmd/tuic",
       "model": "modeling/tui/examples/browser.json"
+    },
+    {
+      "id": "jsonvalidator",
+      "profile": "json-boolean/v1",
+      "module": "modeling/jsonvalidator",
+      "package": "./cmd/jsonvalidator",
+      "model": "modeling/jsonvalidator/testdata/sample/model.json"
     }
   ]
 }
