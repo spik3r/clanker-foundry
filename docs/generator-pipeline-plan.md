@@ -1,11 +1,10 @@
 # Direction: models in, generated code out
 
-Reviewed against `origin/main` at `3d33f68` on 12 November 2026. This is a plan
-for owner review. It proposes no implementation claim; each step below needs its
-own reviewed task. It records one owner-stated aim and updates the priorities in
-the [current direction](current-direction.md) and the
-[holistic plan](holistic-improvement-plan.md) to fit it. Those documents are not
-edited here.
+Reviewed against `origin/main` at `3d33f68` on 12 November 2026. The owner
+accepted this plan the same day; the [decisions](#owner-decisions) are recorded
+at the end. Each step below still needs its own reviewed task and claim. The
+plan answers the route question in the [current direction](current-direction.md)
+and reorders the priorities in the [holistic plan](holistic-improvement-plan.md).
 
 ## The aim
 
@@ -129,6 +128,19 @@ One written contract and one conformance suite that all three generators pass.
   detectable and a reader knows not to make one.
 - Shared refusal classes and exit codes.
 
+The contract is checked from outside. A separate conformance module builds each
+generator and drives its command line; generators do not import shared code, so
+each keeps its own dependency-free module.
+
+**Parts, one pull request each:**
+
+1. The written contract, the conformance harness, a small reference generator
+   that the harness tests itself against, and a CI workflow.
+2. `tuic` conforms and joins the harness registry.
+3. `jsonvalidator` conforms and joins the registry.
+4. `modelc` conforms and joins the registry. Its fixed-path commands keep
+   working, because the other lifecycle commands depend on them.
+
 **Work:** `modelc` accepts a model path and output directory. `jsonvalidator`
 gains a canonical digest, a manifest and `check`. `tuic` gains `validate` and
 `check`. Extract the strict JSON decoder and manifest writer only if the
@@ -171,16 +183,47 @@ editing a model without regenerating fails CI.
 
 ### 4. First consumer, end to end
 
-Owner decision needed: which repository. **Recommendation:** a Flexgo
-application the owner maintains, using the record browser. The generator
-already targets that library, the profile boundary is written down, and the
-surrounding code (loading records, actions) is an explicit hand-written seam.
+The owner named `~/code/monstera`. That checkout is on the owner's machine and
+is not published where this plan's author can read it, so the feature is not
+chosen yet. Picking it needs read access to the repository. The selection rule:
+prefer a feature one existing profile covers whole, with the surrounding code
+as an explicit hand-written seam, and with a requirement change already wanted.
 
 **Done when:** the consumer builds from a pinned generator revision with the
 drift check in its CI; one requirement change lands by editing only the model
 and its expectation literals; and the record lists every line written by hand
 and every gap report raised. The acceptance and stop rules in the
 [current direction](current-direction.md) milestones 1 and 2 apply unchanged.
+
+### 4b. Second consumer: diagram and dashboard generators
+
+Requested by the owner. An AI drafts a declarative model; a generator emits an
+inert picture or page. This does not depend on step 4 and can start once the
+step 1 contract exists, so the new generators conform from their first commit.
+
+Proposed profiles, each a finite documented subset and a separate claim:
+
+- `process-diagram/v1`: start and end events, tasks, exclusive and parallel
+  gateways, sequence flows and lanes. Output is SVG, and optionally BPMN 2.0
+  XML for import into other tools.
+- `class-diagram/v1` and `sequence-diagram/v1`: classes with attributes,
+  operations and typed relations; participants with ordered messages.
+- `dashboard/v1`: stat tiles, tables and bar or line charts over data supplied
+  as JSON. Output is one self-contained HTML file with no script and no network
+  reference.
+
+Rules that follow from the aim. Layout is a fixed algorithm in the generator,
+so the same model gives the same bytes; models carry no coordinates unless a
+profile says so. Labels are escaped data, never markup. Each profile states
+which BPMN or UML elements it supports and claims conformance to nothing
+beyond that list. The existing lifecycle [process view](../modeling/lifecycle/processview/README.md)
+stays as it is; a later change may re-express it as a `process-diagram/v1`
+model.
+
+**Done when:** each profile has a `PROFILE.md`, schema, example model,
+expectation literals over the model's structure (elements present, edges
+connected, no overlap), passes the step 1 conformance suite, and a person has
+looked at the rendered examples.
 
 ### 5. Grow profiles from recorded gaps
 
@@ -227,11 +270,13 @@ then the pipeline is a CLI and a CI job.
   generated share is small and gaps are many, narrow the aim to the profiles
   that pay rather than widening the language.
 
-## Decisions for the owner
+## Owner decisions
 
-1. Confirm the rule in "The aim" and direction changes 1 to 4.
-2. Name the first consumer repository and feature for step 4.
-3. Say whether steps 1 to 3 may start before the consumer is named. They do
-   not depend on which consumer is chosen. Recommendation: yes.
-4. Decide whether this plan replaces the route question in the current
-   direction, and who edits that document.
+Recorded on 12 November 2026.
+
+1. The rule in "The aim" and direction changes 1 to 4 are accepted.
+2. The first consumer is `~/code/monstera`. The feature is open; see step 4.
+3. Steps 1 to 3 start now, before the feature is chosen.
+4. This plan answers the route question in the current direction, which now
+   carries a dated note saying so.
+5. Diagram and dashboard generation is the next consumer; see step 4b.
