@@ -5,10 +5,15 @@ the model; the generator draws it the same way every time. It follows the
 [Foundry generator contract](../CONTRACT.md) and is listed in the
 [conformance registry](../gencontract/generators.json).
 
-One profile exists: [`process-diagram/v1`](PROFILE.md), a BPMN-style process
-diagram with lanes, tasks, events and gateways. The generator picks a profile by
-the model's `profileVersion`. Other diagram profiles can be added as sibling
-packages that implement `contract.Profile`; nothing for them exists yet.
+Two profiles exist. The generator picks one by the model's `profileVersion`:
+
+- [`process-diagram/v1`](PROFILE.md): a BPMN-style process diagram with lanes,
+  tasks, events and gateways, as SVG and BPMN XML.
+- [`dashboard/v1`](DASHBOARD.md): stat tiles, bar and line charts and tables
+  over small embedded datasets, as one self-contained HTML file.
+
+Other profiles can be added as sibling packages that implement
+`contract.Profile`; nothing for them exists yet.
 
 ## Run it
 
@@ -32,15 +37,39 @@ changes nothing. Exit codes are 0 success, 1 failure, 2 refused, 3 drift.
 - `model.json`: the canonical model.
 - `foundry-manifest.json`: file hashes and the generator identity.
 
+For a `dashboard/v1` model the files are `dashboard.html`, `model.json` and the
+manifest; see the dashboard section below.
+
 Generated examples sit under [examples/generated](examples/generated), one
 directory per model: [order](examples/order.json), [parallel](examples/parallel.json)
-and [rework](examples/rework.json) (a loop back to an earlier step). A test
-regenerates them and compares bytes.
+and [rework](examples/rework.json) (a loop back to an earlier step), plus the
+dashboard models [ops-dashboard](examples/ops-dashboard.json),
+[sales-dashboard](examples/sales-dashboard.json) and
+[minimal-dashboard](examples/minimal-dashboard.json). A test regenerates them
+and compares bytes.
+
+## Dashboards
+
+`dashboard/v1` models hold datasets and widgets: `stat`, `bar`, `line` and
+`table`, arranged in rows of up to four. The output is `dashboard.html`: inline
+CSS, inline SVG charts, no script, no external reference, light and dark themes,
+one column on narrow screens. Chart axes and coordinates are computed with
+integer arithmetic, so output is byte-stable. Try it:
+
+```sh
+go run ./cmd/diagramgen validate examples/ops-dashboard.json
+go run ./cmd/diagramgen generate examples/ops-dashboard.json /tmp/ops-dashboard
+```
+
+Input, number rules, canonical encoding, chart rules and what a dashboard
+cannot express are in [DASHBOARD.md](DASHBOARD.md). The
+[schema](authoring/dashboard-v1.schema.json) helps an editor; Go validation
+decides.
 
 ## Change a diagram
 
 Edit the model, then regenerate into a new directory and replace the old output.
-Never edit `diagram.svg`, `diagram.bpmn` or `model.json` by hand; `check` reports
+Never edit `diagram.svg`, `diagram.bpmn`, `dashboard.html` or `model.json` by hand; `check` reports
 the edit as drift. The [schema](authoring/process-diagram-v1.schema.json) helps
 an editor, but the Go validation decides.
 

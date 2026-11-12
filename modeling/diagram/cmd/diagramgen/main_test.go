@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -199,5 +200,106 @@ func TestValidateWritesNothing(t *testing.T) {
 	entries, _ := os.ReadDir(dir)
 	if len(entries) != 1 {
 		t.Errorf("validate left %d entries", len(entries))
+	}
+}
+
+var dashboardIdentity = regexp.MustCompile(`^\{"contract":"foundry-generator/v1","profile":"dashboard/v1","sourceSHA256":"[0-9a-f]{64}","canonicalSHA256":"[0-9a-f]{64}"\}\n$`)
+
+func dashboardModel(t *testing.T, name string) string {
+	t.Helper()
+	p, err := filepath.Abs(filepath.Join("..", "..", "examples", name))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return p
+}
+
+func TestDashboardContract(t *testing.T) {
+	for _, name := range []string{"ops-dashboard.json", "sales-dashboard.json", "minimal-dashboard.json"} {
+		t.Run(name, func(t *testing.T) {
+			m := dashboardModel(t, name)
+			code, vline, errs := do("validate", m)
+			if code != 0 || !dashboardIdentity.MatchString(vline) || errs != "" {
+				t.Fatalf("validate: code %d stdout %q stderr %q", code, vline, errs)
+			}
+			out := filepath.Join(t.TempDir(), "out")
+			code, line, errs := do("generate", m, out)
+			if code != 0 || line != vline || errs != "" {
+				t.Fatalf("generate: code %d stdout %q stderr %q", code, line, errs)
+			}
+			entries, err := os.ReadDir(out)
+			if err != nil || len(entries) != 3 {
+				t.Fatalf("output entries %v %v", entries, err)
+			}
+			for _, f := range []string{"dashboard.html", "model.json", "foundry-manifest.json"} {
+				if _, err := os.Stat(filepath.Join(out, f)); err != nil {
+					t.Errorf("missing %s: %v", f, err)
+				}
+			}
+			if code, cline, errs := do("check", m, out); code != 0 || cline != line || errs != "" {
+				t.Fatalf("check: code %d stdout %q stderr %q", code, cline, errs)
+			}
+			// Drift: edit the HTML, delete model.json, add a file.
+			if err := os.WriteFile(filepath.Join(out, "dashboard.html"), []byte("x"), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.Remove(filepath.Join(out, "model.json")); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(out, "notes.txt"), nil, 0o644); err != nil {
+				t.Fatal(err)
+			}
+			code, stdout, stderr := do("check", m, out)
+			want := "drift: modified dashboard.html\ndrift: missing model.json\ndrift: unexpected notes.txt"
+			got := strings.Split(strings.TrimSpace(stderr), "\n")
+			sort.Strings(got)
+			wantLines := strings.Split(want, "\n")
+			sort.Strings(wantLines)
+			if code != 3 || stdout != "" || strings.Join(got, "\n") != strings.Join(wantLines, "\n") {
+				t.Errorf("code %d stdout %q stderr %q", code, stdout, stderr)
+			}
+		})
+	}
+}
+
+func TestDashboardRefusals(t *testing.T) {
+	dir := t.TempDir()
+	write := func(name, content string) string {
+		p := filepath.Join(dir, name)
+		if err := os.WriteFile(p, []byte(content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		return p
+	}
+	good, err := os.ReadFile(dashboardModel(t, "minimal-dashboard.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	head := `{"formatVersion":"diagram-json/v1","profileVersion":"dashboard/v1","id":"A","title":"T","widgets":[{"id":"W","kind":"stat","label":"l","value":"v"}],"layout":[["W"]]`
+	cases := map[string]string{
+		"duplicate key":    strings.Replace(string(good), `"id": "Minimal",`, `"id": "Minimal", "id": "Again",`, 1),
+		"case variant":     strings.Replace(string(good), `"title"`, `"Title"`, 1),
+		"trailing data":    string(good) + "{}",
+		"null":             strings.Replace(string(good), `"All systems normal"`, `null`, 1),
+		"unknown member":   strings.Replace(string(good), `"layout"`, `"script": "x", "layout"`, 1),
+		"exponent":         head + `,"datasets":[{"id":"D","columns":[{"id":"N","label":"N","type":"number"}],"rows":[[1e3]]}]}`,
+		"bad reference":    strings.Replace(string(good), `["Status"]`, `["Nope"]`, 1),
+		"invalid UTF-8":    strings.Replace(string(good), `Minimal dashboard`, "Minimal \xff dashboard", 1),
+		"oversize":         string(good) + strings.Repeat(" ", 512<<10),
+		"profile mismatch": strings.Replace(string(good), `dashboard/v1`, `dashboard/v9`, 1),
+	}
+	for name, content := range cases {
+		t.Run(name, func(t *testing.T) {
+			p := write(strings.ReplaceAll(name, " ", "_")+".json", content)
+			for _, args := range [][]string{{"validate", p}, {"generate", p, filepath.Join(dir, "never")}, {"check", p, dir}} {
+				code, stdout, stderr := do(args...)
+				if code != 2 || stdout != "" || stderr == "" {
+					t.Errorf("%v: code %d stdout %q stderr %q", args, code, stdout, stderr)
+				}
+			}
+		})
+	}
+	if _, err := os.Lstat(filepath.Join(dir, "never")); err == nil {
+		t.Errorf("generate created output for an invalid model")
 	}
 }

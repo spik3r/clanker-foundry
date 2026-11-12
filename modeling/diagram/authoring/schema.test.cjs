@@ -137,8 +137,8 @@ const cases = [
     text: J(base).replace('"title":"Order handling",', '"title":"Order handling","title":"Again",') },
   { name: 'trailing data', expect: 'looser', reason: 'a parsed value has no trailing data',
     text: J(base) + '{}', parseText: J(base) },
-  { name: 'input over 256 KiB', expect: 'looser', reason: 'the size limit applies to source bytes',
-    text: J(base).replace(/\}$/, ' '.repeat(262145) + '}') },
+  { name: 'input over 512 KiB', expect: 'looser', reason: 'the size limit applies to source bytes',
+    text: J(base).replace(/\}$/, ' '.repeat(524289) + '}') },
 ];
 
 const parsed = c => JSON.parse(c.parseText || c.text);

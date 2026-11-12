@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:diagramgen:dashboard:v1:schema",
+  "title": "dashboard/v1 model",
+  "description": "Authoring aid for diagram-json/v1 models with profile dashboard/v1. Go validation in diagramgen is authoritative. This schema cannot express: unique ids among datasets, widgets and a dataset's columns; that every row has one cell per column and each cell matches its column type; that dataset, category, series, columns and layout entries name things that exist and have the right type; that every widget appears once in the layout; the 60-row limit for chart datasets; number spelling (no exponent, at most 6 fractional digits, at most 15 significant digits); byte lengths of text; duplicate JSON keys; trailing data; and the 512 KiB size limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "id", "title", "widgets", "layout"],
+  "properties": {
+    "formatVersion": {"const": "diagram-json/v1"},
+    "profileVersion": {"const": "dashboard/v1"},
+    "id": {"$ref": "#/$defs/identifier"},
+    "title": {"$ref": "#/$defs/label"},
+    "subtitle": {"$ref": "#/$defs/label"},
+    "datasets": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "columns"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "columns": {
+            "description": "Column order is the cell order of every row.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "label", "type"],
+              "properties": {
+                "id": {"$ref": "#/$defs/identifier"},
+                "label": {"$ref": "#/$defs/label"},
+                "type": {"enum": ["text", "number"]}
+              }
+            }
+          },
+          "rows": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 12,
+              "items": {"$ref": "#/$defs/cell"}
+            }
+          }
+        }
+      }
+    },
+    "widgets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 24,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "label", "value"],
+            "properties": {
+              "id": {"$ref": "#/$defs/identifier"},
+              "kind": {"const": "stat"},
+              "label": {"$ref": "#/$defs/label"},
+              "value": {"$ref": "#/$defs/label"},
+              "note": {"$ref": "#/$defs/label"}
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "title", "dataset", "category", "series"],
+            "properties": {
+              "id": {"$ref": "#/$defs/identifier"},
+              "kind": {"enum": ["bar", "line"]},
+              "title": {"$ref": "#/$defs/label"},
+              "dataset": {"$ref": "#/$defs/identifier"},
+              "category": {"$ref": "#/$defs/identifier"},
+              "series": {
+                "description": "Number columns, in the order they are drawn and coloured.",
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4,
+                "uniqueItems": true,
+                "items": {"$ref": "#/$defs/identifier"}
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "title", "dataset", "columns"],
+            "properties": {
+              "id": {"$ref": "#/$defs/identifier"},
+              "kind": {"const": "table"},
+              "title": {"$ref": "#/$defs/label"},
+              "dataset": {"$ref": "#/$defs/identifier"},
+              "columns": {
+                "description": "Columns shown, in the order shown.",
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "uniqueItems": true,
+                "items": {"$ref": "#/$defs/identifier"}
+              }
+            }
+          }
+        ]
+      }
+    },
+    "layout": {
+      "description": "Rows from top to bottom; widgets in a row share the width equally and keep the listed order.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 4,
+        "items": {"$ref": "#/$defs/identifier"}
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,47}$"
+    },
+    "label": {
+      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank (no Unicode white space only), no control characters, U+2028, U+2029, U+FFFE or U+FFFF. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    },
+    "cell": {
+      "description": "A text cell (0 to 120 bytes of plain text; may be empty or blank) or a number below 1e12 in magnitude. Go also requires the cell to match its column type and a number to be written without exponent, with at most 6 fractional digits and at most 15 significant digits.",
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+        },
+        {
+          "type": "number",
+          "exclusiveMinimum": -1000000000000,
+          "exclusiveMaximum": 1000000000000
+        }
+      ]
+    }
+  }
+}

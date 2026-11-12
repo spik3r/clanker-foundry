@@ -24,6 +24,7 @@ only a first check.
 | `json-boolean/v1` | `jsonvalidator` | Boolean predicate over parsed JSON, emitted as Go and TypeScript functions. | [PROFILE.md](jsonvalidator/PROFILE.md) | [schema](jsonvalidator/authoring/json-boolean-v1.schema.json) |
 | `lifecycle/v1` | `lifecyclegen` | Finite task lifecycle with guards, transitions and ordered effects, as a Go reducer with views. | [README](lifecycle/README.md) | [schema](lifecycle/authoring/lifecycle-v1.schema.json) |
 | `process-diagram/v1` | `diagramgen` | Business-process diagram of lanes, events, tasks, gateways and flows, as SVG and BPMN-style XML. | [PROFILE.md](diagram/PROFILE.md) | [schema](diagram/authoring/process-diagram-v1.schema.json) |
+| `dashboard/v1` | `diagramgen` | Dashboard of stat tiles, bar and line charts and tables over small embedded datasets, as one self-contained HTML file. | [DASHBOARD.md](diagram/DASHBOARD.md) | [schema](diagram/authoring/dashboard-v1.schema.json) |
 
 The harness's own `reference/v1` generator exists to test the contract and is
 not listed.

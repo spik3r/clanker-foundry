@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/dashboard"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/process"
 )
 
@@ -18,7 +19,7 @@ import (
 // alters emitted bytes for any model needs a new Version.
 const (
 	GeneratorID      = "diagramgen"
-	GeneratorVersion = "1.0.0"
+	GeneratorVersion = "1.1.0"
 	Toolchain        = "go1.27.4"
 )
 
@@ -27,7 +28,8 @@ var Self = contract.Generator{ID: GeneratorID, Version: GeneratorVersion, Toolch
 
 // profiles lists the supported profiles by profileVersion.
 var profiles = map[string]contract.Profile{
-	process.Profile: process.Profiler{},
+	process.Profile:   process.Profiler{},
+	dashboard.Profile: dashboard.Profiler{},
 }
 
 // Supported returns the supported profileVersion values, sorted.

@@ -1,0 +1,86 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "dashboard/v1",
+  "id": "SalesReview",
+  "title": "Annual sales review across all regions, channels and product families, with margin by quarter",
+  "subtitle": "Fiscal year, figures in thousands",
+  "datasets": [
+    {
+      "id": "Region",
+      "columns": [
+        {"id": "Name", "label": "Region", "type": "text"},
+        {"id": "Q1", "label": "Q1 revenue", "type": "number"},
+        {"id": "Q2", "label": "Q2 revenue", "type": "number"},
+        {"id": "Q3", "label": "Q3 revenue", "type": "number"},
+        {"id": "Q4", "label": "Q4 revenue", "type": "number"}
+      ],
+      "rows": [
+        ["North America east coast", 412.5, 388, 401.25, 455],
+        ["North America west coast", 380, 395.75, 372, 410],
+        ["Latin America and the Caribbean", 120.5, 131, 127.25, 140],
+        ["Western Europe", 310, 305.5, 322, 341.75],
+        ["Eastern Europe and Central Asia", 88, 92.25, 97, 101],
+        ["Middle East and North Africa", 76.5, 70, 81.25, 85],
+        ["Sub-Saharan Africa", 41, 44.5, 39.75, 52],
+        ["South Asia", 154, 163.5, 171, 180.25],
+        ["East Asia and the Pacific", 290, 301, 312.5, 333]
+      ]
+    },
+    {
+      "id": "Margin",
+      "columns": [
+        {"id": "Name", "label": "Region", "type": "text"},
+        {"id": "Q1", "label": "Q1 margin", "type": "number"},
+        {"id": "Q2", "label": "Q2 margin", "type": "number"},
+        {"id": "Q3", "label": "Q3 margin", "type": "number"},
+        {"id": "Q4", "label": "Q4 margin", "type": "number"}
+      ],
+      "rows": [
+        ["North America east coast", 62.5, 48, 55.25, 71],
+        ["North America west coast", 40, -12.5, 35.75, 52],
+        ["Latin America and the Caribbean", -8.5, 3, -2.25, 6],
+        ["Western Europe", 45, 30.5, 52, 60.75],
+        ["Eastern Europe and Central Asia", 10, 12.25, -4, 15],
+        ["Middle East and North Africa", -6.5, 8, 11.25, 9],
+        ["Sub-Saharan Africa", -15, -9.5, -12.75, 2],
+        ["South Asia", 22, 25.5, 31, 29.25],
+        ["East Asia and the Pacific", 38, -20, 41.5, 47]
+      ]
+    },
+    {
+      "id": "Wide",
+      "columns": [
+        {"id": "Name", "label": "Region", "type": "text"},
+        {"id": "M1", "label": "Metric 1", "type": "number"},
+        {"id": "M2", "label": "Metric 2", "type": "number"},
+        {"id": "M3", "label": "Metric 3", "type": "number"},
+        {"id": "M4", "label": "Metric 4", "type": "number"},
+        {"id": "M5", "label": "Metric 5", "type": "number"},
+        {"id": "M6", "label": "Metric 6", "type": "number"},
+        {"id": "M7", "label": "Metric 7", "type": "number"},
+        {"id": "M8", "label": "Metric 8", "type": "number"},
+        {"id": "M9", "label": "Metric 9", "type": "number"},
+        {"id": "M10", "label": "Metric 10", "type": "number"},
+        {"id": "M11", "label": "Metric 11", "type": "number"}
+      ],
+      "rows": [
+        ["Row 1", 20.25, 33.5, 46.75, 30.0, 73.25, 86.5, 2.75, 16.0, -0.75, 42.5, 55.75],
+        ["Row 2", 27.25, 40.5, 23.75, 67.0, 80.25, 93.5, 9.75, -7.0, 36.25, 49.5, 62.75],
+        ["Row 3", 34.25, 17.5, 60.75, 74.0, 87.25, 3.5, -13.25, 30.0, 43.25, 56.5, 69.75],
+        ["Row 4", 11.25, 54.5, 67.75, 81.0, 94.25, -19.5, 23.75, 37.0, 50.25, 63.5, 46.75],
+        ["Row 5", 48.25, 61.5, 74.75, 88.0, -25.75, 17.5, 30.75, 44.0, 57.25, 40.5, 83.75],
+        ["Row 6", 55.25, 68.5, 81.75, 65.0, 11.25, 24.5, 37.75, 51.0, 34.25, 77.5, 90.75]
+      ]
+    }
+  ],
+  "widgets": [
+    {"id": "Revenue", "kind": "stat", "label": "Total revenue", "value": "7,786", "note": "Thousands, all regions"},
+    {"id": "Loss", "kind": "stat", "label": "Regions with a loss quarter", "value": "6 of 9", "note": "At least one negative quarter in margin"},
+    {"id": "RevByRegion", "kind": "bar", "title": "Revenue by region and quarter", "dataset": "Region", "category": "Name", "series": ["Q1", "Q2", "Q3", "Q4"]},
+    {"id": "MarginByRegion", "kind": "bar", "title": "Margin by region (negative values below the baseline)", "dataset": "Margin", "category": "Name", "series": ["Q1", "Q2", "Q3", "Q4"]},
+    {"id": "MarginTrend", "kind": "line", "title": "Margin per region, first two quarters", "dataset": "Margin", "category": "Name", "series": ["Q1", "Q2"]},
+    {"id": "RegionTable", "kind": "table", "title": "Revenue detail", "dataset": "Region", "columns": ["Name", "Q1", "Q2", "Q3", "Q4"]},
+    {"id": "WideTable", "kind": "table", "title": "Metrics, 12 columns", "dataset": "Wide", "columns": ["Name", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9", "M10", "M11"]}
+  ],
+  "layout": [["Revenue", "Loss"], ["RevByRegion"], ["MarginByRegion", "MarginTrend"], ["RegionTable"], ["WideTable"]]
+}
