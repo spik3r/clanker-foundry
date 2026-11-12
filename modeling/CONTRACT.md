@@ -53,7 +53,9 @@ line.
 ### generate
 
 `OUT` must not exist. An existing file, directory (even empty) or symlink at
-`OUT` is refused with exit 2 and left untouched. The parent of `OUT` must exist.
+`OUT` is refused with exit 2 and left untouched. The parent of `OUT` must exist;
+a missing parent is also refused with exit 2. A generator emits no empty
+directory.
 The generator creates `OUT`, writes every emitted file, and writes the manifest
 last. An invalid model is refused before `OUT` is created.
 
@@ -71,7 +73,9 @@ drift: modified PATH
 drift: unexpected PATH
 ```
 
-A symlink or other nonregular entry is `unexpected`. A missing `OUT` is drift,
+The lines may come in any order. A symlink or other nonregular entry is
+`unexpected`. An unexpected directory is reported once; its contents are not
+listed. A missing `OUT` is drift,
 reported as `drift: missing .`. `check` never writes or repairs anything.
 
 ## Model identity

@@ -1,0 +1,12 @@
+{
+  "registryVersion": "foundry-generator-registry/v1",
+  "generators": [
+    {
+      "id": "refgen",
+      "profile": "reference/v1",
+      "module": "modeling/gencontract",
+      "package": "./cmd/refgen",
+      "model": "modeling/gencontract/testdata/reference/model.json"
+    }
+  ]
+}
