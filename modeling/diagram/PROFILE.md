@@ -45,7 +45,7 @@ Lane order is the visual order, top to bottom.
 These are refused: unknown members (a case variant such as `Title` is unknown),
 duplicate JSON keys, `null`, an object or array where a scalar belongs, trailing
 data after the model, invalid UTF-8, nesting deeper than 16 and input larger
-than 256 KiB. A flow `label` that is present must not be empty.
+than 512 KiB. A flow `label` that is present must not be empty.
 
 ## Validation
 
@@ -94,7 +94,7 @@ bytes, file names or paths.
 | `diagram.svg` | the picture |
 | `diagram.bpmn` | BPMN 2.0 XML with diagram interchange |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.0.0, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.1.0, toolchain constant `go1.27.4` |
 
 No emitted file is `.go` or `.ts`, so the generated-file header rule has
 nothing to apply to. The manifest is an integrity record, not an approval.

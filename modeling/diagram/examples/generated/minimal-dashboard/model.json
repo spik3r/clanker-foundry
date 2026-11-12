@@ -1,0 +1,20 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "dashboard/v1",
+  "id": "Minimal",
+  "title": "Minimal dashboard",
+  "datasets": [],
+  "widgets": [
+    {
+      "id": "Status",
+      "kind": "stat",
+      "label": "Status",
+      "value": "All systems normal"
+    }
+  ],
+  "layout": [
+    [
+      "Status"
+    ]
+  ]
+}

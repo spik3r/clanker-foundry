@@ -11,12 +11,20 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 )
 
-var exampleNames = []string{"order", "parallel", "rework"}
+// exampleFiles maps each example to the files it generates, manifest included.
+var exampleFiles = map[string][]string{
+	"order":             {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"parallel":          {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"rework":            {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"ops-dashboard":     {"dashboard.html", "model.json", "foundry-manifest.json"},
+	"sales-dashboard":   {"dashboard.html", "model.json", "foundry-manifest.json"},
+	"minimal-dashboard": {"dashboard.html", "model.json", "foundry-manifest.json"},
+}
 
 // TestExamplesMatchGenerated regenerates every example and compares bytes with
 // the files committed under examples/generated.
 func TestExamplesMatchGenerated(t *testing.T) {
-	for _, name := range exampleNames {
+	for name, files := range exampleFiles {
 		t.Run(name, func(t *testing.T) {
 			raw, err := os.ReadFile(filepath.Join("examples", name+".json"))
 			if err != nil {
@@ -33,13 +41,13 @@ func TestExamplesMatchGenerated(t *testing.T) {
 			if len(drift) > 0 {
 				t.Fatalf("committed output differs from regenerated output (run: go run ./cmd/diagramgen generate examples/%s.json <new dir>):\n%s", name, strings.Join(drift, "\n"))
 			}
-			for _, want := range []string{"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"} {
+			for _, want := range files {
 				if _, ok := res.Files[want]; !ok {
 					t.Errorf("output lacks %s", want)
 				}
 			}
-			if len(res.Files) != 4 {
-				t.Errorf("%d output files, want 4", len(res.Files))
+			if len(res.Files) != len(files) {
+				t.Errorf("%d output files, want %d", len(res.Files), len(files))
 			}
 		})
 	}
@@ -74,7 +82,7 @@ func TestManifestAndIdentity(t *testing.T) {
 	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 		t.Fatal(err)
 	}
-	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.0.0" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
+	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.1.0" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
 		t.Errorf("manifest %+v", m)
 	}
 	if m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
@@ -123,12 +131,13 @@ func TestSourceFormattingDoesNotChangeOutput(t *testing.T) {
 }
 
 func TestSelect(t *testing.T) {
-	if got := Supported(); len(got) != 1 || got[0] != "process-diagram/v1" {
+	if got := Supported(); len(got) != 2 || got[0] != "dashboard/v1" || got[1] != "process-diagram/v1" {
 		t.Errorf("supported profiles %v", got)
 	}
 	for _, raw := range []string{
 		``, `[]`, `{}`, `{"profileVersion":"class-diagram/v1"}`, `{"profileVersion":7}`, `not json`,
 		`{"profileVersion":"process-diagram/v1"}`, // selected, then refused by the profile
+		`{"profileVersion":"dashboard/v1"}`,
 	} {
 		_, err := Build([]byte(raw))
 		var me contract.ModelError
@@ -136,6 +145,72 @@ func TestSelect(t *testing.T) {
 			t.Errorf("Build(%q) accepted", raw)
 		} else if !errors.As(err, &me) {
 			t.Errorf("Build(%q) error %v is not a model error", raw, err)
+		}
+	}
+}
+
+func TestDashboardIdentityAndManifest(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("examples", "ops-dashboard.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	res, err := Build(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var id struct{ Contract, Profile, SourceSHA256, CanonicalSHA256 string }
+	if err := json.Unmarshal([]byte(res.Identity), &id); err != nil {
+		t.Fatal(err)
+	}
+	if id.Profile != "dashboard/v1" || id.SourceSHA256 != contract.HexSum(raw) {
+		t.Errorf("identity %+v", id)
+	}
+	var m struct {
+		Profile   string
+		Generator struct{ ID, Version, Toolchain string }
+		Model     struct{ CanonicalSHA256 string }
+		Files     []struct {
+			Path   string
+			SHA256 string
+			Bytes  int
+		}
+	}
+	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
+		t.Fatal(err)
+	}
+	if m.Profile != "dashboard/v1" || m.Generator.Version != "1.1.0" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+		t.Errorf("manifest %+v", m)
+	}
+	if len(m.Files) != 2 || m.Files[0].Path != "dashboard.html" || m.Files[1].Path != "model.json" {
+		t.Fatalf("manifest files %+v", m.Files)
+	}
+	for _, f := range m.Files {
+		if f.SHA256 != contract.HexSum(res.Files[f.Path]) || f.Bytes != len(res.Files[f.Path]) {
+			t.Errorf("manifest entry %+v", f)
+		}
+	}
+}
+
+func TestDashboardNumberSpellingDoesNotChangeOutput(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("examples", "ops-dashboard.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	respelled := strings.Replace(string(raw), `["Tue", 135, 130]`, `["Tue", 135.0, 130.00]`, 1)
+	if respelled == string(raw) {
+		t.Fatal("fixture text missing")
+	}
+	a, err := Build(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := Build([]byte(respelled))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, data := range a.Files {
+		if string(data) != string(b.Files[name]) {
+			t.Errorf("%s differs for a respelled number", name)
 		}
 	}
 }

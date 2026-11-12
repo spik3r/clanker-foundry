@@ -1,0 +1,119 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "dashboard/v1",
+  "id": "WeeklyOps",
+  "title": "Weekly operations",
+  "subtitle": "Week 45",
+  "datasets": [
+    {
+      "id": "Orders",
+      "columns": [
+        {
+          "id": "Day",
+          "label": "Day",
+          "type": "text"
+        },
+        {
+          "id": "Placed",
+          "label": "Placed",
+          "type": "number"
+        },
+        {
+          "id": "Shipped",
+          "label": "Shipped",
+          "type": "number"
+        }
+      ],
+      "rows": [
+        [
+          "Mon",
+          120,
+          96
+        ],
+        [
+          "Tue",
+          135,
+          130
+        ],
+        [
+          "Wed",
+          128,
+          124
+        ],
+        [
+          "Thu",
+          142,
+          133
+        ],
+        [
+          "Fri",
+          151,
+          147
+        ],
+        [
+          "Sat",
+          98,
+          102
+        ],
+        [
+          "Sun",
+          98,
+          110
+        ]
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "id": "ByDay",
+      "kind": "bar",
+      "title": "Orders by day",
+      "dataset": "Orders",
+      "category": "Day",
+      "series": [
+        "Placed",
+        "Shipped"
+      ]
+    },
+    {
+      "id": "Detail",
+      "kind": "table",
+      "title": "Daily detail",
+      "dataset": "Orders",
+      "columns": [
+        "Day",
+        "Placed",
+        "Shipped"
+      ]
+    },
+    {
+      "id": "Total",
+      "kind": "stat",
+      "label": "Orders placed",
+      "value": "872",
+      "note": "+4% on last week"
+    },
+    {
+      "id": "Trend",
+      "kind": "line",
+      "title": "Shipped per day",
+      "dataset": "Orders",
+      "category": "Day",
+      "series": [
+        "Shipped"
+      ]
+    }
+  ],
+  "layout": [
+    [
+      "Total"
+    ],
+    [
+      "ByDay",
+      "Trend"
+    ],
+    [
+      "Detail"
+    ]
+  ]
+}

@@ -99,7 +99,7 @@ func TestProfileRegistryIsConsistent(t *testing.T) {
 	}
 
 	// Every registered generator except the harness's own reference generator
-	// has exactly one profile entry.
+	// has at least one profile entry; a generator may serve several profiles.
 	entriesFor := map[string]int{}
 	seenProfile := map[string]bool{}
 	for _, e := range profiles.Profiles {
@@ -115,19 +115,33 @@ func TestProfileRegistryIsConsistent(t *testing.T) {
 			if entriesFor[g.ID] != 0 {
 				t.Errorf("refgen is the harness reference and must not have a profile entry")
 			}
-		case entriesFor[g.ID] != 1:
-			t.Errorf("generator %q has %d profile entries, want exactly 1", g.ID, entriesFor[g.ID])
+		case entriesFor[g.ID] < 1:
+			t.Errorf("generator %q has no profile entry", g.ID)
+		}
+	}
+
+	// The profile the conformance harness drives must be one the generator
+	// serves.
+	for _, g := range generators.Generators {
+		if g.ID == "refgen" {
+			continue
+		}
+		served := false
+		for _, e := range profiles.Profiles {
+			if e.Generator == g.ID && e.Profile == g.Profile {
+				served = true
+			}
+		}
+		if !served {
+			t.Errorf("generator %q is registered for profile %q, which has no profile entry for it", g.ID, g.Profile)
 		}
 	}
 
 	for _, e := range profiles.Profiles {
 		t.Run(e.Profile, func(t *testing.T) {
-			g, ok := byID[e.Generator]
+			_, ok := byID[e.Generator]
 			if !ok {
 				t.Fatalf("generator %q is not in generators.json", e.Generator)
-			}
-			if g.Profile != e.Profile {
-				t.Fatalf("generator %q is registered for profile %q, not %q", e.Generator, g.Profile, e.Profile)
 			}
 			if strings.TrimSpace(e.Summary) == "" {
 				t.Error("summary is empty")

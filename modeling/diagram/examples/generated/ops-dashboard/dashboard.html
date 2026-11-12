@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="diagramgen 1.1.0">
+<title>Weekly operations</title>
+<style>
+:root{--bg:#f4f5f7;--card:#ffffff;--border:#d0d7de;--text:#1f2328;--muted:#59636e;--grid:#e3e7eb;--axis:#8c959f;--c1:#1f6feb;--c2:#c2570c;--c3:#1a7f4b;--c4:#8250df}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--muted:#9198a1;--grid:#262c34;--axis:#6e7681;--c1:#58a6ff;--c2:#f0883e;--c3:#3fb950;--c4:#bc8cff}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.4}
+header,main{max-width:1200px;margin:0 auto}
+header{padding:0 0 16px}
+h1{margin:0;font-size:1.5rem;line-height:1.25;overflow-wrap:anywhere}
+h2{margin:0 0 12px;font-size:1rem;overflow-wrap:anywhere}
+.subtitle{margin:4px 0 0;color:var(--muted)}
+main{display:grid;gap:16px}
+.row{display:grid;gap:16px}
+.cols-1{grid-template-columns:minmax(0,1fr)}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+article{min-width:0;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.stat-label{margin:0;font-size:.8125rem;color:var(--muted);overflow-wrap:anywhere}
+.stat-value{margin:4px 0 0;font-size:2rem;font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.note{margin:4px 0 0;font-size:.8125rem;color:var(--muted);overflow-wrap:anywhere}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;padding:0;list-style:none;font-size:.8125rem}
+.legend li{display:flex;align-items:center;gap:6px}
+.sw{flex:none}
+.chart{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+.chart text{fill:var(--muted);font-size:13px;font-family:inherit}
+.plot{fill:none}
+.grid{stroke:var(--grid);stroke-width:1}
+.zero{stroke:var(--axis);stroke-width:1}
+.b1{fill:var(--c1)}.b2{fill:var(--c2)}.b3{fill:var(--c3)}.b4{fill:var(--c4)}
+.m1{fill:var(--c1)}.m2{fill:var(--c2)}.m3{fill:var(--c3)}.m4{fill:var(--c4)}
+path.l1,path.l2,path.l3,path.l4{fill:none;stroke-width:2;stroke-linejoin:round}
+.l1{stroke:var(--c1)}.l2{stroke:var(--c2);stroke-dasharray:7 4}.l3{stroke:var(--c3);stroke-dasharray:2 3}.l4{stroke:var(--c4);stroke-dasharray:9 3 2 3}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.875rem}
+th,td{padding:6px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.row.cols-2,.row.cols-3,.row.cols-4{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<h1>Weekly operations</h1>
+<p class="subtitle">Week 45</p>
+</header>
+<main>
+<section class="row cols-1">
+<article data-id="Total" data-kind="stat">
+<p class="stat-label">Orders placed</p>
+<p class="stat-value">872</p>
+<p class="note">+4% on last week</p>
+</article>
+</section>
+<section class="row cols-2">
+<article data-id="ByDay" data-kind="bar">
+<h2>Orders by day</h2>
+<ul class="legend">
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b1" x="0" y="0" width="24" height="12"/></svg>Placed</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b2" x="0" y="0" width="24" height="12"/></svg>Shipped</li>
+</ul>
+<svg class="chart" viewBox="0 0 640 320" role="img" aria-label="Orders by day, bar chart">
+<rect class="plot" x="48.00" y="16.00" width="576.00" height="264.00"/>
+<line class="grid" data-v="0" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="tick" x="40.00" y="284.00" text-anchor="end">0</text>
+<line class="grid" data-v="50" x1="48.00" y1="214.00" x2="624.00" y2="214.00"/>
+<text class="tick" x="40.00" y="218.00" text-anchor="end">50</text>
+<line class="grid" data-v="100" x1="48.00" y1="148.00" x2="624.00" y2="148.00"/>
+<text class="tick" x="40.00" y="152.00" text-anchor="end">100</text>
+<line class="grid" data-v="150" x1="48.00" y1="82.00" x2="624.00" y2="82.00"/>
+<text class="tick" x="40.00" y="86.00" text-anchor="end">150</text>
+<line class="grid" data-v="200" x1="48.00" y1="16.00" x2="624.00" y2="16.00"/>
+<text class="tick" x="40.00" y="20.00" text-anchor="end">200</text>
+<line class="zero" data-v="0" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="xl" x="89.14" y="296.00" text-anchor="middle">Mon</text>
+<text class="xl" x="171.42" y="296.00" text-anchor="middle">Tue</text>
+<text class="xl" x="253.70" y="296.00" text-anchor="middle">Wed</text>
+<text class="xl" x="335.98" y="296.00" text-anchor="middle">Thu</text>
+<text class="xl" x="418.26" y="296.00" text-anchor="middle">Fri</text>
+<text class="xl" x="500.54" y="296.00" text-anchor="middle">Sat</text>
+<text class="xl" x="582.82" y="296.00" text-anchor="middle">Sun</text>
+<rect class="b1" x="57.87" y="121.60" width="29.62" height="158.40"><title>Placed, Mon: 120</title></rect>
+<rect class="b1" x="140.15" y="101.80" width="29.62" height="178.20"><title>Placed, Tue: 135</title></rect>
+<rect class="b1" x="222.43" y="111.04" width="29.62" height="168.96"><title>Placed, Wed: 128</title></rect>
+<rect class="b1" x="304.71" y="92.56" width="29.62" height="187.44"><title>Placed, Thu: 142</title></rect>
+<rect class="b1" x="386.99" y="80.68" width="29.62" height="199.32"><title>Placed, Fri: 151</title></rect>
+<rect class="b1" x="469.27" y="150.64" width="29.62" height="129.36"><title>Placed, Sat: 98</title></rect>
+<rect class="b1" x="551.55" y="150.64" width="29.62" height="129.36"><title>Placed, Sun: 98</title></rect>
+<rect class="b2" x="90.78" y="153.28" width="29.62" height="126.72"><title>Shipped, Mon: 96</title></rect>
+<rect class="b2" x="173.06" y="108.40" width="29.62" height="171.60"><title>Shipped, Tue: 130</title></rect>
+<rect class="b2" x="255.34" y="116.32" width="29.62" height="163.68"><title>Shipped, Wed: 124</title></rect>
+<rect class="b2" x="337.62" y="104.44" width="29.62" height="175.56"><title>Shipped, Thu: 133</title></rect>
+<rect class="b2" x="419.90" y="85.96" width="29.62" height="194.04"><title>Shipped, Fri: 147</title></rect>
+<rect class="b2" x="502.18" y="145.36" width="29.62" height="134.64"><title>Shipped, Sat: 102</title></rect>
+<rect class="b2" x="584.46" y="134.80" width="29.62" height="145.20"><title>Shipped, Sun: 110</title></rect>
+</svg>
+</article>
+<article data-id="Trend" data-kind="line">
+<h2>Shipped per day</h2>
+<svg class="chart" viewBox="0 0 640 320" role="img" aria-label="Shipped per day, line chart">
+<rect class="plot" x="48.00" y="16.00" width="576.00" height="264.00"/>
+<line class="grid" data-v="80" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="tick" x="40.00" y="284.00" text-anchor="end">80</text>
+<line class="grid" data-v="100" x1="48.00" y1="214.00" x2="624.00" y2="214.00"/>
+<text class="tick" x="40.00" y="218.00" text-anchor="end">100</text>
+<line class="grid" data-v="120" x1="48.00" y1="148.00" x2="624.00" y2="148.00"/>
+<text class="tick" x="40.00" y="152.00" text-anchor="end">120</text>
+<line class="grid" data-v="140" x1="48.00" y1="82.00" x2="624.00" y2="82.00"/>
+<text class="tick" x="40.00" y="86.00" text-anchor="end">140</text>
+<line class="grid" data-v="160" x1="48.00" y1="16.00" x2="624.00" y2="16.00"/>
+<text class="tick" x="40.00" y="20.00" text-anchor="end">160</text>
+<text class="xl" x="89.14" y="296.00" text-anchor="middle">Mon</text>
+<text class="xl" x="171.42" y="296.00" text-anchor="middle">Tue</text>
+<text class="xl" x="253.70" y="296.00" text-anchor="middle">Wed</text>
+<text class="xl" x="335.98" y="296.00" text-anchor="middle">Thu</text>
+<text class="xl" x="418.26" y="296.00" text-anchor="middle">Fri</text>
+<text class="xl" x="500.54" y="296.00" text-anchor="middle">Sat</text>
+<text class="xl" x="582.82" y="296.00" text-anchor="middle">Sun</text>
+<path class="l1" d="M89.14 227.20 L171.42 115.00 L253.70 134.80 L335.98 105.10 L418.26 58.90 L500.54 207.40 L582.82 181.00"/>
+<circle class="m1" cx="89.14" cy="227.20" r="3"><title>Shipped, Mon: 96</title></circle>
+<circle class="m1" cx="171.42" cy="115.00" r="3"><title>Shipped, Tue: 130</title></circle>
+<circle class="m1" cx="253.70" cy="134.80" r="3"><title>Shipped, Wed: 124</title></circle>
+<circle class="m1" cx="335.98" cy="105.10" r="3"><title>Shipped, Thu: 133</title></circle>
+<circle class="m1" cx="418.26" cy="58.90" r="3"><title>Shipped, Fri: 147</title></circle>
+<circle class="m1" cx="500.54" cy="207.40" r="3"><title>Shipped, Sat: 102</title></circle>
+<circle class="m1" cx="582.82" cy="181.00" r="3"><title>Shipped, Sun: 110</title></circle>
+</svg>
+</article>
+</section>
+<section class="row cols-1">
+<article data-id="Detail" data-kind="table">
+<h2>Daily detail</h2>
+<div class="scroll" role="region" tabindex="0" aria-label="Daily detail">
+<table>
+<thead>
+<tr><th scope="col">Day</th><th scope="col" class="num">Placed</th><th scope="col" class="num">Shipped</th></tr>
+</thead>
+<tbody>
+<tr><td>Mon</td><td class="num">120</td><td class="num">96</td></tr>
+<tr><td>Tue</td><td class="num">135</td><td class="num">130</td></tr>
+<tr><td>Wed</td><td class="num">128</td><td class="num">124</td></tr>
+<tr><td>Thu</td><td class="num">142</td><td class="num">133</td></tr>
+<tr><td>Fri</td><td class="num">151</td><td class="num">147</td></tr>
+<tr><td>Sat</td><td class="num">98</td><td class="num">102</td></tr>
+<tr><td>Sun</td><td class="num">98</td><td class="num">110</td></tr>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+</main>
+</body>
+</html>

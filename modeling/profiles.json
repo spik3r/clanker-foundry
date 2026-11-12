@@ -55,6 +55,27 @@
       ]
     },
     {
+      "profile": "dashboard/v1",
+      "generator": "diagramgen",
+      "summary": "Dashboard of stat tiles, bar and line charts and tables over small embedded datasets, as one self-contained HTML file.",
+      "profileDoc": "modeling/diagram/DASHBOARD.md",
+      "schema": "modeling/diagram/authoring/dashboard-v1.schema.json",
+      "examples": [
+        "modeling/diagram/examples/ops-dashboard.json",
+        "modeling/diagram/examples/sales-dashboard.json",
+        "modeling/diagram/examples/minimal-dashboard.json"
+      ],
+      "emits": ["self-contained HTML file with inline SVG charts"],
+      "cannotExpress": [
+        "live or loaded data",
+        "computed values or aggregates",
+        "interactivity or script",
+        "custom colours, sizes or layout beyond rows of up to 4 equal columns",
+        "chart kinds other than bar and line",
+        "more than 4 series in a chart"
+      ]
+    },
+    {
       "profile": "process-diagram/v1",
       "generator": "diagramgen",
       "summary": "Business-process diagram of lanes, events, tasks, gateways and flows, as SVG and BPMN-style XML.",

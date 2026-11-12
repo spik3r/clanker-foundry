@@ -24,7 +24,7 @@ const (
 	ManifestName = "foundry-manifest.json"
 	manifestTag  = "foundry-generator-manifest/v1"
 	// MaxModelBytes is the largest model file any profile accepts.
-	MaxModelBytes = 256 << 10
+	MaxModelBytes = 512 << 10
 )
 
 // Generator names the generator for the manifest and for emitted metadata.

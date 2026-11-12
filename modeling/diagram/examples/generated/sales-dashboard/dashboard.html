@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="diagramgen 1.1.0">
+<title>Annual sales review across all regions, channels and product families, with margin by quarter</title>
+<style>
+:root{--bg:#f4f5f7;--card:#ffffff;--border:#d0d7de;--text:#1f2328;--muted:#59636e;--grid:#e3e7eb;--axis:#8c959f;--c1:#1f6feb;--c2:#c2570c;--c3:#1a7f4b;--c4:#8250df}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#e6edf3;--muted:#9198a1;--grid:#262c34;--axis:#6e7681;--c1:#58a6ff;--c2:#f0883e;--c3:#3fb950;--c4:#bc8cff}}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.4}
+header,main{max-width:1200px;margin:0 auto}
+header{padding:0 0 16px}
+h1{margin:0;font-size:1.5rem;line-height:1.25;overflow-wrap:anywhere}
+h2{margin:0 0 12px;font-size:1rem;overflow-wrap:anywhere}
+.subtitle{margin:4px 0 0;color:var(--muted)}
+main{display:grid;gap:16px}
+.row{display:grid;gap:16px}
+.cols-1{grid-template-columns:minmax(0,1fr)}
+.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+article{min-width:0;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.stat-label{margin:0;font-size:.8125rem;color:var(--muted);overflow-wrap:anywhere}
+.stat-value{margin:4px 0 0;font-size:2rem;font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.note{margin:4px 0 0;font-size:.8125rem;color:var(--muted);overflow-wrap:anywhere}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 8px;padding:0;list-style:none;font-size:.8125rem}
+.legend li{display:flex;align-items:center;gap:6px}
+.sw{flex:none}
+.chart{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+.chart text{fill:var(--muted);font-size:13px;font-family:inherit}
+.plot{fill:none}
+.grid{stroke:var(--grid);stroke-width:1}
+.zero{stroke:var(--axis);stroke-width:1}
+.b1{fill:var(--c1)}.b2{fill:var(--c2)}.b3{fill:var(--c3)}.b4{fill:var(--c4)}
+.m1{fill:var(--c1)}.m2{fill:var(--c2)}.m3{fill:var(--c3)}.m4{fill:var(--c4)}
+path.l1,path.l2,path.l3,path.l4{fill:none;stroke-width:2;stroke-linejoin:round}
+.l1{stroke:var(--c1)}.l2{stroke:var(--c2);stroke-dasharray:7 4}.l3{stroke:var(--c3);stroke-dasharray:2 3}.l4{stroke:var(--c4);stroke-dasharray:9 3 2 3}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.875rem}
+th,td{padding:6px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.row.cols-2,.row.cols-3,.row.cols-4{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<h1>Annual sales review across all regions, channels and product families, with margin by quarter</h1>
+<p class="subtitle">Fiscal year, figures in thousands</p>
+</header>
+<main>
+<section class="row cols-2">
+<article data-id="Revenue" data-kind="stat">
+<p class="stat-label">Total revenue</p>
+<p class="stat-value">7,786</p>
+<p class="note">Thousands, all regions</p>
+</article>
+<article data-id="Loss" data-kind="stat">
+<p class="stat-label">Regions with a loss quarter</p>
+<p class="stat-value">6 of 9</p>
+<p class="note">At least one negative quarter in margin</p>
+</article>
+</section>
+<section class="row cols-1">
+<article data-id="RevByRegion" data-kind="bar">
+<h2>Revenue by region and quarter</h2>
+<ul class="legend">
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b1" x="0" y="0" width="24" height="12"/></svg>Q1 revenue</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b2" x="0" y="0" width="24" height="12"/></svg>Q2 revenue</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b3" x="0" y="0" width="24" height="12"/></svg>Q3 revenue</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b4" x="0" y="0" width="24" height="12"/></svg>Q4 revenue</li>
+</ul>
+<svg class="chart" viewBox="0 0 640 320" role="img" aria-label="Revenue by region and quarter, bar chart">
+<rect class="plot" x="48.00" y="16.00" width="576.00" height="264.00"/>
+<line class="grid" data-v="0" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="tick" x="40.00" y="284.00" text-anchor="end">0</text>
+<line class="grid" data-v="100" x1="48.00" y1="227.20" x2="624.00" y2="227.20"/>
+<text class="tick" x="40.00" y="231.20" text-anchor="end">100</text>
+<line class="grid" data-v="200" x1="48.00" y1="174.40" x2="624.00" y2="174.40"/>
+<text class="tick" x="40.00" y="178.40" text-anchor="end">200</text>
+<line class="grid" data-v="300" x1="48.00" y1="121.60" x2="624.00" y2="121.60"/>
+<text class="tick" x="40.00" y="125.60" text-anchor="end">300</text>
+<line class="grid" data-v="400" x1="48.00" y1="68.80" x2="624.00" y2="68.80"/>
+<text class="tick" x="40.00" y="72.80" text-anchor="end">400</text>
+<line class="grid" data-v="500" x1="48.00" y1="16.00" x2="624.00" y2="16.00"/>
+<text class="tick" x="40.00" y="20.00" text-anchor="end">500</text>
+<line class="zero" data-v="0" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="xl" x="80.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="144.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="208.00" y="296.00" text-anchor="middle">Latin …</text>
+<text class="xl" x="272.00" y="296.00" text-anchor="middle">Wester…</text>
+<text class="xl" x="336.00" y="296.00" text-anchor="middle">Easter…</text>
+<text class="xl" x="400.00" y="296.00" text-anchor="middle">Middle…</text>
+<text class="xl" x="464.00" y="296.00" text-anchor="middle">Sub-Sa…</text>
+<text class="xl" x="528.00" y="296.00" text-anchor="middle">South …</text>
+<text class="xl" x="592.00" y="296.00" text-anchor="middle">East A…</text>
+<rect class="b1" x="55.04" y="62.20" width="11.52" height="217.80"><title>Q1 revenue, North America east coast: 412.5</title></rect>
+<rect class="b1" x="119.04" y="79.36" width="11.52" height="200.64"><title>Q1 revenue, North America west coast: 380</title></rect>
+<rect class="b1" x="183.04" y="216.38" width="11.52" height="63.62"><title>Q1 revenue, Latin America and the Caribbean: 120.5</title></rect>
+<rect class="b1" x="247.04" y="116.32" width="11.52" height="163.68"><title>Q1 revenue, Western Europe: 310</title></rect>
+<rect class="b1" x="311.04" y="233.54" width="11.52" height="46.46"><title>Q1 revenue, Eastern Europe and Central Asia: 88</title></rect>
+<rect class="b1" x="375.04" y="239.61" width="11.52" height="40.39"><title>Q1 revenue, Middle East and North Africa: 76.5</title></rect>
+<rect class="b1" x="439.04" y="258.35" width="11.52" height="21.65"><title>Q1 revenue, Sub-Saharan Africa: 41</title></rect>
+<rect class="b1" x="503.04" y="198.69" width="11.52" height="81.31"><title>Q1 revenue, South Asia: 154</title></rect>
+<rect class="b1" x="567.04" y="126.88" width="11.52" height="153.12"><title>Q1 revenue, East Asia and the Pacific: 290</title></rect>
+<rect class="b2" x="67.84" y="75.14" width="11.52" height="204.86"><title>Q2 revenue, North America east coast: 388</title></rect>
+<rect class="b2" x="131.84" y="71.04" width="11.52" height="208.96"><title>Q2 revenue, North America west coast: 395.75</title></rect>
+<rect class="b2" x="195.84" y="210.83" width="11.52" height="69.17"><title>Q2 revenue, Latin America and the Caribbean: 131</title></rect>
+<rect class="b2" x="259.84" y="118.70" width="11.52" height="161.30"><title>Q2 revenue, Western Europe: 305.5</title></rect>
+<rect class="b2" x="323.84" y="231.29" width="11.52" height="48.71"><title>Q2 revenue, Eastern Europe and Central Asia: 92.25</title></rect>
+<rect class="b2" x="387.84" y="243.04" width="11.52" height="36.96"><title>Q2 revenue, Middle East and North Africa: 70</title></rect>
+<rect class="b2" x="451.84" y="256.50" width="11.52" height="23.50"><title>Q2 revenue, Sub-Saharan Africa: 44.5</title></rect>
+<rect class="b2" x="515.84" y="193.67" width="11.52" height="86.33"><title>Q2 revenue, South Asia: 163.5</title></rect>
+<rect class="b2" x="579.84" y="121.07" width="11.52" height="158.93"><title>Q2 revenue, East Asia and the Pacific: 301</title></rect>
+<rect class="b3" x="80.64" y="68.14" width="11.52" height="211.86"><title>Q3 revenue, North America east coast: 401.25</title></rect>
+<rect class="b3" x="144.64" y="83.58" width="11.52" height="196.42"><title>Q3 revenue, North America west coast: 372</title></rect>
+<rect class="b3" x="208.64" y="212.81" width="11.52" height="67.19"><title>Q3 revenue, Latin America and the Caribbean: 127.25</title></rect>
+<rect class="b3" x="272.64" y="109.98" width="11.52" height="170.02"><title>Q3 revenue, Western Europe: 322</title></rect>
+<rect class="b3" x="336.64" y="228.78" width="11.52" height="51.22"><title>Q3 revenue, Eastern Europe and Central Asia: 97</title></rect>
+<rect class="b3" x="400.64" y="237.10" width="11.52" height="42.90"><title>Q3 revenue, Middle East and North Africa: 81.25</title></rect>
+<rect class="b3" x="464.64" y="259.01" width="11.52" height="20.99"><title>Q3 revenue, Sub-Saharan Africa: 39.75</title></rect>
+<rect class="b3" x="528.64" y="189.71" width="11.52" height="90.29"><title>Q3 revenue, South Asia: 171</title></rect>
+<rect class="b3" x="592.64" y="115.00" width="11.52" height="165.00"><title>Q3 revenue, East Asia and the Pacific: 312.5</title></rect>
+<rect class="b4" x="93.44" y="39.76" width="11.52" height="240.24"><title>Q4 revenue, North America east coast: 455</title></rect>
+<rect class="b4" x="157.44" y="63.52" width="11.52" height="216.48"><title>Q4 revenue, North America west coast: 410</title></rect>
+<rect class="b4" x="221.44" y="206.08" width="11.52" height="73.92"><title>Q4 revenue, Latin America and the Caribbean: 140</title></rect>
+<rect class="b4" x="285.44" y="99.56" width="11.52" height="180.44"><title>Q4 revenue, Western Europe: 341.75</title></rect>
+<rect class="b4" x="349.44" y="226.67" width="11.52" height="53.33"><title>Q4 revenue, Eastern Europe and Central Asia: 101</title></rect>
+<rect class="b4" x="413.44" y="235.12" width="11.52" height="44.88"><title>Q4 revenue, Middle East and North Africa: 85</title></rect>
+<rect class="b4" x="477.44" y="252.54" width="11.52" height="27.46"><title>Q4 revenue, Sub-Saharan Africa: 52</title></rect>
+<rect class="b4" x="541.44" y="184.83" width="11.52" height="95.17"><title>Q4 revenue, South Asia: 180.25</title></rect>
+<rect class="b4" x="605.44" y="104.18" width="11.52" height="175.82"><title>Q4 revenue, East Asia and the Pacific: 333</title></rect>
+</svg>
+</article>
+</section>
+<section class="row cols-2">
+<article data-id="MarginByRegion" data-kind="bar">
+<h2>Margin by region (negative values below the baseline)</h2>
+<ul class="legend">
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b1" x="0" y="0" width="24" height="12"/></svg>Q1 margin</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b2" x="0" y="0" width="24" height="12"/></svg>Q2 margin</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b3" x="0" y="0" width="24" height="12"/></svg>Q3 margin</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><rect class="b4" x="0" y="0" width="24" height="12"/></svg>Q4 margin</li>
+</ul>
+<svg class="chart" viewBox="0 0 640 320" role="img" aria-label="Margin by region (negative values below the baseline), bar chart">
+<rect class="plot" x="48.00" y="16.00" width="576.00" height="264.00"/>
+<line class="grid" data-v="-20" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="tick" x="40.00" y="284.00" text-anchor="end">-20</text>
+<line class="grid" data-v="0" x1="48.00" y1="227.20" x2="624.00" y2="227.20"/>
+<text class="tick" x="40.00" y="231.20" text-anchor="end">0</text>
+<line class="grid" data-v="20" x1="48.00" y1="174.40" x2="624.00" y2="174.40"/>
+<text class="tick" x="40.00" y="178.40" text-anchor="end">20</text>
+<line class="grid" data-v="40" x1="48.00" y1="121.60" x2="624.00" y2="121.60"/>
+<text class="tick" x="40.00" y="125.60" text-anchor="end">40</text>
+<line class="grid" data-v="60" x1="48.00" y1="68.80" x2="624.00" y2="68.80"/>
+<text class="tick" x="40.00" y="72.80" text-anchor="end">60</text>
+<line class="grid" data-v="80" x1="48.00" y1="16.00" x2="624.00" y2="16.00"/>
+<text class="tick" x="40.00" y="20.00" text-anchor="end">80</text>
+<line class="zero" data-v="0" x1="48.00" y1="227.20" x2="624.00" y2="227.20"/>
+<text class="xl" x="80.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="144.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="208.00" y="296.00" text-anchor="middle">Latin …</text>
+<text class="xl" x="272.00" y="296.00" text-anchor="middle">Wester…</text>
+<text class="xl" x="336.00" y="296.00" text-anchor="middle">Easter…</text>
+<text class="xl" x="400.00" y="296.00" text-anchor="middle">Middle…</text>
+<text class="xl" x="464.00" y="296.00" text-anchor="middle">Sub-Sa…</text>
+<text class="xl" x="528.00" y="296.00" text-anchor="middle">South …</text>
+<text class="xl" x="592.00" y="296.00" text-anchor="middle">East A…</text>
+<rect class="b1" x="55.04" y="62.20" width="11.52" height="165.00"><title>Q1 margin, North America east coast: 62.5</title></rect>
+<rect class="b1" x="119.04" y="121.60" width="11.52" height="105.60"><title>Q1 margin, North America west coast: 40</title></rect>
+<rect class="b1" x="183.04" y="227.20" width="11.52" height="22.44"><title>Q1 margin, Latin America and the Caribbean: -8.5</title></rect>
+<rect class="b1" x="247.04" y="108.40" width="11.52" height="118.80"><title>Q1 margin, Western Europe: 45</title></rect>
+<rect class="b1" x="311.04" y="200.80" width="11.52" height="26.40"><title>Q1 margin, Eastern Europe and Central Asia: 10</title></rect>
+<rect class="b1" x="375.04" y="227.20" width="11.52" height="17.16"><title>Q1 margin, Middle East and North Africa: -6.5</title></rect>
+<rect class="b1" x="439.04" y="227.20" width="11.52" height="39.60"><title>Q1 margin, Sub-Saharan Africa: -15</title></rect>
+<rect class="b1" x="503.04" y="169.12" width="11.52" height="58.08"><title>Q1 margin, South Asia: 22</title></rect>
+<rect class="b1" x="567.04" y="126.88" width="11.52" height="100.32"><title>Q1 margin, East Asia and the Pacific: 38</title></rect>
+<rect class="b2" x="67.84" y="100.48" width="11.52" height="126.72"><title>Q2 margin, North America east coast: 48</title></rect>
+<rect class="b2" x="131.84" y="227.20" width="11.52" height="33.00"><title>Q2 margin, North America west coast: -12.5</title></rect>
+<rect class="b2" x="195.84" y="219.28" width="11.52" height="7.92"><title>Q2 margin, Latin America and the Caribbean: 3</title></rect>
+<rect class="b2" x="259.84" y="146.68" width="11.52" height="80.52"><title>Q2 margin, Western Europe: 30.5</title></rect>
+<rect class="b2" x="323.84" y="194.86" width="11.52" height="32.34"><title>Q2 margin, Eastern Europe and Central Asia: 12.25</title></rect>
+<rect class="b2" x="387.84" y="206.08" width="11.52" height="21.12"><title>Q2 margin, Middle East and North Africa: 8</title></rect>
+<rect class="b2" x="451.84" y="227.20" width="11.52" height="25.08"><title>Q2 margin, Sub-Saharan Africa: -9.5</title></rect>
+<rect class="b2" x="515.84" y="159.88" width="11.52" height="67.32"><title>Q2 margin, South Asia: 25.5</title></rect>
+<rect class="b2" x="579.84" y="227.20" width="11.52" height="52.80"><title>Q2 margin, East Asia and the Pacific: -20</title></rect>
+<rect class="b3" x="80.64" y="81.34" width="11.52" height="145.86"><title>Q3 margin, North America east coast: 55.25</title></rect>
+<rect class="b3" x="144.64" y="132.82" width="11.52" height="94.38"><title>Q3 margin, North America west coast: 35.75</title></rect>
+<rect class="b3" x="208.64" y="227.20" width="11.52" height="5.94"><title>Q3 margin, Latin America and the Caribbean: -2.25</title></rect>
+<rect class="b3" x="272.64" y="89.92" width="11.52" height="137.28"><title>Q3 margin, Western Europe: 52</title></rect>
+<rect class="b3" x="336.64" y="227.20" width="11.52" height="10.56"><title>Q3 margin, Eastern Europe and Central Asia: -4</title></rect>
+<rect class="b3" x="400.64" y="197.50" width="11.52" height="29.70"><title>Q3 margin, Middle East and North Africa: 11.25</title></rect>
+<rect class="b3" x="464.64" y="227.20" width="11.52" height="33.66"><title>Q3 margin, Sub-Saharan Africa: -12.75</title></rect>
+<rect class="b3" x="528.64" y="145.36" width="11.52" height="81.84"><title>Q3 margin, South Asia: 31</title></rect>
+<rect class="b3" x="592.64" y="117.64" width="11.52" height="109.56"><title>Q3 margin, East Asia and the Pacific: 41.5</title></rect>
+<rect class="b4" x="93.44" y="39.76" width="11.52" height="187.44"><title>Q4 margin, North America east coast: 71</title></rect>
+<rect class="b4" x="157.44" y="89.92" width="11.52" height="137.28"><title>Q4 margin, North America west coast: 52</title></rect>
+<rect class="b4" x="221.44" y="211.36" width="11.52" height="15.84"><title>Q4 margin, Latin America and the Caribbean: 6</title></rect>
+<rect class="b4" x="285.44" y="66.82" width="11.52" height="160.38"><title>Q4 margin, Western Europe: 60.75</title></rect>
+<rect class="b4" x="349.44" y="187.60" width="11.52" height="39.60"><title>Q4 margin, Eastern Europe and Central Asia: 15</title></rect>
+<rect class="b4" x="413.44" y="203.44" width="11.52" height="23.76"><title>Q4 margin, Middle East and North Africa: 9</title></rect>
+<rect class="b4" x="477.44" y="221.92" width="11.52" height="5.28"><title>Q4 margin, Sub-Saharan Africa: 2</title></rect>
+<rect class="b4" x="541.44" y="149.98" width="11.52" height="77.22"><title>Q4 margin, South Asia: 29.25</title></rect>
+<rect class="b4" x="605.44" y="103.12" width="11.52" height="124.08"><title>Q4 margin, East Asia and the Pacific: 47</title></rect>
+</svg>
+</article>
+<article data-id="MarginTrend" data-kind="line">
+<h2>Margin per region, first two quarters</h2>
+<ul class="legend">
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><path class="l1" d="M0 6H24"/></svg>Q1 margin</li>
+<li><svg class="sw" viewBox="0 0 24 12" width="24" height="12" aria-hidden="true"><path class="l2" d="M0 6H24"/></svg>Q2 margin</li>
+</ul>
+<svg class="chart" viewBox="0 0 640 320" role="img" aria-label="Margin per region, first two quarters, line chart">
+<rect class="plot" x="48.00" y="16.00" width="576.00" height="264.00"/>
+<line class="grid" data-v="-20" x1="48.00" y1="280.00" x2="624.00" y2="280.00"/>
+<text class="tick" x="40.00" y="284.00" text-anchor="end">-20</text>
+<line class="grid" data-v="0" x1="48.00" y1="227.20" x2="624.00" y2="227.20"/>
+<text class="tick" x="40.00" y="231.20" text-anchor="end">0</text>
+<line class="grid" data-v="20" x1="48.00" y1="174.40" x2="624.00" y2="174.40"/>
+<text class="tick" x="40.00" y="178.40" text-anchor="end">20</text>
+<line class="grid" data-v="40" x1="48.00" y1="121.60" x2="624.00" y2="121.60"/>
+<text class="tick" x="40.00" y="125.60" text-anchor="end">40</text>
+<line class="grid" data-v="60" x1="48.00" y1="68.80" x2="624.00" y2="68.80"/>
+<text class="tick" x="40.00" y="72.80" text-anchor="end">60</text>
+<line class="grid" data-v="80" x1="48.00" y1="16.00" x2="624.00" y2="16.00"/>
+<text class="tick" x="40.00" y="20.00" text-anchor="end">80</text>
+<line class="zero" data-v="0" x1="48.00" y1="227.20" x2="624.00" y2="227.20"/>
+<text class="xl" x="80.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="144.00" y="296.00" text-anchor="middle">North …</text>
+<text class="xl" x="208.00" y="296.00" text-anchor="middle">Latin …</text>
+<text class="xl" x="272.00" y="296.00" text-anchor="middle">Wester…</text>
+<text class="xl" x="336.00" y="296.00" text-anchor="middle">Easter…</text>
+<text class="xl" x="400.00" y="296.00" text-anchor="middle">Middle…</text>
+<text class="xl" x="464.00" y="296.00" text-anchor="middle">Sub-Sa…</text>
+<text class="xl" x="528.00" y="296.00" text-anchor="middle">South …</text>
+<text class="xl" x="592.00" y="296.00" text-anchor="middle">East A…</text>
+<path class="l1" d="M80.00 62.20 L144.00 121.60 L208.00 249.64 L272.00 108.40 L336.00 200.80 L400.00 244.36 L464.00 266.80 L528.00 169.12 L592.00 126.88"/>
+<path class="l2" d="M80.00 100.48 L144.00 260.20 L208.00 219.28 L272.00 146.68 L336.00 194.86 L400.00 206.08 L464.00 252.28 L528.00 159.88 L592.00 280.00"/>
+<circle class="m1" cx="80.00" cy="62.20" r="3"><title>Q1 margin, North America east coast: 62.5</title></circle>
+<circle class="m1" cx="144.00" cy="121.60" r="3"><title>Q1 margin, North America west coast: 40</title></circle>
+<circle class="m1" cx="208.00" cy="249.64" r="3"><title>Q1 margin, Latin America and the Caribbean: -8.5</title></circle>
+<circle class="m1" cx="272.00" cy="108.40" r="3"><title>Q1 margin, Western Europe: 45</title></circle>
+<circle class="m1" cx="336.00" cy="200.80" r="3"><title>Q1 margin, Eastern Europe and Central Asia: 10</title></circle>
+<circle class="m1" cx="400.00" cy="244.36" r="3"><title>Q1 margin, Middle East and North Africa: -6.5</title></circle>
+<circle class="m1" cx="464.00" cy="266.80" r="3"><title>Q1 margin, Sub-Saharan Africa: -15</title></circle>
+<circle class="m1" cx="528.00" cy="169.12" r="3"><title>Q1 margin, South Asia: 22</title></circle>
+<circle class="m1" cx="592.00" cy="126.88" r="3"><title>Q1 margin, East Asia and the Pacific: 38</title></circle>
+<circle class="m2" cx="80.00" cy="100.48" r="3"><title>Q2 margin, North America east coast: 48</title></circle>
+<circle class="m2" cx="144.00" cy="260.20" r="3"><title>Q2 margin, North America west coast: -12.5</title></circle>
+<circle class="m2" cx="208.00" cy="219.28" r="3"><title>Q2 margin, Latin America and the Caribbean: 3</title></circle>
+<circle class="m2" cx="272.00" cy="146.68" r="3"><title>Q2 margin, Western Europe: 30.5</title></circle>
+<circle class="m2" cx="336.00" cy="194.86" r="3"><title>Q2 margin, Eastern Europe and Central Asia: 12.25</title></circle>
+<circle class="m2" cx="400.00" cy="206.08" r="3"><title>Q2 margin, Middle East and North Africa: 8</title></circle>
+<circle class="m2" cx="464.00" cy="252.28" r="3"><title>Q2 margin, Sub-Saharan Africa: -9.5</title></circle>
+<circle class="m2" cx="528.00" cy="159.88" r="3"><title>Q2 margin, South Asia: 25.5</title></circle>
+<circle class="m2" cx="592.00" cy="280.00" r="3"><title>Q2 margin, East Asia and the Pacific: -20</title></circle>
+</svg>
+</article>
+</section>
+<section class="row cols-1">
+<article data-id="RegionTable" data-kind="table">
+<h2>Revenue detail</h2>
+<div class="scroll" role="region" tabindex="0" aria-label="Revenue detail">
+<table>
+<thead>
+<tr><th scope="col">Region</th><th scope="col" class="num">Q1 revenue</th><th scope="col" class="num">Q2 revenue</th><th scope="col" class="num">Q3 revenue</th><th scope="col" class="num">Q4 revenue</th></tr>
+</thead>
+<tbody>
+<tr><td>North America east coast</td><td class="num">412.5</td><td class="num">388</td><td class="num">401.25</td><td class="num">455</td></tr>
+<tr><td>North America west coast</td><td class="num">380</td><td class="num">395.75</td><td class="num">372</td><td class="num">410</td></tr>
+<tr><td>Latin America and the Caribbean</td><td class="num">120.5</td><td class="num">131</td><td class="num">127.25</td><td class="num">140</td></tr>
+<tr><td>Western Europe</td><td class="num">310</td><td class="num">305.5</td><td class="num">322</td><td class="num">341.75</td></tr>
+<tr><td>Eastern Europe and Central Asia</td><td class="num">88</td><td class="num">92.25</td><td class="num">97</td><td class="num">101</td></tr>
+<tr><td>Middle East and North Africa</td><td class="num">76.5</td><td class="num">70</td><td class="num">81.25</td><td class="num">85</td></tr>
+<tr><td>Sub-Saharan Africa</td><td class="num">41</td><td class="num">44.5</td><td class="num">39.75</td><td class="num">52</td></tr>
+<tr><td>South Asia</td><td class="num">154</td><td class="num">163.5</td><td class="num">171</td><td class="num">180.25</td></tr>
+<tr><td>East Asia and the Pacific</td><td class="num">290</td><td class="num">301</td><td class="num">312.5</td><td class="num">333</td></tr>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+<section class="row cols-1">
+<article data-id="WideTable" data-kind="table">
+<h2>Metrics, 12 columns</h2>
+<div class="scroll" role="region" tabindex="0" aria-label="Metrics, 12 columns">
+<table>
+<thead>
+<tr><th scope="col">Region</th><th scope="col" class="num">Metric 1</th><th scope="col" class="num">Metric 2</th><th scope="col" class="num">Metric 3</th><th scope="col" class="num">Metric 4</th><th scope="col" class="num">Metric 5</th><th scope="col" class="num">Metric 6</th><th scope="col" class="num">Metric 7</th><th scope="col" class="num">Metric 8</th><th scope="col" class="num">Metric 9</th><th scope="col" class="num">Metric 10</th><th scope="col" class="num">Metric 11</th></tr>
+</thead>
+<tbody>
+<tr><td>Row 1</td><td class="num">20.25</td><td class="num">33.5</td><td class="num">46.75</td><td class="num">30</td><td class="num">73.25</td><td class="num">86.5</td><td class="num">2.75</td><td class="num">16</td><td class="num">-0.75</td><td class="num">42.5</td><td class="num">55.75</td></tr>
+<tr><td>Row 2</td><td class="num">27.25</td><td class="num">40.5</td><td class="num">23.75</td><td class="num">67</td><td class="num">80.25</td><td class="num">93.5</td><td class="num">9.75</td><td class="num">-7</td><td class="num">36.25</td><td class="num">49.5</td><td class="num">62.75</td></tr>
+<tr><td>Row 3</td><td class="num">34.25</td><td class="num">17.5</td><td class="num">60.75</td><td class="num">74</td><td class="num">87.25</td><td class="num">3.5</td><td class="num">-13.25</td><td class="num">30</td><td class="num">43.25</td><td class="num">56.5</td><td class="num">69.75</td></tr>
+<tr><td>Row 4</td><td class="num">11.25</td><td class="num">54.5</td><td class="num">67.75</td><td class="num">81</td><td class="num">94.25</td><td class="num">-19.5</td><td class="num">23.75</td><td class="num">37</td><td class="num">50.25</td><td class="num">63.5</td><td class="num">46.75</td></tr>
+<tr><td>Row 5</td><td class="num">48.25</td><td class="num">61.5</td><td class="num">74.75</td><td class="num">88</td><td class="num">-25.75</td><td class="num">17.5</td><td class="num">30.75</td><td class="num">44</td><td class="num">57.25</td><td class="num">40.5</td><td class="num">83.75</td></tr>
+<tr><td>Row 6</td><td class="num">55.25</td><td class="num">68.5</td><td class="num">81.75</td><td class="num">65</td><td class="num">11.25</td><td class="num">24.5</td><td class="num">37.75</td><td class="num">51</td><td class="num">34.25</td><td class="num">77.5</td><td class="num">90.75</td></tr>
+</tbody>
+</table>
+</div>
+</article>
+</section>
+</main>
+</body>
+</html>
