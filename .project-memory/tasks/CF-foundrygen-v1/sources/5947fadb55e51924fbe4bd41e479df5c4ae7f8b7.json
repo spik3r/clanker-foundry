@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5947fadb55e51924fbe4bd41e479df5c4ae7f8b7",
+  "id": "CF-foundrygen-v1",
+  "path": "tasks/CF-foundrygen-v1-project-entrypoint.md",
+  "blob": "cea0cf3165cd874905fa25af1d5d732d98a9e3d3",
+  "record": "---\nid: CF-foundrygen-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add the foundrygen project entrypoint and drift check\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is step 3 of the\n[generator pipeline plan](../docs/generator-pipeline-plan.md).\n\nScope: a new Go module `modeling/foundrygen/` with the `foundrygen` command. It\nreads a consuming repository's `foundry.json`, checks that the Foundry checkout\nis at the pinned revision, builds the listed generators and runs their contract\ncommands. `check` reports drift across all outputs; `generate` regenerates\noutputs and refuses to replace a directory it did not generate. Also a new\n`generator-pipeline` CI workflow, its entry in the workflow inventory test, this\ntask record and new immutable Project Memory files.\n\nExclusions: no change to any generator, the conformance harness, the contract\ntext or any consuming repository.\n\nChecks: gofmt, `go vet` and `go test -race` in the new module, the workflow\ninventory test, the repository validator, whitespace check and committed\nProject Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundrygen-v1-project-entrypoint.md",
+        "id": "CF-foundrygen-v1",
+        "blob": "cea0cf3165cd874905fa25af1d5d732d98a9e3d3",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

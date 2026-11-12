@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "5a89f942-5fb9-406b-b5c0-2eca03b61db1",
+  "runId": "71e39b80-76ec-4a55-98f1-dcc60c8ecfa8",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundrygen-v1",
+    "path": "tasks/CF-foundrygen-v1-project-entrypoint.md",
+    "revision": "5947fadb55e51924fbe4bd41e479df5c4ae7f8b7",
+    "blob": "cea0cf3165cd874905fa25af1d5d732d98a9e3d3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7207104e6375bc705d2fe4287ac56bbf6882fc15932587314cb5ba7cd50c97fe"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T11:02:07.595Z",
+  "summary": "Add foundrygen: project file, pin check, regenerate and drift check",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/generator-pipeline.yml",
+    "modeling/foundrygen/README.md",
+    "modeling/foundrygen/cmd/foundrygen/main.go",
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/go.mod",
+    "modeling/foundrygen/project.go",
+    "modeling/foundrygen/project_test.go",
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/run_test.go",
+    "tests/project-memory-workflow.test.mjs",
+    "tasks/CF-foundrygen-v1-project-entrypoint.md"
+  ]
+}

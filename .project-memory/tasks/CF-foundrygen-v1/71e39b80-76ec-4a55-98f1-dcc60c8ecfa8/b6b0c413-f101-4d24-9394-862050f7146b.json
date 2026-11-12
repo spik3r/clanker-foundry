@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "b6b0c413-f101-4d24-9394-862050f7146b",
+  "runId": "71e39b80-76ec-4a55-98f1-dcc60c8ecfa8",
+  "kind": "complete",
+  "parents": [
+    "5a89f942-5fb9-406b-b5c0-2eca03b61db1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundrygen-v1",
+    "path": "tasks/CF-foundrygen-v1-project-entrypoint.md",
+    "revision": "5947fadb55e51924fbe4bd41e479df5c4ae7f8b7",
+    "blob": "cea0cf3165cd874905fa25af1d5d732d98a9e3d3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7207104e6375bc705d2fe4287ac56bbf6882fc15932587314cb5ba7cd50c97fe"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T11:02:27.220Z",
+  "summary": "foundrygen module added: strict foundry.json, pinned-revision check, generate with owned-output replacement, check with drift across all outputs; generator-pipeline workflow added and listed in the inventory test",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    ".github/workflows/generator-pipeline.yml",
+    "modeling/foundrygen/README.md",
+    "modeling/foundrygen/cmd/foundrygen/main.go",
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/go.mod",
+    "modeling/foundrygen/project.go",
+    "modeling/foundrygen/project_test.go",
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/run_test.go",
+    "tests/project-memory-workflow.test.mjs",
+    "tasks/CF-foundrygen-v1-project-entrypoint.md"
+  ],
+  "validation": "Go 1.27.4 in modeling/foundrygen: gofmt -l . empty, go vet clean, go test -race -count=1 ./... ok including end-to-end run with real tuic and jsonvalidator. node --test tests/project-memory-workflow.test.mjs: 46 pass on Node 22 (CI uses 24). scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/generator-pipeline.yml": {
+      "blob": "e5a7b3843166325e2ec51d16cd63bea3026cf4b0",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "55c64fca6ff59dc20ebe65927e11872c8fe47215",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/cmd/foundrygen/main.go": {
+      "blob": "25e14654d0179d566369c75f54296b0fd86b6f2a",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/exec.go": {
+      "blob": "239f937295cbb946f01165bc066b22c78cd46116",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/go.mod": {
+      "blob": "d1fcf4d4534ec02c5959cf93a52b67e6bb6b2034",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/project.go": {
+      "blob": "68ecfc4de4fecd7d8cd6b5ea35d50c4afaf69ba1",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/project_test.go": {
+      "blob": "dfe63fa81938332be260b00b21878ea63c8c2673",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/run.go": {
+      "blob": "69da4dc8085d0fb67f55bb493e2b5ff014c11615",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/run_test.go": {
+      "blob": "cc20605e42e9ee8bf5245ac691f2ddb8e1b2501a",
+      "mode": "100644"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "22a0eb1b338092783178e27723e3743db45ab052",
+      "mode": "100644"
+    },
+    "tasks/CF-foundrygen-v1-project-entrypoint.md": {
+      "blob": "1fbb59f0316820ffcfa11b0afcddc1597ab6925b",
+      "mode": "100644"
+    }
+  }
+}
