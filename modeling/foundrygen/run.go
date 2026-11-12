@@ -2,6 +2,7 @@ package foundrygen
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -9,7 +10,7 @@ import (
 	"path/filepath"
 )
 
-const usage = "usage: foundrygen check|generate --project DIR --foundry CHECKOUT [--unpinned]"
+const usage = "usage: foundrygen check|generate|plan --project DIR --foundry CHECKOUT [--unpinned]"
 
 // Run executes one foundrygen command line (without the program name) and
 // returns the exit code. stdout receives output only when the code is 0.
@@ -31,8 +32,8 @@ func (s *session) usageError(format string, a ...any) int {
 }
 
 func (s *session) main(args []string, out *bytes.Buffer) int {
-	if len(args) == 0 || (args[0] != "check" && args[0] != "generate") {
-		return s.usageError("first argument must be check or generate")
+	if len(args) == 0 || (args[0] != "check" && args[0] != "generate" && args[0] != "plan") {
+		return s.usageError("first argument must be check, generate or plan")
 	}
 	verb := args[0]
 	fs := flag.NewFlagSet(verb, flag.ContinueOnError)
@@ -79,6 +80,9 @@ func (s *session) main(args []string, out *bytes.Buffer) int {
 
 	if verb == "check" {
 		return s.cmdCheck(out)
+	}
+	if verb == "plan" {
+		return s.cmdPlan(out)
 	}
 	return s.cmdGenerate(out)
 }
@@ -154,7 +158,9 @@ type step struct {
 	pendingWrite bool
 }
 
-func (s *session) cmdGenerate(out *bytes.Buffer) int {
+// prepareGeneration validates all inputs and classifies outputs without writing them.
+// Both plan and generate use this preflight so their refusal rules stay aligned.
+func (s *session) prepareGeneration() ([]*step, int) {
 	steps := make([]*step, len(s.proj.Outputs))
 	var codes []int
 
@@ -174,9 +180,10 @@ func (s *session) cmdGenerate(out *bytes.Buffer) int {
 			s.say(o.Out, oc.err.Error())
 			codes = append(codes, oc.code)
 		}
+		st.id = oc.id
 	}
 	if c := worst(codes); c != exitOK {
-		return c
+		return nil, c
 	}
 
 	// Phase 2: decide what each output needs, still without writing.
@@ -211,9 +218,51 @@ func (s *session) cmdGenerate(out *bytes.Buffer) int {
 		}
 	}
 	if c := worst(codes); c != exitOK {
-		return c
+		return nil, c
 	}
+	return steps, exitOK
+}
 
+// cmdPlan emits an observation, not an approval or an executable saved plan.
+func (s *session) cmdPlan(out *bytes.Buffer) int {
+	steps, code := s.prepareGeneration()
+	if code != exitOK {
+		return code
+	}
+	type plannedOutput struct {
+		Action    string   `json:"action"`
+		Generator string   `json:"generator"`
+		Model     string   `json:"model"`
+		Out       string   `json:"out"`
+		Identity  Identity `json:"identity"`
+	}
+	report := struct {
+		PlanVersion string          `json:"planVersion"`
+		Outputs     []plannedOutput `json:"outputs"`
+	}{PlanVersion: "foundry-plan/v1", Outputs: make([]plannedOutput, 0, len(steps))}
+	for _, st := range steps {
+		action := "unchanged"
+		if st.pendingWrite {
+			action = "create"
+			if st.exists {
+				action = "replace"
+			}
+		}
+		report.Outputs = append(report.Outputs, plannedOutput{action, st.o.Generator, st.o.Model, st.o.Out, st.id})
+	}
+	enc := json.NewEncoder(out)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(report); err != nil {
+		return s.report(fail("encode plan: %v", err))
+	}
+	return exitOK
+}
+
+func (s *session) cmdGenerate(out *bytes.Buffer) int {
+	steps, code := s.prepareGeneration()
+	if code != exitOK {
+		return code
+	}
 	// Phase 3: write.
 	for i, st := range steps {
 		if !st.pendingWrite {

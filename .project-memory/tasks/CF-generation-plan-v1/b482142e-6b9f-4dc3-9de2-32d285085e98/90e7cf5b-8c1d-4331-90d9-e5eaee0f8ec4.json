@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "90e7cf5b-8c1d-4331-90d9-e5eaee0f8ec4",
+  "runId": "b482142e-6b9f-4dc3-9de2-32d285085e98",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generation-plan-v1",
+    "path": "tasks/CF-generation-plan-v1-preview.md",
+    "revision": "818136f0da8871d07ecfe0e071d27bcbd97fdc29",
+    "blob": "27af907a612fb27cc8dd416e06a01de80f3ce3d4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "28e71eabb4aff23fa8feb56eb7227c886444709b199561171314643a8f20da01"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-profile-validation",
+  "pullRequest": null,
+  "at": "2026-11-12T20:54:28.171Z",
+  "summary": "Preview generation actions using shared preflight",
+  "next": "Implement and validate without publication",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/plan_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-generation-plan-v1-preview.md"
+  ]
+}

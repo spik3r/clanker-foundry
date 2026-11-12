@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "5ef0e005-a5bf-4589-a4f6-53f88e1dc639",
+  "runId": "b482142e-6b9f-4dc3-9de2-32d285085e98",
+  "kind": "complete",
+  "parents": [
+    "90e7cf5b-8c1d-4331-90d9-e5eaee0f8ec4"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generation-plan-v1",
+    "path": "tasks/CF-generation-plan-v1-preview.md",
+    "revision": "818136f0da8871d07ecfe0e071d27bcbd97fdc29",
+    "blob": "27af907a612fb27cc8dd416e06a01de80f3ce3d4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "28e71eabb4aff23fa8feb56eb7227c886444709b199561171314643a8f20da01"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-profile-validation",
+  "pullRequest": null,
+  "at": "2026-11-12T20:56:55.994Z",
+  "summary": "Added read-only generation preview with shared preflight and versioned action report",
+  "next": "Independent review before any publication",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/plan_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-generation-plan-v1-preview.md"
+  ],
+  "validation": "Full module tests passed 38.810s; full race tests passed 22.542s; strengthened plan race regressions passed 10.393s; go vet and scripts/validate.sh and git diff --check passed",
+  "snapshot": {
+    "modeling/foundrygen/run.go": {
+      "blob": "449b4e220b9f8d6b804abce7208c8e445dea6cd8",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/plan_test.go": {
+      "blob": "c4fb647e9629a7d5f31495cbdc7f39b36b3694cc",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "ad67509079271501b7edd5a0fec7379a98a61315",
+      "mode": "100644"
+    },
+    "tasks/CF-generation-plan-v1-preview.md": {
+      "blob": "27af907a612fb27cc8dd416e06a01de80f3ce3d4",
+      "mode": "100644"
+    }
+  }
+}
