@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "46da1cfc-b31a-4fcc-bf0b-1fd6e2140934",
+  "runId": "93380fb3-e96c-4759-bde0-eca86bb847af",
+  "kind": "start",
+  "parents": [
+    "5da6d159-e890-473f-810c-6e5a9e7f9275"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-pipeline-plan-v1",
+    "path": "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+    "revision": "7cf6da401df51cfc2fc19ceb73403551fb74a75e",
+    "blob": "56a4649ac10054f37d9346f00c3237c825a355d6",
+    "claim": {
+      "heading": "Owner decision update claim",
+      "digest": "30442895688e0aa9a586d8553d22273d1000ecbfef7b80e7d70ad418c6c159ab"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:21:51.221Z",
+  "summary": "Record owner decisions and the diagram and dashboard follow-up in the plan",
+  "next": "Edit, validate, open PR",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "docs/current-direction.md",
+    "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md"
+  ]
+}

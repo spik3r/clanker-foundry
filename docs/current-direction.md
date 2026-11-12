@@ -5,6 +5,16 @@ plan, not a replacement for dated evidence or canonical task claims. Task record
 hold actual ownership and completion. Proposed work below needs its own reviewed
 claim; none starts until this plan is merged.
 
+## Owner update, 12 November 2026
+
+The owner chose the route asked about in question 2 below: generated code from
+reviewed models is the pipeline's only implementation route. The owner named a
+first consumer repository; the feature is still open. Work on a shared generator
+contract may start before it is chosen. The
+[generator pipeline plan](generator-pipeline-plan.md) records these decisions
+and the resulting order of work. The milestones and stop rules below still
+apply to the consumer trial. The rest of this document is unchanged and dated.
+
 ## Facts and remaining hypotheses
 
 - The [skill pack](../README.md) is the primary usable asset. Its instructions and

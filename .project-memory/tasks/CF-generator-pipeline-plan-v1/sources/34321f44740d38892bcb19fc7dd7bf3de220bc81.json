@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "34321f44740d38892bcb19fc7dd7bf3de220bc81",
+  "id": "CF-generator-pipeline-plan-v1",
+  "path": "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+  "blob": "8552d1be098b0c9b511a4179dcdbee5eb5242e6b",
+  "record": "---\nid: CF-generator-pipeline-plan-v1\nstatus: in-progress\nowner: Claude planning contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Plan the direction toward a model-fed generator pipeline\n\n## Implementation claim\n\nThe repository owner requested a review of the latest `origin/main` and an updated\nplan for direction and next steps. The stated aim is a deterministic pipeline in\nwhich AI drafts models and reviewed code generators produce the code, rather\nthan AI writing the code. The claim is limited to a new plan in\n`docs/generator-pipeline-plan.md`, this task record and new immutable Project\nMemory files. It changes no product code, existing direction document, runtime\nauthority, task ownership or open pull request.\n\nBase the plan on fetched `origin/main` at\n`3d33f68`, the current documentation, the three generator modules, their checks\nand the open pull requests. Separate observed facts from recommendations and\nfrom decisions that need the owner. Do not turn proposals into implementation\nclaims. Run the repository validator and whitespace checks, then push the branch\n`claude/nice-mccarthy-k6gbb9` for review without opening or merging a pull\nrequest unless the owner asks.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+        "id": "CF-generator-pipeline-plan-v1",
+        "blob": "8552d1be098b0c9b511a4179dcdbee5eb5242e6b",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
