@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+  "id": "CF-dashboard-data-binding-v1",
+  "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+  "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+  "record": "---\nid: CF-dashboard-data-binding-v1\nstatus: in-progress\nowner: Foundry report binding worker\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reuse a reviewed dashboard with fresh report data\n\n## Implementation claim\n\nImplement bounded dashboard data binding in the existing diagram module. A valid\nreviewed dashboard/v1 model fixes columns, labels, chart choices and layout. A\nseparate strictly decoded payload pins its exact source bytes and replaces every\ndataset's rows and every stat's value/note. The existing validator checks the\nresult, and the existing generator renders it. Add a `diagramgen bind TEMPLATE\nDATA` command that writes only the materialized model to stdout, a public-safe\nexample, contract documentation and independent literal tests.\n\nThis addresses recurring reports where an author should supply changing data,\nnot regenerate layout or HTML. It neither infers data nor measures token savings.\nNo expressions, file inclusion, network input, new rendering profile, live data,\nconsumer integration, arbitrary field mutation or pipeline authority changes.\n\nValidate with diagram race tests and vet, repository validation, bounded CLI\nrefusal tests and Project Memory committed-diff validation. Obtain independent\nreview before publication.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+        "id": "CF-dashboard-data-binding-v1",
+        "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
