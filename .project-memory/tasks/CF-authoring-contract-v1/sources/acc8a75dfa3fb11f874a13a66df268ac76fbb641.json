@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "acc8a75dfa3fb11f874a13a66df268ac76fbb641",
+  "id": "CF-authoring-contract-v1",
+  "path": "tasks/CF-authoring-contract-v1-profile-registry.md",
+  "blob": "6cf2101a98a325fc42681257a7da69778468189d",
+  "record": "---\nid: CF-authoring-contract-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add the profile registry and authoring schemas\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is step 2 of the\n[generator pipeline plan](../docs/generator-pipeline-plan.md).\n\nScope: `modeling/profiles.json`, a registry of the four profiles with their\ngenerator, profile document, schema, examples and stated limits, and a\n`modeling/README.md` index. Authoring JSON Schemas for `record-browser/v1` and\n`json-boolean/v1`. Schema tests for those two and for the existing\nprocess-diagram schema, including a comparison of each schema's verdict with\nits generator's `validate` result, and the workflow changes to run them. A\ntightened label pattern in the process-diagram schema where it was looser than\nthe generator. A registry consistency test in `modeling/gencontract/`. One\nsentence in two profile documents linking the schema. In\n`skills/model-driven-design`: a profiles reference, a gap-report template and\nminimal edits to `SKILL.md` and `README.md` so the skill covers any registered\nprofile. Also this task record and new immutable Project Memory files.\n\nExclusions: no generator behaviour change, no harness change, no edit to\nhash-pinned skill examples or to anything under `modeling/lifecycle/`.\nExpectation literals as data for the record browser remain open from step 2.\n\nChecks: the node schema tests, `go test -race` in `modeling/gencontract`, the\nworkflow inventory test, the repository validator, whitespace check and\ncommitted Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-authoring-contract-v1-profile-registry.md",
+        "id": "CF-authoring-contract-v1",
+        "blob": "6cf2101a98a325fc42681257a7da69778468189d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

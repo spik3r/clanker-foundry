@@ -18,6 +18,10 @@ consistency, actual execution and human approval. It does not add a model langua
 validator, compiler or runner. AI drafting and model correctness are not deterministic.
 
 [SKILL.md](SKILL.md) is the procedure. The
+[profiles reference](references/foundry-profiles.md) covers choosing among the
+registered Foundry profiles from a brief, and the
+[gap report template](assets/gap-report.md) records a requirement no profile can
+express. The
 [Foundry reference](references/foundry-handoff.md) routes current lifecycle/v1 work
 to the existing profile catalog, strict intake/model check, suite comparison,
 generator and qualification tools. It requires an existing trusted Foundry checkout;

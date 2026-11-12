@@ -21,5 +21,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version: '1.27.4'
+          check-latest: false
+          cache: false
       - run: npm ci --prefix runtime --ignore-scripts --no-fund --no-audit
-      - run: node --test modeling/lifecycle/authoring/schema.test.cjs
+      - run: >-
+          node --test
+          modeling/lifecycle/authoring/schema.test.cjs
+          modeling/tui/authoring/schema.test.cjs
+          modeling/jsonvalidator/authoring/schema.test.cjs
+          modeling/diagram/authoring/schema.test.cjs

@@ -1,6 +1,6 @@
 ---
 name: model-driven-design
-description: Turn an idea into a reviewable model proposal and an independent acceptance handoff. Use for first-design model-driven work, especially Foundry lifecycle/v1; expose missing human choices and profile limits before generation. Not a promise to generate an arbitrary application or approval to execute it.
+description: Turn an idea into a reviewable model proposal and an independent acceptance handoff. Use for first-design model-driven work with any registered Foundry profile (lifecycle/v1, record-browser/v1, json-boolean/v1, process-diagram/v1 and others in the checkout's registry); expose missing human choices and profile limits before generation. Not a promise to generate an arbitrary application or approval to execute it.
 ---
 
 # Model-driven design
@@ -41,6 +41,12 @@ Read the actual versioned profile, schema and semantic validator, not just a
 sample diagram. State which requirements fit, which need surrounding engineering,
 and which block the proposal. Do not turn a whole application into an apparently
 complete small state machine by silently omitting its unsupported parts.
+
+To find and choose among the registered Foundry profiles, use
+[the Foundry profiles reference](references/foundry-profiles.md). On the generated
+path your output is data: a model, expectation literals or a gap report, never
+feature code. When a requirement does not fit any profile, the outcome for it is a
+[gap report](assets/gap-report.md), not code or a prose workaround.
 
 For Foundry's current lifecycle route, use
 [the Foundry handoff reference](references/foundry-handoff.md). Locate an existing

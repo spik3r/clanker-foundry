@@ -65,11 +65,11 @@
       "pattern": "^[A-Za-z][A-Za-z0-9_]{0,47}$"
     },
     "label": {
-      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank, no control characters. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank (no Unicode white space only), no control characters, U+2028, U+2029, U+FFFE or U+FFFF. maxLength here counts characters, so the byte limit is checked only by Go.",
       "type": "string",
       "minLength": 1,
       "maxLength": 120,
-      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]*[^\\u0000-\\u0020\\u007f-\\u009f\\u2028\\u2029][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]*$"
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
     }
   }
 }

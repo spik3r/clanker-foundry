@@ -1,0 +1,117 @@
+{
+  "formatVersion": 2,
+  "eventId": "0381bb7a-299c-443d-b1c1-c545778a3dfd",
+  "runId": "3b8f466f-f47d-4688-a878-b46aadd1cf8f",
+  "kind": "complete",
+  "parents": [
+    "ff4fed5f-b17d-4519-9c79-2bb367b0ea2f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-authoring-contract-v1",
+    "path": "tasks/CF-authoring-contract-v1-profile-registry.md",
+    "revision": "acc8a75dfa3fb11f874a13a66df268ac76fbb641",
+    "blob": "6cf2101a98a325fc42681257a7da69778468189d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9703c533b4a4704331248aecedb36bf9477d1c9ee649dbb6289152bd9bc00285"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T19:33:51.779Z",
+  "summary": "Profile registry and index added; authoring schemas for record-browser and json-boolean; schema tests compare each schema with its generator's validate; process-diagram schema label pattern tightened; registry consistency test; design skill gains a profiles reference and gap-report template",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    ".github/workflows/model-authoring-contract.yml",
+    "modeling/README.md",
+    "modeling/diagram/authoring/process-diagram-v1.schema.json",
+    "modeling/diagram/authoring/schema.test.cjs",
+    "modeling/gencontract/profiles_test.go",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "modeling/profiles.json",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/authoring/record-browser-v1.schema.json",
+    "modeling/tui/authoring/schema.test.cjs",
+    "skills/model-driven-design/README.md",
+    "skills/model-driven-design/SKILL.md",
+    "skills/model-driven-design/assets/gap-report.md",
+    "skills/model-driven-design/references/foundry-profiles.md",
+    "tasks/CF-authoring-contract-v1-profile-registry.md"
+  ],
+  "validation": "node --test on the four schema test files: 14 pass, 0 skipped, Node 22 with Go 1.27.4 for the generator builds (CI uses Node 24). Go 1.27.4 modeling/gencontract go test -race ok including TestProfileRegistryIsConsistent. node --test tests/project-memory-workflow.test.mjs: 50 pass. tests/test-validate.sh PASS. scripts/validate.sh PASS (skills-ref skipped). Subagent reported lifecycle builderdemo, builderadmission and builderpreflight tests passing; coordinator did not rerun them. Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/model-authoring-contract.yml": {
+      "blob": "4fd749225cf3b58e43d45001e7dfdaf768a48420",
+      "mode": "100644"
+    },
+    "modeling/README.md": {
+      "blob": "29da77024defc1de0029494266886f0ef6e01962",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/process-diagram-v1.schema.json": {
+      "blob": "8e413de651ec0cab5c35602fb24b4e9bba381d96",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/schema.test.cjs": {
+      "blob": "e7a98af1e145d5c71989ba9491604b37b76a9433",
+      "mode": "100644"
+    },
+    "modeling/gencontract/profiles_test.go": {
+      "blob": "65ad0c93d4603b798e633acf225356d889e369e7",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/PROFILE.md": {
+      "blob": "b25720b5ff5ac6909c9fd185b0110dc904cfe6d6",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json": {
+      "blob": "b05250521c364a7891368ce46b2239ad825e4d2e",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/authoring/schema.test.cjs": {
+      "blob": "17380beb079e7a77480c0281d7c105a3661ac001",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "fb1691485bc3979d5c4fc4988e5a1c76ab657610",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "204be0bf3b2d8fa59b7d98ae9f10c8f2a1bebd92",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-v1.schema.json": {
+      "blob": "b1c26050489434da5f1928249ab3dc5e70e63d72",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/schema.test.cjs": {
+      "blob": "7571c794dc21138f6430b7f949bbbca99f7eed50",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/README.md": {
+      "blob": "7c2a5da5d832e0c1d69198d29309951e307da06e",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/SKILL.md": {
+      "blob": "07947f51daf0c85fbcfb91c74c60fc79f9976e91",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/assets/gap-report.md": {
+      "blob": "91d76b4f2d1de3ca0e2ec3a31c8881efc726b0f8",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/references/foundry-profiles.md": {
+      "blob": "73881fd151682530b83531a4b99144c16bcbabd1",
+      "mode": "100644"
+    },
+    "tasks/CF-authoring-contract-v1-profile-registry.md": {
+      "blob": "ddffb88a3911863d8cf10c791da02a1b58265c7f",
+      "mode": "100644"
+    }
+  }
+}

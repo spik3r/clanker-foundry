@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:jsonvalidator:json-boolean:v1:schema",
+  "title": "json-boolean/v1 model",
+  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It does check the exact members of each node shape, property name syntax, at most 128 properties per object and that additionalProperties is true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile", "root"],
+  "properties": {
+    "profile": {"const": "json-boolean/v1"},
+    "root": {"$ref": "#/$defs/node"}
+  },
+  "$defs": {
+    "node": {
+      "description": "One shape of the predicate. Extra input properties are always allowed, so object nodes carry additionalProperties true and nothing else.",
+      "oneOf": [
+        {
+          "description": "A JSON string.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {"type": {"const": "string"}}
+        },
+        {
+          "description": "A JSON boolean, optionally fixed to one value.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {"type": {"const": "boolean"}, "const": {"type": "boolean"}}
+        },
+        {
+          "description": "An array whose every element satisfies items.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "items"],
+          "properties": {"type": {"const": "array"}, "items": {"$ref": "#/$defs/node"}}
+        },
+        {
+          "description": "An object with at most 128 named properties. Names must be unique (Go checks).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "additionalProperties", "properties"],
+          "properties": {
+            "type": {"const": "object"},
+            "additionalProperties": {"const": true},
+            "properties": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "required", "schema"],
+                "properties": {
+                  "name": {"type": "string", "pattern": "^[A-Za-z_$][A-Za-z0-9_$]{0,127}$"},
+                  "required": {"type": "boolean"},
+                  "schema": {"$ref": "#/$defs/node"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
