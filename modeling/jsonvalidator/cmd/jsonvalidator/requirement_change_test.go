@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"fmt"
 	"os"
 	"os/exec"
@@ -51,8 +50,8 @@ func TestGeneratedRequirementChanges(t *testing.T) {
 			t.Fatal(err)
 		}
 		out := filepath.Join(dir, name)
-		command := exec.CommandContext(t.Context(), binary, "-model", modelPath, "-out", out)
-		if output, err := command.CombinedOutput(); err != nil || len(output) != 0 {
+		command := exec.CommandContext(t.Context(), binary, "generate", modelPath, out)
+		if output, err := command.CombinedOutput(); err != nil || !bytes.HasSuffix(output, []byte("\n")) || bytes.Count(output, []byte("\n")) != 1 {
 			t.Fatalf("generate %s: %v\n%s", name, err, output)
 		}
 		if got, err := os.ReadFile(modelPath); err != nil || !bytes.Equal(got, model) {
@@ -64,7 +63,11 @@ func TestGeneratedRequirementChanges(t *testing.T) {
 		}
 		// Tie the CLI files to the source executed by checkGeneratedLiterals.
 		compiled := [][]byte{goSource, tsSource}
-		digest := fmt.Sprintf("%x", sha256.Sum256(model))
+		parsed, err := parseModel(model)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := parsed.canonicalSHA256()
 		declarations := []string{
 			fmt.Sprintf("const ModelSHA256 = %q", digest),
 			fmt.Sprintf("export const MODEL_SHA256 = %q;", digest),
@@ -79,7 +82,7 @@ func TestGeneratedRequirementChanges(t *testing.T) {
 				t.Fatalf("CLI and executed compiler output differ: %s", file)
 			}
 			if !bytes.Contains(actual[i], []byte(declarations[i])) {
-				t.Errorf("%s lacks exact raw-model provenance", file)
+				t.Errorf("%s lacks canonical-model provenance", file)
 			}
 		}
 		for previous, files := range saved {

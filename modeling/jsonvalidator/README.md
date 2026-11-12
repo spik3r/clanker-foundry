@@ -5,17 +5,34 @@ the bounded [JSON boolean profile](PROFILE.md). It is separate from the
 `lifecycle/v1` module and the root shadow npm package. It has no Go module or npm
 runtime dependencies beyond the language runtimes.
 
-The generator takes an explicit model and a new, absent output directory:
+The generator follows the [Foundry generator contract v1](../CONTRACT.md) and
+is registered in the [conformance harness](../gencontract/README.md). It has
+three commands and no flags:
+
+```sh
+jsonvalidator validate MODEL
+jsonvalidator generate MODEL OUT
+jsonvalidator check MODEL OUT
+```
+
+`generate` needs a new, absent `OUT` whose parent exists. `check` compares `OUT`
+with what `generate` would write, prints `drift:` lines on stderr and exits 3 on
+a difference. It never writes. The old `-model ... -out ...` form is removed and
+is a usage error (exit 2).
 
 ```sh
 GOTOOLCHAIN=local GOPROXY=off go run ./cmd/jsonvalidator \
-  -model testdata/sample/model.json -out /tmp/new-validator-output
+  generate testdata/sample/model.json /tmp/new-validator-output
 ```
 
-Use a fresh destination. The command writes `validator.go` and `validator.ts`.
+The output holds `validator.go`, `validator.ts` and `foundry-manifest.json`.
 Go exposes package `validator`, `Validate(value any) bool` and `ModelSHA256`.
 TypeScript exposes `validate(value: unknown): boolean` and `MODEL_SHA256`.
-The hash identifies the exact input model bytes, not a canonical semantic form.
+Both constants carry the canonical model digest defined in
+[PROFILE.md](PROFILE.md), not a hash of the input bytes. Models that differ only
+in JSON whitespace, member order or property order share the digest and produce
+identical files. The identity line printed on success also gives `sourceSHA256`,
+the hash of the exact input bytes.
 The generated code does not read files, fetch data or require this generator at
 runtime. A consumer can check in the generated TypeScript without adding a
 browser package dependency.
@@ -36,9 +53,12 @@ GOTOOLCHAIN=local GOPROXY=off go vet ./...
 node verify/typescript.mjs
 output=$(mktemp -d)
 GOTOOLCHAIN=local GOPROXY=off go run ./cmd/jsonvalidator \
-  -model testdata/sample/model.json -out "$output/generated"
+  generate testdata/sample/model.json "$output/generated"
 diff -u testdata/sample/validator.go "$output/generated/validator.go"
 diff -u testdata/sample/validator.ts "$output/generated/validator.ts"
+diff -u testdata/sample/foundry-manifest.json "$output/generated/foundry-manifest.json"
+GOTOOLCHAIN=local GOPROXY=off go run ./cmd/jsonvalidator \
+  check testdata/sample/model.json "$output/generated"
 ```
 
 The synthetic sample has 46 literal cases: 12 accepted and 34 refused. Both
@@ -55,7 +75,7 @@ The maintained requirement-change regression follows one synthetic boolean field
 from optional to required to required-and-true. Eleven fixed literals per revision
 execute in both emitted languages, including the values each change must refuse
 and behavior that must stay unchanged. The real CLI output is checked against
-that executed source and each model's exact hash. Earlier outputs stay unchanged;
+that executed source and each model's canonical digest. Earlier outputs stay unchanged;
 restoring the original model must reproduce both original output files byte for
 byte. This producer regression is not consumer acceptance.
 
@@ -70,8 +90,9 @@ the lifecycle module's workflow to cover a new directory.
 
 ## Output and adoption boundaries
 
-Unsupported model input refuses before creating the output directory. An
-existing destination, including a symlink, is refused without overwriting it.
+Unsupported model input refuses before creating the output directory (exit 2).
+An existing destination, including a symlink, or a missing parent is refused
+(exit 2) without overwriting it.
 A later filesystem failure can leave a newly created partial directory; output
 writes are not transactional. Regenerate into a temporary directory and compare
 bytes rather than using generation as an in-place overwrite operation.

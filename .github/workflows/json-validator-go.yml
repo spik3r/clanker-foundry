@@ -51,7 +51,9 @@ jobs:
       - name: Check generated drift without overwriting saved output
         run: |
           output=$(mktemp -d)
-          go run ./cmd/jsonvalidator -model testdata/sample/model.json -out "$output/generated"
+          go run ./cmd/jsonvalidator generate testdata/sample/model.json "$output/generated"
           diff -u testdata/sample/validator.go "$output/generated/validator.go"
           diff -u testdata/sample/validator.ts "$output/generated/validator.ts"
+          diff -u testdata/sample/foundry-manifest.json "$output/generated/foundry-manifest.json"
+          go run ./cmd/jsonvalidator check testdata/sample/model.json "$output/generated"
           git diff --exit-code

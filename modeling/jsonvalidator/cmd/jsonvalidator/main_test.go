@@ -8,7 +8,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
+	"slices"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -45,149 +48,313 @@ func TestDeterminismAndSavedOutput(t *testing.T) {
 	}
 }
 
-func TestCLI(t *testing.T) {
+func buildCLI(t *testing.T) string {
+	t.Helper()
 	// Build the real entry point: go run would replace the program's exit status.
 	binary := filepath.Join(t.TempDir(), "jsonvalidator.exe")
 	build := exec.CommandContext(t.Context(), filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-o", binary, ".")
 	if output, err := build.CombinedOutput(); err != nil {
 		t.Fatalf("build CLI: %v\n%s", err, output)
 	}
+	return binary
+}
+
+// runCLI runs the binary and returns its exit code, stdout and stderr.
+func runCLI(t *testing.T, binary string, args ...string) (int, string, string) {
+	t.Helper()
+	command := exec.CommandContext(t.Context(), binary, args...)
+	var stdout, stderr bytes.Buffer
+	command.Stdout, command.Stderr = &stdout, &stderr
+	exit := 0
+	if err := command.Run(); err != nil {
+		var exitError *exec.ExitError
+		if !errors.As(err, &exitError) {
+			t.Fatalf("run CLI: %v", err)
+		}
+		exit = exitError.ExitCode()
+	}
+	return exit, stdout.String(), stderr.String()
+}
+
+func TestCLI(t *testing.T) {
+	binary := buildCLI(t)
 	model, err := filepath.Abs("../../testdata/sample/model.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	run := func(t *testing.T, args []string, wantExit int, wantError string) {
+	modelBytes, err := os.ReadFile(model)
+	if err != nil {
+		t.Fatal(err)
+	}
+	l, err := parseModel(modelBytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantLine := l.identityLine()
+	// fail runs a command that must exit with code, print nothing on stdout and
+	// name the diagnostic on stderr.
+	fail := func(t *testing.T, code int, diagnostic string, args ...string) {
 		t.Helper()
-		command := exec.CommandContext(t.Context(), binary, args...)
-		var stdout, stderr bytes.Buffer
-		command.Stdout, command.Stderr = &stdout, &stderr
-		err := command.Run()
-		exit := 0
-		if err != nil {
-			var exitError *exec.ExitError
-			if !errors.As(err, &exitError) {
-				t.Fatalf("run CLI: %v", err)
-			}
-			exit = exitError.ExitCode()
+		exit, stdout, stderr := runCLI(t, binary, args...)
+		if exit != code {
+			t.Errorf("exit = %d, want %d; stderr: %s", exit, code, stderr)
 		}
-		if exit != wantExit {
-			t.Errorf("exit = %d, want %d; stderr: %s", exit, wantExit, &stderr)
+		if stdout != "" {
+			t.Errorf("unexpected stdout: %s", stdout)
 		}
-		if stdout.Len() != 0 {
-			t.Errorf("unexpected stdout: %s", &stdout)
-		}
-		if wantExit == 0 && stderr.Len() != 0 {
-			t.Errorf("unexpected stderr: %s", &stderr)
-		} else if wantExit != 0 && (stderr.Len() == 0 || !strings.Contains(stderr.String(), wantError)) {
-			t.Errorf("stderr = %q, want a diagnostic containing %q", stderr.String(), wantError)
+		if stderr == "" || !strings.Contains(stderr, diagnostic) {
+			t.Errorf("stderr = %q, want a diagnostic containing %q", stderr, diagnostic)
 		}
 	}
-	for _, form := range []string{"flags", "reversed-equals", "empty-terminator"} {
-		t.Run(form, func(t *testing.T) {
-			out := filepath.Join(t.TempDir(), "generated")
-			args := []string{"-model", model, "-out", out}
-			if form == "reversed-equals" {
-				args = []string{"-out=" + out, "-model=" + model}
-			} else if form == "empty-terminator" {
-				args = append(args, "--")
-			}
-			run(t, args, 0, "")
-			entries, err := os.ReadDir(out)
-			if err != nil || len(entries) != 2 {
-				t.Fatalf("generated directory: entries = %v, err = %v", entries, err)
-			}
-			for _, name := range []string{"validator.go", "validator.ts"} {
-				got, err := os.ReadFile(filepath.Join(out, name))
-				if err != nil {
-					t.Fatal(err)
-				}
-				want, err := os.ReadFile(filepath.Join("../../testdata/sample", name))
-				if err != nil {
-					t.Fatal(err)
-				}
-				if !bytes.Equal(got, want) {
-					t.Errorf("CLI generated drift in %s", name)
-				}
-			}
-		})
-	}
-	for _, name := range []string{
-		"missing-both", "missing-model", "missing-out", "empty-model", "empty-out",
-		"unknown-flag", "missing-flag-value", "leading-positional", "between-flags",
-		"trailing-positional", "after-terminator", "positionals-only",
-	} {
-		t.Run(name, func(t *testing.T) {
-			out := filepath.Join(t.TempDir(), "generated")
-			args := []string{"-model", model, "-out", out}
-			diagnostic := "use -model MODEL -out NEW_DIRECTORY"
-			switch name {
-			case "missing-both":
-				args = nil
-			case "missing-model":
-				args = []string{"-out", out}
-			case "missing-out":
-				args = []string{"-model", model}
-			case "empty-model":
-				args = []string{"-model=", "-out", out}
-			case "empty-out":
-				args = []string{"-model", model, "-out="}
-			case "unknown-flag":
-				args = append(args, "-unknown")
-				diagnostic = "flag provided but not defined: -unknown"
-			case "missing-flag-value":
-				args = []string{"-model", model, "-out"}
-				diagnostic = "flag needs an argument: -out"
-			case "leading-positional":
-				args = append([]string{"extra"}, args...)
-			case "between-flags":
-				args = []string{"-model", model, "extra", "-out", out}
-			case "trailing-positional":
-				args = append(args, "extra")
-			case "after-terminator":
-				args = append(args, "--", "extra")
-			case "positionals-only":
-				args = []string{model, out}
-			}
-			run(t, args, 2, diagnostic)
-			if _, err := os.Lstat(out); !os.IsNotExist(err) {
-				t.Errorf("usage error created output: %v", err)
-			}
-		})
-	}
-	for _, name := range []string{"missing-model-file", "invalid-model"} {
-		t.Run(name, func(t *testing.T) {
-			dir := t.TempDir()
-			input, out := filepath.Join(dir, "model.json"), filepath.Join(dir, "generated")
-			if name == "invalid-model" {
-				if err := os.WriteFile(input, []byte("null"), 0600); err != nil {
-					t.Fatal(err)
-				}
-			}
-			run(t, []string{"-model", input, "-out", out}, 1, "")
-			if _, err := os.Lstat(out); !os.IsNotExist(err) {
-				t.Errorf("input error created output: %v", err)
-			}
-		})
-	}
-	t.Run("existing-output", func(t *testing.T) {
-		out := t.TempDir()
-		for _, name := range []string{"validator.go", "validator.ts", "keep.txt"} {
-			if err := os.WriteFile(filepath.Join(out, name), []byte("keep "+name), 0600); err != nil {
-				t.Fatal(err)
-			}
+	absent := func(t *testing.T, path string) {
+		t.Helper()
+		if _, err := os.Lstat(path); !os.IsNotExist(err) {
+			t.Errorf("%s exists: %v", path, err)
 		}
-		run(t, []string{"-model", model, "-out", out}, 1, out)
+	}
+	t.Run("validate", func(t *testing.T) {
+		exit, stdout, stderr := runCLI(t, binary, "validate", model)
+		if exit != 0 || stdout != wantLine || stderr != "" {
+			t.Errorf("exit %d stdout %q stderr %q, want line %q", exit, stdout, stderr, wantLine)
+		}
+	})
+	t.Run("generate-and-check", func(t *testing.T) {
+		out := filepath.Join(t.TempDir(), "generated")
+		exit, stdout, stderr := runCLI(t, binary, "generate", model, out)
+		if exit != 0 || stdout != wantLine || stderr != "" {
+			t.Fatalf("generate: exit %d stdout %q stderr %q", exit, stdout, stderr)
+		}
 		entries, err := os.ReadDir(out)
 		if err != nil || len(entries) != 3 {
-			t.Fatalf("existing directory changed: entries = %v, err = %v", entries, err)
+			t.Fatalf("generated directory: entries = %v, err = %v", entries, err)
 		}
-		for _, name := range []string{"validator.go", "validator.ts", "keep.txt"} {
+		for _, name := range []string{"validator.go", "validator.ts", "foundry-manifest.json"} {
 			got, err := os.ReadFile(filepath.Join(out, name))
-			if err != nil || string(got) != "keep "+name {
-				t.Errorf("existing %s changed: data = %q, err = %v", name, got, err)
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := os.ReadFile(filepath.Join("../../testdata/sample", name))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(got, want) {
+				t.Errorf("CLI generated drift in %s", name)
+			}
+		}
+		exit, stdout, stderr = runCLI(t, binary, "check", model, out)
+		if exit != 0 || stdout != wantLine || stderr != "" {
+			t.Errorf("check: exit %d stdout %q stderr %q", exit, stdout, stderr)
+		}
+	})
+	t.Run("usage", func(t *testing.T) {
+		out := filepath.Join(t.TempDir(), "generated")
+		for name, args := range map[string][]string{
+			"none":              nil,
+			"old-flags":         {"-model", model, "-out", out},
+			"old-flags-equals":  {"-model=" + model, "-out=" + out},
+			"unknown-verb":      {"build", model, out},
+			"help":              {"--help"},
+			"validate-no-model": {"validate"},
+			"validate-extra":    {"validate", model, out},
+			"generate-no-out":   {"generate", model},
+			"generate-extra":    {"generate", model, out, "extra"},
+			"check-no-out":      {"check", model},
+			"flag-after-verb":   {"generate", "-x", model, out},
+		} {
+			t.Run(name, func(t *testing.T) {
+				fail(t, 2, "usage:", args...)
+				absent(t, out)
+			})
+		}
+	})
+	t.Run("missing-model", func(t *testing.T) {
+		dir := t.TempDir()
+		input, out := filepath.Join(dir, "none.json"), filepath.Join(dir, "generated")
+		fail(t, 2, "cannot open model", "validate", input)
+		fail(t, 2, "cannot open model", "generate", input, out)
+		fail(t, 2, "cannot open model", "check", input, out)
+		absent(t, out)
+	})
+	t.Run("invalid-model", func(t *testing.T) {
+		dir := t.TempDir()
+		input, out := filepath.Join(dir, "model.json"), filepath.Join(dir, "generated")
+		for _, data := range []string{"", "null", "{}", "[]", `{"profile":"json-boolean/v1","root":`} {
+			if err := os.WriteFile(input, []byte(data), 0600); err != nil {
+				t.Fatal(err)
+			}
+			fail(t, 2, "invalid model", "validate", input)
+			fail(t, 2, "invalid model", "generate", input, out)
+			fail(t, 2, "invalid model", "check", input, out)
+			absent(t, out)
+		}
+	})
+	t.Run("existing-output", func(t *testing.T) {
+		dir := t.TempDir()
+		keep := filepath.Join(dir, "keep")
+		if err := os.Mkdir(keep, 0700); err != nil {
+			t.Fatal(err)
+		}
+		file := filepath.Join(dir, "file")
+		if err := os.WriteFile(file, []byte("keep file"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		link := filepath.Join(dir, "link")
+		if err := os.Symlink(keep, link); err != nil {
+			t.Fatal(err)
+		}
+		empty := filepath.Join(dir, "empty")
+		if err := os.Mkdir(empty, 0700); err != nil {
+			t.Fatal(err)
+		}
+		for _, out := range []string{keep, file, link, empty} {
+			fail(t, 2, "already exists", "generate", model, out)
+		}
+		if got, err := os.ReadFile(file); err != nil || string(got) != "keep file" {
+			t.Errorf("existing file changed: %q, %v", got, err)
+		}
+		for _, d := range []string{keep, empty} {
+			if entries, err := os.ReadDir(d); err != nil || len(entries) != 0 {
+				t.Errorf("existing directory changed: %v, %v", entries, err)
 			}
 		}
 	})
+	t.Run("missing-parent", func(t *testing.T) {
+		out := filepath.Join(t.TempDir(), "no-such-parent", "generated")
+		fail(t, 2, "parent", "generate", model, out)
+		absent(t, filepath.Dir(out))
+	})
+	t.Run("drift", func(t *testing.T) {
+		dir := t.TempDir()
+		out := filepath.Join(dir, "generated")
+		if exit, _, stderr := runCLI(t, binary, "generate", model, out); exit != 0 {
+			t.Fatalf("generate: %d %s", exit, stderr)
+		}
+		driftLines := func(t *testing.T) []string {
+			t.Helper()
+			exit, stdout, stderr := runCLI(t, binary, "check", model, out)
+			if exit != 3 || stdout != "" {
+				t.Fatalf("check: exit %d stdout %q stderr %q", exit, stdout, stderr)
+			}
+			return strings.Split(strings.TrimSuffix(stderr, "\n"), "\n")
+		}
+		// modified
+		if err := os.WriteFile(filepath.Join(out, "validator.ts"), []byte("changed"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		// missing
+		if err := os.Remove(filepath.Join(out, "validator.go")); err != nil {
+			t.Fatal(err)
+		}
+		// unexpected: a file and a directory with contents
+		if err := os.WriteFile(filepath.Join(out, "extra.txt"), nil, 0600); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.MkdirAll(filepath.Join(out, "sub", "deeper"), 0700); err != nil {
+			t.Fatal(err)
+		}
+		got := driftLines(t)
+		sort.Strings(got)
+		want := []string{"drift: missing validator.go", "drift: modified validator.ts", "drift: unexpected extra.txt", "drift: unexpected sub"}
+		if !reflect.DeepEqual(got, want) {
+			t.Errorf("drift lines = %q, want %q", got, want)
+		}
+		// check must not repair anything.
+		if _, err := os.Lstat(filepath.Join(out, "validator.go")); !os.IsNotExist(err) {
+			t.Errorf("check recreated validator.go: %v", err)
+		}
+		if data, _ := os.ReadFile(filepath.Join(out, "validator.ts")); string(data) != "changed" {
+			t.Error("check rewrote validator.ts")
+		}
+		// symlink in place of a file
+		if err := os.Remove(filepath.Join(out, "validator.ts")); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Symlink(filepath.Join(dir, "elsewhere"), filepath.Join(out, "validator.ts")); err != nil {
+			t.Fatal(err)
+		}
+		if got := driftLines(t); !slices.Contains(got, "drift: unexpected validator.ts") {
+			t.Errorf("symlink drift lines = %q", got)
+		}
+		// manifest drift
+		if err := os.WriteFile(filepath.Join(out, "foundry-manifest.json"), []byte("{}"), 0600); err != nil {
+			t.Fatal(err)
+		}
+		if got := driftLines(t); !slices.Contains(got, "drift: modified foundry-manifest.json") {
+			t.Errorf("manifest drift lines = %q", got)
+		}
+		// absent output
+		gone := filepath.Join(dir, "gone")
+		fail(t, 3, "drift: missing .", "check", model, gone)
+		absent(t, gone)
+	})
+}
+
+func TestCanonicalDigestInvariance(t *testing.T) {
+	digest := func(t *testing.T, model string) string {
+		t.Helper()
+		l, err := parseModel([]byte(model))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return l.canonicalSHA256()
+	}
+	base := `{"profile":"json-boolean/v1","root":{"type":"object","additionalProperties":true,"properties":[{"name":"b","required":true,"schema":{"type":"boolean","const":true}},{"name":"a","required":false,"schema":{"type":"array","items":{"type":"string"}}}]}}`
+	want := digest(t, base)
+	same := map[string]string{
+		"whitespace":          "\n{ \"profile\" : \"json-boolean/v1\" ,\n\t\"root\" : { \"type\" : \"object\", \"additionalProperties\" : true, \"properties\" : [ { \"name\" : \"b\", \"required\" : true, \"schema\" : { \"type\" : \"boolean\", \"const\" : true } },\r\n { \"name\" : \"a\", \"required\" : false, \"schema\" : { \"type\" : \"array\", \"items\" : { \"type\" : \"string\" } } } ] } }\n\n",
+		"top-level-key-order": `{"root":{"type":"object","additionalProperties":true,"properties":[{"name":"b","required":true,"schema":{"type":"boolean","const":true}},{"name":"a","required":false,"schema":{"type":"array","items":{"type":"string"}}}]},"profile":"json-boolean/v1"}`,
+		"member-key-order":    `{"profile":"json-boolean/v1","root":{"properties":[{"schema":{"const":true,"type":"boolean"},"required":true,"name":"b"},{"schema":{"items":{"type":"string"},"type":"array"},"name":"a","required":false}],"additionalProperties":true,"type":"object"}}`,
+		"property-order":      `{"profile":"json-boolean/v1","root":{"type":"object","additionalProperties":true,"properties":[{"name":"a","required":false,"schema":{"type":"array","items":{"type":"string"}}},{"name":"b","required":true,"schema":{"type":"boolean","const":true}}]}}`,
+		"escaped-name":        `{"profile":"json-boolean/v1","root":{"type":"object","additionalProperties":true,"properties":[{"name":"b","required":true,"schema":{"type":"boolean","const":true}},{"name":"a","required":false,"schema":{"type":"array","items":{"type":"string"}}}]}}`,
+	}
+	for name, model := range same {
+		if got := digest(t, model); got != want {
+			t.Errorf("%s changed the canonical digest", name)
+		}
+	}
+	different := map[string]string{
+		"required":      strings.Replace(base, `"required":true`, `"required":false`, 1),
+		"const":         strings.Replace(base, `"const":true`, `"const":false`, 1),
+		"const-absent":  strings.Replace(base, `,"const":true`, ``, 1),
+		"name":          strings.Replace(base, `"name":"b"`, `"name":"c"`, 1),
+		"type":          strings.Replace(base, `"items":{"type":"string"}`, `"items":{"type":"boolean"}`, 1),
+		"property-drop": strings.Replace(base, `,{"name":"a","required":false,"schema":{"type":"array","items":{"type":"string"}}}`, ``, 1),
+	}
+	for name, model := range different {
+		if model == base {
+			t.Fatalf("%s: mutation did not apply", name)
+		}
+		if got := digest(t, model); got == want {
+			t.Errorf("%s did not change the canonical digest", name)
+		}
+	}
+}
+
+func TestReorderedPropertiesEmitIdenticalBytes(t *testing.T) {
+	// Nested objects reorder too, so node numbering must follow canonical order.
+	a := `{"profile":"json-boolean/v1","root":{"type":"object","additionalProperties":true,"properties":[{"name":"z","required":true,"schema":{"type":"object","additionalProperties":true,"properties":[{"name":"q","required":true,"schema":{"type":"string"}},{"name":"p","required":false,"schema":{"type":"boolean"}}]}},{"name":"m","required":false,"schema":{"type":"array","items":{"type":"string"}}}]}}`
+	b := `{ "root" : {"properties":[{"schema":{"items":{"type":"string"},"type":"array"},"name":"m","required":false},{"name":"z","required":true,"schema":{"type":"object","properties":[{"name":"p","required":false,"schema":{"type":"boolean"}},{"name":"q","required":true,"schema":{"type":"string"}}],"additionalProperties":true}}],"type":"object","additionalProperties":true}, "profile":"json-boolean/v1"}
+`
+	dir := t.TempDir()
+	var outs []string
+	for i, model := range []string{a, b} {
+		path := filepath.Join(dir, fmt.Sprintf("model%d.json", i))
+		if err := os.WriteFile(path, []byte(model), 0600); err != nil {
+			t.Fatal(err)
+		}
+		out := filepath.Join(dir, fmt.Sprintf("out%d", i))
+		if err := generate(path, out); err != nil {
+			t.Fatal(err)
+		}
+		outs = append(outs, out)
+	}
+	for _, name := range []string{"validator.go", "validator.ts", "foundry-manifest.json"} {
+		x, err1 := os.ReadFile(filepath.Join(outs[0], name))
+		y, err2 := os.ReadFile(filepath.Join(outs[1], name))
+		if err1 != nil || err2 != nil || !bytes.Equal(x, y) {
+			t.Errorf("%s differs between reordered models (%v, %v)", name, err1, err2)
+		}
+	}
 }
 
 func TestSupportedShapes(t *testing.T) {
