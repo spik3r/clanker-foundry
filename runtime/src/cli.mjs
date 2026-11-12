@@ -29,7 +29,7 @@ Demo uses fake workers only. No command publishes, merges, deploys or migrates t
 function fail(code, message = code) { throw Object.assign(new Error(message), { code }); }
 
 function readWire(path) {
-  const fd = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+  const fd = openSync(path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
     const stat = fstatSync(fd);
     if (!stat.isFile() || stat.size > 1_048_576) fail('INVALID_INPUT_FILE');

@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "8376cc468cc3331d346a3faca926c97e44488aac",
+  "id": "CF-runtime-cli-input-file-refusal-v1",
+  "path": "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md",
+  "blob": "22d5672695d984dc466dd6337d98e24b6f0a4055",
+  "record": "---\nid: CF-runtime-cli-input-file-refusal-v1\nstatus: proposed\nowner: Codex runtime CLI maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse special CLI input files before a blocking open\n\n## Implementation claim\n\nThis claim is for the trusted local operator CLI JSON input path only. On\n`origin/main` at `6fbc4a6`, `readWire` in `runtime/src/cli.mjs` opens a path with\n`O_RDONLY | O_NOFOLLOW` before `fstatSync` checks that the descriptor is a regular\nfile. Opening a FIFO with no writer can wait before that check. The shared\n`spawnSync` helper in `runtime/test/cli.test.mjs` has no timeout. This finding is\nfrom source inspection; no FIFO or CLI reproduction was run. It does not claim a\nremote exploit.\n\nThe intended implementation scope is exactly:\n\n- `runtime/src/cli.mjs` — refuse nonregular JSON input paths promptly without\n  weakening symlink refusal; preserve descriptor-based validation and cleanup,\n  strict UTF-8 and JSON handling, the 1 MiB boundary and redacted diagnostics.\n- `runtime/test/cli.test.mjs` — bound CLI subprocess time and cover prompt FIFO\n  and other special-file refusal, a valid regular file, symlink behavior, size\n  boundary and existing invalid-input redaction.\n- This canonical task and new immutable Project Memory source/event files.\n\nDo not change database path handling, worker dispatch, namespace policy,\nruntime artifact or isolation cleanup, installer preflight or Go model intake.\nDo not run an unbounded FIFO probe. Use an isolated worktree and inspect current\nclaims and pull requests again before implementation. Review this published claim\nwith the coordinator before registering its source, recording a genuine start or\nediting implementation files. Any scope expansion needs coordinator review.\n\n## Validation gate\n\nAfter claim review and implementation, use Node 24 or later and the repository's\npinned runtime dependencies. Run bounded focused CLI tests, the runtime suite and\n`scripts/validate.sh`, then whitespace and full committed Project Memory checks.\nIf any test or process restriction remains, record it as unrun rather than\nclaiming a pass. Publish a PR for independent review only after observed checks.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md",
+        "id": "CF-runtime-cli-input-file-refusal-v1",
+        "blob": "22d5672695d984dc466dd6337d98e24b6f0a4055",
+        "status": "proposed"
+      }
+    ],
+    "redirects": []
+  }
+}
