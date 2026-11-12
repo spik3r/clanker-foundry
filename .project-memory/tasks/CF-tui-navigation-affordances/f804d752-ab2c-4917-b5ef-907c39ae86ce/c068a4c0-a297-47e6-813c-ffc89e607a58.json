@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "c068a4c0-a297-47e6-813c-ffc89e607a58",
+  "runId": "f804d752-ab2c-4917-b5ef-907c39ae86ce",
+  "kind": "complete",
+  "parents": [
+    "d77e50e9-633f-4782-839e-3a93a99d5b8b"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-navigation-affordances",
+    "path": "tasks/CF-tui-navigation-affordances-responsive-hints.md",
+    "revision": "8347cff252833a404f94ae11587a5a0182aea4e7",
+    "blob": "a552446da564bd8c5ea3393bd0da4aca0f44de8f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6b664c102f9d13a92b0c8b60061c7235cbd60f6687730c6d6fb1e337eee632e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/responsive-record-browser",
+  "pullRequest": null,
+  "at": "2026-11-12T10:50:50.613Z",
+  "summary": "Generated responsive hints keep open/back and help/quit visible at minimum width",
+  "next": "Independent review and exact-head hosted CI before merge",
+  "files": [
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/RESPONSIVE-INTEGRATION.md",
+    "tasks/CF-tui-navigation-affordances-responsive-hints.md"
+  ],
+  "validation": "Go1.27.4 full compiler and generated acceptance race tests passed; go vet passed; scripts/validate.sh and whitespace passed; old-template regression fails in both model variants; no manual TTY check",
+  "snapshot": {
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "27c849ebac118a67e45f989044a45260096c0bb7",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/browser_test.go.txt": {
+      "blob": "1e1641b0402a660df3cfa090ff8ab06f308e342d",
+      "mode": "100644"
+    },
+    "modeling/tui/RESPONSIVE-INTEGRATION.md": {
+      "blob": "365b38980d117719f5cd69d35ae6c0df671a1fed",
+      "mode": "100644"
+    },
+    "tasks/CF-tui-navigation-affordances-responsive-hints.md": {
+      "blob": "4a3c11f77d1a5f24b01f2643c2ac030c774295fc",
+      "mode": "100644"
+    }
+  }
+}

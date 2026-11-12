@@ -36,3 +36,21 @@ compiler determinism/model tests and both generated acceptance variants with rac
 checks, Go vet, pack validation and committed lifecycle validation. Use patched
 Go 1.27.4. Obtain independent source review before one draft PR and require fresh
 exact-head CI before merge. State unrun interactive TTY checks explicitly.
+
+## Observed validation
+
+Both unchanged-template generated variants failed the new minimum-width hint
+assertion: the list showed only `tab pane ? help q quit`, without Enter/open.
+After the bounded footer change, full compiler/CLI and both generated acceptance
+variants passed race checks on Go 1.27.4. Go vet, whitespace and pack validation
+passed. The optional skills-ref checker was not installed. No interactive TTY or
+private downstream consumer test was run.
+
+The initial genuine start event accidentally encoded the file list as one
+comma-joined path. The source claim above already listed the exact scope. An
+immutable checkpoint records that correction and discloses that tests and the
+guide had been drafted before it; template implementation followed the correction.
+No history or chronology was rewritten.
+
+See the [consumer integration guide](../modeling/tui/RESPONSIVE-INTEGRATION.md).
+Independent review and exact-head hosted checks are still required for merge.
