@@ -7,6 +7,13 @@
       "module": "modeling/gencontract",
       "package": "./cmd/refgen",
       "model": "modeling/gencontract/testdata/reference/model.json"
+    },
+    {
+      "id": "tuic",
+      "profile": "record-browser/v1",
+      "module": "modeling/tui",
+      "package": "./cmd/tuic",
+      "model": "modeling/tui/examples/browser.json"
     }
   ]
 }

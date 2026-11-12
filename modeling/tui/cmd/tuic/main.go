@@ -1,70 +1,96 @@
-// tuic emits a new importable record-browser package from a reviewed JSON model.
+// tuic turns a reviewed JSON model into a record-browser package, following
+// Foundry generator contract v1.
+//
+//	tuic validate MODEL
+//	tuic generate MODEL OUT
+//	tuic check MODEL OUT
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
-	"sort"
 
 	tui "github.com/spik3r/clanker-foundry/modeling/tui"
 )
 
-func run(args []string) error {
-	if len(args) != 2 {
-		return fmt.Errorf("usage: tuic MODEL.json NEW_OUTPUT_DIRECTORY")
+const (
+	exitFailure = 1
+	exitRefused = 2
+	exitDrift   = 3
+)
+
+const usage = "usage: tuic validate MODEL | generate MODEL OUT | check MODEL OUT"
+
+type refusal string
+
+func (r refusal) Error() string { return string(r) }
+
+func main() {
+	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
+}
+
+// run returns the exit code. Stdout is written only on success.
+func run(args []string, stdout, stderr io.Writer) int {
+	line, drift, err := dispatch(args)
+	switch {
+	case err != nil:
+		fmt.Fprintf(stderr, "tuic: %v\n", err)
+		var r refusal
+		var me tui.ModelError
+		if errors.As(err, &r) || errors.As(err, &me) ||
+			errors.Is(err, tui.ErrOutExists) || errors.Is(err, tui.ErrNoParent) {
+			return exitRefused
+		}
+		return exitFailure
+	case len(drift) > 0:
+		for _, d := range drift {
+			fmt.Fprintln(stderr, d)
+		}
+		return exitDrift
 	}
-	f, err := os.Open(args[0])
+	fmt.Fprint(stdout, line)
+	return 0
+}
+
+func dispatch(args []string) (line string, drift []string, err error) {
+	switch {
+	case len(args) == 2 && args[0] == "validate":
+		res, err := load(args[1])
+		return res.Identity, nil, err
+	case len(args) == 3 && args[0] == "generate":
+		res, err := load(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		if err := tui.Write(args[2], res.Files); err != nil {
+			return "", nil, err
+		}
+		return res.Identity, nil, nil
+	case len(args) == 3 && args[0] == "check":
+		res, err := load(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		drift, err := tui.Drift(res.Files, args[2])
+		if err != nil || len(drift) > 0 {
+			return "", drift, err
+		}
+		return res.Identity, nil, nil
+	}
+	return "", nil, refusal(usage)
+}
+
+func load(path string) (tui.Result, error) {
+	f, err := os.Open(path)
 	if err != nil {
-		return err
+		return tui.Result{}, refusal("cannot open model: " + err.Error())
 	}
 	defer f.Close()
 	raw, err := io.ReadAll(io.LimitReader(f, tui.MaxModelBytes+1))
 	if err != nil {
-		return err
+		return tui.Result{}, refusal("cannot read model: " + err.Error())
 	}
-	model, err := tui.Decode(raw)
-	if err != nil {
-		return err
-	}
-	files, err := tui.Compile(model)
-	if err != nil {
-		return err
-	}
-	// Mkdir fails on any existing path, including a symlink. Never overwrite a host app.
-	if err := os.Mkdir(args[1], 0755); err != nil {
-		return err
-	}
-	names := make([]string, 0, len(files))
-	for name := range files {
-		names = append(names, name)
-	}
-	sort.Strings(names)
-	for _, name := range names {
-		// Every path is compiler-owned; models cannot choose output paths.
-		path := filepath.Join(args[1], name)
-		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-			return fmt.Errorf("partial output at %s: %w", args[1], err)
-		}
-		out, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
-		if err != nil {
-			return fmt.Errorf("partial output at %s: %w", args[1], err)
-		}
-		_, writeErr := out.Write(files[name])
-		closeErr := out.Close()
-		if writeErr != nil {
-			return fmt.Errorf("partial output at %s: %w", args[1], writeErr)
-		}
-		if closeErr != nil {
-			return fmt.Errorf("partial output at %s: %w", args[1], closeErr)
-		}
-	}
-	return nil
-}
-func main() {
-	if err := run(os.Args[1:]); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
+	return tui.Build(raw)
 }

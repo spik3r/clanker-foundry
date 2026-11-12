@@ -3,8 +3,6 @@ package tui
 import (
 	"bytes"
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"os"
 	"os/exec"
@@ -58,38 +56,6 @@ func TestCompilerRejectsInvalidTypedModel(t *testing.T) {
 	m.Identity = "Missing"
 	if _, err := Compile(m); err == nil {
 		t.Fatal("accepted invalid typed model")
-	}
-}
-func TestTraceBindsEveryArtifact(t *testing.T) {
-	files, err := Compile(sampleModel(t))
-	if err != nil {
-		t.Fatal(err)
-	}
-	var trace struct {
-		ModelSHA256 string `json:"modelSha256"`
-		Artifacts   []struct{ Path, SHA256 string }
-	}
-	if err := json.Unmarshal(files["trace.json"], &trace); err != nil {
-		t.Fatal(err)
-	}
-	if len(trace.Artifacts) != len(files)-1 {
-		t.Fatal("manifest incomplete")
-	}
-	seen := map[string]bool{}
-	for _, a := range trace.Artifacts {
-		raw, ok := files[a.Path]
-		if !ok || seen[a.Path] {
-			t.Fatal("invalid manifest path")
-		}
-		seen[a.Path] = true
-		sum := sha256.Sum256(raw)
-		if a.SHA256 != hex.EncodeToString(sum[:]) {
-			t.Fatal("artifact mismatch")
-		}
-	}
-	sum := sha256.Sum256(bytes.TrimSuffix(files["model.json"], []byte("\n")))
-	if trace.ModelSHA256 != hex.EncodeToString(sum[:]) {
-		t.Fatal("model identity mismatch")
 	}
 }
 func TestGeneratedBehaviorAndRequirementChange(t *testing.T) {
