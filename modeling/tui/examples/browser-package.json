@@ -1,0 +1,20 @@
+{
+ "formatVersion": "tui-json/v1",
+ "profileVersion": "record-browser/v1",
+ "id": "ServerBrowser",
+ "title": "Servers",
+ "fields": [
+  {"id": "ID", "label": "Identifier"},
+  {"id": "Name", "label": "Name"},
+  {"id": "Description", "label": "Description"},
+  {"id": "Status", "label": "Status"}
+ ],
+ "identity": "ID",
+ "summary": "Name",
+ "details": ["Name", "Status", "Description"],
+ "listLabel": "Records",
+ "detailLabel": "Details",
+ "layout": {"narrowWidth": 24, "narrowHeight": 6, "wideWidth": 80, "wideHeight": 12, "listWidth": 28},
+ "emit": {"mode": "package", "package": "mcpbrowser"},
+ "detailText": "wrap"
+}

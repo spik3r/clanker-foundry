@@ -1,4 +1,4 @@
-package recordbrowser
+package [[[.PackageName]]]
 
 import (
 	"fmt"
@@ -83,7 +83,7 @@ func (s state) normalize(d data, p layout) state {
 		}
 		s.listLines, s.detailLines = len(d.items), 0
 		if idx >= 0 {
-			s.detailLines = len(d.items[idx].details)
+			s.detailLines = detailCount(d.items[idx].details, p)
 		}
 	}
 	if p.variant != tiny {
@@ -143,7 +143,7 @@ func (b browser) update(a action, p layout) browser {
 		s.focus = listPane
 	default:
 		if s.focus == detailPane {
-			s.detailOffset = scroll(s.detailOffset, a, len(b.data.items[idx].details), p.contentRows)
+			s.detailOffset = scroll(s.detailOffset, a, detailCount(b.data.items[idx].details, p), p.contentRows)
 		} else {
 			next := idx
 			switch a {

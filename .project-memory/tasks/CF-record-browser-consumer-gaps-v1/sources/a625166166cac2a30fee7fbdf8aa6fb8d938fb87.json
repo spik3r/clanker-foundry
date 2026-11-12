@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a625166166cac2a30fee7fbdf8aa6fb8d938fb87",
+  "id": "CF-record-browser-consumer-gaps-v1",
+  "path": "tasks/CF-record-browser-consumer-gaps-v1-package-and-wrap.md",
+  "blob": "027149a5b519f6ac120401f01c72c78bcd7ba165",
+  "record": "---\nid: CF-record-browser-consumer-gaps-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Close record-browser gaps found by the first consumer review\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is gap-driven\nprofile work under steps 4 and 5 of the\n[generator pipeline plan](../docs/generator-pipeline-plan.md). The owner named\na consumer application; a read-only review of it on 12 November 2026 found\nthree gaps that block using a generated browser inside an application module.\n\nScope, all under `modeling/tui/`: an optional `emit` model member whose package\nmode emits only an importable Go package with a model-chosen validated package\nname; an optional `detailText` member whose wrap mode shows long and multi-line\ndetail values in full; and documentation of the Go versions the generator and\nits output actually require. Generator version becomes 1.1.0. A model without\nthe new members keeps its canonical digest. Also this task record and new\nimmutable Project Memory files.\n\nExclusions: no change to the consumer application, to the profile's fixed key\ncontract, to the contract text, the harness, the registry or other generators.\nEmbedding inside a host page shell, typed fields and list search remain open\ngaps.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/tui`, `go test -race`\nin `modeling/gencontract` and `modeling/foundrygen`, the repository validator,\nwhitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-record-browser-consumer-gaps-v1-package-and-wrap.md",
+        "id": "CF-record-browser-consumer-gaps-v1",
+        "blob": "027149a5b519f6ac120401f01c72c78bcd7ba165",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

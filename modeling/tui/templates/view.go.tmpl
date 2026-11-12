@@ -1,4 +1,4 @@
-package recordbrowser
+package [[[.PackageName]]]
 
 import (
 	"fmt"
@@ -152,7 +152,7 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		}
 		listTitle += fmt.Sprintf(" %d/%d", idx+1, len(labels))
 		list := panel(listTitle, labels, s.listOffset, idx, t)
-		details := panel(detailTitle, b.data.items[idx].details, s.detailOffset, -1, t)
+		details := panel(detailTitle, detailRows(b.data.items[idx].details, p), s.detailOffset, -1, t)
 		if p.variant == wide {
 			list.Width = p.listWidth
 			body = &flexgo.Node{Flex: 1, Dir: flexgo.Row, Gap: p.gap, Background: t.background(), Children: []*flexgo.Node{list, details}}

@@ -17,12 +17,16 @@ import (
 //go:embed templates/*
 var sources embed.FS
 
+// moduleOnly lists the template outputs that exist only in module mode.
+var moduleOnly = map[string]bool{"go.mod": true, "go.sum": true, "demo_main.go": true}
+
 // Compile emits an importable package, never runs it, and never performs I/O.
 // Details retain presentation order; declarations are normalized by field ID.
 func Compile(m Model) (map[string][]byte, error) {
 	if err := m.Validate(); err != nil {
 		return nil, err
 	}
+	m = m.canonical()
 	m.Fields = append([]Field(nil), m.Fields...)
 	sort.Slice(m.Fields, func(i, j int) bool { return m.Fields[i].ID < m.Fields[j].ID })
 	canonical, err := json.MarshalIndent(m, "", "  ")
@@ -38,6 +42,9 @@ func Compile(m Model) (map[string][]byte, error) {
 	}
 	for _, entry := range entries {
 		name := strings.TrimSuffix(entry.Name(), ".tmpl")
+		if m.PackageMode() && moduleOnly[name] {
+			continue
+		}
 		if name == "demo_main.go" {
 			name = "cmd/demo/main.go"
 		}

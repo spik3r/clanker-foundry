@@ -1,4 +1,11 @@
-package recordbrowser
+package [[[.PackageName]]]
+
+import (
+	"strings"
+	"unicode"
+
+	"github.com/charmbracelet/x/ansi"
+)
 
 type variant int
 
@@ -41,4 +48,97 @@ func plan(width, height int) layout {
 
 func clampOffset(offset, lines, rows int) int {
 	return min(max(0, offset), max(0, lines-rows))
+}
+
+// wrapDetails is set by the model's detailText member. When false, every detail
+// line is one clipped row and the helpers below return the lines unchanged.
+const (
+	wrapDetails  = [[[.Wrap]]]
+	maxWrapLines = 4096
+)
+
+// detailRows returns the rows shown in the detail pane for the current layout.
+func detailRows(details []string, p layout) []string {
+	if !wrapDetails || p.variant == tiny {
+		return details
+	}
+	return wrapRows(details, p.detailWidth)
+}
+
+// detailCount is the number of detail rows at the current layout. Below the
+// minimum size nothing is drawn or scrolled, so the unwrapped count is used.
+func detailCount(details []string, p layout) int {
+	if !wrapDetails || p.variant == tiny {
+		return len(details)
+	}
+	return len(wrapRows(details, p.detailWidth))
+}
+
+// wrapRows sanitizes each value like theme.line does, splits it on newlines and
+// wraps each line to width cells. It returns at most maxWrapLines rows, then a
+// final "… truncated" row.
+func wrapRows(details []string, width int) []string {
+	if width <= 0 {
+		return nil
+	}
+	var rows []string
+	for _, detail := range details {
+		text := ansi.Strip(strings.ToValidUTF8(detail, "�"))
+		for _, part := range strings.Split(text, "\n") {
+			part = strings.Map(func(r rune) rune {
+				if unicode.IsControl(r) {
+					return ' '
+				}
+				return r
+			}, part)
+			var ok bool
+			if rows, ok = wrapPart(rows, part, width); !ok {
+				return append(rows, "… truncated")
+			}
+		}
+	}
+	return rows
+}
+
+// wrapPart appends the rows of one line. Breaks fall at spaces when the row has
+// one, else between grapheme clusters; a cluster is never split. It reports
+// false when the row limit is reached.
+func wrapPart(rows []string, s string, width int) ([]string, bool) {
+	added := 0
+	emit := func(line string) bool {
+		if len(rows) >= maxWrapLines {
+			return false
+		}
+		rows = append(rows, strings.TrimRight(line, " "))
+		added++
+		return true
+	}
+	start, i, cur, space := 0, 0, 0, -1
+	for i < len(s) {
+		cluster, w := ansi.FirstGraphemeCluster(s[i:], ansi.GraphemeWidth)
+		if cur+w > width && i > start {
+			end := i
+			if cluster != " " && space > start {
+				end = space
+			}
+			if !emit(s[start:end]) {
+				return rows, false
+			}
+			next := end
+			for next < len(s) && s[next] == ' ' {
+				next++
+			}
+			start, i, cur, space = next, next, 0, -1
+			continue
+		}
+		if cluster == " " && i > start {
+			space = i
+		}
+		cur += w
+		i += len(cluster)
+	}
+	if start < len(s) || added == 0 {
+		return rows, emit(s[start:])
+	}
+	return rows, true
 }

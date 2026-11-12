@@ -1,0 +1,45 @@
+{
+  "formatVersion": 2,
+  "eventId": "464d7728-5714-4865-93de-df5f4af38750",
+  "runId": "1ff02cb1-94ca-46db-8702-bc3f52afd9d8",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-consumer-gaps-v1",
+    "path": "tasks/CF-record-browser-consumer-gaps-v1-package-and-wrap.md",
+    "revision": "a625166166cac2a30fee7fbdf8aa6fb8d938fb87",
+    "blob": "027149a5b519f6ac120401f01c72c78bcd7ba165",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "aa6bdb6ab1cc172046f9253b9bc02ceff513880ac3b2e47755ccddc7d20955e9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T14:32:52.707Z",
+  "summary": "Add package emit mode and wrapped detail text to record-browser; document Go versions",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/wrap_test.go.txt",
+    "modeling/tui/compiler.go",
+    "modeling/tui/compiler_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-package.json",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/model.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-consumer-gaps-v1-package-and-wrap.md"
+  ]
+}
