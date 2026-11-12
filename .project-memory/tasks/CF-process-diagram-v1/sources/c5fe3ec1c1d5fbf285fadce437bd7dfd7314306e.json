@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "c5fe3ec1c1d5fbf285fadce437bd7dfd7314306e",
+  "id": "CF-process-diagram-v1",
+  "path": "tasks/CF-process-diagram-v1-bpmn-style-generator.md",
+  "blob": "774ab7e6558b58e561b6834c6ae9a64be281038a",
+  "record": "---\nid: CF-process-diagram-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add a BPMN-style process-diagram generator\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff and of the rendered\npictures. This is the first profile of step 4b in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md), requested by the\nrepository owner on 12 November 2026.\n\nScope: a new Go module `modeling/diagram/` with the `diagramgen` command and\nthe `process-diagram/v1` profile. A model lists lanes, start and end events,\ntasks, exclusive and parallel gateways and sequence flows, with no coordinates.\nThe generator emits an inert SVG, BPMN 2.0 XML with diagram coordinates, the\ncanonical model and the contract manifest, using a fixed layout algorithm. Also\nthree example models with committed output, a profile document, an authoring\nschema, a `diagram-model-go` CI workflow with its entry in the workflow\ninventory test, a registry entry in `modeling/gencontract/generators.json`,\nthis task record and new immutable Project Memory files.\n\nExclusions: class, sequence and dashboard profiles; reading BPMN; any claim of\nBPMN conformance beyond the listed emitted elements; the lifecycle process\nview; other generators, the harness code and the contract text.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/diagram` and\n`modeling/gencontract`, the workflow inventory test, the repository validator,\nwhitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-process-diagram-v1-bpmn-style-generator.md",
+        "id": "CF-process-diagram-v1",
+        "blob": "774ab7e6558b58e561b6834c6ae9a64be281038a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

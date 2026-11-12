@@ -1,0 +1,139 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "process-diagram/v1",
+  "id": "Fulfilment",
+  "title": "Parallel fulfilment",
+  "lanes": [
+    {
+      "id": "Sales",
+      "label": "Sales"
+    },
+    {
+      "id": "Warehouse",
+      "label": "Warehouse"
+    },
+    {
+      "id": "Finance",
+      "label": "Finance"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Dispatch",
+      "kind": "task",
+      "label": "Hand over to carrier",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Done",
+      "kind": "end",
+      "label": "Order complete",
+      "lane": "Sales"
+    },
+    {
+      "id": "Invoice",
+      "kind": "task",
+      "label": "Issue invoice",
+      "lane": "Finance"
+    },
+    {
+      "id": "Join",
+      "kind": "parallel",
+      "label": "All done",
+      "lane": "Sales"
+    },
+    {
+      "id": "Notify",
+      "kind": "task",
+      "label": "Tell customer the order is being prepared",
+      "lane": "Sales"
+    },
+    {
+      "id": "Pack",
+      "kind": "task",
+      "label": "Pack parcel",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Pick",
+      "kind": "task",
+      "label": "Pick items",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Plan",
+      "kind": "task",
+      "label": "Plan fulfilment",
+      "lane": "Sales"
+    },
+    {
+      "id": "Split",
+      "kind": "parallel",
+      "label": "Start in parallel",
+      "lane": "Sales"
+    },
+    {
+      "id": "Start",
+      "kind": "start",
+      "label": "Order confirmed",
+      "lane": "Sales"
+    }
+  ],
+  "flows": [
+    {
+      "id": "F01",
+      "from": "Start",
+      "to": "Plan"
+    },
+    {
+      "id": "F02",
+      "from": "Plan",
+      "to": "Split"
+    },
+    {
+      "id": "F03",
+      "from": "Split",
+      "to": "Pick"
+    },
+    {
+      "id": "F04",
+      "from": "Split",
+      "to": "Invoice"
+    },
+    {
+      "id": "F05",
+      "from": "Split",
+      "to": "Notify"
+    },
+    {
+      "id": "F06",
+      "from": "Pick",
+      "to": "Pack"
+    },
+    {
+      "id": "F07",
+      "from": "Pack",
+      "to": "Join"
+    },
+    {
+      "id": "F08",
+      "from": "Invoice",
+      "to": "Join"
+    },
+    {
+      "id": "F09",
+      "from": "Notify",
+      "to": "Join"
+    },
+    {
+      "id": "F10",
+      "from": "Join",
+      "to": "Dispatch"
+    },
+    {
+      "id": "F11",
+      "from": "Dispatch",
+      "to": "Done"
+    }
+  ]
+}
