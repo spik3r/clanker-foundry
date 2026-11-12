@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "8bca0e1d5c7e000bc8a8ecf9c73f65c4065ecf0c",
+  "id": "CF-flexgo-tui-v1",
+  "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+  "blob": "1dff7884c6b8121a15ccfd5732116847141c088c",
+  "record": "---\nid: CF-flexgo-tui-v1\nstatus: in-progress\nowner: Foundry Flexgo implementation\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Compile a bounded record-browser model to Flexgo\n\n## Implementation claim\n\nThe Foundry Flexgo implementation owns `modeling/tui/`, its dedicated CI workflow,\nand a link from the current workflow guide. Build a strict semantic profile for a\nread-only record browser, deterministic Go source generation using the existing\npublic responsive-browser proposal, and independent acceptance checks. The model\nselects typed record fields, identity, summary and ordered details, labels, and\nexplicit responsive breakpoints. Applications supply records; models cannot run\ncommands, access files or inject source code. Preserve selection, focus, scrolling\nand captive help across resize and data replacement.\n\nThe first result must compile and exercise a generated browser, including a model\nchange without hand-editing generated output. This is a bounded prototype, not a\ngeneral UI language or a released Flexgo component API. Do not change private\napplication sources, Flexgo core, existing lifecycle profiles, or unrelated work.\n\n## Checks\n\nRun focused model/compiler tests, generated behavior acceptance tests, formatting,\nGo vet, repository validation and committed project-memory validation. Keep\nunrun terminal visual checks explicit. Publish a draft PR; do not merge or deploy.\n\n## Coordinator closeout claim\n\nOwner: Foundry maintenance coordinator, for this integration record only. The\nimplementation owner and claim above remain historical provenance. Reviewed base:\n`6fbc4a6b3accd558188dd2444e47e29d21894211`. Local branch:\n`fix/tui-reload-offsets-20261111`.\n\nRecord the already merged PR107 outcome and release only its completed bounded\nimplementation scope. Writable paths are this task record and new immutable\nsource/event files for `CF-flexgo-tui-v1`. Do not change code, tests, other task\nrecords, previous snapshots/events or legacy ledger bytes in this closeout run.\nIndependently review this claim before committing its source, register that exact\nsource, and record a genuine start before changing status or adding the result.\nCheck current main, PR107 integration and visible competing work, then run pack,\nwhitespace and committed Project Memory validation. Any follow-on maintenance\nneeds a separate reviewed claim and start; this closeout grants no runtime,\nprovider, production or deployment authority.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+        "id": "CF-flexgo-tui-v1",
+        "blob": "1dff7884c6b8121a15ccfd5732116847141c088c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

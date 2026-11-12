@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ecac36e1c088e7847ea0533ee192276318f2e751",
+  "id": "CF-runtime-cli-bounded-read-v1",
+  "path": "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md",
+  "blob": "892a4dfe83e5a7219beba6a39b9b12d05eb6f32b",
+  "record": "---\nid: CF-runtime-cli-bounded-read-v1\nstatus: proposed\nowner: Foundry runtime CLI maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bound runtime CLI input reads\n\n## Implementation claim\n\nBase: `origin/main` at `30756603f16f3e4fe9216c40389d6d0df024218a`.\nThis is a proposed, bounded follow-up for the trusted local CLI. Review this\nclaim before registering a Project Memory source or starting implementation.\nRecheck main, live claims and open pull requests before implementation.\n\n`runtime/src/cli.mjs` checks a JSON input file's size with `fstatSync`, then\ncalls `readFileSync(fd)` and checks the returned length. A regular file can grow\nbetween the stat and the read. In that case the CLI may read more than its\n1,048,576-byte limit before rejecting it. A finite local probe with an owned\nscratch file observed a zero-byte stat followed by a 2 MiB read after growth.\nThis is a pre-existing P3 resource-bound issue, not a remote exploit or a\nblocker for the separate CLI special-file refusal pull request.\n\nLimit descriptor reads to at most 1,048,577 bytes, including the byte needed\nto detect an over-limit file. Keep the regular-file check, existing open flags,\ndescriptor cleanup, strict UTF-8 decoding, JSON parsing and redacted CLI error\nbehavior. Reject over-limit data without reading the rest of the file. Keep the\npublic CLI interface stable.\n\nImplementation scope is `runtime/src/cli.mjs` and `runtime/test/cli.test.mjs`,\nplus this canonical claim and new immutable Project Memory source and event\nfiles required by the repository workflow. Tests should cover an empty file,\nshort reads, exactly 1,048,576 bytes, one byte above the limit, growth after\nthe stat, a read failure with descriptor cleanup, and multibyte UTF-8 near the\nlimit. Use finite owned files and bounded subprocesses; do not use an unbounded\nproducer or a blocking special file as a fixture.\n\nPull request #110 also touches `runtime/src/cli.mjs`. Its FIFO open behavior is\noutside this claim. Do not copy, replace or merge its changes here. Review the\nsame-file interaction against the then-current base before publishing an\nimplementation pull request.\n\nAcceptance: run the focused CLI tests, `npm test --prefix runtime`,\n`scripts/validate.sh`, `git diff --check`, and the Project Memory validation\nrequired for the committed implementation diff. Record observed results in a\ncompletion event. This claim grants no authority to merge, deploy, activate an\norchestration namespace, dispatch workers or change repository protection.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md",
+        "id": "CF-runtime-cli-bounded-read-v1",
+        "blob": "892a4dfe83e5a7219beba6a39b9b12d05eb6f32b",
+        "status": "proposed"
+      }
+    ],
+    "redirects": []
+  }
+}

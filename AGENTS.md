@@ -101,7 +101,11 @@ skill name matches directory, `name`/`description` frontmatter present, lowercas
 names, `SKILL.md` under 500 lines, a `README.md` per skill, nonempty model mappings,
 shell syntax, pointer files, and every relative Markdown link in tracked or unignored
 untracked Markdown. It also runs `skills-ref validate` when that tool is installed. CI
-runs the validator and installer regression tests on every push and pull request.
+runs the validator and installer regression tests on pull requests, pushes to
+`main`, all tag pushes and manual runs. Other branch pushes wait for a pull
+request. New runs in the same workflow/PR group cancel earlier runs; main, tag
+and manual runs remain separate, including reruns. A PR rerun also joins its
+PR group, so cancellation does not guarantee newest-commit ordering.
 
 For runtime changes, use Node 24 or later, install pinned dependencies with
 `npm ci --prefix runtime --ignore-scripts`, and run `npm test --prefix runtime`.
@@ -111,9 +115,9 @@ ownership or authority to publish, merge or deploy.
 
 Run `node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs`
 when changing the lifecycle helper or its CI integration.
-The separate `project-memory` CI job runs these regressions on pushes, pull
-requests and manual runs. On pull requests it also validates the full committed
-diff against the PR base; locally, use `node
+The separate `project-memory` CI job runs these regressions on pull requests,
+pushes to `main`, all tag pushes and manual runs. On pull requests it also
+validates the full committed diff against the PR base; locally, use `node
 skills/project-memory/scripts/project-memory.mjs validate --base origin/main
 --repository spik3r/clanker-foundry --source-repository spik3r/clanker-foundry`
 after committing. A workflow check blocks merges only if the repository owner

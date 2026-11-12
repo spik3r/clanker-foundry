@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "070b9da1-e61f-4203-af6f-eef362300816",
+  "runId": "c9d32853-9683-4a6c-b18b-e27a0da0081d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-ci-scheduling-v1",
+    "path": "tasks/CF-ci-scheduling-v1-deduplicate-pr-runs.md",
+    "revision": "dd1cb32d9940dcf382b94e28910ffaa262ece3b3",
+    "blob": "aa4bd4486b308df8e327fe767601e491c44d57b6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d4fecd4a048a7ee8819e67c0f97fdc067ddf3a2e2ea1704650ab5665e407ae27"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/ci-scheduling-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T13:11:50.137Z",
+  "summary": "Scope CI push triggers to main and all tags; cancel superseded PR runs only while preserving every job and permission",
+  "next": "Freeze regression expectations and reproduce old workflow failures before implementing schedule headers",
+  "files": [
+    ".github/workflows/json-validator-go.yml",
+    ".github/workflows/model-authoring-contract.yml",
+    ".github/workflows/model-lifecycle-go.yml",
+    ".github/workflows/orchestration.yml",
+    ".github/workflows/project-memory-conformance.yml",
+    ".github/workflows/tui-model-go.yml",
+    ".github/workflows/validate.yml",
+    "tests/project-memory-workflow.test.mjs",
+    "AGENTS.md",
+    "docs/getting-started.md",
+    "skills/project-memory/README.md",
+    "tasks/CF-ci-scheduling-v1-deduplicate-pr-runs.md"
+  ]
+}

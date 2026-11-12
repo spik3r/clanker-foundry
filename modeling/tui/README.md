@@ -65,8 +65,16 @@ Record IDs must be unique and nonempty. A snapshot allows at most 4,096 records,
 
 Replacement preserves an existing selected ID after reordering; removal selects
 the first new record. Empty ready data clears selection. Loading and failed
-snapshots retain the previous identity for a later ready snapshot. The host must
-store the returned model. There are no demo fixture-switch keys in the package.
+snapshots retain the previous identity, focus and scroll positions for a later
+ready snapshot. A same-size reload preserves valid positions. During loading or
+failure, supported resizes clamp list/detail offsets against the last ready
+snapshot's row counts, not any records supplied with a status snapshot. The
+browser retains those counts, not the old record content. Expanding and then
+shrinking cannot restore a clamped detail offset; a ready list can still advance
+its offset as needed to show the selected record. Tiny viewports freeze offsets.
+A new ready snapshot refreshes the counts, and an empty snapshot or removed
+selected ID clears the old positions. The host must store the returned model.
+There are no demo fixture-switch keys in the package.
 
 ## Files and provenance
 

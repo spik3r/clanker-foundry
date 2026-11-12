@@ -1,0 +1,92 @@
+{
+  "formatVersion": 2,
+  "eventId": "b39a4d4d-84ae-42be-a354-2908e80a877f",
+  "runId": "c9d32853-9683-4a6c-b18b-e27a0da0081d",
+  "kind": "complete",
+  "parents": [
+    "070b9da1-e61f-4203-af6f-eef362300816"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-ci-scheduling-v1",
+    "path": "tasks/CF-ci-scheduling-v1-deduplicate-pr-runs.md",
+    "revision": "dd1cb32d9940dcf382b94e28910ffaa262ece3b3",
+    "blob": "aa4bd4486b308df8e327fe767601e491c44d57b6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d4fecd4a048a7ee8819e67c0f97fdc067ddf3a2e2ea1704650ab5665e407ae27"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/ci-scheduling-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T13:27:08.812Z",
+  "summary": "Scoped seven CI schedules and preserved nine jobs and permissions; separately sourced historical fixture prerequisite resolves current-instruction drift",
+  "next": "Validate committed diff and publish qualified draft; fresh independent source review and exact-head hosted CI before integration lead Ready or merge",
+  "files": [
+    ".github/workflows/json-validator-go.yml",
+    ".github/workflows/model-authoring-contract.yml",
+    ".github/workflows/model-lifecycle-go.yml",
+    ".github/workflows/orchestration.yml",
+    ".github/workflows/project-memory-conformance.yml",
+    ".github/workflows/tui-model-go.yml",
+    ".github/workflows/validate.yml",
+    "tests/project-memory-workflow.test.mjs",
+    "AGENTS.md",
+    "docs/getting-started.md",
+    "skills/project-memory/README.md",
+    "tasks/CF-ci-scheduling-v1-deduplicate-pr-runs.md"
+  ],
+  "validation": "Frozen workflow38/38 after old-header28 failures; combined memory/workflow/conformance262/262; runtime321/321 after task-local nested npm cache correction; authoring2/2; parsed YAML7 and63 trigger cases; nine schedule mutations caught; job and permission bytes match base; repository/47 model-map/92 path/shared-base/preflight checks pass; Go1.27.4 vet and format pass but exact1.27.3 lifecycle/modelc checks unavailable; GNU Stow, ShellCheck, actionlint and optional skills-ref unavailable; no live tag/manual/fork/cancellation or savings evidence",
+  "snapshot": {
+    ".github/workflows/json-validator-go.yml": {
+      "blob": "cb7fc44cd4bae81ef03f3dc722f5340c18d5eabb",
+      "mode": "100644"
+    },
+    ".github/workflows/model-authoring-contract.yml": {
+      "blob": "881224c9e7cf20342f505336f884d1110a54acb4",
+      "mode": "100644"
+    },
+    ".github/workflows/model-lifecycle-go.yml": {
+      "blob": "9fe318db1db7f287a7dc04d08d72933f0f007fef",
+      "mode": "100644"
+    },
+    ".github/workflows/orchestration.yml": {
+      "blob": "d9fd2d660fb168032002178abc0b71cd49f6cff7",
+      "mode": "100644"
+    },
+    ".github/workflows/project-memory-conformance.yml": {
+      "blob": "44ac2774fd671756cd0d9dcc8558c52374c11247",
+      "mode": "100644"
+    },
+    ".github/workflows/tui-model-go.yml": {
+      "blob": "4d4b7e65fb7df994c01e13b6ea3b091e12d75ec1",
+      "mode": "100644"
+    },
+    ".github/workflows/validate.yml": {
+      "blob": "e28112ea5bd7573ac9009a7cf116d95bdb162267",
+      "mode": "100644"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "5cad8eb5cc2bf2372587826ff03a737470874323",
+      "mode": "100644"
+    },
+    "AGENTS.md": {
+      "blob": "5839c68ffe7216517fbe75c0a7dc891556d6dad4",
+      "mode": "100644"
+    },
+    "docs/getting-started.md": {
+      "blob": "e60aee887da09ddedba4af5820db7ace2b77735c",
+      "mode": "100644"
+    },
+    "skills/project-memory/README.md": {
+      "blob": "ad46c2c95506fe3d53df9506d9ba3890c4f8136a",
+      "mode": "100644"
+    },
+    "tasks/CF-ci-scheduling-v1-deduplicate-pr-runs.md": {
+      "blob": "2fba7cf4e523decfbb9677c36ce04847f3904761",
+      "mode": "100644"
+    }
+  }
+}

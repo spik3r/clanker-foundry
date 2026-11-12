@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "f8ba7ff5-cbb1-4c6e-9793-a005e52620b0",
+  "runId": "5ebb1e3f-319c-4adb-a889-820ba6e8e872",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-builder-fixture-inputs-v1",
+    "path": "tasks/CF-builder-fixture-inputs-v1-historical-instructions.md",
+    "revision": "4b7691ac9df28eaa829969c200905d2cfc077877",
+    "blob": "81915aa04567c84fa6c9f86e22984522771f8a5f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "eca651cf1c65125ed6b0b8ad650e178152631a122da464950f796e14d66f6606"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/ci-scheduling-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T13:22:52.068Z",
+  "summary": "Isolate historical root instructions as test data while preserving fixed manifest pins and current-source refusals",
+  "next": "Copy exact historical snapshot, freeze supplementary expectations and reproduce old fixture failures before redirecting either fixture reader",
+  "files": [
+    "modeling/lifecycle/builderdemo/testdata/AGENTS-882b5002.txt",
+    "modeling/lifecycle/builderdemo/testdata/README.md",
+    "modeling/lifecycle/builderdemo/prepare_test.go",
+    "modeling/lifecycle/cmd/modelbuilderdemo/main_test.go",
+    "tasks/CF-builder-fixture-inputs-v1-historical-instructions.md"
+  ]
+}

@@ -19,7 +19,7 @@ export function importReviewedTask({ source, spec, reviewedBy, expectedRepositor
   requireInput(source.id === spec.task_id, 'TASK_ID_MISMATCH');
   requireInput(repositories(source.record).includes(spec.repository.repository_id), 'REPOSITORY_MISMATCH');
   const meta = frontmatter(source.record);
-  requireInput(!['done', 'closed', 'cancelled'].includes(meta.status), 'SOURCE_NOT_ACTIONABLE');
+  requireInput(!['done', 'closed', 'cancelled', 'complete', 'completed'].includes(meta.status), 'SOURCE_NOT_ACTIONABLE');
   const claims = claimSections(source.record);
   requireInput(claims.size === 1, 'SELECT_ONE_SOURCE_CLAIM');
   const [claim] = claims.values();

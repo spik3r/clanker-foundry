@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "fe761c48-b022-4de0-9450-f17807be78a2",
+  "runId": "5e15dbb2-a49b-4f81-b81f-693440fe90e0",
+  "kind": "complete",
+  "parents": [
+    "60f34c1a-60b8-47fb-90ec-538fd214689f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-cli-bounded-read-v1",
+    "path": "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md",
+    "revision": "ecac36e1c088e7847ea0533ee192276318f2e751",
+    "blob": "892a4dfe83e5a7219beba6a39b9b12d05eb6f32b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "92376311bf045aa9f388af8fe27bd6ae306d91165f1f11a88e903e4fd857a2c7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-cli-bounded-read-v1",
+  "pullRequest": null,
+  "at": "2026-11-11T13:29:14.573Z",
+  "summary": "Capped regular-file descriptor reads at 1,048,577 bytes; focused regression proves finite read and cleanup behavior",
+  "next": "Commit evidence and implementation, validate committed diff, publish draft PR for review",
+  "files": [
+    "runtime/src/cli.mjs",
+    "runtime/test/cli.test.mjs"
+  ],
+  "validation": "Focused CLI tests: 5 passed. Full runtime tests: 322 passed with writable copied npm cache. Repository validator: pass (optional skills-ref unavailable). git diff --check and staged diff --check: pass. Independent full-diff review: no remaining findings. Disposable negative control on original main: new test failed as expected after reading 2,097,152 bytes.",
+  "snapshot": {
+    "runtime/src/cli.mjs": {
+      "blob": "638adc628ca15ee645fb30887eaa1f1f6aae14db",
+      "mode": "100644"
+    },
+    "runtime/test/cli.test.mjs": {
+      "blob": "691579b3e72bc9ae42b0ac33d60f04f9df8b1bcc",
+      "mode": "100644"
+    }
+  }
+}

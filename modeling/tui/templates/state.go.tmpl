@@ -36,6 +36,9 @@ type state struct {
 	focus                               pane
 	listOffset, detailOffset, helpOffset int
 	helpOpen                            bool
+
+	// Last Ready extents let status displays clamp without retaining record content.
+	listLines, detailLines int
 }
 
 type browser struct {
@@ -69,8 +72,8 @@ func (s state) selectedIndex(d data) int {
 }
 
 func (s state) normalize(d data, p layout) state {
+	idx := s.selectedIndex(d)
 	if d.status == ready {
-		idx := s.selectedIndex(d)
 		if idx < 0 {
 			s.selectedID = ""
 			s.listOffset, s.detailOffset = 0, 0
@@ -78,17 +81,21 @@ func (s state) normalize(d data, p layout) state {
 				s.selectedID, idx = d.items[0].id, 0
 			}
 		}
-		if p.variant != tiny && idx >= 0 {
-			s.listOffset = clampOffset(s.listOffset, len(d.items), p.contentRows)
+		s.listLines, s.detailLines = len(d.items), 0
+		if idx >= 0 {
+			s.detailLines = len(d.items[idx].details)
+		}
+	}
+	if p.variant != tiny {
+		s.listOffset = clampOffset(s.listOffset, s.listLines, p.contentRows)
+		s.detailOffset = clampOffset(s.detailOffset, s.detailLines, p.contentRows)
+		if idx >= 0 {
 			if idx < s.listOffset {
 				s.listOffset = idx
 			} else if idx >= s.listOffset+p.contentRows {
 				s.listOffset = idx - p.contentRows + 1
 			}
-			s.detailOffset = clampOffset(s.detailOffset, len(d.items[idx].details), p.contentRows)
 		}
-	}
-	if p.variant != tiny {
 		s.helpOffset = clampOffset(s.helpOffset, len(helpLines(s, d)), p.contentRows)
 	}
 	return s

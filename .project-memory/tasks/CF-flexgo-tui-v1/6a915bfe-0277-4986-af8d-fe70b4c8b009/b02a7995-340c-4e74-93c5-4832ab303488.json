@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "b02a7995-340c-4e74-93c5-4832ab303488",
+  "runId": "6a915bfe-0277-4986-af8d-fe70b4c8b009",
+  "kind": "start",
+  "parents": [
+    "26c8bc0b-07e3-441b-8b08-274b3c3efd58"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-flexgo-tui-v1",
+    "path": "tasks/CF-flexgo-tui-v1-model-compiler.md",
+    "revision": "8bca0e1d5c7e000bc8a8ecf9c73f65c4065ecf0c",
+    "blob": "1dff7884c6b8121a15ccfd5732116847141c088c",
+    "claim": {
+      "heading": "Coordinator closeout claim",
+      "digest": "51caeb4c82a81c2097dcd3cb1a1b7db7c66b0aa4f42b1fd4a2eaccb6b21cd5a5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "fix/tui-reload-offsets-20261111",
+  "pullRequest": null,
+  "at": "2026-11-11T12:18:19.035Z",
+  "summary": "Record verified PR107 integration and release its completed implementation scope",
+  "next": "Close canonical task, validate metadata and preserve immutable implementation history",
+  "files": [
+    "tasks/CF-flexgo-tui-v1-model-compiler.md"
+  ]
+}

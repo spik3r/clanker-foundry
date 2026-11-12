@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "74a7cafa-2660-49cf-8202-7ba8099039f2",
+  "runId": "88ea70a6-dbdc-4593-b244-091c0dcdc215",
+  "kind": "complete",
+  "parents": [
+    "ee10cf57-c257-4412-b375-61971e21d28e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-cli-bounded-read-v1",
+    "path": "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md",
+    "revision": "ecac36e1c088e7847ea0533ee192276318f2e751",
+    "blob": "892a4dfe83e5a7219beba6a39b9b12d05eb6f32b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "92376311bf045aa9f388af8fe27bd6ae306d91165f1f11a88e903e4fd857a2c7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-cli-bounded-read-v1",
+  "pullRequest": null,
+  "at": "2026-11-11T13:31:07.563Z",
+  "summary": "Recorded tested implementation handoff and covered canonical claim, CLI source and tests for PR review",
+  "next": "Commit full-scope evidence, validate against main, and publish draft PR",
+  "files": [
+    "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md",
+    "runtime/src/cli.mjs",
+    "runtime/test/cli.test.mjs"
+  ],
+  "validation": "Focused CLI tests: 5 passed. Full runtime tests: 322 passed using copied writable npm cache. Disposable original-main negative control: new test failed on 2,097,152-byte read. Repository validator and whitespace checks passed. Independent full-diff review found no remaining issue.",
+  "snapshot": {
+    "tasks/CF-runtime-cli-bounded-read-v1-descriptor-limit.md": {
+      "blob": "f3df89584fdf29d5b24a77d4e783888ff7b004a7",
+      "mode": "100644"
+    },
+    "runtime/src/cli.mjs": {
+      "blob": "638adc628ca15ee645fb30887eaa1f1f6aae14db",
+      "mode": "100644"
+    },
+    "runtime/test/cli.test.mjs": {
+      "blob": "691579b3e72bc9ae42b0ac33d60f04f9df8b1bcc",
+      "mode": "100644"
+    }
+  }
+}
