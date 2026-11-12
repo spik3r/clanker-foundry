@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a983157ff37e6febc84029db8a4faa37f8946b05",
+  "id": "CF-generator-contract-lifecycle-v1",
+  "path": "tasks/CF-generator-contract-lifecycle-v1-lifecyclegen.md",
+  "blob": "9d6c1d646923c85b1bdb4a788a6d700fcc3bf497",
+  "record": "---\nid: CF-generator-contract-lifecycle-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add a contract-conforming lifecycle generator command\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is part 4 of step 1\nin the [generator pipeline plan](../docs/generator-pipeline-plan.md).\n\nScope: a new command `modeling/lifecycle/cmd/lifecyclegen` with the contract's\n`validate`, `generate` and `check` commands over an explicit model path and\noutput directory, its tests and a README beside it. Output is the existing\ncompiler and view bytes with the contract header line added to the two Go files,\nplus the contract manifest and no `trace.json`. `lifecyclegen` joins\n`modeling/gencontract/generators.json`. Also this task record and new immutable\nProject Memory files.\n\nThe plan named `modelc` for this part. The coordinator chose a separate command\ninstead: `modelc validate` with no argument is a working legacy command and a\nusage error under the contract, and one binary cannot be both without depending\non the current directory.\n\nExclusions: no change to `modelc`, to `modeling/lifecycle/generated/`, to the\nlifecycle README, which is hash-pinned by an existing test, to the compiler,\ncanonical, format, model or view packages, or to any other lifecycle command.\n\nChecks: gofmt, `go vet` and the full `go test` in `modeling/lifecycle`,\n`go test -race` in `modeling/gencontract`, the repository validator, whitespace\ncheck and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-contract-lifecycle-v1-lifecyclegen.md",
+        "id": "CF-generator-contract-lifecycle-v1",
+        "blob": "9d6c1d646923c85b1bdb4a788a6d700fcc3bf497",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

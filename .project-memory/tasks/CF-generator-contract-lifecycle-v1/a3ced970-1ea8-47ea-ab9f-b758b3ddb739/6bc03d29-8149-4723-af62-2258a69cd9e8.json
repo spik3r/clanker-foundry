@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "6bc03d29-8149-4723-af62-2258a69cd9e8",
+  "runId": "a3ced970-1ea8-47ea-ab9f-b758b3ddb739",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-lifecycle-v1",
+    "path": "tasks/CF-generator-contract-lifecycle-v1-lifecyclegen.md",
+    "revision": "a983157ff37e6febc84029db8a4faa37f8946b05",
+    "blob": "9d6c1d646923c85b1bdb4a788a6d700fcc3bf497",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c01cca41eced87f6219092b08effaa5dc75b1d71e860ca7036ddceee00dc61cc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:56:19.607Z",
+  "summary": "Add lifecyclegen with contract v1 commands and register it",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "modeling/gencontract/generators.json",
+    "modeling/lifecycle/cmd/lifecyclegen/README.md",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main_test.go",
+    "tasks/CF-generator-contract-lifecycle-v1-lifecyclegen.md"
+  ]
+}
