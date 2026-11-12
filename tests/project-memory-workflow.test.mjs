@@ -24,7 +24,7 @@ const step = (name) => {
 };
 
 const workflowNames = [
-  'json-validator-go', 'model-authoring-contract', 'model-lifecycle-go',
+  'generator-contract', 'json-validator-go', 'model-authoring-contract', 'model-lifecycle-go',
   'orchestration', 'project-memory-conformance', 'tui-model-go', 'validate',
 ];
 const groupExpression = "${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}-{1}', github.run_id, github.run_attempt) }}";

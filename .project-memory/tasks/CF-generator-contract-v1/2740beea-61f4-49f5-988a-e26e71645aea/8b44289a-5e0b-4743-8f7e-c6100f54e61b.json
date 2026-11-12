@@ -1,0 +1,43 @@
+{
+  "formatVersion": 2,
+  "eventId": "8b44289a-5e0b-4743-8f7e-c6100f54e61b",
+  "runId": "2740beea-61f4-49f5-988a-e26e71645aea",
+  "kind": "start",
+  "parents": [
+    "0c6ee58c-e5e3-4617-b8af-229f41bc5580"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-v1",
+    "path": "tasks/CF-generator-contract-v1-conformance-harness.md",
+    "revision": "f5941b5e83743709cb52a4506d1dc29f1d28d728",
+    "blob": "470f975246c374523f92aad08db8cef428237a6d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9b98f75e3f7f1e77a1d15c7594bb559e5404d9a4f18c73eda0d7b550abb9754f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:34:26.542Z",
+  "summary": "Add the new workflow to the maintained workflow inventory test, which hosted CI showed failing",
+  "next": "Complete",
+  "files": [
+    ".github/workflows/generator-contract.yml",
+    "modeling/CONTRACT.md",
+    "modeling/gencontract/README.md",
+    "modeling/gencontract/cmd/refgen/fault_off.go",
+    "modeling/gencontract/cmd/refgen/fault_on.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/main_test.go",
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/generators.json",
+    "modeling/gencontract/go.mod",
+    "modeling/gencontract/testdata/reference/model.json",
+    "tasks/CF-generator-contract-v1-conformance-harness.md",
+    "tests/project-memory-workflow.test.mjs"
+  ]
+}

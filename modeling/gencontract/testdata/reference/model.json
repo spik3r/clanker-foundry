@@ -1,0 +1,5 @@
+{
+  "profile": "reference/v1",
+  "name": "Greetings",
+  "items": ["world", "hello", "again"]
+}

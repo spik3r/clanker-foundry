@@ -1,0 +1,155 @@
+# Foundry generator contract v1
+
+Contract identifier: `foundry-generator/v1`.
+
+A generator is an ordinary program that turns one reviewed model into files.
+This contract fixes how every Foundry generator is invoked, what it writes and
+how its output is checked for drift. It says nothing about what a profile means;
+each profile documents that in its own `PROFILE.md`.
+
+The [conformance harness](gencontract/README.md) drives a built generator from
+its command line and reports every violation it can observe. Generators do not
+import shared code. A generator is conforming when it is listed in the
+[registry](gencontract/generators.json) and the harness reports no finding.
+
+## Commands
+
+`GEN` is the generator binary. `MODEL` is a path to one model file. `OUT` is an
+output directory path.
+
+| Command | Reads | Writes | Success |
+| --- | --- | --- | --- |
+| `GEN validate MODEL` | `MODEL` | nothing | exit 0, identity line on stdout |
+| `GEN generate MODEL OUT` | `MODEL` | a new `OUT` | exit 0, identity line on stdout |
+| `GEN check MODEL OUT` | `MODEL`, `OUT` | nothing | exit 0, identity line on stdout |
+
+Each command takes exactly the arguments shown and no flags. A generator may
+keep older invocations for compatibility; those are outside this contract.
+
+### Identity line
+
+On success stdout is exactly one line: a JSON object with these four string
+members in this order, no extra whitespace, then a newline.
+
+```json
+{"contract":"foundry-generator/v1","profile":"example/v1","sourceSHA256":"<64 hex>","canonicalSHA256":"<64 hex>"}
+```
+
+`sourceSHA256` is the SHA-256 of the exact `MODEL` bytes. `canonicalSHA256` is
+defined under [Model identity](#model-identity). Hashes are lowercase hex.
+
+### Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| 0 | The command succeeded. |
+| 1 | An I/O or internal failure. Output may be partial; the diagnostic says so. |
+| 2 | Refused: wrong usage, a missing, unreadable, invalid or unsupported model, or an `OUT` that already exists. Nothing was written. |
+| 3 | `check` only: `OUT` differs from what the model generates. |
+
+On any nonzero exit stdout is empty and stderr carries at least one diagnostic
+line.
+
+### generate
+
+`OUT` must not exist. An existing file, directory (even empty) or symlink at
+`OUT` is refused with exit 2 and left untouched. The parent of `OUT` must exist;
+a missing parent is also refused with exit 2. A generator emits no empty
+directory.
+The generator creates `OUT`, writes every emitted file, and writes the manifest
+last. An invalid model is refused before `OUT` is created.
+
+### check
+
+`check` computes in memory exactly what `generate` would write and compares it
+with `OUT`. It passes only when every expected file, including the manifest, is
+a regular file with identical bytes, every directory is a real directory, and
+`OUT` holds nothing else. On drift it exits 3 and writes one stderr line per
+differing path, relative to `OUT` with `/` separators:
+
+```text
+drift: missing PATH
+drift: modified PATH
+drift: unexpected PATH
+```
+
+The lines may come in any order. A symlink or other nonregular entry is
+`unexpected`. An unexpected directory is reported once; its contents are not
+listed. A missing `OUT` is drift,
+reported as `drift: missing .`. `check` never writes or repairs anything.
+
+## Model identity
+
+Each profile defines a canonical encoding of the normalized model.
+`canonicalSHA256` is the SHA-256 of that encoding. Two model files that differ
+only in ways the profile declares insignificant share a canonical digest.
+Insignificant JSON whitespace is always insignificant.
+
+Emitted bytes depend only on the canonical model and the generator version.
+They do not depend on the model's source bytes, file name or location, the
+output path, the time, the environment, the host or iteration order. Any change
+that alters emitted bytes for any model requires a new generator version.
+
+## Manifest
+
+Every output directory has `foundry-manifest.json` at its root:
+
+```json
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "example/v1",
+  "generator": {
+    "id": "examplegen",
+    "version": "1.0.0",
+    "toolchain": "go1.27.4"
+  },
+  "model": {
+    "canonicalSHA256": "<64 hex>"
+  },
+  "files": [
+    {
+      "path": "dir/file.go",
+      "sha256": "<64 hex>",
+      "bytes": 123
+    }
+  ]
+}
+```
+
+- The bytes are UTF-8 JSON with two-space indentation, members in the order
+  shown, no HTML escaping and one trailing newline.
+- `files` lists every emitted file except the manifest, sorted by `path` in
+  byte order. There is at least one. Paths are relative, use `/`, and have no
+  empty, `.` or `..` segment.
+- `generator.id` is lowercase letters, digits and hyphens. `version` is three
+  dot-separated decimal numbers. `toolchain` is a constant in the generator
+  source naming the toolchain it was qualified with; it is not detected at run
+  time.
+- The manifest is an integrity record. It is not an approval, a signature or
+  evidence that anything was tested.
+
+## Generated file header
+
+Every emitted file whose name ends in `.go` or `.ts` begins with this line:
+
+```text
+// Code generated by <id> <version> from model <canonicalSHA256>. DO NOT EDIT.
+```
+
+Other files are covered by the manifest alone. To change generated code, change
+the model or the generator and regenerate.
+
+## Isolation
+
+A generator reads `MODEL` and, for `check`, `OUT`. It opens no network
+connection, starts no process and never executes what it emits. A model cannot
+choose output paths, import paths or source text beyond what its profile
+validates. The harness runs generators with an emptied environment, but review
+of the generator source establishes these properties; the harness cannot.
+
+## Limits of conformance
+
+A conforming generator is repeatable and its output is checkable for drift.
+Conformance does not show that a model is the right design, that generated code
+behaves correctly, or that anyone reviewed either. Those remain the job of
+independent expectations and review.
