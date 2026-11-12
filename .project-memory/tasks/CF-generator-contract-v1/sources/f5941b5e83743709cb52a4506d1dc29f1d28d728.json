@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f5941b5e83743709cb52a4506d1dc29f1d28d728",
+  "id": "CF-generator-contract-v1",
+  "path": "tasks/CF-generator-contract-v1-conformance-harness.md",
+  "blob": "470f975246c374523f92aad08db8cef428237a6d",
+  "record": "---\nid: CF-generator-contract-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Define generator contract v1 and its conformance harness\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by supervised\nsubagents and coordinator review of every diff. This is part 1 of step 1 in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md), accepted by the\nrepository owner on 12 November 2026.\n\nScope: a written contract in `modeling/CONTRACT.md`; a new Go module\n`modeling/gencontract/` holding a black-box conformance harness, a small\nreference generator and tests that show the harness detects each class of\nviolation; a registry of conforming generators that starts with the reference\ngenerator only; and a new `generator-contract` CI workflow. Also this task\nrecord and new immutable Project Memory files.\n\nExclusions: no change to `modeling/lifecycle/`, `modeling/jsonvalidator/`,\n`modeling/tui/`, the runtime, skills or existing workflows. Bringing each\nexisting generator into conformance is a separate task and claim.\n\nChecks: gofmt, `go vet` and `go test -race` in the new module, the repository\nvalidator, whitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-contract-v1-conformance-harness.md",
+        "id": "CF-generator-contract-v1",
+        "blob": "470f975246c374523f92aad08db8cef428237a6d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
