@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "a28dec90-eb02-458b-8ac1-2e90e0763413",
+  "runId": "db3b5d65-5ace-4ce3-a530-51f828dacddd",
+  "kind": "start",
+  "parents": [
+    "05d5c678-d4c8-4458-b333-4c8d7ef5f766"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-12T21:17:52.354Z",
+  "summary": "Verify complete source and implementation scope including canonical claim",
+  "next": "Complete full source evidence",
+  "files": [
+    "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "modeling/diagram/dashboardbind/bind.go",
+    "modeling/diagram/dashboardbind/bind_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/bind_test.go",
+    "modeling/diagram/REPORT-BINDING.md",
+    "modeling/diagram/examples/ops-report-data.json",
+    "modeling/diagram/examples/ops-report-data-two.json",
+    "modeling/diagram/README.md"
+  ]
+}
