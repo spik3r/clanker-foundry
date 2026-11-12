@@ -1,0 +1,334 @@
+package recordbrowser
+
+// Copied next to browser_test.go.txt, whose helpers it uses. TestWrap* tests run
+// only for the "wrap" variant (the base model with detailText "wrap"); the
+// TestClip* test runs for the clip variants. Expected values are stated here, not
+// computed with the browser's own wrapping code.
+import (
+	"fmt"
+	"github.com/charmbracelet/x/ansi"
+	"os"
+	"strings"
+	"testing"
+	"unicode"
+)
+
+func needWrap(t *testing.T) {
+	t.Helper()
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") != "wrap" {
+		t.Skip("wrap variant only")
+	}
+}
+
+// paneRows returns the detail pane's content rows (without the title row) cut
+// from column col, trailing spaces removed.
+func paneRows(t *testing.T, m Model, col int) []string {
+	t.Helper()
+	// Rows: title, mode and focus line, pane title row, content rows, footer.
+	lines := strings.Split(plain(m), "\n")
+	if len(lines) < 5 || !strings.Contains(lines[2], "Details") {
+		t.Fatalf("no detail pane: %q", plain(m))
+	}
+	head := 2
+	var rows []string
+	for _, l := range lines[head+1 : len(lines)-1] {
+		rows = append(rows, strings.TrimRight(ansi.Cut(l, col, 1<<20), " "))
+	}
+	return rows
+}
+
+// allRows scrolls one line at a time from the top and returns every row.
+func allRows(t *testing.T, m Model, col int) []string {
+	t.Helper()
+	m = press(t, m, "g")
+	if m.browser.state.detailOffset != 0 {
+		t.Fatal("g did not reach the top")
+	}
+	rows := paneRows(t, m, col)
+	for steps := 0; steps < 20000; steps++ {
+		before := m.browser.state.detailOffset
+		m = press(t, m, "j")
+		if m.browser.state.detailOffset == before {
+			for len(rows) > 0 && rows[len(rows)-1] == "" {
+				rows = rows[:len(rows)-1]
+			}
+			return rows
+		}
+		visible := paneRows(t, m, col)
+		rows = append(rows, visible[len(visible)-1])
+	}
+	t.Fatal("scrolling did not end")
+	return nil
+}
+
+func wordList(n int) []string {
+	w := make([]string, n)
+	for i := range w {
+		w[i] = fmt.Sprintf("w%04d", i)
+	}
+	return w
+}
+
+func wrapRecord(description string) []Record {
+	return []Record{{ID: "id-00", Name: "Row-00", Status: "active", Description: description}}
+}
+
+// wrapModel returns a model sized w x h with the detail pane focused.
+func wrapModel(t *testing.T, r []Record, w, h int) (Model, int) {
+	t.Helper()
+	m := size(t, newModel(t, r), w, h)
+	m = press(t, m, "enter")
+	col := 0
+	if w >= 80 && h >= 12 {
+		col = 29 // list width 28 plus one gutter cell
+	}
+	return m, col
+}
+
+func TestWrapShowsWholeValueAtEverySize(t *testing.T) {
+	needWrap(t)
+	words := wordList(400)
+	want := append([]string{"Name:", "Row-00", "Status:", "active", "Description:"}, words...)
+	for _, d := range [][2]int{{120, 40}, {80, 12}, {60, 9}, {30, 8}, {24, 6}} {
+		m, col := wrapModel(t, wrapRecord(strings.Join(words, " ")), d[0], d[1])
+		rows := allRows(t, m, col)
+		if got := strings.Fields(strings.Join(rows, " ")); strings.Join(got, ",") != strings.Join(want, ",") {
+			t.Fatalf("%v: value not shown in full: %q", d, rows)
+		}
+		paneWidth := d[0] - col
+		for _, r := range rows {
+			if ansi.StringWidth(r) > paneWidth {
+				t.Fatalf("%v: row wider than pane %d: %q", d, paneWidth, r)
+			}
+		}
+		if d[0] == 24 && len(rows) < 50 {
+			t.Fatalf("narrow pane did not wrap: %d rows", len(rows))
+		}
+		bounds(t, m, d[0], d[1])
+	}
+}
+
+func TestWrapEmbeddedNewlinesAreRows(t *testing.T) {
+	needWrap(t)
+	r := []Record{{ID: "id-00", Name: "one\n\ntwo", Status: "alpha\nbeta\r\ngamma", Description: "tail"}}
+	for _, d := range [][2]int{{120, 40}, {30, 14}} {
+		m, col := wrapModel(t, r, d[0], d[1])
+		rows := allRows(t, m, col)
+		want := []string{"Name: one", "", "two", "Status: alpha", "beta", "gamma", "Description: tail"}
+		if strings.Join(rows, "|") != strings.Join(want, "|") {
+			t.Fatalf("%v: rows %q, want %q", d, rows, want)
+		}
+	}
+}
+
+func TestWrapHardBreaksWideAndCombiningText(t *testing.T) {
+	needWrap(t)
+	for _, unit := range []string{"x", "界", "👩‍💻", "Ώ"} {
+		count := 60
+		for _, w := range []int{24, 25, 26, 27, 28, 29} {
+			m, col := wrapModel(t, wrapRecord(strings.Repeat(unit, count)), w, 12)
+			rows := allRows(t, m, col)
+			// "Name:", "Row-00", ... precede; the value follows "Description:".
+			at := -1
+			for i, r := range rows {
+				if r == "Description:" {
+					at = i
+				}
+			}
+			if at < 0 {
+				t.Fatalf("w=%d unit %q: Description label row missing: %q", w, unit, rows)
+			}
+			if got := strings.Join(rows[at+1:], ""); got != strings.Repeat(unit, count) {
+				t.Fatalf("w=%d unit %q: value changed by wrapping: %q", w, unit, rows[at+1:])
+			}
+			for _, r := range rows[at+1:] {
+				if ansi.StringWidth(r) > w {
+					t.Fatalf("w=%d unit %q: row too wide: %q", w, unit, r)
+				}
+				if strings.Contains(strings.ReplaceAll(r, unit, ""), "́") && unit == "Ώ" {
+					t.Fatalf("w=%d: split combining sequence: %q", w, r)
+				}
+				if strings.ReplaceAll(r, unit, "") != "" {
+					t.Fatalf("w=%d unit %q: partial unit in row %q", w, unit, r)
+				}
+			}
+			bounds(t, m, w, 12)
+		}
+	}
+}
+
+func TestWrapScrollKeysUseWrappedLineCount(t *testing.T) {
+	needWrap(t)
+	words := wordList(300)
+	m, col := wrapModel(t, wrapRecord(strings.Join(words, " ")), 30, 8)
+	total := len(allRows(t, m, col))
+	const rows = 4 // 8 rows minus three lines of chrome and the pane title
+	if m.browser.state.detailLines != total {
+		t.Fatalf("detailLines = %d, want %d", m.browser.state.detailLines, total)
+	}
+	m = press(t, m, "G")
+	if m.browser.state.detailOffset != total-rows {
+		t.Fatalf("End offset = %d, want %d", m.browser.state.detailOffset, total-rows)
+	}
+	if !strings.Contains(plain(m), "w0299") {
+		t.Fatal("last word not visible after End")
+	}
+	m = press(t, m, "j")
+	if m.browser.state.detailOffset != total-rows {
+		t.Fatal("down moved past the last line")
+	}
+	m = press(t, m, "pgup")
+	if m.browser.state.detailOffset != total-2*rows {
+		t.Fatalf("PgUp offset = %d, want %d", m.browser.state.detailOffset, total-2*rows)
+	}
+	m = press(t, m, "pgdown")
+	m = press(t, m, "pgdown")
+	if m.browser.state.detailOffset != total-rows {
+		t.Fatal("PgDn did not clamp at the last page")
+	}
+	m = press(t, m, "g")
+	if m.browser.state.detailOffset != 0 || !strings.Contains(plain(m), "Name: Row-00") {
+		t.Fatal("Home did not return to the first line")
+	}
+}
+
+func TestWrapResizeRewrapsAndClamps(t *testing.T) {
+	needWrap(t)
+	description := strings.Join(wordList(300), " ")
+	count := func(w, h int) int {
+		m, col := wrapModel(t, wrapRecord(description), w, h)
+		return len(allRows(t, m, col))
+	}
+	n30, n60, n120 := count(30, 8), count(60, 8), count(120, 40)
+	if !(n30 > n60 && n60 > 1) {
+		t.Fatalf("unexpected row counts %d %d", n30, n60)
+	}
+	m, _ := wrapModel(t, wrapRecord(description), 30, 8)
+	m = press(t, m, "G")
+	if m.browser.state.detailOffset != n30-4 {
+		t.Fatalf("bottom offset %d, want %d", m.browser.state.detailOffset, n30-4)
+	}
+	m = size(t, m, 60, 8)
+	if m.browser.state.detailOffset != n60-4 || m.browser.state.detailLines != n60 {
+		t.Fatalf("after widening: offset %d lines %d, want %d and %d", m.browser.state.detailOffset, m.browser.state.detailLines, n60-4, n60)
+	}
+	bounds(t, m, 60, 8)
+	m = size(t, m, 1, 1)
+	bounds(t, m, 1, 1)
+	m = size(t, m, 120, 40)
+	if n120 > 36 || m.browser.state.detailOffset != 0 {
+		t.Fatalf("expanded pane: offset %d, rows %d", m.browser.state.detailOffset, n120)
+	}
+	m = size(t, m, 30, 8)
+	if m.browser.state.detailOffset != 0 || m.browser.state.detailLines != n30 {
+		t.Fatalf("shrinking: offset %d lines %d, want 0 and %d", m.browser.state.detailOffset, m.browser.state.detailLines, n30)
+	}
+	m = press(t, m, "G")
+	if m.browser.state.detailOffset != n30-4 {
+		t.Fatal("bottom changed after resize cycle")
+	}
+	// A wide-to-narrow change of variant also re-wraps: 80x12 shows a 51 cell pane.
+	m = size(t, m, 80, 12)
+	if want := len(allRows(t, m, 29)); m.browser.state.detailLines != want {
+		t.Fatalf("wide detailLines %d, want %d", m.browser.state.detailLines, want)
+	}
+}
+
+func TestWrapSanitizesControlAndAnsi(t *testing.T) {
+	needWrap(t)
+	hostile := "A\x1b[2J\x1b[31mB\x1b[0m\x1b]52;c;YWJj\aC\rD\tE\x00F\bG\nline2\x1b[2J \u0085x"
+	r := []Record{{ID: "id-00", Name: hostile, Description: hostile, Status: hostile}}
+	for _, d := range [][2]int{{24, 6}, {30, 12}, {120, 20}, {1, 1}} {
+		m, col := wrapModel(t, r, d[0], d[1])
+		for _, k := range []string{"g", "G", "?", "esc"} {
+			m = press(t, m, k)
+			raw := m.View().Content
+			if strings.Contains(raw, "\x1b[2J") || strings.Contains(raw, "\x1b]52") {
+				t.Fatalf("%v: host escape injected", d)
+			}
+			for _, c := range plain(m) {
+				if unicode.IsControl(c) && c != '\n' {
+					t.Fatalf("%v: host control U+%04X survived", d, c)
+				}
+			}
+			bounds(t, m, d[0], d[1])
+		}
+		if d[0] >= 80 {
+			rows := strings.Join(paneRows(t, m, col), "\n")
+			if !strings.Contains(rows, "Name: ABC D E F G\nline2") {
+				t.Fatalf("sanitized text unexpected: %q", rows)
+			}
+		}
+	}
+}
+
+func TestWrapLimitsRowsPerRecord(t *testing.T) {
+	needWrap(t)
+	// Name and Status take two rows; Description adds one row per newline plus one.
+	for _, c := range []struct {
+		newlines  int
+		wantLines int
+		marker    bool
+	}{{4093, 4096, false}, {4094, 4097, true}, {4096, 4097, true}} {
+		m, col := wrapModel(t, wrapRecord(strings.Repeat("\n", c.newlines)), 30, 8)
+		m = press(t, m, "G")
+		if m.browser.state.detailLines != c.wantLines || m.browser.state.detailOffset != c.wantLines-4 {
+			t.Fatalf("%d newlines: lines %d offset %d, want %d and %d", c.newlines, m.browser.state.detailLines, m.browser.state.detailOffset, c.wantLines, c.wantLines-4)
+		}
+		rows := paneRows(t, m, col)
+		if got := rows[len(rows)-1] == "… truncated"; got != c.marker {
+			t.Fatalf("%d newlines: truncation marker = %t, want %t (%q)", c.newlines, got, c.marker, rows)
+		}
+		bounds(t, m, 30, 8)
+	}
+}
+
+func TestWrapKeepsListSummaryOnOneRow(t *testing.T) {
+	needWrap(t)
+	r := []Record{{ID: "id-00", Name: "one\ntwo " + strings.Repeat("z", 200), Status: "s", Description: "d"}}
+	m := size(t, newModel(t, r), 120, 12)
+	lines := strings.Split(plain(m), "\n")
+	found := 0
+	for _, l := range lines {
+		if strings.HasPrefix(l, "> one two zzz") {
+			found++
+			if !strings.Contains(ansi.Cut(l, 0, 28), "…") {
+				t.Fatalf("list row not clipped: %q", l)
+			}
+		}
+	}
+	if found != 1 {
+		t.Fatalf("list summary rows = %d: %q", found, plain(m))
+	}
+}
+
+// Clip mode keeps its behaviour: one row per field, newlines become spaces and
+// long values are clipped with an ellipsis.
+func TestClipKeepsOneRowPerField(t *testing.T) {
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") == "wrap" {
+		t.Skip("clip variants only")
+	}
+	col := 29
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") == "changed" {
+		col = 33
+	}
+	r := []Record{{ID: "id-00", Name: "first\nsecond", Status: "active", Description: "Description marker " + strings.Repeat("z", 500)}}
+	m := size(t, newModel(t, r), 120, 12)
+	// The detail pane starts after the list pane and its gutter.
+	rows := paneRows(t, m, col)
+	if os.Getenv("TUI_ACCEPTANCE_VARIANT") != "changed" {
+		if rows[0] != "Name: first second" || rows[1] != "Status: active" {
+			t.Fatalf("clip rows: %q", rows)
+		}
+		if !strings.HasPrefix(rows[2], "Description: Description marker zzzz") || !strings.HasSuffix(rows[2], "…") {
+			t.Fatalf("long value not clipped to one row: %q", rows)
+		}
+		for _, row := range rows[3:] {
+			if row != "" {
+				t.Fatalf("clip mode wrapped a value onto another row: %q", rows)
+			}
+		}
+	} else if rows[1] != "Name: first second" {
+		t.Fatalf("clip rows: %q", rows)
+	}
+}

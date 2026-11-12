@@ -29,7 +29,72 @@ type Model struct {
 	ListLabel      string   `json:"listLabel"`
 	DetailLabel    string   `json:"detailLabel"`
 	Layout         Layout   `json:"layout"`
+	// Emit and DetailText are optional. Their zero values are the defaults and
+	// are omitted from the canonical encoding.
+	Emit       *Emit  `json:"emit,omitempty"`
+	DetailText string `json:"detailText,omitempty"`
 }
+
+// Emit selects what the compiler writes: a standalone module (default) or only
+// the files of an importable package with the given name.
+type Emit struct {
+	Mode    string `json:"mode"`
+	Package string `json:"package,omitempty"`
+}
+
+// Emit modes and detail text modes.
+const (
+	ModeModule  = "module"
+	ModePackage = "package"
+	TextClip    = "clip"
+	TextWrap    = "wrap"
+	// DefaultPackage is the package name of module-mode output.
+	DefaultPackage = "recordbrowser"
+)
+
+// PackageName is the name in the package clause of every emitted Go file.
+func (m Model) PackageName() string {
+	if m.Emit != nil && m.Emit.Mode == ModePackage {
+		return m.Emit.Package
+	}
+	return DefaultPackage
+}
+
+// PackageMode reports whether only an importable package is emitted.
+func (m Model) PackageMode() bool { return m.Emit != nil && m.Emit.Mode == ModePackage }
+
+// Wrap reports whether the detail pane wraps values instead of clipping them.
+func (m Model) Wrap() bool { return m.DetailText == TextWrap }
+
+// canonical returns m with explicit defaults replaced by absence. It does not
+// modify the pointed-to Emit value.
+func (m Model) canonical() Model {
+	if m.Emit != nil && m.Emit.Mode == ModeModule {
+		m.Emit = nil
+	}
+	if m.DetailText == TextClip {
+		m.DetailText = ""
+	}
+	return m
+}
+
+var packageName = regexp.MustCompile(`^[a-z][a-z0-9]{0,31}$`)
+
+// reservedPackageNames holds Go keywords, predeclared identifiers and names
+// that cannot be imported as a package (main).
+var reservedPackageNames = map[string]bool{}
+
+func init() {
+	for _, w := range strings.Fields(`break default func interface select case defer go map struct chan else goto
+package switch const fallthrough if range type continue for import return var
+any bool byte comparable complex64 complex128 error float32 float64 int int8 int16
+int32 int64 rune string uint uint8 uint16 uint32 uint64 uintptr true false iota nil
+append cap clear close complex copy delete imag len make max min new panic print
+println real recover main init`) {
+		reservedPackageNames[w] = true
+	}
+}
+
 type Field struct {
 	ID    string `json:"id"`
 	Label string `json:"label"`
@@ -62,6 +127,22 @@ func Decode(raw []byte) (Model, error) {
 	if err := d.Decode(&m); err != nil {
 		return m, err
 	}
+	// Present-but-empty optional members are refused, not read as defaults.
+	var probe struct {
+		DetailText *string `json:"detailText"`
+		Emit       *struct {
+			Package *string `json:"package"`
+		} `json:"emit"`
+	}
+	if err := json.Unmarshal(raw, &probe); err != nil {
+		return Model{}, err
+	}
+	if probe.DetailText != nil && m.DetailText == "" {
+		return Model{}, fmt.Errorf("detailText must be %q or %q", TextClip, TextWrap)
+	}
+	if probe.Emit != nil && probe.Emit.Package != nil && m.Emit.Mode != ModePackage {
+		return Model{}, fmt.Errorf("emit.package is only allowed with mode %q", ModePackage)
+	}
 	if err := m.Validate(); err != nil {
 		return Model{}, err
 	}
@@ -85,7 +166,8 @@ func checkValue(d *json.Decoder, depth int, context string) error {
 	switch delim {
 	case '{':
 		allowed := map[string]string{
-			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|",
+			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|emit|detailText|",
+			"emit":     "|mode|package|",
 			"fields[]": "|id|label|",
 			"layout":   "|narrowWidth|narrowHeight|wideWidth|wideHeight|listWidth|",
 		}[context]
@@ -172,6 +254,23 @@ func (m Model) Validate() error {
 			return fmt.Errorf("invalid or duplicate detail reference %q", id)
 		}
 		seen[id] = true
+	}
+	if m.DetailText != "" && m.DetailText != TextClip && m.DetailText != TextWrap {
+		return fmt.Errorf("detailText must be %q or %q", TextClip, TextWrap)
+	}
+	if e := m.Emit; e != nil {
+		switch e.Mode {
+		case ModeModule:
+			if e.Package != "" {
+				return fmt.Errorf("emit.package is only allowed with mode %q", ModePackage)
+			}
+		case ModePackage:
+			if !packageName.MatchString(e.Package) || reservedPackageNames[e.Package] {
+				return fmt.Errorf("emit.package must be a lowercase Go package name of 1..32 letters and digits, not a keyword, predeclared identifier or main")
+			}
+		default:
+			return fmt.Errorf("emit.mode must be %q or %q", ModeModule, ModePackage)
+		}
 	}
 	l := m.Layout
 	if l.NarrowWidth < 24 || l.NarrowWidth > 240 || l.NarrowHeight < 6 || l.NarrowHeight > 80 || l.WideWidth < l.NarrowWidth || l.WideWidth > 400 || l.WideHeight < l.NarrowHeight || l.WideHeight > 120 || l.ListWidth < 8 || l.ListWidth > l.WideWidth-9 {

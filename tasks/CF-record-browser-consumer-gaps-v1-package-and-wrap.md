@@ -1,6 +1,6 @@
 ---
 id: CF-record-browser-consumer-gaps-v1
-status: in-progress
+status: completed
 owner: Claude pipeline coordinator
 repositories: [spik3r/clanker-foundry]
 ---
