@@ -1,9 +1,10 @@
 # foundrygen
 
 `foundrygen` is the project entrypoint for Foundry generators. A repository that
-uses generated code lists its outputs in one file, `foundry.json`. Two commands
+uses generated code lists its outputs in one file, `foundry.json`. Three commands
 then do the work:
 
+- `plan` previews which outputs would be created, replaced or left alone;
 - `generate` rebuilds every declared output;
 - `check` fails when any output differs from what its model generates.
 
@@ -41,6 +42,7 @@ no generator logic of its own and uses only the Go standard library.
 ## Commands
 
 ```sh
+foundrygen plan     --project DIR --foundry CHECKOUT [--unpinned]
 foundrygen check    --project DIR --foundry CHECKOUT [--unpinned]
 foundrygen generate --project DIR --foundry CHECKOUT [--unpinned]
 ```
@@ -48,7 +50,7 @@ foundrygen generate --project DIR --foundry CHECKOUT [--unpinned]
 `--project` defaults to `.`. `--foundry` is required. There are no other
 arguments.
 
-Both commands load the project file and the checkout's registry, check the pin,
+All three commands load the project file and the checkout's registry, check the pin,
 and build each needed generator once into a private temporary directory with
 `go build`. Generators run with an empty environment and a 60 second limit.
 
@@ -79,6 +81,45 @@ directories of `OUT` are created.
 
 Output lines are `generated|regenerated|unchanged OUT GENERATOR CANONICAL_SHA256`.
 On any nonzero exit stdout is empty.
+
+## Preview before generation
+
+`plan` uses the same preflight as `generate`: it validates every model, checks
+output ownership and classifies existing output with the generator's `check`.
+It writes no project outputs or output parent directories and never invokes
+`generate`. It still builds the generators into a temporary directory, so Go's
+build cache may change. A trusted Foundry checkout is required, just as for
+`check` and `generate`.
+
+Success returns one JSON document, in declared output order:
+
+```json
+{
+  "planVersion": "foundry-plan/v1",
+  "outputs": [{
+    "action": "create",
+    "generator": "tuic",
+    "model": "design/browser.json",
+    "out": "internal/browser",
+    "identity": {
+      "contract": "foundry-generator/v1",
+      "profile": "record-browser/v1",
+      "sourceSHA256": "<64 lowercase hexadecimal digits>",
+      "canonicalSHA256": "<64 lowercase hexadecimal digits>"
+    }
+  }]
+}
+```
+
+The actions are `create` for an absent output, `replace` for an owned output
+with drift, and `unchanged` when check passes. A valid plan exits 0 even when it
+contains changes. Invalid models, unowned outputs and other failures produce
+no JSON on stdout; diagnostics and exit codes follow `generate`.
+
+This is an observation, not a saved execution plan or permission to overwrite
+files. It does not list per-file edits, guarantee generation will succeed, or
+lock project inputs. Run `generate` to apply changes; it repeats the preflight
+against the current files. Review generated changes before committing them.
 
 ## Exit codes
 
