@@ -1,0 +1,92 @@
+// diagramgen turns a reviewed JSON diagram model into an SVG picture, BPMN XML
+// and a canonical model, following Foundry generator contract v1.
+//
+//	diagramgen validate MODEL
+//	diagramgen generate MODEL OUT
+//	diagramgen check MODEL OUT
+package main
+
+import (
+	"errors"
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/spik3r/clanker-foundry/modeling/diagram"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
+)
+
+const (
+	exitFailure = 1
+	exitRefused = 2
+	exitDrift   = 3
+)
+
+const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT"
+
+type usageError string
+
+func (u usageError) Error() string { return string(u) }
+
+func main() {
+	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
+}
+
+// run returns the exit code. Stdout is written only on success.
+func run(args []string, stdout, stderr io.Writer) int {
+	line, drift, err := dispatch(args)
+	switch {
+	case err != nil:
+		fmt.Fprintf(stderr, "diagramgen: %v\n", err)
+		var u usageError
+		var me contract.ModelError
+		if errors.As(err, &u) || errors.As(err, &me) ||
+			errors.Is(err, contract.ErrOutExists) || errors.Is(err, contract.ErrNoParent) {
+			return exitRefused
+		}
+		return exitFailure
+	case len(drift) > 0:
+		for _, d := range drift {
+			fmt.Fprintln(stderr, d)
+		}
+		return exitDrift
+	}
+	fmt.Fprint(stdout, line)
+	return 0
+}
+
+func dispatch(args []string) (line string, drift []string, err error) {
+	switch {
+	case len(args) == 2 && args[0] == "validate":
+		res, err := load(args[1])
+		return res.Identity, nil, err
+	case len(args) == 3 && args[0] == "generate":
+		res, err := load(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		if err := contract.Write(args[2], res.Files); err != nil {
+			return "", nil, err
+		}
+		return res.Identity, nil, nil
+	case len(args) == 3 && args[0] == "check":
+		res, err := load(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		drift, err := contract.Drift(res.Files, args[2])
+		if err != nil || len(drift) > 0 {
+			return "", drift, err
+		}
+		return res.Identity, nil, nil
+	}
+	return "", nil, usageError(usage)
+}
+
+func load(path string) (contract.Result, error) {
+	raw, err := contract.ReadModel(path)
+	if err != nil {
+		return contract.Result{}, err
+	}
+	return diagram.Build(raw)
+}

@@ -1,0 +1,88 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "process-diagram/v1",
+  "id": "OrderHandling",
+  "title": "Order handling",
+  "lanes": [
+    {
+      "id": "Sales",
+      "label": "Sales"
+    },
+    {
+      "id": "Warehouse",
+      "label": "Warehouse"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Check",
+      "kind": "task",
+      "label": "Check stock",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Done",
+      "kind": "end",
+      "label": "Closed",
+      "lane": "Sales"
+    },
+    {
+      "id": "InStock",
+      "kind": "exclusive",
+      "label": "In stock?",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Reject",
+      "kind": "task",
+      "label": "Notify customer",
+      "lane": "Sales"
+    },
+    {
+      "id": "Ship",
+      "kind": "task",
+      "label": "Ship order",
+      "lane": "Warehouse"
+    },
+    {
+      "id": "Start",
+      "kind": "start",
+      "label": "Order received",
+      "lane": "Sales"
+    }
+  ],
+  "flows": [
+    {
+      "id": "F1",
+      "from": "Start",
+      "to": "Check"
+    },
+    {
+      "id": "F2",
+      "from": "Check",
+      "to": "InStock"
+    },
+    {
+      "id": "F3",
+      "from": "InStock",
+      "to": "Ship",
+      "label": "yes"
+    },
+    {
+      "id": "F4",
+      "from": "InStock",
+      "to": "Reject",
+      "label": "no"
+    },
+    {
+      "id": "F5",
+      "from": "Ship",
+      "to": "Done"
+    },
+    {
+      "id": "F6",
+      "from": "Reject",
+      "to": "Done"
+    }
+  ]
+}

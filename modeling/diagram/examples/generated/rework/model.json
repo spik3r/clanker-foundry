@@ -1,0 +1,126 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "process-diagram/v1",
+  "id": "DocumentReview",
+  "title": "Document review with rework",
+  "lanes": [
+    {
+      "id": "Author",
+      "label": "Author"
+    },
+    {
+      "id": "Reviewer",
+      "label": "Reviewer"
+    },
+    {
+      "id": "Editor",
+      "label": "Editor"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Approved",
+      "kind": "exclusive",
+      "label": "Approved?",
+      "lane": "Reviewer"
+    },
+    {
+      "id": "Done",
+      "kind": "end",
+      "label": "Published",
+      "lane": "Editor"
+    },
+    {
+      "id": "Draft",
+      "kind": "task",
+      "label": "Write draft",
+      "lane": "Author"
+    },
+    {
+      "id": "Dropped",
+      "kind": "end",
+      "label": "Abandoned",
+      "lane": "Author"
+    },
+    {
+      "id": "Escalate",
+      "kind": "task",
+      "label": "Escalate to editor",
+      "lane": "Editor"
+    },
+    {
+      "id": "Publish",
+      "kind": "task",
+      "label": "Publish document",
+      "lane": "Editor"
+    },
+    {
+      "id": "Review",
+      "kind": "task",
+      "label": "Check the draft against the style guide and the legal requirements",
+      "lane": "Reviewer"
+    },
+    {
+      "id": "Revise",
+      "kind": "task",
+      "label": "Revise draft",
+      "lane": "Author"
+    },
+    {
+      "id": "Start",
+      "kind": "start",
+      "label": "Draft requested",
+      "lane": "Author"
+    }
+  ],
+  "flows": [
+    {
+      "id": "F1",
+      "from": "Start",
+      "to": "Draft"
+    },
+    {
+      "id": "F2",
+      "from": "Draft",
+      "to": "Review"
+    },
+    {
+      "id": "F3",
+      "from": "Review",
+      "to": "Approved"
+    },
+    {
+      "id": "F4",
+      "from": "Approved",
+      "to": "Publish",
+      "label": "yes"
+    },
+    {
+      "id": "F5",
+      "from": "Approved",
+      "to": "Revise",
+      "label": "no"
+    },
+    {
+      "id": "F6",
+      "from": "Approved",
+      "to": "Escalate",
+      "label": "stuck"
+    },
+    {
+      "id": "F7",
+      "from": "Revise",
+      "to": "Review"
+    },
+    {
+      "id": "F8",
+      "from": "Publish",
+      "to": "Done"
+    },
+    {
+      "id": "F9",
+      "from": "Escalate",
+      "to": "Dropped"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions.OrderHandling" name="Order handling" targetNamespace="urn:foundry:diagramgen:process-diagram:v1" exporter="diagramgen" exporterVersion="1.0.0">
+  <collaboration id="Collaboration.OrderHandling">
+    <participant id="Participant.OrderHandling" name="Order handling" processRef="Process.OrderHandling"/>
+  </collaboration>
+  <process id="Process.OrderHandling" name="Order handling" isExecutable="false">
+    <laneSet id="LaneSet.OrderHandling">
+      <lane id="Sales" name="Sales">
+        <flowNodeRef>Done</flowNodeRef>
+        <flowNodeRef>Reject</flowNodeRef>
+        <flowNodeRef>Start</flowNodeRef>
+      </lane>
+      <lane id="Warehouse" name="Warehouse">
+        <flowNodeRef>Check</flowNodeRef>
+        <flowNodeRef>InStock</flowNodeRef>
+        <flowNodeRef>Ship</flowNodeRef>
+      </lane>
+    </laneSet>
+    <task id="Check" name="Check stock">
+      <incoming>F1</incoming>
+      <outgoing>F2</outgoing>
+    </task>
+    <endEvent id="Done" name="Closed">
+      <incoming>F5</incoming>
+      <incoming>F6</incoming>
+    </endEvent>
+    <exclusiveGateway id="InStock" name="In stock?">
+      <incoming>F2</incoming>
+      <outgoing>F3</outgoing>
+      <outgoing>F4</outgoing>
+    </exclusiveGateway>
+    <task id="Reject" name="Notify customer">
+      <incoming>F4</incoming>
+      <outgoing>F6</outgoing>
+    </task>
+    <task id="Ship" name="Ship order">
+      <incoming>F3</incoming>
+      <outgoing>F5</outgoing>
+    </task>
+    <startEvent id="Start" name="Order received">
+      <outgoing>F1</outgoing>
+    </startEvent>
+    <sequenceFlow id="F1" sourceRef="Start" targetRef="Check"/>
+    <sequenceFlow id="F2" sourceRef="Check" targetRef="InStock"/>
+    <sequenceFlow id="F3" name="yes" sourceRef="InStock" targetRef="Ship"/>
+    <sequenceFlow id="F4" name="no" sourceRef="InStock" targetRef="Reject"/>
+    <sequenceFlow id="F5" sourceRef="Ship" targetRef="Done"/>
+    <sequenceFlow id="F6" sourceRef="Reject" targetRef="Done"/>
+  </process>
+  <bpmndi:BPMNDiagram id="Diagram.OrderHandling">
+    <bpmndi:BPMNPlane id="Plane.OrderHandling" bpmnElement="Collaboration.OrderHandling">
+      <bpmndi:BPMNShape id="Shape.Participant.OrderHandling" bpmnElement="Participant.OrderHandling" isHorizontal="true">
+        <dc:Bounds x="20" y="48" width="1405" height="352"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Sales" bpmnElement="Sales" isHorizontal="true">
+        <dc:Bounds x="20" y="48" width="1405" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Warehouse" bpmnElement="Warehouse" isHorizontal="true">
+        <dc:Bounds x="20" y="224" width="1405" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Check" bpmnElement="Check">
+        <dc:Bounds x="469" y="280" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Done" bpmnElement="Done">
+        <dc:Bounds x="1255" y="118" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.InStock" bpmnElement="InStock" isMarkerVisible="true">
+        <dc:Bounds x="752" y="288" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Reject" bpmnElement="Reject">
+        <dc:Bounds x="966" y="104" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Ship" bpmnElement="Ship">
+        <dc:Bounds x="966" y="280" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Start" bpmnElement="Start">
+        <dc:Bounds x="294" y="118" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge.F1" bpmnElement="F1">
+        <di:waypoint x="330" y="136"/>
+        <di:waypoint x="408" y="136"/>
+        <di:waypoint x="408" y="312"/>
+        <di:waypoint x="469" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F2" bpmnElement="F2">
+        <di:waypoint x="619" y="312"/>
+        <di:waypoint x="752" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F3" bpmnElement="F3">
+        <di:waypoint x="800" y="312"/>
+        <di:waypoint x="889" y="312"/>
+        <di:waypoint x="966" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F4" bpmnElement="F4">
+        <di:waypoint x="776" y="288"/>
+        <di:waypoint x="776" y="258"/>
+        <di:waypoint x="889" y="258"/>
+        <di:waypoint x="915" y="258"/>
+        <di:waypoint x="915" y="136"/>
+        <di:waypoint x="966" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F5" bpmnElement="F5">
+        <di:waypoint x="1116" y="312"/>
+        <di:waypoint x="1137" y="312"/>
+        <di:waypoint x="1137" y="136"/>
+        <di:waypoint x="1255" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F6" bpmnElement="F6">
+        <di:waypoint x="1116" y="136"/>
+        <di:waypoint x="1255" y="136"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

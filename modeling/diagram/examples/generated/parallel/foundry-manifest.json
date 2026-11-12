@@ -1,0 +1,29 @@
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "process-diagram/v1",
+  "generator": {
+    "id": "diagramgen",
+    "version": "1.0.0",
+    "toolchain": "go1.27.4"
+  },
+  "model": {
+    "canonicalSHA256": "55d54d61938f5e1ee5d950217970364429ac5abec402dd82d6a11c54adae6343"
+  },
+  "files": [
+    {
+      "path": "diagram.bpmn",
+      "sha256": "db31ac3e53d81d40777d0d604e24cc6f03a162ec706eb575a37ac1e90e2c4991",
+      "bytes": 8133
+    },
+    {
+      "path": "diagram.svg",
+      "sha256": "04e948bb80793a7610d2d7f46edb59faec07ffa6359d12111eec0b48228761a6",
+      "bytes": 5597
+    },
+    {
+      "path": "model.json",
+      "sha256": "0e17bc49580cda102c76350d3f6c302bb38130cc826d7de80c9f85607d986fe9",
+      "bytes": 2356
+    }
+  ]
+}

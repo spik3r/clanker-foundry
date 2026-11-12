@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions.DocumentReview" name="Document review with rework" targetNamespace="urn:foundry:diagramgen:process-diagram:v1" exporter="diagramgen" exporterVersion="1.0.0">
+  <collaboration id="Collaboration.DocumentReview">
+    <participant id="Participant.DocumentReview" name="Document review with rework" processRef="Process.DocumentReview"/>
+  </collaboration>
+  <process id="Process.DocumentReview" name="Document review with rework" isExecutable="false">
+    <laneSet id="LaneSet.DocumentReview">
+      <lane id="Author" name="Author">
+        <flowNodeRef>Draft</flowNodeRef>
+        <flowNodeRef>Dropped</flowNodeRef>
+        <flowNodeRef>Revise</flowNodeRef>
+        <flowNodeRef>Start</flowNodeRef>
+      </lane>
+      <lane id="Reviewer" name="Reviewer">
+        <flowNodeRef>Approved</flowNodeRef>
+        <flowNodeRef>Review</flowNodeRef>
+      </lane>
+      <lane id="Editor" name="Editor">
+        <flowNodeRef>Done</flowNodeRef>
+        <flowNodeRef>Escalate</flowNodeRef>
+        <flowNodeRef>Publish</flowNodeRef>
+      </lane>
+    </laneSet>
+    <exclusiveGateway id="Approved" name="Approved?">
+      <incoming>F3</incoming>
+      <outgoing>F4</outgoing>
+      <outgoing>F5</outgoing>
+      <outgoing>F6</outgoing>
+    </exclusiveGateway>
+    <endEvent id="Done" name="Published">
+      <incoming>F8</incoming>
+    </endEvent>
+    <task id="Draft" name="Write draft">
+      <incoming>F1</incoming>
+      <outgoing>F2</outgoing>
+    </task>
+    <endEvent id="Dropped" name="Abandoned">
+      <incoming>F9</incoming>
+    </endEvent>
+    <task id="Escalate" name="Escalate to editor">
+      <incoming>F6</incoming>
+      <outgoing>F9</outgoing>
+    </task>
+    <task id="Publish" name="Publish document">
+      <incoming>F4</incoming>
+      <outgoing>F8</outgoing>
+    </task>
+    <task id="Review" name="Check the draft against the style guide and the legal requirements">
+      <incoming>F2</incoming>
+      <incoming>F7</incoming>
+      <outgoing>F3</outgoing>
+    </task>
+    <task id="Revise" name="Revise draft">
+      <incoming>F5</incoming>
+      <outgoing>F7</outgoing>
+    </task>
+    <startEvent id="Start" name="Draft requested">
+      <outgoing>F1</outgoing>
+    </startEvent>
+    <sequenceFlow id="F1" sourceRef="Start" targetRef="Draft"/>
+    <sequenceFlow id="F2" sourceRef="Draft" targetRef="Review"/>
+    <sequenceFlow id="F3" sourceRef="Review" targetRef="Approved"/>
+    <sequenceFlow id="F4" name="yes" sourceRef="Approved" targetRef="Publish"/>
+    <sequenceFlow id="F5" name="no" sourceRef="Approved" targetRef="Revise"/>
+    <sequenceFlow id="F6" name="stuck" sourceRef="Approved" targetRef="Escalate"/>
+    <sequenceFlow id="F7" sourceRef="Revise" targetRef="Review"/>
+    <sequenceFlow id="F8" sourceRef="Publish" targetRef="Done"/>
+    <sequenceFlow id="F9" sourceRef="Escalate" targetRef="Dropped"/>
+  </process>
+  <bpmndi:BPMNDiagram id="Diagram.DocumentReview">
+    <bpmndi:BPMNPlane id="Plane.DocumentReview" bpmnElement="Collaboration.DocumentReview">
+      <bpmndi:BPMNShape id="Shape.Participant.DocumentReview" bpmnElement="Participant.DocumentReview" isHorizontal="true">
+        <dc:Bounds x="20" y="74" width="1651" height="704"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Author" bpmnElement="Author" isHorizontal="true">
+        <dc:Bounds x="20" y="74" width="1651" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Reviewer" bpmnElement="Reviewer" isHorizontal="true">
+        <dc:Bounds x="20" y="250" width="1651" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Editor" bpmnElement="Editor" isHorizontal="true">
+        <dc:Bounds x="20" y="426" width="1651" height="352"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Approved" bpmnElement="Approved" isMarkerVisible="true">
+        <dc:Bounds x="984" y="314" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Done" bpmnElement="Done">
+        <dc:Bounds x="1501" y="496" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Draft" bpmnElement="Draft">
+        <dc:Bounds x="469" y="130" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Dropped" bpmnElement="Dropped">
+        <dc:Bounds x="1501" y="144" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Escalate" bpmnElement="Escalate">
+        <dc:Bounds x="1212" y="482" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Publish" bpmnElement="Publish">
+        <dc:Bounds x="1212" y="658" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Review" bpmnElement="Review">
+        <dc:Bounds x="701" y="306" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Revise" bpmnElement="Revise">
+        <dc:Bounds x="1212" y="130" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Start" bpmnElement="Start">
+        <dc:Bounds x="294" y="144" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge.F1" bpmnElement="F1">
+        <di:waypoint x="330" y="162"/>
+        <di:waypoint x="469" y="162"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F2" bpmnElement="F2">
+        <di:waypoint x="619" y="162"/>
+        <di:waypoint x="640" y="162"/>
+        <di:waypoint x="640" y="338"/>
+        <di:waypoint x="701" y="338"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F3" bpmnElement="F3">
+        <di:waypoint x="851" y="338"/>
+        <di:waypoint x="984" y="338"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F4" bpmnElement="F4">
+        <di:waypoint x="1008" y="362"/>
+        <di:waypoint x="1008" y="392"/>
+        <di:waypoint x="1135" y="392"/>
+        <di:waypoint x="1151" y="392"/>
+        <di:waypoint x="1151" y="690"/>
+        <di:waypoint x="1212" y="690"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F5" bpmnElement="F5">
+        <di:waypoint x="1008" y="314"/>
+        <di:waypoint x="1008" y="284"/>
+        <di:waypoint x="1135" y="284"/>
+        <di:waypoint x="1161" y="284"/>
+        <di:waypoint x="1161" y="162"/>
+        <di:waypoint x="1212" y="162"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F6" bpmnElement="F6">
+        <di:waypoint x="1020" y="350"/>
+        <di:waypoint x="1020" y="374"/>
+        <di:waypoint x="1135" y="374"/>
+        <di:waypoint x="1171" y="374"/>
+        <di:waypoint x="1171" y="514"/>
+        <di:waypoint x="1212" y="514"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F7" bpmnElement="F7">
+        <di:waypoint x="1362" y="162"/>
+        <di:waypoint x="1383" y="162"/>
+        <di:waypoint x="1383" y="58"/>
+        <di:waypoint x="650" y="58"/>
+        <di:waypoint x="650" y="338"/>
+        <di:waypoint x="701" y="338"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F8" bpmnElement="F8">
+        <di:waypoint x="1362" y="690"/>
+        <di:waypoint x="1393" y="690"/>
+        <di:waypoint x="1393" y="514"/>
+        <di:waypoint x="1501" y="514"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F9" bpmnElement="F9">
+        <di:waypoint x="1362" y="514"/>
+        <di:waypoint x="1403" y="514"/>
+        <di:waypoint x="1403" y="162"/>
+        <di:waypoint x="1501" y="162"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

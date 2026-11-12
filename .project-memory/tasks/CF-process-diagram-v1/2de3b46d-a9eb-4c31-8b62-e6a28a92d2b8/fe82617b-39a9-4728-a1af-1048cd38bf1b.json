@@ -1,0 +1,222 @@
+{
+  "formatVersion": 2,
+  "eventId": "fe82617b-39a9-4728-a1af-1048cd38bf1b",
+  "runId": "2de3b46d-a9eb-4c31-8b62-e6a28a92d2b8",
+  "kind": "complete",
+  "parents": [
+    "f5477638-7d3b-47eb-89b4-9492c5c9ac65"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-process-diagram-v1",
+    "path": "tasks/CF-process-diagram-v1-bpmn-style-generator.md",
+    "revision": "c5fe3ec1c1d5fbf285fadce437bd7dfd7314306e",
+    "blob": "774ab7e6558b58e561b6834c6ae9a64be281038a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2f1354c0a8104d9df1537ce414cf6abd837cc0db47099210f37f4466e65e578f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T19:23:28.484Z",
+  "summary": "diagramgen added with process-diagram/v1: strict model, fixed layout, inert SVG and BPMN 2.0 XML output, three examples with committed output, schema, CI workflow and harness registration",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    ".github/workflows/diagram-model-go.yml",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/authoring/process-diagram-v1.schema.json",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/main_test.go",
+    "modeling/diagram/contract/contract.go",
+    "modeling/diagram/contract/strict.go",
+    "modeling/diagram/contract/strict_test.go",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/diagram_test.go",
+    "modeling/diagram/examples/generated/order/diagram.bpmn",
+    "modeling/diagram/examples/generated/order/diagram.svg",
+    "modeling/diagram/examples/generated/order/foundry-manifest.json",
+    "modeling/diagram/examples/generated/order/model.json",
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn",
+    "modeling/diagram/examples/generated/parallel/diagram.svg",
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json",
+    "modeling/diagram/examples/generated/parallel/model.json",
+    "modeling/diagram/examples/generated/rework/diagram.bpmn",
+    "modeling/diagram/examples/generated/rework/diagram.svg",
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json",
+    "modeling/diagram/examples/generated/rework/model.json",
+    "modeling/diagram/examples/order.json",
+    "modeling/diagram/examples/parallel.json",
+    "modeling/diagram/examples/rework.json",
+    "modeling/diagram/go.mod",
+    "modeling/diagram/process/bpmn.go",
+    "modeling/diagram/process/helpers_test.go",
+    "modeling/diagram/process/layout.go",
+    "modeling/diagram/process/model.go",
+    "modeling/diagram/process/model_test.go",
+    "modeling/diagram/process/output_test.go",
+    "modeling/diagram/process/profile.go",
+    "modeling/diagram/process/svg.go",
+    "modeling/gencontract/generators.json",
+    "tests/project-memory-workflow.test.mjs",
+    "tasks/CF-process-diagram-v1-bpmn-style-generator.md"
+  ],
+  "validation": "Go 1.27.4: modeling/diagram gofmt -l . empty, go vet clean, go test -race -count=1 ./... ok including geometry and label tests on examples and pseudo-random models; modeling/gencontract go test -race ok with diagramgen registered. node --test tests/project-memory-workflow.test.mjs: 50 pass (Node 22; CI uses 24). scripts/validate.sh PASS (skills-ref skipped). Coordinator rendered the three example SVGs to PNG and looked at them. Not done: import of the BPMN file into a BPMN tool. Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/diagram-model-go.yml": {
+      "blob": "3e53d4c4d9a9e739ebfcdd1841663053cb5e2f1d",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "ed1dc206bf707a3a7c63d0c13a065283bfd98124",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "008b00657572863e3961ffd221824ff200d3d0ca",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/process-diagram-v1.schema.json": {
+      "blob": "d21a16396b3a2e83647bc300d19144ea0306bd50",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "0746bfe674a3ed42f37be1f59e32995114f44a31",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main_test.go": {
+      "blob": "40efdefb16e3d8c40d551f624721901a024f2848",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/contract.go": {
+      "blob": "ae3b981947f2f1c89f82fa99d5f0b1264600cd59",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/strict.go": {
+      "blob": "2db971c282eb7aab63555990cdccf8f21f11494a",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/strict_test.go": {
+      "blob": "f0d3d19f12692e99a532665ecbeb0f0ba146d324",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "c9793d9224ded85a58bc08cb8aa2e1b2ca85c5e3",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "61b33123338dfbd99c0181275afc3898e54de616",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.bpmn": {
+      "blob": "365fab08358cb815500f4e48ac1bfeb000e7a478",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.svg": {
+      "blob": "f54c43afd0b18d170deb82654e60764534da1205",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/foundry-manifest.json": {
+      "blob": "6ff230d6d85dc5639bd8019dba5b0059b976b7c9",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/model.json": {
+      "blob": "5f0f54cfc12c8799ae8c042b9d4684cb71ab45bb",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn": {
+      "blob": "4b3fb46eaac100c3782b5ed7f7264fb0f2e1070c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.svg": {
+      "blob": "e957121f3ed4b7bfd78343af9fbc2c3a8376bdb7",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json": {
+      "blob": "4708a437875585913b098f6a7509360e20c8d0a4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/model.json": {
+      "blob": "8354d8a84a0632a3a0aa65884d7d2fd1dfab8e5f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.bpmn": {
+      "blob": "6eabff00b48a618a9e1caad1efbc5ffe51a26980",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.svg": {
+      "blob": "57cc7045f55bc95307198bb4b2d8335312f19a57",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json": {
+      "blob": "f16d3ad9ffafca0a2b751e6d58d51a469d4747df",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/model.json": {
+      "blob": "013d675ca793913d644abd4418b62eb031b44b86",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/order.json": {
+      "blob": "190a54ace25b174feee6ed981c378ec1a212fe2d",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/parallel.json": {
+      "blob": "85e745ec594a7051759343692996826aa563012f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/rework.json": {
+      "blob": "208624e73362c33d43eb5df2bf5c14a35b9db283",
+      "mode": "100644"
+    },
+    "modeling/diagram/go.mod": {
+      "blob": "d38d48990c88de683c791f44ae6d682550e0cd9d",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/bpmn.go": {
+      "blob": "5bf2112f935e7bd2733cf62aa000a4acbceb3658",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/helpers_test.go": {
+      "blob": "d1579df63b6622f4bab093bd28900ad92445bd1e",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/layout.go": {
+      "blob": "88e0791f92bd7a6316e8e1579707babd818c6d6b",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/model.go": {
+      "blob": "f0fe2856652893dfa230e573a3f16e0a270fa3ea",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/model_test.go": {
+      "blob": "39fb4a4410ee0743c05d29842204d9d50483f335",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/output_test.go": {
+      "blob": "445ffe4393240df98a306869b32ffbc8b1bef1cd",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/profile.go": {
+      "blob": "f7fceead0de0db614b2150db2d9ee762bd72a0ea",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/svg.go": {
+      "blob": "2610ed4d5ba61643a5f68c3e6cb789d945596100",
+      "mode": "100644"
+    },
+    "modeling/gencontract/generators.json": {
+      "blob": "943a711c08bc9e8f27f682c62331fe3b5c65b0e1",
+      "mode": "100644"
+    },
+    "tests/project-memory-workflow.test.mjs": {
+      "blob": "a8da09862f84eb6095eebb6f26388d98c167c880",
+      "mode": "100644"
+    },
+    "tasks/CF-process-diagram-v1-bpmn-style-generator.md": {
+      "blob": "058f1fe7f7f256399b844c4353c25a885887076a",
+      "mode": "100644"
+    }
+  }
+}

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions.Fulfilment" name="Parallel fulfilment" targetNamespace="urn:foundry:diagramgen:process-diagram:v1" exporter="diagramgen" exporterVersion="1.0.0">
+  <collaboration id="Collaboration.Fulfilment">
+    <participant id="Participant.Fulfilment" name="Parallel fulfilment" processRef="Process.Fulfilment"/>
+  </collaboration>
+  <process id="Process.Fulfilment" name="Parallel fulfilment" isExecutable="false">
+    <laneSet id="LaneSet.Fulfilment">
+      <lane id="Sales" name="Sales">
+        <flowNodeRef>Done</flowNodeRef>
+        <flowNodeRef>Join</flowNodeRef>
+        <flowNodeRef>Notify</flowNodeRef>
+        <flowNodeRef>Plan</flowNodeRef>
+        <flowNodeRef>Split</flowNodeRef>
+        <flowNodeRef>Start</flowNodeRef>
+      </lane>
+      <lane id="Warehouse" name="Warehouse">
+        <flowNodeRef>Dispatch</flowNodeRef>
+        <flowNodeRef>Pack</flowNodeRef>
+        <flowNodeRef>Pick</flowNodeRef>
+      </lane>
+      <lane id="Finance" name="Finance">
+        <flowNodeRef>Invoice</flowNodeRef>
+      </lane>
+    </laneSet>
+    <task id="Dispatch" name="Hand over to carrier">
+      <incoming>F10</incoming>
+      <outgoing>F11</outgoing>
+    </task>
+    <endEvent id="Done" name="Order complete">
+      <incoming>F11</incoming>
+    </endEvent>
+    <task id="Invoice" name="Issue invoice">
+      <incoming>F04</incoming>
+      <outgoing>F08</outgoing>
+    </task>
+    <parallelGateway id="Join" name="All done">
+      <incoming>F07</incoming>
+      <incoming>F08</incoming>
+      <incoming>F09</incoming>
+      <outgoing>F10</outgoing>
+    </parallelGateway>
+    <task id="Notify" name="Tell customer the order is being prepared">
+      <incoming>F05</incoming>
+      <outgoing>F09</outgoing>
+    </task>
+    <task id="Pack" name="Pack parcel">
+      <incoming>F06</incoming>
+      <outgoing>F07</outgoing>
+    </task>
+    <task id="Pick" name="Pick items">
+      <incoming>F03</incoming>
+      <outgoing>F06</outgoing>
+    </task>
+    <task id="Plan" name="Plan fulfilment">
+      <incoming>F01</incoming>
+      <outgoing>F02</outgoing>
+    </task>
+    <parallelGateway id="Split" name="Start in parallel">
+      <incoming>F02</incoming>
+      <outgoing>F03</outgoing>
+      <outgoing>F04</outgoing>
+      <outgoing>F05</outgoing>
+    </parallelGateway>
+    <startEvent id="Start" name="Order confirmed">
+      <outgoing>F01</outgoing>
+    </startEvent>
+    <sequenceFlow id="F01" sourceRef="Start" targetRef="Plan"/>
+    <sequenceFlow id="F02" sourceRef="Plan" targetRef="Split"/>
+    <sequenceFlow id="F03" sourceRef="Split" targetRef="Pick"/>
+    <sequenceFlow id="F04" sourceRef="Split" targetRef="Invoice"/>
+    <sequenceFlow id="F05" sourceRef="Split" targetRef="Notify"/>
+    <sequenceFlow id="F06" sourceRef="Pick" targetRef="Pack"/>
+    <sequenceFlow id="F07" sourceRef="Pack" targetRef="Join"/>
+    <sequenceFlow id="F08" sourceRef="Invoice" targetRef="Join"/>
+    <sequenceFlow id="F09" sourceRef="Notify" targetRef="Join"/>
+    <sequenceFlow id="F10" sourceRef="Join" targetRef="Dispatch"/>
+    <sequenceFlow id="F11" sourceRef="Dispatch" targetRef="Done"/>
+  </process>
+  <bpmndi:BPMNDiagram id="Diagram.Fulfilment">
+    <bpmndi:BPMNPlane id="Plane.Fulfilment" bpmnElement="Collaboration.Fulfilment">
+      <bpmndi:BPMNShape id="Shape.Participant.Fulfilment" bpmnElement="Participant.Fulfilment" isHorizontal="true">
+        <dc:Bounds x="20" y="48" width="2068" height="528"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Sales" bpmnElement="Sales" isHorizontal="true">
+        <dc:Bounds x="20" y="48" width="2068" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Warehouse" bpmnElement="Warehouse" isHorizontal="true">
+        <dc:Bounds x="20" y="224" width="2068" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Finance" bpmnElement="Finance" isHorizontal="true">
+        <dc:Bounds x="20" y="400" width="2068" height="176"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Dispatch" bpmnElement="Dispatch">
+        <dc:Bounds x="1629" y="280" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Done" bpmnElement="Done">
+        <dc:Bounds x="1918" y="118" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Invoice" bpmnElement="Invoice">
+        <dc:Bounds x="933" y="456" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Join" bpmnElement="Join">
+        <dc:Bounds x="1448" y="112" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Notify" bpmnElement="Notify">
+        <dc:Bounds x="933" y="104" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Pack" bpmnElement="Pack">
+        <dc:Bounds x="1165" y="280" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Pick" bpmnElement="Pick">
+        <dc:Bounds x="933" y="280" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Plan" bpmnElement="Plan">
+        <dc:Bounds x="469" y="104" width="150" height="64"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Split" bpmnElement="Split">
+        <dc:Bounds x="752" y="112" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape.Start" bpmnElement="Start">
+        <dc:Bounds x="294" y="118" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge.F01" bpmnElement="F01">
+        <di:waypoint x="330" y="136"/>
+        <di:waypoint x="469" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F02" bpmnElement="F02">
+        <di:waypoint x="619" y="136"/>
+        <di:waypoint x="752" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F03" bpmnElement="F03">
+        <di:waypoint x="776" y="160"/>
+        <di:waypoint x="776" y="190"/>
+        <di:waypoint x="872" y="190"/>
+        <di:waypoint x="872" y="312"/>
+        <di:waypoint x="933" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F04" bpmnElement="F04">
+        <di:waypoint x="788" y="148"/>
+        <di:waypoint x="788" y="172"/>
+        <di:waypoint x="882" y="172"/>
+        <di:waypoint x="882" y="488"/>
+        <di:waypoint x="933" y="488"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F05" bpmnElement="F05">
+        <di:waypoint x="800" y="136"/>
+        <di:waypoint x="933" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F06" bpmnElement="F06">
+        <di:waypoint x="1083" y="312"/>
+        <di:waypoint x="1165" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F07" bpmnElement="F07">
+        <di:waypoint x="1315" y="312"/>
+        <di:waypoint x="1336" y="312"/>
+        <di:waypoint x="1336" y="136"/>
+        <di:waypoint x="1448" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F08" bpmnElement="F08">
+        <di:waypoint x="1083" y="488"/>
+        <di:waypoint x="1114" y="488"/>
+        <di:waypoint x="1114" y="136"/>
+        <di:waypoint x="1448" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F09" bpmnElement="F09">
+        <di:waypoint x="1083" y="136"/>
+        <di:waypoint x="1448" y="136"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F10" bpmnElement="F10">
+        <di:waypoint x="1472" y="160"/>
+        <di:waypoint x="1472" y="190"/>
+        <di:waypoint x="1568" y="190"/>
+        <di:waypoint x="1568" y="312"/>
+        <di:waypoint x="1629" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge.F11" bpmnElement="F11">
+        <di:waypoint x="1779" y="312"/>
+        <di:waypoint x="1800" y="312"/>
+        <di:waypoint x="1800" y="136"/>
+        <di:waypoint x="1918" y="136"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
