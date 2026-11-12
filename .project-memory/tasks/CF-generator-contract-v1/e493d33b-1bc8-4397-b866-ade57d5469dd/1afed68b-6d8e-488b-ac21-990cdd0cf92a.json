@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "1afed68b-6d8e-488b-ac21-990cdd0cf92a",
+  "runId": "e493d33b-1bc8-4397-b866-ade57d5469dd",
+  "kind": "start",
+  "parents": [
+    "4ae56b9d-4a13-4e4b-a186-eeceb00e14a9"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-v1",
+    "path": "tasks/CF-generator-contract-v1-conformance-harness.md",
+    "revision": "f5941b5e83743709cb52a4506d1dc29f1d28d728",
+    "blob": "470f975246c374523f92aad08db8cef428237a6d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9b98f75e3f7f1e77a1d15c7594bb559e5404d9a4f18c73eda0d7b550abb9754f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:31:56.795Z",
+  "summary": "Cover the full part 1 scope: contract, harness module, workflow and task record",
+  "next": "Complete with observed checks",
+  "files": [
+    ".github/workflows/generator-contract.yml",
+    "modeling/CONTRACT.md",
+    "modeling/gencontract/README.md",
+    "modeling/gencontract/cmd/refgen/fault_off.go",
+    "modeling/gencontract/cmd/refgen/fault_on.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/main_test.go",
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/generators.json",
+    "modeling/gencontract/go.mod",
+    "modeling/gencontract/testdata/reference/model.json",
+    "tasks/CF-generator-contract-v1-conformance-harness.md"
+  ]
+}

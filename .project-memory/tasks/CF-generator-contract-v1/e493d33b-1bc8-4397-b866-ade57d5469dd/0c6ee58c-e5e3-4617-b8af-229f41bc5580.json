@@ -1,0 +1,97 @@
+{
+  "formatVersion": 2,
+  "eventId": "0c6ee58c-e5e3-4617-b8af-229f41bc5580",
+  "runId": "e493d33b-1bc8-4397-b866-ade57d5469dd",
+  "kind": "complete",
+  "parents": [
+    "1afed68b-6d8e-488b-ac21-990cdd0cf92a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-contract-v1",
+    "path": "tasks/CF-generator-contract-v1-conformance-harness.md",
+    "revision": "f5941b5e83743709cb52a4506d1dc29f1d28d728",
+    "blob": "470f975246c374523f92aad08db8cef428237a6d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9b98f75e3f7f1e77a1d15c7594bb559e5404d9a4f18c73eda0d7b550abb9754f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T10:31:57.008Z",
+  "summary": "Contract v1 written; black-box harness with 26 rule IDs, reference generator, 13 fault-injection self-tests, registry holding refgen only, and generator-contract workflow added",
+  "next": "Open PR; then bring tuic, jsonvalidator and modelc into conformance under separate claims",
+  "files": [
+    ".github/workflows/generator-contract.yml",
+    "modeling/CONTRACT.md",
+    "modeling/gencontract/README.md",
+    "modeling/gencontract/cmd/refgen/fault_off.go",
+    "modeling/gencontract/cmd/refgen/fault_on.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/main_test.go",
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/generators.json",
+    "modeling/gencontract/go.mod",
+    "modeling/gencontract/testdata/reference/model.json",
+    "tasks/CF-generator-contract-v1-conformance-harness.md"
+  ],
+  "validation": "Go 1.27.4 in modeling/gencontract: gofmt -l . empty; go vet ./... clean; go test -race -count=1 ./... ok for both packages. bash scripts/validate.sh: PASS (skills-ref not installed, skipped). git diff --check clean. Timeout rule not exercised by a test. Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/generator-contract.yml": {
+      "blob": "7cfebd2dbc09e8e49244ec9cbf263a61d7cc15f3",
+      "mode": "100644"
+    },
+    "modeling/CONTRACT.md": {
+      "blob": "22dacd3c237f17d51c734122b35da64896c2bd96",
+      "mode": "100644"
+    },
+    "modeling/gencontract/README.md": {
+      "blob": "b149b0a5afcee49509acaaa02da44f2dc1006a7d",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/fault_off.go": {
+      "blob": "f056117e1e5c563f523105fc73db2c3f6b4c3bc0",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/fault_on.go": {
+      "blob": "012eb16aa95fd6416eced145e45a9fd5458d72b1",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/main.go": {
+      "blob": "a7291cb7e18ed28e72f3ebf182b00d3d5c2c9e6d",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/main_test.go": {
+      "blob": "2db1c756e953acfea2995e53b2ab6dbc37a135ff",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance.go": {
+      "blob": "e19f2e10b46b83020400c1ce44f9356929d6bcb9",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance_test.go": {
+      "blob": "37003b92ffc30497be33ef9bd4a80be06d283772",
+      "mode": "100644"
+    },
+    "modeling/gencontract/generators.json": {
+      "blob": "1cf21012c6a94494a4b485d3407ffa763b4a9195",
+      "mode": "100644"
+    },
+    "modeling/gencontract/go.mod": {
+      "blob": "4da758a19becf66097d6a42c5428c5478f5c6ad3",
+      "mode": "100644"
+    },
+    "modeling/gencontract/testdata/reference/model.json": {
+      "blob": "afd048d8bd554ef807616db8cf081297bb146fb8",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-contract-v1-conformance-harness.md": {
+      "blob": "08f1f25692fd6723f98681b1383dff37a87bff7f",
+      "mode": "100644"
+    }
+  }
+}
