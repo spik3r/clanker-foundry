@@ -206,11 +206,21 @@ func footer(s state, d data, p layout) string {
 	if s.selectedIndex(d) < 0 {
 		return global
 	}
-	text := keyFor(nextPaneAction) + " pane " + global
-	if p.width >= wideWidth {
-		text = keyFor(downAction) + "/" + keyFor(upAction) + " move  " + text
+	navigation, movement := keyFor(openAction)+" open", "select"
+	if s.focus == detailPane {
+		navigation, movement = keyFor(closeAction)+" back", "scroll"
 	}
-	return text
+	// Keep the way into or out of a pane visible at the minimum width. Extra
+	// hints are optional, but an incomplete clipped key description is not.
+	compact := navigation + " " + global
+	pane := keyFor(nextPaneAction) + " pane " + compact
+	full := keyFor(downAction) + "/" + keyFor(upAction) + " " + movement + "  " + pane
+	for _, hint := range []string{full, pane, compact} {
+		if ansi.StringWidth(hint) <= p.width {
+			return hint
+		}
+	}
+	return compact
 }
 
 func (b browser) render(p layout, t theme) string {

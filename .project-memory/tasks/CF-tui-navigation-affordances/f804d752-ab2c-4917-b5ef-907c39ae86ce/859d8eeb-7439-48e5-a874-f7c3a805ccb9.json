@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "859d8eeb-7439-48e5-a874-f7c3a805ccb9",
+  "runId": "f804d752-ab2c-4917-b5ef-907c39ae86ce",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-navigation-affordances",
+    "path": "tasks/CF-tui-navigation-affordances-responsive-hints.md",
+    "revision": "8347cff252833a404f94ae11587a5a0182aea4e7",
+    "blob": "a552446da564bd8c5ea3393bd0da4aca0f44de8f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6b664c102f9d13a92b0c8b60061c7235cbd60f6687730c6d6fb1e337eee632e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/responsive-record-browser",
+  "pullRequest": null,
+  "at": "2026-11-12T10:48:38.530Z",
+  "summary": "Keep usable navigation hints visible across generated master/detail sizes",
+  "next": "Add independent regressions and verify generated behavior",
+  "files": [
+    "modeling/tui/templates/view.go.tmpl,modeling/tui/acceptance/browser_test.go.txt,modeling/tui/RESPONSIVE-INTEGRATION.md,tasks/CF-tui-navigation-affordances-responsive-hints.md"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "d77e50e9-633f-4782-839e-3a93a99d5b8b",
+  "runId": "f804d752-ab2c-4917-b5ef-907c39ae86ce",
+  "kind": "checkpoint",
+  "parents": [
+    "859d8eeb-7439-48e5-a874-f7c3a805ccb9"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-navigation-affordances",
+    "path": "tasks/CF-tui-navigation-affordances-responsive-hints.md",
+    "revision": "8347cff252833a404f94ae11587a5a0182aea4e7",
+    "blob": "a552446da564bd8c5ea3393bd0da4aca0f44de8f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6b664c102f9d13a92b0c8b60061c7235cbd60f6687730c6d6fb1e337eee632e1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/responsive-record-browser",
+  "pullRequest": null,
+  "at": "2026-11-12T10:50:03.748Z",
+  "summary": "Correct start file-list encoding: source claim was exact but initial event used one comma-joined path; tests and guide already drafted, template still unchanged",
+  "next": "Finish baseline regression and template change, then revalidate full exact scope",
+  "files": [
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/RESPONSIVE-INTEGRATION.md",
+    "tasks/CF-tui-navigation-affordances-responsive-hints.md"
+  ]
+}

@@ -598,3 +598,69 @@ func TestAcceptanceReloadGeometryFollowsReadySnapshot(t *testing.T) {
 		}
 	}
 }
+
+func footerText(m Model) string {
+	lines := strings.Split(plain(m), "\n")
+	return strings.TrimSpace(lines[len(lines)-1])
+}
+
+func TestAcceptanceResponsiveNavigationHints(t *testing.T) {
+	m := size(t, newModel(t, rows(30)), 24, 6)
+	m = press(t, m, "j")
+	for cycle := 0; cycle < 3; cycle++ {
+		for _, dimensions := range [][2]int{{24, 6}, {40, 10}, {120, 6}, {120, 12}, {24, 6}} {
+			m = size(t, m, dimensions[0], dimensions[1])
+			for _, hint := range []string{"enter open", "? help", "q quit"} {
+				if !strings.Contains(footerText(m), hint) {
+					t.Fatalf("list %v lacks %q: %q", dimensions, hint, footerText(m))
+				}
+			}
+			m = press(t, m, "enter")
+			for _, hint := range []string{"esc back", "? help", "q quit"} {
+				if !strings.Contains(footerText(m), hint) {
+					t.Fatalf("details %v lacks %q: %q", dimensions, hint, footerText(m))
+				}
+			}
+			selected(t, m, "id-01")
+			before := m.browser.state
+			bounds(t, m, dimensions[0], dimensions[1])
+			_ = m.View()
+			if m.browser.state != before {
+				t.Fatal("render changed navigation state")
+			}
+			m = press(t, m, "esc")
+		}
+		m = size(t, m, 1, 1)
+		m = size(t, m, 24, 6)
+		selected(t, m, "id-01")
+	}
+}
+
+func TestAcceptanceNavigationHintsDuringHelpAndStatus(t *testing.T) {
+	m := size(t, newModel(t, rows(1)), 24, 6)
+	m = press(t, m, "enter")
+	m = press(t, m, "?")
+	for _, dimensions := range [][2]int{{24, 6}, {120, 6}, {120, 12}} {
+		m = size(t, m, dimensions[0], dimensions[1])
+		hints := footerText(m)
+		if !strings.Contains(hints, "close") || !strings.Contains(hints, "esc") || !strings.Contains(hints, "scroll") || strings.Contains(hints, "quit") || strings.Contains(hints, "open") {
+			t.Fatalf("incorrect captive-help hints: %q", hints)
+		}
+		m = press(t, m, "q")
+		if !m.browser.state.helpOpen {
+			t.Fatal("quit escaped captive help")
+		}
+	}
+	m = press(t, m, "esc")
+	m = size(t, m, 24, 6)
+	for _, snapshot := range []Snapshot{{Status: Loading}, {Status: Failed}, {Status: Ready}} {
+		var err error
+		m, err = m.Replace(snapshot)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := footerText(m); got != "? help q quit" {
+			t.Fatalf("status/empty hints: %q", got)
+		}
+	}
+}
