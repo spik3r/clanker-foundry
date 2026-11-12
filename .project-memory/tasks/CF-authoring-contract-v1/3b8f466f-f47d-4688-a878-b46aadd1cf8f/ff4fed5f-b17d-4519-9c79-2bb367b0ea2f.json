@@ -1,0 +1,44 @@
+{
+  "formatVersion": 2,
+  "eventId": "ff4fed5f-b17d-4519-9c79-2bb367b0ea2f",
+  "runId": "3b8f466f-f47d-4688-a878-b46aadd1cf8f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-authoring-contract-v1",
+    "path": "tasks/CF-authoring-contract-v1-profile-registry.md",
+    "revision": "acc8a75dfa3fb11f874a13a66df268ac76fbb641",
+    "blob": "6cf2101a98a325fc42681257a7da69778468189d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9703c533b4a4704331248aecedb36bf9477d1c9ee649dbb6289152bd9bc00285"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-12T19:33:15.150Z",
+  "summary": "Add profile registry, authoring schemas with generator-agreement tests, and profile-aware design skill",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/model-authoring-contract.yml",
+    "modeling/README.md",
+    "modeling/diagram/authoring/process-diagram-v1.schema.json",
+    "modeling/diagram/authoring/schema.test.cjs",
+    "modeling/gencontract/profiles_test.go",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "modeling/profiles.json",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/authoring/record-browser-v1.schema.json",
+    "modeling/tui/authoring/schema.test.cjs",
+    "skills/model-driven-design/README.md",
+    "skills/model-driven-design/SKILL.md",
+    "skills/model-driven-design/assets/gap-report.md",
+    "skills/model-driven-design/references/foundry-profiles.md",
+    "tasks/CF-authoring-contract-v1-profile-registry.md"
+  ]
+}

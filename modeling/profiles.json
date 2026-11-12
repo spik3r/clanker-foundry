@@ -1,0 +1,79 @@
+{
+  "registryVersion": "foundry-profile-registry/v1",
+  "profiles": [
+    {
+      "profile": "record-browser/v1",
+      "generator": "tuic",
+      "summary": "Read-only list and detail browser for a terminal, as a Go package.",
+      "profileDoc": "modeling/tui/PROFILE.md",
+      "schema": "modeling/tui/authoring/record-browser-v1.schema.json",
+      "examples": [
+        "modeling/tui/examples/browser.json",
+        "modeling/tui/examples/browser-package.json"
+      ],
+      "emits": ["Go package"],
+      "cannotExpress": [
+        "editable form fields",
+        "custom key actions or shell commands",
+        "field types other than string",
+        "more than two panes",
+        "background jobs or loading data from files or services"
+      ]
+    },
+    {
+      "profile": "json-boolean/v1",
+      "generator": "jsonvalidator",
+      "summary": "Boolean predicate over parsed JSON, emitted as Go and TypeScript functions.",
+      "profileDoc": "modeling/jsonvalidator/PROFILE.md",
+      "schema": "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+      "examples": ["modeling/jsonvalidator/testdata/sample/model.json"],
+      "emits": ["Go source file", "TypeScript source file"],
+      "cannotExpress": [
+        "forbidding extra properties",
+        "defaults, enums or nullable values",
+        "numeric or regular-expression constraints",
+        "unions or recursive references",
+        "cross-field rules",
+        "error messages or a first-error result"
+      ]
+    },
+    {
+      "profile": "lifecycle/v1",
+      "generator": "lifecyclegen",
+      "summary": "Finite task lifecycle with guards, transitions and ordered effects, as a Go reducer with views.",
+      "profileDoc": "modeling/lifecycle/README.md",
+      "schema": "modeling/lifecycle/authoring/lifecycle-v1.schema.json",
+      "examples": ["modeling/lifecycle/examples/lifecycle.json"],
+      "emits": ["Go reducer", "structural tests", "SVG diagram", "decision table", "trace"],
+      "cannotExpress": [
+        "data fields beyond the fixed Task, Command and Review shape",
+        "payments, dates or other external effects",
+        "databases or persistence",
+        "parallel work",
+        "authentication",
+        "guard operators or effects outside the fixed vocabulary"
+      ]
+    },
+    {
+      "profile": "process-diagram/v1",
+      "generator": "diagramgen",
+      "summary": "Business-process diagram of lanes, events, tasks, gateways and flows, as SVG and BPMN-style XML.",
+      "profileDoc": "modeling/diagram/PROFILE.md",
+      "schema": "modeling/diagram/authoring/process-diagram-v1.schema.json",
+      "examples": [
+        "modeling/diagram/examples/order.json",
+        "modeling/diagram/examples/parallel.json",
+        "modeling/diagram/examples/rework.json"
+      ],
+      "emits": ["SVG picture", "BPMN-style XML"],
+      "cannotExpress": [
+        "coordinates, sizes, colours or other layout choices",
+        "task types or events with definitions",
+        "message flows or sub-processes",
+        "data objects",
+        "flow conditions or execution semantics",
+        "more than 8 lanes, 64 nodes or 128 flows"
+      ]
+    }
+  ]
+}

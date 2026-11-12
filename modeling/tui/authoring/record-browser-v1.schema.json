@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:tuic:record-browser:v1:schema",
+  "title": "record-browser/v1 model",
+  "description": "Authoring aid for tui-json/v1 models with profile record-browser/v1. Go validation in tuic is authoritative. This schema cannot express: unique field ids; that identity, summary and details name declared fields; the layout relations wideWidth >= narrowWidth, wideHeight >= narrowHeight and listWidth <= wideWidth - 9; duplicate JSON keys; trailing data; the 32 KiB size limit and the nesting limit; label byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte label can pass here and fail in Go); and that numbers must be written as integers (2.4e1 and 24.0 pass here and fail in Go).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "id", "title", "fields", "identity", "summary", "details", "listLabel", "detailLabel", "layout"],
+  "properties": {
+    "formatVersion": {"const": "tui-json/v1"},
+    "profileVersion": {"const": "record-browser/v1"},
+    "id": {"$ref": "#/$defs/identifier"},
+    "title": {"$ref": "#/$defs/label"},
+    "fields": {
+      "description": "1 to 16 string fields with display labels. Ids must be unique (Go checks).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "label": {"$ref": "#/$defs/label"}
+        }
+      }
+    },
+    "identity": {"description": "Id of the declared field that holds the stable, nonempty record identity.", "$ref": "#/$defs/identifier"},
+    "summary": {"description": "Id of the declared field shown as the list label.", "$ref": "#/$defs/identifier"},
+    "details": {
+      "description": "1 to 16 unique declared field ids, in display order.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/identifier"}
+    },
+    "listLabel": {"$ref": "#/$defs/label"},
+    "detailLabel": {"$ref": "#/$defs/label"},
+    "layout": {
+      "description": "Breakpoints in terminal cells. Go also requires wideWidth >= narrowWidth, wideHeight >= narrowHeight and listWidth <= wideWidth - 9.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["narrowWidth", "narrowHeight", "wideWidth", "wideHeight", "listWidth"],
+      "properties": {
+        "narrowWidth": {"type": "integer", "minimum": 24, "maximum": 240},
+        "narrowHeight": {"type": "integer", "minimum": 6, "maximum": 80},
+        "wideWidth": {"type": "integer", "minimum": 24, "maximum": 400},
+        "wideHeight": {"type": "integer", "minimum": 6, "maximum": 120},
+        "listWidth": {"type": "integer", "minimum": 8, "maximum": 391}
+      }
+    },
+    "detailText": {
+      "description": "Optional. clip (default) shows one cut row per field; wrap wraps values to the pane width.",
+      "enum": ["clip", "wrap"]
+    },
+    "emit": {
+      "description": "Optional. module (default) writes a standalone module; package writes only the Go files of a package with the given name. package is required in package mode and refused in module mode.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {"enum": ["module", "package"]},
+        "package": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]{0,31}$",
+          "not": {"enum": ["break", "default", "func", "interface", "select", "case", "defer", "go", "map", "struct", "chan", "else", "goto", "package", "switch", "const", "fallthrough", "if", "range", "type", "continue", "for", "import", "return", "var", "any", "bool", "byte", "comparable", "complex64", "complex128", "error", "float32", "float64", "int", "int8", "int16", "int32", "int64", "rune", "string", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr", "true", "false", "iota", "nil", "append", "cap", "clear", "close", "complex", "copy", "delete", "imag", "len", "make", "max", "min", "new", "panic", "print", "println", "real", "recover", "main", "init"]}
+        }
+      },
+      "allOf": [
+        {"if": {"properties": {"mode": {"const": "module"}}, "required": ["mode"]}, "then": {"properties": {"package": false}}},
+        {"if": {"properties": {"mode": {"const": "package"}}, "required": ["mode"]}, "then": {"required": ["package"]}}
+      ]
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "description": "Exported ASCII identifier of 1 to 48 characters.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]{0,47}$"
+    },
+    "label": {
+      "description": "Plain text, 1 to 120 UTF-8 bytes, no control characters and no U+2028 or U+2029. Blank text is allowed. maxLength counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\p{Cc}\\u2028\\u2029]+$"
+    }
+  }
+}

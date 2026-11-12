@@ -55,6 +55,8 @@ own loading and error states.
 Unrecognized fields, including case variants, are rejected. Duplicate JSON keys,
 null values, unsupported versions, invalid UTF-8, trailing data, overly deep JSON
 and input larger than 32 KiB are rejected. Go validation is authoritative.
+The [JSON Schema](authoring/record-browser-v1.schema.json) is an authoring aid
+for drafting a model; it lists the rules it cannot express.
 
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
