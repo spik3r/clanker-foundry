@@ -24,3 +24,19 @@ from decisions that need the owner. Do not turn proposals into implementation
 claims. Run the repository validator and whitespace checks, then push the branch
 `claude/nice-mccarthy-k6gbb9` for review without opening or merging a pull
 request unless the owner asks.
+
+## Owner decision update claim
+
+Owner: Claude planning contributor. On 12 November 2026 the repository owner
+accepted the plan's rule and direction changes, named `~/code/monstera` as the
+first consumer with the feature left for a later suggestion, allowed steps 1 to
+3 to start before that feature is chosen, and agreed that the plan answers the
+route question in the current direction. The owner also asked for diagram and
+simple dashboard generation as the next consumer, and for a pull request.
+
+This claim is limited to recording those decisions in
+`docs/generator-pipeline-plan.md`, adding a dated owner update to
+`docs/current-direction.md`, this task record and new immutable Project Memory
+files. It changes no product code and no runtime authority. Each implementation
+part of the plan needs its own task and claim. Run the repository validator and
+whitespace checks and open a pull request.
