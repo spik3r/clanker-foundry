@@ -298,3 +298,64 @@ func TestBoundariesDoNotSilentlyTruncateData(t *testing.T) {
 		t.Fatal("text bound ignored")
 	}
 }
+
+func TestFormattedOutputLimitAndGeneratorRoundtrip(t *testing.T) {
+	// Two dense tables fit the input limit while pretty-printing adds enough
+	// whitespace to cross it. Binding must refuse the final bytes, not return a
+	// model that the generator cannot consume.
+	columns := make([]map[string]any, 12)
+	ids := make([]string, 12)
+	for i := range columns {
+		id := "C" + string(rune('A'+i))
+		ids[i] = id
+		columns[i] = map[string]any{"id": id, "label": id, "type": "text"}
+	}
+	tpl := map[string]any{
+		"formatVersion": "diagram-json/v1", "profileVersion": "dashboard/v1", "id": "Dense", "title": "Dense tables",
+		"datasets": []any{
+			map[string]any{"id": "A", "columns": columns, "rows": []any{}},
+			map[string]any{"id": "B", "columns": columns, "rows": []any{}},
+		},
+		"widgets": []any{
+			map[string]any{"id": "TA", "kind": "table", "title": "A", "dataset": "A", "columns": ids},
+			map[string]any{"id": "TB", "kind": "table", "title": "B", "dataset": "B", "columns": ids},
+		},
+		"layout": [][]string{{"TA"}, {"TB"}},
+	}
+	tplRaw := encoded(t, tpl)
+	for _, width := range []int{80, 100} {
+		rows := make([][]string, 200)
+		for r := range rows {
+			rows[r] = make([]string, 12)
+			for c := range rows[r] {
+				rows[r][c] = strings.Repeat("x", width)
+			}
+		}
+		p := map[string]any{"dataVersion": dashboardbind.Version, "templateSHA256": sum(string(tplRaw)), "datasets": []any{
+			map[string]any{"id": "A", "rows": rows}, map[string]any{"id": "B", "rows": rows},
+		}, "stats": []any{}}
+		dataRaw := encoded(t, p)
+		if len(dataRaw) > contract.MaxModelBytes {
+			t.Fatalf("fixture must be legal input size: %d", len(dataRaw))
+		}
+		bound, err := dashboardbind.Bind(tplRaw, dataRaw)
+		if width == 100 {
+			if err == nil || len(bound) != 0 || !strings.Contains(err.Error(), "materialized dashboard exceeds") {
+				t.Fatalf("expected final-byte refusal, got %d bytes: %v", len(bound), err)
+			}
+			continue
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(bound) > contract.MaxModelBytes {
+			t.Fatalf("success exceeded final output limit: %d", len(bound))
+		}
+		if _, err := dashboard.Decode(bound); err != nil {
+			t.Fatal("successful binding cannot be decoded:", err)
+		}
+		if _, err := diagram.Build(bound); err != nil {
+			t.Fatal("successful binding cannot generate:", err)
+		}
+	}
+}

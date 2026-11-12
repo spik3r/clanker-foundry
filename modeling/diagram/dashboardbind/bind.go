@@ -163,5 +163,8 @@ func Bind(template, data []byte) ([]byte, error) {
 		return nil, err
 	}
 	pretty.WriteByte('\n')
+	if pretty.Len() > contract.MaxModelBytes {
+		return nil, fmt.Errorf("materialized dashboard exceeds %d bytes", contract.MaxModelBytes)
+	}
 	return pretty.Bytes(), nil
 }

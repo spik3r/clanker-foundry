@@ -65,7 +65,9 @@ check its consistency with the data.
 
 Input uses the dashboard's existing strict JSON scanner: no duplicate or unknown
 keys, nulls, trailing data, invalid UTF-8 or deep structures. Each input and the
-materialized model are bounded by 512 KiB. The complete materialized model must
+materialized model are bounded by 512 KiB, including output indentation and its
+final newline. A compact payload within the input limit may still be refused if
+its formatted materialized model exceeds that limit. The complete materialized model must
 pass the existing `dashboard/v1` validator, including column types, decimal
 precision, text limits and chart row limits. Decimal tokens never pass through
 floating point. An empty table is allowed; an empty chart is refused.
