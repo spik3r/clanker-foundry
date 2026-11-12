@@ -28,6 +28,13 @@
       "module": "modeling/lifecycle",
       "package": "./cmd/lifecyclegen",
       "model": "modeling/lifecycle/examples/lifecycle.json"
+    },
+    {
+      "id": "diagramgen",
+      "profile": "process-diagram/v1",
+      "module": "modeling/diagram",
+      "package": "./cmd/diagramgen",
+      "model": "modeling/diagram/examples/order.json"
     }
   ]
 }
