@@ -21,6 +21,13 @@
       "module": "modeling/jsonvalidator",
       "package": "./cmd/jsonvalidator",
       "model": "modeling/jsonvalidator/testdata/sample/model.json"
+    },
+    {
+      "id": "lifecyclegen",
+      "profile": "lifecycle/v1",
+      "module": "modeling/lifecycle",
+      "package": "./cmd/lifecyclegen",
+      "model": "modeling/lifecycle/examples/lifecycle.json"
     }
   ]
 }
