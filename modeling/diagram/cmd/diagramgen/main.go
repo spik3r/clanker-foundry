@@ -14,6 +14,7 @@ import (
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/dashboardbind"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/tesserae"
 )
 
@@ -23,7 +24,7 @@ const (
 	exitDrift   = 3
 )
 
-const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT | tesserae MODEL"
+const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT | bind TEMPLATE DATA | tesserae MODEL"
 
 type usageError string
 
@@ -68,6 +69,20 @@ func dispatch(args []string) (line string, drift []string, err error) {
 			return "", nil, usageError(err.Error())
 		}
 		return string(out), nil, nil
+	case len(args) == 3 && args[0] == "bind":
+		template, err := readBindingInput(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		data, err := readBindingInput(args[2])
+		if err != nil {
+			return "", nil, err
+		}
+		bound, err := dashboardbind.Bind(template, data)
+		if err != nil {
+			return "", nil, contract.Refuse("bind: %v", err)
+		}
+		return string(bound), nil, nil
 	case len(args) == 2 && args[0] == "validate":
 		res, err := load(args[1])
 		return res.Identity, nil, err
@@ -100,4 +115,17 @@ func load(path string) (contract.Result, error) {
 		return contract.Result{}, err
 	}
 	return diagram.Build(raw)
+}
+
+// Binding reads only regular leaf files; do not open named pipes or devices.
+// The project directory must not have a hostile concurrent writer.
+func readBindingInput(path string) ([]byte, error) {
+	info, err := os.Lstat(path)
+	if err != nil {
+		return nil, contract.Refuse("cannot inspect binding input: %v", err)
+	}
+	if !info.Mode().IsRegular() {
+		return nil, contract.Refuse("binding input must be a regular file")
+	}
+	return contract.ReadModel(path)
 }

@@ -19,6 +19,9 @@ Four profiles exist. The generator picks one by the model's `profileVersion`:
 Other profiles can be added as sibling packages that implement
 `contract.Profile`.
 
+For recurring reports, [reuse a reviewed dashboard with fresh data](REPORT-BINDING.md)
+using `diagramgen bind TEMPLATE DATA` before generation.
+
 ## Run it
 
 Go 1.27.4 is required.

@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "05d5c678-d4c8-4458-b333-4c8d7ef5f766",
+  "runId": "6f92df9d-a69b-4b49-826e-bae1f0646d00",
+  "kind": "complete",
+  "parents": [
+    "30ec903c-c610-4957-8e2f-bfa83d2045de"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-12T21:17:36.548Z",
+  "summary": "Reusable exact-pinned report data binds to existing validated dashboard renderer",
+  "next": "Independent review before publication",
+  "files": [
+    "modeling/diagram/dashboardbind/bind.go",
+    "modeling/diagram/dashboardbind/bind_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/bind_test.go",
+    "modeling/diagram/REPORT-BINDING.md",
+    "modeling/diagram/examples/ops-report-data.json",
+    "modeling/diagram/examples/ops-report-data-two.json",
+    "modeling/diagram/README.md"
+  ],
+  "validation": "Go1.27.4 full diagram race tests and vet passed; two independent report payloads preserve component/theme structure; strict refusal and CLI generate/check/drift tests passed; scripts/validate.sh and git diff --check passed",
+  "snapshot": {
+    "modeling/diagram/dashboardbind/bind.go": {
+      "blob": "093994505e4b354abc1c39f0edf0866fc420b07c",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboardbind/bind_test.go": {
+      "blob": "03e29e504878b3ec5270a1a86bd1580c378f7583",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "28633d1266954390715e61c8f14305aeb857a06d",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/bind_test.go": {
+      "blob": "2a177b1bfa8c2b0f4bf59ac9a293b85ac326f54a",
+      "mode": "100644"
+    },
+    "modeling/diagram/REPORT-BINDING.md": {
+      "blob": "c282e1d4107c6fc2ee3dd14d61497ea60694226d",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/ops-report-data.json": {
+      "blob": "016bd2bc2dbe84a9747115280ebe94f4a11191a4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/ops-report-data-two.json": {
+      "blob": "7e9a4169eb4640b1d8dc43abf4d6a1243d2cea55",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "226685ebc75a20d7fd6f61c1c39f84ac9c23d452",
+      "mode": "100644"
+    }
+  }
+}

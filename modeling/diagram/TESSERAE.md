@@ -4,7 +4,7 @@
 `tesserae/v1` presentation model to stdout. It does not render HTML, fetch or
 install Tesserae, write files, or alter the existing dashboard generator output.
 
-This is an experimental consumer seam against Tesserae PR 1, not a released
+This is an experimental consumer seam against Tesserae main (`c2ae9ec`), not a released
 package integration. The consumer owns themes, markup and final rendering limits.
 The external renderer must still validate the emitted model and enforce its
 1 MiB HTML output limit. Source size acceptance does not guarantee rendered size.
