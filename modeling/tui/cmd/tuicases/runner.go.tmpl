@@ -1,0 +1,241 @@
+// Fixed expectation runner. It reads a record-browser-cases/v1 file at run time
+// and drives the generated browser. Only the import path and the record fields
+// come from the model; nothing from the cases file becomes source code.
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+	"strings"
+
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
+
+	browser "[[[.Import]]]"
+)
+
+type size struct{ Width, Height int }
+
+type replace struct {
+	Status  string
+	Records *string
+	Message *string
+}
+
+type step struct {
+	Key     *string
+	Resize  *size
+	Replace *replace
+}
+
+type expect struct {
+	Layout   *string
+	Focus    *string
+	Help     *bool
+	Selected *string
+	Status   *string
+	Visible  *[]string
+	Absent   *[]string
+	Quit     *bool
+}
+
+type testCase struct {
+	ID      string
+	Size    size
+	Records string
+	Steps   []step
+	Expect  expect
+}
+
+type document struct {
+	Records map[string][]map[string]string
+	Cases   []testCase
+}
+
+type result struct {
+	ID       string   `json:"id"`
+	Failures []string `json:"failures"`
+}
+
+func record(v map[string]string) browser.Record {
+	return browser.Record{
+[[[range .Fields]]]		[[[.ID]]]: v["[[[.ID]]]"],
+[[[end]]]	}
+}
+
+func records(set []map[string]string) []browser.Record {
+	out := make([]browser.Record, 0, len(set))
+	for _, v := range set {
+		out = append(out, record(v))
+	}
+	return out
+}
+
+func keyMsg(k string) (tea.KeyPressMsg, error) {
+	var v tea.KeyPressMsg
+	switch k {
+	case "tab":
+		v.Code = tea.KeyTab
+	case "shift+tab":
+		v.Code, v.Mod = tea.KeyTab, tea.ModShift
+	case "enter":
+		v.Code = tea.KeyEnter
+	case "esc":
+		v.Code = tea.KeyEscape
+	case "up":
+		v.Code = tea.KeyUp
+	case "down":
+		v.Code = tea.KeyDown
+	case "pgup":
+		v.Code = tea.KeyPgUp
+	case "pgdown":
+		v.Code = tea.KeyPgDown
+	case "home":
+		v.Code = tea.KeyHome
+	case "end":
+		v.Code = tea.KeyEnd
+	case "ctrl+c", "ctrl+b", "ctrl+f":
+		v.Code, v.Mod = rune(k[5]), tea.ModCtrl
+	default:
+		r := []rune(k)
+		if len(r) != 1 {
+			return v, fmt.Errorf("unsupported key %q", k)
+		}
+		v.Code, v.Text = r[0], k
+	}
+	if v.String() != k {
+		return v, fmt.Errorf("key %q is spelled %q by the library", k, v.String())
+	}
+	return v, nil
+}
+
+func statusName(s browser.Status) string {
+	switch s {
+	case browser.Ready:
+		return "ready"
+	case browser.Loading:
+		return "loading"
+	case browser.Failed:
+		return "failed"
+	}
+	return fmt.Sprintf("unknown(%d)", s)
+}
+
+func isQuit(cmd tea.Cmd) bool {
+	if cmd == nil {
+		return false
+	}
+	_, ok := cmd().(tea.QuitMsg)
+	return ok
+}
+
+func run(doc document, c testCase) []string {
+	var fails []string
+	fail := func(format string, a ...any) { fails = append(fails, fmt.Sprintf(format, a...)) }
+	m, err := browser.New(records(doc.Records[c.Records]))
+	if err != nil {
+		return []string{fmt.Sprintf("setup: want records accepted got %v", err)}
+	}
+	next, _ := m.Update(tea.WindowSizeMsg{Width: c.Size.Width, Height: c.Size.Height})
+	m = next.(browser.Model)
+	quit := false
+	for i, s := range c.Steps {
+		quit = false
+		switch {
+		case s.Key != nil:
+			msg, err := keyMsg(*s.Key)
+			if err != nil {
+				return append(fails, fmt.Sprintf("step %d: want key accepted got %v", i+1, err))
+			}
+			var cmd tea.Cmd
+			next, cmd = m.Update(msg)
+			m = next.(browser.Model)
+			quit = isQuit(cmd)
+		case s.Resize != nil:
+			next, _ = m.Update(tea.WindowSizeMsg{Width: s.Resize.Width, Height: s.Resize.Height})
+			m = next.(browser.Model)
+		case s.Replace != nil:
+			snap := browser.Snapshot{}
+			switch s.Replace.Status {
+			case "ready":
+				snap.Status = browser.Ready
+			case "loading":
+				snap.Status = browser.Loading
+			default:
+				snap.Status = browser.Failed
+			}
+			if s.Replace.Records != nil {
+				snap.Records = records(doc.Records[*s.Replace.Records])
+			}
+			if s.Replace.Message != nil {
+				snap.Message = *s.Replace.Message
+			}
+			after, err := m.Replace(snap)
+			if err != nil {
+				return append(fails, fmt.Sprintf("step %d: want replace accepted got %v", i+1, err))
+			}
+			m = after
+		}
+	}
+	e := c.Expect
+	if e.Layout != nil && m.Layout() != *e.Layout {
+		fail("layout: want %q got %q", *e.Layout, m.Layout())
+	}
+	if e.Focus != nil && m.Focus() != *e.Focus {
+		fail("focus: want %q got %q", *e.Focus, m.Focus())
+	}
+	if e.Help != nil && m.HelpOpen() != *e.Help {
+		fail("help: want %t got %t", *e.Help, m.HelpOpen())
+	}
+	if e.Selected != nil && m.Selected() != *e.Selected {
+		fail("selected: want %q got %q", *e.Selected, m.Selected())
+	}
+	if e.Status != nil && statusName(m.Status()) != *e.Status {
+		fail("status: want %q got %q", *e.Status, statusName(m.Status()))
+	}
+	if e.Quit != nil && quit != *e.Quit {
+		fail("quit: want %t got %t", *e.Quit, quit)
+	}
+	frame := ansi.Strip(m.View().Content)
+	if e.Visible != nil {
+		for _, s := range *e.Visible {
+			if !strings.Contains(frame, s) {
+				fail("visible %q: want shown got not shown", s)
+			}
+		}
+	}
+	if e.Absent != nil {
+		for _, s := range *e.Absent {
+			if strings.Contains(frame, s) {
+				fail("absent %q: want not shown got shown", s)
+			}
+		}
+	}
+	return fails
+}
+
+func main() {
+	if len(os.Args) != 2 {
+		fmt.Fprintln(os.Stderr, "usage: runner CASES")
+		os.Exit(1)
+	}
+	raw, err := os.ReadFile(os.Args[1])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	var doc document
+	if err := json.Unmarshal(raw, &doc); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	results := make([]result, 0, len(doc.Cases))
+	for _, c := range doc.Cases {
+		results = append(results, result{ID: c.ID, Failures: append([]string{}, run(doc, c)...)})
+	}
+	if err := json.NewEncoder(os.Stdout).Encode(results); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}

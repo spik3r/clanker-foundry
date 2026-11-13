@@ -18,6 +18,37 @@ func (m Model) Replace(next Snapshot) (Model,error) {
  b,err:=m.browser.replaceData(d,plan(m.width,m.height));if err!=nil{return m,err}
  m.browser=b;return m,nil
 }
+
+// Selected returns the ID of the record shown as selected, or "" when none is:
+// the browser is loading, failed or empty.
+func (m Model) Selected() string {
+ if m.browser.state.selectedIndex(m.browser.data)<0 { return "" }
+ return m.browser.state.selectedID
+}
+
+// Focus returns the focused pane, "list" or "detail". Loading and failed
+// snapshots retain it.
+func (m Model) Focus() string {
+ if m.browser.state.focus==detailPane { return "detail" }
+ return "list"
+}
+
+// Layout returns the variant for the current size: "wide", "narrow" or "tiny".
+// A model that has not yet received a size is "tiny".
+func (m Model) Layout() string {
+ switch plan(m.width,m.height).variant {
+ case wide: return "wide"
+ case narrow: return "narrow"
+ }
+ return "tiny"
+}
+
+// HelpOpen reports whether the help overlay is open.
+func (m Model) HelpOpen() bool { return m.browser.state.helpOpen }
+
+// Status returns the status of the current snapshot.
+func (m Model) Status() Status { return Status(m.browser.data.status) }
+
 func (m Model) Init() tea.Cmd{return nil}
 func (m Model) Update(msg tea.Msg)(tea.Model,tea.Cmd){
  switch msg:=msg.(type){

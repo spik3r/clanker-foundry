@@ -1,0 +1,49 @@
+{
+  "formatVersion": 2,
+  "eventId": "f77d3b64-35bd-4140-8e8e-fb90b500a531",
+  "runId": "5d84a412-3a38-4332-a541-d71a6ca3f74e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-cases-v1",
+    "path": "tasks/CF-record-browser-cases-v1-expectations-as-data.md",
+    "revision": "e0f21a0956c4a5f6736f4c0ca2504482363e109e",
+    "blob": "a314f6ffc3634d85f5493fee2b7176e22dec7e93",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "635fcbeb6151e1d3583618615b5d5d416433ce61bd34e590890a9fd99b97c7fd"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T08:06:00.166Z",
+  "summary": "Add record-browser-cases/v1, the tuicases runner, accessors, examples, schema and registry member",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/model-authoring-contract.yml",
+    "modeling/README.md",
+    "modeling/gencontract/profiles_test.go",
+    "modeling/profiles.json",
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-package.cases.json",
+    "modeling/tui/examples/browser.cases.json",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "skills/model-driven-design/references/foundry-profiles.md",
+    "tasks/CF-record-browser-cases-v1-expectations-as-data.md"
+  ]
+}

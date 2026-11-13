@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:tuic:record-browser-cases:v1:schema",
+  "title": "record-browser-cases/v1 expectation cases",
+  "description": "Authoring aid for record-browser-cases/v1 documents. tuicases validate is authoritative. This schema cannot express: that model.canonicalSHA256 equals the digest of the model the cases are checked against; that every record has exactly the model's field ids and a unique nonempty identity; that records.SetName and replace.records name a declared record set; unique case ids; duplicate JSON keys; trailing data; the 256 KiB size limit and the nesting limit; byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte string can pass here and fail in Go); and that numbers must be written as integers (24.0 and 2.4e1 pass here and fail in Go).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "model", "records", "cases"],
+  "properties": {
+    "formatVersion": {"const": "record-browser-cases/v1"},
+    "profileVersion": {"const": "record-browser/v1"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalSHA256"],
+      "properties": {
+        "canonicalSHA256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "records": {
+      "description": "1 to 8 named record sets of 0 to 200 records. Each record holds the model's field ids as string values (Go checks the field set and the identity).",
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 8,
+      "propertyNames": {"pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"},
+      "additionalProperties": {
+        "type": "array",
+        "maxItems": 200,
+        "items": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 16,
+          "additionalProperties": {"type": "string", "maxLength": 4096}
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "$defs": {
+    "plain": {
+      "description": "Plain text of 1 to 240 UTF-8 bytes without control characters, U+2028 or U+2029. maxLength counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240,
+      "pattern": "^[^\\p{Cc}\\u2028\\u2029]+$"
+    },
+    "size": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 1, "maximum": 400},
+        "height": {"type": "integer", "minimum": 1, "maximum": 200}
+      }
+    },
+    "status": {"enum": ["ready", "loading", "failed"]},
+    "texts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "items": {"$ref": "#/$defs/plain"}
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "requirement", "size", "records", "steps", "expect"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"},
+        "requirement": {"$ref": "#/$defs/plain"},
+        "size": {"$ref": "#/$defs/size"},
+        "records": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"},
+        "steps": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["key"],
+                "properties": {"key": {"enum": ["tab", "shift+tab", "enter", "esc", "?", "q", "ctrl+c", "j", "k", "up", "down", "pgup", "pgdown", "home", "end"]}}
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["resize"],
+                "properties": {"resize": {"$ref": "#/$defs/size"}}
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["replace"],
+                "properties": {
+                  "replace": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["status"],
+                    "properties": {
+                      "status": {"$ref": "#/$defs/status"},
+                      "records": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,31}$"},
+                      "message": {"$ref": "#/$defs/plain"}
+                    },
+                    "if": {"properties": {"records": {"type": "string"}}, "required": ["records"]},
+                    "then": {"properties": {"status": {"const": "ready"}}}
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "layout": {"enum": ["wide", "narrow", "tiny"]},
+            "focus": {"enum": ["list", "detail"]},
+            "help": {"type": "boolean"},
+            "selected": {"type": "string", "maxLength": 4096},
+            "status": {"$ref": "#/$defs/status"},
+            "visible": {"$ref": "#/$defs/texts"},
+            "absent": {"$ref": "#/$defs/texts"},
+            "quit": {"type": "boolean"}
+          }
+        }
+      }
+    }
+  }
+}
