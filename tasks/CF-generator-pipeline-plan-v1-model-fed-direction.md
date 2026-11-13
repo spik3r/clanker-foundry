@@ -40,3 +40,14 @@ This claim is limited to recording those decisions in
 files. It changes no product code and no runtime authority. Each implementation
 part of the plan needs its own task and claim. Run the repository validator and
 whitespace checks and open a pull request.
+
+## Progress record claim
+
+Owner: Claude planning contributor. The repository owner asked for the plan's
+parts to be worked through with review and merge of each. This claim is limited
+to adding a dated progress section to `docs/generator-pipeline-plan.md` that
+records which steps reached main, where the work departed from the plan, what
+the read-only review of the first consumer found, and what remains open, plus
+this task record and new immutable Project Memory files. It changes no product
+code. Run the repository validator and whitespace checks and open a pull
+request.
