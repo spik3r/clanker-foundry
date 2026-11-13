@@ -239,7 +239,7 @@ func TestStructure(t *testing.T) {
 		t.Errorf("widgets in output order %v, want layout order %v", got, want)
 	}
 	for _, want := range []string{"<header>", "<h1>Annual sales review", `<p class="subtitle">`, "<main>", "<meta charset=\"utf-8\">",
-		`<meta name="viewport" content="width=device-width, initial-scale=1">`, `<meta name="generator" content="diagramgen 1.1.0">`} {
+		`<meta name="viewport" content="width=device-width, initial-scale=1">`, `<meta name="generator" content="diagramgen 1.2.0">`} {
 		if !strings.Contains(out, want) {
 			t.Errorf("output lacks %q", want)
 		}

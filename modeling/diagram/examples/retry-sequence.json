@@ -1,0 +1,32 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "sequence-diagram/v1",
+  "id": "RetryUpload",
+  "title": "Upload with retry and back-off",
+  "participants": [
+    {"id": "Client", "label": "Mobile client", "kind": "participant"},
+    {"id": "Gateway", "label": "API gateway", "kind": "participant"},
+    {"id": "Store", "label": "Object storage service", "kind": "participant"},
+    {"id": "Queue", "label": "Retry queue", "kind": "participant"},
+    {"id": "Ops", "label": "On-call engineer", "kind": "actor"}
+  ],
+  "steps": [
+    {"id": "T1", "kind": "message", "from": "Client", "to": "Gateway", "label": "Upload the photo with the signed request and a content checksum", "style": "sync"},
+    {"id": "T2", "kind": "message", "from": "Gateway", "to": "Store", "label": "Store object", "style": "sync"},
+    {"id": "T3", "kind": "message", "from": "Store", "to": "Gateway", "label": "503 temporarily unavailable", "style": "reply"},
+    {"id": "T4", "kind": "message", "from": "Gateway", "to": "Gateway", "label": "Wait before the next attempt", "style": "sync"},
+    {"id": "T5", "kind": "message", "from": "Gateway", "to": "Store", "label": "Store object again", "style": "sync"},
+    {"id": "T6", "kind": "message", "from": "Store", "to": "Gateway", "label": "Stored", "style": "reply"},
+    {"id": "T7", "kind": "note", "over": ["Gateway", "Queue"], "label": "After the last attempt fails the upload moves to the retry queue and the client is told it is pending"},
+    {"id": "T8", "kind": "message", "from": "Gateway", "to": "Queue", "label": "Enqueue upload for later", "style": "async"},
+    {"id": "T9", "kind": "message", "from": "Gateway", "to": "Client", "label": "202 pending", "style": "reply"},
+    {"id": "T10", "kind": "message", "from": "Queue", "to": "Ops", "label": "Alert when the queue is older than one hour", "style": "async"},
+    {"id": "T11", "kind": "message", "from": "Ops", "to": "Queue", "label": "Replay", "style": "sync"},
+    {"id": "T12", "kind": "message", "from": "Queue", "to": "Queue", "label": "Mark replayed", "style": "sync"},
+    {"id": "T13", "kind": "message", "from": "Queue", "to": "Store", "label": "Store object", "style": "sync"}
+  ],
+  "groups": [
+    {"id": "Retry", "kind": "loop", "label": "up to 3 attempts while storage answers 5xx", "first": "T2", "last": "T6"},
+    {"id": "Manual", "kind": "opt", "label": "still failing", "first": "T10", "last": "T12"}
+  ]
+}

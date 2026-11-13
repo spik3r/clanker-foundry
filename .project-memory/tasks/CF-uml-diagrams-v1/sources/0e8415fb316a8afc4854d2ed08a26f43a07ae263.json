@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "0e8415fb316a8afc4854d2ed08a26f43a07ae263",
+  "id": "CF-uml-diagrams-v1",
+  "path": "tasks/CF-uml-diagrams-v1-sequence-and-class.md",
+  "blob": "d3eded35461c40cd9476c9fa558ac48f4fd1cfb5",
+  "record": "---\nid: CF-uml-diagrams-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add UML-style sequence and class diagram profiles to diagramgen\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by\nsupervised subagents and coordinator review of the diff and of the rendered\npictures. These are the third and fourth profiles of step 4b in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md), requested by the\nrepository owner on 12 November 2026.\n\nScope: profiles `sequence-diagram/v1` and `class-diagram/v1` in\n`modeling/diagram/`. A sequence model lists participants, ordered messages,\nnotes and non-nested frames. A class model lists classes, interfaces and enums\nwith members, and typed relations. Neither carries coordinates. `diagramgen`\nemits an inert SVG, the canonical model and the manifest using fixed layout\nalgorithms. Also four example models with committed output, two profile\ndocuments, two authoring schemas with generator-agreement tests, registry\nentries, and small shared SVG helper packages. `diagramgen` becomes 1.2.0 and\nthe committed process and dashboard examples are regenerated for the new\nversion. Also this task record and new immutable Project Memory files.\n\nExclusions: any claim of UML conformance beyond the listed notation, other\nUML diagram kinds, the harness code, the contract text and other generators.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/diagram` and\n`modeling/gencontract`, the node schema tests, the workflow inventory test, the\nrepository validator, whitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-uml-diagrams-v1-sequence-and-class.md",
+        "id": "CF-uml-diagrams-v1",
+        "blob": "d3eded35461c40cd9476c9fa558ac48f4fd1cfb5",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

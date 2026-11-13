@@ -1,0 +1,237 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "class-diagram/v1",
+  "id": "Orders",
+  "title": "Order model",
+  "classes": [
+    {
+      "id": "Customer",
+      "name": "Customer",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "email",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "orders",
+          "returns": "List<Order>",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Gift",
+      "name": "GiftCard",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "code",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Line",
+      "name": "OrderLine",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "quantity",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "price",
+          "returns": "Money",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Order",
+      "name": "Order",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "OrderId",
+          "visibility": "public"
+        },
+        {
+          "name": "status",
+          "type": "OrderStatus",
+          "visibility": "private"
+        },
+        {
+          "name": "placedAt",
+          "type": "Instant",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "total",
+          "returns": "Money",
+          "visibility": "public"
+        },
+        {
+          "name": "addLine",
+          "parameters": [
+            {
+              "name": "product",
+              "type": "Product"
+            },
+            {
+              "name": "quantity",
+              "type": "int"
+            }
+          ],
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Priced",
+      "name": "Priced",
+      "kind": "interface",
+      "attributes": [],
+      "operations": [
+        {
+          "name": "price",
+          "returns": "Money",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Product",
+      "name": "Product",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "sku",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "unitPrice",
+          "type": "Money",
+          "visibility": "protected"
+        }
+      ],
+      "operations": [
+        {
+          "name": "price",
+          "returns": "Money",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Shelf",
+      "name": "Wishlist",
+      "kind": "class",
+      "attributes": [],
+      "operations": []
+    },
+    {
+      "id": "Status",
+      "name": "OrderStatus",
+      "kind": "enum",
+      "attributes": [
+        {
+          "name": "PLACED",
+          "visibility": "public"
+        },
+        {
+          "name": "PAID",
+          "visibility": "public"
+        },
+        {
+          "name": "SHIPPED",
+          "visibility": "public"
+        },
+        {
+          "name": "CANCELLED",
+          "visibility": "public"
+        }
+      ],
+      "operations": []
+    }
+  ],
+  "relations": [
+    {
+      "id": "R1",
+      "kind": "composition",
+      "from": "Order",
+      "to": "Line",
+      "fromLabel": "1",
+      "toLabel": "1..*"
+    },
+    {
+      "id": "R2",
+      "kind": "realization",
+      "from": "Line",
+      "to": "Priced"
+    },
+    {
+      "id": "R3",
+      "kind": "realization",
+      "from": "Product",
+      "to": "Priced"
+    },
+    {
+      "id": "R4",
+      "kind": "inheritance",
+      "from": "Gift",
+      "to": "Product"
+    },
+    {
+      "id": "R5",
+      "kind": "association",
+      "from": "Line",
+      "to": "Product",
+      "label": "refers to",
+      "fromLabel": "*",
+      "toLabel": "1"
+    },
+    {
+      "id": "R6",
+      "kind": "directed",
+      "from": "Order",
+      "to": "Status",
+      "label": "status"
+    },
+    {
+      "id": "R7",
+      "kind": "aggregation",
+      "from": "Customer",
+      "to": "Order",
+      "fromLabel": "1",
+      "toLabel": "0..*"
+    },
+    {
+      "id": "R8",
+      "kind": "aggregation",
+      "from": "Shelf",
+      "to": "Product",
+      "fromLabel": "1",
+      "toLabel": "0..*"
+    },
+    {
+      "id": "R9",
+      "kind": "dependency",
+      "from": "Customer",
+      "to": "Shelf",
+      "label": "uses"
+    }
+  ]
+}

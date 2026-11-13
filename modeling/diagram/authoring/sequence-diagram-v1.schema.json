@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:diagramgen:sequence-diagram:v1:schema",
+  "title": "sequence-diagram/v1 model",
+  "description": "Authoring aid for diagram-json/v1 models with profile sequence-diagram/v1. Go validation in diagramgen is authoritative. This schema cannot express: unique ids across participants, steps and groups; that from, to, over, first and last name things that exist; that a group's first step is not after its last step; that groups do not overlap; byte lengths of text; duplicate JSON keys; trailing data; and the 512 KiB size limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "id", "title", "participants", "steps"],
+  "properties": {
+    "formatVersion": {"const": "diagram-json/v1"},
+    "profileVersion": {"const": "sequence-diagram/v1"},
+    "id": {"$ref": "#/$defs/identifier"},
+    "title": {"$ref": "#/$defs/label"},
+    "participants": {
+      "description": "Left to right. A participant is a box; an actor is a stick figure.",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "kind"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "label": {"$ref": "#/$defs/label"},
+          "kind": {"enum": ["actor", "participant"]}
+        }
+      }
+    },
+    "steps": {
+      "description": "Top to bottom. A message uses from, to and style; a note uses over.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 80,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "from", "to", "label", "style"],
+            "properties": {
+              "id": {"$ref": "#/$defs/identifier"},
+              "kind": {"const": "message"},
+              "from": {"$ref": "#/$defs/identifier"},
+              "to": {"$ref": "#/$defs/identifier"},
+              "label": {"$ref": "#/$defs/label"},
+              "style": {"enum": ["sync", "async", "reply"]}
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "over", "label"],
+            "properties": {
+              "id": {"$ref": "#/$defs/identifier"},
+              "kind": {"const": "note"},
+              "over": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": true,
+                "items": {"$ref": "#/$defs/identifier"}
+              },
+              "label": {"$ref": "#/$defs/label"}
+            }
+          }
+        ]
+      }
+    },
+    "groups": {
+      "description": "Up to 8 frames around contiguous, non-overlapping ranges of steps.",
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "label", "first", "last"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "kind": {"enum": ["alt", "opt", "loop"]},
+          "label": {"$ref": "#/$defs/label"},
+          "first": {"$ref": "#/$defs/identifier"},
+          "last": {"$ref": "#/$defs/identifier"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,47}$"
+    },
+    "label": {
+      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank (no Unicode white space only), no control characters, U+2028, U+2029, U+FFFE or U+FFFF. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    }
+  }
+}

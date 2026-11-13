@@ -34,3 +34,5 @@ jobs:
           modeling/jsonvalidator/authoring/schema.test.cjs
           modeling/diagram/authoring/schema.test.cjs
           modeling/diagram/authoring/dashboard.schema.test.cjs
+          modeling/diagram/authoring/sequence.schema.test.cjs
+          modeling/diagram/authoring/class.schema.test.cjs

@@ -9,9 +9,11 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/spik3r/clanker-foundry/modeling/diagram/class"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/dashboard"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/process"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/sequence"
 )
 
 // Generator identity. Toolchain is the Go release this generator was
@@ -19,7 +21,7 @@ import (
 // alters emitted bytes for any model needs a new Version.
 const (
 	GeneratorID      = "diagramgen"
-	GeneratorVersion = "1.1.0"
+	GeneratorVersion = "1.2.0"
 	Toolchain        = "go1.27.4"
 )
 
@@ -30,6 +32,8 @@ var Self = contract.Generator{ID: GeneratorID, Version: GeneratorVersion, Toolch
 var profiles = map[string]contract.Profile{
 	process.Profile:   process.Profiler{},
 	dashboard.Profile: dashboard.Profiler{},
+	sequence.Profile:  sequence.Profiler{},
+	class.Profile:     class.Profiler{},
 }
 
 // Supported returns the supported profileVersion values, sorted.

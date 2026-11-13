@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:diagramgen:class-diagram:v1:schema",
+  "title": "class-diagram/v1 model",
+  "description": "Authoring aid for diagram-json/v1 models with profile class-diagram/v1. Go validation in diagramgen is authoritative. This schema cannot express: unique ids across classes and relations; unique attribute names, operation names and parameter names within their lists; that from and to name existing classes; that a relation does not join a class to itself; that no two relations share an unordered pair and kind; that inheritance and realization form no cycle; byte lengths of text; duplicate JSON keys; trailing data; and the 512 KiB size limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "id", "title", "classes"],
+  "properties": {
+    "formatVersion": {"const": "diagram-json/v1"},
+    "profileVersion": {"const": "class-diagram/v1"},
+    "id": {"$ref": "#/$defs/identifier"},
+    "title": {"$ref": "#/$defs/label"},
+    "classes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "kind"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "name": {"$ref": "#/$defs/label"},
+          "kind": {"enum": ["class", "interface", "enum"]},
+          "attributes": {
+            "description": "For an enum these are the literals; their type and visibility are accepted but not drawn.",
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name"],
+              "properties": {
+                "name": {"$ref": "#/$defs/label"},
+                "type": {"$ref": "#/$defs/label"},
+                "visibility": {"$ref": "#/$defs/visibility"}
+              }
+            }
+          },
+          "operations": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name"],
+              "properties": {
+                "name": {"$ref": "#/$defs/label"},
+                "parameters": {
+                  "type": "array",
+                  "maxItems": 8,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["name", "type"],
+                    "properties": {
+                      "name": {"$ref": "#/$defs/label"},
+                      "type": {"$ref": "#/$defs/label"}
+                    }
+                  }
+                },
+                "returns": {"$ref": "#/$defs/label"},
+                "visibility": {"$ref": "#/$defs/visibility"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "maxItems": 80,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "from", "to"],
+        "properties": {
+          "id": {"$ref": "#/$defs/identifier"},
+          "kind": {"enum": ["inheritance", "realization", "association", "directed", "aggregation", "composition", "dependency"]},
+          "from": {"$ref": "#/$defs/identifier"},
+          "to": {"$ref": "#/$defs/identifier"},
+          "label": {"$ref": "#/$defs/endLabel"},
+          "fromLabel": {"$ref": "#/$defs/endLabel"},
+          "toLabel": {"$ref": "#/$defs/endLabel"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]{0,47}$"
+    },
+    "visibility": {"enum": ["public", "private", "protected", "package"]},
+    "label": {
+      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank (no Unicode white space only), no control characters, U+2028, U+2029, U+FFFE or U+FFFF. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    },
+    "endLabel": {
+      "description": "Plain text like label but 1 to 24 UTF-8 bytes. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    }
+  }
+}
