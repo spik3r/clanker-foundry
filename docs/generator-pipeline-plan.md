@@ -397,6 +397,68 @@ model makes its cases stale until they are reviewed.
    digest, and state the one-pane rule for width alone in the browser profile.
 3. A second consumer change made by someone other than this plan's author.
 
+## Gap-driven work at 14 November 2026
+
+Added after the trials section; earlier sections are left as written. Main is
+at `4dbaf4e`. Each change below merged with passing hosted checks and has a
+task record under `tasks/`.
+
+Every item here closes a gap that a trial recorded. None was added on
+speculation.
+
+| Gap, and who recorded it | Change | Generator |
+| --- | --- | --- |
+| Screen could not sit inside a host page (consumer review) | `embed: hosted`; `CapturesKeys`, `KeyHints`, `Title`; run-time `WithColors` with a `Background` role | `tuic` 1.3.1 |
+| No blank row between detail fields (consumer trial) | `detailSpacing: spaced` | `tuic` 1.3.0 |
+| No search or filter (consumer review; authoring trial brief 5) | `filter` over chosen fields, with cases support | `tuic` 1.4.0 |
+| No string constants or enums, no closed objects, no non-empty check (consumer review; authoring trial brief 4) | string `const`, `enum`, `minLength`, `maxLength`; `additionalProperties: false` | `jsonvalidator` 1.1.0 |
+| Cases document did not say what a toolless author writes for the digest; one-pane rule unclear (authoring trial) | both documents corrected | |
+
+The authoring trial's brief 4 requirement, which its author had to leave
+partly out of the model, is now a fixture with 52 literal cases that pass in
+Go and TypeScript.
+
+### Further consumer changes
+
+Three more pull requests merged in the consumer repository, on the owner's
+instruction to keep merging reviewed work.
+
+| Change | Model lines | Hand-written lines | Notes |
+| --- | --- | --- | --- |
+| Reorder details, rename a label, move breakpoints | 3 | 0 | `foundrygen check` exited 3 until the screen was regenerated |
+| Show the screen inside the application's page frame and palette | 2 | 131 host, 180 tests | the host is new; nothing in the application's shell, key or theme packages changed |
+| Add a list filter | 1 | 5 host, 53 tests | see below |
+
+The filter change was meant to need no hand-written code. The filter worked
+and every existing test passed after the model edit alone. A manual probe then
+found that the generated hint text for `esc` used a word the application's
+key-wording rules do not allow for that key, in two states no test covered.
+The fix was a five-line mapping in the host and a test for those states.
+
+What that shows: a host that has its own wording rules must translate hint
+text, and it can only do so by matching on the text. A stable identifier on
+each hint would let a host map hints without depending on wording.
+
+### Still open
+
+- **Owner decision:** while the filter input is open, `ctrl+c` is ignored like
+  any other non-text key, so a standalone browser cannot be quit until the
+  input is closed. This follows the written rule; the owner may prefer that
+  `ctrl+c` always quits.
+- **Owner decision:** whether the consumer's generated screen gets a numbered
+  top-level page. It runs inside the page frame today but is reached only
+  through a command flag.
+- **Not done by anyone:** a run of the generated screen in a real terminal by
+  a person; importing the BPMN XML into a BPMN tool.
+- **Not attempted:** a second consumer change by someone other than this
+  plan's author, milestone 3 in the [current direction](current-direction.md).
+  Every change so far was made or supervised by the same session.
+- **No measured saving.** The numbers recorded are line counts. No effort or
+  review baseline was taken before the trial.
+- **Candidate next gap:** stable identifiers on key hints, from the finding
+  above. Typed fields and sorting have no recorded consumer need yet.
+- **Step 6, the runtime:** not started, as planned.
+
 ## Owner decisions
 
 Recorded on 12 November 2026.
