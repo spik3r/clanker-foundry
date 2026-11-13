@@ -1,0 +1,157 @@
+{
+  "formatVersion": 2,
+  "eventId": "5e363c6f-23cf-4711-b0fa-1900967e946e",
+  "runId": "9759551b-4226-48cd-93a4-91d98486a31b",
+  "kind": "complete",
+  "parents": [
+    "42fac67f-4d37-44a7-9f79-991ca2069a9e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-hint-ids-v1",
+    "path": "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md",
+    "revision": "220b8ba2c4a8f8e2359c35db160de8d60e4d00df",
+    "blob": "ef3b5e9ac346a1eb14844236c48a3d917e2f6441",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8291fe7fae8e4530c2b696428a15000082bb67840cb08e733a0044ce68610865"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T23:04:00.833Z",
+  "summary": "Generated key hints carry stable identifiers from a 13-entry vocabulary kept in one place; cases can match hints by id; tuic is 1.5.0 with unchanged digests and unchanged hint text",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/acceptance/hosted_test.go.txt",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/compiler.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/examples/browser-hosted.cases.json",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/hints.go",
+    "modeling/tui/hints_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md"
+  ],
+  "validation": "Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok including tests that the observed, coded and documented vocabularies agree; modeling/gencontract and modeling/foundrygen go test -race ok. node --test modeling/tui/authoring/*.test.cjs: 8 pass, 0 skipped (Node 22; CI uses 24). scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    "modeling/tui/CASES.md": {
+      "blob": "9d25e65a580398b088b0c73f1b7a6741a7cb1a42",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "656da87e51b2e8e1c0579bd91f8178643c5e46d2",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "1af2bb810e3c95a4f0ff89d01419be519f26cffb",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/browser_test.go.txt": {
+      "blob": "46211adf9e61c2be118de34dcb7f576b72c32143",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/filter_test.go.txt": {
+      "blob": "5e42354524f322fa4c134d735210cdd5c6c5b2f6",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/hosted_test.go.txt": {
+      "blob": "4f7e9b7a2c750bbaffed4a45a6e45f7eb7abb197",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/cases.schema.test.cjs": {
+      "blob": "9b01867e5ddbd8a01884d84e01d31a7027110342",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json": {
+      "blob": "76fc6bbd45ab0498a7b0aa83475a01257aacc79d",
+      "mode": "100644"
+    },
+    "modeling/tui/cases.go": {
+      "blob": "4551b2ed6ad6aa93af017ebc4dd9254f02ddf059",
+      "mode": "100644"
+    },
+    "modeling/tui/cases_test.go": {
+      "blob": "bbfb5fcb72426c0b6566719a3e426ce35644f334",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/main_test.go": {
+      "blob": "93f442e9fda7e9b8848a7eda924db8a02f49c4f9",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/runner.go.tmpl": {
+      "blob": "322c2b87eebbffbc2771ac45062730e6733a0d91",
+      "mode": "100644"
+    },
+    "modeling/tui/compiler.go": {
+      "blob": "a93b4752abd283bb87734b911f1856a8012fe45c",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "8bdeb0d0c27dbe07d022df6c97d9fa16e8157bca",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "dec6c867745a942879223d95dc6860273643beff",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-filter.cases.json": {
+      "blob": "cd883a5a0c9d4491243ec7e07dcb5d38a6c987fa",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-hosted.cases.json": {
+      "blob": "e25467904e8a67572f6e10f27135b99fdf107d18",
+      "mode": "100644"
+    },
+    "modeling/tui/generated_test.go": {
+      "blob": "bd2cf9f7026167649756f8010dc81e25d1e92a90",
+      "mode": "100644"
+    },
+    "modeling/tui/hints.go": {
+      "blob": "d91da576382c55694665645791b74c6dc3b57367",
+      "mode": "100644"
+    },
+    "modeling/tui/hints_test.go": {
+      "blob": "fd7c3ac67672c764ed49e8368632cf61d32d9352",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "0b096238f641166d95073fac20a907e8fb4b0684",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "d7b2fddc8d6f4ad0acd08b5d08d4d264c8e04bbd",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "2128f349d64b6d180485598e4c7cd3b2469246d4",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "1a32c9fa0aeea30d32c5187dca6f1148d5ff5411",
+      "mode": "100644"
+    },
+    "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md": {
+      "blob": "32bdaa5e590d359bcb967e14278dcc9393559b7f",
+      "mode": "100644"
+    }
+  }
+}

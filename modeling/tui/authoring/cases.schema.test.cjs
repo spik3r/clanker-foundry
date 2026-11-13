@@ -44,6 +44,7 @@ const cases = [
     text: fs.readFileSync(path.join(repo, 'modeling/tui/examples/browser-hosted.cases.json'), 'utf8') },
   { name: 'capturesKeys expectation', expect: 'valid', text: mut(d => oneCase(d, c => { c.expect = { capturesKeys: true }; })) },
   { name: 'keyHints expectation', expect: 'valid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{ key: 'j/k', action: 'select' }, { key: '?', action: 'help' }] }; })) },
+  { name: 'keyHints by id', expect: 'valid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{ id: 'select' }, { id: 'help.open', key: '?' }, { id: 'quit', key: 'q', action: 'quit' }] }; })) },
   { name: '12 keyHints', expect: 'valid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: Array.from({ length: 12 }, () => ({ key: '?', action: 'help' })) }; })) },
   { name: 'every documented key', expect: 'valid', text: mut(d => oneCase(d, c => { c.steps = keys.map(key => ({ key })); })) },
   { name: 'resize step', expect: 'valid', text: mut(d => oneCase(d, c => { c.steps = [{ resize: { width: 400, height: 200 } }, { resize: { width: 1, height: 1 } }]; })) },
@@ -59,6 +60,10 @@ const cases = [
   { name: 'requirement of 240 characters', expect: 'valid', text: mut(d => oneCase(d, c => { c.requirement = 'x'.repeat(240); })) },
 
   { name: 'capturesKeys not a boolean', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { capturesKeys: 'yes' }; })) },
+  { name: 'keyHints entry without id, key or action', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{}] }; })) },
+  { name: 'keyHints entry with an unknown id', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{ id: 'nope' }] }; })) },
+  { name: 'keyHints entry with an empty id', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{ id: '' }] }; })) },
+  { name: 'keyHints id with an empty key', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [{ id: 'quit', key: '' }] }; })) },
   { name: 'empty keyHints', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: [] }; })) },
   { name: '13 keyHints', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: Array.from({ length: 13 }, () => ({ key: '?', action: 'help' })) }; })) },
   { name: 'keyHints entry as string', expect: 'invalid', text: mut(d => oneCase(d, c => { c.expect = { keyHints: ['?'] }; })) },

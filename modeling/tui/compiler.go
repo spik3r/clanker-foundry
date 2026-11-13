@@ -52,7 +52,7 @@ func Compile(m Model) (map[string][]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		tmpl, err := template.New(name).Delims("[[[", "]]]").Funcs(template.FuncMap{"quote": strconv.Quote}).Option("missingkey=error").Parse(string(raw))
+		tmpl, err := template.New(name).Delims("[[[", "]]]").Funcs(template.FuncMap{"quote": strconv.Quote, "hintIDs": KeyHintIDs}).Option("missingkey=error").Parse(string(raw))
 		if err != nil {
 			return nil, fmt.Errorf("template %s: %w", name, err)
 		}

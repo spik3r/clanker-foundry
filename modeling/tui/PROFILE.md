@@ -99,13 +99,40 @@ for drafting a model; it lists the rules it cannot express.
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
 the model's `emit.package`), pinned dependencies (module mode), normalized model and a `foundry-manifest.json` integrity
-record (generator `tuic` 1.4.0, toolchain constant `go1.27.4`). It does
+record (generator `tuic` 1.5.0, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
 
 Expectations for a model, such as "after these keys the browser shows X", are
 written as data in [expectation cases](CASES.md) and checked with `tuicases`.
+
+### Key hint IDs
+
+Each `KeyHint` is `{ID, Key, Action string}`. `ID` says what the key does, not
+which key it is, so a host with its own wording rules for keys maps on `ID` and
+never on the `Key` or `Action` text. The vocabulary is fixed within
+`record-browser/v1`: a later generator may add an ID for a new hint, but an
+existing ID is never renamed or reused. The `Key` and `Action` wording may change
+between generator versions. Within one `KeyHints()` result every ID appears at
+most once. The two `esc` hints of the filter differ: `filter.cancel` closes the
+open input (and clears its text), `filter.clear` clears a kept filter.
+
+| ID | When it appears | Default key text | Default action text |
+|---|---|---|---|
+| `select` | list focused, a record selected | `j/k` | `select` |
+| `scroll` | detail focused | `j/k` | `scroll` |
+| `pane` | a record selected | `tab` | `pane` |
+| `open` | list focused, a record selected | `enter` | `open` |
+| `back` | detail focused | `esc` | `back` |
+| `help.open` | help closed | `?` | `help` |
+| `help.scroll` | help open | `j/k` | `scroll` |
+| `help.close` | help open | `esc/?` | `close` |
+| `filter.open` | model has a filter; help and filter input closed | `/` | `filter` |
+| `filter.keep` | filter input open | `enter` | `keep` |
+| `filter.cancel` | filter input open | `esc` | `clear` |
+| `filter.clear` | filter kept (text not empty), list focused | `esc` | `clear` |
+| `quit` | standalone browser only; help and filter input closed | `q` | `quit` |
 
 ## Go versions
 

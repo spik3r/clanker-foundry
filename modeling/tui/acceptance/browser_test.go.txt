@@ -8,6 +8,7 @@ import (
 	"github.com/charmbracelet/x/ansi"
 	"os"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 	"unicode"
@@ -662,5 +663,45 @@ func TestAcceptanceNavigationHintsDuringHelpAndStatus(t *testing.T) {
 		if got := footerText(m); got != "? help q quit" {
 			t.Fatalf("status/empty hints: %q", got)
 		}
+	}
+}
+
+// Every hint has a stable ID from the generated vocabulary, no result repeats
+// one, and a standalone browser without a filter returns every ID except the
+// filter ones across its states.
+func TestAcceptanceKeyHintIDs(t *testing.T) {
+	seen := map[string]bool{}
+	check := func(label string, m Model) {
+		t.Helper()
+		ids := map[string]bool{}
+		for _, h := range m.KeyHints() {
+			if h.ID == "" || h.Key == "" || h.Action == "" || !slices.Contains(keyHintIDs, h.ID) || ids[h.ID] {
+				t.Fatalf("%s: bad or repeated hint %+v in %+v", label, h, m.KeyHints())
+			}
+			ids[h.ID], seen[h.ID] = true, true
+		}
+	}
+	m := size(t, newModel(t, rows(3)), 80, 12)
+	check("list", m)
+	d := press(t, m, "enter")
+	check("detail", d)
+	check("help", press(t, m, "?"))
+	check("help from detail", press(t, d, "?"))
+	for _, snapshot := range []Snapshot{{Status: Loading}, {Status: Failed}, {Status: Ready}} {
+		r, err := m.Replace(snapshot)
+		if err != nil {
+			t.Fatal(err)
+		}
+		check(fmt.Sprintf("status %v", snapshot.Status), r)
+	}
+	want := slices.DeleteFunc(slices.Clone(keyHintIDs), func(id string) bool { return strings.HasPrefix(id, "filter.") })
+	var got []string
+	for id := range seen {
+		got = append(got, id)
+	}
+	slices.Sort(got)
+	slices.Sort(want)
+	if !slices.Equal(got, want) {
+		t.Fatalf("observed ids %v, want %v", got, want)
 	}
 }

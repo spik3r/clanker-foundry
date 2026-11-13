@@ -222,7 +222,7 @@ func TestGeneratedFilterBehavior(t *testing.T) {
 			}
 			goIn(t, dir, nil, "vet", "./...")
 			out := goIn(t, dir, []string{"TUI_ACCEPTANCE_VARIANT=" + variant}, "test", "-race", "-count=1", "-p=1", "-run", "^TestFilter", "-v", "./...")
-			for _, want := range []string{"--- PASS: TestFilterOpenTypeAndMatchRule", "--- PASS: TestFilterEscPrecedence", "--- PASS: TestFilterInputCapturesEveryKey", "--- PASS: TestFilterBoundsAndSanitising", "--- PASS: TestFilterNavigationUsesTheFilteredList"} {
+			for _, want := range []string{"--- PASS: TestFilterOpenTypeAndMatchRule", "--- PASS: TestFilterEscPrecedence", "--- PASS: TestFilterInputCapturesEveryKey", "--- PASS: TestFilterBoundsAndSanitising", "--- PASS: TestFilterNavigationUsesTheFilteredList", "--- PASS: TestFilterKeyHintIDs"} {
 				if !strings.Contains(out, want) {
 					t.Fatalf("missing %q in\n%s", want, out)
 				}

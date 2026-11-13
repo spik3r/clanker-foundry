@@ -160,13 +160,16 @@ func TestHostedExpectationsReport(t *testing.T) {
 	hints := func(h ...string) *[]tui.KeyHint {
 		var out []tui.KeyHint
 		for i := 0; i < len(h); i += 2 {
-			out = append(out, tui.KeyHint{Key: h[i], Action: h[i+1]})
+			out = append(out, tui.KeyHint{Key: &h[i], Action: &h[i+1]})
 		}
 		return &out
 	}
 	base.Cases = []tui.Case{
 		mk("K_ok", []tui.Step{}, tui.Expect{CapturesKeys: yes(false), KeyHints: hints("j/k", "select", "?", "help", "q", "quit")}),
 		mk("K_help_ok", help, tui.Expect{CapturesKeys: yes(true), KeyHints: hints("esc/?", "close")}),
+		mk("K_id_ok", []tui.Step{}, tui.Expect{KeyHints: &[]tui.KeyHint{{ID: "select"}, {ID: "help.open", Key: str("?")}, {ID: "quit", Key: str("q"), Action: str("quit")}}}),
+		mk("K_id_text", []tui.Step{}, tui.Expect{KeyHints: &[]tui.KeyHint{{ID: "help.open", Key: str("x")}}}),
+		mk("K_id_help_only", help, tui.Expect{KeyHints: &[]tui.KeyHint{{ID: "quit"}}}),
 		mk("K_captures", []tui.Step{}, tui.Expect{CapturesKeys: yes(true)}),
 		mk("K_order", []tui.Step{}, tui.Expect{KeyHints: hints("?", "help", "j/k", "select")}),
 		mk("K_missing", []tui.Step{}, tui.Expect{KeyHints: hints("x", "nothing")}),
@@ -175,7 +178,7 @@ func TestHostedExpectationsReport(t *testing.T) {
 	if code != 3 || stdout != "" {
 		t.Fatalf("exit %d, stdout %q\n%s", code, stdout, stderr)
 	}
-	for _, want := range []string{"pass K_ok\n", "pass K_help_ok\n", "fail K_captures: capturesKeys: want true got false\n",
+	for _, want := range []string{"pass K_id_ok\n", `fail K_id_text: keyHints id "help.open" "x": want shown in order got [`, `fail K_id_help_only: keyHints id "quit": want shown in order got [`, "pass K_ok\n", "pass K_help_ok\n", "fail K_captures: capturesKeys: want true got false\n",
 		`fail K_order: keyHints "j/k" "select": want shown in order got [j/k select, tab pane, enter open, ? help, q quit]`,
 		`fail K_missing: keyHints "x" "nothing": want shown in order got [`} {
 		if !strings.Contains(stderr, want) {

@@ -29,8 +29,11 @@ type Model struct {
  colors Colors
 }
 
-// KeyHint is one key and what it does in the current state.
-type KeyHint struct{ Key, Action string }
+// KeyHint is one key and what it does in the current state. ID names what the
+// key does, from a small fixed vocabulary that is stable within the
+// record-browser/v1 profile, so a host can map hints without matching on the
+// Key or Action wording, which may change. See the README for the vocabulary.
+type KeyHint struct{ ID, Key, Action string }
 
 // KeyHints returns the hints the standalone footer shows for the current
 // state, widest form, in order[[[if .Hosted]]], except the quit hint: this browser ignores q and
