@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "f49ebaa8-7af7-4538-a109-daf44afc47ad",
+  "runId": "58430ae5-bc69-418e-9099-2e47879866e4",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-background-v1",
+    "path": "tasks/CF-record-browser-background-v1-host-colour-role.md",
+    "revision": "2c403d5093a95c821804360cfe90f7a8c8d9123d",
+    "blob": "ba43d86e5dd6e46e0d73da6e5af85d8c221ba0bc",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2f663b780cdb3417cd383718dfbfe44ae0eeff2a9934d83940eae99f20d47946"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T12:54:10.142Z",
+  "summary": "Add a Background colour role to the generated record browser",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/hosted_test.go.txt",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-background-v1-host-colour-role.md"
+  ]
+}

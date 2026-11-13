@@ -357,6 +357,33 @@ func TestWithColorsHosted(t *testing.T) {
 			t.Fatalf("%s: WithColors changed the receiver", c.name)
 		}
 	}
+	// Background replaces every cell of the old default background.
+	const oldBg = "48;2;32;38;56"
+	if !strings.Contains(base, oldBg) {
+		t.Fatal("default background escape missing from the baseline")
+	}
+	nb, err := m.WithColors(Colors{Background: "#112233"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := nb.View().Content; strings.Contains(v, oldBg) || !strings.Contains(v, "48;2;17;34;51") {
+		t.Fatal("Background did not replace the default background everywhere")
+	}
+	// With Border unset the gutter follows Background (wide layout).
+	wide := hmodel(t, 120, 12)
+	if v := mustColors(t, wide, Colors{Background: "#112233"}).View().Content; strings.Contains(v, oldBg) {
+		t.Fatal("wide layout still paints the old background")
+	}
+	// Setting the default explicitly changes nothing.
+	if v := mustColors(t, m, Colors{Background: "#202638"}).View().Content; v != base {
+		t.Fatal("explicit default Background changed the output")
+	}
+	for _, bad := range []string{"red", "#fff", "112233", "#GGGGGG", " #112233"} {
+		g, err := nb.WithColors(Colors{Background: bad})
+		if err == nil || !strings.Contains(err.Error(), "Background") || g.View().Content != nb.View().Content {
+			t.Fatalf("Background %q: err %v or model changed", bad, err)
+		}
+	}
 	// Empty roles keep the defaults.
 	same, err := m.WithColors(Colors{})
 	if err != nil || same.View().Content != base {
@@ -394,4 +421,13 @@ func TestWithColorsHosted(t *testing.T) {
 	if got, err := good.WithColors(Colors{Text: "#445566", Muted: "bad"}); err == nil || got.View().Content != good.View().Content {
 		t.Fatal("partial application")
 	}
+}
+
+func mustColors(t *testing.T, m Model, c Colors) Model {
+	t.Helper()
+	got, err := m.WithColors(c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return got
 }
