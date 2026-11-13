@@ -1,6 +1,6 @@
 ---
 id: CF-generator-pipeline-plan-v1
-status: completed
+status: in-progress
 owner: Claude planning contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -51,3 +51,15 @@ the read-only review of the first consumer found, and what remains open, plus
 this task record and new immutable Project Memory files. It changes no product
 code. Run the repository validator and whitespace checks and open a pull
 request.
+
+## Trial record claim
+
+Owner: Claude planning contributor. This claim is limited to recording two
+trials: the first consumer trial, whose two pull requests the owner asked to be
+merged in the consumer repository on 13 November 2026, and an authoring trial
+in which a low-cost agent drafted models from written briefs and the profile
+registry alone. Scope: a new section in `docs/generator-pipeline-plan.md`, the
+authoring trial's briefs, outputs and observed tool results under
+`docs/trials/2026-11-13-authoring/`, this task record and new immutable Project
+Memory files. It changes no product code. Run the repository validator and
+whitespace checks and open a pull request.
