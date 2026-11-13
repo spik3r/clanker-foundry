@@ -11,6 +11,16 @@
         "modeling/tui/examples/browser.json",
         "modeling/tui/examples/browser-package.json"
       ],
+      "cases": {
+        "format": "record-browser-cases/v1",
+        "doc": "modeling/tui/CASES.md",
+        "schema": "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+        "runner": "tuicases",
+        "examples": [
+          "modeling/tui/examples/browser.cases.json",
+          "modeling/tui/examples/browser-package.cases.json"
+        ]
+      },
       "emits": ["Go package"],
       "cannotExpress": [
         "editable form fields",

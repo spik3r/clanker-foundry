@@ -1,0 +1,128 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {"canonicalSHA256": "43e31a41805dd76946df369f36d53c50df3521a937b330a54d9a3cac6a122414"},
+  "records": {
+    "Main": [
+      {"ID": "s1", "Name": "Alpha", "Description": "Primary server", "Status": "up"},
+      {"ID": "s2", "Name": "Beta", "Description": "Backup server", "Status": "up"},
+      {"ID": "s3", "Name": "Gamma", "Description": "Spare server", "Status": "down"}
+    ],
+    "Long": [
+      {"ID": "s1", "Name": "Alpha", "Description": "word01 word02 word03 word04 word05 word06 word07 word08 word09 word10 word11 word12 word13 word14 word15 word16 word17 word18 word19 word20 word21 word22 word23 word24 word25 word26 word27 word28 word29 word30", "Status": "up"}
+    ],
+    "Longer": [
+      {"ID": "s1", "Name": "Alpha", "Description": "word01 word02 word03 word04 word05 word06 word07 word08 word09 word10 word11 word12 word13 word14 word15 word16 word17 word18 word19 word20 word21 word22 word23 word24 word25 word26 word27 word28 word29 word30 word31 word32 word33 word34 word35 word36 word37 word38 word39 word40 word41 word42 word43 word44 word45 word46 word47 word48 word49 word50 word51 word52 word53 word54 word55 word56 word57 word58 word59 word60", "Status": "up"},
+      {"ID": "s2", "Name": "Beta", "Description": "Backup server", "Status": "up"}
+    ],
+    "Lines": [
+      {"ID": "s1", "Name": "Alpha", "Description": "first line\nsecond line\nthird line", "Status": "up"}
+    ]
+  },
+  "cases": [
+    {
+      "id": "P_start_first_selected",
+      "requirement": "A browser given records selects the first one; at 80x12 or larger both panes show.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "wide", "focus": "list", "selected": "s1", "status": "ready", "visible": ["Records", "Details", "Name: Alpha", "Status: up"]}
+    },
+    {
+      "id": "P_wrap_long_value_across_lines",
+      "requirement": "With detailText wrap the detail pane shows the whole value, wrapped at spaces to the pane width, with the label in the first row.",
+      "size": {"width": 80, "height": 12},
+      "records": "Long",
+      "steps": [],
+      "expect": {"visible": ["Description: word01", "word05", "word30"], "absent": ["…"]}
+    },
+    {
+      "id": "P_wrap_newline_starts_new_row",
+      "requirement": "With wrap, newlines are the only control character that starts a new row, so each line of a value is its own row.",
+      "size": {"width": 80, "height": 12},
+      "records": "Lines",
+      "steps": [],
+      "expect": {"visible": ["Description: first line", "second line", "third line"], "absent": ["first line second line"]}
+    },
+    {
+      "id": "P_detail_end_scrolls_wrapped_rows",
+      "requirement": "Scrolling and Home/End use the wrapped row count: End in the details reaches the last wrapped row.",
+      "size": {"width": 80, "height": 12},
+      "records": "Longer",
+      "steps": [{"key": "tab"}, {"key": "end"}],
+      "expect": {"focus": "detail", "visible": ["word60"], "absent": ["Name: Alpha"]}
+    },
+    {
+      "id": "P_detail_home_returns_to_top",
+      "requirement": "Home in the details returns to the first row.",
+      "size": {"width": 80, "height": 12},
+      "records": "Longer",
+      "steps": [{"key": "tab"}, {"key": "end"}, {"key": "home"}],
+      "expect": {"visible": ["Name: Alpha"], "absent": ["word60"]}
+    },
+    {
+      "id": "P_resize_rewraps",
+      "requirement": "A resize re-wraps: at a narrow width the whole value is still reachable by scrolling, and the selection and focus survive.",
+      "size": {"width": 80, "height": 12},
+      "records": "Long",
+      "steps": [{"key": "tab"}, {"resize": {"width": 30, "height": 10}}, {"key": "end"}],
+      "expect": {"layout": "narrow", "focus": "detail", "selected": "s1", "visible": ["word30"]}
+    },
+    {
+      "id": "P_end_selects_last",
+      "requirement": "Home/End go to the ends of the list.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [{"key": "end"}],
+      "expect": {"selected": "s3", "visible": ["Name: Gamma", "Status: down"]}
+    },
+    {
+      "id": "P_tiny_help_captures_keys",
+      "requirement": "While help is open only its scroll and close keys work, including at tiny sizes.",
+      "size": {"width": 20, "height": 5},
+      "records": "Main",
+      "steps": [{"key": "?"}, {"key": "j"}, {"key": "q"}, {"key": "ctrl+c"}],
+      "expect": {"layout": "tiny", "help": true, "quit": false, "selected": "s1"}
+    },
+    {
+      "id": "P_ctrl_c_quits",
+      "requirement": "Ctrl+C quits outside help.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [{"key": "ctrl+c"}],
+      "expect": {"quit": true}
+    },
+    {
+      "id": "P_failed_shows_message",
+      "requirement": "Application code can show Failed with a plain-text message.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [{"replace": {"status": "failed", "message": "Backend unreachable"}}],
+      "expect": {"status": "failed", "visible": ["Backend unreachable"], "absent": ["Alpha"]}
+    },
+    {
+      "id": "P_failed_then_ready_retains_identity_and_focus",
+      "requirement": "Loading and failed snapshots retain the previous identity and focus for a later ready snapshot.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"key": "tab"}, {"replace": {"status": "failed", "message": "Backend unreachable"}}, {"replace": {"status": "ready", "records": "Main"}}],
+      "expect": {"status": "ready", "selected": "s2", "focus": "detail", "visible": ["Name: Beta"]}
+    },
+    {
+      "id": "P_empty_ready_clears_selection",
+      "requirement": "Empty ready data clears selection.",
+      "size": {"width": 80, "height": 12},
+      "records": "Main",
+      "steps": [{"replace": {"status": "ready"}}],
+      "expect": {"status": "ready", "selected": "", "absent": ["Alpha"]}
+    },
+    {
+      "id": "P_resize_through_tiny_keeps_selection",
+      "requirement": "Selection and focus survive resize; the narrow variant shows one pane.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"resize": {"width": 30, "height": 8}}, {"resize": {"width": 20, "height": 5}}, {"resize": {"width": 30, "height": 8}}],
+      "expect": {"layout": "narrow", "selected": "s2", "focus": "list", "visible": ["Beta"]}
+    }
+  ]
+}

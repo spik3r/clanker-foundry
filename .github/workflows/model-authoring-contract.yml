@@ -31,6 +31,7 @@ jobs:
           node --test
           modeling/lifecycle/authoring/schema.test.cjs
           modeling/tui/authoring/schema.test.cjs
+          modeling/tui/authoring/cases.schema.test.cjs
           modeling/jsonvalidator/authoring/schema.test.cjs
           modeling/diagram/authoring/schema.test.cjs
           modeling/diagram/authoring/dashboard.schema.test.cjs

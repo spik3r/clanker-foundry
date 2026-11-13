@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "e0f21a0956c4a5f6736f4c0ca2504482363e109e",
+  "id": "CF-record-browser-cases-v1",
+  "path": "tasks/CF-record-browser-cases-v1-expectations-as-data.md",
+  "blob": "a314f6ffc3634d85f5493fee2b7176e22dec7e93",
+  "record": "---\nid: CF-record-browser-cases-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add expectation cases as data for the record browser\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This closes the item\nleft open in step 2 of the\n[generator pipeline plan](../docs/generator-pipeline-plan.md): expectation\nliterals as data for `record-browser/v1`.\n\nScope: a cases format `record-browser-cases/v1` bound to a model's canonical\ndigest; a `tuicases` command under `modeling/tui/cmd/` whose `validate` checks a\ncases file against a model and whose `check` generates the browser, builds one\nfixed runner and reports each case; read-only accessors on the generated model\nso behaviour is observable; `tuic` 1.2.0 with unchanged canonical digests; two\nexample cases files; a format document, an authoring schema and tests; an\noptional `cases` member in the profile registry and its consistency test; one\nparagraph in the design skill's profiles reference; the workflow line that runs\nthe new schema test. Also this task record and new immutable Project Memory\nfiles.\n\nExclusions: the existing Go acceptance suites are kept and not ported; no\nchange to the generator contract, the harness or other generators; `tuicases`\nis not a generator and is not registered as one.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/tui`, `go test -race`\nin `modeling/gencontract` and `modeling/foundrygen`, the node schema tests, the\nworkflow inventory test, the repository validator, whitespace check and\ncommitted Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-record-browser-cases-v1-expectations-as-data.md",
+        "id": "CF-record-browser-cases-v1",
+        "blob": "a314f6ffc3634d85f5493fee2b7176e22dec7e93",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

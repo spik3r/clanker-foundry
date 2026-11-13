@@ -28,6 +28,14 @@ only a first check.
 | `sequence-diagram/v1` | `diagramgen` | UML-style sequence diagram of participants, messages, notes and alt, opt and loop frames, as SVG. | [SEQUENCE.md](diagram/SEQUENCE.md) | [schema](diagram/authoring/sequence-diagram-v1.schema.json) |
 | `class-diagram/v1` | `diagramgen` | UML-style class diagram of classes, interfaces, enums and seven kinds of relation, as SVG. | [CLASS.md](diagram/CLASS.md) | [schema](diagram/authoring/class-diagram-v1.schema.json) |
 
+A profile entry may also have a `cases` member: the format of its expectation
+literals, a document, a schema, a runner command and examples. Today only
+`record-browser/v1` has one: [record-browser-cases/v1](tui/CASES.md), checked
+with `tuicases` (`validate` reads the files; `check` builds and runs the
+generated browser). Cases are bound to the model's canonical digest and are
+refused when the model changes. `tuicases` is not a generator and is not in
+[generators.json](gencontract/generators.json).
+
 The harness's own `reference/v1` generator exists to test the contract and is
 not listed.
 

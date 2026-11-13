@@ -60,6 +60,13 @@ for the commands, the exit codes and the identity line). Exit 0 means the model 
 accepted; exit 2 means it was refused and stderr says why. Build and run
 the generator only where that is authorized. Report what ran and what did not.
 
+When the profile's registry entry has a `cases` member, write the expectation
+literals in the format it names (read its `doc` and `schema`) and check them with
+its `runner`. Write them from the requirements and the profile document, never
+from what the generated output does, and treat a failing case as a discrepancy to
+report, not as a reason to edit the expectation. Cases are bound to the model's
+digest: after a model change they are stale until a person has reviewed them.
+
 An accepted model proves that the model is well formed for the profile. It does
 not show that the model means what the person wanted, and the generated output
 repeats a wrong model perfectly. Keep the expectation literals separate from the

@@ -22,6 +22,16 @@ type profileEntry struct {
 	Examples      []string `json:"examples"`
 	Emits         []string `json:"emits"`
 	CannotExpress []string `json:"cannotExpress"`
+	// Cases is optional: the format and runner for expectation literals.
+	Cases *casesEntry `json:"cases,omitempty"`
+}
+
+type casesEntry struct {
+	Format   string   `json:"format"`
+	Doc      string   `json:"doc"`
+	Schema   string   `json:"schema"`
+	Runner   string   `json:"runner"`
+	Examples []string `json:"examples"`
 }
 
 type profileRegistry struct {
@@ -163,6 +173,29 @@ func TestProfileRegistryIsConsistent(t *testing.T) {
 				}
 			}
 			requireRegularFile(t, root, e.ProfileDoc)
+			if c := e.Cases; c != nil {
+				if c.Format == "" || c.Runner == "" || len(c.Examples) == 0 {
+					t.Error("cases needs format, runner and at least one example")
+				}
+				requireRegularFile(t, root, c.Doc)
+				requireRegularFile(t, root, c.Schema)
+				for _, rel := range c.Examples {
+					raw, err := os.ReadFile(requireRegularFile(t, root, rel))
+					if err != nil {
+						t.Fatal(err)
+					}
+					var doc struct {
+						FormatVersion  string `json:"formatVersion"`
+						ProfileVersion string `json:"profileVersion"`
+					}
+					if err := json.Unmarshal(raw, &doc); err != nil {
+						t.Fatalf("%s: %v", rel, err)
+					}
+					if doc.FormatVersion != c.Format || doc.ProfileVersion != e.Profile {
+						t.Fatalf("%s declares %q for %q, want %q for %q", rel, doc.FormatVersion, doc.ProfileVersion, c.Format, e.Profile)
+					}
+				}
+			}
 			requireRegularFile(t, root, e.Schema)
 			if len(e.Examples) == 0 {
 				t.Fatal("no examples listed")

@@ -1,0 +1,185 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {"canonicalSHA256": "6a8370de19f321f4a8bb0737745d04d86aa14e30203259d95fe5d79b27a8ac53"},
+  "records": {
+    "Main": [
+      {"ID": "a", "Name": "Alpha", "Description": "First record", "Status": "ready"},
+      {"ID": "b", "Name": "Beta", "Description": "Second record", "Status": "ready"},
+      {"ID": "c", "Name": "Gamma", "Description": "Third record", "Status": "ready"}
+    ],
+    "Reordered": [
+      {"ID": "c", "Name": "Gamma", "Description": "Third record", "Status": "ready"},
+      {"ID": "b", "Name": "Beta", "Description": "Second record", "Status": "ready"},
+      {"ID": "a", "Name": "Alpha", "Description": "First record", "Status": "ready"}
+    ],
+    "WithoutBeta": [
+      {"ID": "c", "Name": "Gamma", "Description": "Third record", "Status": "ready"},
+      {"ID": "a", "Name": "Alpha", "Description": "First record", "Status": "ready"}
+    ],
+    "Many": [
+      {"ID": "r01", "Name": "Row 01", "Description": "Row description", "Status": "ready"},
+      {"ID": "r02", "Name": "Row 02", "Description": "Row description", "Status": "ready"},
+      {"ID": "r03", "Name": "Row 03", "Description": "Row description", "Status": "ready"},
+      {"ID": "r04", "Name": "Row 04", "Description": "Row description", "Status": "ready"},
+      {"ID": "r05", "Name": "Row 05", "Description": "Row description", "Status": "ready"},
+      {"ID": "r06", "Name": "Row 06", "Description": "Row description", "Status": "ready"},
+      {"ID": "r07", "Name": "Row 07", "Description": "Row description", "Status": "ready"},
+      {"ID": "r08", "Name": "Row 08", "Description": "Row description", "Status": "ready"},
+      {"ID": "r09", "Name": "Row 09", "Description": "Row description", "Status": "ready"},
+      {"ID": "r10", "Name": "Row 10", "Description": "Row description", "Status": "ready"},
+      {"ID": "r11", "Name": "Row 11", "Description": "Row description", "Status": "ready"},
+      {"ID": "r12", "Name": "Row 12", "Description": "Row description", "Status": "ready"},
+      {"ID": "r13", "Name": "Row 13", "Description": "Row description", "Status": "ready"},
+      {"ID": "r14", "Name": "Row 14", "Description": "Row description", "Status": "ready"},
+      {"ID": "r15", "Name": "Row 15", "Description": "Row description", "Status": "ready"},
+      {"ID": "r16", "Name": "Row 16", "Description": "Row description", "Status": "ready"},
+      {"ID": "r17", "Name": "Row 17", "Description": "Row description", "Status": "ready"},
+      {"ID": "r18", "Name": "Row 18", "Description": "Row description", "Status": "ready"},
+      {"ID": "r19", "Name": "Row 19", "Description": "Row description", "Status": "ready"},
+      {"ID": "r20", "Name": "Row 20", "Description": "Row description", "Status": "ready"},
+      {"ID": "r21", "Name": "Row 21", "Description": "Row description", "Status": "ready"},
+      {"ID": "r22", "Name": "Row 22", "Description": "Row description", "Status": "ready"},
+      {"ID": "r23", "Name": "Row 23", "Description": "Row description", "Status": "ready"},
+      {"ID": "r24", "Name": "Row 24", "Description": "Row description", "Status": "ready"},
+      {"ID": "r25", "Name": "Row 25", "Description": "Row description", "Status": "ready"},
+      {"ID": "r26", "Name": "Row 26", "Description": "Row description", "Status": "ready"},
+      {"ID": "r27", "Name": "Row 27", "Description": "Row description", "Status": "ready"},
+      {"ID": "r28", "Name": "Row 28", "Description": "Row description", "Status": "ready"},
+      {"ID": "r29", "Name": "Row 29", "Description": "Row description", "Status": "ready"},
+      {"ID": "r30", "Name": "Row 30", "Description": "Row description", "Status": "ready"},
+      {"ID": "r31", "Name": "Row 31", "Description": "Row description", "Status": "ready"},
+      {"ID": "r32", "Name": "Row 32", "Description": "Row description", "Status": "ready"},
+      {"ID": "r33", "Name": "Row 33", "Description": "Row description", "Status": "ready"},
+      {"ID": "r34", "Name": "Row 34", "Description": "Row description", "Status": "ready"},
+      {"ID": "r35", "Name": "Row 35", "Description": "Row description", "Status": "ready"},
+      {"ID": "r36", "Name": "Row 36", "Description": "Row description", "Status": "ready"},
+      {"ID": "r37", "Name": "Row 37", "Description": "Row description", "Status": "ready"},
+      {"ID": "r38", "Name": "Row 38", "Description": "Row description", "Status": "ready"},
+      {"ID": "r39", "Name": "Row 39", "Description": "Row description", "Status": "ready"},
+      {"ID": "r40", "Name": "Row 40", "Description": "Row description", "Status": "ready"}
+    ]
+  },
+  "cases": [
+    {
+      "id": "C_start_first_selected",
+      "requirement": "The first record is selected when records are supplied, and a wide terminal shows both panes with the selected record's details.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "wide", "focus": "list", "selected": "a", "status": "ready", "visible": ["Catalog", "Records", "Details", "Name: Alpha", "Status: ready", "Description: First record"]}
+    },
+    {
+      "id": "C_down_up_move_selection",
+      "requirement": "j/k or arrows move through the focused pane; selection follows the stable record ID and the details follow it.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"key": "down"}, {"key": "up"}],
+      "expect": {"selected": "b", "visible": ["Name: Beta"], "absent": ["Name: Alpha", "Name: Gamma"]}
+    },
+    {
+      "id": "C_tab_switches_pane",
+      "requirement": "Tab switches panes and Shift+Tab switches back; with two panes each moves to the other pane.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "tab"}, {"key": "shift+tab"}, {"key": "shift+tab"}],
+      "expect": {"focus": "detail", "selected": "a"}
+    },
+    {
+      "id": "C_enter_opens_details",
+      "requirement": "Enter shows details: below the wide minimum only the focused pane is shown, and Enter focuses the details.",
+      "size": {"width": 40, "height": 10},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"key": "enter"}],
+      "expect": {"layout": "narrow", "focus": "detail", "selected": "b", "visible": ["Name: Beta", "Status: ready"], "absent": ["Gamma"]}
+    },
+    {
+      "id": "C_esc_returns_to_list",
+      "requirement": "Esc returns to the list from the details; a narrow terminal shows only the focused pane.",
+      "size": {"width": 40, "height": 10},
+      "records": "Main",
+      "steps": [{"key": "enter"}, {"key": "esc"}],
+      "expect": {"layout": "narrow", "focus": "list", "selected": "a", "visible": ["Alpha", "Gamma"], "absent": ["Name: Alpha"]}
+    },
+    {
+      "id": "C_tiny_asks_for_resize",
+      "requirement": "Below the narrow minimum (24x6) the browser asks for a resize.",
+      "size": {"width": 20, "height": 5},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "tiny", "visible": ["Resize"], "absent": ["Alpha"]}
+    },
+    {
+      "id": "C_help_captures_keys",
+      "requirement": "While help is open only its scroll and close keys work: Tab, j and Ctrl+C change nothing and do not quit.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "?"}, {"key": "j"}, {"key": "tab"}, {"key": "ctrl+c"}],
+      "expect": {"help": true, "selected": "a", "focus": "list", "quit": false}
+    },
+    {
+      "id": "C_help_closes_with_esc",
+      "requirement": "Esc closes help; q does nothing while help is open and quits only outside help.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "?"}, {"key": "q"}, {"key": "esc"}],
+      "expect": {"help": false, "quit": false, "selected": "a"}
+    },
+    {
+      "id": "C_quit_with_q",
+      "requirement": "q quits outside help.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "q"}],
+      "expect": {"quit": true}
+    },
+    {
+      "id": "C_paging_and_ends",
+      "requirement": "PgUp/PgDown move a visible page (16 list rows at 100x20); Home/End go to the ends.",
+      "size": {"width": 100, "height": 20},
+      "records": "Many",
+      "steps": [{"key": "pgdown"}],
+      "expect": {"selected": "r17", "visible": ["Row 17"]}
+    },
+    {
+      "id": "C_end_home",
+      "requirement": "Home/End go to the ends of the list.",
+      "size": {"width": 100, "height": 20},
+      "records": "Many",
+      "steps": [{"key": "end"}, {"key": "pgup"}, {"key": "home"}],
+      "expect": {"selected": "r01", "visible": ["Row 01"]}
+    },
+    {
+      "id": "C_resize_keeps_selection_and_focus",
+      "requirement": "Selection and focus survive resize, including to a tiny size and back.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"key": "enter"}, {"resize": {"width": 40, "height": 10}}, {"resize": {"width": 20, "height": 5}}, {"resize": {"width": 100, "height": 20}}],
+      "expect": {"layout": "wide", "focus": "detail", "selected": "b", "visible": ["Name: Beta"]}
+    },
+    {
+      "id": "C_replace_keeps_selected_id",
+      "requirement": "Replacement preserves an existing selected ID after reordering.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"replace": {"status": "ready", "records": "Reordered"}}],
+      "expect": {"selected": "b", "visible": ["Name: Beta"]}
+    },
+    {
+      "id": "C_replace_removed_selects_first",
+      "requirement": "Removal of the selected ID selects the first new record.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"replace": {"status": "ready", "records": "WithoutBeta"}}],
+      "expect": {"selected": "c", "visible": ["Name: Gamma"], "absent": ["Beta"]}
+    },
+    {
+      "id": "C_loading_shows_message",
+      "requirement": "Application code can show Loading with a plain-text message; no record content is shown meanwhile.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"replace": {"status": "loading", "message": "Fetching records"}}],
+      "expect": {"status": "loading", "visible": ["Fetching records"], "absent": ["Alpha", "Gamma"]}
+    }
+  ]
+}

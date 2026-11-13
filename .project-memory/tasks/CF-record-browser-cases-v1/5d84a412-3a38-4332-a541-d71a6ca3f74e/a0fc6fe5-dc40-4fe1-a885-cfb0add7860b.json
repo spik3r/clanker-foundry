@@ -1,0 +1,142 @@
+{
+  "formatVersion": 2,
+  "eventId": "a0fc6fe5-dc40-4fe1-a885-cfb0add7860b",
+  "runId": "5d84a412-3a38-4332-a541-d71a6ca3f74e",
+  "kind": "complete",
+  "parents": [
+    "f77d3b64-35bd-4140-8e8e-fb90b500a531"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-cases-v1",
+    "path": "tasks/CF-record-browser-cases-v1-expectations-as-data.md",
+    "revision": "e0f21a0956c4a5f6736f4c0ca2504482363e109e",
+    "blob": "a314f6ffc3634d85f5493fee2b7176e22dec7e93",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "635fcbeb6151e1d3583618615b5d5d416433ce61bd34e590890a9fd99b97c7fd"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T08:07:05.965Z",
+  "summary": "record-browser-cases/v1 and the tuicases runner added; generated model gains read-only accessors; tuic is 1.2.0 with unchanged digests; example cases, format document, schema, registry member and skill paragraph added",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    ".github/workflows/model-authoring-contract.yml",
+    "modeling/README.md",
+    "modeling/gencontract/profiles_test.go",
+    "modeling/profiles.json",
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-package.cases.json",
+    "modeling/tui/examples/browser.cases.json",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "skills/model-driven-design/references/foundry-profiles.md",
+    "tasks/CF-record-browser-cases-v1-expectations-as-data.md"
+  ],
+  "validation": "Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok including tuicases running both example cases files and deliberately wrong expectations of each kind; modeling/gencontract and modeling/foundrygen go test -race ok. node --test modeling/tui/authoring/*.test.cjs: 8 pass, 0 skipped (Node 22; CI uses 24). node --test tests/project-memory-workflow.test.mjs: 50 pass. scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    ".github/workflows/model-authoring-contract.yml": {
+      "blob": "1a7966095557e27afbabbb3d9ad9524e164712e9",
+      "mode": "100644"
+    },
+    "modeling/README.md": {
+      "blob": "1d7ced9c3506fa5cf31b8904389e47abb0ba30e2",
+      "mode": "100644"
+    },
+    "modeling/gencontract/profiles_test.go": {
+      "blob": "2d2f94c24fd7417f92141e728c2d91ee3e313c50",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "98ab6c6e7fcd68db9b17e583b8c3479a60858506",
+      "mode": "100644"
+    },
+    "modeling/tui/CASES.md": {
+      "blob": "e7dcaeb1453f547c5012d5c05aef352013693182",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "79efae51c57c6718a11316e7f93a337ff0b8344f",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "d0b4d8ccd46df547b3db1b45cb2461df39184d10",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/cases.schema.test.cjs": {
+      "blob": "6cf62daf126b32c0ada933902ad287a9bb035f11",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json": {
+      "blob": "0c3ec3796b2514c8c0da536f4855b75580df38f6",
+      "mode": "100644"
+    },
+    "modeling/tui/cases.go": {
+      "blob": "76cde39c93797f53e4e1e6fb92c47133e1bb0986",
+      "mode": "100644"
+    },
+    "modeling/tui/cases_test.go": {
+      "blob": "9add01bb1c8e5d209f1ab77fbabf5911aaa2ce31",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/main.go": {
+      "blob": "19cb266b3a6f42de8bdec8ce1a1f132655eda9f2",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/main_test.go": {
+      "blob": "99c388280cf99bbe77ec31e2507cba04e4f68a74",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/runner.go.tmpl": {
+      "blob": "04f3981e528fee0c03eef8679268dbc41f983d53",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "9ff009f81279e5f5af5b6ba65fb35ac3910db1cc",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "00d92d900a66e1b97a624a166d057492efd9a74f",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-package.cases.json": {
+      "blob": "0c0ff8f709d93c33701bea4e6a339812e35af047",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser.cases.json": {
+      "blob": "e2c13a462abbef13755e903867de58974477c7a4",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "d9c18ef946a57d9649f89b10ed9100e0acb84c67",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "fa1ec3dc32c4565b638c1ab9c5b5a09a8be2e3c4",
+      "mode": "100644"
+    },
+    "skills/model-driven-design/references/foundry-profiles.md": {
+      "blob": "246d44692c5fdc90aa6a796fc845603f1b7b70fc",
+      "mode": "100644"
+    },
+    "tasks/CF-record-browser-cases-v1-expectations-as-data.md": {
+      "blob": "5d14711cc5270c5a55f8de9fc85765abc0d5a892",
+      "mode": "100644"
+    }
+  }
+}

@@ -61,10 +61,13 @@ for drafting a model; it lists the rules it cannot express.
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
 the model's `emit.package`), pinned dependencies (module mode), normalized model and a `foundry-manifest.json` integrity
-record (generator `tuic` 1.1.0, toolchain constant `go1.27.4`). It does
+record (generator `tuic` 1.2.0, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
+
+Expectations for a model, such as "after these keys the browser shows X", are
+written as data in [expectation cases](CASES.md) and checked with `tuicases`.
 
 ## Go versions
 
