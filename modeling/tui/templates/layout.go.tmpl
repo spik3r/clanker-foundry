@@ -35,8 +35,10 @@ func plan(width, height int) layout {
 		return p
 	}
 	p.variant = narrow
-	p.bodyHeight = p.height - 3
-	p.contentRows = p.bodyHeight - 1
+[[[if .Hosted]]]	// Hosted: the whole height is the body; the host draws any title or footer.
+	p.bodyHeight = p.height
+[[[else]]]	p.bodyHeight = p.height - 3
+[[[end]]]	p.contentRows = p.bodyHeight - 1
 	p.listWidth, p.detailWidth = p.width, p.width
 	if p.width >= wideWidth && p.height >= wideHeight {
 		p.variant = wide
@@ -54,13 +56,30 @@ func clampOffset(offset, lines, rows int) int {
 // line is one clipped row and the helpers below return the lines unchanged.
 const (
 	wrapDetails  = [[[.Wrap]]]
+	spaced   = [[[.Spaced]]]
 	maxWrapLines = 4096
 )
+
+// spaceRows puts one blank row between consecutive rows when the model sets
+// detailSpacing to spaced. It never adds a row before the first or after the last.
+func spaceRows(rows []string) []string {
+	if !spaced || len(rows) < 2 {
+		return rows
+	}
+	out := make([]string, 0, 2*len(rows)-1)
+	for i, row := range rows {
+		if i > 0 {
+			out = append(out, "")
+		}
+		out = append(out, row)
+	}
+	return out
+}
 
 // detailRows returns the rows shown in the detail pane for the current layout.
 func detailRows(details []string, p layout) []string {
 	if !wrapDetails || p.variant == tiny {
-		return details
+		return spaceRows(details)
 	}
 	return wrapRows(details, p.detailWidth)
 }
@@ -69,7 +88,7 @@ func detailRows(details []string, p layout) []string {
 // minimum size nothing is drawn or scrolled, so the unwrapped count is used.
 func detailCount(details []string, p layout) int {
 	if !wrapDetails || p.variant == tiny {
-		return len(details)
+		return len(spaceRows(details))
 	}
 	return len(wrapRows(details, p.detailWidth))
 }
@@ -82,7 +101,13 @@ func wrapRows(details []string, width int) []string {
 		return nil
 	}
 	var rows []string
-	for _, detail := range details {
+	for i, detail := range details {
+		if spaced && i > 0 {
+			if len(rows) >= maxWrapLines {
+				return append(rows, "… truncated")
+			}
+			rows = append(rows, "")
+		}
 		text := ansi.Strip(strings.ToValidUTF8(detail, "�"))
 		for _, part := range strings.Split(text, "\n") {
 			part = strings.Map(func(r rune) rune {

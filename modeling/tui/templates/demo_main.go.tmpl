@@ -5,8 +5,53 @@ import (
  "os"
  tea "charm.land/bubbletea/v2"
  browser "example.com/generated/recordbrowser"
-)
+[[[if .Hosted]]] "github.com/charmbracelet/x/ansi"
+ "strings"
+[[[end]]])
+[[[if .Hosted]]]
+// host is a minimal application page around the hosted browser: a title row,
+// the browser body, and a footer built from KeyHints. It is also the reference
+// for the hosting contract in the package documentation.
+type host struct {
+ b browser.Model
+ width int
+}
 
+func (h host) Init() tea.Cmd { return nil }
+
+func (h host) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+ switch msg := msg.(type) {
+ case tea.WindowSizeMsg:
+  h.width = msg.Width
+  // The browser gets the body size: the terminal minus the title and footer rows.
+  next, cmd := h.b.Update(tea.WindowSizeMsg{Width: msg.Width, Height: max(0, msg.Height-2)})
+  h.b = next.(browser.Model)
+  return h, cmd
+ case tea.KeyPressMsg:
+  if !h.b.CapturesKeys() && (msg.String() == "q" || msg.String() == "ctrl+c") {
+   return h, tea.Quit
+  }
+ }
+ next, cmd := h.b.Update(msg)
+ h.b = next.(browser.Model)
+ return h, cmd
+}
+
+func (h host) View() tea.View {
+ hints := make([]string, 0, 8)
+ for _, k := range h.b.KeyHints() {
+  hints = append(hints, k.Key+" "+k.Action)
+ }
+ if !h.b.CapturesKeys() {
+  hints = append(hints, "q quit")
+ }
+ body := h.b.View().Content
+ text := ansi.Truncate(h.b.Title(), h.width, "…") + "\n" + body + "\n" + ansi.Truncate(strings.Join(hints, "  "), h.width, "…")
+ v := tea.NewView(text)
+ v.AltScreen = true
+ return v
+}
+[[[end]]]
 func main(){
  records:=make([]browser.Record,40)
  for i:=range records{
@@ -17,5 +62,6 @@ func main(){
  }
  m,err:=browser.New(records)
  if err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
- if _,err:=tea.NewProgram(m).Run();err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
-}
+[[[if .Hosted]]] if _,err:=tea.NewProgram(host{b:m}).Run();err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
+[[[else]]] if _,err:=tea.NewProgram(m).Run();err!=nil{fmt.Fprintln(os.Stderr,err);os.Exit(1)}
+[[[end]]]}

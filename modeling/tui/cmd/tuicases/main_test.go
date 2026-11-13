@@ -16,6 +16,8 @@ const (
 	browserCases = "../../examples/browser.cases.json"
 	packageModel = "../../examples/browser-package.json"
 	packageCases = "../../examples/browser-package.cases.json"
+	hostedModel  = "../../examples/browser-hosted.json"
+	hostedCases  = "../../examples/browser-hosted.cases.json"
 )
 
 func invoke(args ...string) (code int, stdout, stderr string) {
@@ -80,7 +82,7 @@ func digestOf(t *testing.T, model string) string {
 
 func TestExampleCasesPass(t *testing.T) {
 	skipShort(t)
-	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}} {
+	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}} {
 		code, stdout, stderr := invoke("check", p[0], p[1])
 		if code != 0 || stderr != "" {
 			t.Fatalf("%s: exit %d\n%s", p[1], code, stderr)
@@ -140,6 +142,43 @@ func TestWrongExpectationsFailWithExit3(t *testing.T) {
 	}
 	if got := strings.Split(strings.TrimSpace(stderr), "\n"); strings.Join(got, "\n") != strings.Join(want, "\n") {
 		t.Fatalf("stderr\n%s\nwant\n%s", stderr, strings.Join(want, "\n"))
+	}
+}
+
+// capturesKeys and keyHints are observed in both embed modes, and a wrong
+// expectation of either kind fails with its own message.
+func TestHostedExpectationsReport(t *testing.T) {
+	skipShort(t)
+	base := readCases(t, browserCases)
+	mk := func(id string, steps []tui.Step, e tui.Expect) tui.Case {
+		return tui.Case{ID: id, Requirement: "An expectation about keys.", Size: tui.Size{Width: 100, Height: 20},
+			Records: "Main", Steps: steps, Expect: e}
+	}
+	help := []tui.Step{{Key: str("?")}}
+	hints := func(h ...string) *[]tui.KeyHint {
+		var out []tui.KeyHint
+		for i := 0; i < len(h); i += 2 {
+			out = append(out, tui.KeyHint{Key: h[i], Action: h[i+1]})
+		}
+		return &out
+	}
+	base.Cases = []tui.Case{
+		mk("K_ok", []tui.Step{}, tui.Expect{CapturesKeys: yes(false), KeyHints: hints("j/k", "select", "?", "help", "q", "quit")}),
+		mk("K_help_ok", help, tui.Expect{CapturesKeys: yes(true), KeyHints: hints("esc/?", "close")}),
+		mk("K_captures", []tui.Step{}, tui.Expect{CapturesKeys: yes(true)}),
+		mk("K_order", []tui.Step{}, tui.Expect{KeyHints: hints("?", "help", "j/k", "select")}),
+		mk("K_missing", []tui.Step{}, tui.Expect{KeyHints: hints("x", "nothing")}),
+	}
+	code, stdout, stderr := invoke("check", browserModel, writeCases(t, base))
+	if code != 3 || stdout != "" {
+		t.Fatalf("exit %d, stdout %q\n%s", code, stdout, stderr)
+	}
+	for _, want := range []string{"pass K_ok\n", "pass K_help_ok\n", "fail K_captures: capturesKeys: want true got false\n",
+		`fail K_order: keyHints "j/k" "select": want shown in order got [j/k select, tab pane, enter open, ? help, q quit]`,
+		`fail K_missing: keyHints "x" "nothing": want shown in order got [`} {
+		if !strings.Contains(stderr, want) {
+			t.Errorf("stderr lacks %q:\n%s", want, stderr)
+		}
 	}
 }
 
@@ -230,7 +269,7 @@ func TestRefusalsExit2WithEmptyStdout(t *testing.T) {
 // validate needs neither go nor any execution: it works with an empty PATH.
 func TestValidateNeedsNoGoToolchain(t *testing.T) {
 	t.Setenv("PATH", "")
-	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}} {
+	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}} {
 		code, stdout, stderr := invoke("validate", p[0], p[1])
 		if code != 0 || stderr != "" || !strings.HasPrefix(stdout, "ok ") {
 			t.Fatalf("exit %d, stdout %q, stderr %q", code, stdout, stderr)
@@ -244,7 +283,7 @@ func TestValidateNeedsNoGoToolchain(t *testing.T) {
 }
 
 func TestRunnerSourceHoldsNoCaseData(t *testing.T) {
-	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}} {
+	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}} {
 		l, err := load(p[0], p[1])
 		if err != nil {
 			t.Fatal(err)

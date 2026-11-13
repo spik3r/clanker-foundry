@@ -55,6 +55,14 @@
       "description": "Optional. clip (default) shows one cut row per field; wrap wraps values to the pane width.",
       "enum": ["clip", "wrap"]
     },
+    "embed": {
+      "description": "Optional. standalone (default) owns the terminal; hosted draws only a body for a host application's page, never quits and draws no title or footer.",
+      "enum": ["standalone", "hosted"]
+    },
+    "detailSpacing": {
+      "description": "Optional. compact (default) shows detail fields on consecutive rows; spaced puts one blank row between consecutive fields.",
+      "enum": ["compact", "spaced"]
+    },
     "emit": {
       "description": "Optional. module (default) writes a standalone module; package writes only the Go files of a package with the given name. package is required in package mode and refused in module mode.",
       "type": "object",

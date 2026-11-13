@@ -1,3 +1,22 @@
+[[[if .Hosted]]]// This browser is hosted: it is one page body inside a host application's
+// own page, not a program of its own. The hosting contract:
+//
+//   - Forward tea.WindowSizeMsg with the size of the body area, not the
+//     terminal. Every layout rule applies to that size.
+//   - Forward key messages unless the host handles them itself. While
+//     CapturesKeys reports true, always forward every key: the browser owns
+//     the keyboard, and the host must not treat digits, q or ctrl+c as its own.
+//   - Store the Model that Update returns.
+//   - Call View for the body. It is exactly the width and height of the last
+//     WindowSizeMsg and has no title line, status line or key-hint footer.
+//     Draw those in the host, using Title and KeyHints.
+//
+// The browser never returns tea.Quit. q and ctrl+c are ignored outside help;
+// the host owns quitting.
+[[[else]]]// This browser is standalone: it owns the terminal, draws its own title and
+// key-hint footer and quits on q or ctrl+c. To place one inside an
+// application's page, set "embed": "hosted" in the model.
+[[[end]]]// The view colours can be set at run time with WithColors.
 package [[[.PackageName]]]
 
 import tea "charm.land/bubbletea/v2"
@@ -7,6 +26,33 @@ type Model struct {
  browser browser
  width,height int
  sized bool
+ colors Colors
+}
+
+// KeyHint is one key and what it does in the current state.
+type KeyHint struct{ Key, Action string }
+
+// KeyHints returns the hints the standalone footer shows for the current
+// state, widest form, in order[[[if .Hosted]]], except the quit hint: this browser ignores q and
+// ctrl+c and the host owns quitting[[[end]]]. A host can draw them in its own footer.
+func (m Model) KeyHints() []KeyHint { return keyHints(m.browser.state, m.browser.data) }
+
+// Title returns the model's title for a host to show.
+func (m Model) Title() string { return [[[quote .Title]]] }
+
+// CapturesKeys reports whether the browser must receive every key. It is true
+// while the help overlay is open: a host must then forward all keys and not
+// treat digits, q or ctrl+c as its own.
+func (m Model) CapturesKeys() bool { return m.browser.state.helpOpen }
+
+// WithColors returns a model that draws with the given colours. Each nonempty
+// value must be #RRGGBB; an empty value keeps the default for that role. On an
+// invalid value the error is returned and the model is unchanged. Colours are
+// applied to the roles that replace the defaults; they never reach the data.
+func (m Model) WithColors(c Colors) (Model, error) {
+ if err:=c.validate();err!=nil{return m,err}
+ m.colors=c
+ return m,nil
 }
 
 // New creates a browser with a ready snapshot. Duplicate or empty IDs are rejected.
@@ -63,10 +109,13 @@ func (m Model) Update(msg tea.Msg)(tea.Model,tea.Cmd){
 func(m Model)handle(a action)(Model,tea.Cmd){
  p:=plan(m.width,m.height)
  if m.browser.state.helpOpen{m.browser=m.browser.update(a,p);return m,nil}
- if a==quitAction{return m,tea.Quit}
- m.browser=m.browser.update(a,p);return m,nil
+[[[if .Hosted]]] if a==quitAction{return m,nil}
+[[[else]]] if a==quitAction{return m,tea.Quit}
+[[[end]]] m.browser=m.browser.update(a,p);return m,nil
 }
 func(m Model)View()tea.View{
- text:="";if m.sized{text=m.browser.render(plan(m.width,m.height),theme{color:true})}
- v:=tea.NewView(text);v.AltScreen=true;return v
+ text:="";if m.sized{text=m.browser.render(plan(m.width,m.height),theme{color:true,colors:m.colors.resolved()})}
+ v:=tea.NewView(text)
+[[[if not .Hosted]]] v.AltScreen=true
+[[[end]]] return v
 }

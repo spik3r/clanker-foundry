@@ -1,0 +1,106 @@
+package main
+
+// A small application shell around a hosted record browser: its own top bar,
+// footer and digit keys for switching pages. The browser is one page body.
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
+
+	hosted "example.com/host/internal/hostedbrowser"
+)
+
+type shell struct {
+	page          int // 0 is the browser page, 1 the about page
+	browser       hosted.Model
+	width, height int
+	forwarded     []string // keys the shell passed to the browser
+}
+
+func newShell() (shell, error) {
+	var rows []hosted.Record
+	for i := 0; i < 30; i++ {
+		rows = append(rows, hosted.Record{ID: fmt.Sprintf("id-%02d", i), Name: fmt.Sprintf("Row-%02d", i), Status: "active", Description: "Description of the row"})
+	}
+	b, err := hosted.New(rows)
+	return shell{browser: b}, err
+}
+
+// bodySize is what the shell's page shell leaves for a page body: the terminal
+// minus the top bar row and the footer row.
+func (s shell) bodySize() (int, int) { return s.width, max(0, s.height-2) }
+
+func (s shell) Init() tea.Cmd { return nil }
+
+func (s shell) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		s.width, s.height = msg.Width, msg.Height
+		w, h := s.bodySize()
+		next, cmd := s.browser.Update(tea.WindowSizeMsg{Width: w, Height: h})
+		s.browser = next.(hosted.Model)
+		return s, cmd
+	case tea.KeyPressMsg:
+		if !(s.page == 0 && s.browser.CapturesKeys()) {
+			switch msg.String() {
+			case "q", "ctrl+c":
+				return s, tea.Quit
+			case "1":
+				s.page = 0
+				return s, nil
+			case "2":
+				s.page = 1
+				return s, nil
+			}
+		}
+		if s.page == 0 {
+			s.forwarded = append(append([]string(nil), s.forwarded...), msg.String())
+			next, cmd := s.browser.Update(msg)
+			s.browser = next.(hosted.Model)
+			return s, cmd
+		}
+	}
+	return s, nil
+}
+
+func pad(text string, width int) string {
+	text = ansi.Truncate(text, width, "")
+	return text + strings.Repeat(" ", max(0, width-ansi.StringWidth(text)))
+}
+
+func (s shell) View() tea.View {
+	w, h := s.bodySize()
+	body := strings.Split(strings.TrimRight(strings.Repeat(pad("About this application", w)+"\n", h), "\n"), "\n")
+	if s.page == 0 {
+		body = strings.Split(s.browser.View().Content, "\n")
+	}
+	hints := []string{}
+	if s.page == 0 {
+		for _, k := range s.browser.KeyHints() {
+			hints = append(hints, k.Key+" "+k.Action)
+		}
+	}
+	if !(s.page == 0 && s.browser.CapturesKeys()) {
+		hints = append(hints, "1/2 page", "q quit")
+	}
+	top := pad(fmt.Sprintf("[App] 1 %s | 2 About", s.browser.Title()), s.width)
+	foot := pad(strings.Join(hints, "  "), s.width)
+	v := tea.NewView(top + "\n" + strings.Join(body, "\n") + "\n" + foot)
+	v.AltScreen = true
+	return v
+}
+
+func main() {
+	s, err := newShell()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if _, err := tea.NewProgram(s).Run(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}

@@ -1,0 +1,397 @@
+package recordbrowser
+
+// Copied unchanged into hosted models whose fields are ID, Name, Status and
+// Description and whose details are Name, Status and Description, spaced. It
+// states the hosting contract independently of the generator's helpers; the
+// compile-time constants wrapDetails and spaced only select the expectation
+// that depends on the text mode.
+import (
+	"fmt"
+	"strings"
+	"testing"
+
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
+)
+
+func hkey(t *testing.T, m Model, k string) (Model, tea.Cmd) {
+	t.Helper()
+	v := tea.KeyPressMsg{}
+	switch k {
+	case "enter":
+		v.Code = tea.KeyEnter
+	case "esc":
+		v.Code = tea.KeyEscape
+	case "tab":
+		v.Code = tea.KeyTab
+	case "pgdown":
+		v.Code = tea.KeyPgDown
+	case "pgup":
+		v.Code = tea.KeyPgUp
+	case "home":
+		v.Code = tea.KeyHome
+	case "end":
+		v.Code = tea.KeyEnd
+	case "ctrl+c":
+		v.Code, v.Mod = 'c', tea.ModCtrl
+	default:
+		v.Code, v.Text = []rune(k)[0], k
+	}
+	next, cmd := m.Update(v)
+	return next.(Model), cmd
+}
+
+func hsize(t *testing.T, m Model, w, h int) Model {
+	t.Helper()
+	next, cmd := m.Update(tea.WindowSizeMsg{Width: w, Height: h})
+	if cmd != nil {
+		t.Fatal("resize command")
+	}
+	return next.(Model)
+}
+
+func hmodel(t *testing.T, w, h int, r ...Record) Model {
+	t.Helper()
+	if len(r) == 0 {
+		for i := 0; i < 20; i++ {
+			r = append(r, Record{ID: fmt.Sprintf("id-%02d", i), Name: fmt.Sprintf("Row-%02d", i), Status: "active", Description: "short"})
+		}
+	}
+	m, err := New(r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return hsize(t, m, w, h)
+}
+
+func hplain(m Model) string { return ansi.Strip(m.View().Content) }
+
+func TestHostedBodyFillsExactlyTheGivenSize(t *testing.T) {
+	for _, sz := range [][2]int{{80, 12}, {80, 11}, {79, 12}, {100, 30}, {40, 9}, {30, 6}, {24, 6}, {23, 6}, {24, 5}, {20, 5}, {1, 1}} {
+		for _, steps := range [][]string{nil, {"enter"}, {"?"}, {"enter", "end"}} {
+			m := hmodel(t, sz[0], sz[1])
+			for _, k := range steps {
+				m, _ = hkey(t, m, k)
+			}
+			lines := strings.Split(m.View().Content, "\n")
+			if len(lines) != sz[1] {
+				t.Fatalf("%v %v: %d rows, want exactly %d", sz, steps, len(lines), sz[1])
+			}
+			for i, l := range lines {
+				if w := ansi.StringWidth(l); w != sz[0] {
+					t.Fatalf("%v %v: row %d is %d cells, want exactly %d: %q", sz, steps, i, w, sz[0], l)
+				}
+			}
+		}
+	}
+	// Loading, failed and empty bodies fill the size too.
+	for _, s := range []Snapshot{{Status: Loading}, {Status: Failed, Message: "boom"}, {Status: Ready}} {
+		m, err := hmodel(t, 80, 12).Replace(s)
+		if err != nil {
+			t.Fatal(err)
+		}
+		lines := strings.Split(m.View().Content, "\n")
+		if len(lines) != 12 || ansi.StringWidth(lines[11]) != 80 {
+			t.Fatalf("status %d: %d rows", s.Status, len(lines))
+		}
+	}
+	// Before any size there is no body, and the view does not enable the alternate screen.
+	m, _ := New(nil)
+	if m.View().Content != "" || m.View().AltScreen {
+		t.Fatal("unsized hosted view must be empty and must not set AltScreen")
+	}
+}
+
+func TestHostedBreakpointsApplyToTheBodySize(t *testing.T) {
+	for _, c := range []struct {
+		w, h int
+		want string
+	}{{80, 12, "wide"}, {80, 11, "narrow"}, {79, 12, "narrow"}, {24, 6, "narrow"}, {24, 5, "tiny"}, {23, 6, "tiny"}} {
+		if got := hmodel(t, c.w, c.h).Layout(); got != c.want {
+			t.Fatalf("%dx%d: layout %q, want %q", c.w, c.h, got, c.want)
+		}
+	}
+	// 12 rows are one label row and 11 content rows: record 11 (index 10) is the last shown.
+	v := hplain(hmodel(t, 80, 12))
+	if !strings.Contains(v, "Row-10") || strings.Contains(v, "Row-11") {
+		t.Fatalf("body is not exactly 12 rows high:\n%s", v)
+	}
+}
+
+func TestHostedDrawsNoTitleStatusOrFooter(t *testing.T) {
+	m := hmodel(t, 80, 12)
+	for _, k := range []string{"", "enter", "?"} {
+		if k != "" {
+			m, _ = hkey(t, m, k)
+		}
+		v := hplain(m)
+		for _, s := range []string{"Catalog", "focus:", "wide |", "narrow |", "quit", "enter open", "j/k select"} {
+			if strings.Contains(v, s) {
+				t.Fatalf("after %q the hosted body shows %q:\n%s", k, s, v)
+			}
+		}
+		if strings.Contains(v, "q/ctrl+c quit") {
+			t.Fatalf("help advertises quit in a hosted browser:\n%s", v)
+		}
+	}
+	m = hmodel(t, 80, 12)
+	if v := hplain(m); !strings.Contains(v, "[Records] 1/20") || !strings.Contains(v, "Details") || !strings.Contains(v, "Name: Row-00") {
+		t.Fatalf("pane labels or details missing:\n%s", v)
+	}
+	if v := hplain(hmodel(t, 20, 5)); !strings.Contains(v, "Resize to continue") || strings.Contains(v, "quit") {
+		t.Fatalf("tiny message: %q", v)
+	}
+}
+
+func TestHostedNeverQuits(t *testing.T) {
+	m := hmodel(t, 80, 12)
+	for _, steps := range [][]string{nil, {"enter"}, {"tab"}, {"enter", "end"}} {
+		s := m
+		for _, k := range steps {
+			s, _ = hkey(t, s, k)
+		}
+		for _, k := range []string{"q", "ctrl+c"} {
+			before := s
+			after, cmd := hkey(t, s, k)
+			if cmd != nil {
+				t.Fatalf("%v then %s returned a command", steps, k)
+			}
+			if after.Selected() != before.Selected() || after.Focus() != before.Focus() || after.browser.state != before.browser.state {
+				t.Fatalf("%v then %s changed the state", steps, k)
+			}
+		}
+	}
+	// Inside help q and ctrl+c are captured and do nothing; the close keys still close it.
+	h, _ := hkey(t, m, "?")
+	for _, k := range []string{"q", "ctrl+c", "tab", "enter", "x"} {
+		var cmd tea.Cmd
+		h, cmd = hkey(t, h, k)
+		if cmd != nil || !h.HelpOpen() || !h.CapturesKeys() {
+			t.Fatalf("key %q inside help: cmd=%v help=%v", k, cmd != nil, h.HelpOpen())
+		}
+	}
+	for _, k := range []string{"esc", "?"} {
+		c, _ := hkey(t, h, k)
+		if c.HelpOpen() || c.CapturesKeys() {
+			t.Fatalf("%s did not close help", k)
+		}
+	}
+	// Loading and empty bodies do not quit either.
+	for _, s := range []Snapshot{{Status: Loading}, {Status: Ready}} {
+		e, _ := m.Replace(s)
+		if _, cmd := hkey(t, e, "q"); cmd != nil {
+			t.Fatal("q quit a status body")
+		}
+	}
+}
+
+func TestHostedAccessors(t *testing.T) {
+	m := hmodel(t, 80, 12)
+	if m.Title() != "Catalog" {
+		t.Fatalf("Title %q", m.Title())
+	}
+	if m.CapturesKeys() {
+		t.Fatal("captures keys with help closed")
+	}
+	want := func(m Model, pairs ...string) {
+		t.Helper()
+		var got []string
+		for _, h := range m.KeyHints() {
+			got = append(got, h.Key+" "+h.Action)
+		}
+		var w []string
+		for i := 0; i < len(pairs); i += 2 {
+			w = append(w, pairs[i]+" "+pairs[i+1])
+		}
+		if strings.Join(got, "|") != strings.Join(w, "|") {
+			t.Fatalf("hints %v, want %v", got, w)
+		}
+	}
+	want(m, "j/k", "select", "tab", "pane", "enter", "open", "?", "help")
+	d, _ := hkey(t, m, "enter")
+	want(d, "j/k", "scroll", "tab", "pane", "esc", "back", "?", "help")
+	h, _ := hkey(t, m, "?")
+	if !h.CapturesKeys() {
+		t.Fatal("help open must capture keys")
+	}
+	want(h, "j/k", "scroll", "esc/?", "close")
+	l, _ := m.Replace(Snapshot{Status: Loading})
+	want(l, "?", "help")
+	if l.CapturesKeys() {
+		t.Fatal("loading captures keys")
+	}
+	// The accessors work before a size is known.
+	u, _ := New(nil)
+	if u.Title() != "Catalog" || u.CapturesKeys() || len(u.KeyHints()) == 0 {
+		t.Fatal("accessors before size")
+	}
+}
+
+func spacedRecord() Record {
+	return Record{ID: "a", Name: "Alpha", Status: "up", Description: "first\nsecond"}
+}
+
+func TestSpacedDetailRowsAndScrolling(t *testing.T) {
+	if !spaced {
+		t.Skip("model is not spaced")
+	}
+	m := hmodel(t, 40, 6, spacedRecord())
+	details := m.browser.data.items[0].details
+	n := len(details)
+	rowsWant := 2*n - 1 // fields and the blank rows between them
+	if wrapDetails {
+		rowsWant++ // the description splits at its newline
+	}
+	const content = 5 // a 6-row body is one label row and 5 content rows
+	if m.browser.state.detailLines != rowsWant || rowsWant <= content {
+		t.Fatalf("detail rows %d, want %d (more than %d)", m.browser.state.detailLines, rowsWant, content)
+	}
+	m, _ = hkey(t, m, "enter")
+	v := strings.Split(hplain(m), "\n")
+	if !strings.HasPrefix(v[1], details[0]) || strings.TrimSpace(v[2]) != "" || !strings.HasPrefix(v[3], details[1]) || strings.TrimSpace(v[4]) != "" {
+		t.Fatalf("one blank row must separate fields, not precede the first:\n%s", strings.Join(v, "\n"))
+	}
+	top := rowsWant - content
+	m, _ = hkey(t, m, "end")
+	if got := m.browser.state.detailOffset; got != top {
+		t.Fatalf("End offset %d, want %d", got, top)
+	}
+	last := strings.Split(hplain(m), "\n")
+	want := details[n-1]
+	if wrapDetails {
+		want = "second"
+	}
+	if !strings.HasPrefix(last[5], want) {
+		t.Fatalf("last row should be %q: no blank row after the last field:\n%s", want, strings.Join(last, "\n"))
+	}
+	m, _ = hkey(t, m, "pgup")
+	if m.browser.state.detailOffset != 0 {
+		t.Fatalf("PgUp offset %d", m.browser.state.detailOffset)
+	}
+	m, _ = hkey(t, m, "pgdown")
+	if m.browser.state.detailOffset != top {
+		t.Fatalf("PgDown offset %d, want %d", m.browser.state.detailOffset, top)
+	}
+	m, _ = hkey(t, m, "home")
+	if m.browser.state.detailOffset != 0 {
+		t.Fatal("Home did not reach the top")
+	}
+	for i := 0; i < 10; i++ {
+		m, _ = hkey(t, m, "j")
+	}
+	if m.browser.state.detailOffset != top {
+		t.Fatalf("j clamps at %d, got %d", top, m.browser.state.detailOffset)
+	}
+	// A taller body needs no scrolling and clamps the offset.
+	m = hsize(t, m, 40, 12)
+	if m.browser.state.detailOffset != 0 {
+		t.Fatalf("resize did not clamp: %d", m.browser.state.detailOffset)
+	}
+	// Below the minimum nothing scrolls, and the unwrapped spaced count is kept.
+	tiny := hsize(t, m, 10, 3)
+	if tiny.Layout() != "tiny" || tiny.browser.state.detailLines != 2*n-1 {
+		t.Fatalf("tiny detail rows %d, want %d", tiny.browser.state.detailLines, 2*n-1)
+	}
+}
+
+func TestSpacedWrapRowCapCountsBlankRows(t *testing.T) {
+	if !spaced || !wrapDetails {
+		t.Skip("needs a spaced, wrapped model")
+	}
+	// Name 2048 rows, then a blank row, Status 2047 rows: exactly 4096 rows.
+	// The blank row before Description would be row 4097, so the list ends with
+	// the truncation row instead of reaching Description.
+	lines := func(n int) string { return strings.TrimSuffix(strings.Repeat("x\n", n), "\n") }
+	m := hmodel(t, 40, 12, Record{ID: "a", Name: lines(2048), Status: lines(2047), Description: "never shown"})
+	if got := m.browser.state.detailLines; got != 4097 {
+		t.Fatalf("detail rows %d, want 4096 plus the truncation row", got)
+	}
+	m, _ = hkey(t, m, "enter")
+	m, _ = hkey(t, m, "end")
+	v := hplain(m)
+	if !strings.Contains(v, "… truncated") || strings.Contains(v, "never shown") {
+		t.Fatalf("expected truncation at the cap:\n%s", v)
+	}
+	// Two rows fewer: the blank row and the first Description row still fit.
+	m = hmodel(t, 40, 12, Record{ID: "a", Name: lines(2048), Status: lines(2045), Description: "shown"})
+	if got := m.browser.state.detailLines; got != 4096 {
+		t.Fatalf("detail rows %d, want 4096 without truncation", got)
+	}
+	m, _ = hkey(t, m, "enter")
+	m, _ = hkey(t, m, "end")
+	if v := hplain(m); !strings.Contains(v, "Description: shown") || strings.Contains(v, "truncated") {
+		t.Fatalf("expected the last field at the cap:\n%s", v)
+	}
+}
+
+func TestWithColorsHosted(t *testing.T) {
+	m := hmodel(t, 80, 12)
+	base := m.View().Content
+	if strings.Contains(base, "38;2;17;34;51") {
+		t.Fatal("test colour present by default")
+	}
+	for _, c := range []struct {
+		name   string
+		colors Colors
+		sgr    string
+	}{
+		{"Accent", Colors{Accent: "#112233"}, "38;2;17;34;51"},
+		{"Text", Colors{Text: "#112233"}, "38;2;17;34;51"},
+		{"SelectionBackground", Colors{SelectionBackground: "#112233"}, "48;2;17;34;51"},
+		{"SelectionText", Colors{SelectionText: "#112233"}, "38;2;17;34;51"},
+		{"Border", Colors{Border: "#112233"}, "48;2;17;34;51"},
+		{"lowercase and uppercase hex", Colors{Accent: "#aAbBcC"}, "38;2;170;187;204"},
+	} {
+		got, err := m.WithColors(c.colors)
+		if err != nil {
+			t.Fatalf("%s: %v", c.name, err)
+		}
+		if v := got.View().Content; !strings.Contains(v, c.sgr) || v == base {
+			t.Fatalf("%s: %q not in the emitted escape sequences", c.name, c.sgr)
+		}
+		if hplain(got) != hplain(m) && c.name != "Border" {
+			t.Fatalf("%s: colours changed the text", c.name)
+		}
+		// The original is unchanged: Model is a value.
+		if m.View().Content != base {
+			t.Fatalf("%s: WithColors changed the receiver", c.name)
+		}
+	}
+	// Empty roles keep the defaults.
+	same, err := m.WithColors(Colors{})
+	if err != nil || same.View().Content != base {
+		t.Fatalf("empty Colors must keep the defaults: %v", err)
+	}
+	// Invalid values are returned as errors and leave the model unchanged.
+	good, _ := m.WithColors(Colors{Accent: "#112233"})
+	for _, bad := range []string{"red", "#fff", "#12345", "#1234567", "#GGGGGG", "112233", " #112233", "#112233 ", "#11223344", "rgb(1,2,3)"} {
+		for _, role := range []string{"Text", "Muted", "Accent", "Border", "SelectionText", "SelectionBackground"} {
+			c := Colors{}
+			switch role {
+			case "Text":
+				c.Text = bad
+			case "Muted":
+				c.Muted = bad
+			case "Accent":
+				c.Accent = bad
+			case "Border":
+				c.Border = bad
+			case "SelectionText":
+				c.SelectionText = bad
+			case "SelectionBackground":
+				c.SelectionBackground = bad
+			}
+			got, err := good.WithColors(c)
+			if err == nil || !strings.Contains(err.Error(), role) {
+				t.Fatalf("%s %q: err %v", role, bad, err)
+			}
+			if got.View().Content != good.View().Content {
+				t.Fatalf("%s %q: model changed on error", role, bad)
+			}
+		}
+	}
+	// One bad role refuses the whole value, even next to a good one.
+	if got, err := good.WithColors(Colors{Text: "#445566", Muted: "bad"}); err == nil || got.View().Content != good.View().Content {
+		t.Fatal("partial application")
+	}
+}

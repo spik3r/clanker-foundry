@@ -1,0 +1,215 @@
+package main
+
+import (
+	"strings"
+	"testing"
+
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
+
+	hosted "example.com/host/internal/hostedbrowser"
+	plain "example.com/host/internal/plainbrowser"
+)
+
+func press(t *testing.T, s shell, k string) (shell, tea.Cmd) {
+	t.Helper()
+	v := tea.KeyPressMsg{}
+	switch k {
+	case "enter":
+		v.Code = tea.KeyEnter
+	case "esc":
+		v.Code = tea.KeyEscape
+	case "ctrl+c":
+		v.Code, v.Mod = 'c', tea.ModCtrl
+	default:
+		v.Code, v.Text = []rune(k)[0], k
+	}
+	next, cmd := s.Update(v)
+	return next.(shell), cmd
+}
+
+func isQuit(cmd tea.Cmd) bool {
+	if cmd == nil {
+		return false
+	}
+	_, ok := cmd().(tea.QuitMsg)
+	return ok
+}
+
+func sized(t *testing.T, w, h int) shell {
+	t.Helper()
+	s, err := newShell()
+	if err != nil {
+		t.Fatal(err)
+	}
+	next, _ := s.Update(tea.WindowSizeMsg{Width: w, Height: h})
+	return next.(shell)
+}
+
+func TestHostQuitsButBrowserDoesNot(t *testing.T) {
+	s := sized(t, 100, 20)
+	for _, k := range []string{"q", "ctrl+c"} {
+		// The browser alone returns no command for the key.
+		if _, cmd := s.browser.Update(tea.KeyPressMsg{Code: []rune(k)[0], Text: k}); k == "q" && cmd != nil {
+			t.Fatal("hosted browser returned a command for q")
+		}
+		if _, cmd := press(t, s, k); !isQuit(cmd) {
+			t.Fatalf("host did not quit on %s", k)
+		}
+	}
+	if _, cmd := s.browser.Update(tea.KeyPressMsg{Code: 'c', Mod: tea.ModCtrl}); cmd != nil {
+		t.Fatal("hosted browser returned a command for ctrl+c")
+	}
+}
+
+func TestDigitsSwitchPagesUnlessBrowserCapturesKeys(t *testing.T) {
+	s := sized(t, 100, 20)
+	s, _ = press(t, s, "2")
+	if s.page != 1 || len(s.forwarded) != 0 {
+		t.Fatalf("page %d forwarded %v: digit should switch pages and stay with the host", s.page, s.forwarded)
+	}
+	s, _ = press(t, s, "1")
+	if s.page != 0 {
+		t.Fatal("1 did not return to the browser page")
+	}
+	s, _ = press(t, s, "?")
+	if !s.browser.CapturesKeys() || !s.browser.HelpOpen() {
+		t.Fatal("help did not open")
+	}
+	// While help is open the shell forwards every key, digits and q included.
+	for _, k := range []string{"2", "q", "1"} {
+		var cmd tea.Cmd
+		s, cmd = press(t, s, k)
+		if isQuit(cmd) || s.page != 0 || !s.browser.HelpOpen() {
+			t.Fatalf("key %q was handled by the host while help was open (page %d)", k, s.page)
+		}
+	}
+	if got := strings.Join(s.forwarded, ","); got != "?,2,q,1" {
+		t.Fatalf("forwarded %q, want ?,2,q,1", got)
+	}
+	s, _ = press(t, s, "esc")
+	if s.browser.CapturesKeys() {
+		t.Fatal("esc did not close help")
+	}
+	s, _ = press(t, s, "2")
+	if s.page != 1 {
+		t.Fatal("digits must switch pages again after help closes")
+	}
+	if _, cmd := press(t, s, "q"); !isQuit(cmd) {
+		t.Fatal("host q must quit again after help closes")
+	}
+}
+
+func TestBodyIsRenderedAtTheReducedSizeAndFitsTheShell(t *testing.T) {
+	for _, sz := range [][2]int{{100, 20}, {80, 14}, {80, 13}, {60, 12}, {30, 8}, {24, 8}, {24, 7}, {10, 4}} {
+		s := sized(t, sz[0], sz[1])
+		if _, h := s.bodySize(); h != sz[1]-2 {
+			t.Fatal("test setup")
+		}
+		lines := strings.Split(s.View().Content, "\n")
+		if len(lines) != sz[1] {
+			t.Fatalf("%v: shell frame has %d rows", sz, len(lines))
+		}
+		for i, l := range lines {
+			if w := ansi.StringWidth(l); w != sz[0] {
+				t.Fatalf("%v: row %d is %d cells wide, shell is %d", sz, i, w, sz[0])
+			}
+		}
+		body := strings.Split(s.browser.View().Content, "\n")
+		if len(body) != sz[1]-2 {
+			t.Fatalf("%v: body has %d rows, want %d", sz, len(body), sz[1]-2)
+		}
+		rows := strings.Split(ansi.Strip(s.View().Content), "\n")
+		if !strings.HasPrefix("[App] 1 Catalog | 2 About", strings.TrimRight(rows[0], " ")) {
+			t.Fatalf("%v: top bar %q", sz, rows[0])
+		}
+		if strings.Contains(strings.Join(rows[1:len(rows)-1], "\n"), "Catalog") {
+			t.Fatalf("%v: the body must not draw the title:\n%s", sz, strings.Join(rows, "\n"))
+		}
+	}
+	// Breakpoints follow the body size: 80x14 leaves an 80x12 body, 80x13 an 80x11 body.
+	if got := sized(t, 80, 14).browser.Layout(); got != "wide" {
+		t.Fatalf("80x14 shell: layout %q", got)
+	}
+	if got := sized(t, 80, 13).browser.Layout(); got != "narrow" {
+		t.Fatalf("80x13 shell: layout %q", got)
+	}
+	// The shell footer is built from KeyHints.
+	foot := ansi.Strip(strings.Split(sized(t, 100, 20).View().Content, "\n")[19])
+	if !strings.Contains(foot, "j/k select  tab pane  enter open  ? help") || !strings.Contains(foot, "q quit") {
+		t.Fatalf("footer %q", foot)
+	}
+}
+
+func TestWithColorsInsideTheShell(t *testing.T) {
+	s := sized(t, 100, 20)
+	base := s.View().Content
+	colored, err := s.browser.WithColors(hosted.Colors{Accent: "#112233", SelectionBackground: "#445566"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	s2 := s
+	s2.browser = colored
+	got := s2.View().Content
+	for _, sgr := range []string{"38;2;17;34;51", "48;2;68;85;102"} {
+		if !strings.Contains(got, sgr) || strings.Contains(base, sgr) {
+			t.Fatalf("escape sequence %q missing or already default", sgr)
+		}
+	}
+	if ansi.Strip(got) != ansi.Strip(base) {
+		t.Fatal("colours changed the text")
+	}
+	if unchanged, err := s.browser.WithColors(hosted.Colors{Text: "blue"}); err == nil || unchanged.View().Content != s.browser.View().Content {
+		t.Fatal("an invalid colour must be refused and leave the model unchanged")
+	}
+}
+
+func TestStandaloneBrowserIsUnchanged(t *testing.T) {
+	var rows []plain.Record
+	for i := 0; i < 5; i++ {
+		rows = append(rows, plain.Record{ID: string(rune('a' + i)), Name: "Name-" + string(rune('a'+i)), Status: "up", Description: "d"})
+	}
+	m, err := plain.New(rows)
+	if err != nil {
+		t.Fatal(err)
+	}
+	next, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: 12})
+	m = next.(plain.Model)
+	v := m.View()
+	text := ansi.Strip(v.Content)
+	if !v.AltScreen || !strings.Contains(text, "Catalog") || !strings.Contains(text, "wide | focus: Records") || !strings.Contains(text, "q quit") {
+		t.Fatalf("standalone frame lost its title, status line or footer:\n%s", text)
+	}
+	if got := len(strings.Split(v.Content, "\n")); got != 12 {
+		t.Fatalf("standalone frame has %d rows", got)
+	}
+	_, cmd := m.Update(tea.KeyPressMsg{Code: 'q', Text: "q"})
+	if !isQuit(cmd) {
+		t.Fatal("standalone q must quit")
+	}
+	if m.Title() != "Catalog" || m.CapturesKeys() {
+		t.Fatal("accessors")
+	}
+	var hints []string
+	for _, h := range m.KeyHints() {
+		hints = append(hints, h.Key+" "+h.Action)
+	}
+	if got := strings.Join(hints, "|"); got != "j/k select|tab pane|enter open|?"+" help|q quit" {
+		t.Fatalf("standalone hints %q", got)
+	}
+	h, _ := m.Update(tea.KeyPressMsg{Code: '?', Text: "?"})
+	if hm := h.(plain.Model); !hm.CapturesKeys() || !strings.Contains(ansi.Strip(hm.View().Content), "q/ctrl+c quit") {
+		t.Fatal("standalone help keeps its quit line")
+	}
+	// WithColors works in standalone mode, including Muted for the status line and footer.
+	c, err := m.WithColors(plain.Colors{Muted: "#112233", Accent: "#445566"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := c.View().Content; !strings.Contains(got, "38;2;17;34;51") || !strings.Contains(got, "38;2;68;85;102") {
+		t.Fatal("standalone colours not applied")
+	}
+	if _, err := m.WithColors(plain.Colors{Muted: "#12"}); err == nil {
+		t.Fatal("invalid colour accepted")
+	}
+}

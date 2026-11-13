@@ -60,6 +60,16 @@ the current width. A resize re-wraps and clamps. At most 4,096 rows are shown fo
 one record, then a final row `… truncated`. The list pane is unchanged: the
 summary stays one clipped row.
 
+## Spaced details
+
+By default (`"detailSpacing": "compact"`) detail fields are on consecutive rows.
+With `"detailSpacing": "spaced"` one blank row separates consecutive fields: not
+before the first and not after the last. This reads better when values wrap to
+several rows. The blank rows are rows of the detail pane. Scrolling, PgUp/PgDown,
+Home/End and offset clamping use the row count with them, and so does the
+4,096-row cap in wrap mode (a blank row that would be row 4,097 is replaced by the
+`… truncated` row). It works the same with clipped and wrapped text.
+
 ## Change the requirement, then regenerate
 
 Copy [the model](examples/browser.json), change `layout.wideWidth` to 100,
@@ -71,7 +81,9 @@ behavior, not an expectation generated from the model.
 
 ## Application integration
 
-To use a browser inside an application, set `"emit": {"mode": "package",
+To use a browser inside an application (for a browser inside an application's page
+with its own navigation and footer, see [Inside an application's
+page](#inside-an-applications-page)), set `"emit": {"mode": "package",
 "package": "name"}` in the model, as in [the package example](examples/browser-package.json).
 The generator then writes only the package's `.go` files (with `package name`),
 `model.json` and `foundry-manifest.json`. It writes no `go.mod`, `go.sum` or
@@ -124,6 +136,120 @@ identity, or `""` while loading, failed or empty; `Focus() string` is `"list"` o
 `"wide"`, `"narrow"` or `"tiny"` for the current size (`"tiny"` before the first
 size); `HelpOpen() bool`; and `Status() Status` is the current snapshot's status.
 
+Generator 1.3.0 added three more, emitted in both embed modes: `CapturesKeys()
+bool` is true while the help overlay is open; `KeyHints() []KeyHint` (with `type
+KeyHint struct{ Key, Action string }`) lists the hints the standalone footer shows
+for the current state, in order and in their widest form, for example `j/k select`,
+`tab pane`, `enter open`, `? help`, `q quit`; and `Title() string` is the model's
+title. A hosted browser's hints have no `q quit` entry.
+
+## Inside an application's page
+
+Set `"embed": "hosted"` (with package mode, as in
+[the hosted example](examples/browser-hosted.json)) to use the browser as one page
+body in an application that has its own page shell: a navigation bar, a footer,
+top-level digit keys and a palette. A hosted browser is not a program:
+
+- It never returns a quit command. `q` and `ctrl+c` are ignored outside help; the
+  host owns quitting. Inside the help overlay the documented close keys (`esc` and
+  `?`) still close help, and every other key is captured.
+- It draws no title line, no status line and no key-hint footer. `View()` is the
+  body only: the list and detail panes with their labels, the loading, failed or
+  empty message, the tiny-size message (without a quit hint) and the help overlay
+  (without its quit line). It does not set the alternate screen.
+- The body is exactly the width and height of the last `tea.WindowSizeMsg`, no
+  more and no less. The host passes the size of the body area, not the terminal's.
+  The breakpoints in the model apply to that size, so `wideHeight: 12` means a body
+  of 12 rows.
+
+The hosting contract:
+
+1. Forward `tea.WindowSizeMsg` with the body size.
+2. Forward key messages unless the host handles them itself. While `CapturesKeys()`
+   is true, always forward every key: the browser owns the keyboard, and digits,
+   `q` and `ctrl+c` must not be treated as the host's own.
+3. Store the model `Update` returns.
+4. Call `View()` for the body, and draw the title and footer yourself, with
+   `Title()` and `KeyHints()`. The hints change with the state (list, detail, help,
+   loading), so build the footer on every frame.
+
+A sketch of a host with a top bar, a footer and digit keys for switching pages:
+
+```go
+func (s shell) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		s.width, s.height = msg.Width, msg.Height
+		body := tea.WindowSizeMsg{Width: s.width, Height: max(0, s.height-2)} // minus top bar and footer
+		next, cmd := s.browser.Update(body)
+		s.browser = next.(browserpkg.Model)
+		return s, cmd
+	case tea.KeyPressMsg:
+		if !(s.page == browserPage && s.browser.CapturesKeys()) {
+			switch msg.String() {
+			case "q", "ctrl+c":
+				return s, tea.Quit
+			case "1":
+				s.page = browserPage
+				return s, nil
+			case "2":
+				s.page = aboutPage
+				return s, nil
+			}
+		}
+		if s.page == browserPage {
+			next, cmd := s.browser.Update(msg)
+			s.browser = next.(browserpkg.Model)
+			return s, cmd
+		}
+	}
+	return s, nil
+}
+
+func (s shell) View() tea.View {
+	var hints []string
+	for _, h := range s.browser.KeyHints() {
+		hints = append(hints, h.Key+" "+h.Action)
+	}
+	text := topBar(s.browser.Title(), s.width) + "\n" + s.browser.View().Content + "\n" + footer(hints, s.width)
+	v := tea.NewView(text)
+	v.AltScreen = true
+	return v
+}
+```
+
+In module mode a hosted model's `cmd/demo` is a host like this one (a title row, the
+body, a footer built from `KeyHints()`, and `q` to quit when `CapturesKeys()` is
+false), so the demo runs and doubles as the reference host. The acceptance test
+builds the same kind of shell around a package-mode hosted browser and checks that
+the host's `q` quits while the browser's does not, that digits switch pages only
+while `CapturesKeys()` is false, that the body is rendered at the reduced size and
+fits the shell, and that colours apply.
+
+### Colours
+
+Colours are application presentation, not design meaning, so they are not in the
+model. Both embed modes emit `type Colors struct { Text, Muted, Accent, Border,
+SelectionText, SelectionBackground string }` and `func (m Model) WithColors(c
+Colors) (Model, error)`. Each nonempty value must be `#RRGGBB` (hex digits of either
+case); otherwise the error is returned and the model is unchanged. An empty value
+keeps the default for that role. Like every `Model` method, `WithColors` returns a
+new model: store it. The roles:
+
+| Role | Used for | Default |
+| --- | --- | --- |
+| `Text` | foreground of rows and messages | `#d3d9e8` |
+| `Accent` | bold foreground of pane labels, the help heading and, standalone, the title line | `#a7c5ff` |
+| `Muted` | foreground of the standalone status line and footer; a hosted browser draws neither, so it has no visible effect there | `#9daac3` |
+| `SelectionText` | foreground of the selected list row | `#d3d9e8` |
+| `SelectionBackground` | background of the selected list row | `#384f72` |
+| `Border` | background of the one-cell gutter between the two panes of the wide layout; the default equals the page background, so the gutter is invisible until a host sets it | `#202638` |
+
+The page background (`#202638`) is not a role and cannot be changed. The browser
+emits full-colour sequences as before and leaves colour support and `NO_COLOR`
+handling to the Bubble Tea program, which downsamples them; the templates have no
+colour switch of their own, and none was added.
+
 ## Expectation cases
 
 Behaviour checks for a model are data too. A [cases file](CASES.md) states, per
@@ -147,7 +273,7 @@ normalized `model.json`, a synthetic `cmd/demo`, and `foundry-manifest.json`.
 Package-mode output has the Go files, `model.json` and `foundry-manifest.json`. The
 manifest lists every other emitted file with its SHA-256 and size. It is an
 integrity record, not an approval or proof of correctness. Every emitted `.go`
-file starts with `// Code generated by tuic 1.2.0 from model <canonicalSHA256>. DO NOT EDIT.`
+file starts with `// Code generated by tuic 1.3.0 from model <canonicalSHA256>. DO NOT EDIT.`
 
 `tuic` follows the [Foundry generator contract](../CONTRACT.md):
 
@@ -201,7 +327,9 @@ help/focus/selection, replacement, status recovery, clipping, wrapping, scrollin
 and resize clamping, and viewport bounds. A separate test generates two
 package-mode browsers with different package names and fields into a temporary
 host module (`go 1.26.0`), builds and runs both, and runs the behavior checks
-against one. The source templates
+against one. A hosted-shell test generates a hosted spaced browser (wrapped and
+clipped), and a standalone one, into a host module with its own top bar, footer
+and page keys, and runs the host tests described above. The source templates
 are not themselves Go files; each emitted Go file is parsed/formatted during
 compilation and then compiled in the generated acceptance suite.
 

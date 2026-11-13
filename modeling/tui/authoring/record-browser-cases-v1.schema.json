@@ -125,7 +125,23 @@
             "status": {"$ref": "#/$defs/status"},
             "visible": {"$ref": "#/$defs/texts"},
             "absent": {"$ref": "#/$defs/texts"},
-            "quit": {"type": "boolean"}
+            "quit": {"type": "boolean"},
+            "capturesKeys": {"type": "boolean"},
+            "keyHints": {
+              "description": "1 to 12 key and action pairs that must appear, in this relative order, in the browser's KeyHints().",
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 12,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["key", "action"],
+                "properties": {
+                  "key": {"$ref": "#/$defs/plain"},
+                  "action": {"$ref": "#/$defs/plain"}
+                }
+              }
+            }
           }
         }
       }

@@ -25,6 +25,7 @@ const (
 	maxCases        = 200
 	maxSteps        = 64
 	maxExpectTexts  = 16
+	maxKeyHints     = 12
 	maxValueBytes   = 4096
 	maxRequirement  = 240
 	maxExpectedText = 240
@@ -94,6 +95,15 @@ type Expect struct {
 	Visible  *[]string `json:"visible,omitempty"`
 	Absent   *[]string `json:"absent,omitempty"`
 	Quit     *bool     `json:"quit,omitempty"`
+	// CapturesKeys and KeyHints observe CapturesKeys() and KeyHints().
+	CapturesKeys *bool      `json:"capturesKeys,omitempty"`
+	KeyHints     *[]KeyHint `json:"keyHints,omitempty"`
+}
+
+// KeyHint is one expected key hint: the key text and the action text.
+type KeyHint struct {
+	Key    string `json:"key"`
+	Action string `json:"action"`
 }
 
 var (
@@ -138,7 +148,8 @@ var caseMembers = map[string]string{
 	"step":    "|key|resize|replace|",
 	"resize":  "|width|height|",
 	"replace": "|status|records|message|",
-	"expect":  "|layout|focus|help|selected|status|visible|absent|quit|",
+	"expect":  "|layout|focus|help|selected|status|visible|absent|quit|capturesKeys|keyHints|",
+	"keyhint": "|key|action|",
 }
 
 // memberContext names the context of an object member's value.
@@ -147,10 +158,11 @@ var memberContext = map[string]map[string]string{
 	"recordsets": {},
 	"case":       {"size": "size", "steps": "steps", "expect": "expect"},
 	"step":       {"resize": "resize", "replace": "replace"},
+	"expect":     {"keyHints": "keyhints"},
 }
 
 // elementContext names the context of an array's elements.
-var elementContext = map[string]string{"cases": "case", "steps": "step", "recordset": "record"}
+var elementContext = map[string]string{"cases": "case", "steps": "step", "recordset": "record", "keyhints": "keyhint"}
 
 func checkCasesValue(d *json.Decoder, depth int, context string) error {
 	if depth > 8 {
@@ -374,6 +386,23 @@ func (e Expect) validate() error {
 	}
 	if e.Quit != nil {
 		n++
+	}
+	if e.CapturesKeys != nil {
+		n++
+	}
+	if e.KeyHints != nil {
+		n++
+		if len(*e.KeyHints) < 1 || len(*e.KeyHints) > maxKeyHints {
+			return fmt.Errorf("expect.keyHints must hold 1..%d hints", maxKeyHints)
+		}
+		for _, h := range *e.KeyHints {
+			if err := plainText(h.Key, "expect.keyHints key", maxExpectedText); err != nil {
+				return err
+			}
+			if err := plainText(h.Action, "expect.keyHints action", maxExpectedText); err != nil {
+				return err
+			}
+		}
 	}
 	for _, p := range []struct {
 		name string

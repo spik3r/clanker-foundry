@@ -78,8 +78,8 @@ func helpLines(s state, d data) []string {
 		keyFor(topAction) + "/" + keyFor(bottomAction) + " help ends",
 		"Other keys are captured.",
 		"After closing help:",
-		allKeysFor(quitAction) + " quit",
-	}
+[[[if not .Hosted]]]		allKeysFor(quitAction) + " quit",
+[[[end]]]	}
 	if s.selectedIndex(d) >= 0 {
 		lines = append(lines,
 			keyFor(nextPaneAction)+" next pane",

@@ -33,6 +33,10 @@ type Model struct {
 	// are omitted from the canonical encoding.
 	Emit       *Emit  `json:"emit,omitempty"`
 	DetailText string `json:"detailText,omitempty"`
+	// Embed and DetailSpacing were added in generator 1.3.0 and follow the same
+	// rule: the default is the same as absence.
+	Embed         string `json:"embed,omitempty"`
+	DetailSpacing string `json:"detailSpacing,omitempty"`
 }
 
 // Emit selects what the compiler writes: a standalone module (default) or only
@@ -48,6 +52,14 @@ const (
 	ModePackage = "package"
 	TextClip    = "clip"
 	TextWrap    = "wrap"
+	// EmbedStandalone is the default: the browser owns the whole terminal.
+	// EmbedHosted draws only a body for a host's page and never quits.
+	EmbedStandalone = "standalone"
+	EmbedHosted     = "hosted"
+	// SpacingCompact is the default: detail fields on consecutive rows.
+	// SpacingSpaced puts one blank row between consecutive fields.
+	SpacingCompact = "compact"
+	SpacingSpaced  = "spaced"
 	// DefaultPackage is the package name of module-mode output.
 	DefaultPackage = "recordbrowser"
 )
@@ -66,6 +78,12 @@ func (m Model) PackageMode() bool { return m.Emit != nil && m.Emit.Mode == ModeP
 // Wrap reports whether the detail pane wraps values instead of clipping them.
 func (m Model) Wrap() bool { return m.DetailText == TextWrap }
 
+// Hosted reports whether the browser is drawn as a body inside a host's page.
+func (m Model) Hosted() bool { return m.Embed == EmbedHosted }
+
+// Spaced reports whether one blank row separates consecutive detail fields.
+func (m Model) Spaced() bool { return m.DetailSpacing == SpacingSpaced }
+
 // canonical returns m with explicit defaults replaced by absence. It does not
 // modify the pointed-to Emit value.
 func (m Model) canonical() Model {
@@ -74,6 +92,12 @@ func (m Model) canonical() Model {
 	}
 	if m.DetailText == TextClip {
 		m.DetailText = ""
+	}
+	if m.Embed == EmbedStandalone {
+		m.Embed = ""
+	}
+	if m.DetailSpacing == SpacingCompact {
+		m.DetailSpacing = ""
 	}
 	return m
 }
@@ -129,8 +153,10 @@ func Decode(raw []byte) (Model, error) {
 	}
 	// Present-but-empty optional members are refused, not read as defaults.
 	var probe struct {
-		DetailText *string `json:"detailText"`
-		Emit       *struct {
+		DetailText    *string `json:"detailText"`
+		Embed         *string `json:"embed"`
+		DetailSpacing *string `json:"detailSpacing"`
+		Emit          *struct {
 			Package *string `json:"package"`
 		} `json:"emit"`
 	}
@@ -139,6 +165,12 @@ func Decode(raw []byte) (Model, error) {
 	}
 	if probe.DetailText != nil && m.DetailText == "" {
 		return Model{}, fmt.Errorf("detailText must be %q or %q", TextClip, TextWrap)
+	}
+	if probe.Embed != nil && m.Embed == "" {
+		return Model{}, fmt.Errorf("embed must be %q or %q", EmbedStandalone, EmbedHosted)
+	}
+	if probe.DetailSpacing != nil && m.DetailSpacing == "" {
+		return Model{}, fmt.Errorf("detailSpacing must be %q or %q", SpacingCompact, SpacingSpaced)
 	}
 	if probe.Emit != nil && probe.Emit.Package != nil && m.Emit.Mode != ModePackage {
 		return Model{}, fmt.Errorf("emit.package is only allowed with mode %q", ModePackage)
@@ -166,7 +198,7 @@ func checkValue(d *json.Decoder, depth int, context string) error {
 	switch delim {
 	case '{':
 		allowed := map[string]string{
-			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|emit|detailText|",
+			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|emit|detailText|embed|detailSpacing|",
 			"emit":     "|mode|package|",
 			"fields[]": "|id|label|",
 			"layout":   "|narrowWidth|narrowHeight|wideWidth|wideHeight|listWidth|",
@@ -257,6 +289,12 @@ func (m Model) Validate() error {
 	}
 	if m.DetailText != "" && m.DetailText != TextClip && m.DetailText != TextWrap {
 		return fmt.Errorf("detailText must be %q or %q", TextClip, TextWrap)
+	}
+	if m.Embed != "" && m.Embed != EmbedStandalone && m.Embed != EmbedHosted {
+		return fmt.Errorf("embed must be %q or %q", EmbedStandalone, EmbedHosted)
+	}
+	if m.DetailSpacing != "" && m.DetailSpacing != SpacingCompact && m.DetailSpacing != SpacingSpaced {
+		return fmt.Errorf("detailSpacing must be %q or %q", SpacingCompact, SpacingSpaced)
 	}
 	if e := m.Emit; e != nil {
 		switch e.Mode {

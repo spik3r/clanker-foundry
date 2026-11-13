@@ -1,0 +1,172 @@
+{
+  "formatVersion": 2,
+  "eventId": "592c1689-9586-44cc-8a3f-4632cfcb32de",
+  "runId": "6e8e3ab4-4fdb-4138-87d6-7c19eec95f86",
+  "kind": "complete",
+  "parents": [
+    "04da5fe3-1fbf-4d1a-85ec-65412a3fac85"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-hosted-v1",
+    "path": "tasks/CF-record-browser-hosted-v1-embed-colours-spacing.md",
+    "revision": "b70b3e0c9a80494f826ff75c8bf89d9c68954d8a",
+    "blob": "7c00f6303494c6fa26c7a0ee9597883e1b4c5984",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "fd79c10534c6d5b610e9ea8f3d4d763d14e14a3e8285a6ad2445c5a5f4be6ec1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T12:46:55.036Z",
+  "summary": "record-browser gains hosted embed mode, CapturesKeys, KeyHints and Title accessors, run-time WithColors, spaced details and matching cases expectations; tuic is 1.3.0 with unchanged digests for existing models",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "modeling/profiles.json",
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/hosted_shell_main.go.txt",
+    "modeling/tui/acceptance/hosted_shell_test.go.txt",
+    "modeling/tui/acceptance/hosted_test.go.txt",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/authoring/record-browser-v1.schema.json",
+    "modeling/tui/authoring/schema.test.cjs",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-hosted.cases.json",
+    "modeling/tui/examples/browser-hosted.json",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/model.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/demo_main.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/layout.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-hosted-v1-embed-colours-spacing.md"
+  ],
+  "validation": "Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok including a hosted browser embedded in a small shell and the 14 hosted example cases; modeling/gencontract and modeling/foundrygen go test -race ok. node --test modeling/tui/authoring/*.test.cjs: 8 pass, 0 skipped (Node 22; CI uses 24). scripts/validate.sh PASS (skills-ref skipped). Not run: a real terminal session. Hosted CI not yet observed",
+  "snapshot": {
+    "modeling/profiles.json": {
+      "blob": "ee6247f52a95be0ba81e2073d523c5c0d712786a",
+      "mode": "100644"
+    },
+    "modeling/tui/CASES.md": {
+      "blob": "3a2b19569dd4696c484753c98840491660fbf861",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "f365c3e4795a0342191d10a40422599ab39a7730",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "379d2bf067c4c19f50ba3749aed39de40fa39fbc",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/hosted_shell_main.go.txt": {
+      "blob": "d46781adb121db49a6dcb1408cf63f763d787b9a",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/hosted_shell_test.go.txt": {
+      "blob": "c788459594f582c8d3189aa39ee04df065a55041",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/hosted_test.go.txt": {
+      "blob": "e05659af0940f5e8c9670aec1d2f023d7b0d9f71",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/cases.schema.test.cjs": {
+      "blob": "34e21f7b318f7c6d207e3a8adefb0fb08c44d59d",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json": {
+      "blob": "2de926fbcbfbba08f817c4b733803edeaa6d3351",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-v1.schema.json": {
+      "blob": "8731a6421490b3d43bc3bc96b3514157cde47dde",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/schema.test.cjs": {
+      "blob": "1633961b5de971899284c284ca7f9bf544a761a3",
+      "mode": "100644"
+    },
+    "modeling/tui/cases.go": {
+      "blob": "46cd6d60af5aff6ee2c8e7184602f5b94fdb1fbf",
+      "mode": "100644"
+    },
+    "modeling/tui/cases_test.go": {
+      "blob": "321ac3611af2a3dc1b8b21255bd1aff51f2c5f0f",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/main_test.go": {
+      "blob": "30fe9888f95917bf6309ef37c41420a305b97353",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/runner.go.tmpl": {
+      "blob": "f027248dd05503020d7af80ef43cca5fec968080",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "2b54b65124ace9e7021fba87ed319760483e80cf",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "53df7947f2a153614d57340837a684c8ad447612",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-hosted.cases.json": {
+      "blob": "96aa34d7ff56af07234e1e46460783dc84771123",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-hosted.json": {
+      "blob": "f7be3afe4e3ed5791cd28c1e48e8beea4a6f6c52",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "0111519f59baab718b2074b732d1fde4d6ee20aa",
+      "mode": "100644"
+    },
+    "modeling/tui/model.go": {
+      "blob": "7acf1f4c8b60c40939636c7908e720dc4fb745c7",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "9eeaa884116ee1d79446703d5cb615bb90b5f9e0",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "f67c443127ee62f97994cd032d063cb0f94646b4",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/demo_main.go.tmpl": {
+      "blob": "4a00c0974548a4c364a7299953fad49e2ae3db7f",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/keys.go.tmpl": {
+      "blob": "d601aec47d02a84f3d3db820fbd380254367bf49",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/layout.go.tmpl": {
+      "blob": "246405b08a5d0b583db160b3aac611e0bf935259",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "8e232aa99f398270a71716e8781153c7e711b835",
+      "mode": "100644"
+    },
+    "tasks/CF-record-browser-hosted-v1-embed-colours-spacing.md": {
+      "blob": "1008f88e58d45d86341863500fd3fd8ab0219f6e",
+      "mode": "100644"
+    }
+  }
+}
