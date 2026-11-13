@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "7d3f3af5-1463-44b7-9f79-7969a723628d",
+  "runId": "388b2bcd-921c-4aa7-b405-d40b072042c5",
+  "kind": "complete",
+  "parents": [
+    "e50eb5ee-bf03-4e6b-9ed4-fa7f4d2a6d23"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-12T21:19:20.266Z",
+  "summary": "Refuse oversized formatted bound models before stdout",
+  "next": "Independent re-review",
+  "files": [
+    "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "modeling/diagram/dashboardbind/bind.go",
+    "modeling/diagram/dashboardbind/bind_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/bind_test.go",
+    "modeling/diagram/REPORT-BINDING.md",
+    "modeling/diagram/examples/ops-report-data.json",
+    "modeling/diagram/examples/ops-report-data-two.json",
+    "modeling/diagram/README.md"
+  ],
+  "validation": "Go1.27.4 full diagram race tests and vet passed; dense 2x200x12 tables reproduce final-byte refusal while smaller dense output roundtrips through Decode and Build; repository validator and whitespace checks passed",
+  "snapshot": {
+    "tasks/CF-dashboard-data-binding-v1-reusable-reports.md": {
+      "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboardbind/bind.go": {
+      "blob": "ba9c7c244dc77676b910e0924fd718f0aaca2c6c",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboardbind/bind_test.go": {
+      "blob": "abfb867d3eb81ed985e3182c086e979cd4c39a87",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "28633d1266954390715e61c8f14305aeb857a06d",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/bind_test.go": {
+      "blob": "2a177b1bfa8c2b0f4bf59ac9a293b85ac326f54a",
+      "mode": "100644"
+    },
+    "modeling/diagram/REPORT-BINDING.md": {
+      "blob": "d8f0fb52d49238863aa3972c395d0057b67a6ce3",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/ops-report-data.json": {
+      "blob": "016bd2bc2dbe84a9747115280ebe94f4a11191a4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/ops-report-data-two.json": {
+      "blob": "7e9a4169eb4640b1d8dc43abf4d6a1243d2cea55",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "226685ebc75a20d7fd6f61c1c39f84ac9c23d452",
+      "mode": "100644"
+    }
+  }
+}

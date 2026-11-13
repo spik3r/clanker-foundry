@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "d2407fb5-b8fd-4c7f-aa07-55c99acb6e81",
+  "runId": "b7795f3b-2f81-41d7-b879-86593a77ca3c",
+  "kind": "start",
+  "parents": [
+    "f9d1153c-a2ac-487b-a110-b84ed7e7a5d4"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-13T02:06:28.306Z",
+  "summary": "Qualify full combined report binding scope against latest main",
+  "next": "Repeat final checks and record full-scope fingerprints",
+  "files": [
+    "modeling/diagram/README.md",
+    "modeling/diagram/REPORT-BINDING.md",
+    "modeling/diagram/cmd/diagramgen/bind_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/dashboardbind/bind.go",
+    "modeling/diagram/dashboardbind/bind_test.go",
+    "modeling/diagram/examples/ops-report-data-two.json",
+    "modeling/diagram/examples/ops-report-data.json",
+    "tasks/CF-dashboard-data-binding-v1-reusable-reports.md"
+  ]
+}

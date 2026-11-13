@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "e50eb5ee-bf03-4e6b-9ed4-fa7f4d2a6d23",
+  "runId": "388b2bcd-921c-4aa7-b405-d40b072042c5",
+  "kind": "start",
+  "parents": [
+    "93336f9e-9764-4af4-806f-8dc4537db0f2"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-12T21:19:04.030Z",
+  "summary": "Fix actual final bound output byte limit found by independent review",
+  "next": "Run boundary roundtrip regression and full checks",
+  "files": [
+    "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "modeling/diagram/dashboardbind/bind.go",
+    "modeling/diagram/dashboardbind/bind_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/bind_test.go",
+    "modeling/diagram/REPORT-BINDING.md",
+    "modeling/diagram/examples/ops-report-data.json",
+    "modeling/diagram/examples/ops-report-data-two.json",
+    "modeling/diagram/README.md"
+  ]
+}

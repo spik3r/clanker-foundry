@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "f9d1153c-a2ac-487b-a110-b84ed7e7a5d4",
+  "runId": "00fb7012-15f4-4d56-9ffb-d54e8d895f60",
+  "kind": "complete",
+  "parents": [
+    "f9d2c978-d584-4844-8329-c67cda607f69"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-dashboard-data-binding-v1",
+    "path": "tasks/CF-dashboard-data-binding-v1-reusable-reports.md",
+    "revision": "01b1884617095bc633fc92de518e34668f88c2a1",
+    "blob": "ead3197fb078f8f243d35a429c47230f594b6592",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "4b7b1403f0e2f6ec231682f6982acfbd24041adead7483a8a2c7414a118f9e37"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-next-independent",
+  "pullRequest": null,
+  "at": "2026-11-13T02:05:58.570Z",
+  "summary": "Verified combined current-main diagram profile and report binding documentation",
+  "next": "Verify committed evidence and publish integration for fresh CI",
+  "files": [
+    "modeling/diagram/README.md"
+  ],
+  "validation": "Full diagram go test -race ./... and go vet ./... passed; repository scripts/validate.sh and git diff --check passed; clean automatic integration",
+  "snapshot": {
+    "modeling/diagram/README.md": {
+      "blob": "8c5f93d7dfce8439712ba921a5220b70c0c2298c",
+      "mode": "100644"
+    }
+  }
+}

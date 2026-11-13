@@ -1,0 +1,33 @@
+{
+  "dataVersion": "dashboard-data/v1",
+  "templateSHA256": "1c78ccc17fb4686bd6b56c387db82a83f6326f2b9f9fbd4c4976e50db280db53",
+  "datasets": [
+    {
+      "id": "Orders",
+      "rows": [
+        [
+          "Wed",
+          88,
+          82
+        ],
+        [
+          "Thu",
+          99,
+          94
+        ],
+        [
+          "Fri",
+          101,
+          100
+        ]
+      ]
+    }
+  ],
+  "stats": [
+    {
+      "id": "Total",
+      "value": "288",
+      "note": "Three days, fictional example"
+    }
+  ]
+}
