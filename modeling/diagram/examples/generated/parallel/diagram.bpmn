@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions.Fulfilment" name="Parallel fulfilment" targetNamespace="urn:foundry:diagramgen:process-diagram:v1" exporter="diagramgen" exporterVersion="1.1.0">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions.Fulfilment" name="Parallel fulfilment" targetNamespace="urn:foundry:diagramgen:process-diagram:v1" exporter="diagramgen" exporterVersion="1.2.0">
   <collaboration id="Collaboration.Fulfilment">
     <participant id="Participant.Fulfilment" name="Parallel fulfilment" processRef="Process.Fulfilment"/>
   </collaboration>

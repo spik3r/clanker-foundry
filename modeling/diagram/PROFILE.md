@@ -94,7 +94,7 @@ bytes, file names or paths.
 | `diagram.svg` | the picture |
 | `diagram.bpmn` | BPMN 2.0 XML with diagram interchange |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.1.0, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.0, toolchain constant `go1.27.4` |
 
 No emitted file is `.go` or `.ts`, so the generated-file header rule has
 nothing to apply to. The manifest is an integrity record, not an approval.

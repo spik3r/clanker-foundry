@@ -95,6 +95,46 @@
         "flow conditions or execution semantics",
         "more than 8 lanes, 64 nodes or 128 flows"
       ]
+    },
+    {
+      "profile": "sequence-diagram/v1",
+      "generator": "diagramgen",
+      "summary": "UML-style sequence diagram of participants, messages, notes and alt, opt and loop frames, as SVG.",
+      "profileDoc": "modeling/diagram/SEQUENCE.md",
+      "schema": "modeling/diagram/authoring/sequence-diagram-v1.schema.json",
+      "examples": [
+        "modeling/diagram/examples/checkout-sequence.json",
+        "modeling/diagram/examples/retry-sequence.json"
+      ],
+      "emits": ["SVG picture"],
+      "cannotExpress": [
+        "coordinates, sizes, colours or other layout choices",
+        "lifeline creation, destruction or activation bars",
+        "found, lost or combined messages and message numbering",
+        "nested frames, else branches or other frame kinds",
+        "more than 12 participants, 80 steps or 8 groups",
+        "UML conformance beyond the notation listed in the profile document"
+      ]
+    },
+    {
+      "profile": "class-diagram/v1",
+      "generator": "diagramgen",
+      "summary": "UML-style class diagram of classes, interfaces, enums and seven kinds of relation, as SVG.",
+      "profileDoc": "modeling/diagram/CLASS.md",
+      "schema": "modeling/diagram/authoring/class-diagram-v1.schema.json",
+      "examples": [
+        "modeling/diagram/examples/orders-class.json",
+        "modeling/diagram/examples/plugins-class.json"
+      ],
+      "emits": ["SVG picture"],
+      "cannotExpress": [
+        "coordinates, sizes, colours or other layout choices",
+        "packages, generics, abstract or static members, or association classes",
+        "self-relations or two relations of one kind between the same pair",
+        "an inheritance or realization cycle",
+        "more than 40 classes, 20 members per list or 80 relations",
+        "UML conformance beyond the notation listed in the profile document"
+      ]
     }
   ]
 }

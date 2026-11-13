@@ -5,15 +5,19 @@ the model; the generator draws it the same way every time. It follows the
 [Foundry generator contract](../CONTRACT.md) and is listed in the
 [conformance registry](../gencontract/generators.json).
 
-Two profiles exist. The generator picks one by the model's `profileVersion`:
+Four profiles exist. The generator picks one by the model's `profileVersion`:
 
 - [`process-diagram/v1`](PROFILE.md): a BPMN-style process diagram with lanes,
   tasks, events and gateways, as SVG and BPMN XML.
 - [`dashboard/v1`](DASHBOARD.md): stat tiles, bar and line charts and tables
   over small embedded datasets, as one self-contained HTML file.
+- [`sequence-diagram/v1`](SEQUENCE.md): a UML-style sequence diagram of
+  participants, messages, notes and alt, opt and loop frames, as SVG.
+- [`class-diagram/v1`](CLASS.md): a UML-style class diagram of classes,
+  interfaces, enums and seven kinds of relation, as SVG.
 
 Other profiles can be added as sibling packages that implement
-`contract.Profile`; nothing for them exists yet.
+`contract.Profile`.
 
 ## Run it
 
@@ -64,6 +68,26 @@ go run ./cmd/diagramgen generate examples/ops-dashboard.json /tmp/ops-dashboard
 Input, number rules, canonical encoding, chart rules and what a dashboard
 cannot express are in [DASHBOARD.md](DASHBOARD.md). The
 [schema](authoring/dashboard-v1.schema.json) helps an editor; Go validation
+decides.
+
+## UML-style diagrams
+
+`sequence-diagram/v1` and `class-diagram/v1` write `diagram.svg`, `model.json`
+and the manifest. The pictures are UML-style: each profile document lists the
+notation it draws and claims no UML conformance beyond that list. Examples:
+[checkout-sequence](examples/checkout-sequence.json),
+[retry-sequence](examples/retry-sequence.json),
+[orders-class](examples/orders-class.json) and
+[plugins-class](examples/plugins-class.json).
+
+```sh
+go run ./cmd/diagramgen generate examples/orders-class.json /tmp/orders-class
+```
+
+Input, validation, canonical encoding, what is drawn, what it cannot express and
+known layout limits are in [SEQUENCE.md](SEQUENCE.md) and [CLASS.md](CLASS.md).
+The schemas ([sequence](authoring/sequence-diagram-v1.schema.json),
+[class](authoring/class-diagram-v1.schema.json)) help an editor; Go validation
 decides.
 
 ## Change a diagram
