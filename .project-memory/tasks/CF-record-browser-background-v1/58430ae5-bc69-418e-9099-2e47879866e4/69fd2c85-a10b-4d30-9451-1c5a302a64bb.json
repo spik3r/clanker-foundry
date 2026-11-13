@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "69fd2c85-a10b-4d30-9451-1c5a302a64bb",
+  "runId": "58430ae5-bc69-418e-9099-2e47879866e4",
+  "kind": "complete",
+  "parents": [
+    "f49ebaa8-7af7-4538-a109-daf44afc47ad"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-background-v1",
+    "path": "tasks/CF-record-browser-background-v1-host-colour-role.md",
+    "revision": "2c403d5093a95c821804360cfe90f7a8c8d9123d",
+    "blob": "ba43d86e5dd6e46e0d73da6e5af85d8c221ba0bc",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2f663b780cdb3417cd383718dfbfe44ae0eeff2a9934d83940eae99f20d47946"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T12:54:11.343Z",
+  "summary": "Background colour role added to the generated record browser; tuic is 1.3.1; default output unchanged",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/hosted_test.go.txt",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-background-v1-host-colour-role.md"
+  ],
+  "validation": "Coordinator ran, in the subagent's worktree at the same commit, with Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok; modeling/gencontract and modeling/foundrygen go test -race ok. After applying to the branch: modeling/tui go test -count=1 -short ok. scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    "modeling/tui/PROFILE.md": {
+      "blob": "1eefabb5ee3819fef21dc57a3cd93f3bdc3ee791",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "ceca7cd3b31f3e9fb5cc2495cfcfa2e78b41a27a",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/hosted_test.go.txt": {
+      "blob": "2a0d131b7657224ddd1b10bcab329c8bc144b570",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "11138000c9fee5bc205b9a0eefffca754fb92fa8",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "7981db91c899c87082b384e23895e00a63749fee",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "3073f13b1fad9927c2781072aea60234f36aea66",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "4a016009a284427d431d959e563b93bf22b4c748",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "7ea8d33bd204ace235da0106c8b5038e83f0f5a5",
+      "mode": "100644"
+    },
+    "tasks/CF-record-browser-background-v1-host-colour-role.md": {
+      "blob": "c3477fc58167e7e8fd57ca43e9e68aa420388c2a",
+      "mode": "100644"
+    }
+  }
+}

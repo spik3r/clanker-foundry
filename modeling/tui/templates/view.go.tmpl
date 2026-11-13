@@ -26,6 +26,9 @@ const (
 // application presentation, not part of the model. Each nonempty value is
 // #RRGGBB; an empty value keeps the default for that role.
 //
+//   - Background: the page background behind every row, the padding and fill,
+//     the help overlay and the size and status messages. Default #202638. Set
+//     it to the host's background so no patch of another colour shows.
 //   - Text: the foreground of ordinary rows and messages. Default #d3d9e8.
 //   - Muted: the foreground of secondary text, the standalone status line and
 //     footer. A hosted browser draws none, so Muted has no visible effect there.
@@ -33,21 +36,19 @@ const (
 //   - Accent: the bold foreground of pane labels, the title line and the help
 //     and status headings. Default #a7c5ff.
 //   - Border: the background of the one-cell gutter between the two panes of
-//     the wide layout. Default #202638, the page background, so by default the
+//     the wide layout. Default is the effective Background, so by default the
 //     gutter is invisible; a different value draws a vertical divider.
 //   - SelectionText: the foreground of the selected list row. Default #d3d9e8.
 //   - SelectionBackground: the background of the selected list row. Default #384f72.
-//
-// The page background (#202638) is not a role and is not configurable.
 type Colors struct {
-	Text, Muted, Accent, Border, SelectionText, SelectionBackground string
+	Background, Text, Muted, Accent, Border, SelectionText, SelectionBackground string
 }
 
 var hexColor = regexp.MustCompile(`^#[0-9A-Fa-f]{6}$`)
 
 func (c Colors) validate() error {
 	for _, role := range []struct{ name, value string }{
-		{"Text", c.Text}, {"Muted", c.Muted}, {"Accent", c.Accent}, {"Border", c.Border},
+		{"Background", c.Background}, {"Text", c.Text}, {"Muted", c.Muted}, {"Accent", c.Accent}, {"Border", c.Border},
 		{"SelectionText", c.SelectionText}, {"SelectionBackground", c.SelectionBackground},
 	} {
 		if role.value != "" && !hexColor.MatchString(role.value) {
@@ -60,7 +61,7 @@ func (c Colors) validate() error {
 // resolved fills empty roles with the defaults.
 func (c Colors) resolved() Colors {
 	for _, role := range []struct{ value *string; def string }{
-		{&c.Text, "#d3d9e8"}, {&c.Muted, "#9daac3"}, {&c.Accent, "#a7c5ff"},
+		{&c.Background, "#202638"}, {&c.Text, "#d3d9e8"}, {&c.Muted, "#9daac3"}, {&c.Accent, "#a7c5ff"},
 		{&c.SelectionText, "#d3d9e8"}, {&c.SelectionBackground, "#384f72"},
 	} {
 		if *role.value == "" {
@@ -77,7 +78,7 @@ type theme struct {
 
 func (t theme) background() color.Color {
 	if t.color {
-		return lipgloss.Color("#202638")
+		return lipgloss.Color(t.colors.resolved().Background)
 	}
 	return nil
 }

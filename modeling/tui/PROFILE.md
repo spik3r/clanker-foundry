@@ -65,7 +65,7 @@ Its input format is `tui-json/v1`, with profile `record-browser/v1`.
   mode, and in wrap mode they count toward the 4,096-row cap.
 
 Colours are application presentation, not design meaning, so the model has no
-colour members. A host sets them at run time with `WithColors` (README).
+colour members. A host sets them at run time with `WithColors` (README). The roles are `Background`, `Text`, `Muted`, `Accent`, `Border`, `SelectionText` and `SelectionBackground`; `Background` was added in 1.3.1 and an empty value keeps the old page colour.
 
 The narrow minimum cannot be smaller than 24 by 6 or larger than 240 by 80.
 Wide minima must be at least the narrow minima and at most 400 by 120. Each wide
@@ -90,7 +90,7 @@ for drafting a model; it lists the rules it cannot express.
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
 the model's `emit.package`), pinned dependencies (module mode), normalized model and a `foundry-manifest.json` integrity
-record (generator `tuic` 1.3.0, toolchain constant `go1.27.4`). It does
+record (generator `tuic` 1.3.1, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
