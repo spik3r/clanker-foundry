@@ -1,0 +1,252 @@
+[
+  {
+    "id": "code-one",
+    "rawJson": "{\"code\": \"a\"}",
+    "valid": true
+  },
+  {
+    "id": "code-three",
+    "rawJson": "{\"code\": \"abc\"}",
+    "valid": true
+  },
+  {
+    "id": "code-empty-below-min",
+    "rawJson": "{\"code\": \"\"}",
+    "valid": false
+  },
+  {
+    "id": "code-four-over-max",
+    "rawJson": "{\"code\": \"abcd\"}",
+    "valid": false
+  },
+  {
+    "id": "code-missing",
+    "rawJson": "{}",
+    "valid": false
+  },
+  {
+    "id": "code-not-string",
+    "rawJson": "{\"code\": 1}",
+    "valid": false
+  },
+  {
+    "id": "code-null",
+    "rawJson": "{\"code\": null}",
+    "valid": false
+  },
+  {
+    "id": "code-three-astral",
+    "rawJson": "{\"code\":\"😀😀😀\"}",
+    "valid": true
+  },
+  {
+    "id": "code-three-astral-escaped",
+    "rawJson": "{\"code\":\"\\ud83d\\ude00\\ud83d\\ude00\\ud83d\\ude00\"}",
+    "valid": true
+  },
+  {
+    "id": "code-four-astral",
+    "rawJson": "{\"code\":\"😀😀😀😀\"}",
+    "valid": false
+  },
+  {
+    "id": "code-two-bmp-one-astral",
+    "rawJson": "{\"code\":\"éé😀\"}",
+    "valid": true
+  },
+  {
+    "id": "code-combining-counts-each",
+    "rawJson": "{\"code\":\"e\\u0301e\"}",
+    "valid": true
+  },
+  {
+    "id": "code-combining-four",
+    "rawJson": "{\"code\":\"e\\u0301e\\u0301\"}",
+    "valid": false
+  },
+  {
+    "id": "code-unpaired-high",
+    "rawJson": "{\"code\":\"\\ud800\"}",
+    "valid": true
+  },
+  {
+    "id": "code-unpaired-low",
+    "rawJson": "{\"code\":\"\\udc00\"}",
+    "valid": true
+  },
+  {
+    "id": "code-three-unpaired",
+    "rawJson": "{\"code\":\"\\ud800\\ud800\\ud800\"}",
+    "valid": true
+  },
+  {
+    "id": "code-four-unpaired",
+    "rawJson": "{\"code\":\"\\ud800\\ud800\\ud800\\ud800\"}",
+    "valid": false
+  },
+  {
+    "id": "code-reversed-pair-is-two-unpaired",
+    "rawJson": "{\"code\":\"\\ude00\\ud83d\"}",
+    "valid": true
+  },
+  {
+    "id": "code-reversed-pair-plus-two",
+    "rawJson": "{\"code\":\"\\ude00\\ud83dab\"}",
+    "valid": false
+  },
+  {
+    "id": "code-unpaired-then-ascii",
+    "rawJson": "{\"code\":\"\\ud800ab\"}",
+    "valid": true
+  },
+  {
+    "id": "note-absent",
+    "rawJson": "{\"code\":\"a\"}",
+    "valid": true
+  },
+  {
+    "id": "note-empty-is-allowed-without-min",
+    "rawJson": "{\"code\":\"a\",\"note\":\"\"}",
+    "valid": true
+  },
+  {
+    "id": "note-two",
+    "rawJson": "{\"code\":\"a\",\"note\":\"ab\"}",
+    "valid": true
+  },
+  {
+    "id": "note-three",
+    "rawJson": "{\"code\":\"a\",\"note\":\"abc\"}",
+    "valid": false
+  },
+  {
+    "id": "tag-one-below-min",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"x\"}",
+    "valid": false
+  },
+  {
+    "id": "tag-empty-below-min",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"\"}",
+    "valid": false
+  },
+  {
+    "id": "tag-two",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"xy\"}",
+    "valid": true
+  },
+  {
+    "id": "tag-long-no-max",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}",
+    "valid": true
+  },
+  {
+    "id": "tag-one-astral-below-min",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"😀\"}",
+    "valid": false
+  },
+  {
+    "id": "tag-two-astral",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"😀😀\"}",
+    "valid": true
+  },
+  {
+    "id": "tag-one-unpaired-below-min",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"\\ud800\"}",
+    "valid": false
+  },
+  {
+    "id": "tag-two-unpaired",
+    "rawJson": "{\"code\":\"a\",\"tag\":\"\\ud800\\ud800\"}",
+    "valid": true
+  },
+  {
+    "id": "exact-two",
+    "rawJson": "{\"code\":\"a\",\"exact\":\"ab\"}",
+    "valid": true
+  },
+  {
+    "id": "exact-one",
+    "rawJson": "{\"code\":\"a\",\"exact\":\"a\"}",
+    "valid": false
+  },
+  {
+    "id": "exact-three",
+    "rawJson": "{\"code\":\"a\",\"exact\":\"abc\"}",
+    "valid": false
+  },
+  {
+    "id": "exact-astral-and-ascii",
+    "rawJson": "{\"code\":\"a\",\"exact\":\"😀a\"}",
+    "valid": true
+  },
+  {
+    "id": "empty-only-empty",
+    "rawJson": "{\"code\":\"a\",\"empty\":\"\"}",
+    "valid": true
+  },
+  {
+    "id": "empty-one-char",
+    "rawJson": "{\"code\":\"a\",\"empty\":\"a\"}",
+    "valid": false
+  },
+  {
+    "id": "version-const",
+    "rawJson": "{\"code\":\"a\",\"version\":\"v1\"}",
+    "valid": true
+  },
+  {
+    "id": "version-wrong-case",
+    "rawJson": "{\"code\":\"a\",\"version\":\"V1\"}",
+    "valid": false
+  },
+  {
+    "id": "version-trailing-space",
+    "rawJson": "{\"code\":\"a\",\"version\":\"v1 \"}",
+    "valid": false
+  },
+  {
+    "id": "version-empty",
+    "rawJson": "{\"code\":\"a\",\"version\":\"\"}",
+    "valid": false
+  },
+  {
+    "id": "version-number",
+    "rawJson": "{\"code\":\"a\",\"version\":1}",
+    "valid": false
+  },
+  {
+    "id": "word-precomposed",
+    "rawJson": "{\"code\":\"a\",\"word\":\"caf\\u00e9\"}",
+    "valid": true
+  },
+  {
+    "id": "word-decomposed-not-normalised",
+    "rawJson": "{\"code\":\"a\",\"word\":\"cafe\\u0301\"}",
+    "valid": false
+  },
+  {
+    "id": "only-a",
+    "rawJson": "{\"code\":\"a\",\"only\":\"a\"}",
+    "valid": true
+  },
+  {
+    "id": "only-upper",
+    "rawJson": "{\"code\":\"a\",\"only\":\"A\"}",
+    "valid": false
+  },
+  {
+    "id": "only-empty",
+    "rawJson": "{\"code\":\"a\",\"only\":\"\"}",
+    "valid": false
+  },
+  {
+    "id": "only-null",
+    "rawJson": "{\"code\":\"a\",\"only\":null}",
+    "valid": false
+  },
+  {
+    "id": "extra-allowed-in-open-object",
+    "rawJson": "{\"code\":\"a\",\"extra\":[1,null]}",
+    "valid": true
+  }
+]

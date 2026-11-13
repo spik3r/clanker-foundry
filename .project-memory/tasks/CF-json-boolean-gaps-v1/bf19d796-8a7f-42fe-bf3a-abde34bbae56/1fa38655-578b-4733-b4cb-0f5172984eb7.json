@@ -1,0 +1,51 @@
+{
+  "formatVersion": 2,
+  "eventId": "1fa38655-578b-4733-b4cb-0f5172984eb7",
+  "runId": "bf19d796-8a7f-42fe-bf3a-abde34bbae56",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-boolean-gaps-v1",
+    "path": "tasks/CF-json-boolean-gaps-v1-strings-and-closed-objects.md",
+    "revision": "a405bd8775eb869701043556112ec565f99ec786",
+    "blob": "4d2464be448e312df86b8f016145562ad04f322e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "efd3dd6bbaf20cc8c8c4cb11b0f0cabc9faeba95ad30c358c17fd04c7da024b4"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T17:39:17.038Z",
+  "summary": "Add string const, enum and length bounds and closed objects to json-boolean",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    ".github/workflows/json-validator-go.yml",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/jsonvalidator/README.md",
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main_test.go",
+    "modeling/jsonvalidator/testdata/lengths/cases.json",
+    "modeling/jsonvalidator/testdata/lengths/foundry-manifest.json",
+    "modeling/jsonvalidator/testdata/lengths/model.json",
+    "modeling/jsonvalidator/testdata/lengths/validator.go",
+    "modeling/jsonvalidator/testdata/lengths/validator.ts",
+    "modeling/jsonvalidator/testdata/manifest/cases.json",
+    "modeling/jsonvalidator/testdata/manifest/foundry-manifest.json",
+    "modeling/jsonvalidator/testdata/manifest/model.json",
+    "modeling/jsonvalidator/testdata/manifest/validator.go",
+    "modeling/jsonvalidator/testdata/manifest/validator.ts",
+    "modeling/jsonvalidator/testdata/sample/foundry-manifest.json",
+    "modeling/jsonvalidator/testdata/sample/validator.go",
+    "modeling/jsonvalidator/testdata/sample/validator.ts",
+    "modeling/jsonvalidator/verify/acceptance_test.go",
+    "modeling/jsonvalidator/verify/typescript.mjs",
+    "modeling/profiles.json",
+    "tasks/CF-json-boolean-gaps-v1-strings-and-closed-objects.md"
+  ]
+}

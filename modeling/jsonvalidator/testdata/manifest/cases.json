@@ -1,0 +1,262 @@
+[
+  {
+    "id": "scanner",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": true
+  },
+  {
+    "id": "reporter",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"reporter\"}",
+    "valid": true
+  },
+  {
+    "id": "exporter",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"exporter\"}",
+    "valid": true
+  },
+  {
+    "id": "with-tags",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [\"a\", \"b\"]}",
+    "valid": true
+  },
+  {
+    "id": "empty-tags",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": []}",
+    "valid": true
+  },
+  {
+    "id": "empty-tag-string",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [\"\"]}",
+    "valid": true
+  },
+  {
+    "id": "empty-name-and-version",
+    "rawJson": "{\"name\": \"\", \"version\": \"\", \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": true
+  },
+  {
+    "id": "disabled",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": false, \"kind\": \"scanner\"}",
+    "valid": true
+  },
+  {
+    "id": "kind-escaped-spelling",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"\\u0073canner\"}",
+    "valid": true
+  },
+  {
+    "id": "key-order-irrelevant",
+    "rawJson": "{\"kind\":\"exporter\",\"enabled\":false,\"version\":\"2\",\"name\":\"x\"}",
+    "valid": true
+  },
+  {
+    "id": "kind-capitalised",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"Scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-upper",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"SCANNER\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-reporter-upper",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"Reporter\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-trailing-space",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner \"}",
+    "valid": false
+  },
+  {
+    "id": "kind-leading-space",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\" scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-empty",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-unknown",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"importer\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-prefix",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scan\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-two-values",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner,reporter\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-nul-suffix",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner\\u0000\"}",
+    "valid": false
+  },
+  {
+    "id": "kind-missing",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true}",
+    "valid": false
+  },
+  {
+    "id": "kind-null",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": null}",
+    "valid": false
+  },
+  {
+    "id": "kind-number",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": 1}",
+    "valid": false
+  },
+  {
+    "id": "kind-true",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": true}",
+    "valid": false
+  },
+  {
+    "id": "kind-array",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": [\"scanner\"]}",
+    "valid": false
+  },
+  {
+    "id": "kind-object",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": {}}",
+    "valid": false
+  },
+  {
+    "id": "extra-property",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"extra\": 1}",
+    "valid": false
+  },
+  {
+    "id": "extra-null",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"extra\": null}",
+    "valid": false
+  },
+  {
+    "id": "extra-case-variant",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"Name\": \"x\"}",
+    "valid": false
+  },
+  {
+    "id": "extra-empty-key",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner\",\"\":1}",
+    "valid": false
+  },
+  {
+    "id": "extra-proto-own-key",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner\",\"__proto__\":{}}",
+    "valid": false
+  },
+  {
+    "id": "extra-proto-own-key-null",
+    "rawJson": "{\"name\":\"n\",\"version\":\"1\",\"enabled\":true,\"kind\":\"scanner\",\"__proto__\":null}",
+    "valid": false
+  },
+  {
+    "id": "extra-constructor",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"constructor\": \"x\"}",
+    "valid": false
+  },
+  {
+    "id": "extra-toString",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"toString\": \"x\"}",
+    "valid": false
+  },
+  {
+    "id": "extra-hasOwnProperty",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"hasOwnProperty\": 1}",
+    "valid": false
+  },
+  {
+    "id": "name-missing",
+    "rawJson": "{\"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "version-missing",
+    "rawJson": "{\"name\": \"n\", \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "enabled-missing",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "name-number",
+    "rawJson": "{\"name\": 1, \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "version-null",
+    "rawJson": "{\"name\": \"n\", \"version\": null, \"enabled\": true, \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "enabled-string",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": \"true\", \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "enabled-number",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": 1, \"kind\": \"scanner\"}",
+    "valid": false
+  },
+  {
+    "id": "tags-string",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": \"a\"}",
+    "valid": false
+  },
+  {
+    "id": "tags-null",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": null}",
+    "valid": false
+  },
+  {
+    "id": "tags-number-element",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [\"a\", 1]}",
+    "valid": false
+  },
+  {
+    "id": "tags-null-element",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [null]}",
+    "valid": false
+  },
+  {
+    "id": "tags-nested",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [[\"a\"]]}",
+    "valid": false
+  },
+  {
+    "id": "tags-object-element",
+    "rawJson": "{\"name\": \"n\", \"version\": \"1\", \"enabled\": true, \"kind\": \"scanner\", \"tags\": [{}]}",
+    "valid": false
+  },
+  {
+    "id": "root-null",
+    "rawJson": "null",
+    "valid": false
+  },
+  {
+    "id": "root-array",
+    "rawJson": "[]",
+    "valid": false
+  },
+  {
+    "id": "root-string",
+    "rawJson": "\"scanner\"",
+    "valid": false
+  },
+  {
+    "id": "root-empty-object",
+    "rawJson": "{}",
+    "valid": false
+  }
+]

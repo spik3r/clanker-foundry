@@ -17,12 +17,13 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 )
 
 const (
 	generatorID      = "jsonvalidator"
-	generatorVersion = "1.0.0"
+	generatorVersion = "1.1.0"
 	// toolchain names the toolchain this generator was qualified with. It is a
 	// constant, not detected at run time.
 	toolchain = "go1.27.3"
@@ -42,6 +43,9 @@ const maxJSONDepth = 64
 const maxSchemaDepth = 32
 const maxNodes = 512
 const maxProperties = 128
+const maxStringBytes = 256
+const maxEnumValues = 32
+const maxLengthBound = 65535
 
 var propertyName = regexp.MustCompile(`^[A-Za-z_$][A-Za-z0-9_$]{0,127}$`)
 
@@ -53,6 +57,11 @@ type property struct {
 type node struct {
 	kind       string
 	literal    *bool
+	constant   *string
+	enum       []string
+	minLength  *int
+	maxLength  *int
+	closed     bool
 	properties []property
 	items      *node
 	id         int
@@ -151,6 +160,41 @@ func boolValue(raw []byte) (bool, error) {
 	}
 }
 
+// modelString reads a model string that becomes part of generated code. It
+// refuses non-strings, control characters, strings over 256 bytes and U+FFFD:
+// an unpaired surrogate escape decodes to U+FFFD, so U+FFFD is refused rather
+// than let a lone surrogate silently change meaning.
+func modelString(raw []byte) (string, error) {
+	raw = bytes.TrimSpace(raw)
+	var s string
+	if len(raw) == 0 || raw[0] != '"' || json.Unmarshal(raw, &s) != nil {
+		return "", errors.New("expected model string")
+	}
+	if len(s) > maxStringBytes {
+		return "", errors.New("model string too long")
+	}
+	for _, r := range s {
+		if unicode.IsControl(r) || r == utf8.RuneError {
+			return "", errors.New("model string has a control or replacement character")
+		}
+	}
+	return s, nil
+}
+
+var lengthLexeme = regexp.MustCompile(`^(0|[1-9][0-9]{0,4})$`)
+
+func lengthBound(raw []byte) (*int, error) {
+	text := string(bytes.TrimSpace(raw))
+	if !lengthLexeme.MatchString(text) {
+		return nil, errors.New("expected model length integer")
+	}
+	v, _ := strconv.Atoi(text)
+	if v > maxLengthBound {
+		return nil, errors.New("model length out of range")
+	}
+	return &v, nil
+}
+
 func parseNode(raw []byte, depth int, count *int) (*node, error) {
 	*count++
 	if depth > maxSchemaDepth || *count > maxNodes {
@@ -167,8 +211,57 @@ func parseNode(raw []byte, depth int, count *int) (*node, error) {
 	n := &node{kind: kind}
 	switch kind {
 	case "string":
-		_, err := object(raw, []string{"type"})
-		return n, err
+		obj, err := object(raw, []string{"type"}, "const", "enum", "minLength", "maxLength")
+		if err != nil {
+			return nil, err
+		}
+		_, hasConst := obj["const"]
+		_, hasEnum := obj["enum"]
+		_, hasMin := obj["minLength"]
+		_, hasMax := obj["maxLength"]
+		if hasConst && hasEnum || (hasConst || hasEnum) && (hasMin || hasMax) {
+			return nil, errors.New("string const, enum and length bounds conflict")
+		}
+		if hasConst {
+			c, err := modelString(obj["const"])
+			if err != nil {
+				return nil, err
+			}
+			n.constant = &c
+		}
+		if hasEnum {
+			var values []json.RawMessage
+			if err := json.Unmarshal(obj["enum"], &values); err != nil || len(values) < 1 || len(values) > maxEnumValues {
+				return nil, errors.New("enum needs 1 to 32 strings")
+			}
+			seen := map[string]bool{}
+			for _, rawValue := range values {
+				v, err := modelString(rawValue)
+				if err != nil {
+					return nil, err
+				}
+				if seen[v] {
+					return nil, errors.New("duplicate enum value")
+				}
+				seen[v] = true
+				n.enum = append(n.enum, v)
+			}
+			sort.Strings(n.enum)
+		}
+		if hasMin {
+			if n.minLength, err = lengthBound(obj["minLength"]); err != nil {
+				return nil, err
+			}
+		}
+		if hasMax {
+			if n.maxLength, err = lengthBound(obj["maxLength"]); err != nil {
+				return nil, err
+			}
+		}
+		if n.minLength != nil && n.maxLength != nil && *n.minLength > *n.maxLength {
+			return nil, errors.New("minLength exceeds maxLength")
+		}
+		return n, nil
 	case "boolean":
 		obj, err := object(raw, []string{"type"}, "const")
 		if err != nil {
@@ -196,9 +289,10 @@ func parseNode(raw []byte, depth int, count *int) (*node, error) {
 			return nil, err
 		}
 		allow, err := boolValue(obj["additionalProperties"])
-		if err != nil || !allow {
-			return nil, errors.New("only permissive extra properties are supported")
+		if err != nil {
+			return nil, err
 		}
+		n.closed = !allow
 		var properties []json.RawMessage
 		if err := json.Unmarshal(obj["properties"], &properties); err != nil || properties == nil || len(properties) > maxProperties {
 			return nil, errors.New("invalid model properties")
@@ -233,12 +327,38 @@ func parseNode(raw []byte, depth int, count *int) (*node, error) {
 	return n, nil
 }
 
+// quote writes a model string for the canonical encoding: only the double
+// quote and the backslash are escaped. Control characters cannot occur.
+func quote(s string) string {
+	return `"` + strings.NewReplacer(`\`, `\\`, `"`, `\"`).Replace(s) + `"`
+}
+
 // canonical encodes the node as compact JSON in the fixed member order
 // documented in PROFILE.md. Property names are ASCII identifiers, so
 // strconv.Quote yields valid JSON.
 func (n *node) canonical(b *strings.Builder) {
 	fmt.Fprintf(b, `{"type":%q`, n.kind)
 	switch n.kind {
+	case "string":
+		switch {
+		case n.constant != nil:
+			b.WriteString(`,"const":` + quote(*n.constant))
+		case n.enum != nil:
+			b.WriteString(`,"enum":[`)
+			for i, v := range n.enum {
+				if i > 0 {
+					b.WriteByte(',')
+				}
+				b.WriteString(quote(v))
+			}
+			b.WriteByte(']')
+		}
+		if n.minLength != nil {
+			fmt.Fprintf(b, `,"minLength":%d`, *n.minLength)
+		}
+		if n.maxLength != nil {
+			fmt.Fprintf(b, `,"maxLength":%d`, *n.maxLength)
+		}
 	case "boolean":
 		if n.literal != nil {
 			fmt.Fprintf(b, `,"const":%t`, *n.literal)
@@ -247,7 +367,7 @@ func (n *node) canonical(b *strings.Builder) {
 		b.WriteString(`,"items":`)
 		n.items.canonical(b)
 	case "object":
-		b.WriteString(`,"additionalProperties":true,"properties":[`)
+		fmt.Fprintf(b, `,"additionalProperties":%t,"properties":[`, !n.closed)
 		for i, p := range n.properties {
 			if i > 0 {
 				b.WriteByte(',')
@@ -357,8 +477,7 @@ func (l loaded) emit() ([]byte, []byte, error) {
 		fmt.Fprintf(&tsSource, "\nfunction n%d(value: unknown): boolean {\n", n.id)
 		switch n.kind {
 		case "string":
-			goSource.WriteString("_, ok := value.(string); return ok\n")
-			tsSource.WriteString("  return typeof value === 'string';\n")
+			emitString(n, &goSource, &tsSource)
 		case "boolean":
 			if n.literal == nil {
 				goSource.WriteString("_, ok := value.(bool); return ok\n")
@@ -373,8 +492,11 @@ func (l loaded) emit() ([]byte, []byte, error) {
 		case "object":
 			goSource.WriteString("obj, ok := value.(map[string]any); if !ok || obj == nil { return false }\n")
 			tsSource.WriteString("  if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;\n")
-			if len(n.properties) > 0 {
+			if len(n.properties) > 0 || n.closed {
 				tsSource.WriteString("  const obj = value as Record<string, unknown>;\n")
+			}
+			if n.closed {
+				emitClosed(n, &goSource, &tsSource)
 			}
 			for _, p := range n.properties {
 				key, _ := json.Marshal(p.name)
@@ -397,6 +519,65 @@ func (l loaded) emit() ([]byte, []byte, error) {
 		return nil, nil, err
 	}
 	return formatted, []byte(tsSource.String()), nil
+}
+
+// emitString writes the predicate body of a string node. Lengths count code
+// points: Go ranges over runes and TypeScript iterates by code point, so a
+// surrogate pair is one and an unpaired surrogate is one in both languages
+// (Go's JSON decoder turns an unpaired surrogate escape into U+FFFD).
+func emitString(n *node, goSource, tsSource *strings.Builder) {
+	switch {
+	case n.constant != nil:
+		fmt.Fprintf(goSource, "v, ok := value.(string); return ok && v == %s\n", strconv.Quote(*n.constant))
+		fmt.Fprintf(tsSource, "  return value === %s;\n", jsString(*n.constant))
+	case n.enum != nil:
+		var g, t []string
+		for _, v := range n.enum {
+			g = append(g, "v == "+strconv.Quote(v))
+			t = append(t, "value === "+jsString(v))
+		}
+		fmt.Fprintf(goSource, "v, ok := value.(string); return ok && (%s)\n", strings.Join(g, " || "))
+		fmt.Fprintf(tsSource, "  return %s;\n", strings.Join(t, " || "))
+	case n.minLength != nil || n.maxLength != nil:
+		goSource.WriteString("v, ok := value.(string); if !ok { return false }; n := 0; for range v { n++ }\n")
+		tsSource.WriteString("  if (typeof value !== 'string') return false;\n  let n = 0;\n  for (const _ of value) n++;\n")
+		var g, t []string
+		if n.minLength != nil {
+			g = append(g, fmt.Sprintf("n >= %d", *n.minLength))
+			t = append(t, fmt.Sprintf("n >= %d", *n.minLength))
+		}
+		if n.maxLength != nil {
+			g = append(g, fmt.Sprintf("n <= %d", *n.maxLength))
+			t = append(t, fmt.Sprintf("n <= %d", *n.maxLength))
+		}
+		fmt.Fprintf(goSource, "return %s\n", strings.Join(g, " && "))
+		fmt.Fprintf(tsSource, "  return %s;\n", strings.Join(t, " && "))
+	default:
+		goSource.WriteString("_, ok := value.(string); return ok\n")
+		tsSource.WriteString("  return typeof value === 'string';\n")
+	}
+}
+
+func jsString(s string) string {
+	b, _ := json.Marshal(s)
+	return string(b)
+}
+
+// emitClosed refuses any own enumerable string key that is not declared. The
+// switch compares keys by value, so inherited names never count as declared.
+func emitClosed(n *node, goSource, tsSource *strings.Builder) {
+	if len(n.properties) == 0 {
+		goSource.WriteString("if len(obj) > 0 { return false }\n")
+		tsSource.WriteString("  if (Object.keys(obj).length > 0) return false;\n")
+		return
+	}
+	var g, t []string
+	for _, p := range n.properties {
+		g = append(g, strconv.Quote(p.name))
+		t = append(t, "      case "+jsString(p.name)+":")
+	}
+	fmt.Fprintf(goSource, "for key := range obj { switch key { case %s: default: return false } }\n", strings.Join(g, ", "))
+	fmt.Fprintf(tsSource, "  for (const key of Object.keys(obj)) {\n    switch (key) {\n%s\n        break;\n      default:\n        return false;\n    }\n  }\n", strings.Join(t, "\n"))
 }
 
 // compile returns the emitted sources for a model.
