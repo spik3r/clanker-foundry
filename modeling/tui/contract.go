@@ -17,7 +17,7 @@ import (
 const (
 	ContractID       = "foundry-generator/v1"
 	GeneratorID      = "tuic"
-	GeneratorVersion = "1.2.0"
+	GeneratorVersion = "1.3.0"
 	// Toolchain is the Go release this generator was qualified with. It is a
 	// constant, not detected at run time.
 	Toolchain    = "go1.27.4"

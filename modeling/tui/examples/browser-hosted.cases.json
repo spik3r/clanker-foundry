@@ -1,0 +1,476 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {
+    "canonicalSHA256": "82e00bf6ad341858b7ef314250157d2d72059965c4aaddcd3107135acbde0275"
+  },
+  "records": {
+    "Main": [
+      {
+        "ID": "s1",
+        "Name": "Alpha",
+        "Description": "Primary server",
+        "Status": "up"
+      },
+      {
+        "ID": "s2",
+        "Name": "Beta",
+        "Description": "Backup server",
+        "Status": "up"
+      },
+      {
+        "ID": "s3",
+        "Name": "Gamma",
+        "Description": "Spare server",
+        "Status": "down"
+      }
+    ],
+    "Many": [
+      {
+        "ID": "m01",
+        "Name": "Item01",
+        "Description": "Row 1",
+        "Status": "up"
+      },
+      {
+        "ID": "m02",
+        "Name": "Item02",
+        "Description": "Row 2",
+        "Status": "up"
+      },
+      {
+        "ID": "m03",
+        "Name": "Item03",
+        "Description": "Row 3",
+        "Status": "up"
+      },
+      {
+        "ID": "m04",
+        "Name": "Item04",
+        "Description": "Row 4",
+        "Status": "up"
+      },
+      {
+        "ID": "m05",
+        "Name": "Item05",
+        "Description": "Row 5",
+        "Status": "up"
+      },
+      {
+        "ID": "m06",
+        "Name": "Item06",
+        "Description": "Row 6",
+        "Status": "up"
+      },
+      {
+        "ID": "m07",
+        "Name": "Item07",
+        "Description": "Row 7",
+        "Status": "up"
+      },
+      {
+        "ID": "m08",
+        "Name": "Item08",
+        "Description": "Row 8",
+        "Status": "up"
+      },
+      {
+        "ID": "m09",
+        "Name": "Item09",
+        "Description": "Row 9",
+        "Status": "up"
+      },
+      {
+        "ID": "m10",
+        "Name": "Item10",
+        "Description": "Row 10",
+        "Status": "up"
+      },
+      {
+        "ID": "m11",
+        "Name": "Item11",
+        "Description": "Row 11",
+        "Status": "up"
+      },
+      {
+        "ID": "m12",
+        "Name": "Item12",
+        "Description": "Row 12",
+        "Status": "up"
+      },
+      {
+        "ID": "m13",
+        "Name": "Item13",
+        "Description": "Row 13",
+        "Status": "up"
+      },
+      {
+        "ID": "m14",
+        "Name": "Item14",
+        "Description": "Row 14",
+        "Status": "up"
+      }
+    ],
+    "Two": [
+      {
+        "ID": "s1",
+        "Name": "Alpha",
+        "Description": "first\nsecond",
+        "Status": "up"
+      }
+    ],
+    "Long": [
+      {
+        "ID": "s1",
+        "Name": "Alpha",
+        "Description": "line01\nline02\nline03\nline04\nline05\nline06\nline07\nline08\nline09\nline10\nline11\nline12",
+        "Status": "up"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "QDoesNotQuit",
+      "requirement": "A hosted browser ignores q outside help: the host owns quitting.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "q"
+        }
+      ],
+      "expect": {
+        "quit": false,
+        "help": false,
+        "selected": "s1"
+      }
+    },
+    {
+      "id": "CtrlCDoesNotQuit",
+      "requirement": "A hosted browser ignores ctrl+c outside help: the host owns quitting.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "ctrl+c"
+        }
+      ],
+      "expect": {
+        "quit": false,
+        "selected": "s1"
+      }
+    },
+    {
+      "id": "NoTitleOrFooter",
+      "requirement": "A hosted browser draws only the body: pane labels and records, no title line, status line or key-hint footer.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [],
+      "expect": {
+        "visible": [
+          "[Records] 1/3",
+          "Details",
+          "> Alpha",
+          "Name: Alpha"
+        ],
+        "absent": [
+          "Servers",
+          "focus:",
+          "q quit",
+          "? help",
+          "enter open"
+        ]
+      }
+    },
+    {
+      "id": "BodyFillsGivenHeight",
+      "requirement": "The body uses the whole height it was given: a pane label row and 11 content rows at height 12.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Many",
+      "steps": [],
+      "expect": {
+        "visible": [
+          "[Records] 1/14",
+          "Item11"
+        ],
+        "absent": [
+          "Item12"
+        ]
+      }
+    },
+    {
+      "id": "ListHints",
+      "requirement": "In the list with a record selected the hints are select, pane, open and help; the browser does not capture keys.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [],
+      "expect": {
+        "capturesKeys": false,
+        "help": false,
+        "keyHints": [
+          {
+            "key": "j/k",
+            "action": "select"
+          },
+          {
+            "key": "tab",
+            "action": "pane"
+          },
+          {
+            "key": "enter",
+            "action": "open"
+          },
+          {
+            "key": "?",
+            "action": "help"
+          }
+        ]
+      }
+    },
+    {
+      "id": "DetailHints",
+      "requirement": "With the detail pane focused the hints are scroll, pane, back and help.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "enter"
+        }
+      ],
+      "expect": {
+        "focus": "detail",
+        "keyHints": [
+          {
+            "key": "j/k",
+            "action": "scroll"
+          },
+          {
+            "key": "tab",
+            "action": "pane"
+          },
+          {
+            "key": "esc",
+            "action": "back"
+          },
+          {
+            "key": "?",
+            "action": "help"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HelpCapturesKeys",
+      "requirement": "While help is open the browser captures keys and its hints are scroll and close.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "?"
+        }
+      ],
+      "expect": {
+        "help": true,
+        "capturesKeys": true,
+        "keyHints": [
+          {
+            "key": "j/k",
+            "action": "scroll"
+          },
+          {
+            "key": "esc/?",
+            "action": "close"
+          }
+        ],
+        "visible": [
+          "[Help]"
+        ]
+      }
+    },
+    {
+      "id": "QInsideHelpDoesNotQuit",
+      "requirement": "Inside help only the documented keys act: q neither quits nor closes help.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "?"
+        },
+        {
+          "key": "q"
+        }
+      ],
+      "expect": {
+        "quit": false,
+        "help": true,
+        "capturesKeys": true
+      }
+    },
+    {
+      "id": "EscClosesHelp",
+      "requirement": "Esc closes help and the browser stops capturing keys.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "?"
+        },
+        {
+          "key": "esc"
+        }
+      ],
+      "expect": {
+        "help": false,
+        "capturesKeys": false,
+        "visible": [
+          "[Records] 1/3"
+        ]
+      }
+    },
+    {
+      "id": "LoadingHints",
+      "requirement": "A loading snapshot shows its message in the body and leaves only the help hint.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "replace": {
+            "status": "loading",
+            "message": "Fetching data"
+          }
+        }
+      ],
+      "expect": {
+        "status": "loading",
+        "visible": [
+          "Fetching data"
+        ],
+        "keyHints": [
+          {
+            "key": "?",
+            "action": "help"
+          }
+        ],
+        "capturesKeys": false
+      }
+    },
+    {
+      "id": "SpacedRowsScroll",
+      "requirement": "Spaced details put one blank row between fields: Name, blank, Status, blank and two Description rows are 6 rows, one more than the 5 rows of a 30x6 body, so End scrolls Name out.",
+      "size": {
+        "width": 30,
+        "height": 6
+      },
+      "records": "Two",
+      "steps": [
+        {
+          "key": "enter"
+        },
+        {
+          "key": "end"
+        }
+      ],
+      "expect": {
+        "focus": "detail",
+        "visible": [
+          "second"
+        ],
+        "absent": [
+          "Name: Alpha"
+        ]
+      }
+    },
+    {
+      "id": "ScrollReachesLastField",
+      "requirement": "End in the detail pane scrolls to the last row of the last field.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Long",
+      "steps": [
+        {
+          "key": "enter"
+        },
+        {
+          "key": "end"
+        }
+      ],
+      "expect": {
+        "visible": [
+          "line12"
+        ],
+        "absent": [
+          "Name: Alpha"
+        ]
+      }
+    },
+    {
+      "id": "WideNeedsWidthAndHeight",
+      "requirement": "The two-pane layout needs both the wide width and the wide height of the body: 80x11 shows one pane.",
+      "size": {
+        "width": 80,
+        "height": 11
+      },
+      "records": "Main",
+      "steps": [],
+      "expect": {
+        "layout": "narrow",
+        "focus": "list",
+        "absent": [
+          "Details"
+        ]
+      }
+    },
+    {
+      "id": "TinyBodyMessage",
+      "requirement": "Below the narrow minimum the body is a resize message without a quit hint.",
+      "size": {
+        "width": 20,
+        "height": 5
+      },
+      "records": "Main",
+      "steps": [],
+      "expect": {
+        "layout": "tiny",
+        "visible": [
+          "Resize to continue",
+          "Minimum: 24x6"
+        ],
+        "absent": [
+          "quit"
+        ]
+      }
+    }
+  ]
+}

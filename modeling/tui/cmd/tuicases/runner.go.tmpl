@@ -38,7 +38,12 @@ type expect struct {
 	Visible  *[]string
 	Absent   *[]string
 	Quit     *bool
+
+	CapturesKeys *bool
+	KeyHints     *[]hint
 }
+
+type hint struct{ Key, Action string }
 
 type testCase struct {
 	ID      string
@@ -122,6 +127,14 @@ func statusName(s browser.Status) string {
 	return fmt.Sprintf("unknown(%d)", s)
 }
 
+func hintList(hints []browser.KeyHint) string {
+	parts := make([]string, len(hints))
+	for i, h := range hints {
+		parts[i] = h.Key + " " + h.Action
+	}
+	return "[" + strings.Join(parts, ", ") + "]"
+}
+
 func isQuit(cmd tea.Cmd) bool {
 	if cmd == nil {
 		return false
@@ -196,6 +209,23 @@ func run(doc document, c testCase) []string {
 	}
 	if e.Quit != nil && quit != *e.Quit {
 		fail("quit: want %t got %t", *e.Quit, quit)
+	}
+	if e.CapturesKeys != nil && m.CapturesKeys() != *e.CapturesKeys {
+		fail("capturesKeys: want %t got %t", *e.CapturesKeys, m.CapturesKeys())
+	}
+	if e.KeyHints != nil {
+		got := m.KeyHints()
+		at := 0
+		for _, want := range *e.KeyHints {
+			for at < len(got) && (got[at].Key != want.Key || got[at].Action != want.Action) {
+				at++
+			}
+			if at == len(got) {
+				fail("keyHints %q %q: want shown in order got %s", want.Key, want.Action, hintList(got))
+				break
+			}
+			at++
+		}
 	}
 	frame := ansi.Strip(m.View().Content)
 	if e.Visible != nil {

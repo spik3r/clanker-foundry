@@ -3,6 +3,7 @@ package [[[.PackageName]]]
 import (
 	"fmt"
 	"image/color"
+	"regexp"
 	"strings"
 	"unicode"
 
@@ -21,7 +22,58 @@ const (
 	mutedTone
 )
 
-type theme struct{ color bool }
+// Colors sets the view colours at run time with Model.WithColors. Colours are
+// application presentation, not part of the model. Each nonempty value is
+// #RRGGBB; an empty value keeps the default for that role.
+//
+//   - Text: the foreground of ordinary rows and messages. Default #d3d9e8.
+//   - Muted: the foreground of secondary text, the standalone status line and
+//     footer. A hosted browser draws none, so Muted has no visible effect there.
+//     Default #9daac3.
+//   - Accent: the bold foreground of pane labels, the title line and the help
+//     and status headings. Default #a7c5ff.
+//   - Border: the background of the one-cell gutter between the two panes of
+//     the wide layout. Default #202638, the page background, so by default the
+//     gutter is invisible; a different value draws a vertical divider.
+//   - SelectionText: the foreground of the selected list row. Default #d3d9e8.
+//   - SelectionBackground: the background of the selected list row. Default #384f72.
+//
+// The page background (#202638) is not a role and is not configurable.
+type Colors struct {
+	Text, Muted, Accent, Border, SelectionText, SelectionBackground string
+}
+
+var hexColor = regexp.MustCompile(`^#[0-9A-Fa-f]{6}$`)
+
+func (c Colors) validate() error {
+	for _, role := range []struct{ name, value string }{
+		{"Text", c.Text}, {"Muted", c.Muted}, {"Accent", c.Accent}, {"Border", c.Border},
+		{"SelectionText", c.SelectionText}, {"SelectionBackground", c.SelectionBackground},
+	} {
+		if role.value != "" && !hexColor.MatchString(role.value) {
+			return fmt.Errorf("colour %s must be #RRGGBB, got %q", role.name, role.value)
+		}
+	}
+	return nil
+}
+
+// resolved fills empty roles with the defaults.
+func (c Colors) resolved() Colors {
+	for _, role := range []struct{ value *string; def string }{
+		{&c.Text, "#d3d9e8"}, {&c.Muted, "#9daac3"}, {&c.Accent, "#a7c5ff"},
+		{&c.SelectionText, "#d3d9e8"}, {&c.SelectionBackground, "#384f72"},
+	} {
+		if *role.value == "" {
+			*role.value = role.def
+		}
+	}
+	return c
+}
+
+type theme struct {
+	color  bool
+	colors Colors // resolved, except Border, which is empty unless set
+}
 
 func (t theme) background() color.Color {
 	if t.color {
@@ -47,14 +99,15 @@ func (t theme) line(text string, width int, kind tone) string {
 	if !t.color {
 		return text
 	}
-	style := lipgloss.NewStyle().Background(t.background()).Foreground(lipgloss.Color("#d3d9e8"))
+	c := t.colors.resolved()
+	style := lipgloss.NewStyle().Background(t.background()).Foreground(lipgloss.Color(c.Text))
 	switch kind {
 	case headingTone:
-		style = style.Bold(true).Foreground(lipgloss.Color("#a7c5ff"))
+		style = style.Bold(true).Foreground(lipgloss.Color(c.Accent))
 	case selectedTone:
-		style = style.Background(lipgloss.Color("#384f72")).Bold(true)
+		style = style.Background(lipgloss.Color(c.SelectionBackground)).Foreground(lipgloss.Color(c.SelectionText)).Bold(true)
 	case mutedTone:
-		style = style.Foreground(lipgloss.Color("#9daac3"))
+		style = style.Foreground(lipgloss.Color(c.Muted))
 	}
 	return style.Render(text)
 }
@@ -103,8 +156,9 @@ func panel(title string, lines []string, offset, selected int, t theme) *flexgo.
 func (b browser) tree(p layout, t theme) *flexgo.Node {
 	if p.variant == tiny {
 		minimum := fmt.Sprintf("Minimum: %dx%d", minimumWidth, minimumHeight)
-		lines := []string{"Resize to continue", minimum, keyFor(helpAction) + " help  " + keyFor(quitAction) + " quit"}
-		if b.state.helpOpen {
+[[[if .Hosted]]]		lines := []string{"Resize to continue", minimum}
+[[[else]]]		lines := []string{"Resize to continue", minimum, keyFor(helpAction) + " help  " + keyFor(quitAction) + " quit"}
+[[[end]]]		if b.state.helpOpen {
 			lines = []string{"Help open: " + keyFor(closeAction) + "/" + keyFor(helpAction) + " closes", minimum}
 		}
 		return &flexgo.Node{View: func(w, h int) string { return t.block(lines, w, h) }, Background: t.background()}
@@ -155,7 +209,19 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		details := panel(detailTitle, detailRows(b.data.items[idx].details, p), s.detailOffset, -1, t)
 		if p.variant == wide {
 			list.Width = p.listWidth
-			body = &flexgo.Node{Flex: 1, Dir: flexgo.Row, Gap: p.gap, Background: t.background(), Children: []*flexgo.Node{list, details}}
+			if t.color && t.colors.Border != "" {
+				// An explicit Border colour draws the gutter as a divider.
+				divider := &flexgo.Node{Width: p.gap, Background: lipgloss.Color(t.colors.Border), View: func(w, h int) string {
+					if w <= 0 || h <= 0 {
+						return ""
+					}
+					row := lipgloss.NewStyle().Background(lipgloss.Color(t.colors.Border)).Render(strings.Repeat(" ", w))
+					return strings.TrimSuffix(strings.Repeat(row+"\n", h), "\n")
+				}}
+				body = &flexgo.Node{Flex: 1, Dir: flexgo.Row, Background: t.background(), Children: []*flexgo.Node{list, divider, details}}
+			} else {
+				body = &flexgo.Node{Flex: 1, Dir: flexgo.Row, Gap: p.gap, Background: t.background(), Children: []*flexgo.Node{list, details}}
+			}
 		} else if s.focus == detailPane {
 			body = details
 		} else {
@@ -163,7 +229,9 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		}
 	}
 
-	mode, focus := "narrow", [[[quote .ListLabel]]]
+[[[if .Hosted]]]	return body
+}
+[[[else]]]	mode, focus := "narrow", [[[quote .ListLabel]]]
 	if p.variant == wide {
 		mode = "wide"
 	}
@@ -197,24 +265,48 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		},
 	}
 }
+[[[end]]]
+// hintText joins hints as "key action" separated by single spaces.
+func hintText(hints []KeyHint) string {
+	parts := make([]string, len(hints))
+	for i, h := range hints {
+		parts[i] = h.Key + " " + h.Action
+	}
+	return strings.Join(parts, " ")
+}
+
+// keyHints lists the hints of the standalone footer for the current state, in
+// order, in their widest form[[[if .Hosted]]]. A hosted browser omits the quit hint[[[end]]].
+func keyHints(s state, d data) []KeyHint {
+	var hints []KeyHint
+	if s.helpOpen {
+		return []KeyHint{
+			{keyFor(downAction) + "/" + keyFor(upAction), "scroll"},
+			{keyFor(closeAction) + "/" + keyFor(helpAction), "close"},
+		}
+	}
+	if s.selectedIndex(d) >= 0 {
+		navigation, movement := KeyHint{keyFor(openAction), "open"}, "select"
+		if s.focus == detailPane {
+			navigation, movement = KeyHint{keyFor(closeAction), "back"}, "scroll"
+		}
+		hints = append(hints, KeyHint{keyFor(downAction) + "/" + keyFor(upAction), movement}, KeyHint{keyFor(nextPaneAction), "pane"}, navigation)
+	}
+	hints = append(hints, KeyHint{keyFor(helpAction), "help"})
+[[[if not .Hosted]]]	hints = append(hints, KeyHint{keyFor(quitAction), "quit"})
+[[[end]]]	return hints
+}
 
 func footer(s state, d data, p layout) string {
-	if s.helpOpen {
-		return keyFor(downAction) + "/" + keyFor(upAction) + " scroll " + keyFor(closeAction) + "/" + keyFor(helpAction) + " close"
-	}
-	global := keyFor(helpAction) + " help " + keyFor(quitAction) + " quit"
-	if s.selectedIndex(d) < 0 {
-		return global
-	}
-	navigation, movement := keyFor(openAction)+" open", "select"
-	if s.focus == detailPane {
-		navigation, movement = keyFor(closeAction)+" back", "scroll"
+	hints := keyHints(s, d)
+	if s.helpOpen || s.selectedIndex(d) < 0 {
+		return hintText(hints)
 	}
 	// Keep the way into or out of a pane visible at the minimum width. Extra
 	// hints are optional, but an incomplete clipped key description is not.
-	compact := navigation + " " + global
-	pane := keyFor(nextPaneAction) + " pane " + compact
-	full := keyFor(downAction) + "/" + keyFor(upAction) + " " + movement + "  " + pane
+	compact := hintText(hints[2:])
+	pane := hintText(hints[1:])
+	full := hintText(hints[:1]) + "  " + pane
 	for _, hint := range []string{full, pane, compact} {
 		if ansi.StringWidth(hint) <= p.width {
 			return hint

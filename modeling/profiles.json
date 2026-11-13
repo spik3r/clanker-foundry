@@ -9,7 +9,8 @@
       "schema": "modeling/tui/authoring/record-browser-v1.schema.json",
       "examples": [
         "modeling/tui/examples/browser.json",
-        "modeling/tui/examples/browser-package.json"
+        "modeling/tui/examples/browser-package.json",
+        "modeling/tui/examples/browser-hosted.json"
       ],
       "cases": {
         "format": "record-browser-cases/v1",
@@ -18,7 +19,8 @@
         "runner": "tuicases",
         "examples": [
           "modeling/tui/examples/browser.cases.json",
-          "modeling/tui/examples/browser-package.cases.json"
+          "modeling/tui/examples/browser-package.cases.json",
+          "modeling/tui/examples/browser-hosted.cases.json"
         ]
       },
       "emits": ["Go package"],

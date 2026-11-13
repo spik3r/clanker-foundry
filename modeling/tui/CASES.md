@@ -78,12 +78,17 @@ after the last step and reported separately.
 | `visible` | 1 to 16 strings of 1 to 240 bytes. Each must appear in the rendered frame after ANSI sequences are removed. |
 | `absent` | 1 to 16 such strings. None may appear in the frame. |
 | `quit` | `true` when the last step was a key and the browser returned the quit command; `false` otherwise. |
+| `capturesKeys` | `true` when the browser's `CapturesKeys()` is true after the last step: the help overlay is open and a host must forward every key. |
+| `keyHints` | 1 to 12 objects `{"key": "...", "action": "..."}` (each 1 to 240 bytes, plain text). Each must appear in the browser's `KeyHints()`, and they must appear in the order given; other hints may lie between them. A standalone browser lists its footer hints (including `q quit`); a hosted browser has no quit hint. |
 
-`visible` and `absent` match plain substrings within the text of the frame.
+`visible` and `absent` match plain substrings within the text of the frame. For
+a hosted model the frame is the body the browser draws, with no title line,
+status line or footer, and `size` and every `resize` are the body size.
 The frame is rows of text, and a string cannot contain a line break, so a
 match lies inside one row. In a wide layout the two panes share rows. Only
 observable behaviour is checked: the frame and the public read-only methods of
-the generated package (`Selected`, `Focus`, `Layout`, `HelpOpen`, `Status`).
+the generated package (`Selected`, `Focus`, `Layout`, `HelpOpen`, `Status`,
+`CapturesKeys`, `KeyHints`).
 Scroll offsets are not observable as numbers. Check them through `visible` and
 `absent`. Colours and styles are removed from the frame and cannot be checked.
 
@@ -96,6 +101,22 @@ the old expectations were written for the old model. Review every case against
 the changed model and its requirements, and set the digest only after that
 review. A digest changed without review turns the check into a copy of the
 current behaviour. `tuic validate MODEL` prints the digest as `canonicalSHA256`.
+
+### The digest when you have no tools
+
+An author who cannot run `tuic` writes 64 zeros
+(`0000000000000000000000000000000000000000000000000000000000000000`) for
+`model.canonicalSHA256`. That passes the format check and is refused by
+`tuicases` as stale, on purpose: a placeholder must never run as if it were
+reviewed. The author does not guess a digest.
+
+The digest is filled in when the cases are reviewed, by the reviewer: a person (or
+an agent acting for one) who has read every case against the model and the
+requirements and who can run `tuic validate MODEL`. The reviewer copies the
+`canonicalSHA256` value from that output into the file. Nothing else may change at
+that step. If the review finds a case that must change, change it first, finish the
+review again, and only then set the digest. A digest filled in by the author
+without that review turns the check into a copy of the current behaviour.
 
 ## Running
 
@@ -133,4 +154,6 @@ empty on any nonzero exit.
 The [authoring schema](authoring/record-browser-cases-v1.schema.json) is a
 first check. It lists what it cannot express; `tuicases validate` is
 authoritative. Examples: [browser](examples/browser.cases.json) and
-[package browser](examples/browser-package.cases.json).
+[package browser](examples/browser-package.cases.json) and
+[hosted browser](examples/browser-hosted.cases.json), whose cases are written from
+the hosting contract in the README.
