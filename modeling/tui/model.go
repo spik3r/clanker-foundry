@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"sort"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -37,7 +38,20 @@ type Model struct {
 	// rule: the default is the same as absence.
 	Embed         string `json:"embed,omitempty"`
 	DetailSpacing string `json:"detailSpacing,omitempty"`
+	// Filter was added in generator 1.4.0. Absent means the list cannot be
+	// filtered and the canonical encoding is unchanged.
+	Filter *Filter `json:"filter,omitempty"`
 }
+
+// Filter makes the list filterable by a case-insensitive substring of any of
+// the named fields. The order of Fields is not significant: the canonical
+// encoding sorts it.
+type Filter struct {
+	Fields []string `json:"fields"`
+}
+
+// MaxFilterFields bounds the fields a filter can name.
+const MaxFilterFields = 8
 
 // Emit selects what the compiler writes: a standalone module (default) or only
 // the files of an importable package with the given name.
@@ -84,6 +98,9 @@ func (m Model) Hosted() bool { return m.Embed == EmbedHosted }
 // Spaced reports whether one blank row separates consecutive detail fields.
 func (m Model) Spaced() bool { return m.DetailSpacing == SpacingSpaced }
 
+// Filtered reports whether the list can be filtered.
+func (m Model) Filtered() bool { return m.Filter != nil }
+
 // canonical returns m with explicit defaults replaced by absence. It does not
 // modify the pointed-to Emit value.
 func (m Model) canonical() Model {
@@ -98,6 +115,12 @@ func (m Model) canonical() Model {
 	}
 	if m.DetailSpacing == SpacingCompact {
 		m.DetailSpacing = ""
+	}
+	if m.Filter != nil {
+		f := *m.Filter
+		f.Fields = append([]string(nil), f.Fields...)
+		sort.Strings(f.Fields)
+		m.Filter = &f
 	}
 	return m
 }
@@ -198,7 +221,8 @@ func checkValue(d *json.Decoder, depth int, context string) error {
 	switch delim {
 	case '{':
 		allowed := map[string]string{
-			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|emit|detailText|embed|detailSpacing|",
+			"model":    "|formatVersion|profileVersion|id|title|fields|identity|summary|details|listLabel|detailLabel|layout|emit|detailText|embed|detailSpacing|filter|",
+			"filter":   "|fields|",
 			"emit":     "|mode|package|",
 			"fields[]": "|id|label|",
 			"layout":   "|narrowWidth|narrowHeight|wideWidth|wideHeight|listWidth|",
@@ -295,6 +319,21 @@ func (m Model) Validate() error {
 	}
 	if m.DetailSpacing != "" && m.DetailSpacing != SpacingCompact && m.DetailSpacing != SpacingSpaced {
 		return fmt.Errorf("detailSpacing must be %q or %q", SpacingCompact, SpacingSpaced)
+	}
+	if f := m.Filter; f != nil {
+		if len(f.Fields) < 1 || len(f.Fields) > MaxFilterFields {
+			return fmt.Errorf("filter.fields must contain 1..%d fields", MaxFilterFields)
+		}
+		named := map[string]bool{}
+		for _, id := range f.Fields {
+			if !fields[id] {
+				return fmt.Errorf("filter.fields references undeclared field %q", id)
+			}
+			if named[id] {
+				return fmt.Errorf("duplicate filter field %q", id)
+			}
+			named[id] = true
+		}
 	}
 	if e := m.Emit; e != nil {
 		switch e.Mode {

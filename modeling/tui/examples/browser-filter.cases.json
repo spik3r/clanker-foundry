@@ -1,0 +1,492 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {
+    "canonicalSHA256": "c783e88e088bc86338766ab42c2a3a520f75ff58b61b4c249111806f05e25387"
+  },
+  "records": {
+    "Main": [
+      {
+        "ID": "s1",
+        "Name": "Alpha",
+        "Description": "Primary server",
+        "Status": "up"
+      },
+      {
+        "ID": "s2",
+        "Name": "Beta",
+        "Description": "Backup SERVER",
+        "Status": "up"
+      },
+      {
+        "ID": "s3",
+        "Name": "Gamma",
+        "Description": "Spare ÄBC unit",
+        "Status": "down"
+      },
+      {
+        "ID": "s4",
+        "Name": "Delta",
+        "Description": "Cold storage",
+        "Status": "down"
+      }
+    ],
+    "Fresh": [
+      {
+        "ID": "s1",
+        "Name": "Alpha",
+        "Description": "Primary server",
+        "Status": "up"
+      },
+      {
+        "ID": "s6",
+        "Name": "Alpine",
+        "Description": "Edge node",
+        "Status": "up"
+      },
+      {
+        "ID": "s7",
+        "Name": "Zeta",
+        "Description": "Final spare",
+        "Status": "down"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "open_input",
+      "requirement": "/ opens the filter input and the browser then captures every key.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        }
+      ],
+      "expect": {
+        "filterOpen": true,
+        "capturesKeys": true,
+        "filter": "",
+        "shown": 4,
+        "keyHints": [
+          {
+            "key": "enter",
+            "action": "keep"
+          },
+          {
+            "key": "esc",
+            "action": "clear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "typing_narrows_case_insensitive",
+      "requirement": "Typed text narrows the list to records whose Name or Description contains it, ignoring case.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "SERV"
+        }
+      ],
+      "expect": {
+        "filter": "SERV",
+        "shown": 2,
+        "selected": "s1",
+        "visible": [
+          "Alpha",
+          "Beta",
+          "2/4 /SERV_"
+        ],
+        "absent": [
+          "Gamma",
+          "Delta"
+        ]
+      }
+    },
+    {
+      "id": "second_field_matches",
+      "requirement": "A match in the second filter field is enough.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "cold"
+        }
+      ],
+      "expect": {
+        "shown": 1,
+        "selected": "s4",
+        "visible": [
+          "Delta"
+        ],
+        "absent": [
+          "Alpha"
+        ]
+      }
+    },
+    {
+      "id": "other_fields_are_ignored",
+      "requirement": "Status is not a filter field, so its value matches nothing.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "down"
+        }
+      ],
+      "expect": {
+        "shown": 0,
+        "selected": ""
+      }
+    },
+    {
+      "id": "no_matches_row",
+      "requirement": "When nothing matches, nothing is selected and the list says so.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "zzzz"
+        }
+      ],
+      "expect": {
+        "shown": 0,
+        "selected": "",
+        "visible": [
+          "No matches"
+        ],
+        "absent": [
+          "Alpha"
+        ]
+      }
+    },
+    {
+      "id": "backspace_removes_last_character",
+      "requirement": "Backspace removes the last code point and widens the list again.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "serx"
+        },
+        {
+          "key": "backspace"
+        }
+      ],
+      "expect": {
+        "filter": "ser",
+        "shown": 2,
+        "filterOpen": true
+      }
+    },
+    {
+      "id": "enter_keeps_filter",
+      "requirement": "Enter closes the input and keeps the filter; the label shows the count.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ser"
+        },
+        {
+          "key": "enter"
+        }
+      ],
+      "expect": {
+        "filterOpen": false,
+        "capturesKeys": false,
+        "filter": "ser",
+        "shown": 2,
+        "visible": [
+          "[Records] 2/4 /ser"
+        ]
+      }
+    },
+    {
+      "id": "esc_clears_input",
+      "requirement": "Esc while typing clears the text and closes the input.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ser"
+        },
+        {
+          "key": "esc"
+        }
+      ],
+      "expect": {
+        "filterOpen": false,
+        "capturesKeys": false,
+        "filter": "",
+        "shown": 4
+      }
+    },
+    {
+      "id": "selection_kept_when_still_matching",
+      "requirement": "The selected record stays selected while it still matches.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "down"
+        },
+        {
+          "key": "/"
+        },
+        {
+          "text": "server"
+        }
+      ],
+      "expect": {
+        "selected": "s2",
+        "shown": 2
+      }
+    },
+    {
+      "id": "selection_moves_to_first_match",
+      "requirement": "A selected record that stops matching gives way to the first match.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "down"
+        },
+        {
+          "key": "/"
+        },
+        {
+          "text": "alp"
+        }
+      ],
+      "expect": {
+        "selected": "s1",
+        "shown": 1
+      }
+    },
+    {
+      "id": "keys_are_text_while_open",
+      "requirement": "q, digits, j and ? are text while the input is open: nothing quits, pages or scrolls.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "q1j?"
+        }
+      ],
+      "expect": {
+        "filter": "q1j?",
+        "filterOpen": true,
+        "help": false,
+        "quit": false,
+        "capturesKeys": true,
+        "shown": 0
+      }
+    },
+    {
+      "id": "esc_clears_kept_filter",
+      "requirement": "Esc in the list clears a kept filter and keeps the selected record.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ser"
+        },
+        {
+          "key": "enter"
+        },
+        {
+          "key": "down"
+        },
+        {
+          "key": "esc"
+        }
+      ],
+      "expect": {
+        "filter": "",
+        "shown": 4,
+        "selected": "s2"
+      }
+    },
+    {
+      "id": "esc_leaves_detail_before_clearing",
+      "requirement": "Esc from the details returns to the list first and keeps the filter.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ser"
+        },
+        {
+          "key": "enter"
+        },
+        {
+          "key": "enter"
+        },
+        {
+          "key": "esc"
+        }
+      ],
+      "expect": {
+        "focus": "list",
+        "filter": "ser",
+        "shown": 2
+      }
+    },
+    {
+      "id": "replace_reapplies_filter",
+      "requirement": "Replace keeps the filter text and applies it to the new records.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "al"
+        },
+        {
+          "key": "enter"
+        },
+        {
+          "replace": {
+            "status": "ready",
+            "records": "Fresh"
+          }
+        }
+      ],
+      "expect": {
+        "filter": "al",
+        "shown": 3,
+        "selected": "s1",
+        "visible": [
+          "Alpine",
+          "Zeta"
+        ]
+      }
+    },
+    {
+      "id": "navigation_stays_in_filtered_list",
+      "requirement": "Moving, Home and End use only the listed records.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ser"
+        },
+        {
+          "key": "enter"
+        },
+        {
+          "key": "end"
+        }
+      ],
+      "expect": {
+        "selected": "s2",
+        "shown": 2
+      }
+    },
+    {
+      "id": "multibyte_text_folds_case",
+      "requirement": "Text is typed by code point and folded with simple Unicode case folding.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "ÄB"
+        }
+      ],
+      "expect": {
+        "filter": "ÄB",
+        "shown": 1,
+        "selected": "s3"
+      }
+    }
+  ]
+}

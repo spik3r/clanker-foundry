@@ -25,6 +25,7 @@ type replace struct {
 
 type step struct {
 	Key     *string
+	Text    *string
 	Resize  *size
 	Replace *replace
 }
@@ -41,6 +42,10 @@ type expect struct {
 
 	CapturesKeys *bool
 	KeyHints     *[]hint
+
+	Filter     *string
+	FilterOpen *bool
+	Shown      *int
 }
 
 type hint struct{ Key, Action string }
@@ -100,6 +105,8 @@ func keyMsg(k string) (tea.KeyPressMsg, error) {
 		v.Code = tea.KeyHome
 	case "end":
 		v.Code = tea.KeyEnd
+	case "backspace":
+		v.Code = tea.KeyBackspace
 	case "ctrl+c", "ctrl+b", "ctrl+f":
 		v.Code, v.Mod = rune(k[5]), tea.ModCtrl
 	default:
@@ -165,6 +172,14 @@ func run(doc document, c testCase) []string {
 			next, cmd = m.Update(msg)
 			m = next.(browser.Model)
 			quit = isQuit(cmd)
+		case s.Text != nil:
+			// One key message per code point, as typed characters.
+			for _, r := range *s.Text {
+				var cmd tea.Cmd
+				next, cmd = m.Update(tea.KeyPressMsg{Code: r, Text: string(r)})
+				m = next.(browser.Model)
+				quit = quit || isQuit(cmd)
+			}
 		case s.Resize != nil:
 			next, _ = m.Update(tea.WindowSizeMsg{Width: s.Resize.Width, Height: s.Resize.Height})
 			m = next.(browser.Model)
@@ -212,6 +227,15 @@ func run(doc document, c testCase) []string {
 	}
 	if e.CapturesKeys != nil && m.CapturesKeys() != *e.CapturesKeys {
 		fail("capturesKeys: want %t got %t", *e.CapturesKeys, m.CapturesKeys())
+	}
+	if e.Filter != nil && m.FilterText() != *e.Filter {
+		fail("filter: want %q got %q", *e.Filter, m.FilterText())
+	}
+	if e.FilterOpen != nil && m.FilterOpen() != *e.FilterOpen {
+		fail("filterOpen: want %t got %t", *e.FilterOpen, m.FilterOpen())
+	}
+	if e.Shown != nil && m.Shown() != *e.Shown {
+		fail("shown: want %d got %d", *e.Shown, m.Shown())
 	}
 	if e.KeyHints != nil {
 		got := m.KeyHints()

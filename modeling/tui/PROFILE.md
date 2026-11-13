@@ -64,6 +64,14 @@ Its input format is `tui-json/v1`, with profile `record-browser/v1`.
   scrolling, paging, Home/End and clamping include them, in clip and in wrap text
   mode, and in wrap mode they count toward the 4,096-row cap.
 
+- `filter` is optional (generator 1.4.0): `{"fields": ["Name", "Owner"]}` makes
+  the list filterable by a case-insensitive substring of any of 1 to 8 unique
+  declared field ids. The order of `filter.fields` is not significant: the
+  canonical encoding sorts it. Keys, matching and selection rules are fixed; see
+  the README, "Filtering the list". Matching compares text after
+  `strings.ToLower` on valid UTF-8 and nothing else. Without `filter` there is no
+  filter behaviour and the canonical encoding is unchanged.
+
 Colours are application presentation, not design meaning, so the model has no
 colour members. A host sets them at run time with `WithColors` (README). The roles are `Background`, `Text`, `Muted`, `Accent`, `Border`, `SelectionText` and `SelectionBackground`; `Background` was added in 1.3.1 and an empty value keeps the old page colour.
 
@@ -75,7 +83,8 @@ choices, not a claim that every terminal or application should use them.
 ## Fixed behavior
 
 The profile fixes keyboard behavior, selection by stable ID, viewport clamping,
-list/detail focus, data replacement and captive help. Models cannot bind shell
+list/detail focus, data replacement and captive help. With a `filter`, `/`, typing, `backspace`, `enter` and `esc` filter the list as the
+README describes; the filter only narrows the shown records, never changes them. Models cannot bind shell
 commands, define arbitrary actions, choose import paths, create widgets, access
 files, invoke a service or change runtime authority. There are no editable form
 fields or background jobs. Application code supplies typed records and adapts its
@@ -90,7 +99,7 @@ for drafting a model; it lists the rules it cannot express.
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
 the model's `emit.package`), pinned dependencies (module mode), normalized model and a `foundry-manifest.json` integrity
-record (generator `tuic` 1.3.1, toolchain constant `go1.27.4`). It does
+record (generator `tuic` 1.4.0, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
@@ -112,7 +121,7 @@ README for details.
 it to `model.json`, without the final newline. The encoding is Go's
 `encoding/json` indented with two spaces (default escaping of `<`, `>` and `&`),
 members in the order `formatVersion`, `profileVersion`, `id`, `title`, `fields`,
-`identity`, `summary`, `details`, `listLabel`, `detailLabel`, `layout`, then `emit`, `detailText`, `embed` and `detailSpacing` when present. Each field
+`identity`, `summary`, `details`, `listLabel`, `detailLabel`, `layout`, then `emit`, `detailText`, `embed`, `detailSpacing` and `filter` when present. Each field
 is `id` then `label`; `layout` is `narrowWidth`, `narrowHeight`, `wideWidth`,
 `wideHeight`, `listWidth`; `emit` is `mode` then `package`. `fields` is sorted by
 `id`.
@@ -138,6 +147,11 @@ refused here too. The canonical digests of `examples/browser.json` and
 Emitted Go files differ from 1.2.0 output in the generator version in their
 header and in the added accessors and colour support, so a manifest changes
 even when the canonical digest does not.
+
+`filter` was added in generator 1.4.0 and is the last member, `{"fields": [...]}`
+with the ids sorted. A model without it has the same canonical bytes and digest as
+before; the digests of the three older examples are pinned by a test. `"filter":
+null`, `{}` and `{"fields": []}` are refused.
 
 JSON whitespace, member order in the source and the order of `fields` do not
 change the digest. The order of `details` does. Emitted bytes depend only on the

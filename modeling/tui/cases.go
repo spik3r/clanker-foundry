@@ -35,7 +35,7 @@ const (
 // them. Undocumented aliases of the fixed bindings are not allowed.
 var AllowedKeys = []string{
 	"tab", "shift+tab", "enter", "esc", "?", "q", "ctrl+c",
-	"j", "k", "up", "down", "pgup", "pgdown", "home", "end",
+	"j", "k", "up", "down", "pgup", "pgdown", "home", "end", "/", "backspace",
 }
 
 // Cases is a decoded record-browser-cases/v1 document.
@@ -71,9 +71,10 @@ type Size struct {
 	Height int `json:"height"`
 }
 
-// Step is exactly one of Key, Resize or Replace.
+// Step is exactly one of Key, Text, Resize or Replace.
 type Step struct {
 	Key     *string  `json:"key,omitempty"`
+	Text    *string  `json:"text,omitempty"`
 	Resize  *Size    `json:"resize,omitempty"`
 	Replace *Replace `json:"replace,omitempty"`
 }
@@ -98,6 +99,11 @@ type Expect struct {
 	// CapturesKeys and KeyHints observe CapturesKeys() and KeyHints().
 	CapturesKeys *bool      `json:"capturesKeys,omitempty"`
 	KeyHints     *[]KeyHint `json:"keyHints,omitempty"`
+	// Filter, FilterOpen and Shown observe FilterText(), FilterOpen() and
+	// Shown(). They need a model with a filter.
+	Filter     *string `json:"filter,omitempty"`
+	FilterOpen *bool   `json:"filterOpen,omitempty"`
+	Shown      *int    `json:"shown,omitempty"`
 }
 
 // KeyHint is one expected key hint: the key text and the action text.
@@ -145,10 +151,10 @@ var caseMembers = map[string]string{
 	"model":   "|canonicalSHA256|",
 	"case":    "|id|requirement|size|records|steps|expect|",
 	"size":    "|width|height|",
-	"step":    "|key|resize|replace|",
+	"step":    "|key|text|resize|replace|",
 	"resize":  "|width|height|",
 	"replace": "|status|records|message|",
-	"expect":  "|layout|focus|help|selected|status|visible|absent|quit|capturesKeys|keyHints|",
+	"expect":  "|layout|focus|help|selected|status|visible|absent|quit|capturesKeys|keyHints|filter|filterOpen|shown|",
 	"keyhint": "|key|action|",
 }
 
@@ -226,6 +232,25 @@ func plainText(s, name string, max int) error {
 	}
 	for _, r := range s {
 		if unicode.IsControl(r) || r == ' ' || r == ' ' {
+			return fmt.Errorf("%s contains a control character", name)
+		}
+	}
+	return nil
+}
+
+// maxTypedText is the most code points one text step or filter expectation holds.
+const maxTypedText = 64
+
+// typedText checks text typed into, or expected from, the filter input: valid
+// UTF-8 of at most maxTypedText code points with no control characters. An
+// empty string is allowed only when allowEmpty is set.
+func typedText(s, name string, allowEmpty bool) error {
+	n := utf8.RuneCountInString(s)
+	if (n == 0 && !allowEmpty) || n > maxTypedText || !utf8.ValidString(s) {
+		return fmt.Errorf("%s must be valid UTF-8 of 1..%d code points", name, maxTypedText)
+	}
+	for _, r := range s {
+		if unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
 			return fmt.Errorf("%s contains a control character", name)
 		}
 	}
@@ -323,6 +348,12 @@ func (s Step) validate(sets map[string][]Values) error {
 			return fmt.Errorf("key %q is not one of the profile's keys", *s.Key)
 		}
 	}
+	if s.Text != nil {
+		n++
+		if err := typedText(*s.Text, "text", false); err != nil {
+			return err
+		}
+	}
 	if s.Resize != nil {
 		n++
 		if err := validSize(*s.Resize, "resize"); err != nil {
@@ -350,7 +381,7 @@ func (s Step) validate(sets map[string][]Values) error {
 		}
 	}
 	if n != 1 {
-		return fmt.Errorf("a step must have exactly one of key, resize and replace")
+		return fmt.Errorf("a step must have exactly one of key, text, resize and replace")
 	}
 	return nil
 }
@@ -389,6 +420,21 @@ func (e Expect) validate() error {
 	}
 	if e.CapturesKeys != nil {
 		n++
+	}
+	if e.Filter != nil {
+		n++
+		if err := typedText(*e.Filter, "expect.filter", true); err != nil {
+			return err
+		}
+	}
+	if e.FilterOpen != nil {
+		n++
+	}
+	if e.Shown != nil {
+		n++
+		if *e.Shown < 0 || *e.Shown > 4096 {
+			return fmt.Errorf("expect.shown must be 0..4096")
+		}
 	}
 	if e.KeyHints != nil {
 		n++
@@ -448,6 +494,11 @@ func (c Cases) CheckAgainst(m Model, digest string) error {
 	if c.Model.CanonicalSHA256 != digest {
 		return StaleError{Cases: c.Model.CanonicalSHA256, Model: digest}
 	}
+	if !m.Filtered() {
+		if err := c.refuseFilterUse(); err != nil {
+			return err
+		}
+	}
 	want := make([]string, len(m.Fields))
 	for i, f := range m.Fields {
 		want[i] = f.ID
@@ -478,6 +529,28 @@ func (c Cases) CheckAgainst(m Model, digest string) error {
 				return fmt.Errorf("records.%s[%d]: identity %s must be unique and nonempty", name, i, m.Identity)
 			}
 			identities[id] = true
+		}
+	}
+	return nil
+}
+
+// refuseFilterUse refuses the steps, keys and expectations that need a list
+// filter, for a model that has none.
+func (c Cases) refuseFilterUse() error {
+	for _, k := range c.Cases {
+		for i, st := range k.Steps {
+			if st.Text != nil {
+				return fmt.Errorf("case %s: step %d: text steps need a model with a filter", k.ID, i+1)
+			}
+			if st.Key != nil && (*st.Key == "/" || *st.Key == "backspace") {
+				return fmt.Errorf("case %s: step %d: key %q needs a model with a filter", k.ID, i+1, *st.Key)
+			}
+		}
+		e := k.Expect
+		for name, used := range map[string]bool{"filter": e.Filter != nil, "filterOpen": e.FilterOpen != nil, "shown": e.Shown != nil} {
+			if used {
+				return fmt.Errorf("case %s: expect.%s needs a model with a filter", k.ID, name)
+			}
 		}
 	}
 	return nil

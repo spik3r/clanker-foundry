@@ -53,9 +53,13 @@ Each step has exactly one member.
 
 - `{"key": K}` presses a key. `K` is one of the keys the README documents, spelled
   as written here: `tab`, `shift+tab`, `enter`, `esc`, `?`, `q`, `ctrl+c`, `j`,
-  `k`, `up`, `down`, `pgup`, `pgdown`, `home`, `end`. Any other spelling is
+  `k`, `up`, `down`, `pgup`, `pgdown`, `home`, `end`, and, for a model with a
+  `filter`, `/` and `backspace`. Any other spelling is
   refused, including aliases the browser accepts but the README does not
   document.
+- `{"text": "abc"}` types the characters, one key message per code point, as the
+  text of a key (1 to 64 code points, plain text, no control characters). It is
+  how filter text is entered; it needs a model with a `filter`.
 - `{"resize": {"width": W, "height": H}}` resizes the terminal (same limits as `size`).
 - `{"replace": {"status": S, "records": "SetName", "message": "..."}}` hands the
   browser a new snapshot, as application code does. `S` is `ready`, `loading` or
@@ -78,8 +82,15 @@ after the last step and reported separately.
 | `visible` | 1 to 16 strings of 1 to 240 bytes. Each must appear in the rendered frame after ANSI sequences are removed. |
 | `absent` | 1 to 16 such strings. None may appear in the frame. |
 | `quit` | `true` when the last step was a key and the browser returned the quit command; `false` otherwise. |
-| `capturesKeys` | `true` when the browser's `CapturesKeys()` is true after the last step: the help overlay is open and a host must forward every key. |
+| `capturesKeys` | `true` when the browser's `CapturesKeys()` is true after the last step: the help overlay or the filter input is open and a host must forward every key. |
 | `keyHints` | 1 to 12 objects `{"key": "...", "action": "..."}` (each 1 to 240 bytes, plain text). Each must appear in the browser's `KeyHints()`, and they must appear in the order given; other hints may lie between them. A standalone browser lists its footer hints (including `q quit`); a hosted browser has no quit hint. |
+| `filter` | The filter text, kept or being typed (0 to 64 code points, plain text): `FilterText()`. |
+| `filterOpen` | `true` when the filter input is open: `FilterOpen()`. |
+| `shown` | Integer 0 to 4096: the number of records the list shows, `Shown()`. |
+
+`filter`, `filterOpen` and `shown`, the `text` step and the `/` and `backspace`
+keys need a model with a `filter`. `validate` refuses a cases file that uses them
+against a model without one.
 
 `visible` and `absent` match plain substrings within the text of the frame. For
 a hosted model the frame is the body the browser draws, with no title line,
@@ -88,7 +99,7 @@ The frame is rows of text, and a string cannot contain a line break, so a
 match lies inside one row. In a wide layout the two panes share rows. Only
 observable behaviour is checked: the frame and the public read-only methods of
 the generated package (`Selected`, `Focus`, `Layout`, `HelpOpen`, `Status`,
-`CapturesKeys`, `KeyHints`).
+`CapturesKeys`, `KeyHints`, `FilterText`, `FilterOpen`, `Shown`).
 Scroll offsets are not observable as numbers. Check them through `visible` and
 `absent`. Colours and styles are removed from the frame and cannot be checked.
 

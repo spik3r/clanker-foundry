@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d96d08346c5f14134f6c57a927bbd2161a2962ae",
+  "id": "CF-record-browser-filter-v1",
+  "path": "tasks/CF-record-browser-filter-v1-list-filter.md",
+  "blob": "c510ecec3483e082898f16cffd3efa54c560b4fc",
+  "record": "---\nid: CF-record-browser-filter-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add a list filter to the record browser\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by\nsupervised subagents and coordinator review of the diff. Two records name this\ngap: the first consumer review in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md) and the gap\nreport for brief 5 of the\n[authoring trial](../docs/trials/2026-11-13-authoring/README.md).\n\nScope, under `modeling/tui/` and the profile registry: an optional `filter`\nmodel member naming the fields to match; a `/` filter input with fixed keys,\ncase-insensitive substring matching, selection that follows identity, and a\nlabel showing the filter and match count; `FilterText`, `FilterOpen` and\n`Shown` accessors; a `text` step, `/` and `backspace` keys and `filter`,\n`filterOpen` and `shown` expectations in the cases format; a filter example\nwith cases; schemas, registry and documents updated. `tuic` becomes 1.4.0 with\nunchanged canonical digests for existing models. Also this task record and new\nimmutable Project Memory files.\n\nExclusions: sorting, regular expressions, typed fields, and any change to the\nconsumer application, the contract, the harness or other generators.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/tui`, `go test -race`\nin `modeling/gencontract` and `modeling/foundrygen`, the node schema tests, the\nrepository validator, whitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-record-browser-filter-v1-list-filter.md",
+        "id": "CF-record-browser-filter-v1",
+        "blob": "c510ecec3483e082898f16cffd3efa54c560b4fc",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/color"
 	"regexp"
+	"slices"
 	"strings"
 	"unicode"
 
@@ -154,6 +155,20 @@ func panel(title string, lines []string, offset, selected int, t theme) *flexgo.
 	}
 }
 
+// filterLabel is the tail of the list label: the position among the listed
+// records, or, while a filter text is kept or being typed, the number listed
+// out of all records and the text.
+func filterLabel(s state, total, shown, pos int) string {
+	if !filterEnabled || (s.filterText == "" && !s.filterOpen) {
+		return fmt.Sprintf(" %d/%d", pos+1, shown)
+	}
+	label := fmt.Sprintf(" %d/%d /%s", shown, total, s.filterText)
+	if s.filterOpen {
+		label += "_"
+	}
+	return label
+}
+
 func (b browser) tree(p layout, t theme) *flexgo.Node {
 	if p.variant == tiny {
 		minimum := fmt.Sprintf("Minimum: %dx%d", minimumWidth, minimumHeight)
@@ -171,6 +186,9 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 	switch {
 	case s.helpOpen:
 		body = panel("[Help]", helpLines(s, b.data), s.helpOffset, -1, t)
+	case idx < 0 && b.data.status == ready && len(b.data.items) > 0:
+		// Nothing matches the kept filter: only the list is shown.
+		body = panel("["+[[[quote .ListLabel]]]+"]"+filterLabel(s, len(b.data.items), 0, -1), []string{"No matches"}, 0, -1, t)
 	case idx < 0:
 		title, message := "Empty", b.data.message
 		switch b.data.status {
@@ -191,13 +209,15 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		}
 		body = panel(title, []string{message}, 0, -1, t)
 	default:
-		labels := make([]string, len(b.data.items))
-		for i, row := range b.data.items {
+		rows := s.rows(b.data)
+		labels := make([]string, len(rows))
+		pos := slices.Index(rows, idx)
+		for i, at := range rows {
 			prefix := "  "
-			if i == idx {
+			if i == pos {
 				prefix = "> "
 			}
-			labels[i] = prefix + row.label
+			labels[i] = prefix + b.data.items[at].label
 		}
 		listTitle, detailTitle := [[[quote .ListLabel]]], [[[quote .DetailLabel]]]
 		if s.focus == listPane {
@@ -205,8 +225,8 @@ func (b browser) tree(p layout, t theme) *flexgo.Node {
 		} else {
 			detailTitle = "[" + detailTitle + "]"
 		}
-		listTitle += fmt.Sprintf(" %d/%d", idx+1, len(labels))
-		list := panel(listTitle, labels, s.listOffset, idx, t)
+		listTitle += filterLabel(s, len(b.data.items), len(labels), pos)
+		list := panel(listTitle, labels, s.listOffset, pos, t)
 		details := panel(detailTitle, detailRows(b.data.items[idx].details, p), s.detailOffset, -1, t)
 		if p.variant == wide {
 			list.Width = p.listWidth
@@ -286,6 +306,9 @@ func keyHints(s state, d data) []KeyHint {
 			{keyFor(closeAction) + "/" + keyFor(helpAction), "close"},
 		}
 	}
+	if s.filterOpen {
+		return []KeyHint{{"enter", "keep"}, {"esc", "clear"}}
+	}
 	if s.selectedIndex(d) >= 0 {
 		navigation, movement := KeyHint{keyFor(openAction), "open"}, "select"
 		if s.focus == detailPane {
@@ -294,13 +317,19 @@ func keyHints(s state, d data) []KeyHint {
 		hints = append(hints, KeyHint{keyFor(downAction) + "/" + keyFor(upAction), movement}, KeyHint{keyFor(nextPaneAction), "pane"}, navigation)
 	}
 	hints = append(hints, KeyHint{keyFor(helpAction), "help"})
+	if filterEnabled {
+		hints = append(hints, KeyHint{keyFor(filterAction), "filter"})
+		if s.filterText != "" && s.focus == listPane {
+			hints = append(hints, KeyHint{keyFor(closeAction), "clear"})
+		}
+	}
 [[[if not .Hosted]]]	hints = append(hints, KeyHint{keyFor(quitAction), "quit"})
 [[[end]]]	return hints
 }
 
 func footer(s state, d data, p layout) string {
 	hints := keyHints(s, d)
-	if s.helpOpen || s.selectedIndex(d) < 0 {
+	if s.helpOpen || s.filterOpen || s.selectedIndex(d) < 0 {
 		return hintText(hints)
 	}
 	// Keep the way into or out of a pane visible at the minimum width. Extra

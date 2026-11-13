@@ -21,6 +21,7 @@ const (
 	pageDownAction
 	topAction
 	bottomAction
+	filterAction
 )
 
 type binding struct {
@@ -41,6 +42,7 @@ var bindings = []binding{
 	{pageDownAction, []string{"pgdown", "ctrl+f"}},
 	{topAction, []string{"home", "g"}},
 	{bottomAction, []string{"end", "G"}},
+	{filterAction, []string{"/"}},
 }
 
 func actionFor(key string) action {
@@ -80,6 +82,13 @@ func helpLines(s state, d data) []string {
 		"After closing help:",
 [[[if not .Hosted]]]		allKeysFor(quitAction) + " quit",
 [[[end]]]	}
+	if filterEnabled {
+		lines = append(lines,
+			keyFor(filterAction)+" filter the list",
+			"typing: enter keeps, esc clears",
+			keyFor(closeAction)+" in the list clears a kept filter",
+		)
+	}
 	if s.selectedIndex(d) >= 0 {
 		lines = append(lines,
 			keyFor(nextPaneAction)+" next pane",
