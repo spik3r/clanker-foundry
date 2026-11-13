@@ -1,6 +1,6 @@
 ---
 id: CF-generator-pipeline-plan-v1
-status: in-progress
+status: completed
 owner: Claude planning contributor
 repositories: [spik3r/clanker-foundry]
 ---

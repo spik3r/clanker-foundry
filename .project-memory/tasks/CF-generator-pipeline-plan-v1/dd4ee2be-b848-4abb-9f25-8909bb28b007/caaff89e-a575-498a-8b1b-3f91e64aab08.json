@@ -1,0 +1,132 @@
+{
+  "formatVersion": 2,
+  "eventId": "caaff89e-a575-498a-8b1b-3f91e64aab08",
+  "runId": "dd4ee2be-b848-4abb-9f25-8909bb28b007",
+  "kind": "complete",
+  "parents": [
+    "e8b85b35-10b1-4052-9fef-d50726fbdb86"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-pipeline-plan-v1",
+    "path": "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+    "revision": "479e3b62443dfed2948369364ab8a1ede30e9bc0",
+    "blob": "f19f9f7f265538e91d4e3b1fff6debf27660d4af",
+    "claim": {
+      "heading": "Trial record claim",
+      "digest": "6aacfe2b7df9ef4a2a3541689fb3f314b2d140cbf335c01235861a7fe6d2b818"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T08:14:58.878Z",
+  "summary": "Consumer trial and authoring trial recorded in the plan; authoring trial briefs, unedited outputs and tool results added under docs/trials",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+    "docs/trials/2026-11-13-authoring/README.md",
+    "docs/trials/2026-11-13-authoring/brief1.cases.json",
+    "docs/trials/2026-11-13-authoring/brief1.model.json",
+    "docs/trials/2026-11-13-authoring/brief1.notes.md",
+    "docs/trials/2026-11-13-authoring/brief2.gap.md",
+    "docs/trials/2026-11-13-authoring/brief2.model.json",
+    "docs/trials/2026-11-13-authoring/brief2.notes.md",
+    "docs/trials/2026-11-13-authoring/brief3.gap.md",
+    "docs/trials/2026-11-13-authoring/brief3.model.json",
+    "docs/trials/2026-11-13-authoring/brief3.notes.md",
+    "docs/trials/2026-11-13-authoring/brief4.gap.md",
+    "docs/trials/2026-11-13-authoring/brief4.model.json",
+    "docs/trials/2026-11-13-authoring/brief4.notes.md",
+    "docs/trials/2026-11-13-authoring/brief5.cases.json",
+    "docs/trials/2026-11-13-authoring/brief5.gap.md",
+    "docs/trials/2026-11-13-authoring/brief5.model.json",
+    "docs/trials/2026-11-13-authoring/brief5.notes.md",
+    "docs/trials/2026-11-13-authoring/briefs.md"
+  ],
+  "validation": "bash scripts/validate.sh: PASS (skills-ref not installed, skipped); git diff --cached --check clean. Documentation and trial artifacts only; no code changed. The tool results in the trial record were observed by the coordinator: five validate runs exit 0, two tuicases check runs with 5 of 5 passing each",
+  "snapshot": {
+    "docs/generator-pipeline-plan.md": {
+      "blob": "92c860a829f741e05fce6c3de523f6694284ec72",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md": {
+      "blob": "7c8d48010463e36df00dab43de057ed9040fbb31",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/README.md": {
+      "blob": "4baae746abc6d30d4a805667427aa3a32921cf8a",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief1.cases.json": {
+      "blob": "7fbcee4c8554fb36aedbc196aa1ad5c446315ec3",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief1.model.json": {
+      "blob": "35fbbc251af75465461562729e928274e9958ed7",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief1.notes.md": {
+      "blob": "e06ea073b379529ad52dd4a9c2370053d0f468ef",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief2.gap.md": {
+      "blob": "00e1ea674cecad06113763ede3b5781d7bacb72b",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief2.model.json": {
+      "blob": "79f68ee1320a2a4425a432432328bc3db646f3db",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief2.notes.md": {
+      "blob": "d0c7ebf48223e8b58186662bd036a1be1d8c15a2",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief3.gap.md": {
+      "blob": "581b7e38140d83e337e991b03e0774be2af7deb7",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief3.model.json": {
+      "blob": "48f8a285d7830140033d14ef2f00eff21eaa51a6",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief3.notes.md": {
+      "blob": "6c9979f02ee67016a15d7733f9ea8392bcced91c",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief4.gap.md": {
+      "blob": "3dced71cb73f00b32e3a0d5b5cc3c6473539d11f",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief4.model.json": {
+      "blob": "a4edb262f7ded5d9361b3547fa37722e7f56873c",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief4.notes.md": {
+      "blob": "085597c5200439b96d451b696130f402e20856ed",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief5.cases.json": {
+      "blob": "c119ebe5c73d747dff165d8632346b47930f1872",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief5.gap.md": {
+      "blob": "97153ec93f5f8196e4944e6a37b678bb6981a7b2",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief5.model.json": {
+      "blob": "d4a7b07d73a8a8dad54e73af18b1a03e1177abc0",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/brief5.notes.md": {
+      "blob": "d8c2a3adfbf33394ac181bcd1ff6c156b19b2ed1",
+      "mode": "100644"
+    },
+    "docs/trials/2026-11-13-authoring/briefs.md": {
+      "blob": "ae6b86324d729891b159c01e3e86c3edbd012b2a",
+      "mode": "100644"
+    }
+  }
+}

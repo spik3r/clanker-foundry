@@ -1,0 +1,38 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "process-diagram/v1",
+  "id": "ExpenseApproval",
+  "title": "Expense claim approval",
+  "lanes": [
+    {"id": "Employee", "label": "Employee"},
+    {"id": "Manager", "label": "Manager"},
+    {"id": "Finance", "label": "Finance"}
+  ],
+  "nodes": [
+    {"id": "Submitted", "kind": "start", "label": "Claim submitted", "lane": "Employee"},
+    {"id": "Review", "kind": "task", "label": "Review claim", "lane": "Manager"},
+    {"id": "ManagerDecision", "kind": "exclusive", "label": "Manager approves?", "lane": "Manager"},
+    {"id": "Tell", "kind": "task", "label": "Tell employee the claim is rejected", "lane": "Manager"},
+    {"id": "Rejected", "kind": "end", "label": "Claim rejected", "lane": "Employee"},
+    {"id": "Threshold", "kind": "exclusive", "label": "Over finance threshold?", "lane": "Manager"},
+    {"id": "FinanceCheck", "kind": "task", "label": "Finance checks claim", "lane": "Finance"},
+    {"id": "FinanceDecision", "kind": "exclusive", "label": "Finance approves?", "lane": "Finance"},
+    {"id": "Fix", "kind": "task", "label": "Fix and resubmit claim", "lane": "Employee"},
+    {"id": "Pay", "kind": "task", "label": "Pay claim", "lane": "Finance"},
+    {"id": "Paid", "kind": "end", "label": "Claim paid", "lane": "Finance"}
+  ],
+  "flows": [
+    {"id": "F1", "from": "Submitted", "to": "Review"},
+    {"id": "F2", "from": "Review", "to": "ManagerDecision"},
+    {"id": "F3", "from": "ManagerDecision", "to": "Threshold", "label": "yes"},
+    {"id": "F4", "from": "ManagerDecision", "to": "Tell", "label": "no"},
+    {"id": "F5", "from": "Tell", "to": "Rejected"},
+    {"id": "F6", "from": "Threshold", "to": "FinanceCheck", "label": "yes"},
+    {"id": "F7", "from": "Threshold", "to": "Pay", "label": "no"},
+    {"id": "F8", "from": "FinanceCheck", "to": "FinanceDecision"},
+    {"id": "F9", "from": "FinanceDecision", "to": "Pay", "label": "approve"},
+    {"id": "F10", "from": "FinanceDecision", "to": "Fix", "label": "send back"},
+    {"id": "F11", "from": "Fix", "to": "Review", "label": "resubmit"},
+    {"id": "F12", "from": "Pay", "to": "Paid"}
+  ]
+}

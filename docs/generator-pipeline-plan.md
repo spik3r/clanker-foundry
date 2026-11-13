@@ -333,6 +333,70 @@ feature or authorized a change to the consumer, so milestone 1 in the
 - Diagram and dashboard pictures were looked at by the coordinating session,
   not yet by the owner.
 
+## Trials at 13 November 2026
+
+Added after the progress section above; that section is left as written.
+
+### First consumer trial
+
+The owner confirmed the recommended feature and asked for the change to be
+made and merged in the consumer repository. Two pull requests merged there with
+passing hosted checks.
+
+| Measure | Result |
+| --- | --- |
+| Model | 31 lines of JSON |
+| Generated Go | 868 lines, 8 files |
+| Hand-written Go | 139 lines: an adapter from saved records to browser records, and one flag |
+| Hand-written tests | 147 lines |
+| Changes needed to generated code | none; it compiled against the consumer's own dependency versions |
+| Drift check in the consumer's CI | ran and passed on its first run |
+| Requirement change | detail order, one label and the breakpoints changed by editing 3 lines of the model; no hand-written file changed |
+| Stale output detection | before regenerating, `foundrygen check` exited 3 and listed every generated file |
+
+Gap reports raised: none during the trial itself. The gaps were found by the
+review beforehand and are listed in the progress section. Two more showed up
+when the screen was rendered: detail fields have no blank line between them,
+and the browser does not use the host's colours.
+
+What the trial did not establish:
+
+- Nobody has run the screen in a real terminal. One frame was rendered from
+  real adapter output and read as text.
+- The adapter was written by an AI session, not generated and not written by a
+  person. The plan's rule covers the generated screen; the seam is ordinary
+  code under ordinary review.
+- No effort or review baseline was recorded beforehand, so this gives no
+  measured saving. The line counts above are the only numbers.
+- One feature in one repository. Milestone 3 in the
+  [current direction](current-direction.md), a second change by someone other
+  than the author, has not been attempted.
+
+### Authoring trial
+
+A low-cost agent, given five briefs and the registry and told not to read
+generator source or run tools, wrote five models that all validated at the
+first attempt and ten expectation cases that all passed, and wrote gap reports
+for the requirements no profile could express. The
+[trial record](trials/2026-11-13-authoring/README.md) has the briefs, the
+unedited output, the tool results and the limits of what one run shows.
+
+### Step 2 is closed
+
+[Expectation cases as data](../modeling/tui/CASES.md) for the record browser
+merged, with a fixed runner. Cases are bound to the model digest, so a changed
+model makes its cases stale until they are reviewed.
+
+### Next, from these trials
+
+1. Let a generated browser sit inside a host application's page: no own quit
+   key, no own frame, and a way for the host to know when it is capturing
+   keys. This is the gap that kept the consumer's screen out of its main
+   navigation.
+2. Say in the cases document what an author without tools writes for the
+   digest, and state the one-pane rule for width alone in the browser profile.
+3. A second consumer change made by someone other than this plan's author.
+
 ## Owner decisions
 
 Recorded on 12 November 2026.

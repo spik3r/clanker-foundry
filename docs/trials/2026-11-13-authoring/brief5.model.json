@@ -1,0 +1,18 @@
+{
+  "formatVersion": "tui-json/v1",
+  "profileVersion": "record-browser/v1",
+  "id": "ServiceList",
+  "title": "Internal services",
+  "fields": [
+    {"id": "Name", "label": "Service"},
+    {"id": "Owner", "label": "Owner team"},
+    {"id": "OnCall", "label": "On-call contact"},
+    {"id": "Status", "label": "Status"}
+  ],
+  "identity": "Name",
+  "summary": "Name",
+  "details": ["Name", "Owner", "OnCall", "Status"],
+  "listLabel": "Services",
+  "detailLabel": "Details",
+  "layout": {"narrowWidth": 24, "narrowHeight": 6, "wideWidth": 80, "wideHeight": 12, "listWidth": 28}
+}
