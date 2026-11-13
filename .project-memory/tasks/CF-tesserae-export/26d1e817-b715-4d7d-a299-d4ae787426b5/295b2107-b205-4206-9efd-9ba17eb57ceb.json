@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "295b2107-b205-4206-9efd-9ba17eb57ceb",
+  "runId": "26d1e817-b715-4d7d-a299-d4ae787426b5",
+  "kind": "start",
+  "parents": [
+    "7664f68b-3175-49b9-80f0-ae20c141109b"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tesserae-export",
+    "path": "tasks/CF-tesserae-export-stat-table.md",
+    "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+    "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0b5f91d99e675990220bdc4b6ac653eb17e7a3d08f0381509fb861e89b712407"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tesserae-contract-export",
+  "pullRequest": null,
+  "at": "2026-11-13T02:17:03.579Z",
+  "summary": "Correct exact file-list coverage and finalize independently reviewed consumer compatibility",
+  "next": "Record exact-path coverage",
+  "files": [
+    "tasks/CF-tesserae-export.md",
+    "tasks/CF-tesserae-export-stat-table.md",
+    "modeling/diagram/tesserae/export.go",
+    "modeling/diagram/tesserae/export_test.go",
+    "modeling/diagram/TESSERAE.md",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go"
+  ]
+}

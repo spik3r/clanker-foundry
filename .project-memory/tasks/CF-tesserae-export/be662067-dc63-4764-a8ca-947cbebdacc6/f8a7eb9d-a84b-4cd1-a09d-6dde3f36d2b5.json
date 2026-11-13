@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "f8a7eb9d-a84b-4cd1-a09d-6dde3f36d2b5",
+  "runId": "be662067-dc63-4764-a8ca-947cbebdacc6",
+  "kind": "start",
+  "parents": [
+    "89977a01-41a0-47bb-8c67-afbba7e32b96"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tesserae-export",
+    "path": "tasks/CF-tesserae-export-stat-table.md",
+    "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+    "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0b5f91d99e675990220bdc4b6ac653eb17e7a3d08f0381509fb861e89b712407"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tesserae-contract-export",
+  "pullRequest": null,
+  "at": "2026-11-13T02:16:12.658Z",
+  "summary": "Revalidate latest-main reconciliation and consumer compatibility before publication",
+  "next": "Independent review and refresh final evidence",
+  "files": [
+    "tasks/CF-tesserae-export.md,tasks/CF-tesserae-export-stat-table.md,modeling/diagram/tesserae/export.go,modeling/diagram/tesserae/export_test.go,modeling/diagram/TESSERAE.md,modeling/diagram/cmd/diagramgen/main.go,modeling/diagram/cmd/diagramgen/tesserae_test.go"
+  ]
+}

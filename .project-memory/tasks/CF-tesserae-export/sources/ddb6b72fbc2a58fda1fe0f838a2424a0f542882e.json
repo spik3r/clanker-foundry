@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+  "id": "CF-tesserae-export",
+  "path": "tasks/CF-tesserae-export-stat-table.md",
+  "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+  "record": "---\nid: CF-tesserae-export\nstatus: in-progress\nowner: Foundry integration worker\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bounded Tesserae export\n\n## Implementation claim\n\nImplement a local-only stat/table dashboard-to-tesserae/v1 export seam and CLI.\nFoundry owns model validation and mapping, not themes or markup. Refuse unsupported\ncharts, nonnumeric stat values and target-limit overflow. Preserve reading order,\nnot source grid rows. Test strict input, determinism and numeric/table conversion.\nNo renderer vendoring, package publication, remote changes, browser previews or\nclaims of complete dashboard or framework support.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-tesserae-export-stat-table.md",
+        "id": "CF-tesserae-export",
+        "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

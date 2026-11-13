@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "523056cf-a694-4d13-aacb-eb508c3de373",
+  "runId": "26d1e817-b715-4d7d-a299-d4ae787426b5",
+  "kind": "complete",
+  "parents": [
+    "295b2107-b205-4206-9efd-9ba17eb57ceb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tesserae-export",
+    "path": "tasks/CF-tesserae-export-stat-table.md",
+    "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+    "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0b5f91d99e675990220bdc4b6ac653eb17e7a3d08f0381509fb861e89b712407"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tesserae-contract-export",
+  "pullRequest": null,
+  "at": "2026-11-13T02:17:03.735Z",
+  "summary": "Final reviewed export reconciliation with exact path coverage",
+  "next": "Publish and await CI",
+  "files": [
+    "tasks/CF-tesserae-export.md",
+    "tasks/CF-tesserae-export-stat-table.md",
+    "modeling/diagram/tesserae/export.go",
+    "modeling/diagram/tesserae/export_test.go",
+    "modeling/diagram/TESSERAE.md",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go"
+  ],
+  "validation": "Full diagram race tests and vet, root validation and diff checks pass; independent reviewer verified exact Tesserae c2ae9ec rendering with escaping, decimal display and neutral provenance; 5002-byte HTML",
+  "snapshot": {
+    "tasks/CF-tesserae-export.md": {
+      "blob": null,
+      "mode": null
+    },
+    "tasks/CF-tesserae-export-stat-table.md": {
+      "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+      "mode": "100644"
+    },
+    "modeling/diagram/tesserae/export.go": {
+      "blob": "db2f2267f82131fc5176872c52094b5a5d64c46b",
+      "mode": "100644"
+    },
+    "modeling/diagram/tesserae/export_test.go": {
+      "blob": "2c24a9dbd66e659bb596df4d89b62b03df347fa9",
+      "mode": "100644"
+    },
+    "modeling/diagram/TESSERAE.md": {
+      "blob": "adb1d940eaaa3cc1b0b1ddcee2f532c4942c76aa",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "acb30fa7c5d9affd126f757f2ab4991c100c5999",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go": {
+      "blob": "9c940349a75096e3b7822d3c7ec4acb2a5456c39",
+      "mode": "100644"
+    }
+  }
+}
