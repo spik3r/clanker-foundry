@@ -1,0 +1,32 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "dashboard/v1",
+  "id": "BuildHealthWeekly",
+  "title": "Build health this week",
+  "datasets": [
+    {
+      "id": "Daily",
+      "columns": [
+        {"id": "Day", "label": "Day", "type": "text"},
+        {"id": "Passed", "label": "Passed", "type": "number"},
+        {"id": "Failed", "label": "Failed", "type": "number"},
+        {"id": "MedianMinutes", "label": "Median build time (min)", "type": "number"}
+      ],
+      "rows": [
+        ["Mon", 80, 5, 11.5],
+        ["Tue", 78, 7, 12],
+        ["Wed", 85, 3, 10.75],
+        ["Thu", 70, 9, 14],
+        ["Fri", 73, 2, 11]
+      ]
+    }
+  ],
+  "widgets": [
+    {"id": "TotalBuilds", "kind": "stat", "label": "Total builds this week", "value": "412"},
+    {"id": "FailureRate", "kind": "stat", "label": "Failure rate", "value": "6.3%"},
+    {"id": "BuildsByDay", "kind": "bar", "title": "Builds per day, passed and failed", "dataset": "Daily", "category": "Day", "series": ["Passed", "Failed"]},
+    {"id": "MedianByDay", "kind": "line", "title": "Median build time per day (min)", "dataset": "Daily", "category": "Day", "series": ["MedianMinutes"]},
+    {"id": "DailyTable", "kind": "table", "title": "Daily figures", "dataset": "Daily", "columns": ["Day", "Passed", "Failed", "MedianMinutes"]}
+  ],
+  "layout": [["TotalBuilds", "FailureRate"], ["BuildsByDay", "MedianByDay"], ["DailyTable"]]
+}

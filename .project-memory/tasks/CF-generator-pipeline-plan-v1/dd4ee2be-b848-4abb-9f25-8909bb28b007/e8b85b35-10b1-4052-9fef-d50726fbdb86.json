@@ -1,0 +1,49 @@
+{
+  "formatVersion": 2,
+  "eventId": "e8b85b35-10b1-4052-9fef-d50726fbdb86",
+  "runId": "dd4ee2be-b848-4abb-9f25-8909bb28b007",
+  "kind": "start",
+  "parents": [
+    "3adffd0d-4111-4afc-a25f-d980177370d5"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-pipeline-plan-v1",
+    "path": "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+    "revision": "479e3b62443dfed2948369364ab8a1ede30e9bc0",
+    "blob": "f19f9f7f265538e91d4e3b1fff6debf27660d4af",
+    "claim": {
+      "heading": "Trial record claim",
+      "digest": "6aacfe2b7df9ef4a2a3541689fb3f314b2d140cbf335c01235861a7fe6d2b818"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T08:14:51.545Z",
+  "summary": "Record the consumer trial and the authoring trial with its artifacts",
+  "next": "Write, validate, open PR",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "tasks/CF-generator-pipeline-plan-v1-model-fed-direction.md",
+    "docs/trials/2026-11-13-authoring/README.md",
+    "docs/trials/2026-11-13-authoring/brief1.cases.json",
+    "docs/trials/2026-11-13-authoring/brief1.model.json",
+    "docs/trials/2026-11-13-authoring/brief1.notes.md",
+    "docs/trials/2026-11-13-authoring/brief2.gap.md",
+    "docs/trials/2026-11-13-authoring/brief2.model.json",
+    "docs/trials/2026-11-13-authoring/brief2.notes.md",
+    "docs/trials/2026-11-13-authoring/brief3.gap.md",
+    "docs/trials/2026-11-13-authoring/brief3.model.json",
+    "docs/trials/2026-11-13-authoring/brief3.notes.md",
+    "docs/trials/2026-11-13-authoring/brief4.gap.md",
+    "docs/trials/2026-11-13-authoring/brief4.model.json",
+    "docs/trials/2026-11-13-authoring/brief4.notes.md",
+    "docs/trials/2026-11-13-authoring/brief5.cases.json",
+    "docs/trials/2026-11-13-authoring/brief5.gap.md",
+    "docs/trials/2026-11-13-authoring/brief5.model.json",
+    "docs/trials/2026-11-13-authoring/brief5.notes.md",
+    "docs/trials/2026-11-13-authoring/briefs.md"
+  ]
+}

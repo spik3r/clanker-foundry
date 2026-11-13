@@ -1,0 +1,59 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {"canonicalSHA256": "UNKNOWN"},
+  "records": {
+    "Main": [
+      {"Name": "billing-api", "Owner": "Payments", "OnCall": "payments-oncall", "Status": "up"},
+      {"Name": "auth-svc", "Owner": "Identity", "OnCall": "identity-oncall", "Status": "down"},
+      {"Name": "search-index", "Owner": "Search", "OnCall": "search-oncall", "Status": "up"}
+    ],
+    "Reloaded": [
+      {"Name": "auth-svc", "Owner": "Identity", "OnCall": "identity-oncall", "Status": "up"},
+      {"Name": "billing-api", "Owner": "Payments", "OnCall": "payments-oncall", "Status": "up"},
+      {"Name": "search-index", "Owner": "Search", "OnCall": "search-oncall", "Status": "up"}
+    ]
+  },
+  "cases": [
+    {
+      "id": "S_wide_first_service_selected",
+      "requirement": "At 80 columns or more both panes show the service list and the first service's owner, on-call contact and status.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "wide", "focus": "list", "selected": "billing-api", "status": "ready", "visible": ["Services", "Owner team: Payments", "On-call contact: payments-oncall", "Status: up"]}
+    },
+    {
+      "id": "S_down_selects_next_service",
+      "requirement": "Moving down the list selects the next service and its details replace the previous ones.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}],
+      "expect": {"selected": "auth-svc", "visible": ["Owner team: Identity"], "absent": ["Owner team: Payments"]}
+    },
+    {
+      "id": "S_narrow_enter_shows_details",
+      "requirement": "Below 80 columns only one pane shows; Enter moves to the details of the selected service.",
+      "size": {"width": 40, "height": 10},
+      "records": "Main",
+      "steps": [{"key": "enter"}],
+      "expect": {"layout": "narrow", "focus": "detail", "selected": "billing-api", "visible": ["Status: up"]}
+    },
+    {
+      "id": "S_replace_keeps_selected_service",
+      "requirement": "Application code supplies reloaded data as a ready snapshot; the selected service stays selected and shows its new status.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}, {"replace": {"status": "ready", "records": "Reloaded"}}],
+      "expect": {"selected": "auth-svc", "visible": ["Status: up"], "absent": ["Status: down"]}
+    },
+    {
+      "id": "S_tiny_asks_for_resize",
+      "requirement": "Below the narrow minimum the browser asks for a resize instead of showing services.",
+      "size": {"width": 20, "height": 5},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "tiny", "visible": ["Resize"]}
+    }
+  ]
+}

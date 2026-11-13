@@ -1,0 +1,21 @@
+{
+  "formatVersion": "tui-json/v1",
+  "profileVersion": "record-browser/v1",
+  "id": "BranchBrowser",
+  "title": "Git branches",
+  "fields": [
+    {"id": "Name", "label": "Branch"},
+    {"id": "Hash", "label": "Commit"},
+    {"id": "Author", "label": "Author"},
+    {"id": "Subject", "label": "Subject"},
+    {"id": "Divergence", "label": "Ahead/behind main"}
+  ],
+  "identity": "Name",
+  "summary": "Name",
+  "details": ["Subject", "Author", "Hash", "Divergence"],
+  "listLabel": "Branches",
+  "detailLabel": "Details",
+  "layout": {"narrowWidth": 24, "narrowHeight": 6, "wideWidth": 90, "wideHeight": 6, "listWidth": 28},
+  "detailText": "wrap",
+  "emit": {"mode": "package", "package": "branchbrowser"}
+}

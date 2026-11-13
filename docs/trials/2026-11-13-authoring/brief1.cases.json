@@ -1,0 +1,57 @@
+{
+  "formatVersion": "record-browser-cases/v1",
+  "profileVersion": "record-browser/v1",
+  "model": {"canonicalSHA256": "UNKNOWN"},
+  "records": {
+    "Main": [
+      {"Name": "main", "Hash": "1a2b3c4", "Author": "Ana Lopez", "Subject": "Merge pull request 12 from docs", "Divergence": "0 ahead, 0 behind"},
+      {"Name": "feature/login", "Hash": "9f8e7d6", "Author": "Ben Kato", "Subject": "Add login form", "Divergence": "3 ahead, 1 behind"},
+      {"Name": "fix/typo", "Hash": "5c4b3a2", "Author": "Chen Wu", "Subject": "Fix typo in help text", "Divergence": "1 ahead, 2 behind"}
+    ],
+    "Long": [
+      {"Name": "feature/long", "Hash": "7a7a7a7", "Author": "Dana Ortiz", "Subject": "word01 word02 word03 word04 word05 word06 word07 word08 word09 word10 word11 word12 word13 word14 word15 word16 word17 word18 word19 word20 word21 word22 word23 word24 word25 word26 word27 word28 word29 word30", "Divergence": "12 ahead, 0 behind"}
+    ]
+  },
+  "cases": [
+    {
+      "id": "B_wide_first_branch_selected",
+      "requirement": "At 90 columns or more both panes show; the first branch is selected and its subject is shown first among the details.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "wide", "focus": "list", "selected": "main", "status": "ready", "visible": ["Branches", "Subject: Merge pull request 12 from docs", "Author: Ana Lopez", "Commit: 1a2b3c4", "Ahead/behind main: 0 ahead, 0 behind"]}
+    },
+    {
+      "id": "B_down_selects_next_branch",
+      "requirement": "Moving down the branch list selects the next branch and its details replace the previous ones.",
+      "size": {"width": 100, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "j"}],
+      "expect": {"selected": "feature/login", "visible": ["Subject: Add login form", "Ahead/behind main: 3 ahead, 1 behind"], "absent": ["Merge pull request 12"]}
+    },
+    {
+      "id": "B_narrow_enter_shows_details",
+      "requirement": "Below 90 columns only one pane shows; Enter moves to the details, which show the subject.",
+      "size": {"width": 60, "height": 20},
+      "records": "Main",
+      "steps": [{"key": "enter"}],
+      "expect": {"layout": "narrow", "focus": "detail", "selected": "main", "visible": ["Subject: Merge pull request 12 from docs"]}
+    },
+    {
+      "id": "B_long_subject_read_in_full",
+      "requirement": "A long commit subject is wrapped in the details pane so that every word of it is readable.",
+      "size": {"width": 100, "height": 20},
+      "records": "Long",
+      "steps": [],
+      "expect": {"layout": "wide", "selected": "feature/long", "visible": ["Subject: word01 word02", "word30"], "absent": ["…"]}
+    },
+    {
+      "id": "B_tiny_asks_for_resize",
+      "requirement": "Below the narrow minimum the browser asks for a resize instead of showing branches.",
+      "size": {"width": 20, "height": 5},
+      "records": "Main",
+      "steps": [],
+      "expect": {"layout": "tiny", "visible": ["Resize"]}
+    }
+  ]
+}
