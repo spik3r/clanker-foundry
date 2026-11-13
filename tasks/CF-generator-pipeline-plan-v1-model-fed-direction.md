@@ -1,6 +1,6 @@
 ---
 id: CF-generator-pipeline-plan-v1
-status: completed
+status: in-progress
 owner: Claude planning contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -63,3 +63,12 @@ authoring trial's briefs, outputs and observed tool results under
 `docs/trials/2026-11-13-authoring/`, this task record and new immutable Project
 Memory files. It changes no product code. Run the repository validator and
 whitespace checks and open a pull request.
+
+## Second progress record claim
+
+Owner: Claude planning contributor. This claim is limited to adding a dated
+section to `docs/generator-pipeline-plan.md` that records the gap-driven
+profile work merged since the trials section, the three further consumer
+changes, what they showed and what remains open, plus this task record and new
+immutable Project Memory files. It changes no product code. Run the repository
+validator and whitespace checks and open a pull request.
