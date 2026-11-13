@@ -3,7 +3,7 @@
   "profile": "json-boolean/v1",
   "generator": {
     "id": "jsonvalidator",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "toolchain": "go1.27.3"
   },
   "model": {
@@ -12,12 +12,12 @@
   "files": [
     {
       "path": "validator.go",
-      "sha256": "27990b6b275345d6fa519285fd473fb0492964a74c84002377f1e1a10c7f743d",
+      "sha256": "baa3f5f46968b8621823d47af9af076dbd600e0aded76b949ca5a65f47b57334",
       "bytes": 1867
     },
     {
       "path": "validator.ts",
-      "sha256": "50b521bfa0b46a62c74bb8e65e52dc5f16d6938854041596ab5de7c78abc956f",
+      "sha256": "603689d40aa43c8bc94f54fe9d8078a3cd7ef6c5b7a1f6ce6686751b71452917",
       "bytes": 2161
     }
   ]

@@ -1,0 +1,78 @@
+{
+  "profile": "json-boolean/v1",
+  "root": {
+    "type": "object",
+    "additionalProperties": true,
+    "properties": [
+      {
+        "name": "code",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3
+        }
+      },
+      {
+        "name": "note",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "maxLength": 2
+        }
+      },
+      {
+        "name": "tag",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "minLength": 2
+        }
+      },
+      {
+        "name": "exact",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        }
+      },
+      {
+        "name": "empty",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 0
+        }
+      },
+      {
+        "name": "version",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "const": "v1"
+        }
+      },
+      {
+        "name": "word",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "const": "café"
+        }
+      },
+      {
+        "name": "only",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "a"
+          ]
+        }
+      }
+    ]
+  }
+}

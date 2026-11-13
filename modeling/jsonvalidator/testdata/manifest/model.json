@@ -1,0 +1,52 @@
+{
+  "profile": "json-boolean/v1",
+  "root": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": [
+      {
+        "name": "name",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "version",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      {
+        "name": "enabled",
+        "required": true,
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      {
+        "name": "tags",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "name": "kind",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "scanner",
+            "reporter",
+            "exporter"
+          ]
+        }
+      }
+    ]
+  }
+}

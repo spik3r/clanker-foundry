@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:jsonvalidator:json-boolean:v1:schema",
   "title": "json-boolean/v1 model",
-  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It does check the exact members of each node shape, property name syntax, at most 128 properties per object and that additionalProperties is true.",
+  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It also cannot express: unique enum values; minLength not above maxLength; the 256-byte limit on const and enum strings (a pattern cannot count bytes); and the refusal of control characters and U+FFFD in those strings in every spelling. It does check the exact members of each node shape, which string members may be combined, enum size 1 to 32, length bounds as integers 0 to 65535, property name syntax, at most 128 properties per object and that additionalProperties is a boolean.",
   "type": "object",
   "additionalProperties": false,
   "required": ["profile", "root"],
@@ -12,14 +12,43 @@
   },
   "$defs": {
     "node": {
-      "description": "One shape of the predicate. Extra input properties are always allowed, so object nodes carry additionalProperties true and nothing else.",
+      "description": "One shape of the predicate. Object nodes say whether extra input properties are allowed with additionalProperties true or false.",
       "oneOf": [
         {
-          "description": "A JSON string.",
+          "description": "A JSON string, with no further rule.",
           "type": "object",
           "additionalProperties": false,
           "required": ["type"],
           "properties": {"type": {"const": "string"}}
+        },
+        {
+          "description": "A JSON string equal to one value, compared exactly.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "const"],
+          "properties": {"type": {"const": "string"}, "const": {"type": "string", "maxLength": 256}}
+        },
+        {
+          "description": "A JSON string equal to one of 1 to 32 values (unique, checked by Go), compared exactly.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "enum"],
+          "properties": {
+            "type": {"const": "string"},
+            "enum": {"type": "array", "minItems": 1, "maxItems": 32, "items": {"type": "string", "maxLength": 256}}
+          }
+        },
+        {
+          "description": "A JSON string whose length in code points is within the bounds. At least one bound is present. minLength not above maxLength is checked by Go.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "anyOf": [{"required": ["minLength"], "properties": {"minLength": true}}, {"required": ["maxLength"], "properties": {"maxLength": true}}],
+          "properties": {
+            "type": {"const": "string"},
+            "minLength": {"type": "integer", "minimum": 0, "maximum": 65535},
+            "maxLength": {"type": "integer", "minimum": 0, "maximum": 65535}
+          }
         },
         {
           "description": "A JSON boolean, optionally fixed to one value.",
@@ -42,7 +71,7 @@
           "required": ["type", "additionalProperties", "properties"],
           "properties": {
             "type": {"const": "object"},
-            "additionalProperties": {"const": true},
+            "additionalProperties": {"type": "boolean"},
             "properties": {
               "type": "array",
               "maxItems": 128,

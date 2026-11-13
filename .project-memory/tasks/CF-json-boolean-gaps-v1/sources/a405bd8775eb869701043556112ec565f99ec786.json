@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a405bd8775eb869701043556112ec565f99ec786",
+  "id": "CF-json-boolean-gaps-v1",
+  "path": "tasks/CF-json-boolean-gaps-v1-strings-and-closed-objects.md",
+  "blob": "4d2464be448e312df86b8f016145562ad04f322e",
+  "record": "---\nid: CF-json-boolean-gaps-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Close recorded gaps in the JSON boolean validator profile\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. Two records name the\nsame gaps in `json-boolean/v1`: the first consumer review in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md) and the gap\nreport for brief 4 of the\n[authoring trial](../docs/trials/2026-11-13-authoring/README.md).\n\nScope, under `modeling/jsonvalidator/` and the profile registry: optional\nstring `const`, `enum`, `minLength` and `maxLength`; `additionalProperties`\nmay be `false`; canonical encoding rules for these with unchanged digests for\nmodels that use none; generator version 1.1.0 with regenerated fixtures; two\nnew fixtures with literal cases run in Go and TypeScript, one being the\ntrial's plugin manifest requirement; schema, registry and documents updated;\none loop in the `json-validator-go` workflow that checks the new fixtures. Also\nthis task record and new immutable Project Memory files.\n\nExclusions: numbers, regular expressions, unions, cross-field rules, error\nmessages, defaults and nullable values stay outside the profile. No change to\nother generators, the harness or the contract.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/jsonvalidator`, the\nTypeScript check, `go test -race` in `modeling/gencontract` and\n`modeling/foundrygen`, the node schema test, the repository validator,\nwhitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-json-boolean-gaps-v1-strings-and-closed-objects.md",
+        "id": "CF-json-boolean-gaps-v1",
+        "blob": "4d2464be448e312df86b8f016145562ad04f322e",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

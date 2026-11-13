@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "json-boolean/v1",
+  "generator": {
+    "id": "jsonvalidator",
+    "version": "1.1.0",
+    "toolchain": "go1.27.3"
+  },
+  "model": {
+    "canonicalSHA256": "f02cc6ace5e4f45b47d0ff0b1f6bcacf247ad0a30efb1bf78e269dcf5832ab6d"
+  },
+  "files": [
+    {
+      "path": "validator.go",
+      "sha256": "2578a43493774eea99349c251e1aeb60dfbab170dd56d272a86196526bfe84fd",
+      "bytes": 1892
+    },
+    {
+      "path": "validator.ts",
+      "sha256": "5e0a68f5f3c9c656bad974bd55dcaede1fd13e8630694f12a0e8f4fd00195cda",
+      "bytes": 2210
+    }
+  ]
+}

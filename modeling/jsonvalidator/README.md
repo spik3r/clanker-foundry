@@ -59,7 +59,21 @@ diff -u testdata/sample/validator.ts "$output/generated/validator.ts"
 diff -u testdata/sample/foundry-manifest.json "$output/generated/foundry-manifest.json"
 GOTOOLCHAIN=local GOPROXY=off go run ./cmd/jsonvalidator \
   check testdata/sample/model.json "$output/generated"
+for name in manifest lengths; do
+  GOTOOLCHAIN=local GOPROXY=off go run ./cmd/jsonvalidator \
+    generate "testdata/$name/model.json" "$output/$name"
+  for f in validator.go validator.ts foundry-manifest.json; do
+    diff -u "testdata/$name/$f" "$output/$name/$f"
+  done
+done
 ```
+
+String nodes can carry `const`, `enum` or length bounds, and object nodes can
+forbid extra properties; see [PROFILE.md](PROFILE.md). A model that uses none of
+this keeps its digest. The `manifest` fixture (a plugin manifest with a
+three-value `kind` and no extra properties, 52 cases) and the `lengths` fixture
+(length bounds, a constant, a one-value enum, astral characters and unpaired
+surrogates, 50 cases) run in both languages like the sample.
 
 The synthetic sample has 46 literal cases: 12 accepted and 34 refused. Both
 languages execute those exact expectations. Compiler tests also execute seven

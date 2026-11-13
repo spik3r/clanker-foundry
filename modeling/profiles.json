@@ -38,12 +38,17 @@
       "summary": "Boolean predicate over parsed JSON, emitted as Go and TypeScript functions.",
       "profileDoc": "modeling/jsonvalidator/PROFILE.md",
       "schema": "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
-      "examples": ["modeling/jsonvalidator/testdata/sample/model.json"],
+      "examples": [
+        "modeling/jsonvalidator/testdata/sample/model.json",
+        "modeling/jsonvalidator/testdata/manifest/model.json",
+        "modeling/jsonvalidator/testdata/lengths/model.json"
+      ],
       "emits": ["Go source file", "TypeScript source file"],
       "cannotExpress": [
-        "forbidding extra properties",
-        "defaults, enums or nullable values",
-        "numeric or regular-expression constraints",
+        "defaults or nullable values",
+        "numbers, or numeric constraints",
+        "regular-expression or format constraints on strings",
+        "enums or constants of numbers, null or other non-string values",
         "unions or recursive references",
         "cross-field rules",
         "error messages or a first-error result"

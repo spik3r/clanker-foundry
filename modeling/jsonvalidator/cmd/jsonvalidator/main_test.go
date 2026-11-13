@@ -385,12 +385,38 @@ func TestUnsupportedModelsRefuse(t *testing.T) {
 		"coercion":                wrap(`{"type":"string","coerce":true}`),
 		"default":                 wrap(`{"type":"string","default":"x"}`),
 		"regex":                   wrap(`{"type":"string","pattern":".*"}`),
+		"const-and-enum":          wrap(`{"type":"string","const":"a","enum":["a"]}`),
+		"const-and-min":           wrap(`{"type":"string","const":"a","minLength":1}`),
+		"enum-and-max":            wrap(`{"type":"string","enum":["a"],"maxLength":3}`),
+		"const-number":            wrap(`{"type":"string","const":1}`),
+		"const-null":              wrap(`{"type":"string","const":null}`),
+		"const-control":           wrap(`{"type":"string","const":"a\u0001"}`),
+		"const-newline":           wrap(`{"type":"string","const":"a\n"}`),
+		"const-del":               wrap(`{"type":"string","const":"a\u007f"}`),
+		"const-c1":                wrap(`{"type":"string","const":"a\u0085"}`),
+		"const-lone-surrogate":    wrap(`{"type":"string","const":"\ud800"}`),
+		"const-replacement-char":  wrap(`{"type":"string","const":"\ufffd"}`),
+		"const-257-bytes":         wrap(`{"type":"string","const":"` + strings.Repeat("a", 257) + `"}`),
+		"enum-empty":              wrap(`{"type":"string","enum":[]}`),
+		"enum-null":               wrap(`{"type":"string","enum":null}`),
+		"enum-not-array":          wrap(`{"type":"string","enum":"a"}`),
+		"enum-number":             wrap(`{"type":"string","enum":["a",1]}`),
+		"enum-duplicate":          wrap(`{"type":"string","enum":["a","b","a"]}`),
+		"enum-33-values":          wrap(`{"type":"string","enum":[` + enumValues(33) + `]}`),
+		"min-negative":            wrap(`{"type":"string","minLength":-1}`),
+		"min-float":               wrap(`{"type":"string","minLength":1.0}`),
+		"min-exponent":            wrap(`{"type":"string","minLength":1e2}`),
+		"min-string":              wrap(`{"type":"string","minLength":"1"}`),
+		"min-null":                wrap(`{"type":"string","minLength":null}`),
+		"min-leading-zero":        wrap(`{"type":"string","minLength":01}`),
+		"max-65536":               wrap(`{"type":"string","maxLength":65536}`),
+		"min-above-max":           wrap(`{"type":"string","minLength":3,"maxLength":2}`),
+		"closed-null":             wrap(`{"type":"object","additionalProperties":"false","properties":[]}`),
 		"null-const":              wrap(`{"type":"boolean","const":null}`),
 		"numeric-const":           wrap(`{"type":"boolean","const":1}`),
 		"missing-items":           wrap(`{"type":"array"}`),
 		"null-items":              wrap(`{"type":"array","items":null}`),
 		"missing-extra-policy":    wrap(`{"type":"object","properties":[]}`),
-		"reject-extras":           wrap(`{"type":"object","additionalProperties":false,"properties":[]}`),
 		"null-extra-policy":       wrap(`{"type":"object","additionalProperties":null,"properties":[]}`),
 		"null-properties":         wrap(`{"type":"object","additionalProperties":true,"properties":null}`),
 		"missing-required":        wrap(`{"type":"object","additionalProperties":true,"properties":[{"name":"x","schema":{"type":"string"}}]}`),
@@ -667,4 +693,136 @@ func TestCompilerExactBoundaries(t *testing.T) {
 			}
 		})
 	}
+}
+
+func enumValues(n int) string {
+	var parts []string
+	for i := range n {
+		parts = append(parts, fmt.Sprintf("%q", fmt.Sprintf("v%d", i)))
+	}
+	return strings.Join(parts, ",")
+}
+
+func TestNewConstructsBoundaries(t *testing.T) {
+	for _, root := range []string{
+		`{"type":"string","const":""}`,
+		`{"type":"string","const":"` + strings.Repeat("a", 256) + `"}`,
+		`{"type":"string","const":"caf\u00e9\ud83d\ude00"}`,
+		`{"type":"string","enum":["a"]}`,
+		`{"type":"string","enum":[` + enumValues(32) + `]}`,
+		`{"type":"string","minLength":0}`,
+		`{"type":"string","maxLength":65535}`,
+		`{"type":"string","minLength":2,"maxLength":2}`,
+		`{"type":"object","additionalProperties":false,"properties":[]}`,
+	} {
+		if _, _, err := compile([]byte(wrap(root))); err != nil {
+			t.Errorf("supported shape rejected: %.80s: %v", root, err)
+		}
+	}
+}
+
+// The models below used only constructs that existed in 1.0.0. Their canonical
+// digests must not move.
+func TestExistingDigestsUnchanged(t *testing.T) {
+	sample, err := os.ReadFile("../../testdata/sample/model.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	object := func(prop string) string {
+		return `{"profile":"json-boolean/v1","root":{"type":"object","additionalProperties":true,"properties":[` + prop + `]}}`
+	}
+	for name, item := range map[string]struct{ model, want string }{
+		"sample":               {string(sample), "01bea4ac3c1699b3b2381c9d1339fc2cd8ce9b2fbb86b80e093b3834fc254563"},
+		"requirement-optional": {object(`{"name":"enabled","required":false,"schema":{"type":"boolean"}}`), "2d686ed86c427d4c0b8118e495c42545abd8469fb5a9bed8948839cc023df6c3"},
+		"requirement-required": {object(`{"name":"enabled","required":true,"schema":{"type":"boolean"}}`), "b57974dd597ddbf8aff73d0cc26d1190fec715fb01839509f24059f909e9c8da"},
+		"requirement-constant": {object(`{"name":"enabled","required":true,"schema":{"type":"boolean","const":true}}`), "3e518d8b9f85b2b52f8c027acccb4f360791f60fa6bf92e14ba6c18e3c71f887"},
+	} {
+		l, err := parseModel([]byte(item.model))
+		if err != nil {
+			t.Fatalf("%s: %v", name, err)
+		}
+		if got := l.canonicalSHA256(); got != item.want {
+			t.Errorf("%s digest moved: %s", name, got)
+		}
+	}
+}
+
+func TestNewConstructCanonicalForms(t *testing.T) {
+	canon := func(root string) string {
+		l, err := parseModel([]byte(wrap(root)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return string(l.canonical)
+	}
+	for _, c := range []struct{ root, want string }{
+		{`{"maxLength":5,"type":"string","minLength":1}`, `{"type":"string","minLength":1,"maxLength":5}`},
+		{`{"type":"string","enum":["b","a","\u00e9","B"]}`, "{\"type\":\"string\",\"enum\":[\"B\",\"a\",\"b\",\"\u00e9\"]}"},
+		{`{"type":"string","const":"a\"b\\c"}`, `{"type":"string","const":"a\"b\\c"}`},
+	} {
+		want := `{"profile":"json-boolean/v1","root":` + c.want + `}`
+		if got := canon(c.root); got != want {
+			t.Errorf("canonical form\n got %s\nwant %s", got, want)
+		}
+	}
+	one, constant := canon(`{"type":"string","enum":["a"]}`), canon(`{"type":"string","const":"a"}`)
+	if one == constant {
+		t.Error("one-value enum and const share a canonical form")
+	}
+	closed := canon(`{"type":"object","additionalProperties":false,"properties":[]}`)
+	open := canon(`{"type":"object","additionalProperties":true,"properties":[]}`)
+	if closed == open || !strings.Contains(closed, `"additionalProperties":false`) {
+		t.Error("closed and open objects must differ in the canonical form")
+	}
+	a := canon(`{"type":"string","enum":["z","y"]}`)
+	b := canon(`{"type":"string","enum":["y","z"]}`)
+	if a != b {
+		t.Error("enum order changed the canonical form")
+	}
+}
+
+func TestGeneratedClosedObjects(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		checkGeneratedLiterals(t, []byte(wrap(`{"type":"object","additionalProperties":false,"properties":[]}`)), []profileCase{
+			{`{}`, true}, {`{"a":1}`, false}, {`{"__proto__":{}}`, false}, {`{"constructor":1}`, false}, {`[]`, false}, {`null`, false},
+		})
+	})
+	for _, name := range []string{"__proto__", "constructor", "toString"} {
+		t.Run("declared-"+name, func(t *testing.T) {
+			quoted, _ := json.Marshal(name)
+			model := wrap(`{"type":"object","additionalProperties":false,"properties":[{"name":` + string(quoted) + `,"required":false,"schema":{"type":"string"}}]}`)
+			checkGeneratedLiterals(t, []byte(model), []profileCase{
+				{`{}`, true}, {`{` + string(quoted) + `:"x"}`, true}, {`{` + string(quoted) + `:1}`, false},
+				{`{"other":"x"}`, false}, {`{` + string(quoted) + `:"x","other":"x"}`, false},
+			})
+		})
+		t.Run("undeclared-"+name, func(t *testing.T) {
+			quoted, _ := json.Marshal(name)
+			model := wrap(`{"type":"object","additionalProperties":false,"properties":[{"name":"a","required":false,"schema":{"type":"string"}}]}`)
+			checkGeneratedLiterals(t, []byte(model), []profileCase{
+				{`{"a":"x"}`, true}, {`{` + string(quoted) + `:"x"}`, false}, {`{` + string(quoted) + `:null}`, false}, {`{"a":"x",` + string(quoted) + `:{}}`, false},
+			})
+		})
+	}
+	t.Run("nested", func(t *testing.T) {
+		model := wrap(`{"type":"array","items":{"type":"object","additionalProperties":false,"properties":[{"name":"a","required":true,"schema":{"type":"object","additionalProperties":true,"properties":[]}}]}}`)
+		checkGeneratedLiterals(t, []byte(model), []profileCase{
+			{`[{"a":{"free":1}}]`, true}, {`[{"a":{},"b":1}]`, false}, {`[{"a":{}},{"a":{},"z":0}]`, false}, {`[]`, true},
+		})
+	})
+}
+
+func TestGeneratedStringConstructs(t *testing.T) {
+	checkGeneratedLiterals(t, []byte(wrap(`{"type":"string","const":"a\u00e9\ud83d\ude00"}`)), []profileCase{
+		{`"a\u00e9\ud83d\ude00"`, true}, {`"aé😀"`, true}, {`"ae\u0301\ud83d\ude00"`, false}, {`"a\u00e9\ud83d"`, false}, {`"a\u00e9"`, false}, {`""`, false}, {`1`, false}, {`null`, false},
+	})
+	checkGeneratedLiterals(t, []byte(wrap(`{"type":"string","enum":["a","B","\u00e9"]}`)), []profileCase{
+		{`"a"`, true}, {`"B"`, true}, {`"é"`, true}, {`"b"`, false}, {`"A"`, false}, {`"e\u0301"`, false}, {`"a "`, false}, {`""`, false}, {`["a"]`, false}, {`true`, false},
+	})
+	checkGeneratedLiterals(t, []byte(wrap(`{"type":"string","minLength":2,"maxLength":3}`)), []profileCase{
+		{`""`, false}, {`"a"`, false}, {`"ab"`, true}, {`"abc"`, true}, {`"abcd"`, false},
+		{`"\ud83d\ude00"`, false}, {`"\ud83d\ude00\ud83d\ude00"`, true}, {`"\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00"`, false},
+		{`"\ud800"`, false}, {`"\ud800\ud800"`, true}, {`"\ud800\ud800\ud800\ud800"`, false}, {`"\ude00\ud83d"`, true},
+		{`"e\u0301"`, true}, {`1`, false}, {`null`, false},
+	})
 }
