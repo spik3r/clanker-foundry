@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "2d733244-5c17-48ab-908b-102dcc10e423",
+  "runId": "0ac24c20-0f19-41e9-8186-3dce49880524",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tesserae-export",
+    "path": "tasks/CF-tesserae-export-stat-table.md",
+    "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+    "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0b5f91d99e675990220bdc4b6ac653eb17e7a3d08f0381509fb861e89b712407"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tesserae-contract-export",
+  "pullRequest": null,
+  "at": "2026-11-13T02:04:28.214Z",
+  "summary": "Export validated numeric stats and tables as bounded Tesserae input",
+  "next": "Implement and validate",
+  "files": [
+    "tasks/CF-tesserae-export.md",
+    "tasks/CF-tesserae-export-stat-table.md",
+    "modeling/diagram/tesserae/export.go",
+    "modeling/diagram/tesserae/export_test.go",
+    "modeling/diagram/TESSERAE.md",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go"
+  ]
+}

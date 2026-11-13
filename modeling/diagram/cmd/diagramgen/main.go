@@ -14,6 +14,7 @@ import (
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/tesserae"
 )
 
 const (
@@ -22,7 +23,7 @@ const (
 	exitDrift   = 3
 )
 
-const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT"
+const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT | tesserae MODEL"
 
 type usageError string
 
@@ -57,6 +58,16 @@ func run(args []string, stdout, stderr io.Writer) int {
 
 func dispatch(args []string) (line string, drift []string, err error) {
 	switch {
+	case len(args) == 2 && args[0] == "tesserae":
+		raw, err := contract.ReadModel(args[1])
+		if err != nil {
+			return "", nil, err
+		}
+		out, err := tesserae.Export(raw)
+		if err != nil {
+			return "", nil, usageError(err.Error())
+		}
+		return string(out), nil, nil
 	case len(args) == 2 && args[0] == "validate":
 		res, err := load(args[1])
 		return res.Identity, nil, err

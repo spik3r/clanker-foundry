@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "89977a01-41a0-47bb-8c67-afbba7e32b96",
+  "runId": "0ac24c20-0f19-41e9-8186-3dce49880524",
+  "kind": "complete",
+  "parents": [
+    "2d733244-5c17-48ab-908b-102dcc10e423"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tesserae-export",
+    "path": "tasks/CF-tesserae-export-stat-table.md",
+    "revision": "ddb6b72fbc2a58fda1fe0f838a2424a0f542882e",
+    "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0b5f91d99e675990220bdc4b6ac653eb17e7a3d08f0381509fb861e89b712407"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tesserae-contract-export",
+  "pullRequest": null,
+  "at": "2026-11-13T02:08:11.144Z",
+  "summary": "Bounded stat/table Tesserae model export with no renderer vendoring",
+  "next": "Independent review; no publication",
+  "files": [
+    "tasks/CF-tesserae-export.md",
+    "tasks/CF-tesserae-export-stat-table.md",
+    "modeling/diagram/tesserae/export.go",
+    "modeling/diagram/tesserae/export_test.go",
+    "modeling/diagram/TESSERAE.md",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go"
+  ],
+  "validation": "Full diagram race tests and vet passed; repository validator and diff checks passed; actual local Tesserae renderPage roundtrip passed with escaped text and neutral provenance; independent review in progress",
+  "snapshot": {
+    "tasks/CF-tesserae-export.md": {
+      "blob": null,
+      "mode": null
+    },
+    "tasks/CF-tesserae-export-stat-table.md": {
+      "blob": "f1ceb94c89cf8164a800d2c8328224562b85edfe",
+      "mode": "100644"
+    },
+    "modeling/diagram/tesserae/export.go": {
+      "blob": "db2f2267f82131fc5176872c52094b5a5d64c46b",
+      "mode": "100644"
+    },
+    "modeling/diagram/tesserae/export_test.go": {
+      "blob": "2c24a9dbd66e659bb596df4d89b62b03df347fa9",
+      "mode": "100644"
+    },
+    "modeling/diagram/TESSERAE.md": {
+      "blob": "73accaf908f69836c2ae2e86d85b8bce22f5def9",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "0a46eaace1be0359d385a1e17c7b2301168c7e0d",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/tesserae_test.go": {
+      "blob": "9c940349a75096e3b7822d3c7ec4acb2a5456c39",
+      "mode": "100644"
+    }
+  }
+}
