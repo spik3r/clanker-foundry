@@ -270,6 +270,69 @@ then the pipeline is a CLI and a CI job.
   generated share is small and gaps are many, narrow the aim to the profiles
   that pay rather than widening the language.
 
+## Progress at 13 November 2026
+
+Facts from merged pull requests on main at `ecd5824`. Each had passing hosted
+checks when merged. Task records under `tasks/` hold the detail.
+
+| Step | State | Where |
+| --- | --- | --- |
+| 1. Generator contract v1 | Done | [contract](../modeling/CONTRACT.md), [harness](../modeling/gencontract/README.md); `tuic`, `jsonvalidator`, `lifecyclegen` and `diagramgen` are registered and pass |
+| 2. Authoring contract | Done except one item | [profile registry](../modeling/profiles.json), a schema per profile tested against its generator, [profiles reference](../skills/model-driven-design/references/foundry-profiles.md) and [gap report](../skills/model-driven-design/assets/gap-report.md) |
+| 3. Entrypoint and drift check | Done, not yet used by a consumer | [foundrygen](../modeling/foundrygen/README.md) |
+| 4. First consumer | Not started | waits on the owner; see below |
+| 4b. Diagrams and dashboards | Done | [process](../modeling/diagram/PROFILE.md), [sequence](../modeling/diagram/SEQUENCE.md), [class](../modeling/diagram/CLASS.md) and [dashboard](../modeling/diagram/DASHBOARD.md) profiles in one generator |
+| 5. Profile growth from gaps | Started | package output and wrapped detail text for the [record browser](../modeling/tui/PROFILE.md) |
+| 6. Runtime | Not started | as planned |
+
+Departures from the plan:
+
+- The lifecycle generator conforms through a new `lifecyclegen` command, not
+  through `modelc`. `modelc validate` with no argument is a working command and
+  a usage error under the contract, so one binary could not be both. `modelc`
+  and its committed output are unchanged.
+- The lifecycle README was not edited, because an existing test pins its hash.
+  The `lifecyclegen` documentation sits beside the command.
+- The diagram and dashboard profiles share one generator, `diagramgen`, which
+  selects a profile by the model. The registry test was changed to allow that.
+
+Still open in step 2: expectation literals as data for the record browser.
+Its acceptance checks are still Go test text, not cases a fixed runner reads.
+
+### First consumer review
+
+The owner gave read access to the consumer application on 12 November. A
+read-only review, with its main claims spot-checked against the code, found:
+
+- **Recommended feature:** a browser over the saved MCP inventory file, started
+  from a new command flag. It is new, read-only, has its data on disk already
+  and touches no existing screen. The record browser profile covers the screen;
+  loading the file and flattening each row to strings stays hand-written, an
+  estimated 90 to 130 lines.
+- **Gaps closed for it:** importable package output with a chosen package name,
+  and wrapped multi-line detail text.
+- **Gaps left open:** the generated browser draws its own frame and handles
+  quit itself, so embedding it in the application's page shell needs a
+  hand-written wrapper; fields are strings only; the list has no search or
+  filter. A standalone command avoids the first of these.
+- **Rejected candidates:** replacing the existing mode guide screen needs
+  search, grouping and a select action the profile cannot express; a findings
+  browser would duplicate an existing table; the JSON validator lacks string
+  constants, enums and non-empty checks the application's formats need.
+
+These are findings and a recommendation. The owner has not yet confirmed the
+feature or authorized a change to the consumer, so milestone 1 in the
+[current direction](current-direction.md) is not met.
+
+### What nobody has checked
+
+- No consumer repository runs `foundrygen` in its CI.
+- No recorded trial shows a fresh agent session producing a valid model or a
+  gap report from a brief and the registry alone, the step 2 completion test.
+- The BPMN XML output has not been imported into a BPMN tool.
+- Diagram and dashboard pictures were looked at by the coordinating session,
+  not yet by the owner.
+
 ## Owner decisions
 
 Recorded on 12 November 2026.

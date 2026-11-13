@@ -1,0 +1,24 @@
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "class-diagram/v1",
+  "generator": {
+    "id": "diagramgen",
+    "version": "1.2.0",
+    "toolchain": "go1.27.4"
+  },
+  "model": {
+    "canonicalSHA256": "ce37e95d58e9c2a858b746a268ba2ecef161a2f60dc6435972518066a0822c15"
+  },
+  "files": [
+    {
+      "path": "diagram.svg",
+      "sha256": "d5e546638b8aeb5437a132109c8040cfb2c5018d0e972e3f187cd7ef3fbde054",
+      "bytes": 9279
+    },
+    {
+      "path": "model.json",
+      "sha256": "7825947bd3143997293df4322c60b49a16670559fb17ce08280d843701bcc58f",
+      "bytes": 4568
+    }
+  ]
+}

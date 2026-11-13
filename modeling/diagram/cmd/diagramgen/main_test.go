@@ -152,7 +152,7 @@ func TestRefusals(t *testing.T) {
 		{"truncated model", []string{"validate", write("trunc.json", `{"formatVersion":"diagram-json/v1"`)}},
 		{"empty object", []string{"validate", write("obj.json", `{}`)}},
 		{"array", []string{"validate", write("arr.json", `[]`)}},
-		{"unsupported profile", []string{"validate", write("prof.json", `{"profileVersion":"class-diagram/v1"}`)}},
+		{"unsupported profile", []string{"validate", write("prof.json", `{"profileVersion":"class-diagram/v9"}`)}},
 		{"generate invalid model", []string{"generate", write("bad.json", `{}`), filepath.Join(dir, "bad-out")}},
 		{"check invalid model", []string{"check", write("bad2.json", `[]`), existing}},
 		{"generate onto existing directory", []string{"generate", model(t), existing}},

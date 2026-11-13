@@ -1,0 +1,23 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "sequence-diagram/v1",
+  "id": "Checkout",
+  "title": "Checkout",
+  "participants": [
+    {"id": "User", "label": "Customer", "kind": "actor"},
+    {"id": "Web", "label": "Web app", "kind": "participant"},
+    {"id": "Pay", "label": "Payment service", "kind": "participant"}
+  ],
+  "steps": [
+    {"id": "S1", "kind": "message", "from": "User", "to": "Web", "label": "Place order", "style": "sync"},
+    {"id": "S2", "kind": "message", "from": "Web", "to": "Pay", "label": "Charge card", "style": "sync"},
+    {"id": "S3", "kind": "message", "from": "Pay", "to": "Web", "label": "Charged", "style": "reply"},
+    {"id": "S4", "kind": "note", "over": ["Web"], "label": "Order is now confirmed"},
+    {"id": "S5", "kind": "message", "from": "Web", "to": "Web", "label": "Record order", "style": "sync"},
+    {"id": "S6", "kind": "note", "over": ["Web", "Pay"], "label": "Receipt is sent after the payment service confirms the charge"},
+    {"id": "S7", "kind": "message", "from": "Web", "to": "User", "label": "Show receipt", "style": "async"}
+  ],
+  "groups": [
+    {"id": "G1", "kind": "alt", "label": "card accepted", "first": "S2", "last": "S3"}
+  ]
+}

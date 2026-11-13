@@ -1,0 +1,422 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "class-diagram/v1",
+  "id": "Plugins",
+  "title": "Plugin host",
+  "classes": [
+    {
+      "id": "Base",
+      "name": "BasePlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "protected"
+        },
+        {
+          "name": "timeoutSeconds",
+          "type": "int",
+          "visibility": "protected"
+        }
+      ],
+      "operations": [
+        {
+          "name": "run",
+          "parameters": [
+            {
+              "name": "ctx",
+              "type": "Context"
+            },
+            {
+              "name": "input",
+              "type": "Artifact"
+            }
+          ],
+          "returns": "Result",
+          "visibility": "public"
+        },
+        {
+          "name": "buildCommand",
+          "parameters": [
+            {
+              "name": "target",
+              "type": "String"
+            },
+            {
+              "name": "outputDirectory",
+              "type": "Path"
+            },
+            {
+              "name": "rateLimit",
+              "type": "int"
+            }
+          ],
+          "returns": "List<String>",
+          "visibility": "protected"
+        }
+      ]
+    },
+    {
+      "id": "Cfg",
+      "name": "Config",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "profile",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Crawl",
+      "name": "CrawlPlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "depth",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Ctx",
+      "name": "Context",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "outputDirectory",
+          "type": "Path",
+          "visibility": "public"
+        },
+        {
+          "name": "rateLimit",
+          "type": "int",
+          "visibility": "public"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Fuzz",
+      "name": "FuzzPlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "wordlist",
+          "type": "Path",
+          "visibility": "private"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Loader",
+      "name": "PluginLoader",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "searchPaths",
+          "type": "List<Path>",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "load",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "Path"
+            }
+          ],
+          "returns": "Plugin",
+          "visibility": "public"
+        },
+        {
+          "name": "reload",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Native",
+      "name": "NativePlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "entryPoint",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "invoke",
+          "returns": "int",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "id": "Plugin",
+      "name": "Plugin",
+      "kind": "interface",
+      "attributes": [],
+      "operations": [
+        {
+          "name": "name",
+          "returns": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "run",
+          "parameters": [
+            {
+              "name": "ctx",
+              "type": "Context"
+            },
+            {
+              "name": "input",
+              "type": "Artifact"
+            }
+          ],
+          "returns": "Result",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Probe",
+      "name": "ProbePlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "requestsPerHostBudget",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "userAgentWithAVeryLongDescriptiveName",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "send",
+          "parameters": [
+            {
+              "name": "host",
+              "type": "String"
+            }
+          ],
+          "returns": "Response",
+          "visibility": "protected"
+        }
+      ]
+    },
+    {
+      "id": "Registry",
+      "name": "Registry",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "byName",
+          "type": "Map<String, Plugin>",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "find",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "String"
+            }
+          ],
+          "returns": "Plugin",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Result",
+      "name": "Result",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "findings",
+          "type": "List<Finding>",
+          "visibility": "public"
+        },
+        {
+          "name": "exitCode",
+          "type": "int",
+          "visibility": "public"
+        }
+      ],
+      "operations": []
+    },
+    {
+      "id": "Runner",
+      "name": "PipelineRunner",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "mode",
+          "type": "Mode",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "execute",
+          "parameters": [
+            {
+              "name": "target",
+              "type": "String"
+            }
+          ],
+          "returns": "Report",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "id": "Shell",
+      "name": "ShellPlugin",
+      "kind": "class",
+      "attributes": [
+        {
+          "name": "commandTemplate",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "operations": [
+        {
+          "name": "render",
+          "parameters": [
+            {
+              "name": "vars",
+              "type": "Map<String, String>"
+            }
+          ],
+          "returns": "String",
+          "visibility": "private"
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "R01",
+      "kind": "realization",
+      "from": "Base",
+      "to": "Plugin"
+    },
+    {
+      "id": "R02",
+      "kind": "inheritance",
+      "from": "Shell",
+      "to": "Base"
+    },
+    {
+      "id": "R03",
+      "kind": "inheritance",
+      "from": "Native",
+      "to": "Base"
+    },
+    {
+      "id": "R04",
+      "kind": "inheritance",
+      "from": "Probe",
+      "to": "Shell"
+    },
+    {
+      "id": "R05",
+      "kind": "inheritance",
+      "from": "Crawl",
+      "to": "Shell"
+    },
+    {
+      "id": "R06",
+      "kind": "inheritance",
+      "from": "Fuzz",
+      "to": "Probe"
+    },
+    {
+      "id": "R07",
+      "kind": "directed",
+      "from": "Loader",
+      "to": "Plugin",
+      "label": "creates",
+      "toLabel": "*"
+    },
+    {
+      "id": "R08",
+      "kind": "composition",
+      "from": "Registry",
+      "to": "Loader",
+      "fromLabel": "1",
+      "toLabel": "1"
+    },
+    {
+      "id": "R09",
+      "kind": "directed",
+      "from": "Runner",
+      "to": "Registry",
+      "label": "looks up",
+      "toLabel": "1"
+    },
+    {
+      "id": "R10",
+      "kind": "dependency",
+      "from": "Runner",
+      "to": "Ctx",
+      "label": "builds"
+    },
+    {
+      "id": "R11",
+      "kind": "dependency",
+      "from": "Plugin",
+      "to": "Ctx",
+      "label": "reads"
+    },
+    {
+      "id": "R12",
+      "kind": "dependency",
+      "from": "Plugin",
+      "to": "Result",
+      "label": "returns"
+    },
+    {
+      "id": "R13",
+      "kind": "directed",
+      "from": "Ctx",
+      "to": "Cfg",
+      "toLabel": "1"
+    },
+    {
+      "id": "R14",
+      "kind": "association",
+      "from": "Runner",
+      "to": "Result",
+      "fromLabel": "1",
+      "toLabel": "0..*"
+    },
+    {
+      "id": "R15",
+      "kind": "dependency",
+      "from": "Fuzz",
+      "to": "Cfg",
+      "label": "wordlist from"
+    }
+  ]
+}

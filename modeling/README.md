@@ -25,6 +25,8 @@ only a first check.
 | `lifecycle/v1` | `lifecyclegen` | Finite task lifecycle with guards, transitions and ordered effects, as a Go reducer with views. | [README](lifecycle/README.md) | [schema](lifecycle/authoring/lifecycle-v1.schema.json) |
 | `process-diagram/v1` | `diagramgen` | Business-process diagram of lanes, events, tasks, gateways and flows, as SVG and BPMN-style XML. | [PROFILE.md](diagram/PROFILE.md) | [schema](diagram/authoring/process-diagram-v1.schema.json) |
 | `dashboard/v1` | `diagramgen` | Dashboard of stat tiles, bar and line charts and tables over small embedded datasets, as one self-contained HTML file. | [DASHBOARD.md](diagram/DASHBOARD.md) | [schema](diagram/authoring/dashboard-v1.schema.json) |
+| `sequence-diagram/v1` | `diagramgen` | UML-style sequence diagram of participants, messages, notes and alt, opt and loop frames, as SVG. | [SEQUENCE.md](diagram/SEQUENCE.md) | [schema](diagram/authoring/sequence-diagram-v1.schema.json) |
+| `class-diagram/v1` | `diagramgen` | UML-style class diagram of classes, interfaces, enums and seven kinds of relation, as SVG. | [CLASS.md](diagram/CLASS.md) | [schema](diagram/authoring/class-diagram-v1.schema.json) |
 
 The harness's own `reference/v1` generator exists to test the contract and is
 not listed.
