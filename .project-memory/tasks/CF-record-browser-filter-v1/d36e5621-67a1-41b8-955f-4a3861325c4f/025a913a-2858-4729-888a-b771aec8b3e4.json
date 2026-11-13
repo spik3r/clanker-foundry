@@ -1,0 +1,172 @@
+{
+  "formatVersion": 2,
+  "eventId": "025a913a-2858-4729-888a-b771aec8b3e4",
+  "runId": "d36e5621-67a1-41b8-955f-4a3861325c4f",
+  "kind": "complete",
+  "parents": [
+    "36411934-0944-4f99-8620-35e1d2f1b8cb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-filter-v1",
+    "path": "tasks/CF-record-browser-filter-v1-list-filter.md",
+    "revision": "d96d08346c5f14134f6c57a927bbd2161a2962ae",
+    "blob": "c510ecec3483e082898f16cffd3efa54c560b4fc",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d7ab2049544c47fc253fd4822baafd6bb17a0f0055cbb434d92be75975e122d9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T22:42:14.666Z",
+  "summary": "record-browser gains an optional list filter with FilterText, FilterOpen and Shown accessors and matching cases support; tuic is 1.4.0 with unchanged digests for existing models",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "modeling/profiles.json",
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/authoring/record-browser-v1.schema.json",
+    "modeling/tui/authoring/schema.test.cjs",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/examples/browser-filter.json",
+    "modeling/tui/filter_test.go",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/model.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/templates/records.go.tmpl",
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-filter-v1-list-filter.md"
+  ],
+  "validation": "Go 1.27.4: modeling/tui gofmt -l . empty, go vet clean, go test -race -count=1 -p=1 ./... ok including filter acceptance for standalone and hosted and the 16 filter example cases; modeling/gencontract and modeling/foundrygen go test -race ok. node --test modeling/tui/authoring/*.test.cjs: 8 pass, 0 skipped (Node 22; CI uses 24). scripts/validate.sh PASS (skills-ref skipped). Not run: a real terminal session. Hosted CI not yet observed",
+  "snapshot": {
+    "modeling/profiles.json": {
+      "blob": "81f028651988f962e7599e1f7f261c75f9719a79",
+      "mode": "100644"
+    },
+    "modeling/tui/CASES.md": {
+      "blob": "d9539aebbe9c246b9b47e384579dcb8edc49490e",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "45301ab1e4ca62325540ad1a90bc475ad30fe770",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "2d5b81cbfa03ed8702bde7e3fd83970f7d20f2b9",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/filter_test.go.txt": {
+      "blob": "cadb0d77678ec4e9fecf9dcc9e5e52cf7024c7ff",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/cases.schema.test.cjs": {
+      "blob": "4cb464ea4c3be7758b4dbe578dae3c514b044c4a",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json": {
+      "blob": "851900001e85939b7b456dcd399a7ddef8b81f52",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/record-browser-v1.schema.json": {
+      "blob": "d6d597bf364d0370f9953a5c477d3da6578bd707",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/schema.test.cjs": {
+      "blob": "aa526b79ef39905e5cc32591b453e4e63ab1c85e",
+      "mode": "100644"
+    },
+    "modeling/tui/cases.go": {
+      "blob": "b4d0ab2a50196e79404c2cf49cd1ed3464d5d7b7",
+      "mode": "100644"
+    },
+    "modeling/tui/cases_test.go": {
+      "blob": "336cf6e4cf96910c2e7e55925da5ea2dab0b7a3e",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/main_test.go": {
+      "blob": "d6b3b4375d77ef813bcd717592d3960262fc3643",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuicases/runner.go.tmpl": {
+      "blob": "6308c1b3aa009e3a8535de4be6e894527b11f5d9",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "e032d532d59b244348a9af4bdc91e3af625c26d1",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "73e2815433d0a9d728cf1c75df8ab93d071c9e8a",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-filter.cases.json": {
+      "blob": "2e4cec7c0bb6bfeaa97dae4fc2fadbe63c52cf32",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-filter.json": {
+      "blob": "3de916768f4f0766c6ab356db445dcca2e0ff1b4",
+      "mode": "100644"
+    },
+    "modeling/tui/filter_test.go": {
+      "blob": "6b40f9295cc57c830ac9cf2541b782934eaf220f",
+      "mode": "100644"
+    },
+    "modeling/tui/generated_test.go": {
+      "blob": "119a208faf5ad2e3835df46ecd3480568367ad96",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "db8ee9d571a12715e6c43e4002d6a2fd5794499e",
+      "mode": "100644"
+    },
+    "modeling/tui/model.go": {
+      "blob": "bace0931dbb3acce42b4ef31595ea013392afe3e",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "8df7dedae6a8dbe88a7101038a5201349630e9af",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "268fbae2ec4a5869789e62d00a7cb677b5862b91",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/keys.go.tmpl": {
+      "blob": "0681106c77a26077cc63d92d1b57cf8e8a80c1bd",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/records.go.tmpl": {
+      "blob": "65830f0aac76b92204bf97ac2fd5a50439aa9238",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "ea7ab40b77c3f7727bb28c9b99024c135aae6e93",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "c3c6a6e71cbad2b9afcf7d20d1880b7614e82ac8",
+      "mode": "100644"
+    },
+    "tasks/CF-record-browser-filter-v1-list-filter.md": {
+      "blob": "3d6b17578ce7ff3dabaee3b27efa9b1884c69807",
+      "mode": "100644"
+    }
+  }
+}

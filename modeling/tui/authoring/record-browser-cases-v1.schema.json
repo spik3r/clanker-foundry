@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:tuic:record-browser-cases:v1:schema",
   "title": "record-browser-cases/v1 expectation cases",
-  "description": "Authoring aid for record-browser-cases/v1 documents. tuicases validate is authoritative. This schema cannot express: that model.canonicalSHA256 equals the digest of the model the cases are checked against; that every record has exactly the model's field ids and a unique nonempty identity; that records.SetName and replace.records name a declared record set; unique case ids; duplicate JSON keys; trailing data; the 256 KiB size limit and the nesting limit; byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte string can pass here and fail in Go); and that numbers must be written as integers (24.0 and 2.4e1 pass here and fail in Go).",
+  "description": "Authoring aid for record-browser-cases/v1 documents. tuicases validate is authoritative. This schema cannot express: that model.canonicalSHA256 equals the digest of the model the cases are checked against; that every record has exactly the model's field ids and a unique nonempty identity; that cases using text steps, the / and backspace keys or the filter, filterOpen and shown expectations are paired with a model that has a filter; that records.SetName and replace.records name a declared record set; unique case ids; duplicate JSON keys; trailing data; the 256 KiB size limit and the nesting limit; byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte string can pass here and fail in Go); and that numbers must be written as integers (24.0 and 2.4e1 pass here and fail in Go).",
   "type": "object",
   "additionalProperties": false,
   "required": ["formatVersion", "profileVersion", "model", "records", "cases"],
@@ -49,6 +49,13 @@
       "maxLength": 240,
       "pattern": "^[^\\p{Cc}\\u2028\\u2029]+$"
     },
+    "typed": {
+      "description": "Text typed into the filter input: 1 to 64 code points without control characters, U+2028 or U+2029. It needs a model with a filter (Go checks). maxLength counts UTF-16 units in some validators, so the code point limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[^\\p{Cc}\\u2028\\u2029]+$"
+    },
     "size": {
       "type": "object",
       "additionalProperties": false,
@@ -83,7 +90,13 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": ["key"],
-                "properties": {"key": {"enum": ["tab", "shift+tab", "enter", "esc", "?", "q", "ctrl+c", "j", "k", "up", "down", "pgup", "pgdown", "home", "end"]}}
+                "properties": {"key": {"enum": ["tab", "shift+tab", "enter", "esc", "?", "q", "ctrl+c", "j", "k", "up", "down", "pgup", "pgdown", "home", "end", "/", "backspace"]}}
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["text"],
+                "properties": {"text": {"$ref": "#/$defs/typed"}}
               },
               {
                 "type": "object",
@@ -127,6 +140,9 @@
             "absent": {"$ref": "#/$defs/texts"},
             "quit": {"type": "boolean"},
             "capturesKeys": {"type": "boolean"},
+            "filter": {"description": "The kept or in-progress filter text, 0 to 64 code points. Needs a model with a filter (Go checks).", "type": "string", "maxLength": 64, "pattern": "^[^\\p{Cc}\\u2028\\u2029]*$"},
+            "filterOpen": {"type": "boolean"},
+            "shown": {"description": "Number of records the list shows. Needs a model with a filter (Go checks).", "type": "integer", "minimum": 0, "maximum": 4096},
             "keyHints": {
               "description": "1 to 12 key and action pairs that must appear, in this relative order, in the browser's KeyHints().",
               "type": "array",

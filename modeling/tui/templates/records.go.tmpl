@@ -33,6 +33,9 @@ func recordsData(next Snapshot) (data,error) {
   d.items=append(d.items,item{id:record.[[[.Identity]]],label:record.[[[.Summary]]],details:[]string{
  [[[range $id := .Details]]][[[range $.Fields]]][[[if eq .ID $id]]][[[quote .Label]]] + ": " + record.[[[.ID]]],
  [[[end]]][[[end]]][[[end]]]
+ },match:[]string{
+ [[[if .Filter]]][[[range $id := .Filter.Fields]]]fold(record.[[[$id]]]),
+ [[[end]]][[[end]]]
  }})
  }
  return d,nil

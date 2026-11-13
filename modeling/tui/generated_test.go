@@ -187,3 +187,46 @@ func TestPackageModeBuildsInsideHostModule(t *testing.T) {
 	}
 	goIn(t, host, []string{"TUI_ACCEPTANCE_VARIANT=base"}, "test", "-race", "-count=1", "-p=1", "./...")
 }
+
+// filterModel is the sample model with a filter over Name and Description.
+func filterModel(t *testing.T) Model {
+	t.Helper()
+	m := sampleModel(t)
+	m.Filter = &Filter{Fields: []string{"Name", "Description"}}
+	return m
+}
+
+// The list filter behaves as documented in both embed modes.
+func TestGeneratedFilterBehavior(t *testing.T) {
+	if testing.Short() {
+		t.Skip("generated Go acceptance invokes compiler")
+	}
+	for _, variant := range []string{"standalone", "hosted"} {
+		t.Run(variant, func(t *testing.T) {
+			m := filterModel(t)
+			if variant == "hosted" {
+				m.Embed = EmbedHosted
+			}
+			files, err := Compile(m)
+			if err != nil {
+				t.Fatal(err)
+			}
+			dir := t.TempDir()
+			writeFiles(t, dir, files)
+			raw, err := os.ReadFile(filepath.Join("acceptance", "filter_test.go.txt"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(dir, "filter_test.go"), raw, 0600); err != nil {
+				t.Fatal(err)
+			}
+			goIn(t, dir, nil, "vet", "./...")
+			out := goIn(t, dir, []string{"TUI_ACCEPTANCE_VARIANT=" + variant}, "test", "-race", "-count=1", "-p=1", "-run", "^TestFilter", "-v", "./...")
+			for _, want := range []string{"--- PASS: TestFilterOpenTypeAndMatchRule", "--- PASS: TestFilterEscPrecedence", "--- PASS: TestFilterInputCapturesEveryKey", "--- PASS: TestFilterBoundsAndSanitising", "--- PASS: TestFilterNavigationUsesTheFilteredList"} {
+				if !strings.Contains(out, want) {
+					t.Fatalf("missing %q in\n%s", want, out)
+				}
+			}
+		})
+	}
+}

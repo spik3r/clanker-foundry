@@ -3,6 +3,16 @@ package [[[.PackageName]]]
 import (
 	"fmt"
 	"slices"
+	"strings"
+	"unicode"
+	"unicode/utf8"
+)
+
+// filterEnabled is set by the model's filter member. When false the filter
+// code below is never reached and the browser behaves as it always did.
+const (
+	filterEnabled = [[[.Filtered]]]
+	maxFilter     = 64
 )
 
 type status int
@@ -16,6 +26,46 @@ const (
 type item struct {
 	id, label string
 	details   []string
+	// match holds the values of the filter fields after case folding.
+	match []string
+}
+
+// fold is the case folding of the filter: strings.ToLower on valid UTF-8.
+// Invalid bytes become U+FFFD first, as they do when drawn. There is no
+// normalization, no diacritic folding and no pattern syntax.
+func fold(s string) string { return strings.ToLower(strings.ToValidUTF8(s, "\uFFFD")) }
+
+func (r item) matches(folded string) bool {
+	for _, v := range r.match {
+		if strings.Contains(v, folded) {
+			return true
+		}
+	}
+	return false
+}
+
+// cleanFilterText keeps the printable code points of s: no control characters,
+// no line or paragraph separators, no invalid UTF-8.
+func cleanFilterText(s string) string {
+	return strings.Map(func(r rune) rune {
+		if r == utf8.RuneError || unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
+			return -1
+		}
+		return r
+	}, s)
+}
+
+// appendFilter adds the clean code points of text to cur, up to maxFilter.
+func appendFilter(cur, text string) string {
+	room := maxFilter - utf8.RuneCountInString(cur)
+	if room <= 0 {
+		return cur
+	}
+	add := []rune(cleanFilterText(text))
+	if len(add) > room {
+		add = add[:room]
+	}
+	return cur + string(add)
 }
 
 type data struct {
@@ -36,6 +86,8 @@ type state struct {
 	focus                               pane
 	listOffset, detailOffset, helpOffset int
 	helpOpen                            bool
+	filterText                          string
+	filterOpen                          bool
 
 	// Last Ready extents let status displays clamp without retaining record content.
 	listLines, detailLines int
@@ -58,10 +110,33 @@ func (b browser) replaceData(next data, p layout) (browser, error) {
 		}
 		ids[row.id] = true
 		next.items[i].details = slices.Clone(row.details)
+		next.items[i].match = slices.Clone(row.match)
 	}
 	b.data = next
 	b.state = b.state.normalize(next, p)
 	return b, nil
+}
+
+// rows returns the indices of the records the list shows, in order: all of
+// them, or those with a filter field containing the filter text.
+func (s state) rows(d data) []int {
+	if d.status != ready {
+		return nil
+	}
+	out := make([]int, 0, len(d.items))
+	if !filterEnabled || s.filterText == "" {
+		for i := range d.items {
+			out = append(out, i)
+		}
+		return out
+	}
+	want := fold(s.filterText)
+	for i, row := range d.items {
+		if row.matches(want) {
+			out = append(out, i)
+		}
+	}
+	return out
 }
 
 func (s state) selectedIndex(d data) int {
@@ -73,15 +148,23 @@ func (s state) selectedIndex(d data) int {
 
 func (s state) normalize(d data, p layout) state {
 	idx := s.selectedIndex(d)
+	pos := -1
 	if d.status == ready {
-		if idx < 0 {
+		rows := s.rows(d)
+		if pos = slices.Index(rows, idx); pos < 0 {
 			s.selectedID = ""
 			s.listOffset, s.detailOffset = 0, 0
-			if len(d.items) > 0 {
-				s.selectedID, idx = d.items[0].id, 0
+			idx = -1
+			if len(rows) > 0 {
+				idx, pos = rows[0], 0
+				s.selectedID = d.items[idx].id
 			}
 		}
-		s.listLines, s.detailLines = len(d.items), 0
+		if idx < 0 && len(d.items) > 0 {
+			// Nothing matches the filter: only the list can be shown.
+			s.focus = listPane
+		}
+		s.listLines, s.detailLines = len(rows), 0
 		if idx >= 0 {
 			s.detailLines = detailCount(d.items[idx].details, p)
 		}
@@ -89,11 +172,11 @@ func (s state) normalize(d data, p layout) state {
 	if p.variant != tiny {
 		s.listOffset = clampOffset(s.listOffset, s.listLines, p.contentRows)
 		s.detailOffset = clampOffset(s.detailOffset, s.detailLines, p.contentRows)
-		if idx >= 0 {
-			if idx < s.listOffset {
-				s.listOffset = idx
-			} else if idx >= s.listOffset+p.contentRows {
-				s.listOffset = idx - p.contentRows + 1
+		if pos >= 0 {
+			if pos < s.listOffset {
+				s.listOffset = pos
+			} else if pos >= s.listOffset+p.contentRows {
+				s.listOffset = pos - p.contentRows + 1
 			}
 		}
 		s.helpOffset = clampOffset(s.helpOffset, len(helpLines(s, d)), p.contentRows)
@@ -125,8 +208,24 @@ func (b browser) update(a action, p layout) browser {
 		b.state = s
 		return b
 	}
+	if a == filterAction && filterEnabled {
+		if p.variant != tiny && b.data.status == ready && len(b.data.items) > 0 {
+			s.filterOpen, s.focus = true, listPane
+			b.state = s.normalize(b.data, p)
+		}
+		return b
+	}
 	idx := s.selectedIndex(b.data)
-	if p.variant == tiny || idx < 0 {
+	if p.variant == tiny || b.data.status != ready {
+		return b
+	}
+	if idx < 0 {
+		// Nothing is selected: either there are no records or nothing
+		// matches the kept filter, which esc clears.
+		if a == closeAction && filterEnabled && s.filterText != "" {
+			s.filterText = ""
+			b.state = s.normalize(b.data, p)
+		}
 		return b
 	}
 
@@ -140,12 +239,19 @@ func (b browser) update(a action, p layout) browser {
 	case openAction:
 		s.focus = detailPane
 	case closeAction:
-		s.focus = listPane
+		// esc returns from the details first; from the list it clears a kept filter.
+		if s.focus == detailPane {
+			s.focus = listPane
+		} else if filterEnabled {
+			s.filterText = ""
+		}
 	default:
 		if s.focus == detailPane {
 			s.detailOffset = scroll(s.detailOffset, a, detailCount(b.data.items[idx].details, p), p.contentRows)
 		} else {
-			next := idx
+			rows := s.rows(b.data)
+			pos := slices.Index(rows, idx)
+			next := pos
 			switch a {
 			case upAction:
 				next--
@@ -158,14 +264,34 @@ func (b browser) update(a action, p layout) browser {
 			case topAction:
 				next = 0
 			case bottomAction:
-				next = len(b.data.items) - 1
+				next = len(rows) - 1
 			}
-			next = min(max(0, next), len(b.data.items)-1)
-			if next != idx {
-				s.selectedID = b.data.items[next].id
+			next = min(max(0, next), len(rows)-1)
+			if next != pos {
+				s.selectedID = b.data.items[rows[next]].id
 				s.detailOffset = 0
 			}
 		}
+	}
+	b.state = s.normalize(b.data, p)
+	return b
+}
+
+// filterKey handles one key while the filter input is open. key is the key's
+// string and text the characters it types; every other key does nothing.
+func (b browser) filterKey(key, text string, p layout) browser {
+	s := b.state
+	switch {
+	case text == "" && key == "enter":
+		s.filterOpen = false
+	case text == "" && key == "esc":
+		s.filterText, s.filterOpen = "", false
+	case text == "" && key == "backspace":
+		if _, n := utf8.DecodeLastRuneInString(s.filterText); n > 0 {
+			s.filterText = s.filterText[:len(s.filterText)-n]
+		}
+	default:
+		s.filterText = appendFilter(s.filterText, text)
 	}
 	b.state = s.normalize(b.data, p)
 	return b

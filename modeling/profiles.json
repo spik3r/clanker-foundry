@@ -10,7 +10,8 @@
       "examples": [
         "modeling/tui/examples/browser.json",
         "modeling/tui/examples/browser-package.json",
-        "modeling/tui/examples/browser-hosted.json"
+        "modeling/tui/examples/browser-hosted.json",
+        "modeling/tui/examples/browser-filter.json"
       ],
       "cases": {
         "format": "record-browser-cases/v1",
@@ -20,7 +21,8 @@
         "examples": [
           "modeling/tui/examples/browser.cases.json",
           "modeling/tui/examples/browser-package.cases.json",
-          "modeling/tui/examples/browser-hosted.cases.json"
+          "modeling/tui/examples/browser-hosted.cases.json",
+          "modeling/tui/examples/browser-filter.cases.json"
         ]
       },
       "emits": ["Go package"],
@@ -29,6 +31,7 @@
         "custom key actions or shell commands",
         "field types other than string",
         "more than two panes",
+        "sorting, or filtering by anything but a substring of chosen fields",
         "background jobs or loading data from files or services"
       ]
     },

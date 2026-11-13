@@ -1,0 +1,384 @@
+package recordbrowser
+
+// Copied unchanged into models whose fields are ID, Name, Status and
+// Description, whose list label is "Records" and whose filter fields are Name
+// and Description. TUI_ACCEPTANCE_VARIANT=hosted selects the hosted
+// expectations (q and ctrl+c never quit); anything else is standalone.
+import (
+	"fmt"
+	"os"
+	"strings"
+	"testing"
+
+	tea "charm.land/bubbletea/v2"
+	"github.com/charmbracelet/x/ansi"
+)
+
+func fhosted() bool { return os.Getenv("TUI_ACCEPTANCE_VARIANT") == "hosted" }
+
+func frecs() []Record {
+	return []Record{
+		{ID: "a1", Name: "Alpha", Status: "active", Description: "First server"},
+		{ID: "b2", Name: "Beta", Status: "active", Description: "Backup SERVER"},
+		{ID: "g3", Name: "Gamma", Status: "active", Description: "Spare ÄBC"},
+		{ID: "d4", Name: "Delta", Status: "active", Description: "xyz"},
+	}
+}
+
+func fnew(t *testing.T, w, h int, r []Record) Model {
+	t.Helper()
+	m, err := New(r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	next, _ := m.Update(tea.WindowSizeMsg{Width: w, Height: h})
+	return next.(Model)
+}
+
+func fsend(m Model, msg tea.Msg) (Model, tea.Cmd) {
+	next, cmd := m.Update(msg)
+	return next.(Model), cmd
+}
+
+func fkey(m Model, k string) (Model, tea.Cmd) {
+	v := tea.KeyPressMsg{}
+	switch k {
+	case "enter":
+		v.Code = tea.KeyEnter
+	case "esc":
+		v.Code = tea.KeyEscape
+	case "tab":
+		v.Code = tea.KeyTab
+	case "backspace":
+		v.Code = tea.KeyBackspace
+	case "down":
+		v.Code = tea.KeyDown
+	case "end":
+		v.Code = tea.KeyEnd
+	case "pgdown":
+		v.Code = tea.KeyPgDown
+	case "ctrl+c":
+		v.Code, v.Mod = 'c', tea.ModCtrl
+	default:
+		v.Code, v.Text = []rune(k)[0], k
+	}
+	return fsend(m, v)
+}
+
+func fkeys(m Model, ks ...string) Model {
+	for _, k := range ks {
+		m, _ = fkey(m, k)
+	}
+	return m
+}
+
+// ftype delivers one key message per code point.
+func ftype(m Model, s string) Model {
+	for _, r := range s {
+		m, _ = fkey(m, string(r))
+	}
+	return m
+}
+
+func fview(m Model) string { return ansi.Strip(m.View().Content) }
+
+func TestFilterOpenTypeAndMatchRule(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	if m.FilterOpen() || m.CapturesKeys() || m.FilterText() != "" || m.Shown() != 4 {
+		t.Fatal("initial filter state")
+	}
+	m, _ = fkey(m, "/")
+	if !m.FilterOpen() || !m.CapturesKeys() || m.FilterText() != "" || m.Shown() != 4 {
+		t.Fatal("open state")
+	}
+	m = ftype(m, "SERV")
+	if m.FilterText() != "SERV" || m.Shown() != 2 || m.Selected() != "a1" {
+		t.Fatalf("second field, case-insensitive: %q %d %q", m.FilterText(), m.Shown(), m.Selected())
+	}
+	v := fview(m)
+	if !strings.Contains(v, "2/4 /SERV_") || strings.Contains(v, "Gamma") {
+		t.Fatalf("label or rows:\n%s", v)
+	}
+	// ID and Status are not filter fields.
+	m = fkeys(m, "esc")
+	m = ftype(fkeys(m, "/"), "active")
+	if m.Shown() != 0 {
+		t.Fatalf("non-filter field matched: %d", m.Shown())
+	}
+	// Case folding is strings.ToLower: Ä folds to ä, there is no diacritic folding.
+	m = fkeys(m, "esc")
+	m = ftype(fkeys(m, "/"), "äb")
+	if m.Shown() != 1 || m.Selected() != "g3" {
+		t.Fatalf("Ä/ä: %d %q", m.Shown(), m.Selected())
+	}
+	m = fkeys(m, "esc")
+	m = ftype(fkeys(m, "/"), "ab")
+	if m.Shown() != 0 {
+		t.Fatalf("diacritics folded: %d", m.Shown())
+	}
+	// No pattern syntax: . and * are literal characters.
+	m = fkeys(m, "esc")
+	m = ftype(fkeys(m, "/"), "a.")
+	if m.Shown() != 0 {
+		t.Fatal("pattern syntax")
+	}
+}
+
+func TestFilterNoMatchesBackspaceKeepClear(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	m = ftype(fkeys(m, "/"), "zzz")
+	if m.Shown() != 0 || m.Selected() != "" || !strings.Contains(fview(m), "No matches") {
+		t.Fatalf("no matches: %d %q\n%s", m.Shown(), m.Selected(), fview(m))
+	}
+	// "z" matched Delta (xyz), so Delta was selected; it still matches the
+	// empty filter and stays selected.
+	m = fkeys(m, "backspace", "backspace", "backspace")
+	if m.FilterText() != "" || m.Shown() != 4 || m.Selected() != "d4" {
+		t.Fatalf("backspace: %q %d %q", m.FilterText(), m.Shown(), m.Selected())
+	}
+	m, _ = fkey(m, "backspace")
+	if m.FilterText() != "" {
+		t.Fatal("backspace on empty")
+	}
+	m = ftype(m, "ta")
+	m, _ = fkey(m, "enter")
+	if m.FilterOpen() || m.CapturesKeys() || m.FilterText() != "ta" || m.Shown() != 2 {
+		t.Fatalf("enter keeps: %v %v %q %d", m.FilterOpen(), m.CapturesKeys(), m.FilterText(), m.Shown())
+	}
+	if !strings.Contains(fview(m), "[Records] 2/4 /ta") {
+		t.Fatalf("kept label:\n%s", fview(m))
+	}
+	// esc in the list clears the kept filter; the selected record stays.
+	m = fkeys(m, "down")
+	sel := m.Selected()
+	m, _ = fkey(m, "esc")
+	if m.FilterText() != "" || m.Shown() != 4 || m.Selected() != sel {
+		t.Fatalf("esc in list: %q %d %q (was %q)", m.FilterText(), m.Shown(), m.Selected(), sel)
+	}
+	// esc while typing clears the text and closes the input.
+	m = ftype(fkeys(m, "/"), "be")
+	m, _ = fkey(m, "esc")
+	if m.FilterOpen() || m.FilterText() != "" || m.Shown() != 4 {
+		t.Fatal("esc while typing")
+	}
+}
+
+func TestFilterEscPrecedence(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	m = fkeys(ftype(fkeys(m, "/"), "server"), "enter")
+	m = fkeys(m, "enter") // detail focus
+	if m.Focus() != "detail" {
+		t.Fatal("detail focus")
+	}
+	m, _ = fkey(m, "esc")
+	if m.Focus() != "list" || m.FilterText() != "server" {
+		t.Fatalf("first esc returns to the list: %s %q", m.Focus(), m.FilterText())
+	}
+	m, _ = fkey(m, "esc")
+	if m.FilterText() != "" || m.Focus() != "list" {
+		t.Fatalf("second esc clears: %q", m.FilterText())
+	}
+	// "/" from the detail pane opens the input on the list.
+	m = fkeys(m, "enter", "/")
+	if !m.FilterOpen() || m.Focus() != "list" {
+		t.Fatal("/ from detail")
+	}
+	// esc with nothing selected clears a kept filter.
+	m = fkeys(ftype(fkeys(fkeys(m, "esc"), "/"), "zzz"), "enter")
+	if m.Selected() != "" || m.FilterText() != "zzz" {
+		t.Fatal("setup")
+	}
+	m, _ = fkey(m, "esc")
+	if m.FilterText() != "" || m.Selected() != "a1" {
+		t.Fatalf("esc with no match: %q %q", m.FilterText(), m.Selected())
+	}
+}
+
+func TestFilterInputCapturesEveryKey(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	m = fkeys(m, "/")
+	for _, k := range []string{"q", "1", "j", "?", "k", "g", "G", " "} {
+		var cmd tea.Cmd
+		m, cmd = fkey(m, k)
+		if cmd != nil {
+			t.Fatalf("%q returned a command", k)
+		}
+	}
+	if m.FilterText() != "q1j?kgG " || m.HelpOpen() || !m.FilterOpen() {
+		t.Fatalf("text %q help %v", m.FilterText(), m.HelpOpen())
+	}
+	// Keys that type nothing do nothing.
+	for _, k := range []string{"tab", "down", "end", "pgdown", "ctrl+c"} {
+		var cmd tea.Cmd
+		m, cmd = fkey(m, k)
+		if cmd != nil || !m.FilterOpen() || m.FilterText() != "q1j?kgG " || m.Selected() != "" && m.Shown() > 0 {
+			t.Fatalf("%q acted: %q open=%v", k, m.FilterText(), m.FilterOpen())
+		}
+	}
+	m, _ = fkey(m, "esc")
+	// With the input closed, q quits only a standalone browser.
+	_, cmd := fkey(m, "q")
+	if quit := cmd != nil && func() bool { _, ok := cmd().(tea.QuitMsg); return ok }(); quit == fhosted() {
+		t.Fatalf("quit after closing: %v hosted %v", quit, fhosted())
+	}
+}
+
+func TestFilterBoundsAndSanitising(t *testing.T) {
+	m := fkeys(fnew(t, 80, 12, frecs()), "/")
+	m = ftype(m, strings.Repeat("é", 70))
+	if got := []rune(m.FilterText()); len(got) != 64 {
+		t.Fatalf("bound: %d code points", len(got))
+	}
+	m = ftype(m, "x")
+	if len([]rune(m.FilterText())) != 64 {
+		t.Fatal("input beyond the bound was not ignored")
+	}
+	m, _ = fkey(m, "backspace")
+	if got := m.FilterText(); len([]rune(got)) != 63 || strings.Contains(got, "�") {
+		t.Fatalf("backspace removes one code point: %q", got)
+	}
+	// Multi-rune key text is bounded and control characters are dropped.
+	m = fkeys(fnew(t, 80, 12, frecs()), "/")
+	m, _ = fsend(m, tea.KeyPressMsg{Code: 'a', Text: "al\x1b[31m\x00\n\tpha"})
+	if m.FilterText() != "al[31mpha" {
+		t.Fatalf("sanitised: %q", m.FilterText())
+	}
+	m, _ = fsend(m, tea.KeyPressMsg{Code: 'x', Text: strings.Repeat("日本語", 40)})
+	if len([]rune(m.FilterText())) != 64 {
+		t.Fatalf("bounded: %d", len([]rune(m.FilterText())))
+	}
+	m, _ = fkey(m, "esc")
+	// Paste is text too.
+	m, _ = fkey(m, "/")
+	m, _ = fsend(m, tea.PasteMsg{Content: "Be\nta\x00"})
+	if m.FilterText() != "Beta" || m.Shown() != 1 {
+		t.Fatalf("paste: %q %d", m.FilterText(), m.Shown())
+	}
+	// Paste is ignored while the input is closed.
+	m = fkeys(m, "enter")
+	m, _ = fsend(m, tea.PasteMsg{Content: "zzz"})
+	if m.FilterText() != "Beta" {
+		t.Fatal("paste while closed")
+	}
+}
+
+func TestFilterSelectionFollowsIdentityAndReplaceReapplies(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	m = fkeys(m, "down") // b2
+	m = ftype(fkeys(m, "/"), "server")
+	if m.Selected() != "b2" {
+		t.Fatalf("selected record still matches: %q", m.Selected())
+	}
+	m = fkeys(ftype(m, "x"), "backspace")
+	m = fkeys(m, "backspace", "backspace", "backspace", "backspace", "backspace", "backspace")
+	m = ftype(m, "alp")
+	if m.Selected() != "a1" {
+		t.Fatalf("selection moves to the first match: %q", m.Selected())
+	}
+	m = fkeys(m, "enter")
+	// Replace keeps and re-applies the filter.
+	r := frecs()
+	r = append(r, Record{ID: "e5", Name: "Epsilon-alp", Status: "active", Description: "new"})
+	m, err := m.Replace(Snapshot{Status: Ready, Records: r})
+	if err != nil || m.Shown() != 2 || m.FilterText() != "alp" || m.Selected() != "a1" {
+		t.Fatalf("replace: %v %d %q %q", err, m.Shown(), m.FilterText(), m.Selected())
+	}
+	m, _ = m.Replace(Snapshot{Status: Loading})
+	if m.FilterText() != "alp" || m.Selected() != "" {
+		t.Fatal("loading keeps the filter text")
+	}
+	m, _ = m.Replace(Snapshot{Status: Failed, Message: "boom"})
+	if m.FilterText() != "alp" {
+		t.Fatal("failed keeps the filter text")
+	}
+	m, _ = m.Replace(Snapshot{Status: Ready, Records: []Record{{ID: "z", Name: "Zed", Status: "x", Description: "y"}}})
+	if m.Shown() != 0 || m.Selected() != "" || !strings.Contains(fview(m), "No matches") {
+		t.Fatalf("no record matches the kept filter: %d %q", m.Shown(), m.Selected())
+	}
+	m, _ = fkey(m, "esc")
+	if m.FilterText() != "" || m.Selected() != "z" {
+		t.Fatal("esc after replace")
+	}
+	// Clearing the filter keeps the selected identity.
+	m = fnew(t, 80, 12, frecs())
+	m = fkeys(ftype(fkeys(m, "/"), "delta"), "enter")
+	m, _ = fkey(m, "esc")
+	if m.Selected() != "d4" || m.Shown() != 4 {
+		t.Fatalf("clear keeps identity: %q", m.Selected())
+	}
+}
+
+func TestFilterNavigationUsesTheFilteredList(t *testing.T) {
+	var r []Record
+	for i := 0; i < 30; i++ {
+		r = append(r, Record{ID: fmt.Sprintf("id-%02d", i), Name: fmt.Sprintf("Row-%02d", i), Status: "active", Description: "d"})
+	}
+	m := fnew(t, 80, 12, r)
+	m = fkeys(ftype(fkeys(m, "/"), "row-2"), "enter")
+	if m.Shown() != 10 || m.Selected() != "id-20" {
+		t.Fatalf("shown %d selected %q", m.Shown(), m.Selected())
+	}
+	m, _ = fkey(m, "down")
+	if m.Selected() != "id-21" {
+		t.Fatalf("down: %q", m.Selected())
+	}
+	m, _ = fkey(m, "end")
+	if m.Selected() != "id-29" {
+		t.Fatalf("end: %q", m.Selected())
+	}
+	m, _ = fkey(m, "down")
+	if m.Selected() != "id-29" {
+		t.Fatalf("down at end: %q", m.Selected())
+	}
+	m, _ = fkey(m, "g")
+	if m.Selected() != "id-20" {
+		t.Fatalf("home: %q", m.Selected())
+	}
+	v := fview(m)
+	if !strings.Contains(v, "10/30 /row-2") || strings.Contains(v, "Row-19") {
+		t.Fatalf("filtered list:\n%s", v)
+	}
+	m, _ = fkey(m, "pgdown")
+	if m.Selected() == "id-20" {
+		t.Fatalf("pgdown did not move: %q", m.Selected())
+	}
+}
+
+func TestFilterKeyHintsAndHelp(t *testing.T) {
+	m := fnew(t, 80, 12, frecs())
+	has := func(m Model, key, action string) bool {
+		for _, h := range m.KeyHints() {
+			if h.Key == key && h.Action == action {
+				return true
+			}
+		}
+		return false
+	}
+	if !has(m, "/", "filter") {
+		t.Fatalf("hints %v", m.KeyHints())
+	}
+	m = fkeys(m, "/")
+	h := m.KeyHints()
+	if len(h) != 2 || h[0] != (KeyHint{"enter", "keep"}) || h[1] != (KeyHint{"esc", "clear"}) {
+		t.Fatalf("input hints %v", h)
+	}
+	m = fkeys(ftype(m, "al"), "enter", "?")
+	next, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: 40})
+	m = next.(Model)
+	help := fview(m)
+	if !m.HelpOpen() || !strings.Contains(help, "filter the list") || !strings.Contains(help, "enter keeps, esc clears") {
+		t.Fatalf("help:\n%s", help)
+	}
+	// Tiny: / does nothing.
+	tiny := fnew(t, 10, 3, frecs())
+	tiny, _ = fkey(tiny, "/")
+	if tiny.FilterOpen() {
+		t.Fatal("input opened in the tiny layout")
+	}
+	// Nothing to filter: / does nothing.
+	empty := fnew(t, 80, 12, nil)
+	empty, _ = fkey(empty, "/")
+	if empty.FilterOpen() {
+		t.Fatal("input opened without records")
+	}
+}

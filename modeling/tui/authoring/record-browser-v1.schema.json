@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:tuic:record-browser:v1:schema",
   "title": "record-browser/v1 model",
-  "description": "Authoring aid for tui-json/v1 models with profile record-browser/v1. Go validation in tuic is authoritative. This schema cannot express: unique field ids; that identity, summary and details name declared fields; the layout relations wideWidth >= narrowWidth, wideHeight >= narrowHeight and listWidth <= wideWidth - 9; duplicate JSON keys; trailing data; the 32 KiB size limit and the nesting limit; label byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte label can pass here and fail in Go); and that numbers must be written as integers (2.4e1 and 24.0 pass here and fail in Go).",
+  "description": "Authoring aid for tui-json/v1 models with profile record-browser/v1. Go validation in tuic is authoritative. This schema cannot express: unique field ids; that identity, summary, details and filter.fields name declared fields; the layout relations wideWidth >= narrowWidth, wideHeight >= narrowHeight and listWidth <= wideWidth - 9; duplicate JSON keys; trailing data; the 32 KiB size limit and the nesting limit; label byte lengths (maxLength counts characters, which are never fewer than bytes, so a long multibyte label can pass here and fail in Go); and that numbers must be written as integers (2.4e1 and 24.0 pass here and fail in Go).",
   "type": "object",
   "additionalProperties": false,
   "required": ["formatVersion", "profileVersion", "id", "title", "fields", "identity", "summary", "details", "listLabel", "detailLabel", "layout"],
@@ -62,6 +62,21 @@
     "detailSpacing": {
       "description": "Optional. compact (default) shows detail fields on consecutive rows; spaced puts one blank row between consecutive fields.",
       "enum": ["compact", "spaced"]
+    },
+    "filter": {
+      "description": "Optional (generator 1.4.0). Makes the list filterable by a case-insensitive substring of any of the named fields. 1 to 8 unique declared field ids; their order is not significant (the canonical encoding sorts them). Go checks that the ids are declared and unique.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fields"],
+      "properties": {
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/identifier"}
+        }
+      }
     },
     "emit": {
       "description": "Optional. module (default) writes a standalone module; package writes only the Go files of a package with the given name. package is required in package mode and refused in module mode.",

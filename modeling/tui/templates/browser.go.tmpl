@@ -41,9 +41,21 @@ func (m Model) KeyHints() []KeyHint { return keyHints(m.browser.state, m.browser
 func (m Model) Title() string { return [[[quote .Title]]] }
 
 // CapturesKeys reports whether the browser must receive every key. It is true
-// while the help overlay is open: a host must then forward all keys and not
-// treat digits, q or ctrl+c as its own.
-func (m Model) CapturesKeys() bool { return m.browser.state.helpOpen }
+// while the help overlay is open[[[if .Filtered]]] or the filter input is open[[[end]]]: a host must then
+// forward all keys and not treat digits, q or ctrl+c as its own.
+func (m Model) CapturesKeys() bool { return m.browser.state.helpOpen || m.browser.state.filterOpen }
+
+// FilterText returns the filter text, kept or being typed. It is "" when the
+// model has no filter.
+func (m Model) FilterText() string { return m.browser.state.filterText }
+
+// FilterOpen reports whether the filter input is open. It is false when the
+// model has no filter.
+func (m Model) FilterOpen() bool { return m.browser.state.filterOpen }
+
+// Shown returns the number of records the list shows now: all of them without
+// a filter text, else those that match. It is 0 while loading or failed.
+func (m Model) Shown() int { return len(m.browser.state.rows(m.browser.data)) }
 
 // WithColors returns a model that draws with the given colours. Each nonempty
 // value must be #RRGGBB; an empty value keeps the default for that role. On an
@@ -102,7 +114,15 @@ func (m Model) Update(msg tea.Msg)(tea.Model,tea.Cmd){
   m.width,m.height,m.sized=max(0,msg.Width),max(0,msg.Height),true
   m.browser=m.browser.resize(plan(m.width,m.height))
  case tea.KeyPressMsg:
+  if m.browser.state.filterOpen {
+   m.browser=m.browser.filterKey(msg.String(),msg.Text,plan(m.width,m.height))
+   return m,nil
+  }
   return m.handle(actionFor(msg.String()))
+ case tea.PasteMsg:
+  if m.browser.state.filterOpen {
+   m.browser=m.browser.filterKey("",msg.Content,plan(m.width,m.height))
+  }
  }
  return m,nil
 }

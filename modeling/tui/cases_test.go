@@ -206,7 +206,7 @@ func TestHostedExpectationsDecode(t *testing.T) {
 }
 
 func TestAllowedKeysAreTheDocumentedKeys(t *testing.T) {
-	want := "tab shift+tab enter esc ? q ctrl+c j k up down pgup pgdown home end"
+	want := "tab shift+tab enter esc ? q ctrl+c j k up down pgup pgdown home end / backspace"
 	if got := strings.Join(AllowedKeys, " "); got != want {
 		t.Fatalf("allowed keys %q, want %q", got, want)
 	}
@@ -258,6 +258,40 @@ func TestCheckAgainstModel(t *testing.T) {
 		err := c.CheckAgainst(m, digest)
 		if err == nil || errors.As(err, &stale) {
 			t.Errorf("%s: %v", name, err)
+		}
+	}
+}
+
+func TestFilterStepsAndExpectationsDecode(t *testing.T) {
+	step := func(s string) string {
+		return strings.Replace(baseCases, `{"key": "j"}`, s, 1)
+	}
+	for _, good := range []string{`{"text": "a"}`, `{"text": "` + strings.Repeat("é", 64) + `"}`, `{"text": "a b"}`, `{"key": "/"}`, `{"key": "backspace"}`} {
+		if _, err := DecodeCases([]byte(step(good))); err != nil {
+			t.Errorf("%s refused: %v", good, err)
+		}
+	}
+	for name, bad := range map[string]string{
+		"empty text":     `{"text": ""}`,
+		"65 code points": `{"text": "` + strings.Repeat("é", 65) + `"}`,
+		"newline":        `{"text": "a\nb"}`,
+		"escape":         `{"text": "\u001b[0m"}`,
+		"line separator": `{"text": "a b"}`,
+		"key and text":   `{"key": "j", "text": "a"}`,
+		"null text":      `{"text": null}`,
+	} {
+		if _, err := DecodeCases([]byte(step(bad))); err == nil {
+			t.Errorf("%s accepted", name)
+		}
+	}
+	for _, good := range []string{`"filter": ""`, `"filter": "abc"`, `"filterOpen": true`, `"shown": 0`, `"shown": 4096`} {
+		if _, err := DecodeCases([]byte(strings.Replace(baseCases, `"selected": "b"`, good, 1))); err != nil {
+			t.Errorf("%s refused: %v", good, err)
+		}
+	}
+	for _, bad := range []string{`"filter": "a\u0007"`, `"filter": "` + strings.Repeat("x", 65) + `"`, `"shown": -1`, `"shown": 4097`, `"filterOpen": "yes"`} {
+		if _, err := DecodeCases([]byte(strings.Replace(baseCases, `"selected": "b"`, bad, 1))); err == nil {
+			t.Errorf("%s accepted", bad)
 		}
 	}
 }

@@ -18,6 +18,8 @@ const (
 	packageCases = "../../examples/browser-package.cases.json"
 	hostedModel  = "../../examples/browser-hosted.json"
 	hostedCases  = "../../examples/browser-hosted.cases.json"
+	filterModel  = "../../examples/browser-filter.json"
+	filterCases  = "../../examples/browser-filter.cases.json"
 )
 
 func invoke(args ...string) (code int, stdout, stderr string) {
@@ -82,7 +84,7 @@ func digestOf(t *testing.T, model string) string {
 
 func TestExampleCasesPass(t *testing.T) {
 	skipShort(t)
-	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}} {
+	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}, {filterModel, filterCases}} {
 		code, stdout, stderr := invoke("check", p[0], p[1])
 		if code != 0 || stderr != "" {
 			t.Fatalf("%s: exit %d\n%s", p[1], code, stderr)
@@ -269,7 +271,7 @@ func TestRefusalsExit2WithEmptyStdout(t *testing.T) {
 // validate needs neither go nor any execution: it works with an empty PATH.
 func TestValidateNeedsNoGoToolchain(t *testing.T) {
 	t.Setenv("PATH", "")
-	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}} {
+	for _, p := range [][2]string{{browserModel, browserCases}, {packageModel, packageCases}, {hostedModel, hostedCases}, {filterModel, filterCases}} {
 		code, stdout, stderr := invoke("validate", p[0], p[1])
 		if code != 0 || stderr != "" || !strings.HasPrefix(stdout, "ok ") {
 			t.Fatalf("exit %d, stdout %q, stderr %q", code, stdout, stderr)
@@ -329,6 +331,59 @@ func TestGeneratorNeverRunsGeneratedCode(t *testing.T) {
 			if strings.Contains(string(raw), `"os/exec"`) {
 				t.Errorf("%s imports os/exec", f)
 			}
+		}
+	}
+}
+
+// A wrong expectation of each filter kind fails with its own message, and a
+// text step is delivered one key message per code point.
+func TestWrongFilterExpectationsFail(t *testing.T) {
+	skipShort(t)
+	base := readCases(t, filterCases)
+	n3 := 3
+	mk := func(id string, steps []tui.Step, e tui.Expect) tui.Case {
+		return tui.Case{ID: id, Requirement: "A filter expectation.", Size: tui.Size{Width: 100, Height: 20},
+			Records: "Main", Steps: steps, Expect: e}
+	}
+	typed := []tui.Step{{Key: str("/")}, {Text: str("ser")}}
+	base.Cases = []tui.Case{
+		mk("F_ok", typed, tui.Expect{Filter: str("ser"), FilterOpen: yes(true), Shown: func() *int { n := 2; return &n }()}),
+		mk("F_filter", typed, tui.Expect{Filter: str("se")}),
+		mk("F_open", typed, tui.Expect{FilterOpen: yes(false)}),
+		mk("F_shown", typed, tui.Expect{Shown: &n3}),
+		mk("F_backspace", []tui.Step{{Key: str("/")}, {Text: str("sex")}, {Key: str("backspace")}}, tui.Expect{Filter: str("sex")}),
+	}
+	code, stdout, stderr := invoke("check", filterModel, writeCases(t, base))
+	if code != 3 || stdout != "" {
+		t.Fatalf("exit %d, stdout %q\n%s", code, stdout, stderr)
+	}
+	for _, want := range []string{"pass F_ok\n", `fail F_filter: filter: want "se" got "ser"`, "fail F_open: filterOpen: want false got true",
+		"fail F_shown: shown: want 3 got 2", `fail F_backspace: filter: want "sex" got "se"`} {
+		if !strings.Contains(stderr, want) {
+			t.Errorf("stderr lacks %q:\n%s", want, stderr)
+		}
+	}
+}
+
+// Steps, keys and expectations that need a filter are refused, at validate
+// time, for a model without one.
+func TestFilterCasesAreRefusedWithoutAFilter(t *testing.T) {
+	base := readCases(t, browserCases)
+	zero := 0
+	for name, c := range map[string]tui.Case{
+		"text step":  {Steps: []tui.Step{{Text: str("a")}}, Expect: tui.Expect{Selected: str("a")}},
+		"slash key":  {Steps: []tui.Step{{Key: str("/")}}, Expect: tui.Expect{Selected: str("a")}},
+		"backspace":  {Steps: []tui.Step{{Key: str("backspace")}}, Expect: tui.Expect{Selected: str("a")}},
+		"filter":     {Steps: []tui.Step{}, Expect: tui.Expect{Filter: str("")}},
+		"filterOpen": {Steps: []tui.Step{}, Expect: tui.Expect{FilterOpen: yes(false)}},
+		"shown":      {Steps: []tui.Step{}, Expect: tui.Expect{Shown: &zero}},
+	} {
+		c.ID, c.Requirement, c.Size, c.Records = "X", "Needs a filter.", tui.Size{Width: 100, Height: 20}, "Main"
+		doc := base
+		doc.Cases = []tui.Case{c}
+		code, stdout, stderr := invoke("validate", browserModel, writeCases(t, doc))
+		if code != 2 || stdout != "" || !strings.Contains(stderr, "model with a filter") {
+			t.Errorf("%s: exit %d, stdout %q, stderr %q", name, code, stdout, stderr)
 		}
 	}
 }
