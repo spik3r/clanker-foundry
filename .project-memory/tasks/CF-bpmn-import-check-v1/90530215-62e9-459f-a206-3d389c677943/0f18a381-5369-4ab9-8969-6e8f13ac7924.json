@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "0f18a381-5369-4ab9-8969-6e8f13ac7924",
+  "runId": "90530215-62e9-459f-a206-3d389c677943",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-bpmn-import-check-v1",
+    "path": "tasks/CF-bpmn-import-check-v1-bpmn-moddle.md",
+    "revision": "5a8297f7777d379667a0bf71e5640eab837994dc",
+    "blob": "35fb0ceab05577ca58fddfe455f11841bc3f3c13",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ad9aae975338faedaab65ebe1026a28ab3c4873bd0ebaedebfd933ac2c0eaaac"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-14T06:10:37.112Z",
+  "summary": "Add an opt-in bpmn-moddle check for generated BPMN",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/verify/README.md",
+    "modeling/diagram/verify/bpmn-moddle.mjs",
+    "tasks/CF-bpmn-import-check-v1-bpmn-moddle.md"
+  ]
+}

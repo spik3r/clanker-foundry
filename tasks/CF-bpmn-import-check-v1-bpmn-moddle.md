@@ -1,6 +1,6 @@
 ---
 id: CF-bpmn-import-check-v1
-status: in-progress
+status: completed
 owner: Claude pipeline coordinator
 repositories: [spik3r/clanker-foundry]
 ---

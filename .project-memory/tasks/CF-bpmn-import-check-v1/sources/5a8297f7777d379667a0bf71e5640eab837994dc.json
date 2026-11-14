@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5a8297f7777d379667a0bf71e5640eab837994dc",
+  "id": "CF-bpmn-import-check-v1",
+  "path": "tasks/CF-bpmn-import-check-v1-bpmn-moddle.md",
+  "blob": "35fb0ceab05577ca58fddfe455f11841bc3f3c13",
+  "record": "---\nid: CF-bpmn-import-check-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Check generated BPMN with a BPMN implementation\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated work by a supervised\nsubagent and coordinator review. The\n[generator pipeline plan](../docs/generator-pipeline-plan.md) lists importing\nthe generated BPMN XML into a BPMN tool as never checked.\n\nScope: an opt-in script `modeling/diagram/verify/bpmn-moddle.mjs` that loads\ngenerated `diagram.bpmn` files with the bpmn-moddle library and fails on any\nwarning, unresolved reference or round-trip warning; its README; one line in\nthe diagram README; corrected statements in the process profile and the plan\nabout what has been checked. No generator code changes and no dependency is\nadded to any package file. Also this task record and new immutable Project\nMemory files.\n\nExclusions: OMG XSD validation, which is not reachable from the environment\nused, and any rendering or layout change.\n\nChecks: the script on the three committed examples and on a deliberately\nbroken file; gofmt, `go vet` and `go test -race` in `modeling/diagram`; the\nrepository validator, whitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-bpmn-import-check-v1-bpmn-moddle.md",
+        "id": "CF-bpmn-import-check-v1",
+        "blob": "35fb0ceab05577ca58fddfe455f11841bc3f3c13",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -55,6 +55,8 @@ dashboard models [ops-dashboard](examples/ops-dashboard.json),
 [minimal-dashboard](examples/minimal-dashboard.json). A test regenerates them
 and compares bytes.
 
+To check the BPMN files with bpmn-moddle (opt-in, not in CI), see [verify](verify/README.md).
+
 ## Dashboards
 
 `dashboard/v1` models hold datasets and widgets: `stat`, `bar`, `line` and
