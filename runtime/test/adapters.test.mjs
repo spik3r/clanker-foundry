@@ -199,6 +199,55 @@ test('read-only workspace adapter enforces pinned Git bytes, allowlist, symlink,
   await assert.rejects(wrongBase.verifyBaseRevision('f'.repeat(40)), { code: 'BASE_REVISION_MISMATCH' });
 });
 
+test('read-only workspace blob comparison honors the configured byte budget', async (t) => {
+  const maxBytes = 3 * 1024 * 1024;
+  const cases = [
+    { name: 'two-mib.txt', size: 2 * 1024 * 1024 },
+    { name: 'two-mib-plus-one.txt', size: 2 * 1024 * 1024 + 1 },
+    { name: 'configured-max.txt', size: maxBytes },
+    { name: 'over-configured-max.txt', size: maxBytes + 1 },
+  ];
+  const source = Object.fromEntries(cases.map(({ name, size }) => [name, 'x'.repeat(size)]));
+  source['small-dirty.txt'] = 'invented earlier bytes';
+  const { root, revision } = await gitWorkspace(t, source);
+  const reader = createReadOnlyWorkspaceAdapter({ root, allowedPaths: Object.keys(source), maxBytes });
+  assert.equal(await reader.verifyBaseRevision(revision), revision);
+  for (const { name, size } of cases) {
+    await t.test(name, async () => {
+      if (size > maxBytes) {
+        await assert.rejects(reader.readFiles([name]), {
+          code: 'INPUT_TOO_LARGE', message: 'Workspace file exceeds the configured byte limit',
+        });
+        return;
+      }
+      const [file] = await reader.readFiles([name]);
+      assert.equal(file.path, name);
+      assert.equal(Buffer.byteLength(file.content, 'utf8'), size);
+      assert.equal(file.digest, createHash('sha256').update(source[name], 'utf8').digest('hex'));
+    });
+  }
+  await assert.rejects(reader.readFiles(['two-mib.txt', 'two-mib-plus-one.txt']), {
+    code: 'INPUT_TOO_LARGE', message: 'Workspace input set exceeds the configured byte limit',
+  });
+  const wrongBase = createReadOnlyWorkspaceAdapter({ root, allowedPaths: ['configured-max.txt'], maxBytes });
+  await assert.rejects(wrongBase.verifyBaseRevision('f'.repeat(40)), { code: 'BASE_REVISION_MISMATCH' });
+
+  await writeFile(path.join(root, 'configured-max.txt'), 'y'.repeat(maxBytes));
+  await assert.rejects(reader.readFiles(['configured-max.txt']), (error) => {
+    assert.equal(error.code, 'WORKSPACE_DIRTY');
+    assert.equal(error.message, 'Workspace bytes differ from pinned base: configured-max.txt');
+    return true;
+  });
+  // A small configured read must keep the existing dirty-blob refusal even
+  // when its committed predecessor is larger than the current working file.
+  await writeFile(path.join(root, 'small-dirty.txt'), 'edit');
+  const small = createReadOnlyWorkspaceAdapter({ root, allowedPaths: ['small-dirty.txt'], maxBytes: 4 });
+  await small.verifyBaseRevision(revision);
+  await assert.rejects(small.readFiles(['small-dirty.txt']), {
+    code: 'WORKSPACE_DIRTY', message: 'Workspace bytes differ from pinned base: small-dirty.txt',
+  });
+});
+
 test('fake adapter returns a deterministic result tied to read input bytes and revokes its attempt', async () => {
   const adapter = new FakeAdapter({
     output: 'fake',

@@ -10,6 +10,7 @@ const DEFAULT_OUTPUT_LIMIT = 32 * 1024;
 const DEFAULT_INPUT_LIMIT = 1024 * 1024;
 const DEFAULT_FILE_LIMIT = 64;
 const MAX_OUTSTANDING_ARTIFACTS = 16;
+const DEFAULT_GIT_CAPTURE_LIMIT = 2 * 1024 * 1024;
 const execFileAsync = promisify(execFile);
 
 function fail(code, message) {
@@ -132,11 +133,11 @@ function releaseArtifactReference(artifacts, capacity, artifactDigest, identity,
   return true;
 }
 
-async function gitOutput(root, args) {
+async function gitOutput(root, args, maxBuffer = DEFAULT_GIT_CAPTURE_LIMIT) {
   const { stdout } = await execFileAsync('git', ['-C', root, ...args], {
     encoding: 'buffer',
     timeout: 2_000,
-    maxBuffer: 2 * 1024 * 1024,
+    maxBuffer,
     env: {
       PATH: process.env.PATH ?? '/usr/bin:/bin',
       HOME: '/nonexistent',
@@ -222,7 +223,7 @@ export function createReadOnlyWorkspaceAdapter({
       const currentRealPath = await realpath(current);
       if (currentRealPath !== path.join(base, candidate)) fail('UNSAFE_WORKSPACE', 'Workspace path changed during the read');
       const bytes = Buffer.concat(chunks, total);
-      const committedBytes = await gitOutput(base, ['show', `${verifiedRevision}:${candidate}`]);
+      const committedBytes = await gitOutput(base, ['show', `${verifiedRevision}:${candidate}`], Math.max(DEFAULT_GIT_CAPTURE_LIMIT, maxBytes));
       if (!committedBytes.equals(bytes)) fail('WORKSPACE_DIRTY', `Workspace bytes differ from pinned base: ${candidate}`);
       let content;
       try {

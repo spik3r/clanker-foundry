@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "6e006982-011c-4fe0-ae16-0aacfa36e511",
+  "runId": "488b2a45-9b65-49ef-8c45-968e7d24e311",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-workspace-budget-v1",
+    "path": "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+    "revision": "0c8c7c7ad8646634400f97efb799a3f94d050b37",
+    "blob": "f0da5a35b5bb65e6328aaa67cf1113d31a18148d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "208a279f07f7e07f1bd569f5c7a8a33192a83687c042065ccacfc70018bb00af"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-workspace-budget-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:34:02.571Z",
+  "summary": "Align pinned Git blob capture with the admitted read-only workspace byte budget",
+  "next": "Install pinned dependencies, add failing boundary fixtures, repair bounded capture and validate",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md"
+  ]
+}
