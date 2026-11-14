@@ -679,9 +679,30 @@ func write(l loaded, out string) error {
 	return nil
 }
 
+// trimOutputRoot removes only terminal separators and dot components. Interior
+// components retain filesystem meaning, including .. after a parent symlink.
+func trimOutputRoot(out string) string {
+	root := len(filepath.VolumeName(out))
+	for root < len(out) && os.IsPathSeparator(out[root]) {
+		root++
+	}
+	for {
+		for len(out) > root && os.IsPathSeparator(out[len(out)-1]) {
+			out = out[:len(out)-1]
+		}
+		n := len(out)
+		if n > root && n >= 2 && out[n-1] == '.' && os.IsPathSeparator(out[n-2]) {
+			out = out[:n-1]
+			continue
+		}
+		return out
+	}
+}
+
 // check compares out with what generate would write and returns one drift line
 // per differing path. It writes nothing.
 func check(l loaded, out string) ([]string, error) {
+	out = trimOutputRoot(out)
 	files, err := build(l)
 	if err != nil {
 		return nil, err
@@ -696,6 +717,12 @@ func check(l loaded, out string) ([]string, error) {
 	if !fi.IsDir() { // includes a symlink to a directory
 		return []string{"drift: unexpected ."}, nil
 	}
+	// Resolve the accepted directory before Join can collapse interior parent components.
+	out, err = filepath.EvalSymlinks(out)
+	if err != nil {
+		return nil, err
+	}
+
 	entries, err := os.ReadDir(out)
 	if err != nil {
 		return nil, err

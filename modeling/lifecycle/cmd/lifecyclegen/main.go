@@ -260,7 +260,28 @@ func writeNew(path string, data []byte) error {
 	return f.Close()
 }
 
+// trimOutputRoot removes only terminal separators and dot components. Interior
+// components retain filesystem meaning, including .. after a parent symlink.
+func trimOutputRoot(out string) string {
+	root := len(filepath.VolumeName(out))
+	for root < len(out) && os.IsPathSeparator(out[root]) {
+		root++
+	}
+	for {
+		for len(out) > root && os.IsPathSeparator(out[len(out)-1]) {
+			out = out[:len(out)-1]
+		}
+		n := len(out)
+		if n > root && n >= 2 && out[n-1] == '.' && os.IsPathSeparator(out[n-2]) {
+			out = out[:n-1]
+			continue
+		}
+		return out
+	}
+}
+
 func contractCheck(modelPath, out string) ([]byte, error) {
+	out = trimOutputRoot(out)
 	identity, files, err := contractLoad(modelPath)
 	if err != nil {
 		return nil, err
@@ -275,6 +296,11 @@ func contractCheck(modelPath, out string) ([]byte, error) {
 	case !st.IsDir():
 		drift = append(drift, "drift: unexpected .")
 	default:
+		// Resolve the accepted directory before Join can collapse interior parent components.
+		out, err = filepath.EvalSymlinks(out)
+		if err != nil {
+			return nil, ioFail("output: %v", err)
+		}
 		entries, err := os.ReadDir(out)
 		if err != nil {
 			return nil, ioFail("output: %v", err)

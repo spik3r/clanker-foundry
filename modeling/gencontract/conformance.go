@@ -819,6 +819,72 @@ func (c *checker) stepDrift(tree map[string]entry) error {
 		}
 	}
 
+	// A terminal separator or dot must not hide a symlink at the output root.
+	target, err := c.freshCopy(tree)
+	if err != nil {
+		return err
+	}
+	rootDir, err := c.dir("root-link")
+	if err != nil {
+		return err
+	}
+	link := filepath.Join(rootDir, "out")
+	if os.Symlink(target, link) == nil {
+		sep := string(os.PathSeparator)
+		for _, suffix := range []string{"", sep, sep + ".", sep + "." + sep + "." + sep} {
+			if err := c.driftCase("check.symlink-root", "symlink OUT with suffix "+fmt.Sprintf("%q", suffix), link+suffix, "drift: unexpected .", true, target, rootDir); err != nil {
+				return err
+			}
+		}
+	}
+
+	// Interior .. components follow filesystem semantics across parent symlinks.
+	parentDir, err := c.dir("parent-link")
+	if err != nil {
+		return err
+	}
+	realParent := filepath.Join(parentDir, "real")
+	if err := os.MkdirAll(filepath.Join(realParent, "nested"), 0o755); err != nil {
+		return err
+	}
+	// A distinct decoy tree at the lexically cleaned path makes misresolution
+	// observable even when that path is also an existing output directory.
+	decoy := filepath.Join(parentDir, "out")
+	if err := writeTree(decoy, tree); err != nil {
+		return err
+	}
+	for _, name := range sortedPaths(tree) {
+		if tree[name].kind == 'f' {
+			if err := os.WriteFile(filepath.Join(decoy, filepath.FromSlash(name)), append(append([]byte(nil), tree[name].data...), '\n'), 0o644); err != nil {
+				return err
+			}
+			break
+		}
+	}
+	realOut := filepath.Join(realParent, "out")
+	if err := writeTree(realOut, tree); err != nil {
+		return err
+	}
+	alias := filepath.Join(parentDir, "alias")
+	if os.Symlink(filepath.Join(realParent, "nested"), alias) == nil {
+		// Join would erase the very .. component this case needs to exercise.
+		sep := string(os.PathSeparator)
+		out := alias + sep + ".." + sep + "out"
+		before := fingerprint(parentDir)
+		r, err := c.runRO(c.g.Model, "check", c.g.Model, out)
+		if err != nil {
+			return err
+		}
+		if r.code != 0 {
+			c.add("check.path-resolution", "interior symlink/..: exit %d, want 0 (stderr %s)", r.code, snippet(r.stderr))
+		} else {
+			c.checkIdentity("check.identity", r.stdout, c.model)
+		}
+		if fingerprint(parentDir) != before {
+			c.add("check.writes", "check changed the parent-symlink output tree")
+		}
+	}
+
 	// (e) OUT absent
 	d, err := c.dir("absent")
 	if err != nil {

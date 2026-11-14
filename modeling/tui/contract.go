@@ -162,9 +162,30 @@ func Write(out string, files map[string][]byte) error {
 	return nil
 }
 
+// trimOutputRoot removes only terminal separators and dot components. Interior
+// components retain filesystem meaning, including .. after a parent symlink.
+func trimOutputRoot(out string) string {
+	root := len(filepath.VolumeName(out))
+	for root < len(out) && os.IsPathSeparator(out[root]) {
+		root++
+	}
+	for {
+		for len(out) > root && os.IsPathSeparator(out[len(out)-1]) {
+			out = out[:len(out)-1]
+		}
+		n := len(out)
+		if n > root && n >= 2 && out[n-1] == '.' && os.IsPathSeparator(out[n-2]) {
+			out = out[:n-1]
+			continue
+		}
+		return out
+	}
+}
+
 // Drift compares out with files and returns one "drift: KIND PATH" line per
 // differing path, sorted. It never writes.
 func Drift(files map[string][]byte, out string) ([]string, error) {
+	out = trimOutputRoot(out)
 	fi, err := os.Lstat(out)
 	if os.IsNotExist(err) {
 		return []string{"drift: missing ."}, nil
@@ -175,6 +196,12 @@ func Drift(files map[string][]byte, out string) ([]string, error) {
 	if !fi.IsDir() { // a file, or a symlink even to a directory
 		return []string{"drift: unexpected ."}, nil
 	}
+	// Resolve the accepted directory before Join can collapse interior parent components.
+	out, err = filepath.EvalSymlinks(out)
+	if err != nil {
+		return nil, err
+	}
+
 	dirs := map[string]bool{"": true}
 	children := map[string]map[string]bool{}
 	for name := range files {

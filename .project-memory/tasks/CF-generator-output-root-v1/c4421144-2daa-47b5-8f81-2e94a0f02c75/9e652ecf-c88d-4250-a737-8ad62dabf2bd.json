@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "9e652ecf-c88d-4250-a737-8ad62dabf2bd",
+  "runId": "c4421144-2daa-47b5-8f81-2e94a0f02c75",
+  "kind": "complete",
+  "parents": [
+    "ce65532a-0a60-4ba8-bfbc-da59254a885e"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-output-root-v1",
+    "path": "tasks/CF-generator-output-root-v1-terminal-symlinks.md",
+    "revision": "1ad617d126bcaf2868d96383c923e7e9de811359",
+    "blob": "5215a3b469628765b59aed5138204b022a93d749",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5e8be804af3e9e6addb3bfab640213b54783f67fea64d839914a8e6116f9a1d7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-output-root-symlink-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:43:47.972Z",
+  "summary": "All five generators reject terminal-syntax root symlinks and preserve interior parent-symlink resolution; shared harness detects both violations",
+  "next": "Commit evidence, validate full committed diff, publish PR for coordinator final review and hosted CI",
+  "files": [
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/output_root_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/output_root_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/output_root_test.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/output_root_test.go",
+    "modeling/diagram/contract/contract.go",
+    "modeling/diagram/contract/output_root_test.go",
+    "modeling/gencontract/README.md",
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md"
+  ],
+  "validation": "New shared cases failed on all five generators before repair. Go 1.27.0 vet and full race tests passed in gencontract (including all registered generators and two fault guards), tui, jsonvalidator, diagram and lifecycle (90 packages plus 2 without tests). JSON tests passed with Node24.15.0 after ambient Node26 transform-mode failures; lifecycle final repeat used canonical TMPDIR=/private/tmp after macOS temp alias assertions and initial concurrent-comment-edit snapshot failure. Final code unchanged during passing lifecycle run. Lexical helpers match in all5; focused final helper race tests pass. Windows-specific cases not executed here. Repository validator passed (optional skills-ref absent); staged/unstaged whitespace checks pass.",
+  "snapshot": {
+    "modeling/gencontract/conformance.go": {
+      "blob": "6089f31fdeebb09815aa07fb224b6eed08c76129",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance_test.go": {
+      "blob": "28bcf2fb724a7830a165f271017baef983b0676b",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/main.go": {
+      "blob": "c25e6af29501802e7154637eafe498d782cd5c08",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/output_root_test.go": {
+      "blob": "5293aaf86576581a778c4b515f54b71dcc9404ca",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "13b42ed7cc229401600f03239261ca42318117a8",
+      "mode": "100644"
+    },
+    "modeling/tui/output_root_test.go": {
+      "blob": "6cf45457d079648106260ea0d98f29dc0ada9e0d",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go": {
+      "blob": "6e45a2b3e98a0541a86a4a20ad4b2816bdc474b3",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/output_root_test.go": {
+      "blob": "5293aaf86576581a778c4b515f54b71dcc9404ca",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/lifecyclegen/main.go": {
+      "blob": "f567cae48b0343a52b6ab0a90cebfb858a3f168d",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/lifecyclegen/output_root_test.go": {
+      "blob": "5293aaf86576581a778c4b515f54b71dcc9404ca",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/contract.go": {
+      "blob": "6b28bb19ff47b6b4976c396646680f5ff187ec37",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/output_root_test.go": {
+      "blob": "ddb30962aa8ae3088892d7c3760f1f53b6ce3c49",
+      "mode": "100644"
+    },
+    "modeling/gencontract/README.md": {
+      "blob": "9d537d88f771ed56dd0578adaf18da53dc1d4a8e",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md": {
+      "blob": "5215a3b469628765b59aed5138204b022a93d749",
+      "mode": "100644"
+    }
+  }
+}

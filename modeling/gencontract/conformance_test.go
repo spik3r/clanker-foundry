@@ -128,6 +128,8 @@ func TestHarnessDetectsFaults(t *testing.T) {
 		{"stdout-on-failure", "refuse.usage"},
 		{"stdout-on-failure", "refuse.invalid-model"},
 		{"ignore-extra", "check.unexpected"},
+		{"follow-output-root", "check.symlink-root"},
+		{"clean-output-path", "check.path-resolution"},
 	}
 	byFault := map[string][]string{}
 	var order []string
@@ -140,6 +142,12 @@ func TestHarnessDetectsFaults(t *testing.T) {
 	for _, name := range order {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
+			if name == "follow-output-root" || name == "clean-output-path" {
+				dir := t.TempDir()
+				if err := os.Symlink(dir, filepath.Join(dir, "link")); err != nil {
+					t.Skipf("symlinks unavailable: %v", err)
+				}
+			}
 			findings, err := Check(refgen(t, "REFGEN_FAULT="+name), t.TempDir())
 			if err != nil {
 				t.Fatal(err)

@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "affb4d6b-3644-45fc-8c43-a90c76b6bda2",
+  "runId": "c4421144-2daa-47b5-8f81-2e94a0f02c75",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-output-root-v1",
+    "path": "tasks/CF-generator-output-root-v1-terminal-symlinks.md",
+    "revision": "1ad617d126bcaf2868d96383c923e7e9de811359",
+    "blob": "5215a3b469628765b59aed5138204b022a93d749",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5e8be804af3e9e6addb3bfab640213b54783f67fea64d839914a8e6116f9a1d7"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-output-root-symlink-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:33:35.237Z",
+  "summary": "Reject terminal-syntax output symlinks without changing interior path resolution",
+  "next": "Add failing conformance regressions, repair roots and validate all generators",
+  "files": [
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/output_root_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/output_root_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/output_root_test.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/output_root_test.go",
+    "modeling/diagram/contract/contract.go",
+    "modeling/diagram/contract/output_root_test.go",
+    "modeling/gencontract/README.md",
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md"
+  ]
+}
