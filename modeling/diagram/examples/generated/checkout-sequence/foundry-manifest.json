@@ -3,7 +3,7 @@
   "profile": "sequence-diagram/v1",
   "generator": {
     "id": "diagramgen",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "toolchain": "go1.27.4"
   },
   "model": {
@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "diagram.svg",
-      "sha256": "104de78aa507f4a81c15d8196d8cd48bb3c0cce384e2c5a67cb9040e5f1f3a37",
+      "sha256": "e9a67c6a7f3ada774563b420e81dd2a96a1736c609845a3eda7a24a4f7e8d5f6",
       "bytes": 5182
     },
     {

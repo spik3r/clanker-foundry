@@ -3,7 +3,7 @@
   "profile": "dashboard/v1",
   "generator": {
     "id": "diagramgen",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "toolchain": "go1.27.4"
   },
   "model": {
@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "dashboard.html",
-      "sha256": "420ca172255302c7df709680f89f1abbd2ad8ed6444a975da422d47a67e549e5",
+      "sha256": "ea747796152b1f7610995dd7f7893829fef624366d53d31de0fa154a68bef36e",
       "bytes": 9722
     },
     {

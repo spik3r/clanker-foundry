@@ -9,7 +9,7 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 )
 
-var testGen = contract.Generator{ID: "diagramgen", Version: "1.2.1", Toolchain: "go1.27.4"}
+var testGen = contract.Generator{ID: "diagramgen", Version: "1.2.2", Toolchain: "go1.27.4"}
 
 // exampleNames are the models under ../examples.
 var exampleNames = []string{"order", "parallel", "rework"}
@@ -237,6 +237,30 @@ func checkGeometry(t *testing.T, m Model, g geo) {
 			}
 			if a.a.X == b.a.X && min(a.a.Y, a.b.Y) < max(b.a.Y, b.b.Y) && min(b.a.Y, b.b.Y) < max(a.a.Y, a.b.Y) {
 				t.Errorf("vertical segments of %s and %s coincide at x=%d", a.flow, b.flow, a.a.X)
+			}
+		}
+	}
+	// Flows into different targets never share a collinear stretch, except
+	// flows that must share an exit of an over-full gateway.
+	to := map[string]string{}
+	for _, f := range m.Flows {
+		to[f.ID] = f.To
+	}
+	degree := map[string]int{}
+	for _, f := range m.Flows {
+		degree[f.From]++
+	}
+	for i, a := range segs {
+		for _, b := range segs[i+1:] {
+			if a.flow == b.flow || to[a.flow] == to[b.flow] || a.horizontal != b.horizontal {
+				continue
+			}
+			if degree[g.flows[a.flow].from] > maxExits && g.flows[a.flow].from == g.flows[b.flow].from {
+				continue
+			}
+			if a.horizontal && a.a.Y == b.a.Y && min(a.a.X, a.b.X) < max(b.a.X, b.b.X) && min(b.a.X, b.b.X) < max(a.a.X, a.b.X) ||
+				!a.horizontal && a.a.X == b.a.X && min(a.a.Y, a.b.Y) < max(b.a.Y, b.b.Y) && min(b.a.Y, b.b.Y) < max(a.a.Y, a.b.Y) {
+				t.Errorf("flows %s and %s into different targets share a segment %v-%v / %v-%v", a.flow, b.flow, a.a, a.b, b.a, b.b)
 			}
 		}
 	}

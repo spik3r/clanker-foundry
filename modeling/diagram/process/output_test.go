@@ -683,6 +683,7 @@ func TestGeometryOnRandomModels(t *testing.T) {
 		checkGeometry(t, m, g)
 		doc := parseSVG(t, SVG(m, l, testGen))
 		checkGeometry(t, m, doc.geo)
+		checkBPMNGeometry(t, m, BPMN(m, l, testGen))
 		for _, f := range l.Flows {
 			if f.Points[len(f.Points)-1].X < f.Points[0].X {
 				backEdges++
@@ -790,6 +791,117 @@ func TestLabelsOnWideFanOut(t *testing.T) {
 			checkGeometry(t, m, geoOfLayout(l))
 			checkGeometry(t, m, parseSVG(t, SVG(m, l, testGen)).geo)
 			parseBPMN(t, BPMN(m, l, testGen))
+		})
+	}
+}
+
+// bpmnGeometry reads the diagram interchange of emitted BPMN: shape bounds by
+// bpmnElement and edge waypoints by bpmnElement.
+func bpmnGeometry(t *testing.T, data []byte) (shapes map[string]rect, edges map[string][]Point) {
+	t.Helper()
+	shapes, edges = map[string]rect{}, map[string][]Point{}
+	d := xml.NewDecoder(bytes.NewReader(data))
+	cur := ""
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			break
+		}
+		e, ok := tok.(xml.StartElement)
+		if !ok {
+			continue
+		}
+		switch e.Name.Local {
+		case "BPMNShape", "BPMNEdge":
+			cur, _ = attr(e, "bpmnElement")
+		case "Bounds":
+			shapes[cur] = rect{attrInt(t, e, "x"), attrInt(t, e, "y"), attrInt(t, e, "width"), attrInt(t, e, "height")}
+		case "waypoint":
+			edges[cur] = append(edges[cur], Point{attrInt(t, e, "x"), attrInt(t, e, "y")})
+		}
+	}
+	return shapes, edges
+}
+
+func inside(in, out rect) bool {
+	return in.x >= out.x && in.y >= out.y && in.x+in.w <= out.x+out.w && in.y+in.h <= out.y+out.h
+}
+
+// checkBPMNGeometry verifies the pool, lane, node and edge promises of the
+// emitted BPMN against model m.
+func checkBPMNGeometry(t *testing.T, m Model, bpmn []byte) {
+	t.Helper()
+	shapes, edges := bpmnGeometry(t, bpmn)
+	pool, ok := shapes["Participant."+m.ID]
+	if !ok {
+		t.Fatalf("no participant shape")
+	}
+	for _, ln := range m.Lanes {
+		lr, ok := shapes[ln.ID]
+		if !ok {
+			t.Fatalf("lane %s has no shape", ln.ID)
+		}
+		if lr.x != pool.x+poolStripW {
+			t.Errorf("lane %s x %d, want %d (pool x %d + %d)", ln.ID, lr.x, pool.x+poolStripW, pool.x, poolStripW)
+		}
+		if !inside(lr, pool) {
+			t.Errorf("lane %s %v is not inside participant %v", ln.ID, lr, pool)
+		}
+	}
+	for _, n := range m.Nodes {
+		nr, ok := shapes[n.ID]
+		if !ok {
+			t.Fatalf("node %s has no shape", n.ID)
+		}
+		if !inside(nr, shapes[n.Lane]) {
+			t.Errorf("node %s %v is not inside lane %s %v", n.ID, nr, n.Lane, shapes[n.Lane])
+		}
+	}
+	type seg struct {
+		flow, to   string
+		a, b       Point
+		horizontal bool
+	}
+	var segs []seg
+	for _, f := range m.Flows {
+		pts := edges[f.ID]
+		if len(pts) < 2 {
+			t.Fatalf("flow %s has %d waypoints", f.ID, len(pts))
+		}
+		for i, p := range pts {
+			if p.X < pool.x || p.X > pool.x+pool.w || p.Y < pool.y || p.Y > pool.y+pool.h {
+				t.Errorf("flow %s waypoint %v is outside participant %v", f.ID, p, pool)
+			}
+			if i > 0 {
+				segs = append(segs, seg{f.ID, f.To, pts[i-1], p, p.Y == pts[i-1].Y})
+			}
+		}
+	}
+	out := map[string]int{}
+	src := map[string]string{}
+	for _, f := range m.Flows {
+		out[f.From]++
+		src[f.ID] = f.From
+	}
+	for i, a := range segs {
+		for _, b := range segs[i+1:] {
+			if a.to == b.to || a.horizontal != b.horizontal || src[a.flow] == src[b.flow] && out[src[a.flow]] > maxExits {
+				continue
+			}
+			if a.horizontal && a.a.Y == b.a.Y && min(a.a.X, a.b.X) < max(b.a.X, b.b.X) && min(b.a.X, b.b.X) < max(a.a.X, a.b.X) ||
+				!a.horizontal && a.a.X == b.a.X && min(a.a.Y, a.b.Y) < max(b.a.Y, b.b.Y) && min(b.a.Y, b.b.Y) < max(a.a.Y, a.b.Y) {
+				t.Errorf("flows %s and %s into different targets share a BPMN segment %v-%v / %v-%v", a.flow, b.flow, a.a, a.b, b.a, b.b)
+			}
+		}
+	}
+}
+
+func TestBPMNPoolLanesAndEdgesOnExamples(t *testing.T) {
+	for _, name := range exampleNames {
+		t.Run(name, func(t *testing.T) {
+			m := mustDecode(t, readExample(t, name))
+			_, bpmn, _ := generateAll(t, m)
+			checkBPMNGeometry(t, m, bpmn)
 		})
 	}
 }

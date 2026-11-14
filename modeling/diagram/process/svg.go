@@ -113,6 +113,7 @@ func textBlock(b *strings.Builder, class, anchor string, x, firstY int, lines []
 }
 
 const svgStyle = `.bg{fill:#fff}
+.pool{fill:#fff;stroke:#8a8f98;stroke-width:1}
 .lane{fill:#fff;stroke:#8a8f98;stroke-width:1}
 .strip{fill:#eef1f5;stroke:#8a8f98;stroke-width:1}
 .lane-title{font-weight:bold;fill:#222}
@@ -141,6 +142,10 @@ func SVG(m Model, l Layout, g contract.Generator) []byte {
 
 	title := truncate(m.Title, max(8, (w-2*margin)/titleCharsPx))
 	fmt.Fprintf(&b, `<text class="title" x="%d" y="%d">%s</text>`+"\n", l.Title.X, l.Title.Y, esc(title))
+
+	pb := l.Pool
+	fmt.Fprintf(&b, `<rect class="pool" x="%d" y="%d" width="%d" height="%d"/>`+"\n", pb.X, pb.Y, pb.W, pb.H)
+	fmt.Fprintf(&b, `<rect class="strip" x="%d" y="%d" width="%d" height="%d"/>`+"\n", pb.X, pb.Y, poolStripW, pb.H)
 
 	for _, ln := range l.Lanes {
 		bx := ln.Box
