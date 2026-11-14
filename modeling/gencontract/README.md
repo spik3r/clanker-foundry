@@ -51,6 +51,8 @@ appear. Normal builds of `refgen` contain no fault code.
 | `check.missing` | a deleted file gives exit 3 and `drift: missing PATH` | check |
 | `check.unexpected` | an extra file or directory, at the top level or in a subdirectory, gives exit 3 and `drift: unexpected PATH` | check |
 | `check.symlink` | a symlink in place of a file gives exit 3 and `drift: unexpected PATH` | check |
+| `check.symlink-root` | a symlink at `OUT`, including terminal separators or dot components, gives exit 3 and leaves its target unchanged | check |
+| `check.path-resolution` | an interior parent symlink followed by `..` resolves through the filesystem rather than lexical path cleaning | check |
 | `check.absent` | a missing `OUT` gives exit 3 and `drift: missing .` | check |
 | `check.repaired` | a failed `check` leaves the tampered tree as it found it | check |
 | `refuse.invalid-model` | empty, truncated, `{}` and `[]` models give exit 2 from all three commands, and `generate` creates no `OUT` | Exit codes, generate |
