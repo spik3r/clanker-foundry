@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "0bd92d9a-fa3c-4e8d-aee1-b58e2ffb7a58",
+  "runId": "a75bc191-f447-4181-a8d0-c3846f3401fd",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-second-consumer-trial-v1",
+    "path": "tasks/CF-second-consumer-trial-v1-protocol.md",
+    "revision": "33030f093cb90c0853e34af479401ee188ed8bf2",
+    "blob": "d3b4cfbb107b1219710bd3b53d7e08b8eb8be5a2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "544d2ea87e707090b67ad59267cdf94d2bebe43fad12d200275fce3d723407f6"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-14T22:34:04.837Z",
+  "summary": "Write the second consumer change trial protocol and result template",
+  "next": "Write, validate, open PR",
+  "files": [
+    "docs/trials/second-consumer-change/README.md",
+    "docs/trials/second-consumer-change/result-template.md",
+    "docs/generator-pipeline-plan.md",
+    "tasks/CF-second-consumer-trial-v1-protocol.md"
+  ]
+}

@@ -461,6 +461,12 @@ each hint would let a host map hints without depending on wording.
   above. Typed fields and sorting have no recorded consumer need yet.
 - **Step 6, the runtime:** not started, as planned.
 
+## Second consumer trial protocol
+
+The [protocol](trials/second-consumer-change/README.md) for a change by
+another operator is written and has not been run. It also records a scripted
+terminal check of the consumer's screen, which is not a person's check.
+
 ## Owner decisions
 
 Recorded on 12 November 2026.
