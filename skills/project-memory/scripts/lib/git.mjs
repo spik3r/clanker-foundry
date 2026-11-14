@@ -1,7 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, writeFileSync, linkSync, unlinkSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, linkSync, unlinkSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import {
   ROOT, LEGACY, MODES, REPO, metadataPath, metadataContainer, parseJSON, validateSource, validateEvent, buildGraph,
   completionHeads, eventPath, canonicalPath, fail,
@@ -12,12 +13,14 @@ export function utf8(bytes, label = 'data') {
   catch { fail(`${label} contains unsupported non-UTF-8 bytes`); }
 }
 export function createGit(cwd = process.cwd()) {
-  const runBytes = (where, ...args) => execFileSync('git', ['--no-replace-objects', '--literal-pathspecs', ...args], {
-    cwd: where, maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'],
+  const runGit = (where, args, options = {}) => execFileSync('git', ['--no-replace-objects', '--literal-pathspecs', ...args], {
+    cwd: where, maxBuffer: 64 * 1024 * 1024, stdio: [options.input === undefined ? 'ignore' : 'pipe', 'pipe', 'pipe'],
     // Empty allow-list denies every transport, even on Git 2.43 where the
     // newer no-lazy-fetch option/environment variable is not supported.
-    env: { ...process.env, GIT_OPTIONAL_LOCKS: '0', GIT_NO_LAZY_FETCH: '1', GIT_ALLOW_PROTOCOL: '', GIT_NO_REPLACE_OBJECTS: '1' },
+    input: options.input,
+    env: { ...process.env, ...options.env, GIT_OPTIONAL_LOCKS: '0', GIT_NO_LAZY_FETCH: '1', GIT_ALLOW_PROTOCOL: '', GIT_NO_REPLACE_OBJECTS: '1' },
   });
+  const runBytes = (where, ...args) => runGit(where, args);
   const root = utf8(runBytes(cwd, 'rev-parse', '--show-toplevel'), 'Git root').replace(/\r?\n$/, '');
   const bytes = (...args) => runBytes(root, ...args);
   const git = (...args) => utf8(bytes(...args), 'Git output');
@@ -55,22 +58,47 @@ export function createGit(cwd = process.cwd()) {
     }
     return false;
   };
-  const snapshotIndex = (files) => Object.fromEntries(files.map((file) => {
-    try { git('diff', '--quiet', '--no-ext-diff', '--no-textconv', '--ignore-submodules=none', '--', file); }
-    catch { fail(`stage final tested changes before completion: ${JSON.stringify(file)}`); }
-    const records = git('ls-files', '--stage', '-z', '--', file).split('\0').filter(Boolean).map((row) => {
-      const match = /^(\d+) ([a-f0-9]+) (\d)\t([\s\S]+)$/.exec(row);
-      if (!match) fail('invalid Git index record');
-      return match;
-    }).filter((match) => match[4] === file);
-    if (!records.length) {
-      if (hasWorktreeFile(file)) fail(`stage the new file before completion: ${JSON.stringify(file)}`);
-      return [file, { blob: null, mode: null }];
-    }
-    const match = records.length === 1 && records[0];
-    if (!match || match[3] !== '0' || !MODES.has(match[1])) fail(`resolve index conflicts at ${JSON.stringify(file)}`);
-    return [file, { blob: match[2], mode: match[1] }];
-  }));
+  const checkVisibleIndex = (files) => {
+    const intended = new Set(files);
+    const hidden = git('ls-files', '-v', '-z', '--', ...files).split('\0')
+      .filter((row) => /^[a-zS] /.test(row) && intended.has(row.slice(2))).map((row) => row.slice(2));
+    if (!hidden.length) return;
+    const temporary = mkdtempSync(resolve(tmpdir(), 'project-memory-index-'));
+    try {
+      // Rebuild without visibility flags or cached stat data. Keep Git's content
+      // conversion and mode rules without touching the caller's index or hooks.
+      const config = ['-c', 'core.splitIndex=false', '-c', 'core.sparseCheckout=false',
+        '-c', 'core.ignorestat=false', '-c', 'core.fsmonitor=false', '-c', `core.hooksPath=${temporary}`];
+      const options = { env: { GIT_INDEX_FILE: resolve(temporary, 'index') } };
+      runGit(root, [...config, 'update-index', '-z', '--index-info'], {
+        ...options, input: bytes('ls-files', '--stage', '-z'),
+      });
+      for (const file of hidden) {
+        try { runGit(root, [...config, 'diff', '--quiet', '--no-ext-diff', '--no-textconv', '--ignore-submodules=none', '--', file], options); }
+        catch { fail(`stage final tested changes before completion: ${JSON.stringify(file)}`); }
+      }
+    } finally { rmSync(temporary, { recursive: true, force: true }); }
+  };
+  const snapshotIndex = (files) => {
+    const snapshot = Object.fromEntries(files.map((file) => {
+      try { git('diff', '--quiet', '--no-ext-diff', '--no-textconv', '--ignore-submodules=none', '--', file); }
+      catch { fail(`stage final tested changes before completion: ${JSON.stringify(file)}`); }
+      const records = git('ls-files', '--stage', '-z', '--', file).split('\0').filter(Boolean).map((row) => {
+        const match = /^(\d+) ([a-f0-9]+) (\d)\t([\s\S]+)$/.exec(row);
+        if (!match) fail('invalid Git index record');
+        return match;
+      }).filter((match) => match[4] === file);
+      if (!records.length) {
+        if (hasWorktreeFile(file)) fail(`stage the new file before completion: ${JSON.stringify(file)}`);
+        return [file, { blob: null, mode: null }];
+      }
+      const match = records.length === 1 && records[0];
+      if (!match || match[3] !== '0' || !MODES.has(match[1])) fail(`resolve index conflicts at ${JSON.stringify(file)}`);
+      return [file, { blob: match[2], mode: match[1] }];
+    }));
+    checkVisibleIndex(files);
+    return snapshot;
+  };
   const memoryAt = (ref) => {
     const entries = new Map();
     for (const [path, item] of tree(ref, '.project-memory')) {

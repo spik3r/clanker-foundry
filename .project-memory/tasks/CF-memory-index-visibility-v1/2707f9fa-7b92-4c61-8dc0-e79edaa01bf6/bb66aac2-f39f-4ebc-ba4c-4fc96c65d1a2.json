@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "bb66aac2-f39f-4ebc-ba4c-4fc96c65d1a2",
+  "runId": "2707f9fa-7b92-4c61-8dc0-e79edaa01bf6",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-memory-index-visibility-v1",
+    "path": "tasks/CF-memory-index-visibility-v1-hidden-changes.md",
+    "revision": "3beb2db1ed1a545791c298ac9eabb8522212944a",
+    "blob": "077da279a43e90edb3115228765ef2d3e7f86d88",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5cc272fde6cbb987953789119a9e9f59f1698a02d8cd4bca060ae998083e084c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/memory-index-visibility-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:12:38.598Z",
+  "summary": "Check hidden intended changes against a disposable plain index",
+  "next": "Add regressions, implement and validate",
+  "files": [
+    "skills/project-memory/scripts/lib/git.mjs",
+    "skills/project-memory/FORMAT.md",
+    "tests/project-memory.test.mjs",
+    "tasks/CF-memory-index-visibility-v1-hidden-changes.md"
+  ]
+}

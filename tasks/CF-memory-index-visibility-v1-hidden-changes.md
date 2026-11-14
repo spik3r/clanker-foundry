@@ -1,6 +1,6 @@
 ---
 id: CF-memory-index-visibility-v1
-status: in-progress
+status: completed
 owner: Codex Project Memory contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -26,3 +26,14 @@ Test both flags, clean/changed/deleted files, normalization, modes, symlinks,
 gitlinks, SHA-256, literal paths and caller-index preservation. Run lifecycle and
 workflow regressions, repository validation and committed memory coverage. No
 ledger rewrites, new blanket flag ban or generic Git configuration hardening.
+
+## Local result
+
+Completed the local repair and validation; this status does not assert that its
+PR has merged. Before repair, both CLI hidden-change regressions failed and the
+matrix had 20 failures with 12 clean controls passing. Final lifecycle/workflow
+suites passed 219 tests, zero skips, in 44.048 seconds on Node 26 and Git 2.54.
+Repository validation and whitespace checks passed. The private-index prototype
+also exposed a false pass with core.ignorestat=true; its explicit private override
+is covered by the committed regression. No real ledger, old event or caller index
+was rewritten. Next: independent review and hosted checks before merge.

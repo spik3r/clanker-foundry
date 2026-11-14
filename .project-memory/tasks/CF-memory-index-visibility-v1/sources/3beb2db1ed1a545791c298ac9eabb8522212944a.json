@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "3beb2db1ed1a545791c298ac9eabb8522212944a",
+  "id": "CF-memory-index-visibility-v1",
+  "path": "tasks/CF-memory-index-visibility-v1-hidden-changes.md",
+  "blob": "077da279a43e90edb3115228765ef2d3e7f86d88",
+  "record": "---\nid: CF-memory-index-visibility-v1\nstatus: in-progress\nowner: Codex Project Memory contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse hidden unstaged intended changes at completion\n\n## Implementation claim\n\nOwner: Codex Project Memory contributor. Branch `codex/memory-index-visibility-v1`,\nreviewed main base `3037fb8`. Scope: `skills/project-memory/scripts/lib/git.mjs`,\n`skills/project-memory/FORMAT.md`, `tests/project-memory.test.mjs`, this task and\nnew immutable Project Memory source/events.\n\nCompletion currently accepts unstaged changes concealed by assume-unchanged or\nskip-worktree flags. Preserve clean flagged completions and staged Git blob/mode\nsemantics. Keep the original diff first, then check exact flagged intended paths\nagainst a private index rebuilt from raw staged records. Preserve the caller's\nindex bytes and flags, including custom/split indexes. Disable private index\nhooks, split-index writes, sparse handling, ignorestat and FSMonitor; clean up\nprivate files on success and failure. Keep offline Git restrictions centralized.\n\nTest both flags, clean/changed/deleted files, normalization, modes, symlinks,\ngitlinks, SHA-256, literal paths and caller-index preservation. Run lifecycle and\nworkflow regressions, repository validation and committed memory coverage. No\nledger rewrites, new blanket flag ban or generic Git configuration hardening.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-memory-index-visibility-v1-hidden-changes.md",
+        "id": "CF-memory-index-visibility-v1",
+        "blob": "077da279a43e90edb3115228765ef2d3e7f86d88",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -717,3 +717,82 @@ for (const key of ['path', 'blob', 'record', 'targetPath', 'targetId', 'targetBl
     }
   });
 }
+
+for (const flag of ['assume-unchanged', 'skip-worktree']) {
+  test(`CLI completion refuses unstaged intended changes hidden by ${flag}`, (t) => {
+    const f = cliFixture(t); f.start(); f.git('update-index', `--${flag}`, '--', 'file.txt');
+    f.write('file.txt', 'hidden change\n');
+    const index = readFileSync(join(f.cwd, '.git/index')); const flags = f.git('ls-files', '-v');
+    f.reject(/stage final tested changes/, 'complete', '--id', 'CF-101', '--summary', 'Checked', '--next', 'Review', '--validation', 'Checks');
+    assert.deepEqual(readFileSync(join(f.cwd, '.git/index')), index);
+    assert.equal(f.git('ls-files', '-v'), flags);
+    assert.equal(f.memory().events.length, 1);
+  });
+  for (const scenario of ['clean', 'changed', 'deleted', 'crlf', 'filter', 'executable', 'ignored-mode', 'symlink-clean', 'symlink-changed', 'gitlink-clean', 'gitlink-changed', 'ignorestat', 'split', 'custom', 'sha256', 'literal']) {
+    test(`private completion check preserves Git semantics: ${flag}, ${scenario}`, (t) => {
+      const path = scenario === 'literal' ? 'line\n雪\t[literal].txt' : 'file.txt';
+      const f = cliFixture(t, { [path]: 'base\n' }, null, scenario === 'sha256' ? 'sha256' : 'sha1');
+      if (scenario === 'crlf') { f.write('.gitattributes', `${path} text eol=lf\n`); f.write(path, 'base\r\n'); f.stage('.gitattributes', path); }
+      if (scenario === 'filter') { f.git('config', 'filter.fixture.clean', 'tr a-z A-Z'); f.write('.gitattributes', `${path} filter=fixture\n`); f.stage('.gitattributes', path); }
+      if (scenario.startsWith('symlink')) { rmSync(join(f.cwd, path)); symlinkSync('target', join(f.cwd, path)); f.stage(path); }
+      if (scenario.startsWith('gitlink')) {
+        rmSync(join(f.cwd, path)); mkdirSync(join(f.cwd, path));
+        const sub = join(f.cwd, path); f.gitAt(sub, 'init', '-q');
+        f.gitAt(sub, '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'core.hooksPath=.empty-hooks', 'commit', '--allow-empty', '-qm', 'Submodule fixture');
+        f.stage(path);
+      }
+      if (scenario === 'ignorestat') f.git('config', 'core.ignorestat', 'true');
+      if (scenario === 'ignored-mode') f.git('config', 'core.filemode', 'false');
+      if (scenario === 'split') f.git('update-index', '--split-index');
+      f.git('update-index', `--${flag}`, '--', path);
+      if (scenario === 'deleted') rmSync(join(f.cwd, path));
+      else if (['changed', 'ignorestat', 'split', 'custom', 'sha256', 'literal'].includes(scenario)) f.write(path, 'hidden change\n');
+      else if (['executable', 'ignored-mode'].includes(scenario)) chmodSync(join(f.cwd, path), 0o755);
+      else if (scenario === 'symlink-changed') { rmSync(join(f.cwd, path)); symlinkSync('different', join(f.cwd, path)); }
+      else if (scenario === 'gitlink-changed') f.write(`${path}/untracked`, 'dirty');
+      const originalIndex = join(f.cwd, '.git/index'); const customIndex = join(f.root, 'custom-index');
+      const env = scenario === 'custom' ? { ...ENV, GIT_INDEX_FILE: customIndex } : ENV;
+      if (scenario === 'custom') writeFileSync(customIndex, readFileSync(originalIndex));
+      const indexPath = scenario === 'custom' ? customIndex : originalIndex;
+      const index = readFileSync(indexPath); const original = readFileSync(originalIndex);
+      const shared = () => Object.fromEntries(readdirSync(join(f.cwd, '.git')).filter((name) => name.startsWith('sharedindex.')).map((name) => [name, readFileSync(join(f.cwd, '.git', name))]));
+      const sharedBefore = shared(); const hook = join(f.root, 'hooks'); mkdirSync(hook);
+      writeFileSync(join(hook, 'post-index-change'), '#!/bin/sh\nprintf called > "$GIT_WORK_TREE/hook-called"\n'); chmodSync(join(hook, 'post-index-change'), 0o755); f.git('config', 'core.hooksPath', hook);
+      const temporaryRoot = join(f.root, 'temporary'); mkdirSync(temporaryRoot);
+      const result = spawnSync(process.execPath, ['--input-type=module', '-e', `import {createGit} from ${JSON.stringify(new URL('../skills/project-memory/scripts/lib/git.mjs', import.meta.url).href)}; console.log(JSON.stringify(createGit().snapshotIndex(${JSON.stringify([path])})))`], {
+        cwd: f.cwd, env: { ...env, GIT_WORK_TREE: f.cwd, TMPDIR: temporaryRoot, TMP: temporaryRoot, TEMP: temporaryRoot }, encoding: 'utf8',
+      });
+      const clean = ['clean', 'crlf', 'filter', 'ignored-mode', 'symlink-clean', 'gitlink-clean'].includes(scenario);
+      assert.equal(result.status, clean ? 0 : 1, result.stderr || result.stdout);
+      if (clean) assert.equal(JSON.parse(result.stdout)[path].blob, f.git('ls-files', '--stage', '--', path).split(' ')[1]);
+      else assert.match(result.stderr, /stage final tested changes/);
+      assert.deepEqual(readFileSync(indexPath), index); assert.deepEqual(readFileSync(originalIndex), original); assert.deepEqual(shared(), sharedBefore);
+      assert.equal(fs.existsSync(join(f.cwd, 'hook-called')), false);
+      assert.deepEqual(readdirSync(temporaryRoot), []);
+    });
+  }
+}
+
+for (const operation of ['update-index', 'diff']) {
+  test(`private index ${operation} failure refuses completion and removes temporary files`, (t) => {
+    const f = cliFixture(t); f.git('update-index', '--assume-unchanged', '--', 'file.txt');
+    const index = readFileSync(join(f.cwd, '.git/index')); const original = childProcess.execFileSync;
+    let temporaryIndex;
+    childProcess.execFileSync = (command, args, options) => {
+      if (options.env.GIT_INDEX_FILE) {
+        temporaryIndex = options.env.GIT_INDEX_FILE;
+        assert.equal(options.env.GIT_ALLOW_PROTOCOL, '');
+        assert.equal(options.env.GIT_NO_LAZY_FETCH, '1');
+        assert.equal(options.env.GIT_NO_REPLACE_OBJECTS, '1');
+        assert.equal(options.env.GIT_OPTIONAL_LOCKS, '0');
+        if (args.includes(operation)) throw new Error('Synthetic private Git failure');
+      }
+      return original(command, args, options);
+    };
+    syncBuiltinESMExports();
+    try { assert.throws(() => createGit(f.cwd).snapshotIndex(['file.txt']), operation === 'diff' ? /stage final tested changes/ : /Synthetic private Git failure/); }
+    finally { childProcess.execFileSync = original; syncBuiltinESMExports(); }
+    assert.ok(temporaryIndex); assert.equal(fs.existsSync(dirname(temporaryIndex)), false);
+    assert.deepEqual(readFileSync(join(f.cwd, '.git/index')), index);
+  });
+}
