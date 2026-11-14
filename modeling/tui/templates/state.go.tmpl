@@ -48,11 +48,11 @@ func (r item) matches(folded string) bool {
 // no line or paragraph separators, no invalid UTF-8.
 func cleanFilterText(s string) string {
 	return strings.Map(func(r rune) rune {
-		if r == utf8.RuneError || unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
+		if unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
 			return -1
 		}
 		return r
-	}, s)
+	}, strings.ToValidUTF8(s, ""))
 }
 
 // appendFilter adds the clean code points of text to cur, up to maxFilter.
