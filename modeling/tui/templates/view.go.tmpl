@@ -296,34 +296,40 @@ func hintText(hints []KeyHint) string {
 	return strings.Join(parts, " ")
 }
 
+// keyHintIDs is the full vocabulary of KeyHint.ID values, in the order the
+// generator documents them. IDs name what a key does, not which key it is.
+var keyHintIDs = []string{[[[range $i, $id := hintIDs]]]
+	[[[quote $id]]],[[[end]]]
+}
+
 // keyHints lists the hints of the standalone footer for the current state, in
 // order, in their widest form[[[if .Hosted]]]. A hosted browser omits the quit hint[[[end]]].
 func keyHints(s state, d data) []KeyHint {
 	var hints []KeyHint
 	if s.helpOpen {
 		return []KeyHint{
-			{keyFor(downAction) + "/" + keyFor(upAction), "scroll"},
-			{keyFor(closeAction) + "/" + keyFor(helpAction), "close"},
+			{"help.scroll", keyFor(downAction) + "/" + keyFor(upAction), "scroll"},
+			{"help.close", keyFor(closeAction) + "/" + keyFor(helpAction), "close"},
 		}
 	}
 	if s.filterOpen {
-		return []KeyHint{{"enter", "keep"}, {"esc", "clear"}}
+		return []KeyHint{{"filter.keep", "enter", "keep"}, {"filter.cancel", "esc", "clear"}}
 	}
 	if s.selectedIndex(d) >= 0 {
-		navigation, movement := KeyHint{keyFor(openAction), "open"}, "select"
+		navigation, movement := KeyHint{"open", keyFor(openAction), "open"}, KeyHint{"select", keyFor(downAction) + "/" + keyFor(upAction), "select"}
 		if s.focus == detailPane {
-			navigation, movement = KeyHint{keyFor(closeAction), "back"}, "scroll"
+			navigation, movement = KeyHint{"back", keyFor(closeAction), "back"}, KeyHint{"scroll", keyFor(downAction) + "/" + keyFor(upAction), "scroll"}
 		}
-		hints = append(hints, KeyHint{keyFor(downAction) + "/" + keyFor(upAction), movement}, KeyHint{keyFor(nextPaneAction), "pane"}, navigation)
+		hints = append(hints, movement, KeyHint{"pane", keyFor(nextPaneAction), "pane"}, navigation)
 	}
-	hints = append(hints, KeyHint{keyFor(helpAction), "help"})
+	hints = append(hints, KeyHint{"help.open", keyFor(helpAction), "help"})
 	if filterEnabled {
-		hints = append(hints, KeyHint{keyFor(filterAction), "filter"})
+		hints = append(hints, KeyHint{"filter.open", keyFor(filterAction), "filter"})
 		if s.filterText != "" && s.focus == listPane {
-			hints = append(hints, KeyHint{keyFor(closeAction), "clear"})
+			hints = append(hints, KeyHint{"filter.clear", keyFor(closeAction), "clear"})
 		}
 	}
-[[[if not .Hosted]]]	hints = append(hints, KeyHint{keyFor(quitAction), "quit"})
+[[[if not .Hosted]]]	hints = append(hints, KeyHint{"quit", keyFor(quitAction), "quit"})
 [[[end]]]	return hints
 }
 

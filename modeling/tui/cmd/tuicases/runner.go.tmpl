@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	tea "charm.land/bubbletea/v2"
@@ -48,7 +49,10 @@ type expect struct {
 	Shown      *int
 }
 
-type hint struct{ Key, Action string }
+type hint struct {
+	ID          string
+	Key, Action *string
+}
 
 type testCase struct {
 	ID      string
@@ -132,6 +136,28 @@ func statusName(s browser.Status) string {
 		return "failed"
 	}
 	return fmt.Sprintf("unknown(%d)", s)
+}
+
+// hintMatches reports whether got is the expected hint: by ID when one is
+// given, and by key and action text when those are given.
+func hintMatches(got browser.KeyHint, want hint) bool {
+	return (want.ID == "" || got.ID == want.ID) &&
+		(want.Key == nil || got.Key == *want.Key) &&
+		(want.Action == nil || got.Action == *want.Action)
+}
+
+func hintLabel(want hint) string {
+	var parts []string
+	if want.ID != "" {
+		parts = append(parts, "id "+strconv.Quote(want.ID))
+	}
+	if want.Key != nil {
+		parts = append(parts, strconv.Quote(*want.Key))
+	}
+	if want.Action != nil {
+		parts = append(parts, strconv.Quote(*want.Action))
+	}
+	return strings.Join(parts, " ")
 }
 
 func hintList(hints []browser.KeyHint) string {
@@ -241,11 +267,11 @@ func run(doc document, c testCase) []string {
 		got := m.KeyHints()
 		at := 0
 		for _, want := range *e.KeyHints {
-			for at < len(got) && (got[at].Key != want.Key || got[at].Action != want.Action) {
+			for at < len(got) && !hintMatches(got[at], want) {
 				at++
 			}
 			if at == len(got) {
-				fail("keyHints %q %q: want shown in order got %s", want.Key, want.Action, hintList(got))
+				fail("keyHints %s: want shown in order got %s", hintLabel(want), hintList(got))
 				break
 			}
 			at++

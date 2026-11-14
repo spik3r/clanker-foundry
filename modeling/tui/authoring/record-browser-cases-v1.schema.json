@@ -144,15 +144,19 @@
             "filterOpen": {"type": "boolean"},
             "shown": {"description": "Number of records the list shows. Needs a model with a filter (Go checks).", "type": "integer", "minimum": 0, "maximum": 4096},
             "keyHints": {
-              "description": "1 to 12 key and action pairs that must appear, in this relative order, in the browser's KeyHints().",
+              "description": "1 to 12 hints that must appear, in this relative order, in the browser's KeyHints(). Each names the hint by id (see the hint vocabulary in the README), or by key and action text, or both; with an id, a given key or action is checked too.",
               "type": "array",
               "minItems": 1,
               "maxItems": 12,
               "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": ["key", "action"],
+                "anyOf": [
+                  {"required": ["id"], "properties": {"id": true}},
+                  {"required": ["key", "action"], "properties": {"key": true, "action": true}}
+                ],
                 "properties": {
+                  "id": {"enum": ["select", "scroll", "pane", "open", "back", "help.open", "help.scroll", "help.close", "filter.open", "filter.keep", "filter.cancel", "filter.clear", "quit"]},
                   "key": {"$ref": "#/$defs/plain"},
                   "action": {"$ref": "#/$defs/plain"}
                 }

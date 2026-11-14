@@ -224,20 +224,16 @@
         "help": false,
         "keyHints": [
           {
-            "key": "j/k",
-            "action": "select"
+            "id": "select"
           },
           {
-            "key": "tab",
-            "action": "pane"
+            "id": "pane"
           },
           {
-            "key": "enter",
-            "action": "open"
+            "id": "open"
           },
           {
-            "key": "?",
-            "action": "help"
+            "id": "help.open"
           }
         ]
       }
@@ -259,20 +255,16 @@
         "focus": "detail",
         "keyHints": [
           {
-            "key": "j/k",
-            "action": "scroll"
+            "id": "scroll"
           },
           {
-            "key": "tab",
-            "action": "pane"
+            "id": "pane"
           },
           {
-            "key": "esc",
-            "action": "back"
+            "id": "back"
           },
           {
-            "key": "?",
-            "action": "help"
+            "id": "help.open"
           }
         ]
       }
@@ -295,12 +287,10 @@
         "capturesKeys": true,
         "keyHints": [
           {
-            "key": "j/k",
-            "action": "scroll"
+            "id": "help.scroll"
           },
           {
-            "key": "esc/?",
-            "action": "close"
+            "id": "help.close"
           }
         ],
         "visible": [
@@ -377,8 +367,7 @@
         ],
         "keyHints": [
           {
-            "key": "?",
-            "action": "help"
+            "id": "help.open"
           }
         ],
         "capturesKeys": false

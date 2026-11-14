@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 	"unicode"
@@ -106,10 +107,13 @@ type Expect struct {
 	Shown      *int    `json:"shown,omitempty"`
 }
 
-// KeyHint is one expected key hint: the key text and the action text.
+// KeyHint is one expected key hint. ID is a KeyHintVocabulary ID. Key and
+// Action are the key text and the action text. An entry needs an ID, or both a
+// Key and an Action; with an ID, a given Key or Action is checked as well.
 type KeyHint struct {
-	Key    string `json:"key"`
-	Action string `json:"action"`
+	ID     string  `json:"id,omitempty"`
+	Key    *string `json:"key,omitempty"`
+	Action *string `json:"action,omitempty"`
 }
 
 var (
@@ -155,7 +159,7 @@ var caseMembers = map[string]string{
 	"resize":  "|width|height|",
 	"replace": "|status|records|message|",
 	"expect":  "|layout|focus|help|selected|status|visible|absent|quit|capturesKeys|keyHints|filter|filterOpen|shown|",
-	"keyhint": "|key|action|",
+	"keyhint": "|id|key|action|",
 }
 
 // memberContext names the context of an object member's value.
@@ -165,6 +169,7 @@ var memberContext = map[string]map[string]string{
 	"case":       {"size": "size", "steps": "steps", "expect": "expect"},
 	"step":       {"resize": "resize", "replace": "replace"},
 	"expect":     {"keyHints": "keyhints"},
+	"keyhint":    {"id": "hintid"},
 }
 
 // elementContext names the context of an array's elements.
@@ -180,6 +185,11 @@ func checkCasesValue(d *json.Decoder, depth int, context string) error {
 	}
 	if t == nil {
 		return fmt.Errorf("null is not supported")
+	}
+	// The decoded string field cannot distinguish an absent ID from an empty
+	// one. Check the token while its presence is still known.
+	if context == "hintid" && t == "" {
+		return fmt.Errorf("expect.keyHints id must not be empty")
 	}
 	delim, ok := t.(json.Delim)
 	if !ok {
@@ -442,11 +452,21 @@ func (e Expect) validate() error {
 			return fmt.Errorf("expect.keyHints must hold 1..%d hints", maxKeyHints)
 		}
 		for _, h := range *e.KeyHints {
-			if err := plainText(h.Key, "expect.keyHints key", maxExpectedText); err != nil {
-				return err
+			if h.ID != "" && !slices.Contains(KeyHintIDs(), h.ID) {
+				return fmt.Errorf("expect.keyHints id %q is not in the hint vocabulary", h.ID)
 			}
-			if err := plainText(h.Action, "expect.keyHints action", maxExpectedText); err != nil {
-				return err
+			if h.ID == "" && (h.Key == nil || h.Action == nil) {
+				return fmt.Errorf("expect.keyHints entry needs an id, or a key and an action")
+			}
+			if h.Key != nil {
+				if err := plainText(*h.Key, "expect.keyHints key", maxExpectedText); err != nil {
+					return err
+				}
+			}
+			if h.Action != nil {
+				if err := plainText(*h.Action, "expect.keyHints action", maxExpectedText); err != nil {
+					return err
+				}
 			}
 		}
 	}

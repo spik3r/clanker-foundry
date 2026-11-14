@@ -7,6 +7,7 @@ package recordbrowser
 // that depends on the text mode.
 import (
 	"fmt"
+	"slices"
 	"strings"
 	"testing"
 
@@ -207,16 +208,38 @@ func TestHostedAccessors(t *testing.T) {
 			t.Fatalf("hints %v, want %v", got, w)
 		}
 	}
+	ids := func(m Model) string {
+		var got []string
+		for _, h := range m.KeyHints() {
+			if h.ID == "" || !slices.Contains(keyHintIDs, h.ID) || h.ID == "quit" || slices.Contains(got, h.ID) {
+				t.Fatalf("hint %+v in %+v: want a unique documented id, not quit", h, m.KeyHints())
+			}
+			got = append(got, h.ID)
+		}
+		return strings.Join(got, ",")
+	}
 	want(m, "j/k", "select", "tab", "pane", "enter", "open", "?", "help")
+	if got := ids(m); got != "select,pane,open,help.open" {
+		t.Fatalf("list ids %s", got)
+	}
 	d, _ := hkey(t, m, "enter")
 	want(d, "j/k", "scroll", "tab", "pane", "esc", "back", "?", "help")
+	if got := ids(d); got != "scroll,pane,back,help.open" {
+		t.Fatalf("detail ids %s", got)
+	}
 	h, _ := hkey(t, m, "?")
 	if !h.CapturesKeys() {
 		t.Fatal("help open must capture keys")
 	}
 	want(h, "j/k", "scroll", "esc/?", "close")
+	if got := ids(h); got != "help.scroll,help.close" {
+		t.Fatalf("help ids %s", got)
+	}
 	l, _ := m.Replace(Snapshot{Status: Loading})
 	want(l, "?", "help")
+	if got := ids(l); got != "help.open" {
+		t.Fatalf("loading ids %s", got)
+	}
 	if l.CapturesKeys() {
 		t.Fatal("loading captures keys")
 	}

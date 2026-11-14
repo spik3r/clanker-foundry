@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "31882f27-210d-40ca-9034-c8fc0cc7c1bf",
+  "runId": "846574be-ac9c-4ddf-8084-7b8c09cd0477",
+  "kind": "complete",
+  "parents": [
+    "c70fab96-8410-4663-88fb-f3050bc5f1f2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-hint-empty-id-v1",
+    "path": "tasks/CF-hint-empty-id-v1-cases-parity.md",
+    "revision": "02a971b6992af36a7ad1eaed5a12a477604159e0",
+    "blob": "c16def5d25f781a3e1be13684a0b8a0381371c69",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c57a1d83896c0ece9ea24d52133a203fda914d7a975c106d702ce8cf07004f82"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/hint-empty-id-fix",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/139",
+  "at": "2026-11-14T02:12:07.441Z",
+  "summary": "Reject explicit empty hint IDs before JSON decoding loses member presence; preserve legacy absent IDs",
+  "next": "Commit evidence, validate full committed diff, recheck live PR head and push fast-forward update for coordinator review",
+  "files": [
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "tasks/CF-hint-empty-id-v1-cases-parity.md"
+  ],
+  "validation": "Regression failed before fix for empty ID plus legacy pair in both member orders. Go 1.27.0: go vet ./... and full go test -race -count=1 -p=1 ./... passed in modeling/tui (38.258s package, 1.735s tuic, 9.316s tuicases). gencontract race passed (9.324s); foundrygen race passed (28.323s). Node 26 with existing pinned Ajv 8.20.0 via NODE_PATH: authoring tests 8 passed, 0 skipped. scripts/validate.sh passed, optional skills-ref unavailable. Whitespace checks passed.",
+  "snapshot": {
+    "modeling/tui/cases.go": {
+      "blob": "c1cccecd8ca16aeeb17dbb28c2cedb1c3cd7d49d",
+      "mode": "100644"
+    },
+    "modeling/tui/cases_test.go": {
+      "blob": "b1659ebdfdd94aaff3a10b1a88f1a266f40c6344",
+      "mode": "100644"
+    },
+    "modeling/tui/authoring/cases.schema.test.cjs": {
+      "blob": "f48bcb0fb85f647c32866ceb878a1a288ce848af",
+      "mode": "100644"
+    },
+    "tasks/CF-hint-empty-id-v1-cases-parity.md": {
+      "blob": "c16def5d25f781a3e1be13684a0b8a0381371c69",
+      "mode": "100644"
+    }
+  }
+}

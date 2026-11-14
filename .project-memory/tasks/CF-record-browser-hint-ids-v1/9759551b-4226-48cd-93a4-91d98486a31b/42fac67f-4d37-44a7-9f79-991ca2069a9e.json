@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "42fac67f-4d37-44a7-9f79-991ca2069a9e",
+  "runId": "9759551b-4226-48cd-93a4-91d98486a31b",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-record-browser-hint-ids-v1",
+    "path": "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md",
+    "revision": "220b8ba2c4a8f8e2359c35db160de8d60e4d00df",
+    "blob": "ef3b5e9ac346a1eb14844236c48a3d917e2f6441",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "8291fe7fae8e4530c2b696428a15000082bb67840cb08e733a0044ce68610865"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-13T23:02:52.720Z",
+  "summary": "Add stable identifiers to generated key hints and to the cases format",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "modeling/tui/CASES.md",
+    "modeling/tui/PROFILE.md",
+    "modeling/tui/README.md",
+    "modeling/tui/acceptance/browser_test.go.txt",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/acceptance/hosted_test.go.txt",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "modeling/tui/authoring/record-browser-cases-v1.schema.json",
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/cmd/tuicases/main_test.go",
+    "modeling/tui/cmd/tuicases/runner.go.tmpl",
+    "modeling/tui/compiler.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/examples/browser-hosted.cases.json",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/hints.go",
+    "modeling/tui/hints_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "02a971b6992af36a7ad1eaed5a12a477604159e0",
+  "id": "CF-hint-empty-id-v1",
+  "path": "tasks/CF-hint-empty-id-v1-cases-parity.md",
+  "blob": "c16def5d25f781a3e1be13684a0b8a0381371c69",
+  "record": "---\nid: CF-hint-empty-id-v1\nstatus: in-progress\nowner: Codex hint validation contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject explicit empty key hint IDs\n\n## Implementation claim\n\nOwner: Codex hint validation contributor, delegated by the coordinating agent.\nThe owner requested continued subagent work and reviewed PR merges. This claim\nfixes the existing P2 review finding on PR #139 at\n`d4071d3f8d28d54872e40ce63c09884681371767`. The original hint ID task is complete;\nthis follow-up changes no existing immutable Project Memory evidence.\n\nScope: `modeling/tui/cases.go`, `modeling/tui/cases_test.go`,\n`modeling/tui/authoring/cases.schema.test.cjs`, this task record and new immutable\nProject Memory files. Preserve the distinction between absent and explicit\nempty hint IDs during JSON decoding. Reject empty IDs with key, action, or both;\nkeep absent-ID legacy key/action pairs accepted. Add Go decoder regressions and\nschema parity cases. Keep public types, generated code and schema unchanged.\n\nChecks: prove the regression fails before the fix; focused Go decoder tests;\nfull TUI race tests and vet; Node authoring tests; generator contract and\nfoundrygen race tests; repository validation, whitespace checks and committed\nProject Memory validation. Push a fast-forward update to PR #139 only after\nrechecking its live head. The coordinating agent reviews and merges.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-hint-empty-id-v1-cases-parity.md",
+        "id": "CF-hint-empty-id-v1",
+        "blob": "c16def5d25f781a3e1be13684a0b8a0381371c69",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

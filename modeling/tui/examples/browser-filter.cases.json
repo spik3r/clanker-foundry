@@ -73,12 +73,10 @@
         "shown": 4,
         "keyHints": [
           {
-            "key": "enter",
-            "action": "keep"
+            "id": "filter.keep"
           },
           {
-            "key": "esc",
-            "action": "clear"
+            "id": "filter.cancel"
           }
         ]
       }

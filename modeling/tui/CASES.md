@@ -83,7 +83,7 @@ after the last step and reported separately.
 | `absent` | 1 to 16 such strings. None may appear in the frame. |
 | `quit` | `true` when the last step was a key and the browser returned the quit command; `false` otherwise. |
 | `capturesKeys` | `true` when the browser's `CapturesKeys()` is true after the last step: the help overlay or the filter input is open and a host must forward every key. |
-| `keyHints` | 1 to 12 objects `{"key": "...", "action": "..."}` (each 1 to 240 bytes, plain text). Each must appear in the browser's `KeyHints()`, and they must appear in the order given; other hints may lie between them. A standalone browser lists its footer hints (including `q quit`); a hosted browser has no quit hint. |
+| `keyHints` | 1 to 12 objects `{"id": "...", "key": "...", "action": "..."}`. Each needs an `id`, or a `key` together with an `action`. `id` is one of the hint IDs in the README ("Key hint IDs"); `key` and `action` are 1 to 240 bytes, plain text. With an `id` the runner matches the hint by ID, and also checks `key` and `action` when they are given; without one it matches on `key` and `action`. Prefer `id`: hint wording may change between generator versions, IDs do not. Each hint must appear in the browser's `KeyHints()`, and they must appear in the order given; other hints may lie between them. A standalone browser lists its footer hints (including `q quit`); a hosted browser has no quit hint. |
 | `filter` | The filter text, kept or being typed (0 to 64 code points, plain text): `FilterText()`. |
 | `filterOpen` | `true` when the filter input is open: `FilterOpen()`. |
 | `shown` | Integer 0 to 4096: the number of records the list shows, `Shown()`. |

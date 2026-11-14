@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "220b8ba2c4a8f8e2359c35db160de8d60e4d00df",
+  "id": "CF-record-browser-hint-ids-v1",
+  "path": "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md",
+  "blob": "ef3b5e9ac346a1eb14844236c48a3d917e2f6441",
+  "record": "---\nid: CF-record-browser-hint-ids-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Give record-browser key hints stable identifiers\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. The\n[generator pipeline plan](../docs/generator-pipeline-plan.md) records the gap\nunder \"Further consumer changes\": a host had to translate a key hint by\nmatching its English text, which breaks silently if the wording changes.\n\nScope, under `modeling/tui/`: an `ID` field on the generated `KeyHint` type,\ndrawn from a fixed vocabulary kept in one place and documented in the README\nand profile; tests that the observed, coded and documented vocabularies agree;\nan optional `id` member on `keyHints` expectations in the cases format, with\nschema, document and example updates; `tuic` 1.5.0 with unchanged canonical\ndigests. Existing hint text does not change. Also this task record and new\nimmutable Project Memory files.\n\nExclusions: no change to the consumer application, the contract, the harness\nor other generators.\n\nChecks: gofmt, `go vet` and `go test -race` in `modeling/tui`, `go test -race`\nin `modeling/gencontract` and `modeling/foundrygen`, the node schema tests, the\nrepository validator, whitespace check and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-record-browser-hint-ids-v1-stable-identifiers.md",
+        "id": "CF-record-browser-hint-ids-v1",
+        "blob": "ef3b5e9ac346a1eb14844236c48a3d917e2f6441",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -7,6 +7,7 @@ package recordbrowser
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 
@@ -359,7 +360,7 @@ func TestFilterKeyHintsAndHelp(t *testing.T) {
 	}
 	m = fkeys(m, "/")
 	h := m.KeyHints()
-	if len(h) != 2 || h[0] != (KeyHint{"enter", "keep"}) || h[1] != (KeyHint{"esc", "clear"}) {
+	if len(h) != 2 || h[0] != (KeyHint{"filter.keep", "enter", "keep"}) || h[1] != (KeyHint{"filter.cancel", "esc", "clear"}) {
 		t.Fatalf("input hints %v", h)
 	}
 	m = fkeys(ftype(m, "al"), "enter", "?")
@@ -380,5 +381,67 @@ func TestFilterKeyHintsAndHelp(t *testing.T) {
 	empty, _ = fkey(empty, "/")
 	if empty.FilterOpen() {
 		t.Fatal("input opened without records")
+	}
+}
+
+// Every hint the browser returns in any state has a stable ID from the
+// generated vocabulary, no result repeats an ID, and across the states below
+// the browser returns exactly the vocabulary (a hosted browser has no quit hint).
+func TestFilterKeyHintIDs(t *testing.T) {
+	seen := map[string]bool{}
+	check := func(label string, m Model) {
+		t.Helper()
+		ids := map[string]bool{}
+		for _, h := range m.KeyHints() {
+			if h.ID == "" || h.Key == "" || h.Action == "" {
+				t.Fatalf("%s: incomplete hint %+v", label, h)
+			}
+			if !slices.Contains(keyHintIDs, h.ID) {
+				t.Fatalf("%s: id %q is not in the vocabulary %v", label, h.ID, keyHintIDs)
+			}
+			if ids[h.ID] {
+				t.Fatalf("%s: id %q appears twice in %+v", label, h.ID, m.KeyHints())
+			}
+			ids[h.ID], seen[h.ID] = true, true
+		}
+	}
+	m := fnew(t, 80, 12, frecs())
+	check("list", m)
+	d := fkeys(m, "enter")
+	check("detail", d)
+	check("help", fkeys(m, "?"))
+	check("help from detail", fkeys(d, "?"))
+	open := fkeys(m, "/")
+	check("filter input", open)
+	check("filter input with text", ftype(open, "al"))
+	kept := fkeys(ftype(open, "al"), "enter")
+	check("filter kept", kept)
+	check("filter kept, detail", fkeys(kept, "enter"))
+	check("filter kept, help", fkeys(kept, "?"))
+	none := fkeys(ftype(fkeys(m, "/"), "zzz"), "enter")
+	if none.Shown() != 0 {
+		t.Fatalf("no-matches state shows %d records", none.Shown())
+	}
+	check("no matches", none)
+	check("no matches, input", ftype(fkeys(m, "/"), "zzz"))
+	for _, snap := range []Snapshot{{Status: Loading}, {Status: Failed, Message: "boom"}} {
+		r, err := m.Replace(snap)
+		if err != nil {
+			t.Fatal(err)
+		}
+		check(fmt.Sprintf("status %v", snap.Status), r)
+	}
+	var got []string
+	for id := range seen {
+		got = append(got, id)
+	}
+	want := slices.Clone(keyHintIDs)
+	if fhosted() {
+		want = slices.DeleteFunc(want, func(id string) bool { return id == "quit" })
+	}
+	slices.Sort(got)
+	slices.Sort(want)
+	if !slices.Equal(got, want) {
+		t.Fatalf("observed ids %v, want the documented vocabulary %v", got, want)
 	}
 }
