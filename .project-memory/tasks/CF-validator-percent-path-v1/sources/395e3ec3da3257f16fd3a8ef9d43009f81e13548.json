@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "395e3ec3da3257f16fd3a8ef9d43009f81e13548",
+  "id": "CF-validator-percent-path-v1",
+  "path": "tasks/CF-validator-percent-path-v1-relative-links.md",
+  "blob": "d45025cbb55b1d58ce6d80664d9851e55e5cc9dc",
+  "record": "---\nid: CF-validator-percent-path-v1\nstatus: in-progress\nowner: Codex validator maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Resolve percent-encoded relative link paths\n\n## Implementation claim\n\nThe coordinator assigned this bounded repair after isolated fixtures showed\nthat the pack validator rejects existing percent-encoded destinations and can\naccept an encoded-spelling decoy while the decoded destination is missing.\nReviewed main at `44db6e4`, current claims and open PRs #159 and #160; their\nrecord closure and Project Memory repair do not overlap this scope.\n\nLimit changes to scripts/validate.sh, its existing installer validator\nregressions in tests/test-install.sh, a concise clarification in\ndocs/getting-started.md if needed, this record and new immutable evidence.\nDecode valid percent triplets exactly once after splitting the raw fragment.\nKeep plus signs, literal backslashes, encoded hash filename bytes and decoded\ntrailing newlines unchanged. Reject decoded NUL bytes. Leave malformed escapes\nliteral, preserving existing literal paths. Do not add dependencies or a generic\nMarkdown parser, or change external-link and reference-link handling.\n\nProve the regressions fail before repair. Cover present/missing destinations,\nliteral encoded decoys, percent/double encoding, Unicode, space, hash, lowercase\nhex, plus, backslash, trailing newline, NUL and malformed-escape controls.\nRun Bash 3.2 syntax, full installer and model-map regressions, repository\nvalidator, whitespace and committed Project Memory coverage. Publish for\nindependent review; the coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-validator-percent-path-v1-relative-links.md",
+        "id": "CF-validator-percent-path-v1",
+        "blob": "d45025cbb55b1d58ce6d80664d9851e55e5cc9dc",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

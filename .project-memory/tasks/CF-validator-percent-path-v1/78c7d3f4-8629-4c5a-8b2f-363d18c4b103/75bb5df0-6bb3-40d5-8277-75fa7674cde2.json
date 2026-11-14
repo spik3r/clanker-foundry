@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "75bb5df0-6bb3-40d5-8277-75fa7674cde2",
+  "runId": "78c7d3f4-8629-4c5a-8b2f-363d18c4b103",
+  "kind": "complete",
+  "parents": [
+    "5616bb1e-0e35-460d-a151-4bc576d09147"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-percent-path-v1",
+    "path": "tasks/CF-validator-percent-path-v1-relative-links.md",
+    "revision": "395e3ec3da3257f16fd3a8ef9d43009f81e13548",
+    "blob": "d45025cbb55b1d58ce6d80664d9851e55e5cc9dc",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ec64b14a4c2c76e50bc49c913fadee271c0bb2616d54fa399e432c61c2fa9fa0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-percent-path-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:23:35.726Z",
+  "summary": "Decode valid URL path escapes once before checking relative Markdown targets; preserve literal bytes and refuse NUL",
+  "next": "Independent exact-head review and hosted checks; coordinator owns merge",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-percent-path-v1-relative-links.md"
+  ],
+  "validation": "Pre-fix full installer fixture run failed eight cases; repaired full tests/test-install.sh passed including18 link cases and full resolver/preflight/wiring;47 model-map cases passed; Bash3.2.57 syntax and execution passed; scripts/validate.sh and whitespace passed",
+  "snapshot": {
+    "scripts/validate.sh": {
+      "blob": "565d8ef2ec5cad391eb32c42b29f612bd05c1aa3",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "c17df194f44f938bc87f9c28bb2a20a41421ad17",
+      "mode": "100755"
+    },
+    "docs/getting-started.md": {
+      "blob": "87dc6e3e1a597e54a731b8d0283e831433ecfc45",
+      "mode": "100644"
+    },
+    "tasks/CF-validator-percent-path-v1-relative-links.md": {
+      "blob": "d45025cbb55b1d58ce6d80664d9851e55e5cc9dc",
+      "mode": "100644"
+    }
+  }
+}
