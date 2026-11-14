@@ -51,7 +51,7 @@
         "defaults or nullable values",
         "numbers, or numeric constraints",
         "regular-expression or format constraints on strings",
-        "enums or constants of numbers, null or other non-string values",
+        "enums of non-string values; constants of numbers, null, arrays or objects",
         "unions or recursive references",
         "cross-field rules",
         "error messages or a first-error result"

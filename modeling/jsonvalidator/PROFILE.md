@@ -18,7 +18,8 @@ traversed. With false they are refused (see "Closed objects").
 
 The model has no defaults, nullability, numbers, regular-expression constraints,
 unions, coercion, recursive references, cross-field rules or diagnostic
-constructs. Enums and constants exist for strings only. Unknown fields and unsupported versions are refusals. The
+constructs. Enums exist for strings only; boolean and string nodes support
+constants. Unknown fields and unsupported versions are refusals. The
 [JSON Schema](authoring/json-boolean-v1.schema.json) is an authoring aid for
 drafting a model; Go validation is authoritative and the schema lists the rules
 it cannot express.

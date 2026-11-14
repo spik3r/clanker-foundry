@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "fa2bc12617153d59620f118a60d1c59d692e4c59",
+  "id": "CF-authoring-guidance-accuracy-v1",
+  "path": "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+  "blob": "b1cff6d3d29ecc87e006ed1ba4bf58bd54e8d90f",
+  "record": "---\nid: CF-authoring-guidance-accuracy-v1\nstatus: in-progress\nowner: Codex authoring guidance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Correct public authoring guidance and current route pointers\n\n## Implementation claim\n\nOwner: Codex authoring guidance contributor, delegated by the coordinating\nagent during the owner's continued maintenance request. Main at `7b5a2d6`,\ncurrent direction and active work were reviewed. The coordinator separately\nowns enum uniqueness schema work; this claim excludes schemas and code.\n\nThe JSON validator registry and profile exclude non-string constants despite\nsupporting boolean const. The TUI cases command block omits its module working\ndirectory and says Go is unnecessary beside a go-run command. The pipeline\nintroduction is a dated 11 November snapshot that still presents the historical\nbuilder route beside generation without pointing readers to the owner's newer\ngenerated-code-only decision.\n\nScope: `modeling/profiles.json`, `modeling/jsonvalidator/PROFILE.md`,\n`modeling/tui/CASES.md`, `docs/model-driven-pipeline.md`, this task and new\nimmutable Project Memory files. Correct only those claims: retain boolean\nconstants, show module cwd and distinguish prebuilt validate from go run, and\nadd a dated update linking the accepted generator pipeline direction. Preserve\nhistorical pipeline sections and the number-spelling note. No source, schema,\nversion, generated output or consumer changes, and no broader plan rewrite.\n\nChecks: validate a boolean-constant model, run the documented TUI validate\ncommand from its stated cwd, run existing registry and authoring schema checks,\nrepository validation, whitespace and committed Project Memory validation.\nPush and open a PR for independent coordinator review; merging belongs to the\ncoordinator.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+        "id": "CF-authoring-guidance-accuracy-v1",
+        "blob": "b1cff6d3d29ecc87e006ed1ba4bf58bd54e8d90f",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

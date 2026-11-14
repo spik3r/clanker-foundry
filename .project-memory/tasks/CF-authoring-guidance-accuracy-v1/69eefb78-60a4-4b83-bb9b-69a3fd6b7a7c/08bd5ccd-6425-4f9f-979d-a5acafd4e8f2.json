@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "08bd5ccd-6425-4f9f-979d-a5acafd4e8f2",
+  "runId": "69eefb78-60a4-4b83-bb9b-69a3fd6b7a7c",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-authoring-guidance-accuracy-v1",
+    "path": "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+    "revision": "fa2bc12617153d59620f118a60d1c59d692e4c59",
+    "blob": "b1cff6d3d29ecc87e006ed1ba4bf58bd54e8d90f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba2321dcb79dd5fff0272f850a1f979eab933053e855474cab02a991cc6e540a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/authoring-guidance-accuracy-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:38:33.427Z",
+  "summary": "Correct boolean const claims, TUI command setup and current pipeline route pointers",
+  "next": "Apply four bounded guidance edits and verify documented behavior",
+  "files": [
+    "modeling/profiles.json",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/tui/CASES.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md"
+  ]
+}

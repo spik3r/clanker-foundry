@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "50dd557e-1df1-4b16-908a-ea2654473b2e",
+  "runId": "69eefb78-60a4-4b83-bb9b-69a3fd6b7a7c",
+  "kind": "complete",
+  "parents": [
+    "08bd5ccd-6425-4f9f-979d-a5acafd4e8f2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-authoring-guidance-accuracy-v1",
+    "path": "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+    "revision": "fa2bc12617153d59620f118a60d1c59d692e4c59",
+    "blob": "b1cff6d3d29ecc87e006ed1ba4bf58bd54e8d90f",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba2321dcb79dd5fff0272f850a1f979eab933053e855474cab02a991cc6e540a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/authoring-guidance-accuracy-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:39:33.141Z",
+  "summary": "Correct boolean constant exclusions, document TUI command cwd and clarify current generated-code route without rewriting historical sections",
+  "next": "Commit immutable evidence, validate committed diff, push and open PR for coordinator review and hosted checks",
+  "files": [
+    "modeling/profiles.json",
+    "modeling/jsonvalidator/PROFILE.md",
+    "modeling/tui/CASES.md",
+    "docs/model-driven-pipeline.md",
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md"
+  ],
+  "validation": "Boolean const model validation returned identity and exit 0. Documented go run validate from modeling/tui reported 15 cases; prebuilt tuicases validate also passed with PATH=/nonexistent. Profile registry race test passed in 2.224s. JSON validator and TUI authoring schema suites: 12 passed, 0 skipped (Node 26, existing pinned Ajv 8.20.0 via NODE_PATH). Repository validator passed; optional skills-ref unavailable. Whitespace checks passed. No code/schema/version/generated output changes.",
+  "snapshot": {
+    "modeling/profiles.json": {
+      "blob": "b2faa68f05b3b53ced440a8aaa98e4ea26bab8e9",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/PROFILE.md": {
+      "blob": "044ec7866e552ccc486ad671ca7e516d00a7ce97",
+      "mode": "100644"
+    },
+    "modeling/tui/CASES.md": {
+      "blob": "2ca130fcc543bc1fc1efbc3c2e06a87dea6f87ac",
+      "mode": "100644"
+    },
+    "docs/model-driven-pipeline.md": {
+      "blob": "0090949ab5a950835a78f94d2d1196ca0486e7a7",
+      "mode": "100644"
+    },
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md": {
+      "blob": "b1cff6d3d29ecc87e006ed1ba4bf58bd54e8d90f",
+      "mode": "100644"
+    }
+  }
+}
