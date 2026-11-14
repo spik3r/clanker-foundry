@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "0a2cb5bd-d7ef-4583-91cf-7519f42883c6",
+  "runId": "f963401c-f530-4bfd-a16a-12655e482665",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-stdout-v1",
+    "path": "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+    "revision": "533d6ddd4f8893f9a5ca06b8e9dd5ec42ad7107f",
+    "blob": "60dbea222897908cf39c6138e601dbded44573f2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "185ff0f843bfab28b69a17422cca8583f4ec0580053474667cf9bdf041f3380e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-stdout-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:16:05.789Z",
+  "summary": "Detect result and warning delivery failures without changing primary refusal or artifact behavior",
+  "next": "Add failing writer/closed-pipe regressions, repair output delivery, validate and publish",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/cmd/foundrygen/main.go",
+    "modeling/foundrygen/stdout_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md"
+  ]
+}

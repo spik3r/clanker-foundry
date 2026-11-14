@@ -96,7 +96,17 @@ possible and the message names any leftover directory. Missing parent
 directories of `OUT` are created.
 
 Output lines are `generated|regenerated|unchanged OUT GENERATOR CANONICAL_SHA256`.
-On any nonzero exit stdout is empty.
+On a command failure stdout is empty. Delivery failures are the exception:
+a failed or short stdout write returns exit 1 and attempts the fixed diagnostic
+`foundrygen: output write failed`. Already accepted stdout bytes may remain,
+and generated artifacts are not rolled back.
+
+Buffered warnings and diagnostics are delivered before stdout. If an otherwise
+successful command cannot deliver a nonempty warning, it returns exit 1 before
+attempting stdout and attempts `foundrygen: diagnostic write failed` on stderr.
+An existing refusal, drift or failure code is preserved if only diagnostic
+delivery fails. Empty writes are skipped. A broken stderr cannot be relied on
+to carry the fallback diagnostic.
 
 ## Preview before generation
 

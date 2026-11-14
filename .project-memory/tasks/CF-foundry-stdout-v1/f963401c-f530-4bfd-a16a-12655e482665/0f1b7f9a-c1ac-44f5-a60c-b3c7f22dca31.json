@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "0f1b7f9a-c1ac-44f5-a60c-b3c7f22dca31",
+  "runId": "f963401c-f530-4bfd-a16a-12655e482665",
+  "kind": "complete",
+  "parents": [
+    "0a2cb5bd-d7ef-4583-91cf-7519f42883c6"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-stdout-v1",
+    "path": "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+    "revision": "533d6ddd4f8893f9a5ca06b8e9dd5ec42ad7107f",
+    "blob": "60dbea222897908cf39c6138e601dbded44573f2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "185ff0f843bfab28b69a17422cca8583f4ec0580053474667cf9bdf041f3380e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-stdout-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:22:23.876Z",
+  "summary": "Foundry reports failed result or warning delivery, suppresses stdout before warning-delivery failure and preserves primary nonzero results",
+  "next": "Commit and validate evidence, publish PR for independent final review and hosted CI",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/cmd/foundrygen/main.go",
+    "modeling/foundrygen/stdout_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md"
+  ],
+  "validation": "Red tests exposed false exit0 for four stdout and four warning writer failures/short writes, unnecessary empty diagnostic writes and process SIGPIPE termination on preclosed stdout/stderr pipes. Go1.27.0 foundrygen vet and full race suite passed36.712s. Normal pinned fixture, unpinned warning controls, refusal/drift priority, generated artifact preservation and bounded30s actual closed-pipe cases pass. Repository validator passed (optional skills-ref absent); staged and unstaged whitespace checks pass. No generator or emitted-byte changes.",
+  "snapshot": {
+    "modeling/foundrygen/run.go": {
+      "blob": "00e82ac33630829e9319fb632d9d22deebd3353c",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/cmd/foundrygen/main.go": {
+      "blob": "766c38e270e48632838a6e900916ea7e6c153530",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/stdout_test.go": {
+      "blob": "6c5ce11b511f74bc8ef29d2f05c2809b0db76946",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "2f5398cd590a1d630ba1f3dcbf101a5c6f8228bd",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md": {
+      "blob": "60dbea222897908cf39c6138e601dbded44573f2",
+      "mode": "100644"
+    }
+  }
+}
