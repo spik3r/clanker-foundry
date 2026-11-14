@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "3db25f46-434d-4e27-b35a-2db59242d224",
+  "runId": "25e758fd-9c94-4f99-b74e-552480d133e2",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-schema-number-spelling-v1",
+    "path": "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+    "revision": "200dce2939aa6b93c57d138838f0ccbcd648cc95",
+    "blob": "d4f4c4795969c5935e1d85de2d1fd407affbc25a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7c0706991b98edde8e0bd95d650cb34409807b0b2467fec3cc9dea423075ebea"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/json-schema-number-spelling-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:30:02.325Z",
+  "summary": "Document erased number spelling and cover raw bounds in schema agreement",
+  "next": "Add explanatory text and six raw-source fixtures, run focused checks",
+  "files": [
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "modeling/jsonvalidator/PROFILE.md",
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md"
+  ]
+}

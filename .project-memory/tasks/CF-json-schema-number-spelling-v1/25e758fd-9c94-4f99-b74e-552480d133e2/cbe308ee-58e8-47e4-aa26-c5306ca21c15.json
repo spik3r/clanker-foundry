@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "cbe308ee-58e8-47e4-aa26-c5306ca21c15",
+  "runId": "25e758fd-9c94-4f99-b74e-552480d133e2",
+  "kind": "complete",
+  "parents": [
+    "3db25f46-434d-4e27-b35a-2db59242d224"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-schema-number-spelling-v1",
+    "path": "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+    "revision": "200dce2939aa6b93c57d138838f0ccbcd648cc95",
+    "blob": "d4f4c4795969c5935e1d85de2d1fd407affbc25a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7c0706991b98edde8e0bd95d650cb34409807b0b2467fec3cc9dea423075ebea"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/json-schema-number-spelling-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:31:05.016Z",
+  "summary": "Document source spelling limits of parsed-value schema checks and add six raw length-bound agreement fixtures",
+  "next": "Commit evidence, validate full committed diff, push and open PR for independent review and hosted checks",
+  "files": [
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "modeling/jsonvalidator/PROFILE.md",
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md"
+  ],
+  "validation": "Independent probes: raw 1e0, 1.0 and -0 minLength models accepted by Ajv and refused by Go with exit 2. Full JSON validator authoring suite passed: 4 tests, 0 skipped, Node 26 with existing pinned Ajv 8.20.0 via NODE_PATH. Go 1.27.0 model refusal race tests passed (1.803s). Repository validator passed; optional skills-ref unavailable. Whitespace checks passed. No Go, schema constraints, generator version or emitted code changed.",
+  "snapshot": {
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json": {
+      "blob": "11e26f3b2251c56edb3e70a3149debd9ae781bb6",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/authoring/schema.test.cjs": {
+      "blob": "a508b6ee50751a1a04c5c94c29789733e35e8652",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/PROFILE.md": {
+      "blob": "0cf0d381459317ad7a7d22ca8f85cefbfcedb207",
+      "mode": "100644"
+    },
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md": {
+      "blob": "d4f4c4795969c5935e1d85de2d1fd407affbc25a",
+      "mode": "100644"
+    }
+  }
+}

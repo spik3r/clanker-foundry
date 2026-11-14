@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:jsonvalidator:json-boolean:v1:schema",
   "title": "json-boolean/v1 model",
-  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It also cannot express: unique enum values; minLength not above maxLength; the 256-byte limit on const and enum strings (a pattern cannot count bytes); and the refusal of control characters and U+FFFD in those strings in every spelling. It does check the exact members of each node shape, which string members may be combined, enum size 1 to 32, length bounds as integers 0 to 65535, property name syntax, at most 128 properties per object and that additionalProperties is a boolean.",
+  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It also cannot express: plain unsigned integer source spelling for length bounds (JSON.parse erases decimal and exponent spelling, and numeric -0 passes the nonnegative bound); unique enum values; minLength not above maxLength; the 256-byte limit on const and enum strings (a pattern cannot count bytes); and the refusal of control characters and U+FFFD in those strings in every spelling. It does check the exact members of each node shape, which string members may be combined, enum size 1 to 32, parsed length bounds as integer values 0 to 65535, property name syntax, at most 128 properties per object and that additionalProperties is a boolean.",
   "type": "object",
   "additionalProperties": false,
   "required": ["profile", "root"],
@@ -39,7 +39,7 @@
           }
         },
         {
-          "description": "A JSON string whose length in code points is within the bounds. At least one bound is present. minLength not above maxLength is checked by Go.",
+          "description": "A JSON string whose length in code points is within the bounds. At least one bound is present. Go checks minLength not above maxLength and requires plain unsigned integer source spelling; the schema sees only parsed numeric values.",
           "type": "object",
           "additionalProperties": false,
           "required": ["type"],

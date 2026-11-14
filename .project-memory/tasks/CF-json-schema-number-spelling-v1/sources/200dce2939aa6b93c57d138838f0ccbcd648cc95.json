@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "200dce2939aa6b93c57d138838f0ccbcd648cc95",
+  "id": "CF-json-schema-number-spelling-v1",
+  "path": "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+  "blob": "d4f4c4795969c5935e1d85de2d1fd407affbc25a",
+  "record": "---\nid: CF-json-schema-number-spelling-v1\nstatus: in-progress\nowner: Codex schema maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# State the JSON authoring schema's number spelling limit\n\n## Implementation claim\n\nOwner: Codex schema maintenance contributor, delegated by the coordinating\nagent under the owner's continued maintenance request. Main at `c87356a`, the\ndirection plan and claims were reviewed. Open PRs #142 and #143 do not overlap.\nA separate queued JSON validator symlink fix owns command code, excluded here.\n\nThe JSON boolean profile requires minLength and maxLength to be plain unsigned\ninteger source text. JSON.parse turns 1e0 and 1.0 into 1 and preserves -0 as a\nnumeric zero, so the authoring schema accepts those spellings while Go rejects\nthem. The schema lists its limits but omits number spelling. Current agreement\nfixtures use JSON.stringify for length bounds and erase the spelling difference.\nIndependent probes confirmed schema acceptance and Go exit 2 for all three.\n\nScope: `modeling/jsonvalidator/authoring/json-boolean-v1.schema.json`,\n`modeling/jsonvalidator/authoring/schema.test.cjs`,\n`modeling/jsonvalidator/PROFILE.md`, this task and new immutable Project Memory\nfiles. Explain that the schema checks parsed numeric values and cannot enforce\nsource spelling. Add raw-text looser agreement fixtures for minLength and\nmaxLength with decimal, exponent and negative-zero spelling. Do not change Go\nvalidation, schema constraints, generated code, generator versions or policy.\n\nChecks: full JSON validator authoring schema suite, relevant Go model refusal\nregressions, repository validation, whitespace and committed Project Memory\nvalidation. Commit, push and open a PR for independent coordinator review and\nhosted checks; merge belongs to the coordinator.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+        "id": "CF-json-schema-number-spelling-v1",
+        "blob": "d4f4c4795969c5935e1d85de2d1fd407affbc25a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
