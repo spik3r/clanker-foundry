@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:jsonvalidator:json-boolean:v1:schema",
   "title": "json-boolean/v1 model",
-  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It also cannot express: plain unsigned integer source spelling for length bounds (JSON.parse erases decimal and exponent spelling, and numeric -0 passes the nonnegative bound); unique enum values; minLength not above maxLength; the 256-byte limit on const and enum strings (a pattern cannot count bytes); and the refusal of control characters and U+FFFD in those strings in every spelling. It does check the exact members of each node shape, which string members may be combined, enum size 1 to 32, parsed length bounds as integer values 0 to 65535, property name syntax, at most 128 properties per object and that additionalProperties is a boolean.",
+  "description": "Authoring aid for models with profile json-boolean/v1. Go validation in jsonvalidator is authoritative. This schema cannot express: unique property names within one object; duplicate JSON keys; trailing data; the 1 MiB size limit; JSON nesting depth 64; schema depth 32; and the 512 schema node limit. It also cannot express: plain unsigned integer source spelling for length bounds (JSON.parse erases decimal and exponent spelling, and numeric -0 passes the nonnegative bound); minLength not above maxLength; the 256-byte limit on const and enum strings (a pattern cannot count bytes); and the refusal of control characters and U+FFFD in those strings in every spelling. It does check the exact members of each node shape, which string members may be combined, unique enum values and enum size 1 to 32, parsed length bounds as integer values 0 to 65535, property name syntax, at most 128 properties per object and that additionalProperties is a boolean.",
   "type": "object",
   "additionalProperties": false,
   "required": ["profile", "root"],
@@ -29,13 +29,13 @@
           "properties": {"type": {"const": "string"}, "const": {"type": "string", "maxLength": 256}}
         },
         {
-          "description": "A JSON string equal to one of 1 to 32 values (unique, checked by Go), compared exactly.",
+          "description": "A JSON string equal to one of 1 to 32 unique values, compared exactly.",
           "type": "object",
           "additionalProperties": false,
           "required": ["type", "enum"],
           "properties": {
             "type": {"const": "string"},
-            "enum": {"type": "array", "minItems": 1, "maxItems": 32, "items": {"type": "string", "maxLength": 256}}
+            "enum": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true, "items": {"type": "string", "maxLength": 256}}
           }
         },
         {

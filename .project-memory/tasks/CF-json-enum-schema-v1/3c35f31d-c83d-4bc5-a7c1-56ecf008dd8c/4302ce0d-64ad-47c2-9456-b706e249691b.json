@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "4302ce0d-64ad-47c2-9456-b706e249691b",
+  "runId": "3c35f31d-c83d-4bc5-a7c1-56ecf008dd8c",
+  "kind": "complete",
+  "parents": [
+    "6d82bade-811a-4bd2-bcbd-0d6856a72e35"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-enum-schema-v1",
+    "path": "tasks/CF-json-enum-schema-v1-unique-values.md",
+    "revision": "c3df0664e881b2e37b2116bc45b35e4d5981b79a",
+    "blob": "7667c2d9680160aa81823cdb6f3ebaf3dcae503b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "1908de78d90ea0977c3bd5656ffca545db3f27c9eaa4b3417ffadb7f61a1e35f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/json-enum-schema-uniqueness",
+  "pullRequest": null,
+  "at": "2026-11-14T02:40:33.960Z",
+  "summary": "Authoring schema now rejects duplicate enum strings including escaped equivalents",
+  "next": "Commit immutable evidence, validate committed diff, obtain independent exact-head review and publish PR",
+  "files": [
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "tasks/CF-json-enum-schema-v1-unique-values.md"
+  ],
+  "validation": "Agreement fixtures failed before fix in schema refusal and Go agreement checks. Full Node schema suite4passed0skipped using pinned Ajv from root runtime/node_modules. Go1.27.0 race TestUnsupportedModelsRefuse passed1.497s. scripts/validate.sh passed, optional skills-ref unavailable. Whitespace passed; generator and emitted bytes unchanged.",
+  "snapshot": {
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json": {
+      "blob": "f7d7d2a22953298f31db820ccb8474870c3ea29e",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/authoring/schema.test.cjs": {
+      "blob": "8ec5cd76d6090f2a2d0edf6f666161f6e5ec4cc4",
+      "mode": "100644"
+    },
+    "tasks/CF-json-enum-schema-v1-unique-values.md": {
+      "blob": "7667c2d9680160aa81823cdb6f3ebaf3dcae503b",
+      "mode": "100644"
+    }
+  }
+}

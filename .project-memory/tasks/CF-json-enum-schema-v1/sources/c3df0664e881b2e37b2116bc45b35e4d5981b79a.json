@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "c3df0664e881b2e37b2116bc45b35e4d5981b79a",
+  "id": "CF-json-enum-schema-v1",
+  "path": "tasks/CF-json-enum-schema-v1-unique-values.md",
+  "blob": "7667c2d9680160aa81823cdb6f3ebaf3dcae503b",
+  "record": "---\nid: CF-json-enum-schema-v1\nstatus: in-progress\nowner: Codex authoring maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject duplicate string enum values in the authoring schema\n\n## Implementation claim\n\nThe owner authorized continued bounded maintenance with independent review and\nmerging after validation. Main at `7b5a2d6`, live claims and open PRs were\nreviewed. Other active work changes output-root checking, class layout and\npublic authoring guidance; none owns the two implementation files below.\n\nThe json-boolean authoring schema accepts duplicate string enum values that\nthe authoritative compiler refuses. Its description and agreement fixture\nincorrectly call uniqueness inexpressible. A finite local Ajv probe accepted\n`[\"a\", \"b\", \"a\"]` under the existing schema and rejected it after adding\n`uniqueItems: true`, while still accepting distinct values.\n\nAdd the standard uniqueness constraint to the enum array and correct its\nschema descriptions. Change the existing duplicate fixture from an admitted\nschema limitation to a mutual refusal. Cover empty and escaped-equivalent\nduplicates, a nested enum, and distinct values that differ in case or Unicode\nnormalization. Preserve the profile's exact string comparison and current\ncompiler validation; no generator version or emitted bytes change.\n\nScope: `modeling/jsonvalidator/authoring/json-boolean-v1.schema.json`,\n`modeling/jsonvalidator/authoring/schema.test.cjs`, this task and new immutable\nProject Memory files. Boolean-constant wording and command guidance belong to\nthe separate authoring-guidance task.\n\nChecks: demonstrate the stricter agreement fixtures fail before the schema\nfix; run the full JSON schema agreement suite against the actual generator,\nits Go model refusal tests, repository validation, whitespace and committed\nProject Memory checks. Independently review the final commit and await all\nhosted checks before merging.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-json-enum-schema-v1-unique-values.md",
+        "id": "CF-json-enum-schema-v1",
+        "blob": "7667c2d9680160aa81823cdb6f3ebaf3dcae503b",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
