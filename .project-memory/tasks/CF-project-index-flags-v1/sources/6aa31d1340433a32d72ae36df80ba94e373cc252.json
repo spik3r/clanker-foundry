@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "6aa31d1340433a32d72ae36df80ba94e373cc252",
+  "id": "CF-project-index-flags-v1",
+  "path": "tasks/CF-project-index-flags-v1-visible-baseline.md",
+  "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+  "record": "---\nid: CF-project-index-flags-v1\nstatus: in-progress\nowner: Codex shared-baseline maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse hidden tracked baseline files during project setup\n\n## Implementation claim\n\nOwner: Codex shared-baseline maintenance contributor, delegated by the coordinator\nunder the owner's continued maintenance and reviewed-merge request. Base:\norigin/main at `b3faf9c`. The coordinator assigned these paths exclusively; the\nseparate Foundry pin follow-up owns no files in this scope.\n\nIn isolated local submodule fixtures, assume-unchanged and skip-worktree flags\nhid edits to global-agents/AGENTS.md from the baseline status check. Setup and\n--check both returned zero while importing bytes that differed from the staged\nrevision. The documented setup requires a clean pinned baseline.\n\nBefore trusting Git status or creating wiring, refuse baseline index entries\nmarked assume-unchanged or skip-worktree, including clean flagged files. Do not\nclear flags, refresh the index or write probe files. Read Git output with NUL\nrecord boundaries and propagate Git failures. Keep ordinary full checkouts and\nproject-owned overlays working. State the conservative full-checkout requirement\nand its effect on sparse checkouts; do not claim protection from a hostile host.\n\nScope: `scripts/project-setup.sh`, `tests/test-project-setup.sh`,\n`docs/project-shared-base.md`, this task and new immutable Project Memory files.\nNo global installation, real-home changes, Foundry entrypoint, generator,\nconsumer or runtime changes. Fixtures use owned scratch repositories and public\nlocal source only.\n\nChecks: prove new cases fail before the repair; exercise both flags on clean and\nchanged files in setup and --check, preserve bytes/index flags on refusal, test\nNUL-safe paths and failed Git queries, and retain ordinary setup/overlay controls.\nRun Bash syntax, full project-setup and installer regressions, repository\nvalidation, whitespace and committed Project Memory validation. Commit, push and\nopen a PR for independent review; the coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-project-index-flags-v1-visible-baseline.md",
+        "id": "CF-project-index-flags-v1",
+        "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

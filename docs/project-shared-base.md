@@ -79,6 +79,15 @@ baseline changes, invalid names, missing skills, symlink parents and conflicting
 destinations fail before any wiring is created. Do not run concurrent setup writers.
 Filesystem errors can still interrupt creation; inspect and rerun after fixing them.
 
+The baseline must be a full checkout with no tracked entries marked
+`assume-unchanged` or `skip-worktree`, even when those files have no edits.
+These index flags can hide working-tree changes from Git status. Sparse checkouts
+that set `skip-worktree` entries are therefore refused too. The helper reads
+NUL-delimited index records and refuses a failed index or status query. It never
+clears flags or refreshes the index. Review and resolve that checkout state
+yourself before rerunning. This is a conservative check of the local checkout,
+not proof against a hostile host or concurrent file changes.
+
 For `.gitmodules`, matching the staged file means exact bytes or one narrow
 representation change: if the staged blob contains no CR or NUL bytes, every LF
 may become one CRLF pair in the working file. All other bytes and whether the last

@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "6f27d412-627b-48ea-b5f2-47f3400cd2bc",
+  "runId": "4c5e11a0-4196-4686-b995-5991b58f6677",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-index-flags-v1",
+    "path": "tasks/CF-project-index-flags-v1-visible-baseline.md",
+    "revision": "6aa31d1340433a32d72ae36df80ba94e373cc252",
+    "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba8757bef82733f31ae5b8b2fe6eeec8854be749dbf9844ff415a2969dad71f9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-index-flags-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:33:53.200Z",
+  "summary": "Refuse baseline index flags that hide tracked changes without mutating index state",
+  "next": "Add failing flag and Git failure regressions, implement NUL-safe guard and validate",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "docs/project-shared-base.md",
+    "tasks/CF-project-index-flags-v1-visible-baseline.md"
+  ]
+}

@@ -17,6 +17,20 @@ esac
 export GIT_OPTIONAL_LOCKS=0 GIT_NO_LAZY_FETCH=1 GIT_NO_REPLACE_OBJECTS=1
 git_local() { git -c protocol.allow=never -c core.fsmonitor=false "$@"; }
 
+# Git status may hide modified tracked files with either index visibility flag.
+# Keep record boundaries intact: filenames may contain newlines and flag-like text.
+baseline_index_visible() {
+  local LC_ALL=C entry=''
+  git_local -C "$baseline" ls-files -v -z | {
+    while IFS= read -r -d '' entry; do
+      case "$entry" in
+        [a-z]\ *|S\ *) exit 1 ;;
+      esac
+    done
+    [ -z "$entry" ]
+  }
+}
+
 emit_crlf() {
   local LC_ALL=C line=''
   while :; do
@@ -79,7 +93,10 @@ done < <(git_local config --no-includes --file .gitmodules --get-regexp '^submod
 module_url="$(git_local config --no-includes --file .gitmodules --get-all "$module_key.url")" \
   || fail 'Missing baseline URL in .gitmodules.'
 [ -n "$module_url" ] && [[ "$module_url" != *$'\n'* ]] || fail 'Expected one nonempty baseline URL.'
-[ -z "$(git_local -C "$baseline" status --porcelain --untracked-files=all --ignore-submodules=none)" ] \
+baseline_index_visible || fail 'Baseline index must be readable with no assume-unchanged or skip-worktree entries. Use a full checkout.'
+baseline_status="$(git_local -C "$baseline" status --porcelain --untracked-files=all --ignore-submodules=none)" \
+  || fail 'Cannot read baseline status.'
+[ -z "$baseline_status" ] \
   || fail 'Baseline has local changes. Keep customizations in the consumer project.'
 
 # Reject symlink parents before inspecting or creating anything beneath them.

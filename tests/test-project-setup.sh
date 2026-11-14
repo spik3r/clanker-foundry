@@ -10,6 +10,9 @@ cp "$repo_dir/scripts/project-setup.sh" "$baseline/scripts/"
 cp "$repo_dir/global-agents/AGENTS.md" "$baseline/global-agents/"
 cp "$repo_dir/templates/project/shared-agents.md" "$baseline/templates/project/"
 for name in engineer review-change; do cp -R "$repo_dir/skills/$name" "$baseline/skills/"; done
+# A clean tracked filename may contain text that resembles flags on later lines.
+index_odd_path=$'notes\nh pretend-assume-unchanged\nS pretend-skip-worktree'
+printf 'fixture notes\n' > "$baseline/$index_odd_path"
 git -C "$baseline" init -q
 git -C "$baseline" add .
 git -C "$baseline" -c user.name=Test -c user.email=test@example.invalid commit -qm baseline
@@ -131,6 +134,72 @@ setup --check
 snapshot > "$test_root/after"
 cmp "$test_root/before" "$test_root/after"
 reject_without_changes review-change
+
+# Bash 3.2 locale ranges may include uppercase H in [a-z]. A normal cached
+# entry must remain accepted under such a locale.
+if LC_ALL=en_US.UTF-8 bash -c 'case "H normal" in [a-z]\ *) exit 0 ;; *) exit 1 ;; esac' 2>/dev/null; then
+  LC_ALL=en_US.UTF-8 setup --check
+fi
+
+# Hidden index entries cannot certify a pinned baseline, even when unchanged.
+# Both modes must preserve the working tree, index bytes and flag records.
+for path in global-agents/AGENTS.md "$index_odd_path"; do
+  cp ".agent-baseline/$path" "$test_root/flag-original"
+  for flag in assume-unchanged skip-worktree; do
+    for state in clean changed; do
+      git -C .agent-baseline update-index "--$flag" -- "$path"
+      if [ "$state" = changed ]; then
+        printf '\nUnreviewed fixture change.\n' >> ".agent-baseline/$path"
+      fi
+      git -C .agent-baseline ls-files -v -z -- "$path" > "$test_root/flags-before"
+      reject_without_changes
+      grep -qF 'assume-unchanged or skip-worktree' "$test_root/output"
+      reject_without_changes --check
+      grep -qF 'assume-unchanged or skip-worktree' "$test_root/output"
+      git -C .agent-baseline ls-files -v -z -- "$path" > "$test_root/flags-after"
+      cmp "$test_root/flags-before" "$test_root/flags-after"
+      git -C .agent-baseline update-index "--no-$flag" -- "$path"
+      cp "$test_root/flag-original" ".agent-baseline/$path"
+    done
+  done
+done
+setup --check
+
+# A Git error, including after valid NUL-delimited output, must not turn into a
+# successful empty flag list. A failed empty status query cannot certify a clean
+# tree either. The seam records calls outside the consumer tree.
+INDEX_FLAGS_REAL_GIT="$(command -v git)"
+export INDEX_FLAGS_REAL_GIT
+export INDEX_FLAGS_TRACE="$test_root/index-flags-trace"
+mkdir "$test_root/index-flags-bin"
+cat > "$test_root/index-flags-bin/git" <<'FAULT'
+#!/usr/bin/env bash
+set -eu
+case " $* " in
+  *" ls-files -v -z "*)
+    if [ "$INDEX_FLAGS_FAULT" = status ]; then exec "$INDEX_FLAGS_REAL_GIT" "$@"; fi
+    printf 'queried\n' >> "$INDEX_FLAGS_TRACE"
+    if [ "$INDEX_FLAGS_FAULT" = before ]; then exit 73; fi
+    "$INDEX_FLAGS_REAL_GIT" "$@"
+    exit 73 ;;
+  *" status --porcelain --untracked-files=all --ignore-submodules=none "*)
+    if [ "$INDEX_FLAGS_FAULT" = status ]; then
+      printf 'status queried\n' >> "$INDEX_FLAGS_TRACE"
+      exit 73
+    fi ;;
+esac
+exec "$INDEX_FLAGS_REAL_GIT" "$@"
+FAULT
+chmod +x "$test_root/index-flags-bin/git"
+for phase in before after status; do
+  : > "$INDEX_FLAGS_TRACE"
+  INDEX_FLAGS_FAULT="$phase" PATH="$test_root/index-flags-bin:$PATH" reject_without_changes
+  test -s "$INDEX_FLAGS_TRACE"
+  INDEX_FLAGS_FAULT="$phase" PATH="$test_root/index-flags-bin:$PATH" reject_without_changes --check
+  test -s "$INDEX_FLAGS_TRACE"
+done
+setup
+setup --check
 
 cp .agents/foundry-skills "$test_root/selection"
 printf '../outside\n' > .agents/foundry-skills

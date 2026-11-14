@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "a594d5c5-fae4-4ceb-a561-5322647bef4a",
+  "runId": "4c5e11a0-4196-4686-b995-5991b58f6677",
+  "kind": "complete",
+  "parents": [
+    "4e4d80fc-cd24-4629-8b25-a1dd7ef6aa67"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-index-flags-v1",
+    "path": "tasks/CF-project-index-flags-v1-visible-baseline.md",
+    "revision": "6aa31d1340433a32d72ae36df80ba94e373cc252",
+    "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba8757bef82733f31ae5b8b2fe6eeec8854be749dbf9844ff415a2969dad71f9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-index-flags-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:43:59.543Z",
+  "summary": "Shared-baseline setup refuses hidden index entries and failed clean-state queries without changing files or flags",
+  "next": "Commit evidence, validate committed coverage, push and open PR for independent review and hosted checks; coordinator owns merge",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "docs/project-shared-base.md",
+    "tasks/CF-project-index-flags-v1-visible-baseline.md"
+  ],
+  "validation": "Original helper accepted clean flagged setup; independent owned fixtures also showed changed assume-unchanged and skip-worktree files accepted by setup and --check. A finite Git seam reproduced an empty failed status query falsely passing after the flag guard was added; checked status capture fixes it. Bash 3.2 en_US.UTF-8 reproduced a false uppercase-H rejection; local C locale fixes it. Final bash -n, full bash tests/test-project-setup.sh, full bash tests/test-install.sh, bash scripts/validate.sh and staged/unstaged whitespace checks passed. Tests cover both flags on clean/changed ordinary and newline-containing paths, setup/check byte and flag preservation, failed Git queries before/after valid output, status failure, ordinary full checkouts and project overlays. All fixtures used owned scratch projects or invented HOME targets. Git 2.54.0 and Bash 3.2.57; optional skills-ref unavailable.",
+  "snapshot": {
+    "scripts/project-setup.sh": {
+      "blob": "69ff27d05a49f2092382befbe7bdb4beaee4cc1b",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "a9bf3f381b0f56c3a7d5d8216631c974acc21434",
+      "mode": "100755"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "c2f3f92a813b39f7b77e0c2b7c774e26609cf702",
+      "mode": "100644"
+    },
+    "tasks/CF-project-index-flags-v1-visible-baseline.md": {
+      "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+      "mode": "100644"
+    }
+  }
+}
