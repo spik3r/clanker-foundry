@@ -108,7 +108,9 @@ an editor, but the Go validation decides.
 - A flow leaves a gateway at the top, bottom or right depending on where its
   target is, and its label sits on the first stretch that belongs to that flow
   alone. A gateway has nine exits; flows beyond that share one.
-- Label wrapping counts characters. It does not measure fonts.
+- Label wrapping counts characters. It does not measure fonts. Class relation
+  labels move to a free baseline when a taller neighboring class blocks their
+  nearby positions.
 - BPMN output is a subset and claims no conformance. See [PROFILE.md](PROFILE.md).
 - Tests parse the SVG and check structure and geometry. They do not show that a
   picture reads well. A person should look at the rendered picture before

@@ -529,7 +529,7 @@ func LayoutOf(m Model) Layout {
 	for i := range l.Classes {
 		boxes[i] = l.Classes[i].Box
 	}
-	maxX := contentRight
+	maxX, maxY := contentRight, bottom
 	l.Relations = make([]RelGeom, len(rels))
 	for i, r := range rels {
 		rt := routes[i]
@@ -579,7 +579,7 @@ func LayoutOf(m Model) Layout {
 			for k := 0; k < 8; k++ {
 				cands = append(cands, textGeom(text, p.X+10, by+dir*k*lineH, "start"), textGeom(text, p.X-10, by+dir*k*lineH, "end"))
 			}
-			return pick(boxes, cands)
+			return pick(boxes, cands, dir)
 		}
 		pf, pt := p0, p1
 		if p0.end == 1 {
@@ -593,23 +593,13 @@ func LayoutOf(m Model) Layout {
 		for _, t := range []*TextGeom{g.Label, g.FromLabel, g.ToLabel} {
 			if t != nil {
 				maxX = max(maxX, t.Box.X+t.Box.W)
+				maxY = max(maxY, t.Box.Y+t.Box.H)
 			}
 		}
 		l.Relations[i] = g
 	}
 	l.Width = maxX + margin
-	// Keep every label inside the canvas on the left.
-	for i := range l.Relations {
-		for _, t := range []*TextGeom{l.Relations[i].Label, l.Relations[i].FromLabel, l.Relations[i].ToLabel} {
-			if t != nil && t.Box.X < margin {
-				shift := margin - t.Box.X
-				t.X += shift
-				t.Box.X += shift
-				l.Width = max(l.Width, t.Box.X+t.Box.W+margin)
-			}
-		}
-	}
-	l.Height = bottom + margin
+	l.Height = maxY + margin
 	return l
 }
 
@@ -625,22 +615,64 @@ func textGeom(text string, x, baseline int, anchor string) *TextGeom {
 	return &TextGeom{Text: text, X: x, Y: baseline, Anchor: anchor, Box: Rect{bx, baseline - labelH + 2, w, labelH}}
 }
 
-// pick returns the first candidate that overlaps no class box and does not
-// start left of the margin, or the first candidate when every one overlaps.
-func pick(boxes []Rect, cands []*TextGeom) *TextGeom {
-	for _, c := range cands {
-		ok := c.Box.X >= margin
+// pick preserves the first clear candidate. If none fits, class edges give a
+// finite set of alternative baselines. End labels keep moving away from their
+// class; centre labels beside vertical segments may move in either direction.
+// direction is -1 above, +1 below, or 0 for either side of the baseline.
+func pick(boxes []Rect, cands []*TextGeom, direction int) *TextGeom {
+	clear := func(c *TextGeom) bool {
+		if c.Box.X < margin || c.Box.Y < margin {
+			return false
+		}
 		for _, b := range boxes {
 			if overlap(c.Box, b) {
-				ok = false
-				break
+				return false
 			}
 		}
-		if ok {
+		return true
+	}
+	for _, c := range cands {
+		if clear(c) {
 			return c
 		}
 	}
-	return cands[0]
+
+	hasUnshiftedCandidate := false
+	for _, c := range cands {
+		hasUnshiftedCandidate = hasUnshiftedCandidate || c.Box.X >= margin
+	}
+	var best *TextGeom
+	bestDistance := 0
+	for _, c := range cands {
+		// Keep end labels beside their port. Do not shift a left-anchored
+		// candidate across its line when the right side is available.
+		if hasUnshiftedCandidate && c.Box.X < margin {
+			continue
+		}
+		baselines := []int{max(c.Y, margin+labelH-2)}
+		for _, b := range boxes {
+			// A text box spans baseline-labelH+2 through baseline+2.
+			baselines = append(baselines, b.Y-2, b.Y+b.H+labelH-2)
+		}
+		for _, baseline := range baselines {
+			if (direction > 0 && baseline < cands[0].Y) || (direction < 0 && baseline > cands[0].Y) {
+				continue
+			}
+			n := *c
+			n.X += max(0, margin-n.Box.X)
+			n.Box.X = max(n.Box.X, margin)
+			n.Y = baseline
+			n.Box.Y = baseline - labelH + 2
+			if !clear(&n) {
+				continue
+			}
+			distance := abs(n.Box.X-cands[0].Box.X) + abs(n.Box.Y-cands[0].Box.Y)
+			if best == nil || distance < bestDistance {
+				best, bestDistance = &n, distance
+			}
+		}
+	}
+	return best
 }
 
 func overlap(a, b Rect) bool {
@@ -660,7 +692,7 @@ func placeLabel(boxes []Rect, text string, pts []Point) *TextGeom {
 	}
 	if best >= 0 {
 		a, b := pts[best], pts[best+1]
-		return pick(boxes, []*TextGeom{textGeom(text, (a.X+b.X)/2, a.Y-5, "middle")})
+		return pick(boxes, []*TextGeom{textGeom(text, (a.X+b.X)/2, a.Y-5, "middle")}, -1)
 	}
 	for i := 0; i+1 < len(pts); i++ {
 		if d := abs(pts[i+1].Y - pts[i].Y); d > bestLen {
@@ -675,7 +707,7 @@ func placeLabel(boxes []Rect, text string, pts []Point) *TextGeom {
 			cands = append(cands, textGeom(text, a.X+8, mid+dy, "start"), textGeom(text, a.X-8, mid+dy, "end"))
 		}
 	}
-	return pick(boxes, cands)
+	return pick(boxes, cands, 0)
 }
 
 func abs(v int) int {

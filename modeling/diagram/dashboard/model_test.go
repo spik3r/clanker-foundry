@@ -10,7 +10,7 @@ import (
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 )
 
-var testGen = contract.Generator{ID: "diagramgen", Version: "1.2.0", Toolchain: "go1.27.4"}
+var testGen = contract.Generator{ID: "diagramgen", Version: "1.2.1", Toolchain: "go1.27.4"}
 
 const good = `{
  "formatVersion": "diagram-json/v1",

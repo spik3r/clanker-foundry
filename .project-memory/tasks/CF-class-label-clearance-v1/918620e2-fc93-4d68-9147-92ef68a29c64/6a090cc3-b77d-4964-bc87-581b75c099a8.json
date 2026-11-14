@@ -1,0 +1,227 @@
+{
+  "formatVersion": 2,
+  "eventId": "6a090cc3-b77d-4964-bc87-581b75c099a8",
+  "runId": "918620e2-fc93-4d68-9147-92ef68a29c64",
+  "kind": "complete",
+  "parents": [
+    "08db19bd-a5ce-48cc-920f-40ecc6adae54"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-class-label-clearance-v1",
+    "path": "tasks/CF-class-label-clearance-v1-layout.md",
+    "revision": "2e4de04f446a2f71ca043359e3734779887a868d",
+    "blob": "4c723fbb7183486c412550fde8fd8074c9b06e08",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "899d3781a530d895a22a5eeb2b9dc1c84e6edc4d7512b18ac703b35a28c9a89d"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/class-label-clearance-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:44:17.148Z",
+  "summary": "Class relation labels use finite extent-derived fallback and stay clear of class boxes; diagramgen 1.2.1 examples regenerated",
+  "next": "Commit evidence, validate committed diff, push and open PR for independent coordinator review and hosted checks",
+  "files": [
+    "modeling/diagram/class/layout.go",
+    "modeling/diagram/class/output_test.go",
+    "modeling/diagram/class/model_test.go",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/diagram_test.go",
+    "modeling/diagram/process/helpers_test.go",
+    "modeling/diagram/sequence/model_test.go",
+    "modeling/diagram/sequence/output_test.go",
+    "modeling/diagram/dashboard/model_test.go",
+    "modeling/diagram/dashboard/output_test.go",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/CLASS.md",
+    "modeling/diagram/SEQUENCE.md",
+    "modeling/diagram/DASHBOARD.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/order/diagram.bpmn",
+    "modeling/diagram/examples/generated/order/diagram.svg",
+    "modeling/diagram/examples/generated/order/foundry-manifest.json",
+    "modeling/diagram/examples/generated/orders-class/diagram.svg",
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn",
+    "modeling/diagram/examples/generated/parallel/diagram.svg",
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json",
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg",
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/rework/diagram.bpmn",
+    "modeling/diagram/examples/generated/rework/diagram.svg",
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json",
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json",
+    "tasks/CF-class-label-clearance-v1-layout.md"
+  ],
+  "validation": "Before fix, endpoint regressions failed 8 variants and centre regressions failed 2 variants; all 18 variants now pass. Go 1.27.0: diagram gofmt/vet/full race suite passed (class 4.761s, process 8.032s); gencontract race 9.771s and foundrygen race 24.049s passed. Diagram authoring Node suite passed 16 tests with 0 skipped using existing Ajv dependencies. Repository validator and staged/unstaged whitespace checks passed; optional skills-ref unavailable. A disposable finite 4000-model geometry probe passed. All ten committed examples regenerate byte-exactly; nonmanifest artifacts differ only by generator version. Native Quick Look PNG inspection covered the final repro, seven SVG example overviews and three HTML overviews; sales dashboard inspection covered only its first viewport, not a full browser/consumer acceptance test.",
+  "snapshot": {
+    "modeling/diagram/class/layout.go": {
+      "blob": "cf11521adaaf95a1a3db11bed1a27f58edf44d15",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/output_test.go": {
+      "blob": "e75abec9d928b6979278d9560988a9b0d21e6b8f",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/model_test.go": {
+      "blob": "f3111139ea4bd005343de1933e2f30e1fc4ec73b",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "051aac766c6c3f01aa90770dccdeda5cb2060fe9",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "0ef2f212b69a17b6bdec8dd430afee9b3754e53d",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/helpers_test.go": {
+      "blob": "093ae34fe8cb0682b76d1f0f7069610bb3f3a256",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/model_test.go": {
+      "blob": "0e6425c5ec80231e4f60b9d66db42dc1e969c571",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/output_test.go": {
+      "blob": "f51eefcb19b05f24e425fa43a63818354b8f61e2",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model_test.go": {
+      "blob": "9bfe88343839f7e40eb6b8f13e9f531e7f4574b0",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/output_test.go": {
+      "blob": "202aa30454b43b1a423f72ccd14d91555c5b3759",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "f92c09a632f6314ee3c5cb4c81dd69142748f913",
+      "mode": "100644"
+    },
+    "modeling/diagram/CLASS.md": {
+      "blob": "20671c830e84842a3386d6e9d7a99c0239b239ca",
+      "mode": "100644"
+    },
+    "modeling/diagram/SEQUENCE.md": {
+      "blob": "606d9a51ab2d9ca5e5e5d5ad18e85bd86cdeb13a",
+      "mode": "100644"
+    },
+    "modeling/diagram/DASHBOARD.md": {
+      "blob": "acba1bbec989095d63bb60af5a67702fc7df924d",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "c074f30e60c1c8a88c23e6238d3dbd207b4620af",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg": {
+      "blob": "0d99af40cc817fbc4a6c3b81321e6007260ed40f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json": {
+      "blob": "2bc0ed02104ca04d968ea1cc8abc3b6408a14202",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html": {
+      "blob": "c4030ed566d944dc9a8fc667e3e1110e8f00a3ae",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json": {
+      "blob": "51f40f92e6b1d010f4638597c20ec0a460c51b91",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html": {
+      "blob": "b4d39295f1f4f60ed923046169cac4b1dbc3e7b0",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json": {
+      "blob": "81a8f33f9ddede862ced9d477b2b1e316b29fc75",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.bpmn": {
+      "blob": "605e5567b91d4c803ffa8423bc14b3831c3bb461",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.svg": {
+      "blob": "ee898e423bd091a9a7165518e5d53a9d38df2406",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/foundry-manifest.json": {
+      "blob": "aa0ae216e621749d7e916ca4f0d2b96effac19ac",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/diagram.svg": {
+      "blob": "3c7259d1d9f2bcc7982818e05d9c8756831e6ddc",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json": {
+      "blob": "2120ae3dc4f06147aaf8d59af43e239d0cbc252f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn": {
+      "blob": "2b56ab15a8839a6f877b0e195537591331279ea2",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.svg": {
+      "blob": "565ff09140152a0d6e6f6932ae4d3c628999f90f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json": {
+      "blob": "7e3a1a518b1f074f98d633148be2a8322e64315e",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg": {
+      "blob": "0b8f7688b35a27751ca025d40912a8eef69609aa",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json": {
+      "blob": "06fd067c7bd564ac07453286250dfaf2eb78d312",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg": {
+      "blob": "f0ccdcb279cc91bf32411dab40bae574dccac2cc",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json": {
+      "blob": "72d21ad4f5f4b5462d7768b30eac8a37203da3c6",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.bpmn": {
+      "blob": "11e8872fed50044679f550f5d73ea375bb525f09",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.svg": {
+      "blob": "574197dfa84aa0dfd37c24a0d4aa1c7e18e01728",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json": {
+      "blob": "985a008be14461b82ede15aca20c787888013e35",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html": {
+      "blob": "c16989b815ec111494b011643c12d461fddf6fd1",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json": {
+      "blob": "dddac94bda55e76725ac5f782a4e97c6c835c246",
+      "mode": "100644"
+    },
+    "tasks/CF-class-label-clearance-v1-layout.md": {
+      "blob": "4c723fbb7183486c412550fde8fd8074c9b06e08",
+      "mode": "100644"
+    }
+  }
+}
