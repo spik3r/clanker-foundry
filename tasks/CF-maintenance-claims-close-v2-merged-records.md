@@ -1,6 +1,6 @@
 ---
 id: CF-maintenance-claims-close-v2
-status: in-progress
+status: completed
 owner: Codex maintenance coordinator
 repositories: [spik3r/clanker-foundry]
 ---

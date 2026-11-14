@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "01a2a450-e32f-4697-bdd5-8bdb5e4c4ad3",
+  "runId": "a44c4560-dc21-489c-8482-28fd1a35ef47",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v2",
+    "path": "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+    "revision": "03e19080e9979682ed757d1dc3b5179a8231d10c",
+    "blob": "e276aafaf25cfdf1f432ffe61028df409ca9dd1c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c1026bfe3ebbc382cd240f96717d0826678b885b454673b68bab67b8a19b3150"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/maintenance-claims-close-v2",
+  "pullRequest": null,
+  "at": "2026-11-14T04:16:27.302Z",
+  "summary": "Close six independently reviewed merged maintenance claims with exact integration evidence",
+  "next": "Append verified integration results and validate record-only changes",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+    "tasks/CF-generator-stdout-v1-delivery-failures.md",
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+    "tasks/CF-project-index-flags-v1-visible-baseline.md",
+    "tasks/CF-foundry-pin-index-flags-v1-visible-source.md",
+    "tasks/CF-model-key-literal-v1-awk-lookup.md"
+  ]
+}

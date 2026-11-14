@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "03e19080e9979682ed757d1dc3b5179a8231d10c",
+  "id": "CF-maintenance-claims-close-v2",
+  "path": "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+  "blob": "e276aafaf25cfdf1f432ffe61028df409ca9dd1c",
+  "record": "---\nid: CF-maintenance-claims-close-v2\nstatus: in-progress\nowner: Codex maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Close six verified merged maintenance claims\n\n## Implementation claim\n\nThe owner authorized continued maintenance and the coordinator assigned this\nrecord-only closure. Main at `44db6e4`, current task frontiers and open PRs were\nreviewed. No PR is open. The active Project Memory repair is outside this scope.\n\nLimit changes to this record and the six canonical records for\nCF-generator-stdout-v1, CF-foundry-stdout-v1, CF-runtime-workspace-budget-v1,\nCF-project-index-flags-v1, CF-foundry-pin-index-flags-v1 and\nCF-model-key-literal-v1, plus new immutable Project Memory evidence.\nMark the six claims completed and append their verified integration results:\nPR, exact reviewed head, merge commit, independent review and hosted checks.\nPreserve every existing claim and validation statement and all immutable history.\nThis closure may be marked locally completed after its checks; that does not\nclaim its own future PR has merged.\n\nChecks: fetch merged metadata and successful exact-head workflow evidence for\nPRs #152, #154, #155, #156, #157 and #158; verify merge parents in Git; compare\noriginal claim text; run repository validator, whitespace checks and committed\nProject Memory coverage. No product or runtime change or test is needed.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+        "id": "CF-maintenance-claims-close-v2",
+        "blob": "e276aafaf25cfdf1f432ffe61028df409ca9dd1c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

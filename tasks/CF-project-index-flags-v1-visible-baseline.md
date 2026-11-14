@@ -1,6 +1,6 @@
 ---
 id: CF-project-index-flags-v1
-status: in-progress
+status: completed
 owner: Codex shared-baseline maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -38,3 +38,11 @@ NUL-safe paths and failed Git queries, and retain ordinary setup/overlay control
 Run Bash syntax, full project-setup and installer regressions, repository
 validation, whitespace and committed Project Memory validation. Commit, push and
 open a PR for independent review; the coordinator owns merge.
+
+## Integration result
+
+The coordinating agent confirmed independent review of
+`11cd8d663718c0f88065ad17bee0109be941737f`; all ten hosted workflows passed on that exact head.
+[PR #156](https://github.com/spik3r/clanker-foundry/pull/156) merged on 14 November 2026 as
+`fa8ca14616ad9fa812edadf9cdbcb294782f0a45`. Git confirms the reviewed head is the merge's second parent.
+This bounded implementation claim is complete and reserves no further work.
