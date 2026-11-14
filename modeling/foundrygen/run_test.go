@@ -411,6 +411,28 @@ func TestPinCheck(t *testing.T) {
 	}
 }
 
+func TestPinRefusesUntrackedFilesWhenGitHidesThem(t *testing.T) {
+	for _, path := range []string{"modeling/extra.go", "modeling/new-package/extra.go"} {
+		t.Run(path, func(t *testing.T) {
+			dir, head := gitFixture(t)
+			cmd := exec.Command("git", "-C", dir, "config", "status.showUntrackedFiles", "no")
+			if b, err := cmd.CombinedOutput(); err != nil {
+				t.Fatalf("configure Git: %v: %s", err, b)
+			}
+			s := &session{foundry: dir, proj: &Project{Revision: head}, stderr: &bytes.Buffer{}}
+			writeFile(t, filepath.Join(dir, "notes.txt"), "outside modeling")
+			if err := s.pin(); err != nil {
+				t.Fatalf("clean modeling tree refused: %v", err)
+			}
+			writeFile(t, filepath.Join(dir, path), "package extra")
+			err := s.pin()
+			if err == nil || codeOf(err) != exitRefused || !strings.Contains(err.Error(), "uncommitted") {
+				t.Fatalf("hidden untracked source accepted: %v", err)
+			}
+		})
+	}
+}
+
 func TestRunPinMismatchOnFixture(t *testing.T) {
 	dir, head := gitFixture(t)
 	proj := t.TempDir()

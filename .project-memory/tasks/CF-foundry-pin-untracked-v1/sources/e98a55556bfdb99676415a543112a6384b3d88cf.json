@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "e98a55556bfdb99676415a543112a6384b3d88cf",
+  "id": "CF-foundry-pin-untracked-v1",
+  "path": "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+  "blob": "de00ea6e89d10d42bf97d377d630d4a536de301d",
+  "record": "---\nid: CF-foundry-pin-untracked-v1\nstatus: in-progress\nowner: Codex pin maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse untracked generator source when Git hides untracked files\n\n## Implementation claim\n\nOwner: Codex pin maintenance contributor. The owner requested the next logical\nindependent task, implementation in a separate worktree, push and a pull request.\nMain at `4a161d1` and open PR #139 were reviewed; #139 changes TUI hint IDs and\ndoes not overlap this claim.\n\nThe pinned Foundry check runs `git status --porcelain -- modeling`. Git's\n`status.showUntrackedFiles=no` setting suppresses untracked generator source,\nallowing a checkout with extra build inputs to pass the clean-tree check.\nExplicitly request all untracked files. Keep ignored-file policy, revision\nmatching and the development-only `--unpinned` escape unchanged.\n\nScope: `modeling/foundrygen/exec.go`, `modeling/foundrygen/run_test.go`,\n`modeling/foundrygen/README.md`, this task and new immutable Project Memory\nsource/events. Add a regression with repository-local Git configuration,\ncovering both top-level and nested untracked modeling files and an untracked\nfile outside modeling. No consumer edits, other generators or runtime work.\n\nChecks: demonstrate the regression fails before the fix; gofmt, go vet and\n`go test -race -count=1 ./...` in modeling/foundrygen; repository validator;\nwhitespace and committed Project Memory validation. Publication is authorized;\nmerge and deployment are outside this claim.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+        "id": "CF-foundry-pin-untracked-v1",
+        "blob": "de00ea6e89d10d42bf97d377d630d4a536de301d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

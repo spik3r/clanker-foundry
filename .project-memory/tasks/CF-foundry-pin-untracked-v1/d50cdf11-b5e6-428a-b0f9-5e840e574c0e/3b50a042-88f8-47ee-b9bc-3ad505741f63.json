@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "3b50a042-88f8-47ee-b9bc-3ad505741f63",
+  "runId": "d50cdf11-b5e6-428a-b0f9-5e840e574c0e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-untracked-v1",
+    "path": "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+    "revision": "e98a55556bfdb99676415a543112a6384b3d88cf",
+    "blob": "de00ea6e89d10d42bf97d377d630d4a536de301d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "723c2beda4f9d56c45c9f4049ff562bce31f6c43fba9fcecb0f9ad68fc453e25"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-pin-untracked-files",
+  "pullRequest": null,
+  "at": "2026-11-14T00:39:58.133Z",
+  "summary": "Reject untracked generator inputs even when Git hides them",
+  "next": "Add failing regression, fix pin check and validate",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/run_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md"
+  ]
+}
