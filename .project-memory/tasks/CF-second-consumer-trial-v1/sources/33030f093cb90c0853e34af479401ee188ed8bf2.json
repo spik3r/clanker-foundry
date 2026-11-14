@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "33030f093cb90c0853e34af479401ee188ed8bf2",
+  "id": "CF-second-consumer-trial-v1",
+  "path": "tasks/CF-second-consumer-trial-v1-protocol.md",
+  "blob": "d3b4cfbb107b1219710bd3b53d7e08b8eb8be5a2",
+  "record": "---\nid: CF-second-consumer-trial-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Write the protocol for a second consumer change by another operator\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator. The repository owner asked for the\nrecommended next steps to be carried out. One of them is milestone 3 in the\n[current direction](../docs/current-direction.md): a second change to the\nconsumer made by someone other than the session that built the tools. That\nsession must not run the trial itself.\n\nScope: a trial protocol and result template under\n`docs/trials/second-consumer-change/`, and a link from the\n[generator pipeline plan](../docs/generator-pipeline-plan.md). It names two\ntasks against the consumer's existing generated screens, what the operator may\nread, what to time and record, and what counts as success, a stop, or a gap. It\nrecords a real-terminal session run by the coordinating session through a\nterminal multiplexer, stating that it is not a person's check. Also this task\nrecord and new immutable Project Memory files.\n\nExclusions: running the trial, changing any generator or the consumer, naming\nan operator, or setting a value threshold, which is the owner's decision.\n\nChecks: the repository validator, whitespace check and committed Project\nMemory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-second-consumer-trial-v1-protocol.md",
+        "id": "CF-second-consumer-trial-v1",
+        "blob": "d3b4cfbb107b1219710bd3b53d7e08b8eb8be5a2",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

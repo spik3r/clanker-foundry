@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "648add76-fff7-42fa-a75a-54f283fb472c",
+  "runId": "a75bc191-f447-4181-a8d0-c3846f3401fd",
+  "kind": "complete",
+  "parents": [
+    "0bd92d9a-fa3c-4e8d-aee1-b58e2ffb7a58"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-second-consumer-trial-v1",
+    "path": "tasks/CF-second-consumer-trial-v1-protocol.md",
+    "revision": "33030f093cb90c0853e34af479401ee188ed8bf2",
+    "blob": "d3b4cfbb107b1219710bd3b53d7e08b8eb8be5a2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "544d2ea87e707090b67ad59267cdf94d2bebe43fad12d200275fce3d723407f6"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-14T22:34:35.446Z",
+  "summary": "Second consumer change trial protocol and result template written, with two tasks, a reading limit, what to record and outcome rules; scripted terminal check of the consumer screen recorded; plan links to it",
+  "next": "Open PR, watch CI, merge; owner chooses the operator",
+  "files": [
+    "docs/trials/second-consumer-change/README.md",
+    "docs/trials/second-consumer-change/result-template.md",
+    "docs/generator-pipeline-plan.md",
+    "tasks/CF-second-consumer-trial-v1-protocol.md"
+  ],
+  "validation": "bash scripts/validate.sh: PASS (skills-ref not installed, skipped); git diff --cached --check clean. Documentation only. The terminal check results quoted were observed by the coordinator in a tmux session at 110x30, 60x20 and 20x5",
+  "snapshot": {
+    "docs/trials/second-consumer-change/README.md": {
+      "blob": "6e429313b2b2a69f12ff276b1cb4299cb248a7bc",
+      "mode": "100644"
+    },
+    "docs/trials/second-consumer-change/result-template.md": {
+      "blob": "06d388e7ae4fa4df4532389c83ad692e36aa63ae",
+      "mode": "100644"
+    },
+    "docs/generator-pipeline-plan.md": {
+      "blob": "c63da7150c518f90599973db3d824ef8951c5bf9",
+      "mode": "100644"
+    },
+    "tasks/CF-second-consumer-trial-v1-protocol.md": {
+      "blob": "f5cb0959e25ebbba9200d10ff19777622733500b",
+      "mode": "100644"
+    }
+  }
+}
