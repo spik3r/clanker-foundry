@@ -119,8 +119,9 @@ It checks that the folders follow the Agent Skills open format:
 - all skills remain well below the recommended 500-line limit;
 - each skill ships a `README.md`, model mappings are nonempty, shell scripts parse, and
   every relative Markdown link in tracked or unignored untracked Markdown resolves on disk.
-  Link paths decode valid `%HH` escapes once, after removing the raw fragment.
-  Plus signs and malformed escapes stay literal; encoded NUL bytes are refused.
+  Link paths decode valid `%HH` escapes once, after removing the raw query and fragment.
+  Encoded question marks stay in filenames. Plus signs and malformed escapes stay
+  literal; encoded NUL bytes in paths are refused. Queries are not decoded.
   Inline links are checked; anchors, reference-style links, and paths in inline code are
   outside this check.
 

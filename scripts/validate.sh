@@ -199,6 +199,7 @@ while IFS= read -r -d '' md; do
   grep -oE '\]\([^)]+\)' -- "$md" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
     case "$target" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
     path="${target%%#*}"
+    path="${path%%\?*}"
     [ -z "$path" ] && continue
     if ! decode_link_path "$path"; then
       err "$md: NUL byte in link path -> $target"

@@ -139,6 +139,18 @@ expect_link 0 'bad%.md'
 expect_link 0 'README.md#ordinary-fragment'
 expect_link 0 'https://example.invalid/absent%20name.md'
 expect_link 0 '#anchor'
+# Raw queries are URL metadata; encoded question marks remain filename bytes.
+printf '# Target\n' > "$fixture_repo/question?name.md"
+printf '# Decoy\n' > "$fixture_repo/query-missing.md?plain=1"
+expect_link 0 'README.md?plain=1'
+expect_link 1 'query-missing.md?plain=1'
+expect_link 1 'query-absent.md?plain=1'
+expect_link 0 'README.md?plain=1#fragment'
+expect_link 0 'question%3Fname.md'
+expect_link 0 'question%3Fname.md?plain=1'
+expect_link 0 '?plain=1'
+expect_link 0 'README.md?ignored=%00%2G%'
+expect_link 0 '?ignored=%00%2G%'
 [ "$link_failures" -eq 0 ] || exit 1
 rm "$untracked_doc"
 

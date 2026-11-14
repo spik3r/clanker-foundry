@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "a723f260-b364-4094-bd53-086b519e0860",
+  "runId": "5797b4d2-811e-4d0a-bd7a-5e3f65495766",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-raw-query-v1",
+    "path": "tasks/CF-validator-raw-query-v1-relative-links.md",
+    "revision": "3ac04edfd4907af865292b1155e8a6c3c98ece01",
+    "blob": "241c942ff42c2fe7dedc6bdfaf27cab7f6b08a2b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b607568fedca99ac79033849fca9690224b57488cb49ef672e9d6cca8bc756ad"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-raw-query-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:29:55.653Z",
+  "summary": "Strip raw URL queries before decoding relative link paths",
+  "next": "Prove regressions, repair and validate",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-raw-query-v1-relative-links.md"
+  ]
+}
