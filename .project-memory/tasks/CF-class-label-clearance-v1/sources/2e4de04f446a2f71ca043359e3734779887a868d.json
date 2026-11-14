@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "2e4de04f446a2f71ca043359e3734779887a868d",
+  "id": "CF-class-label-clearance-v1",
+  "path": "tasks/CF-class-label-clearance-v1-layout.md",
+  "blob": "4c723fbb7183486c412550fde8fd8074c9b06e08",
+  "record": "---\nid: CF-class-label-clearance-v1\nstatus: in-progress\nowner: Codex diagram maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Keep class relation labels clear of class boxes\n\n## Implementation claim\n\nOwner: Codex diagram maintenance contributor, delegated by the coordinator under\nthe owner's continued maintenance and reviewed-merge request. Base: origin/main\nat `9371406`. The coordinator reviewed active work; the output-root symlink task\nowns `modeling/diagram/contract/contract.go`, excluded from this change.\n\nA valid three-class model places a short parent beside an unrelated class with\neight attributes. Its child's inheritance relation has the end label \"Parent\nreference\". The finite eight-position search fails, then returns its first\ncandidate despite overlap: label box `94 116 112 12` intersects class box\n`192 68 120 172`. The class is painted over the label. This violates the\nprofile's label-clearance rule without involving estimated font widths.\n\nKeep model acceptance and public interfaces stable. Preserve existing successful\ncandidates; add a deterministic finite fallback derived from class extents for\nend and centre labels, with canvas containment. Add the literal three-class\nregression and endpoint, mirror, maximum-label and tall-class variants using\nexisting SVG geometry checks. Publish diagramgen 1.2.1 because emitted bytes\nchange, and regenerate the ten committed examples with updated provenance.\n\nScope: `modeling/diagram/class/layout.go`, its output and model tests;\n`modeling/diagram/diagram.go`, `diagram_test.go`; version-pinned test helpers and\nassertions in process, sequence and dashboard; the four profile documents;\n`modeling/diagram/README.md`; changed generated SVG, BPMN, HTML and manifest files\nunder `modeling/diagram/examples/generated/`; this task and immutable Project\nMemory files. No other generator, contract I/O, schema, consumer or runtime edits.\n\nChecks: observe the regression fail before the fix; diagram gofmt, vet, full\nrace suite and authoring schema suite; generator-contract and foundrygen race\nsuites; repository validator, whitespace and committed Project Memory validation.\nRender and visually inspect the repro and generated examples; state any visual\nlimits. Commit, push and open a PR; independent review and merge belong to the\ncoordinator.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-class-label-clearance-v1-layout.md",
+        "id": "CF-class-label-clearance-v1",
+        "blob": "4c723fbb7183486c412550fde8fd8074c9b06e08",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

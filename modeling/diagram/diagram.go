@@ -21,7 +21,7 @@ import (
 // alters emitted bytes for any model needs a new Version.
 const (
 	GeneratorID      = "diagramgen"
-	GeneratorVersion = "1.2.0"
+	GeneratorVersion = "1.2.1"
 	Toolchain        = "go1.27.4"
 )
 

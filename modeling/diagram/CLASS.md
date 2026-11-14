@@ -89,7 +89,7 @@ visibility is written as `public`. The digest covers these bytes.
 | --- | --- |
 | `diagram.svg` | the picture |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.0, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.1, toolchain constant `go1.27.4` |
 
 `diagram.svg` is inert: no script, no event attribute, no external reference, no
 `foreignObject`, no embedded font or image. Every drawn element group carries
@@ -119,7 +119,10 @@ tests can read it back. All coordinates are integers.
 | `dependency` | dashed | open arrow at `to` |
 
 - The relation `label` beside a segment that no other relation uses; `fromLabel`
-  and `toLabel` beside their ends.
+  and `toLabel` beside their ends. Labels stay clear of every class box. When
+  the nearby positions are blocked, placement uses class edges to find a free
+  baseline, keeping end labels on the outward side of their class. The canvas
+  grows to contain the labels.
 
 Nothing else is drawn: no abstract or static marks, no generics, no packages,
 no notes, no association classes, no navigability marks beyond `directed`, no

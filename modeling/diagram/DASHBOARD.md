@@ -140,7 +140,7 @@ series, column or layout change does.
 | --- | --- |
 | `dashboard.html` | the dashboard |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.0, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.1, toolchain constant `go1.27.4` |
 
 No emitted file is `.go` or `.ts`, so the generated-file header rule has
 nothing to apply to.
