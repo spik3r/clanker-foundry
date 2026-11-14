@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d7fe84e94809959e7a76b37b46d14a73b59f3660",
+  "id": "CF-foundry-path-alias-v1",
+  "path": "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+  "blob": "1f6a586ad81d25e6c9eae784ce94b5fbdfedabc2",
+  "record": "---\nid: CF-foundry-path-alias-v1\nstatus: in-progress\nowner: Codex path containment contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse existing filesystem aliases across inputs and outputs\n\n## Implementation claim\n\nOwner: Codex path containment contributor, delegated by the coordinating session\nunder the owner's maintenance and reviewed-merge request. Base: main at\n`f98b825`. The coordinator reviewed current work; this does not overlap the\npending JSON schema text or generator output-root changes.\n\nOn the host's case-insensitive filesystem, a project with model\n`data/model.json` and output `DATA` passes lexical containment checks. With a\nreal generator manifest in data, plan reports replace and generate exits 0\nwhile deleting the model as part of replacing its own ancestor directory.\nThis was reproduced with finite owned scratch files and the pinned generator;\nno concurrent mutation or fabricated generator was involved.\n\nBefore building or invoking generators, resolve every declared path under the\nexisting no-symlink rules. Use existing filesystem identity and ancestry to\nrefuse any existing output that aliases a model, foundry.json or an ancestor\nof either, and any pair of outputs whose existing roots alias or contain one\nanother. Preserve valid case-distinct directories on filesystems that distinguish\nthem. Do not case-fold strings, probe by writing files, or claim to resolve\naliases between nonexistent names without filesystem metadata.\n\nScope: `modeling/foundrygen/run.go`, new\n`modeling/foundrygen/path_alias.go`, new\n`modeling/foundrygen/path_alias_test.go`, `modeling/foundrygen/README.md`, this\ntask and new immutable Project Memory files. No generators, versions, consumer\nor runtime changes.\n\nTests: reproduce the actual case-alias failure before the fix, then all verbs\nmust refuse without changing source/model/target bytes. Exercise other-model\nprotection, missing-model ancestors, output equality/nesting aliases, normalized\nUnicode aliases where supported and legitimate case-distinct paths. Cover actual\nfilesystem identity on Linux with hardlinked files and ancestry checks, without\nmocking the implementation. Platform alias fixtures may skip when the filesystem\nhas no such alias. Run full foundrygen vet/race, repository validation, whitespace\nchecks and committed Project Memory validation. Publish a PR for independent\ncoordinator review; this contributor must not merge it.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+        "id": "CF-foundry-path-alias-v1",
+        "blob": "1f6a586ad81d25e6c9eae784ce94b5fbdfedabc2",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

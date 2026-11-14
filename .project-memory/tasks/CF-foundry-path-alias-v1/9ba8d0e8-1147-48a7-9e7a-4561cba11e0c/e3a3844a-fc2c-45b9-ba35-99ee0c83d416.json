@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "e3a3844a-fc2c-45b9-ba35-99ee0c83d416",
+  "runId": "9ba8d0e8-1147-48a7-9e7a-4561cba11e0c",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-path-alias-v1",
+    "path": "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+    "revision": "d7fe84e94809959e7a76b37b46d14a73b59f3660",
+    "blob": "1f6a586ad81d25e6c9eae784ce94b5fbdfedabc2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ce9fd6356e899df2c581d088a290c69f8a27fa2c5be95259ce59cdc77c65273a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-path-alias-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:54:55.964Z",
+  "summary": "Refuse filesystem aliases that let output replacement erase declared inputs or other outputs",
+  "next": "Add failing finite alias regressions, add read-only identity preflight, validate and publish",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/path_alias.go",
+    "modeling/foundrygen/path_alias_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md"
+  ]
+}

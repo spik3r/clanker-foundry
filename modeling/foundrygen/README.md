@@ -35,6 +35,13 @@ no generator logic of its own and uses only the Go standard library.
   backslashes.
 - No two `out` paths may be equal or nested. An `out` may not equal or contain
   any `model` path or `foundry.json`.
+- Existing filesystem identities are checked too, so a case or Unicode spelling
+  alias cannot let an output replace an input's ancestor or another output.
+  These checks read metadata and create no probing files. They use existing
+  objects; aliases between nonexistent names have no identity to compare.
+  Generation repeats the check before each output write, so an alias revealed
+  by an earlier write refuses the later one. Earlier outputs may already have
+  been written when this happens; a plan remains an observation.
 - Existing path components must not be symlinks.
 - The file is decoded strictly: unknown keys, duplicate keys, wrong types,
   trailing data and sizes over 64 KiB are refused.
