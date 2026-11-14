@@ -3,7 +3,7 @@
 // Checks the json-boolean/v1 authoring schema against the registry examples,
 // against independently written invalid models and against the real jsonvalidator
 // generator. Go validation is authoritative; the schema may only be looser than
-// Go for rules it cannot express, and each such case is listed with its reason.
+// Go for documented checks it omits, and each such case is listed with its reason.
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
@@ -31,10 +31,36 @@ const nest = depth => { let n = str; for (let i = 1; i < depth; i++) n = { type:
 const names = n => Array.from({ length: n }, (_, i) => 'p' + i);
 const mut = fn => { const m = JSON.parse(J(base)); fn(m); return J(m); };
 
+const stringModel = (kind, value) => doc({ type: 'string', [kind]: kind === 'enum' ? [value] : value });
+// Preserve surrogate escape sequences for the Go decoder and JSON.parse to
+// interpret independently, rather than serializing a previously parsed value.
+const rawStringModel = (kind, raw) => `{"profile":"json-boolean/v1","root":{"type":"string","${kind}":${kind === 'enum' ? `[${raw}]` : raw}}}`;
+const controls = [...Array.from({ length: 32 }, (_, i) => i), ...Array.from({ length: 33 }, (_, i) => 127 + i)];
+const stringCharacterCases = ['const', 'enum'].flatMap(kind => [
+  ...controls.map(cp => ({ name: `${kind} control U+${cp.toString(16).padStart(4, '0')}`, expect: 'invalid',
+    text: stringModel(kind, `a${String.fromCodePoint(cp)}b`) })),
+  ...[
+    ['empty text', ''], ['allowed range boundaries', ' ~\u00a0\ud7ff\ue000\ufffc\ufffe'],
+    ['astral text', '😀'], ['line and paragraph separators', '\u2028\u2029'],
+    ['case and normalization distinct text', 'aAée\u0301'],
+  ].map(([name, value]) => ({ name: `${kind} ${name}`, expect: 'valid', text: stringModel(kind, value) })),
+  { name: `${kind} literal replacement character`, expect: 'invalid', text: stringModel(kind, '�') },
+  { name: `${kind} final newline`, expect: 'invalid', text: stringModel(kind, 'ok\n') },
+  ...[
+    ['lone high surrogate', String.raw`"\ud800"`], ['lone low surrogate', String.raw`"\udc00"`],
+    ['lone high before a valid pair', String.raw`"\ud800\ud801\udc00"`],
+    ['lone low after a valid pair', String.raw`"\ud800\udc00\udc01"`],
+    ['escaped replacement character', String.raw`"\ufffd"`],
+  ].map(([name, raw]) => ({ name: `${kind} ${name}`, expect: 'invalid', text: rawStringModel(kind, raw) })),
+  ...[String.raw`"\ud800\udc00"`, String.raw`"\udbff\udfff"`].map(raw => ({
+    name: `${kind} valid surrogate pair ${raw}`, expect: 'valid', text: rawStringModel(kind, raw),
+  })),
+]);
+
 // expect: 'valid' (schema and Go accept), 'invalid' (both refuse) or
-// 'looser' (schema accepts, Go refuses; the reason names the rule the schema
-// cannot express).
+// 'looser' (schema accepts, Go refuses; the reason names the omitted check).
 const cases = [
+  ...stringCharacterCases,
   { name: 'sample model', expect: 'valid', text: J(base) },
   { name: 'string root', expect: 'valid', text: doc(str) },
   { name: 'boolean root', expect: 'valid', text: doc({ type: 'boolean' }) },
@@ -144,14 +170,16 @@ const cases = [
     text: '{"profile":"json-boolean/v1","root":{"type":"string","maxLength":-0}}' },
   { name: 'minLength above maxLength', expect: 'looser', reason: 'comparing two members is not expressible',
     text: doc({ type: 'string', minLength: 3, maxLength: 2 }) },
-  { name: 'const of 100 three-byte characters', expect: 'looser', reason: 'the schema counts characters, Go counts the 256-byte limit',
+  { name: 'const of 100 three-byte characters', expect: 'looser', reason: 'the schema counts code points, Go enforces the 256-byte UTF-8 limit',
     text: doc({ type: 'string', const: '\u20ac'.repeat(100) }) },
-  { name: 'const with a control character', expect: 'looser', reason: 'refusing control characters is not expressed',
+  { name: 'const with a control character', expect: 'invalid',
     text: doc({ type: 'string', const: 'a\u0001' }) },
-  { name: 'const with U+FFFD', expect: 'looser', reason: 'refusing the replacement character is not expressed',
+  { name: 'const with U+FFFD', expect: 'invalid',
     text: doc({ type: 'string', const: '\ufffd' }) },
-  { name: 'enum value with a newline', expect: 'looser', reason: 'refusing control characters is not expressed',
+  { name: 'enum value with a newline', expect: 'invalid',
     text: doc({ type: 'string', enum: ['a\n'] }) },
+  { name: 'enum of 100 three-byte characters', expect: 'looser', reason: 'the schema counts code points, Go enforces the 256-byte UTF-8 limit',
+    text: doc({ type: 'string', enum: ['\u20ac'.repeat(100)] }) },
   { name: 'schema nested to depth 33', expect: 'looser', reason: 'the schema depth limit of 32 is not expressed',
     text: doc(nest(33)) },
   { name: 'more than 512 schema nodes', expect: 'looser', reason: 'the node count limit of 512 is not expressed',
@@ -165,6 +193,15 @@ const cases = [
 ];
 
 const parsed = c => JSON.parse(c.parseText || c.text);
+
+test('model string character rules work with both regex Unicode modes', () => {
+  for (const unicodeRegExp of [true, false]) {
+    const check = new Ajv2020({ allErrors: true, strict: true, unicodeRegExp }).compile(schema);
+    for (const c of stringCharacterCases) {
+      assert.equal(check(parsed(c)), c.expect === 'valid', `${c.name}, unicodeRegExp=${unicodeRegExp}`);
+    }
+  }
+});
 
 test('registry examples satisfy the schema', () => {
   assert.ok(entry.examples.length >= 1);

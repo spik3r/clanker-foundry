@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "dc202819-4e40-4f69-889f-5e5b6493bb11",
+  "runId": "cfb2dc30-134f-4519-9fc5-64625631b92c",
+  "kind": "complete",
+  "parents": [
+    "af0cb9c8-a64e-43c9-aae6-915681ba6132"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-schema-text-v1",
+    "path": "tasks/CF-json-schema-text-v1-character-parity.md",
+    "revision": "b4312584cead5ebb73f81045864d794a14f5d9c5",
+    "blob": "d8cedbac7d39e66812c0433258d3bb20add46a1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e2bc262201702f13d81dadf7a45ede7dab4053f15b2b5e29f0b63c96fcab2e5c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/json-schema-text-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:51:03.200Z",
+  "summary": "Reject unsupported const and enum string characters with a shared pair-aware schema rule while retaining the documented UTF-8 byte-count gap",
+  "next": "Commit evidence, validate committed diff, push and open PR for independent review and hosted checks",
+  "files": [
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "tasks/CF-json-schema-text-v1-character-parity.md"
+  ],
+  "validation": "Before fix, new character-rule and agreement tests failed on U+0000 accepted by schema and refused by Go. Final full authoring suite: 5 passed, 0 skipped (Node 26, pinned Ajv 8.20.0 via NODE_PATH), covering all 65 C0/DEL/C1 controls for const and enum, raw surrogate cases, valid boundaries, regex modes and byte-gap fixtures against actual Go. Go 1.27.0 model-refusal race test passed in 1.401s. Repository validator passed; optional skills-ref unavailable. Whitespace checks passed. No Go, version or generated-output changes.",
+  "snapshot": {
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json": {
+      "blob": "8f26d18b2a9d336ae020f64e232d2f0b17a56b49",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/authoring/schema.test.cjs": {
+      "blob": "dd4e7f82bef1ea6b796eda14ee6baa75dec02908",
+      "mode": "100644"
+    },
+    "tasks/CF-json-schema-text-v1-character-parity.md": {
+      "blob": "d8cedbac7d39e66812c0433258d3bb20add46a1e",
+      "mode": "100644"
+    }
+  }
+}
