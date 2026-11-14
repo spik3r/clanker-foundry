@@ -51,6 +51,7 @@ const cases = [
   { name: 'string const empty', expect: 'valid', text: doc({ type: 'string', const: '' }) },
   { name: 'string const of 256 characters', expect: 'valid', text: doc({ type: 'string', const: 'a'.repeat(256) }) },
   { name: 'string enum', expect: 'valid', text: doc({ type: 'string', enum: ['scanner', 'reporter', 'exporter'] }) },
+  { name: 'case and normalization distinct enum values', expect: 'valid', text: doc({ type: 'string', enum: ['a', 'A', 'é', 'e\u0301'] }) },
   { name: 'string enum of one value', expect: 'valid', text: doc({ type: 'string', enum: ['a'] }) },
   { name: 'string enum of 32 values', expect: 'valid', text: doc({ type: 'string', enum: names(32) }) },
   { name: 'string minLength', expect: 'valid', text: doc({ type: 'string', minLength: 1 }) },
@@ -121,8 +122,13 @@ const cases = [
 
   { name: 'duplicate property names', expect: 'looser', reason: 'unique names within one object are not expressible',
     text: doc(obj(prop('a', str), prop('a', { type: 'boolean' }))) },
-  { name: 'duplicate enum values', expect: 'looser', reason: 'unique enum values are not expressible',
+  { name: 'duplicate enum values', expect: 'invalid',
     text: doc({ type: 'string', enum: ['a', 'b', 'a'] }) },
+  { name: 'duplicate empty enum values', expect: 'invalid', text: doc({ type: 'string', enum: ['', ''] }) },
+  { name: 'escaped equivalent enum values', expect: 'invalid',
+    text: String.raw`{"profile":"json-boolean/v1","root":{"type":"string","enum":["a","\u0061"]}}` },
+  { name: 'nested duplicate enum values', expect: 'invalid',
+    text: doc(obj(prop('mode', { type: 'array', items: { type: 'string', enum: ['a', 'a'] } }))) },
   // Keep raw source text: JSON.stringify would erase the spelling under test.
   { name: 'minLength decimal source spelling', expect: 'looser', reason: 'the schema checks numeric values; only Go enforces plain unsigned integer source spelling',
     text: '{"profile":"json-boolean/v1","root":{"type":"string","minLength":1.0}}' },
