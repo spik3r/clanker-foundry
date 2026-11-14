@@ -131,10 +131,18 @@ without that review turns the check into a copy of the current behaviour.
 
 ## Running
 
+From the repository root, run the example in the TUI module:
+
 ```sh
-go run ./cmd/tuicases validate MODEL CASES   # format, binding and record checks; no build, no go needed
-go run ./cmd/tuicases check MODEL CASES      # also generates, builds and runs the browser
+cd modeling/tui
+go run ./cmd/tuicases validate examples/browser.json examples/browser.cases.json
+go run ./cmd/tuicases check examples/browser.json examples/browser.cases.json
 ```
+
+Use your model and cases paths in place of the example paths. `validate` checks
+format, binding and records without building or running the generated browser.
+`go run` still needs Go to build `tuicases` itself. A prebuilt `tuicases validate
+MODEL CASES` needs no Go toolchain.
 
 `check` generates the browser from the model into a private temporary
 directory (a temporary host module in package mode), writes one fixed runner
@@ -144,7 +152,7 @@ the import path and the model's field list come from the model, and nothing
 from the cases becomes Go source. The `tuic` generator never runs code;
 running is a separate command on purpose.
 
-`go` must be installed (see Go versions in the README), and the generated
+`check` requires `go` (see Go versions in the README), and the generated
 module's dependencies must be in the module cache or reachable through the
 network, as for the acceptance tests. The timeouts are 5 minutes for the build
 and 2 minutes for the run.

@@ -9,6 +9,14 @@ reviewed on 11 November 2026. They do not turn an arbitrary idea into a finished
 application. The [current workflow guide](model-driven-current-workflow.md) has
 the supported commands and their review and execution boundaries.
 
+## Owner update, 14 November 2026
+
+The owner accepted [the generator pipeline direction](generator-pipeline-plan.md#owner-decisions)
+on 12 November: generated code is the current pipeline's only implementation
+route. AI drafts models and expectation data; reviewed generators produce feature
+code. The builder trial below remains historical evidence. The sections below
+retain their 11 November scope; use the linked plan for the current route.
+
 ## Who does what?
 
 | Responsibility | People and AI | Deterministic tools |
