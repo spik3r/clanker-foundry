@@ -52,7 +52,11 @@ arguments.
 
 All three commands load the project file and the checkout's registry, check the pin,
 and build each needed generator once into a private temporary directory with
-`go build`. Generators run with an empty environment and a 60 second limit.
+`go build` in module mode (`GOWORK=off`, `GOFLAGS=-mod=readonly`). A parent
+`go.work` or an inherited `GOWORK` setting cannot replace the module
+dependencies selected by the checkout. The caller's other Go settings, including
+its toolchain, caches and proxy, still apply. Generators run with an empty
+environment and a 60 second limit.
 
 Successful generator responses must use the exact compact identity line from
 the contract: four string members in order and one final newline. Trailing

@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "efa7ed4b-39dd-4b6d-bf79-2677f8d9fcc2",
+  "runId": "6236e346-8f5f-47ca-8881-4b6ab63c8735",
+  "kind": "complete",
+  "parents": [
+    "bcce5f9b-9a39-409e-8127-8ce6dc2d7ac4"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-build-workspace-v1",
+    "path": "tasks/CF-foundry-build-workspace-v1-pinned-modules.md",
+    "revision": "1b8144d6887826085990ac88925c52bd612ce565",
+    "blob": "54de37210035cc80566c67ffc9bf5c9a0e7cada4",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d194c710f887cf12f04413753a7cf9a2a7c35898221fb727a8c1f5cc336c8321"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-build-workspace-off",
+  "pullRequest": null,
+  "at": "2026-11-14T02:27:33.134Z",
+  "summary": "Generator builds select module dependencies rather than ambient workspace replacements",
+  "next": "Commit evidence, independently review final SHA, validate committed diff, publish PR and await hosted checks",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/exec_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-build-workspace-v1-pinned-modules.md"
+  ],
+  "validation": "Both auto-discovered and explicit GOWORK regressions failed before the fix by printing ambient workspace. Go1.27.0: go vet ./... and full go test -race -count=1 ./... passed in modeling/foundrygen (24.318s). scripts/validate.sh passed; optional skills-ref unavailable. Formatting and whitespace checks passed.",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "b3af0128df3b9d06eb7f3cc4a25aedbd298718ee",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/exec_test.go": {
+      "blob": "cb215be592ffde4c6cc53e0bd67b11037a964f13",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "e1ea89b4ae084d4b97514a2af4b56bc6d531cd23",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-build-workspace-v1-pinned-modules.md": {
+      "blob": "54de37210035cc80566c67ffc9bf5c9a0e7cada4",
+      "mode": "100644"
+    }
+  }
+}

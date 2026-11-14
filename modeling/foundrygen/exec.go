@@ -170,7 +170,7 @@ func (s *session) pin() error {
 
 // build compiles every generator the project needs into the private bin dir.
 func (s *session) build() error {
-	env := append(os.Environ(), "GOFLAGS=-mod=readonly")
+	env := append(os.Environ(), "GOFLAGS=-mod=readonly", "GOWORK=off")
 	built := map[string]bool{}
 	for _, o := range s.proj.Outputs {
 		if built[o.Generator] {
