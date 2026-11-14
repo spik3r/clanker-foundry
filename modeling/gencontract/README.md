@@ -58,11 +58,18 @@ appear. Normal builds of `refgen` contain no fault code.
 | `refuse.invalid-model` | empty, truncated, `{}` and `[]` models give exit 2 from all three commands, and `generate` creates no `OUT` | Exit codes, generate |
 | `refuse.missing-model` | a missing model file gives exit 2 from all three commands | Exit codes |
 | `refuse.usage` | wrong argument counts, an unknown verb and `--help` give exit 2 | Commands, Exit codes |
+| `output.closed-pipe` | `validate` with a preclosed stdout pipe exits 1 and reports the fixed output-failure diagnostic | Exit codes |
 | `readonly` | `validate` and `check` add or change nothing in the model's directory or the working directory | Commands |
 | `run.timeout` | a command finishes within 30 seconds | not in the contract; harness limit |
 
-Every nonzero exit is also checked for empty stdout and a nonempty stderr, and
-is reported under the rule of the case being run.
+Ordinary nonzero exits are also checked for empty stdout and a nonempty stderr,
+and are reported under the rule of the case being run. `output.closed-pipe`
+checks an output failure before any stdout byte can be delivered; it exercises
+the real process entrypoint, including signal handling on systems with SIGPIPE.
+Package tests separately cover failed writes and short writes, including a full
+byte count accompanied by an error. Normal identity lines and emitted bytes stay
+under the existing checks. The `ignore-output-error` reference fault must trigger
+`output.closed-pipe`.
 
 ## Add a generator
 

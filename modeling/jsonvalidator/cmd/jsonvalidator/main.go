@@ -12,11 +12,13 @@ import (
 	"go/format"
 	"io"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
 	"strings"
+	"syscall"
 	"unicode"
 	"unicode/utf8"
 )
@@ -761,11 +763,13 @@ func check(l loaded, out string) ([]string, error) {
 }
 
 func main() {
+	// A closed stdout pipe must reach the contract I/O failure path.
+	signal.Ignore(syscall.SIGPIPE)
 	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
 }
 
-// run executes one command line and returns the exit code. On success stdout
-// is exactly the identity line; on any failure stdout is empty.
+// run executes one command line and returns its exit code. A successful command
+// delivers exactly the identity line; a failed delivery may leave a prefix.
 func run(args []string, stdout, stderr io.Writer) int {
 	line, drift, err := dispatch(args)
 	switch {
@@ -783,7 +787,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 		return exitDrift
 	}
-	fmt.Fprint(stdout, line)
+	n, err := io.WriteString(stdout, line)
+	if err != nil || n != len(line) {
+		fmt.Fprintln(stderr, "jsonvalidator: output write failed")
+		return exitFailure
+	}
 	return 0
 }
 

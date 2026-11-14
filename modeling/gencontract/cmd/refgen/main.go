@@ -19,10 +19,12 @@ import (
 	"go/format"
 	"io"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
+	"syscall"
 	"unicode"
 	"unicode/utf8"
 )
@@ -46,6 +48,8 @@ const (
 )
 
 func main() {
+	// A closed stdout pipe must reach the contract I/O failure path.
+	signal.Ignore(syscall.SIGPIPE)
 	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
 }
 
@@ -61,8 +65,8 @@ func refuse(format string, a ...any) error {
 	return refusal{msg: fmt.Sprintf(format, a...)}
 }
 
-// run executes one command line and returns the process exit code. On success
-// stdout is exactly the identity line; on any failure stdout is empty.
+// run executes one command line and returns its exit code. A successful command
+// delivers exactly the identity line; a failed delivery may leave a prefix.
 func run(args []string, stdout, stderr io.Writer) int {
 	line, drift, err := dispatch(args)
 	switch {
@@ -86,7 +90,14 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 		return exitDrift
 	}
-	fmt.Fprint(stdout, line)
+	n, err := io.WriteString(stdout, line)
+	if fault() == "ignore-output-error" {
+		return 0
+	}
+	if err != nil || n != len(line) {
+		fmt.Fprintln(stderr, "refgen: output write failed")
+		return exitFailure
+	}
 	return 0
 }
 

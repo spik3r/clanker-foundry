@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d82266b6b884a23f33e5d138cb09eb0bbde7d68f",
+  "id": "CF-generator-stdout-v1",
+  "path": "tasks/CF-generator-stdout-v1-delivery-failures.md",
+  "blob": "e94c459742e6e4721b3207c8a2c7941bd1cd11c0",
+  "record": "---\nid: CF-generator-stdout-v1\nstatus: in-progress\nowner: Codex generator stdout contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Report generator stdout delivery failures\n\n## Implementation claim\n\nOwner: Codex generator stdout contributor, delegated by the coordinating agent\nunder the owner's continued maintenance request. Main at `74e36ac`, direction\nand current claims were reviewed. Active Foundry path-alias work is excluded;\nits stdout handling is a separately queued follow-up after that work merges.\n\nFinite probes of all five registered generators found that closed stdout pipes\nterminate them with SIGPIPE. Four also return exit 0 on a failed writer;\nlifecyclegen reports writer errors but accepts a short write with no error.\nAll five accept such short writes. The generator contract declares I/O failure\nexit 1. Existing lifecycle commands show the intended process-entrypoint pattern.\n\nScope: `modeling/CONTRACT.md`, `modeling/gencontract/README.md`,\n`modeling/gencontract/conformance.go`, `modeling/gencontract/conformance_test.go`,\n`modeling/gencontract/cmd/refgen/main.go`,\n`modeling/gencontract/cmd/refgen/stdout_test.go`,\n`modeling/tui/cmd/tuic/main.go`, `modeling/tui/cmd/tuic/stdout_test.go`,\n`modeling/jsonvalidator/cmd/jsonvalidator/main.go`,\n`modeling/jsonvalidator/cmd/jsonvalidator/stdout_test.go`,\n`modeling/lifecycle/cmd/lifecyclegen/main.go`,\n`modeling/lifecycle/cmd/lifecyclegen/stdout_test.go`,\n`modeling/diagram/cmd/diagramgen/main.go`,\n`modeling/diagram/cmd/diagramgen/stdout_test.go`, this task and new immutable\nProject Memory files. Check stdout byte counts and errors, return exit 1 with a\nfixed diagnostic, and ignore SIGPIPE only in each process main. Add failed,\nshort and full-count/error writer tests plus real preclosed-pipe conformance and\na reference fault proving the harness detects false success. Keep normal bytes,\nrefusal/drift checks and generator versions unchanged. Clarify only the necessary\ncontract exception for bytes already delivered before an output failure.\n\nChecks: prove package and real-process regressions fail before the repair; all\naffected module vet/race suites, JSON checks with pinned Node 24 and lifecycle\nscratch under canonical TMPDIR; all five generators' conformance; repository,\nformat, whitespace and committed Project Memory validation. Finish edits before\nfull tests. Commit, push and open a PR for independent coordinator review and\nhosted checks; no merge, output regeneration or Foundry entrypoint edits.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-generator-stdout-v1-delivery-failures.md",
+        "id": "CF-generator-stdout-v1",
+        "blob": "e94c459742e6e4721b3207c8a2c7941bd1cd11c0",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

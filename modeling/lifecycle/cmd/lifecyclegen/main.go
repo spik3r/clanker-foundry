@@ -13,9 +13,11 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"sort"
 	"strings"
+	"syscall"
 
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/canonical"
 	"github.com/spik3r/clanker-foundry/modeling/lifecycle/compiler"
@@ -58,10 +60,14 @@ func ioFail(format string, a ...any) error {
 	return &contractError{exitIO, fmt.Sprintf(format, a...)}
 }
 
-func main() { os.Exit(contractMain(os.Args[1:], os.Stdout, os.Stderr)) }
+func main() {
+	// A closed stdout pipe must reach the contract I/O failure path.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(contractMain(os.Args[1:], os.Stdout, os.Stderr))
+}
 
-// contractMain runs contract mode and returns the process exit code. stdout
-// receives output only on success.
+// contractMain runs contract mode and returns its exit code. It writes stdout
+// after contractRun succeeds; a delivery failure may leave a prefix.
 func contractMain(args []string, stdout, stderr io.Writer) int {
 	out, err := contractRun(args)
 	if err != nil {
@@ -77,8 +83,8 @@ func contractMain(args []string, stdout, stderr io.Writer) int {
 		}
 		return code
 	}
-	if _, err := stdout.Write(out); err != nil {
-		fmt.Fprintln(stderr, "lifecyclegen: write stdout:", err)
+	if n, err := stdout.Write(out); err != nil || n != len(out) {
+		fmt.Fprintln(stderr, "lifecyclegen: output write failed")
 		return exitIO
 	}
 	return 0

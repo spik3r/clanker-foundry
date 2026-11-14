@@ -1,0 +1,107 @@
+{
+  "formatVersion": 2,
+  "eventId": "a0427a07-c84b-42da-9d01-9eb029adaedf",
+  "runId": "2c699110-fdd0-4a55-98af-e9f87dad3fd4",
+  "kind": "complete",
+  "parents": [
+    "8f31aa98-771a-4a68-90dc-f5f694c7ee62"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-stdout-v1",
+    "path": "tasks/CF-generator-stdout-v1-delivery-failures.md",
+    "revision": "d82266b6b884a23f33e5d138cb09eb0bbde7d68f",
+    "blob": "e94c459742e6e4721b3207c8a2c7941bd1cd11c0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "220ecd8d9d3afecbbcc0af991f7fe4910846dd994c0c78086164d6182c349c22"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-stdout-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:17:48.886Z",
+  "summary": "All five generators return exit 1 with a fixed diagnostic on failed or short stdout delivery; process mains route closed pipes through that path",
+  "next": "Commit immutable evidence, validate committed diff, push and open PR for exact-head review and hosted checks; Foundry stdout follow-up remains separate",
+  "files": [
+    "modeling/CONTRACT.md",
+    "modeling/gencontract/README.md",
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/stdout_test.go",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/cmd/tuic/stdout_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/stdout_test.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/stdout_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/stdout_test.go",
+    "tasks/CF-generator-stdout-v1-delivery-failures.md"
+  ],
+  "validation": "Before repair, all five package writer regressions and real preclosed-pipe conformance failed; lifecyclegen short writes falsely succeeded. Full vet and race suites passed in gencontract, tui, diagram (Go 1.27.0), jsonvalidator and lifecycle (module-selected Go 1.27.3). JSON used Node 24.15.0, lifecycle canonical TMPDIR=/private/tmp. Frozen TypeScript verifier passed all 148 literals. After comment clarification, all five writer race tests passed; final stricter diagnostic check reran full gencontract vet/race including all five generators and fault self-tests (8.589s). Windows tuic test crosscompile passed; not executed on Windows. Repository validator, gofmt and whitespace checks passed; optional skills-ref unavailable. Independent read-only review found no implementation issue. No emitted bytes or generator versions changed.",
+  "snapshot": {
+    "modeling/CONTRACT.md": {
+      "blob": "8f9e4af48d39679607ed2b5762119165884305d7",
+      "mode": "100644"
+    },
+    "modeling/gencontract/README.md": {
+      "blob": "770244733e3e46bb8d18d9d0f0ed412c5cca6385",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance.go": {
+      "blob": "0094df3d8ceb20faff6cbe99c62ed0d9f4e3906d",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance_test.go": {
+      "blob": "4249e61657e30c377ea75da32f2fbfd504099927",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/main.go": {
+      "blob": "22ea10087a3593a4bcf68eb88fee22003062def7",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/stdout_test.go": {
+      "blob": "6e4b7d7800c861d462642bb2171e625c03aa73f3",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/main.go": {
+      "blob": "01121cd260e6ffbba01e7f9e3a513cf184cc6466",
+      "mode": "100644"
+    },
+    "modeling/tui/cmd/tuic/stdout_test.go": {
+      "blob": "6b02596d8af32414c727ff32c20182379a7e8a3e",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go": {
+      "blob": "e00930d8e0ee30660fee3d85ca8c24056d31eecf",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/stdout_test.go": {
+      "blob": "e8105c05d5ae4be6a74b2c0a3ae0035723f7aa7c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/lifecyclegen/main.go": {
+      "blob": "40e4765e11ae9fba371858b3a6c05a62a6ff76e4",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/lifecyclegen/stdout_test.go": {
+      "blob": "a968701cbc9d285515b228fc1d1253cfdeac16a4",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "c535e25fd7c42549a4963e869c68670a816a000e",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/stdout_test.go": {
+      "blob": "3fc634f65c00a2bee79cfa1888a8831cf66d9934",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-stdout-v1-delivery-failures.md": {
+      "blob": "e94c459742e6e4721b3207c8a2c7941bd1cd11c0",
+      "mode": "100644"
+    }
+  }
+}
