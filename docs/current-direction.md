@@ -15,6 +15,20 @@ contract may start before it is chosen. The
 and the resulting order of work. The milestones and stop rules below still
 apply to the consumer trial. The rest of this document is unchanged and dated.
 
+## Owner update, 14 November 2026
+
+The owner approved immediate Ctrl+C quitting in a standalone browser's open
+filter input. This is implemented on main as `tuic` 1.5.2 in
+[PR #164](https://github.com/spik3r/clanker-foundry/pull/164). Hosted browsers
+still leave quitting to the host, and help remains captive.
+
+The owner delegated the bounded consumer choice. The existing saved MCP
+inventory screen in Monstera was selected as the native `6: MCP` page. This
+records authorization and selection; consumer implementation and integration
+belong in the consumer's own source and acceptance records. It establishes no
+consumer acceptance or measured value. The existing human, repeatability,
+value and runtime activation gates remain unchanged.
+
 ## Facts and remaining hypotheses
 
 - The [skill pack](../README.md) is the primary usable asset. Its instructions and

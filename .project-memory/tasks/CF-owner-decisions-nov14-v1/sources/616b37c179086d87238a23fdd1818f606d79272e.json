@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "616b37c179086d87238a23fdd1818f606d79272e",
+  "id": "CF-owner-decisions-nov14-v1",
+  "path": "tasks/CF-owner-decisions-nov14-v1-public-update.md",
+  "blob": "32379b0cc5e4aef8cf5774352f05692a633dc109",
+  "record": "---\nid: CF-owner-decisions-nov14-v1\nstatus: in-progress\nowner: Codex maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Record the approved November 14 owner decisions\n\n## Implementation claim\n\nThe coordinator assigned this bounded public decision update after PR #164\nmerged. Main at `9976f8e`, live claims and open PRs were inspected; no PR is open.\n\nLimit changes to docs/generator-pipeline-plan.md, docs/current-direction.md,\ntasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md, this record and new immutable\nProject Memory evidence. Preserve historical dated statements and evidence.\nAdd a clearly dated 14 November owner update: standalone filter Ctrl+C was\napproved and implemented as tuic 1.5.2 in PR #164; host quit authority and captive\nhelp are unchanged. The owner delegated the bounded consumer choice; the\nexisting saved MCP inventory screen in the already named Monstera was selected\nas native page 6: MCP. Record authorization and selection only, without claiming\nconsumer implementation, acceptance, integration or measured value. Preserve\nconsumer, human, value and runtime gates. Copy no private application source or\ntask data into public documentation and create no new report or framework.\n\nClose the Ctrl+C task with its exact reviewed head, merge commit, independent\nreview and ten successful exact-head workflows, preserving all original text.\nThis update's own task may be completed locally after checks; that does not\nclaim its future PR has merged. Run repository/link validation, whitespace,\noriginal-text preservation checks and fresh committed Project Memory coverage.\nPublish for independent exact-head review; the coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-owner-decisions-nov14-v1-public-update.md",
+        "id": "CF-owner-decisions-nov14-v1",
+        "blob": "32379b0cc5e4aef8cf5774352f05692a633dc109",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
