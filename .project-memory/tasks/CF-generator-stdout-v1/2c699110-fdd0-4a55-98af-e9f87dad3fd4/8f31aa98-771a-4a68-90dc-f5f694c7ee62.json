@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "8f31aa98-771a-4a68-90dc-f5f694c7ee62",
+  "runId": "2c699110-fdd0-4a55-98af-e9f87dad3fd4",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-stdout-v1",
+    "path": "tasks/CF-generator-stdout-v1-delivery-failures.md",
+    "revision": "d82266b6b884a23f33e5d138cb09eb0bbde7d68f",
+    "blob": "e94c459742e6e4721b3207c8a2c7941bd1cd11c0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "220ecd8d9d3afecbbcc0af991f7fe4910846dd994c0c78086164d6182c349c22"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-stdout-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:04:41.424Z",
+  "summary": "Report generator stdout error and short-write failures without changing emitted bytes",
+  "next": "Add failing writer and process regressions, fix success delivery, validate all five generators",
+  "files": [
+    "modeling/CONTRACT.md",
+    "modeling/gencontract/README.md",
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/gencontract/cmd/refgen/stdout_test.go",
+    "modeling/tui/cmd/tuic/main.go",
+    "modeling/tui/cmd/tuic/stdout_test.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/stdout_test.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/stdout_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/stdout_test.go",
+    "tasks/CF-generator-stdout-v1-delivery-failures.md"
+  ]
+}

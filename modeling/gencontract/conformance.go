@@ -153,7 +153,49 @@ func Check(g Generator, scratch string) ([]Finding, error) {
 	if err := c.stepUsage(); err != nil {
 		return nil, err
 	}
+	if err := c.stepStdoutClosed(); err != nil {
+		return nil, err
+	}
 	return c.findings, nil
+}
+
+// A preclosed pipe makes delivery fail before any stdout bytes can be written.
+// Exercise the process entrypoint as well as its ordinary command behavior.
+func (c *checker) stepStdoutClosed() error {
+	reader, writer, err := os.Pipe()
+	if err != nil {
+		return err
+	}
+	defer writer.Close()
+	if err := reader.Close(); err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), runTimeout)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, c.g.Bin, "validate", c.g.Model)
+	cmd.Dir = c.work
+	cmd.Env = append([]string{}, c.g.Env...)
+	cmd.Stdout = writer
+	var stderr bytes.Buffer
+	cmd.Stderr = &stderr
+	cmd.WaitDelay = 5 * time.Second
+	err = cmd.Run()
+	if ctx.Err() != nil {
+		c.add("run.timeout", "closed stdout did not finish within %s", runTimeout)
+		return nil
+	}
+	code := 0
+	var exit *exec.ExitError
+	if errors.As(err, &exit) {
+		code = exit.ExitCode()
+	} else if err != nil {
+		return fmt.Errorf("start %s: %w", c.g.Bin, err)
+	}
+	want := c.g.ID + ": output write failed\n"
+	if code != 1 || stderr.String() != want {
+		c.add("output.closed-pipe", "validate with closed stdout: exit %d, stderr %s; want exit 1 and %q", code, snippet(stderr.Bytes()), want)
+	}
+	return nil
 }
 
 func (c *checker) add(rule, format string, a ...any) {

@@ -48,7 +48,11 @@ defined under [Model identity](#model-identity). Hashes are lowercase hex.
 | 3 | `check` only: `OUT` differs from what the model generates. |
 
 On any nonzero exit stdout is empty and stderr carries at least one diagnostic
-line.
+line, except when stdout delivery itself fails. A failed write or a write that
+accepts fewer bytes than offered returns exit 1 and reports `GEN: output write
+failed` on stderr, where `GEN` is the generator ID. That diagnostic means stdout
+may be partial: bytes already accepted cannot be retracted. It does not permit
+success output for refused input or detected drift.
 
 ### generate
 

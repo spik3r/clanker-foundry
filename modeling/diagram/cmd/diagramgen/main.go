@@ -11,6 +11,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
@@ -31,10 +33,13 @@ type usageError string
 func (u usageError) Error() string { return string(u) }
 
 func main() {
+	// A closed stdout pipe must reach the contract I/O failure path.
+	signal.Ignore(syscall.SIGPIPE)
 	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
 }
 
-// run returns the exit code. Stdout is written only on success.
+// run writes stdout only after dispatch succeeds. A delivery failure may leave
+// a prefix; the exit code reports whether the full result was delivered.
 func run(args []string, stdout, stderr io.Writer) int {
 	line, drift, err := dispatch(args)
 	switch {
@@ -53,7 +58,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 		return exitDrift
 	}
-	fmt.Fprint(stdout, line)
+	n, err := io.WriteString(stdout, line)
+	if err != nil || n != len(line) {
+		fmt.Fprintln(stderr, "diagramgen: output write failed")
+		return exitFailure
+	}
 	return 0
 }
 

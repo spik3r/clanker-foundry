@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -41,6 +42,9 @@ func goBuild(t *testing.T, moduleDir, pkg, name string, tags ...string) string {
 		return bin
 	}
 	bin := filepath.Join(buildDir, fmt.Sprintf("%02d-%s", len(buildCache), name))
+	if runtime.GOOS == "windows" {
+		bin += ".exe"
+	}
 	args := []string{"build", "-o", bin}
 	if len(tags) > 0 {
 		args = append(args, "-tags", strings.Join(tags, ","))
@@ -125,6 +129,7 @@ func TestHarnessDetectsFaults(t *testing.T) {
 		{"accept-invalid", "refuse.invalid-model"},
 		{"usage-exit1", "refuse.usage"},
 		{"canonical-whitespace", "validate.whitespace"},
+		{"ignore-output-error", "output.closed-pipe"},
 		{"stdout-on-failure", "refuse.usage"},
 		{"stdout-on-failure", "refuse.invalid-model"},
 		{"ignore-extra", "check.unexpected"},
