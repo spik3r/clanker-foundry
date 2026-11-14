@@ -120,6 +120,7 @@ It checks that the folders follow the Agent Skills open format:
 - each skill ships a `README.md`, model mappings are nonempty, shell scripts parse, and
   every relative Markdown link in tracked or unignored untracked Markdown resolves on disk.
   One literal outer `<...>` destination pair is removed before URL handling.
+  External `http://`, `https://` and `mailto:` prefixes ignore ASCII letter case.
   Link paths decode valid `%HH` escapes once, after removing the raw query and fragment.
   Encoded question marks stay in filenames. Plus signs and malformed escapes stay
   literal; encoded NUL bytes in paths are refused. Queries are not decoded.

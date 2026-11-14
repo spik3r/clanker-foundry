@@ -177,6 +177,35 @@ expect_link 0 '<%3C%3Cnested.md%3E%3E>'
 expect_link 0 '< enclosed name >'
 expect_link 0 '<ending%0A>'
 expect_link 1 '<README.md%00>'
+# Scheme names are case-insensitive; URI path bytes are not normalized here.
+for external in \
+  'http://example.invalid/absent' 'HTTP://example.invalid/absent' 'hTtP://example.invalid/absent' \
+  'https://example.invalid/absent' 'HTTPS://example.invalid/absent' 'hTtPs://example.invalid/absent' \
+  'mailto:fixture@example.invalid' 'MAILTO:fixture@example.invalid' 'mAiLtO:fixture@example.invalid' \
+  '<hTtP://example.invalid/absent>' '<hTtPs://example.invalid/absent>' '<mAiLtO:fixture@example.invalid>'; do
+  expect_link 0 "$external"
+done
+# An encoded colon is local filename data, never a second scheme lookup.
+mkdir -p "$fixture_repo/HTTPS:/example.invalid" "$fixture_repo/HTTPS%3A/example.invalid"
+printf '# Target\n' > "$fixture_repo/HTTPS:/example.invalid/local.txt"
+expect_link 0 'HTTPS%3A//example.invalid/local.txt'
+rm "$fixture_repo/HTTPS:/example.invalid/local.txt"
+expect_link 1 'HTTPS%3A//example.invalid/local.txt'
+printf '# Decoy\n' > "$fixture_repo/HTTPS%3A/example.invalid/local.txt"
+expect_link 1 'HTTPS%3A//example.invalid/local.txt'
+printf '# Target\n' > "$fixture_repo/MAILTO:fixture@example.invalid"
+expect_link 0 'MAILTO%3Afixture@example.invalid'
+rm "$fixture_repo/MAILTO:fixture@example.invalid"
+expect_link 1 'MAILTO%3Afixture@example.invalid'
+printf '# Decoy\n' > "$fixture_repo/MAILTO%3Afixture@example.invalid"
+expect_link 1 'MAILTO%3Afixture@example.invalid'
+printf '# Target\n' > "$fixture_repo/Case-Sensitive-Local.TXT"
+expect_link 0 'Case-Sensitive-Local.TXT'
+if [ -e "$fixture_repo/case-sensitive-local.txt" ]; then
+  printf '%s\n' 'CHECK local case spellings alias on this filesystem'
+else
+  expect_link 1 'case-sensitive-local.txt'
+fi
 [ "$link_failures" -eq 0 ] || exit 1
 rm "$untracked_doc"
 

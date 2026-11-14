@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "87d9b979-e858-4c16-8d86-238c97cf1175",
+  "runId": "ba800798-3547-4052-a2b0-9c3d73d0019c",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-scheme-case-v1",
+    "path": "tasks/CF-validator-scheme-case-v1-relative-links.md",
+    "revision": "026d7e962cd82442cdd168a7e07b8a2d6b5a8380",
+    "blob": "52501ddadf9c38c041e96dc02e69c87bffd99602",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c4223555b5be6689e0d8598192bfed60863ef5e8d313ff07c1accf6c2b779dfa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-scheme-case-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T06:43:34.143Z",
+  "summary": "Match only existing external URI schemes without case sensitivity",
+  "next": "Prove regressions, repair and validate",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-scheme-case-v1-relative-links.md"
+  ]
+}
