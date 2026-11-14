@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "1b8144d6887826085990ac88925c52bd612ce565",
+  "id": "CF-foundry-build-workspace-v1",
+  "path": "tasks/CF-foundry-build-workspace-v1-pinned-modules.md",
+  "blob": "54de37210035cc80566c67ffc9bf5c9a0e7cada4",
+  "record": "---\nid: CF-foundry-build-workspace-v1\nstatus: in-progress\nowner: Codex pipeline maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Build pinned generators outside ambient Go workspaces\n\n## Implementation claim\n\nThe owner authorized several hours of bounded maintenance, independent subagent\nreview, publication and merging after checks. Main at `c87356a`, live Project\nMemory frontiers and open PRs were reviewed before this claim. The filter Unicode\nrepair is independent; the output-root and class-layout repairs remain queued.\n\n`foundrygen` builds generators with inherited environment and read-only module\nmode. A parent `go.work` or explicit `GOWORK` can replace a dependency with source\noutside the pinned checkout. A finite local probe built the same module twice:\nwith ambient workspace discovery it printed the replacement dependency's value;\nwith `GOWORK=off` it printed the dependency selected by the module's own go.mod.\nRead-only module mode does not prevent that substitution.\n\nDisable workspace mode for generator builds so each module's committed go.mod\nand go.sum select its dependencies. Keep the caller's cache, proxy and toolchain\nsettings and the empty environment used to invoke built generators. This does\nnot claim that builds are sandboxed, offline or independent of the installed Go\ntoolchain. The `--unpinned` development flag still skips only Git pin checks.\n\nScope: `modeling/foundrygen/exec.go`, new `modeling/foundrygen/exec_test.go`,\n`modeling/foundrygen/README.md`, this task and new immutable Project Memory files.\nTests use fixed local fixture modules and a local replacement dependency, with\nboth automatic parent-workspace discovery and explicit GOWORK. No network or\nconsumer edits; no generator or runtime changes.\n\nChecks: prove regressions fail before the fix; gofmt, go vet and full race tests\nin modeling/foundrygen; repository validation, whitespace and committed Project\nMemory validation; independent final-commit review and hosted PR checks.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-build-workspace-v1-pinned-modules.md",
+        "id": "CF-foundry-build-workspace-v1",
+        "blob": "54de37210035cc80566c67ffc9bf5c9a0e7cada4",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
