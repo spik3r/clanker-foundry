@@ -1,0 +1,38 @@
+{
+  "formatVersion": 2,
+  "eventId": "53394c09-0f99-424c-9ef9-51ec8d5db929",
+  "runId": "ca3af895-d9b9-4ffe-b42c-29c0a2bcc94e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-filter-unicode-replacement-v1",
+    "path": "tasks/CF-filter-unicode-replacement-v1-valid-text.md",
+    "revision": "0001c2d20f65570aa348db1b08159e374d7dbf9b",
+    "blob": "c11ecc23572275fc66db0a7b3c571ba489046d4c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f5cc95400f71da14f97350d1de5717b6bc4062c231283e710cd6e7e42ee602ab"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/filter-unicode-replacement-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:24:21.958Z",
+  "summary": "Preserve valid U+FFFD in filter input while dropping malformed UTF-8",
+  "next": "Add failing acceptance and literal cases, fix sanitizer, validate tuic 1.5.1",
+  "files": [
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md"
+  ]
+}

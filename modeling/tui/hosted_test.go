@@ -151,7 +151,7 @@ func TestEmbedAndSpacingValidation(t *testing.T) {
 }
 
 func TestHostedFileSetsAndVersion(t *testing.T) {
-	if GeneratorVersion != "1.5.0" {
+	if GeneratorVersion != "1.5.1" {
 		t.Fatalf("generator version %s", GeneratorVersion)
 	}
 	raw, err := os.ReadFile("examples/browser-hosted.json")

@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "edbe4823-fa71-4c46-8f7e-41f26bd486d8",
+  "runId": "ca3af895-d9b9-4ffe-b42c-29c0a2bcc94e",
+  "kind": "complete",
+  "parents": [
+    "53394c09-0f99-424c-9ef9-51ec8d5db929"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-filter-unicode-replacement-v1",
+    "path": "tasks/CF-filter-unicode-replacement-v1-valid-text.md",
+    "revision": "0001c2d20f65570aa348db1b08159e374d7dbf9b",
+    "blob": "c11ecc23572275fc66db0a7b3c571ba489046d4c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "f5cc95400f71da14f97350d1de5717b6bc4062c231283e710cd6e7e42ee602ab"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/filter-unicode-replacement-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:27:01.598Z",
+  "summary": "tuic 1.5.1 preserves valid replacement characters in filter input and still drops malformed bytes, controls and separators",
+  "next": "Commit immutable evidence, validate committed diff, push and open PR for coordinator review and hosted checks",
+  "files": [
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md"
+  ],
+  "validation": "Before fix, new acceptance subtests failed in standalone and hosted modes for typed text, mixed key/paste text and both cap paths; added literal case failed with filter empty and shown2 instead of1. Go1.27.0 vet and full tui race suite passed (31.846s package, 1.778s tuic, 8.793s tuicases); gencontract race9.239s and foundrygen race24.839s passed. Node26 authoring tests:8 passed,0 skipped using existing pinned Ajv8.20.0 via NODE_PATH. Repository validator passed; optional skills-ref unavailable. Whitespace checks passed. Independent reviewer ran focused generated filter tests and found no issue.",
+  "snapshot": {
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "2fe338e01cf44924500c4b323c438d47b9baec0e",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/filter_test.go.txt": {
+      "blob": "d020041a1d71431f5d6c077b7c527057ed7cc6e5",
+      "mode": "100644"
+    },
+    "modeling/tui/generated_test.go": {
+      "blob": "f990b48e9a9a54dedb1387933da60d01b7a9751c",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-filter.cases.json": {
+      "blob": "693631c20bfbbb2e17b6ca529b5f48c9a327c277",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "8fa8bf023073b138e0d46e90972257d439bd8c6f",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "2aacb61aa08794ccbfc070d03eac59d2c178480f",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "e9b9f8158d7ad31a63d17b03598237a181e6c6b4",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "0c472d5fd30845d704083f1ef7df65d4dea717d2",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "b17190ebd1adcda5083517ae84ff510c65591148",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "950a98e521594f7ae2483e3863a9704dc2347394",
+      "mode": "100644"
+    },
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md": {
+      "blob": "c11ecc23572275fc66db0a7b3c571ba489046d4c",
+      "mode": "100644"
+    }
+  }
+}

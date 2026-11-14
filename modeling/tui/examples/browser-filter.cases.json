@@ -50,6 +50,20 @@
         "Description": "Final spare",
         "Status": "down"
       }
+    ],
+    "ReplacementRune": [
+      {
+        "ID": "r1",
+        "Name": "Alpha�",
+        "Description": "Primary",
+        "Status": "up"
+      },
+      {
+        "ID": "r2",
+        "Name": "Beta",
+        "Description": "Backup",
+        "Status": "up"
+      }
     ]
   },
   "cases": [
@@ -484,6 +498,28 @@
         "filter": "ÄB",
         "shown": 1,
         "selected": "s3"
+      }
+    },
+    {
+      "id": "F_replacement_rune",
+      "requirement": "Valid Unicode filter text is retained and matches a substring.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "ReplacementRune",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "�"
+        }
+      ],
+      "expect": {
+        "filter": "�",
+        "shown": 1,
+        "selected": "r1"
       }
     }
   ]

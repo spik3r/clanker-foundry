@@ -263,6 +263,56 @@ func TestFilterBoundsAndSanitising(t *testing.T) {
 	}
 }
 
+// Valid replacement characters survive sanitizing; malformed bytes do not
+// erase them or introduce extra replacement characters into the filter.
+func TestFilterValidReplacementCharacter(t *testing.T) {
+	records := []Record{{ID: "match", Name: "A\uFFFDB"}, {ID: "other", Name: "Other"}}
+	for _, input := range []struct {
+		name string
+		send func(Model) Model
+	}{
+		{"typed", func(m Model) Model { return ftype(m, "A\uFFFDB") }},
+		{"key text", func(m Model) Model {
+			m, _ = fsend(m, tea.KeyPressMsg{Code: 'a', Text: "A\xff\uFFFD\xfe\n\t\x00\u2028\u2029B"})
+			return m
+		}},
+		{"paste", func(m Model) Model {
+			m, _ = fsend(m, tea.PasteMsg{Content: "A\xff\uFFFD\xfe\n\t\x00\u2028\u2029B"})
+			return m
+		}},
+	} {
+		t.Run(input.name, func(t *testing.T) {
+			m := input.send(fkeys(fnew(t, 80, 12, records), "/"))
+			if m.FilterText() != "A\uFFFDB" || m.Shown() != 1 || m.Selected() != "match" {
+				t.Fatalf("text=%q shown=%d selected=%q", m.FilterText(), m.Shown(), m.Selected())
+			}
+			m = fkeys(m, "backspace", "backspace")
+			if m.FilterText() != "A" {
+				t.Fatalf("backspace did not remove one code point: %q", m.FilterText())
+			}
+		})
+	}
+	for _, paste := range []bool{false, true} {
+		t.Run(fmt.Sprintf("cap paste=%v", paste), func(t *testing.T) {
+			m := fkeys(fnew(t, 80, 12, records), "/")
+			prefix := strings.Repeat("a", 63)
+			text := prefix + "\xff\uFFFDx"
+			if paste {
+				m, _ = fsend(m, tea.PasteMsg{Content: text})
+			} else {
+				m, _ = fsend(m, tea.KeyPressMsg{Code: 'a', Text: text})
+			}
+			if m.FilterText() != prefix+"\uFFFD" {
+				t.Fatalf("invalid bytes consumed room or valid replacement was dropped: %q", m.FilterText())
+			}
+			m = ftype(m, "\uFFFDz")
+			if m.FilterText() != prefix+"\uFFFD" {
+				t.Fatal("text beyond 64 code points was accepted")
+			}
+		})
+	}
+}
+
 func TestFilterSelectionFollowsIdentityAndReplaceReapplies(t *testing.T) {
 	m := fnew(t, 80, 12, frecs())
 	m = fkeys(m, "down") // b2
