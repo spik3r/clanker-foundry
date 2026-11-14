@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "b412304b-b944-404d-8f77-4b091dee2e16",
+  "runId": "d50cdf11-b5e6-428a-b0f9-5e840e574c0e",
+  "kind": "complete",
+  "parents": [
+    "3b50a042-88f8-47ee-b9bc-3ad505741f63"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-untracked-v1",
+    "path": "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+    "revision": "e98a55556bfdb99676415a543112a6384b3d88cf",
+    "blob": "de00ea6e89d10d42bf97d377d630d4a536de301d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "723c2beda4f9d56c45c9f4049ff562bce31f6c43fba9fcecb0f9ad68fc453e25"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-pin-untracked-files",
+  "pullRequest": null,
+  "at": "2026-11-14T00:41:19.853Z",
+  "summary": "Pinned check refuses hidden untracked modeling source; regression covers top-level and nested files",
+  "next": "Commit evidence, validate committed diff, push branch and open PR for review",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/run_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md"
+  ],
+  "validation": "Regression failed on original implementation in both subtests. Go 1.27.0: go vet ./... and go test -race -count=1 ./... passed in modeling/foundrygen (26.269s). bash scripts/validate.sh passed; optional skills-ref unavailable. git diff --check and staged whitespace check passed.",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "16b628e8a746c10aee8da9a2c8b5013dea9355cb",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/run_test.go": {
+      "blob": "fee8e9966b802934ef71e3c5415a61b0f0ae7e14",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "5341172ae1ef1d26a483a837361846730c615d1b",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md": {
+      "blob": "de00ea6e89d10d42bf97d377d630d4a536de301d",
+      "mode": "100644"
+    }
+  }
+}

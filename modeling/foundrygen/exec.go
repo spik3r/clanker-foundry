@@ -147,7 +147,7 @@ func (s *session) pin() error {
 	if got := strings.TrimSpace(head); got != s.proj.Revision {
 		return refuse("Foundry checkout is at %s but %s pins %s", got, ProjectFile, s.proj.Revision)
 	}
-	status, err := s.git("status", "--porcelain", "--", "modeling")
+	status, err := s.git("status", "--porcelain", "--untracked-files=all", "--", "modeling")
 	if err != nil {
 		return err
 	}
