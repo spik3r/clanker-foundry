@@ -62,7 +62,9 @@ read_map() {
     printf '%s:%d: NUL byte is not allowed\n' "$3" "$((nul_line + 1))" >&2
     return 1
   fi
-  LC_ALL=C awk -v key="$1" -v label="$3" '
+  # Unlike -v assignments, ENVIRON keeps backslashes in the requested key literal.
+  FOUNDRY_MODEL_LOOKUP_KEY="$1" LC_ALL=C awk -v label="$3" '
+    BEGIN { key = ENVIRON["FOUNDRY_MODEL_LOOKUP_KEY"] }
     function bad(message) {
       printf "%s:%d: %s\n", label, NR, message > "/dev/stderr"
       failed = 1
