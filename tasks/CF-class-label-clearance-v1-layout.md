@@ -1,6 +1,6 @@
 ---
 id: CF-class-label-clearance-v1
-status: in-progress
+status: completed
 owner: Codex diagram maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -41,3 +41,10 @@ suites; repository validator, whitespace and committed Project Memory validation
 Render and visually inspect the repro and generated examples; state any visual
 limits. Commit, push and open a PR; independent review and merge belong to the
 coordinator.
+
+## Integration result
+
+The coordinating agent reviewed `de02aafc5b783c594fd2bb55ac8025896761984e`;
+all ten hosted workflows passed on that head. [PR #148](https://github.com/spik3r/clanker-foundry/pull/148)
+merged on 14 November 2026 as `f98b825f971fc253b687c28c660453ea4f0bfc45`.
+This bounded implementation claim is complete and reserves no further work.

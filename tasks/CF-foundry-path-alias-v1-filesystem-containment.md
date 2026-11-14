@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-path-alias-v1
-status: in-progress
+status: completed
 owner: Codex path containment contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -44,3 +44,10 @@ mocking the implementation. Platform alias fixtures may skip when the filesystem
 has no such alias. Run full foundrygen vet/race, repository validation, whitespace
 checks and committed Project Memory validation. Publish a PR for independent
 coordinator review; this contributor must not merge it.
+
+## Integration result
+
+The coordinating agent reviewed `1d3e1da7faa4d1c1f0969cd6b8ea496c527f328d`;
+all ten hosted workflows passed on that head. [PR #151](https://github.com/spik3r/clanker-foundry/pull/151)
+merged on 14 November 2026 as `b8f729dba52381733175adcfb3eeed4ef781185a`.
+This bounded implementation claim is complete and reserves no further work.

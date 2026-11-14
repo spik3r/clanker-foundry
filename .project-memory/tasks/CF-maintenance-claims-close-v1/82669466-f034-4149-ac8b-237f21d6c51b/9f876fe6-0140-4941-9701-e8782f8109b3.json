@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "9f876fe6-0140-4941-9701-e8782f8109b3",
+  "runId": "82669466-f034-4149-ac8b-237f21d6c51b",
+  "kind": "complete",
+  "parents": [
+    "143232ba-a28a-42e2-a9d4-6c315b312f0e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v1",
+    "path": "tasks/CF-maintenance-claims-close-v1-merged-results.md",
+    "revision": "026f4ae7c7fb88afac507c78ca7f5f96616e1c26",
+    "blob": "a6647de0e053128446539b12054b5d57dbeb6288",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "aac46941a55facecbf5e5f3198fab8a35b349ee701676d3cac41b598bcc251ea"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/close-merged-maintenance-claims",
+  "pullRequest": null,
+  "at": "2026-11-14T03:18:40.759Z",
+  "summary": "Closed 13 merged claims with exact integration references and appended module-toolchain corrections",
+  "next": "Commit immutable evidence, independently review final record diff, push PR and await hosted checks",
+  "files": [
+    "tasks/CF-hint-empty-id-v1-cases-parity.md",
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md",
+    "tasks/CF-foundry-build-workspace-v1-pinned-modules.md",
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+    "tasks/CF-json-enum-schema-v1-unique-values.md",
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md",
+    "tasks/CF-class-label-clearance-v1-layout.md",
+    "tasks/CF-json-schema-text-v1-character-parity.md",
+    "tasks/CF-wiring-parent-preflight-v1-directories.md",
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+    "tasks/CF-maintenance-claims-close-v1-merged-results.md"
+  ],
+  "validation": "Fetched merged GitHub metadata for all13 PRs; verified exact reviewed heads are merge parents and all merges are ancestors of main. Script verified original record bodies preserved except status plus appended results. Module-local go version: jsonvalidator/lifecycle1.27.3; other4modules1.27.0; historical go.mod requirements verified. Repository validator and whitespace passed; optional skills-ref unavailable. Record-only change, no product tests needed.",
+  "snapshot": {
+    "tasks/CF-hint-empty-id-v1-cases-parity.md": {
+      "blob": "7f3e9ff27ffb83ffc03235ecd94353a11b4de23d",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md": {
+      "blob": "4acbf0e1dd34e02402c880b4800d25ab6adde3f6",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md": {
+      "blob": "093e50f33b94046efe96d5fe372e7ee2969d6045",
+      "mode": "100644"
+    },
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md": {
+      "blob": "cc9eee7d33714c4c703f0303d6288210929c007f",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-build-workspace-v1-pinned-modules.md": {
+      "blob": "631bae1f6c0cb1f091802af0c893ae5dcabfea3e",
+      "mode": "100644"
+    },
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md": {
+      "blob": "ed4e51e2ba775cf5fecd6d6721a737f648e891ae",
+      "mode": "100644"
+    },
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md": {
+      "blob": "903247f81b1c6b61229ae9f1febacd2dd12de7ad",
+      "mode": "100644"
+    },
+    "tasks/CF-json-enum-schema-v1-unique-values.md": {
+      "blob": "4999c69f29e8d716bb472610201d369ba49fec44",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md": {
+      "blob": "03d739b1ebbcf89d986cea3cc23baac3f888e06d",
+      "mode": "100644"
+    },
+    "tasks/CF-class-label-clearance-v1-layout.md": {
+      "blob": "b6648bac7e906cb284976c67bab2e4fd893a22a6",
+      "mode": "100644"
+    },
+    "tasks/CF-json-schema-text-v1-character-parity.md": {
+      "blob": "3bb9ede25286e76163bafd1ba0aaed9f2b60f642",
+      "mode": "100644"
+    },
+    "tasks/CF-wiring-parent-preflight-v1-directories.md": {
+      "blob": "06494e12b1fa5dda92bd6ac36605a9052f1d09d5",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md": {
+      "blob": "a532023953f8ec990e6051a178d5ebd240dbb10f",
+      "mode": "100644"
+    },
+    "tasks/CF-maintenance-claims-close-v1-merged-results.md": {
+      "blob": "71857893eb62978ef8a7bac2ce482bca38acebf8",
+      "mode": "100644"
+    }
+  }
+}

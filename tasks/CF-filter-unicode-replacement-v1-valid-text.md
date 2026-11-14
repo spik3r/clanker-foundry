@@ -1,6 +1,6 @@
 ---
 id: CF-filter-unicode-replacement-v1
-status: in-progress
+status: completed
 owner: Codex filter maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -35,3 +35,10 @@ Checks: prove new regressions fail before the fix; full TUI vet and race suite;
 Node authoring tests; generator-contract and foundrygen race suites; repository
 validation, whitespace checks and committed Project Memory validation. Push and
 open a PR for coordinator review; merging belongs to the coordinator.
+
+## Integration result
+
+The coordinating agent reviewed `9eaddd8367ce15a9ef196ad59aed8bafc497a5b3`;
+all ten hosted workflows passed on that head. [PR #142](https://github.com/spik3r/clanker-foundry/pull/142)
+merged on 14 November 2026 as `9371406d87169cc9a7007ecee9ed79499173cebb`.
+This bounded implementation claim is complete and reserves no further work.

@@ -1,6 +1,6 @@
 ---
 id: CF-json-schema-text-v1
-status: in-progress
+status: completed
 owner: Codex schema text contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -36,3 +36,18 @@ agreement suite with actual Go validation; existing Go model-refusal race tests;
 repository validation, whitespace and committed Project Memory validation.
 Commit, push and open a PR for independent review and hosted checks; merge
 belongs to the coordinating agent.
+
+## Integration result
+
+The coordinating agent reviewed `22d7ff9e14e8a3eadf2062903724e12b1670bc6c`;
+all ten hosted workflows passed on that head. [PR #149](https://github.com/spik3r/clanker-foundry/pull/149)
+merged on 14 November 2026 as `74e36ac4ebbb071bd63497dd64cd37eb05eee505`.
+This bounded implementation claim is complete and reserves no further work.
+
+### Local toolchain clarification
+
+The JSON validator module requires and auto-selects Go 1.27.3. Earlier local
+validation notes that name Go 1.27.0 report the shell launcher, not the module
+toolchain. Module-local version checks confirm Go 1.27.3; the historical
+`go.mod` has the same requirement. The passed checks stand, and the immutable
+events remain unchanged.

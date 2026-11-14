@@ -1,6 +1,6 @@
 ---
 id: CF-maintenance-claims-close-v1
-status: in-progress
+status: completed
 owner: Codex maintenance coordinator
 repositories: [spik3r/clanker-foundry]
 ---
@@ -30,14 +30,13 @@ PR, reviewed head and merge commit. Append a local-toolchain clarification to
 the JSON number-spelling, enum, text and generator output-root records: the
 JSON validator and lifecycle modules require and auto-select Go 1.27.3, while
 some earlier notes named the shell launcher Go 1.27.0. Module-local version
-checks and the historical go.mod files confirm the distinction. Preserve every existing claim and historical
-validation statement. Do not edit old source snapshots, events or legacy ledger
-bytes, change unrelated ownership, or close active stdout-repair work. This
+checks and the historical go.mod files confirm the distinction. Preserve every
+existing claim and historical validation statement. Do not edit old source
+snapshots, events or legacy ledger bytes, change unrelated ownership, or close active stdout-repair work. This
 record's local implementation may be marked completed after its checks; that
 does not claim its own PR has already merged.
 
 Checks: independently fetch each PR's merged metadata, verify its head and merge
-commit in Git, confirm no original claim text was changed, check module-local Go versions,
-run repository
-validation and whitespace checks, and validate fresh committed Project Memory
-coverage. This is a record-only change; no product or runtime test is required.
+commit in Git, confirm no original claim text was changed, check module-local
+Go versions, run repository validation and whitespace checks, and validate
+fresh committed Project Memory coverage. This is a record-only change; no product or runtime test is required.

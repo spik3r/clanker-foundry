@@ -1,6 +1,6 @@
 ---
 id: CF-json-schema-number-spelling-v1
-status: in-progress
+status: completed
 owner: Codex schema maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -33,3 +33,18 @@ Checks: full JSON validator authoring schema suite, relevant Go model refusal
 regressions, repository validation, whitespace and committed Project Memory
 validation. Commit, push and open a PR for independent coordinator review and
 hosted checks; merge belongs to the coordinator.
+
+## Integration result
+
+The coordinating agent reviewed `ed8e2431986d48222712e1831664f1a4a8240630`;
+all ten hosted workflows passed on that head. [PR #144](https://github.com/spik3r/clanker-foundry/pull/144)
+merged on 14 November 2026 as `7b5a2d6d4633e8f5ae12f9a280ac937fd45a2a52`.
+This bounded implementation claim is complete and reserves no further work.
+
+### Local toolchain clarification
+
+The JSON validator module requires and auto-selects Go 1.27.3. Earlier local
+validation notes that name Go 1.27.0 report the shell launcher, not the module
+toolchain. Module-local version checks confirm Go 1.27.3; the historical
+`go.mod` has the same requirement. The passed checks stand, and the immutable
+events remain unchanged.

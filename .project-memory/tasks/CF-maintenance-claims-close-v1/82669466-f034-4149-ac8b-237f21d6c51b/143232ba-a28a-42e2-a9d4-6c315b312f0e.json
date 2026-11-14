@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "143232ba-a28a-42e2-a9d4-6c315b312f0e",
+  "runId": "82669466-f034-4149-ac8b-237f21d6c51b",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v1",
+    "path": "tasks/CF-maintenance-claims-close-v1-merged-results.md",
+    "revision": "026f4ae7c7fb88afac507c78ca7f5f96616e1c26",
+    "blob": "a6647de0e053128446539b12054b5d57dbeb6288",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "aac46941a55facecbf5e5f3198fab8a35b349ee701676d3cac41b598bcc251ea"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/close-merged-maintenance-claims",
+  "pullRequest": null,
+  "at": "2026-11-14T03:15:36.490Z",
+  "summary": "Close merged maintenance claims and clarify module-local Go versions",
+  "next": "Append verified integration results, preserve historical claims and validate",
+  "files": [
+    "tasks/CF-hint-empty-id-v1-cases-parity.md",
+    "tasks/CF-foundry-pin-untracked-v1-git-config.md",
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+    "tasks/CF-filter-unicode-replacement-v1-valid-text.md",
+    "tasks/CF-foundry-build-workspace-v1-pinned-modules.md",
+    "tasks/CF-json-schema-number-spelling-v1-authoring-limits.md",
+    "tasks/CF-authoring-guidance-accuracy-v1-public-entrypoints.md",
+    "tasks/CF-json-enum-schema-v1-unique-values.md",
+    "tasks/CF-generator-output-root-v1-terminal-symlinks.md",
+    "tasks/CF-class-label-clearance-v1-layout.md",
+    "tasks/CF-json-schema-text-v1-character-parity.md",
+    "tasks/CF-wiring-parent-preflight-v1-directories.md",
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+    "tasks/CF-maintenance-claims-close-v1-merged-results.md"
+  ]
+}
