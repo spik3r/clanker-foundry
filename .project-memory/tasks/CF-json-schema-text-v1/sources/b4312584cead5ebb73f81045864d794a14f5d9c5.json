@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "b4312584cead5ebb73f81045864d794a14f5d9c5",
+  "id": "CF-json-schema-text-v1",
+  "path": "tasks/CF-json-schema-text-v1-character-parity.md",
+  "blob": "d8cedbac7d39e66812c0433258d3bb20add46a1e",
+  "record": "---\nid: CF-json-schema-text-v1\nstatus: in-progress\nowner: Codex schema text contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject unsupported model string characters in the authoring schema\n\n## Implementation claim\n\nOwner: Codex schema text contributor, delegated by the coordinating agent\nunder the owner's continued maintenance request. Main at `ccad85b`, direction\nand claims were reviewed. Enum uniqueness PR #146 is merged. Other active work\nowns generator output paths and class labels, with no overlap here.\n\nThe JSON boolean authoring schema admits control characters, U+FFFD and lone\nsurrogates in string constants and enum values, though Go refuses them. Its\ndescription incorrectly lists this as a rule schemas cannot express. Finite\nindependent probes matched Go with a standard not/pattern constraint, including\npaired and lone surrogates in Unicode and non-Unicode regular expression modes.\nThe 256-byte UTF-8 limit remains a separate gap: schema maxLength counts code\npoints, so 100 euro signs pass it while Go refuses their 300 bytes.\n\nScope: `modeling/jsonvalidator/authoring/json-boolean-v1.schema.json`,\n`modeling/jsonvalidator/authoring/schema.test.cjs`, this task and new immutable\nProject Memory files. Share one model-string definition between string const\nand enum values. Reject C0, DEL/C1, U+FFFD and unpaired surrogates without\nrejecting valid astral characters, U+2028/U+2029, empty strings, case differences\nor normalization-distinct strings. Keep maxLength 256 and state its remaining\nbyte-count gap. Add agreement fixtures, preserve raw surrogate spellings and\ncheck both regex modes. No Go, version, generated-output or policy changes.\n\nChecks: show new schema refusal regressions fail before the fix; full schema\nagreement suite with actual Go validation; existing Go model-refusal race tests;\nrepository validation, whitespace and committed Project Memory validation.\nCommit, push and open a PR for independent review and hosted checks; merge\nbelongs to the coordinating agent.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-json-schema-text-v1-character-parity.md",
+        "id": "CF-json-schema-text-v1",
+        "blob": "d8cedbac7d39e66812c0433258d3bb20add46a1e",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

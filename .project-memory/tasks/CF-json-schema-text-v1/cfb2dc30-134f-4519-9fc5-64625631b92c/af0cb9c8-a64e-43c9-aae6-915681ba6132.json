@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "af0cb9c8-a64e-43c9-aae6-915681ba6132",
+  "runId": "cfb2dc30-134f-4519-9fc5-64625631b92c",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-json-schema-text-v1",
+    "path": "tasks/CF-json-schema-text-v1-character-parity.md",
+    "revision": "b4312584cead5ebb73f81045864d794a14f5d9c5",
+    "blob": "d8cedbac7d39e66812c0433258d3bb20add46a1e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e2bc262201702f13d81dadf7a45ede7dab4053f15b2b5e29f0b63c96fcab2e5c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/json-schema-text-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:49:01.112Z",
+  "summary": "Reject unsupported const and enum string characters in the authoring schema",
+  "next": "Add failing fixtures, apply shared pair-aware constraint and validate agreement",
+  "files": [
+    "modeling/jsonvalidator/authoring/json-boolean-v1.schema.json",
+    "modeling/jsonvalidator/authoring/schema.test.cjs",
+    "tasks/CF-json-schema-text-v1-character-parity.md"
+  ]
+}
