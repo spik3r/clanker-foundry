@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "cce39e6c-d145-4a2f-af98-a23a8d69a284",
+  "runId": "2707f9fa-7b92-4c61-8dc0-e79edaa01bf6",
+  "kind": "complete",
+  "parents": [
+    "bb66aac2-f39f-4ebc-ba4c-4fc96c65d1a2"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-memory-index-visibility-v1",
+    "path": "tasks/CF-memory-index-visibility-v1-hidden-changes.md",
+    "revision": "3beb2db1ed1a545791c298ac9eabb8522212944a",
+    "blob": "077da279a43e90edb3115228765ef2d3e7f86d88",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5cc272fde6cbb987953789119a9e9f59f1698a02d8cd4bca060ae998083e084c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/memory-index-visibility-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:16:54.812Z",
+  "summary": "Refuse hidden unstaged intended changes without changing caller indexes or clean flagged semantics",
+  "next": "Independent review and hosted checks; no merge performed",
+  "files": [
+    "skills/project-memory/scripts/lib/git.mjs",
+    "skills/project-memory/FORMAT.md",
+    "tests/project-memory.test.mjs",
+    "tasks/CF-memory-index-visibility-v1-hidden-changes.md"
+  ],
+  "validation": "Before repair: two CLI refusals failed and matrix20failed12passed. Final node --test tests/project-memory.test.mjs tests/project-memory-workflow.test.mjs:219pass0fail0skip44.048s; bash scripts/validate.sh passes; whitespace passes; private fault checks prove cleanup and offline restrictions; caller normal/custom/split index bytes preserved.",
+  "snapshot": {
+    "skills/project-memory/scripts/lib/git.mjs": {
+      "blob": "7c339e61e7d2816a72c74d1f959107e60c3c324d",
+      "mode": "100644"
+    },
+    "skills/project-memory/FORMAT.md": {
+      "blob": "2214bf4a5a9f2d7d72609de07d300f73d6bd3007",
+      "mode": "100644"
+    },
+    "tests/project-memory.test.mjs": {
+      "blob": "bf09e1f31a99ad8faaa0d9fa93bfa43eb0e2121c",
+      "mode": "100644"
+    },
+    "tasks/CF-memory-index-visibility-v1-hidden-changes.md": {
+      "blob": "84677628e894c2f45b046ccc3608819c0045a44b",
+      "mode": "100644"
+    }
+  }
+}

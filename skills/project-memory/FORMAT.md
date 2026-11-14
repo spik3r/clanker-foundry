@@ -87,7 +87,9 @@ self-references are refused. Directories do not recursively cover files.
 Fingerprints are `{blob, mode}` from the staged Git index, with modes `100644`,
 `100755`, `120000` or `160000`. A deletion has both values null. The helper refuses
 unstaged intended changes and unstaged new files, including ignored files.
-Completion includes no raw file contents.
+Assume-unchanged and skip-worktree flags do not hide intended changes from
+completion. Clean flagged files remain supported; the helper leaves the caller’s
+index and flags unchanged. Completion includes no raw file contents.
 
 Validation resolves explicit base and HEAD using their actual merge base, reads
 only committed evidence, and preserves every base metadata path byte-for-byte
