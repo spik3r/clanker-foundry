@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "5a098f9e-ec38-4d5f-aa83-067d83a74fce",
+  "runId": "9370f234-197c-4413-9f9d-f106b3daa023",
+  "kind": "complete",
+  "parents": [
+    "7d1b77c6-6bcf-430c-b818-ce15789a8dda"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v3",
+    "path": "tasks/CF-maintenance-claims-close-v3-two-records.md",
+    "revision": "10e77d58ebfea7466d58f49fe22012eef8b402cd",
+    "blob": "d84f11c59c7e49eab2d0a094f78de3c6d4a04b01",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3372c36b5d4a32f67715cbaff661b69f73c21393c494efe3781d317b784ca27"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/maintenance-claims-close-v3",
+  "pullRequest": null,
+  "at": "2026-11-14T04:40:10.542Z",
+  "summary": "Closed two merged implementation records while preserving historical claims and precise workflow counts",
+  "next": "Independent exact-head review and hosted checks; no claim of this closure PR merge",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v3-two-records.md",
+    "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md",
+    "tasks/CF-validator-percent-path-v1-relative-links.md"
+  ],
+  "validation": "PR110 merged head/secondparent verified with7successful exact-head workflows; PR161 with10; both completed frontiers verified; current independent Node24.15 focused CLI2pass0skip and unchanged source/tests audited; original prose preserved except statuses; repository/link validator and whitespace passed",
+  "snapshot": {
+    "tasks/CF-maintenance-claims-close-v3-two-records.md": {
+      "blob": "979cf57d00385669fa11f01da7327ff2d8f72085",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md": {
+      "blob": "284cdc490d5b4c4b14dceb7a17d6b42aeafbb17f",
+      "mode": "100644"
+    },
+    "tasks/CF-validator-percent-path-v1-relative-links.md": {
+      "blob": "752edcbac27e5dd73bc5944ec3ddf4fec18b7ad3",
+      "mode": "100644"
+    }
+  }
+}

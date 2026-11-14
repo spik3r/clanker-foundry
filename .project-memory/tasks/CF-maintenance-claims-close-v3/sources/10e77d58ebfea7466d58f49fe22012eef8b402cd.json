@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "10e77d58ebfea7466d58f49fe22012eef8b402cd",
+  "id": "CF-maintenance-claims-close-v3",
+  "path": "tasks/CF-maintenance-claims-close-v3-two-records.md",
+  "blob": "d84f11c59c7e49eab2d0a094f78de3c6d4a04b01",
+  "record": "---\nid: CF-maintenance-claims-close-v3\nstatus: in-progress\nowner: Codex maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Close two verified implementation records\n\n## Implementation claim\n\nThe coordinator assigned this record-only cleanup after reviewing the stale\nproposed CLI input claim and merged percent-link repair. Main at `4587cc0`,\ncurrent Project Memory frontiers and open PRs were inspected; no PR is open.\n\nLimit changes to this record, CF-runtime-cli-input-file-refusal-v1 and\nCF-validator-percent-path-v1, plus new immutable Project Memory evidence.\nMark those two records completed and append verified integration evidence.\nPreserve all old claim text, validation statements, ownership and immutable\nhistory. Record PR #110's seven successful historical workflows, its completed\nfrontier and the current independent Node 24 source/test audit. Do not infer a\nhistorical independent review. For PR #161, record the observed independent\nreview and ten successful exact-head workflows. Include exact heads and merge\ncommits for both. This closure may be completed locally after its checks; that\ndoes not claim its own future PR has merged.\n\nChecks: verify merged metadata, merge parents, exact-head workflow counts and\ncompleted frontiers; confirm old text is preserved; run repository/link\nvalidation, whitespace and fresh committed Project Memory coverage. This is a\nrecord-only change with no product, runtime or ownership-policy change.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-maintenance-claims-close-v3-two-records.md",
+        "id": "CF-maintenance-claims-close-v3",
+        "blob": "d84f11c59c7e49eab2d0a094f78de3c6d4a04b01",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
