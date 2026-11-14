@@ -329,7 +329,9 @@ feature or authorized a change to the consumer, so milestone 1 in the
 - No consumer repository runs `foundrygen` in its CI.
 - No recorded trial shows a fresh agent session producing a valid model or a
   gap report from a brief and the registry alone, the step 2 completion test.
-- The BPMN XML output has not been imported into a BPMN tool.
+- The three generated BPMN examples import with zero warnings in bpmn-moddle
+  and bpmn-js (opt-in check in `modeling/diagram/verify`, not run in CI). No
+  desktop or hosted BPMN tool and no OMG XSD validation has been tried.
 - Diagram and dashboard pictures were looked at by the coordinating session,
   not yet by the owner.
 
@@ -449,7 +451,7 @@ each hint would let a host map hints without depending on wording.
   top-level page. It runs inside the page frame today but is reached only
   through a command flag.
 - **Not done by anyone:** a run of the generated screen in a real terminal by
-  a person; importing the BPMN XML into a BPMN tool.
+  a person; importing the BPMN XML into a desktop or hosted BPMN tool, and OMG XSD validation.
 - **Not attempted:** a second consumer change by someone other than this
   plan's author, milestone 3 in the [current direction](current-direction.md).
   Every change so far was made or supervised by the same session.

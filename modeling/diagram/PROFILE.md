@@ -139,8 +139,9 @@ are the generator id and version. There are no timestamps.
 This is a BPMN-style subset. It makes no claim to conform to BPMN 2.0 or to any
 BPMN conformance class beyond emitting the elements above. No task types,
 events with definitions, message flows, sub-processes, data objects, conditions
-or execution semantics are emitted. Whether a particular tool imports the file
-has not been checked here.
+or execution semantics are emitted. The three generated examples import with
+no warnings in bpmn-moddle 10.3.1 and bpmn-js 18.31.1 (see
+[verify](verify/README.md)); no other tool has been tried.
 
 ## Layout
 
