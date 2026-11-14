@@ -99,7 +99,7 @@ for drafting a model; it lists the rules it cannot express.
 Compilation normalizes field declarations by ID but retains detail order. It
 emits fixed relative file names, formatted Go source (package `recordbrowser`, or
 the model's `emit.package`), pinned dependencies (module mode), normalized model and a `foundry-manifest.json` integrity
-record (generator `tuic` 1.5.1, toolchain constant `go1.27.4`). It does
+record (generator `tuic` 1.5.2, toolchain constant `go1.27.4`). It does
 not execute generated code. Rendering and independent behavior tests remain
 separate acceptance steps. Model edits require regeneration, not edits to the
 emitted files.
@@ -132,7 +132,10 @@ open input (and clears its text), `filter.clear` clears a kept filter.
 | `filter.keep` | filter input open | `enter` | `keep` |
 | `filter.cancel` | filter input open | `esc` | `clear` |
 | `filter.clear` | filter kept (text not empty), list focused | `esc` | `clear` |
-| `quit` | standalone browser only; help and filter input closed | `q` | `quit` |
+| `quit` | standalone browser only; help closed (ctrl+c while filter input open) | `q` | `quit` |
+
+The `quit` hint keeps its ID and uses `ctrl+c` while filter input is open;
+its default key is `q` outside the input. Hosted browsers omit it.
 
 ## Go versions
 

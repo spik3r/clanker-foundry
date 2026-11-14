@@ -1,0 +1,102 @@
+{
+  "formatVersion": 2,
+  "eventId": "7ed40560-4f57-421d-bed6-cf1960453c82",
+  "runId": "c36d58dc-8351-42eb-9056-6f4c1b6f8bed",
+  "kind": "complete",
+  "parents": [
+    "2c0ccf0e-ae3c-4823-ade9-d316f5d37f0c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-filter-ctrl-c-v1",
+    "path": "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+    "revision": "15ad40a6eae65dafca21545972da6dfa8c4872ec",
+    "blob": "ce4771d32a2b6147d8cd486288375ea267a47b16",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "57444c41de36798e69a9ac3619b3cabe177021d8b98b376c7fc4a1f2fefc8020"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tui-filter-ctrl-c-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T05:39:15.115Z",
+  "summary": "Standalone Ctrl+C now quits during filter input, with stable quit hints and hosted/captive-help controls preserved",
+  "next": "Independent exact-head review and hosted checks; coordinator owns merge",
+  "files": [
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/hints.go",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md"
+  ],
+  "validation": "Pre-fix generated acceptance failed seven standalone states plus missing hint; final full TUI vet/race passed31.600s including literal hosted cases and generated standalone/hosted acceptance; gencontract vet/race passed10.055s; foundrygen vet/race passed42.014s; Node24.15 authoring4pass0skip; repository validator, gofmt and whitespace passed; tuic1.5.2 emitted-byte version pins updated with unchanged model digests",
+  "snapshot": {
+    "modeling/tui/templates/browser.go.tmpl": {
+      "blob": "b895b0a78d9f1526e0651a532c7a688a2e75cad0",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/view.go.tmpl": {
+      "blob": "93b1ac7a65d1ff8435513f1cf07525382dc563a4",
+      "mode": "100644"
+    },
+    "modeling/tui/templates/keys.go.tmpl": {
+      "blob": "688ab7f9ef8f444305a53f1868f3b1f527844cb3",
+      "mode": "100644"
+    },
+    "modeling/tui/hints.go": {
+      "blob": "6b4b37588c98ead95f2af3c0b2c052a9643cf23a",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/filter_test.go.txt": {
+      "blob": "29f7d2ec173570ff80237c1fd14d4ed217cecc55",
+      "mode": "100644"
+    },
+    "modeling/tui/generated_test.go": {
+      "blob": "4bfc84b953adf5c3ca42c5d7d6ba6f4188cf10b8",
+      "mode": "100644"
+    },
+    "modeling/tui/examples/browser-filter.cases.json": {
+      "blob": "4b307af0122a8e26e18de5114e36c6c856887239",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "1a0cc7de85175de26361816575a26781fc4a541a",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "bc64794310c78d567e880c5ebdfaab9bf7ac7bda",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "09d02a8e81bf23886a1dbfe06f24c24623b38dda",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "42eb0136ebf99a1bbcefbc992d8bab93908bc3b9",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "a6580518b4e41b79539d01e3eb850ecbd312fe92",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "62c0231ed5dad3824a5bfacb693691b1209a5510",
+      "mode": "100644"
+    },
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md": {
+      "blob": "ce4771d32a2b6147d8cd486288375ea267a47b16",
+      "mode": "100644"
+    }
+  }
+}

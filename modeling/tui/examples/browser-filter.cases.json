@@ -521,6 +521,40 @@
         "shown": 1,
         "selected": "r1"
       }
+    },
+    {
+      "id": "ctrl_c_keeps_hosted_input",
+      "requirement": "The hosted browser captures Ctrl+C without quitting or changing the open input; q stays text.",
+      "size": {
+        "width": 80,
+        "height": 12
+      },
+      "records": "Main",
+      "steps": [
+        {
+          "key": "/"
+        },
+        {
+          "text": "q"
+        },
+        {
+          "key": "ctrl+c"
+        }
+      ],
+      "expect": {
+        "quit": false,
+        "filter": "q",
+        "filterOpen": true,
+        "capturesKeys": true,
+        "keyHints": [
+          {
+            "id": "filter.keep"
+          },
+          {
+            "id": "filter.cancel"
+          }
+        ]
+      }
     }
   ]
 }

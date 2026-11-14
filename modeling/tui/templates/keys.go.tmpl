@@ -86,7 +86,8 @@ func helpLines(s state, d data) []string {
 		lines = append(lines,
 			keyFor(filterAction)+" filter the list",
 			"typing: enter keeps, esc clears",
-			keyFor(closeAction)+" in the list clears a kept filter",
+[[[if not .Hosted]]]			"ctrl+c quits while typing",
+[[[end]]]			keyFor(closeAction)+" in the list clears a kept filter",
 		)
 	}
 	if s.selectedIndex(d) >= 0 {

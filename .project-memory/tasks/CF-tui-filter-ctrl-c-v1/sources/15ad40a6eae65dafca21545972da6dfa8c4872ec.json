@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "15ad40a6eae65dafca21545972da6dfa8c4872ec",
+  "id": "CF-tui-filter-ctrl-c-v1",
+  "path": "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+  "blob": "ce4771d32a2b6147d8cd486288375ea267a47b16",
+  "record": "---\nid: CF-tui-filter-ctrl-c-v1\nstatus: in-progress\nowner: Codex TUI maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Quit the standalone browser with Ctrl+C during filter input\n\n## Implementation claim\n\nThe user approved immediate standalone Ctrl+C quitting during filter input.\nMain at `5cfb052`, live claims and open PRs were inspected; no PR is open.\nPreserve captive help, hosted non-quitting capture, q as text and all other keys.\n\nLimit implementation to modeling/tui/templates/browser.go.tmpl,\nmodeling/tui/templates/view.go.tmpl, modeling/tui/templates/keys.go.tmpl,\nmodeling/tui/hints.go, modeling/tui/acceptance/filter_test.go.txt,\nmodeling/tui/generated_test.go, modeling/tui/examples/browser-filter.cases.json,\nmodeling/tui/contract.go, modeling/tui/contract_test.go,\nmodeling/tui/hosted_test.go, modeling/tui/options_test.go,\nmodeling/tui/README.md and modeling/tui/PROFILE.md, plus this record and new\nimmutable Project Memory evidence. Add a standalone exception before filter-key\nprocessing. Retain the stable quit hint ID, with ctrl+c as its key while input\nis open; hosted input hints remain enter and esc. Synchronize help and docs.\nBump tuic to 1.5.2 for changed emitted bytes; canonical model digests stay fixed.\nThere are no tracked generated TUI packages to regenerate.\n\nProve the changed behavior fails before implementation. Cover empty text,\nno matches, loading/failed replacements, empty replacement and tiny resize\nwhile input remains open; hosted variants never return quit. Keep captive-help\nand q/text controls. Run generated acceptance, full TUI vet/race, authoring,\ngenerator contract and Foundry entrypoint checks, repository validator,\nwhitespace and fresh committed Project Memory coverage. Publish for independent\nexact-head review and hosted checks; the coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+        "id": "CF-tui-filter-ctrl-c-v1",
+        "blob": "ce4771d32a2b6147d8cd486288375ea267a47b16",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

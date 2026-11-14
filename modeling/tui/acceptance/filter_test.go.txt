@@ -209,7 +209,7 @@ func TestFilterInputCapturesEveryKey(t *testing.T) {
 		t.Fatalf("text %q help %v", m.FilterText(), m.HelpOpen())
 	}
 	// Keys that type nothing do nothing.
-	for _, k := range []string{"tab", "down", "end", "pgdown", "ctrl+c"} {
+	for _, k := range []string{"tab", "down", "end", "pgdown"} {
 		var cmd tea.Cmd
 		m, cmd = fkey(m, k)
 		if cmd != nil || !m.FilterOpen() || m.FilterText() != "q1j?kgG " || m.Selected() != "" && m.Shown() > 0 {
@@ -221,6 +221,44 @@ func TestFilterInputCapturesEveryKey(t *testing.T) {
 	_, cmd := fkey(m, "q")
 	if quit := cmd != nil && func() bool { _, ok := cmd().(tea.QuitMsg); return ok }(); quit == fhosted() {
 		t.Fatalf("quit after closing: %v hosted %v", quit, fhosted())
+	}
+}
+
+func TestFilterCtrlCQuitPolicy(t *testing.T) {
+	base := fkeys(fnew(t, 80, 12, frecs()), "/")
+	states := map[string]Model{"empty input": base, "typed input": ftype(base, "alp"), "no matches": ftype(base, "zzzz")}
+	for _, status := range []Status{Loading, Failed, Ready} {
+		m, err := base.Replace(Snapshot{Status: status})
+		if err != nil {
+			t.Fatal(err)
+		}
+		states[fmt.Sprintf("replacement %v", status)] = m
+	}
+	tiny, _ := base.Update(tea.WindowSizeMsg{Width: 1, Height: 1})
+	states["tiny after opening"] = tiny.(Model)
+	for name, before := range states {
+		t.Run(name, func(t *testing.T) {
+			if !before.FilterOpen() || !before.CapturesKeys() {
+				t.Fatal("input must remain captured")
+			}
+			after, cmd := fkey(before, "ctrl+c")
+			quit := false
+			if cmd != nil {
+				_, quit = cmd().(tea.QuitMsg)
+			}
+			if quit == fhosted() || (fhosted() && cmd != nil) {
+				t.Fatalf("Ctrl+C quit=%v hosted=%v", quit, fhosted())
+			}
+			if after.browser.state != before.browser.state || fview(after) != fview(before) {
+				t.Fatal("Ctrl+C changed input or browser state")
+			}
+		})
+	}
+	// Help remains captive; this policy only changes open filter input.
+	help := fkeys(fnew(t, 80, 12, frecs()), "?")
+	after, cmd := fkey(help, "ctrl+c")
+	if cmd != nil || !after.HelpOpen() {
+		t.Fatal("Ctrl+C escaped captive help")
 	}
 }
 
@@ -410,8 +448,12 @@ func TestFilterKeyHintsAndHelp(t *testing.T) {
 	}
 	m = fkeys(m, "/")
 	h := m.KeyHints()
-	if len(h) != 2 || h[0] != (KeyHint{"filter.keep", "enter", "keep"}) || h[1] != (KeyHint{"filter.cancel", "esc", "clear"}) {
-		t.Fatalf("input hints %v", h)
+	want := []KeyHint{{"filter.keep", "enter", "keep"}, {"filter.cancel", "esc", "clear"}}
+	if !fhosted() {
+		want = append(want, KeyHint{"quit", "ctrl+c", "quit"})
+	}
+	if !slices.Equal(h, want) {
+		t.Fatalf("input hints %v, want %v", h, want)
 	}
 	m = fkeys(ftype(m, "al"), "enter", "?")
 	next, _ := m.Update(tea.WindowSizeMsg{Width: 80, Height: 40})
@@ -419,6 +461,9 @@ func TestFilterKeyHintsAndHelp(t *testing.T) {
 	help := fview(m)
 	if !m.HelpOpen() || !strings.Contains(help, "filter the list") || !strings.Contains(help, "enter keeps, esc clears") {
 		t.Fatalf("help:\n%s", help)
+	}
+	if strings.Contains(help, "ctrl+c quits while typing") == fhosted() {
+		t.Fatalf("help quit policy hosted=%v:\n%s", fhosted(), help)
 	}
 	// Tiny: / does nothing.
 	tiny := fnew(t, 10, 3, frecs())

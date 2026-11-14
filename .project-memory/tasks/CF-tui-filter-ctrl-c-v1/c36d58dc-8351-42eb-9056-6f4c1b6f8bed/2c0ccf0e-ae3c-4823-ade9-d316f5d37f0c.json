@@ -1,0 +1,41 @@
+{
+  "formatVersion": 2,
+  "eventId": "2c0ccf0e-ae3c-4823-ade9-d316f5d37f0c",
+  "runId": "c36d58dc-8351-42eb-9056-6f4c1b6f8bed",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-filter-ctrl-c-v1",
+    "path": "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+    "revision": "15ad40a6eae65dafca21545972da6dfa8c4872ec",
+    "blob": "ce4771d32a2b6147d8cd486288375ea267a47b16",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "57444c41de36798e69a9ac3619b3cabe177021d8b98b376c7fc4a1f2fefc8020"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tui-filter-ctrl-c-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T05:35:09.463Z",
+  "summary": "Apply approved standalone Ctrl+C quit exception during filter input with truthful hints and hosted controls",
+  "next": "Prove changed acceptance red before implementing narrow exception and version update",
+  "files": [
+    "modeling/tui/templates/browser.go.tmpl",
+    "modeling/tui/templates/view.go.tmpl",
+    "modeling/tui/templates/keys.go.tmpl",
+    "modeling/tui/hints.go",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/examples/browser-filter.cases.json",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md"
+  ]
+}
