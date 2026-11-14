@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f30fea2ef623c91fa3eac418a46defe2aa8bc49e",
+  "id": "CF-foundry-pin-index-flags-v1",
+  "path": "tasks/CF-foundry-pin-index-flags-v1-visible-source.md",
+  "blob": "e701af8be2b6b4d899da38ce5af741babc88230a",
+  "record": "---\nid: CF-foundry-pin-index-flags-v1\nstatus: in-progress\nowner: Codex pinned-source maintenance coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse hidden tracked changes in pinned generator source\n\n## Implementation claim\n\nThe owner authorized several hours of bounded maintenance with independent\nreview, publication and merging after checks. Main at `65a7f4e`, live claims\nand open PRs were reviewed. The separate project-setup repair owns Bash baseline\nchecks; runtime workspace-budget work is also independent.\n\nFoundry's pin check accepts modified tracked modeling files when Git marks them\nassume-unchanged or skip-worktree. Both failures were reproduced in disposable\nlocal Git fixtures: HEAD matched the pin and status reported no changes while\nthe registry file's bytes differed. Status alone cannot certify these files.\n\nBefore trusting status, inspect tracked modeling entries and refuse either\nvisibility flag without clearing it or refreshing the index. Keep unrelated\nflags and changes outside modeling allowed. The conservative check requires an\nordinary full modeling checkout; sparse checkouts using skip-worktree are not\ncertified. This closes a known status blind spot, not a hostile-host guarantee.\n\nUse NUL-delimited metadata. Refuse incomplete metadata, including a listing\nthat reaches the existing capture limit, rather than trusting a possibly\ntruncated prefix. Preserve revision matching, untracked-file checks, ignored-file\npolicy and the explicit development-only --unpinned escape.\n\nScope: `modeling/foundrygen/exec.go`, new\n`modeling/foundrygen/pin_flags_test.go`, `modeling/foundrygen/README.md`, this\ntask and new immutable Project Memory files. No generator, output, runtime or\nproject-setup changes.\n\nChecks: show regressions fail before the repair for both flags on clean and\nmodified files; verify flags, index bytes and source bytes remain unchanged;\nexercise outside-modeling and ordinary-checkout controls; test complete and\ncapture-limit metadata. Run gofmt, vet, full foundrygen race tests, repository\nvalidation, whitespace and committed Project Memory checks. Independently review\nthe final commit and await all hosted checks before merging.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-pin-index-flags-v1-visible-source.md",
+        "id": "CF-foundry-pin-index-flags-v1",
+        "blob": "e701af8be2b6b4d899da38ce5af741babc88230a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
