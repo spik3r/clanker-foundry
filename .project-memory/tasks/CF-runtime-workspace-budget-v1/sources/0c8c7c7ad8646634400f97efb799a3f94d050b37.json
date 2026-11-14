@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "0c8c7c7ad8646634400f97efb799a3f94d050b37",
+  "id": "CF-runtime-workspace-budget-v1",
+  "path": "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+  "blob": "f0da5a35b5bb65e6328aaa67cf1113d31a18148d",
+  "record": "---\nid: CF-runtime-workspace-budget-v1\nstatus: in-progress\nowner: Codex read-only adapter maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Honor the configured read-only workspace byte budget\n\n## Implementation claim\n\nOwner: Codex read-only adapter maintenance contributor, delegated by the\ncoordinating session under the owner's maintenance window. Base: main at\n`b3faf9c`. Runtime direction and rollout boundaries were reviewed; this is\ncorrectness maintenance of the existing read-only adapter. Other current work\nowns modeling output handling and diagrams, with no overlap here.\n\nA finite committed Git fixture reproduces a limit mismatch. With maxBytes set\nto 3 MiB, a 2 MiB file reads successfully, but a 2 MiB + 1 byte file fails with\nERR_CHILD_PROCESS_STDIO_MAXBUFFER. The file read honors maxBytes; its pinned-byte\ncomparison still captures git show with a fixed 2 MiB buffer.\n\nGive the blob comparison a finite capture budget derived from maxBytes. Retain\nthe existing small default capture cap for metadata commands and do not lower\nold blob capture behavior for smaller reader limits. Keep maxBytes admission,\nper-file and aggregate limits, pinned-byte matching, symlink checks, UTF-8\nhandling and existing refusal behavior. No unrelated limit changes or unbounded\ncapture. Use only invented owned Git fixtures; no live database, provider,\nnamespace, dispatch, migration or recovery work is authorized by this task.\n\nScope: `runtime/src/adapters.mjs`, `runtime/test/adapters.test.mjs`, a short\nclarification in `runtime/README.md`, this task and new immutable Project Memory\nfiles. No schema, state, store, provider or isolation changes.\n\nChecks: prove the old mismatch, then test committed files at exactly 2 MiB,\n2 MiB + 1, the configured maximum and one byte above it. Preserve revision and\ndirty-byte refusal controls without exposing file content in diagnostics.\nUse Node 24 or later, pinned npm ci with ignored scripts, focused and full\nruntime tests, repository validation, whitespace and committed Project Memory\nvalidation. Publish a PR for independent final review; this contributor must\nnot merge or activate runtime work.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+        "id": "CF-runtime-workspace-budget-v1",
+        "blob": "f0da5a35b5bb65e6328aaa67cf1113d31a18148d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

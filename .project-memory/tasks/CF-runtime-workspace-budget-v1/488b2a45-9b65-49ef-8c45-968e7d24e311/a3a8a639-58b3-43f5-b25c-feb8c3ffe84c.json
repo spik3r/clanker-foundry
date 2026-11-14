@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "a3a8a639-58b3-43f5-b25c-feb8c3ffe84c",
+  "runId": "488b2a45-9b65-49ef-8c45-968e7d24e311",
+  "kind": "complete",
+  "parents": [
+    "6e006982-011c-4fe0-ae16-0aacfa36e511"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-runtime-workspace-budget-v1",
+    "path": "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+    "revision": "0c8c7c7ad8646634400f97efb799a3f94d050b37",
+    "blob": "f0da5a35b5bb65e6328aaa67cf1113d31a18148d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "208a279f07f7e07f1bd569f5c7a8a33192a83687c042065ccacfc70018bb00af"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/runtime-workspace-budget-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:40:47.371Z",
+  "summary": "Pinned Git blob capture honors the admitted workspace byte budget while retaining metadata and small-reader capture behavior",
+  "next": "Commit and validate immutable evidence, publish PR for independent review and hosted CI",
+  "files": [
+    "runtime/src/adapters.mjs",
+    "runtime/test/adapters.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md"
+  ],
+  "validation": "New committed-file regression failed before repair at2MiB+1 andconfigured3MiB with ERR_CHILD_PROCESS_STDIO_MAXBUFFER, while2MiB andoverlimit refusal controls passed. Node24.15.0 pinned npmci --ignore-scripts installed5packages offline fromexistingcache. Focused adapters tests16pass0skip; fullruntime npmtest333pass0skip39.426s usingcanonicalTMPDIR andwritable scratchnpmcache seededwith5lockfile-integrity-checked tarballs. Initial fullrun332pass/1environmentfailure wasreadonly homecache inofflineconsumer packaging, fixed throughenvironment only. Exactsize,aggregate,wrongrevision,dirtybytes andredacted-message controls pass. Repository validator passed (optional skills-ref absent); staged/unstaged whitespace checks pass. No live provider,Docker,namespace,authoritydatabase orworkerdispatch actions; tests use invented fixtures.",
+  "snapshot": {
+    "runtime/src/adapters.mjs": {
+      "blob": "6d076bf88a81d56cb89499dbd4cc3f1c5629767b",
+      "mode": "100644"
+    },
+    "runtime/test/adapters.test.mjs": {
+      "blob": "23da1281ebe6fb394d9b5626f401986392b8403f",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "d23257db8618e09d5ae3f62aa01d97a0f0a0a77d",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md": {
+      "blob": "f0da5a35b5bb65e6328aaa67cf1113d31a18148d",
+      "mode": "100644"
+    }
+  }
+}

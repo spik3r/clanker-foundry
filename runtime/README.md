@@ -252,7 +252,9 @@ normalization. Tests use invented callbacks and a fake candidate host; they do
 not establish provider execution or host isolation.
 
 The workspace reader allowlists exact paths, rejects symlinks, bounds total bytes
-and checks the pinned local Git revision. It is not a sandbox for arbitrary code
+and checks the pinned local Git revision. A larger configured `maxBytes` also
+applies to pinned Git blob comparison. Smaller reader limits retain the existing
+2 MiB Git capture cap, as do metadata queries. It is not a sandbox for arbitrary code
 or a guarantee against an untrusted concurrent filesystem writer. Use immutable
 input snapshots or host isolation if other processes can alter its workspace.
 
