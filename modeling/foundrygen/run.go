@@ -13,15 +13,26 @@ import (
 const usage = "usage: foundrygen check|generate|plan --project DIR --foundry CHECKOUT [--unpinned]"
 
 // Run executes one foundrygen command line (without the program name) and
-// returns the exit code. stdout receives output only when the code is 0.
+// returns the exit code. Results are buffered until the command succeeds;
+// a failed delivery can leave a partial stdout prefix with exit 1.
 func Run(args []string, stdout, stderr io.Writer) int {
 	var out bytes.Buffer
 	s := &session{stderr: &bytes.Buffer{}}
 	code := s.main(args, &out)
-	if code == exitOK {
-		_, _ = stdout.Write(out.Bytes())
+	if s.stderr.Len() > 0 {
+		n, err := stderr.Write(s.stderr.Bytes())
+		if (err != nil || n != s.stderr.Len()) && code == exitOK {
+			_, _ = io.WriteString(stderr, "foundrygen: diagnostic write failed\n")
+			return exitFailure
+		}
 	}
-	_, _ = stderr.Write(s.stderr.Bytes())
+	if code == exitOK && out.Len() > 0 {
+		n, err := stdout.Write(out.Bytes())
+		if err != nil || n != out.Len() {
+			_, _ = io.WriteString(stderr, "foundrygen: output write failed\n")
+			return exitFailure
+		}
+	}
 	return code
 }
 

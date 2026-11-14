@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "533d6ddd4f8893f9a5ca06b8e9dd5ec42ad7107f",
+  "id": "CF-foundry-stdout-v1",
+  "path": "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+  "blob": "60dbea222897908cf39c6138e601dbded44573f2",
+  "record": "---\nid: CF-foundry-stdout-v1\nstatus: in-progress\nowner: Codex entrypoint output contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Report failed Foundry output delivery\n\n## Implementation claim\n\nOwner: Codex entrypoint output contributor, assigned by the coordinating session\nunder the owner's continued maintenance and reviewed-merge request. Base: main\nat `b8f729d`, after the filesystem alias repair. The separate generator stdout\ntask owns generator and contract files; this task changes only foundrygen.\n\nRun discards stdout and stderr write errors and counts. A successful command\ncan report exit 0 after its result or warning was not delivered. At the process\nentrypoint, a closed stdout pipe can terminate the process with SIGPIPE before\nthe library can report an I/O failure.\n\nDeliver nonempty buffered warnings before stdout. An internally successful run\nmust return exit 1 and leave stdout untouched if warning delivery fails or is\nshort. Preserve an existing nonzero command result if only diagnostic delivery\nfails. Then deliver nonempty stdout, treating errors and short writes as exit 1\nwith a fixed diagnostic. Do not expose writer error details. Ignore SIGPIPE only\nin process main so failed pipe writes reach ordinary error handling.\n\nKeep normal bytes and artifact behavior unchanged. A failed output delivery can\nleave a partial stdout prefix and already-generated artifacts; do not promise\nrollback. Preserve primary refusal and drift behavior and skip empty writes.\n\nScope: `modeling/foundrygen/run.go`,\n`modeling/foundrygen/cmd/foundrygen/main.go`, new\n`modeling/foundrygen/stdout_test.go`, `modeling/foundrygen/README.md`, this task\nand new immutable Project Memory files. No generator, version, contract,\nconsumer or runtime changes.\n\nChecks: demonstrate current false success for writer errors and short writes;\nexercise normal, warning, refusal and drift controls, unchanged artifacts after\nfailed delivery, and finite subprocesses with preclosed pipes. Run foundrygen\nvet/full race, repository validator, whitespace and committed Project Memory\nvalidation. Push and open a PR for independent review; this contributor must\nnot merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+        "id": "CF-foundry-stdout-v1",
+        "blob": "60dbea222897908cf39c6138e601dbded44573f2",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
