@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "116222a9-5d2d-4168-a693-f13f9d8b78fd",
+  "runId": "8ff738e9-9cb7-4e89-96a7-e9105adaf2eb",
+  "kind": "complete",
+  "parents": [
+    "a23e5a54-7a13-48e9-8943-09d9f61089d1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-angle-wrapper-v1",
+    "path": "tasks/CF-validator-angle-wrapper-v1-relative-links.md",
+    "revision": "13522fd249db4ef0691b0a490c62121c31ef6ad1",
+    "blob": "cb8df7464b6a752ad3253027370550e9de068d49",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "dabd8472f68118019295fb2d5069277d76cb573316e472f552789694d842b438"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-angle-wrapper-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T06:37:17.095Z",
+  "summary": "Unwrap one literal angle destination pair before URL resolution, retaining raw diagnostics and encoded filename bytes",
+  "next": "Independent exact-head review and hosted checks; no claim of future PR merge",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-angle-wrapper-v1-relative-links.md"
+  ],
+  "validation": "Pre-fix installer fixtures failed existing wrapped README/space targets and accepted a missing-target angle decoy; final full installer/link/resolver/wiring/preflight suite passed with20new angle cases plus27 prior link controls;47 model-map cases passed; actual Bash3.2.57 syntax/execution, repository validator and whitespace passed; independent frozen code review no findings",
+  "snapshot": {
+    "scripts/validate.sh": {
+      "blob": "13e860845c217204c4b3c1b8614aaa85ae831812",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "b7fca659976189adc786bbf0c0a3906b48bf9732",
+      "mode": "100755"
+    },
+    "docs/getting-started.md": {
+      "blob": "95fa2625007bf5fb7dc7dd4567e109e35d79ae57",
+      "mode": "100644"
+    },
+    "tasks/CF-validator-angle-wrapper-v1-relative-links.md": {
+      "blob": "3902c03403286ebd7abc7f944f2842c8e7100082",
+      "mode": "100644"
+    }
+  }
+}
