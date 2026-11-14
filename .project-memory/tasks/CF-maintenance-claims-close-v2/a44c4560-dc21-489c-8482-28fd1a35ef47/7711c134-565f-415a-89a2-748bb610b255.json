@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "7711c134-565f-415a-89a2-748bb610b255",
+  "runId": "a44c4560-dc21-489c-8482-28fd1a35ef47",
+  "kind": "complete",
+  "parents": [
+    "01a2a450-e32f-4697-bdd5-8bdb5e4c4ad3"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v2",
+    "path": "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+    "revision": "03e19080e9979682ed757d1dc3b5179a8231d10c",
+    "blob": "e276aafaf25cfdf1f432ffe61028df409ca9dd1c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c1026bfe3ebbc382cd240f96717d0826678b885b454673b68bab67b8a19b3150"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/maintenance-claims-close-v2",
+  "pullRequest": null,
+  "at": "2026-11-14T04:16:51.142Z",
+  "summary": "Closed six merged maintenance claims with verified integration results; original claim text preserved",
+  "next": "Independent review and hosted checks for this record-only PR; coordinator owns merge",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v2-merged-records.md",
+    "tasks/CF-generator-stdout-v1-delivery-failures.md",
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md",
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md",
+    "tasks/CF-project-index-flags-v1-visible-baseline.md",
+    "tasks/CF-foundry-pin-index-flags-v1-visible-source.md",
+    "tasks/CF-model-key-literal-v1-awk-lookup.md"
+  ],
+  "validation": "Merged metadata verified for PRs152,154,155,156,157,158; exact head is merge second parent for each; all60 exact-head hosted workflow runs completed successfully; original text preserved except status; bash scripts/validate.sh passed; git diff --check and cached whitespace passed",
+  "snapshot": {
+    "tasks/CF-maintenance-claims-close-v2-merged-records.md": {
+      "blob": "f4566135414c99ff0a33b48c2fc6209d6c1d4f1b",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-stdout-v1-delivery-failures.md": {
+      "blob": "f7da7d3909b0a2362283912c4c1a080dd73d9af3",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-stdout-v1-delivery-errors.md": {
+      "blob": "5d76773afaedcdbdf77169f5ced66b03cb126e08",
+      "mode": "100644"
+    },
+    "tasks/CF-runtime-workspace-budget-v1-pinned-blob-read.md": {
+      "blob": "8b32c8e440849d34f5ae3239ff7031f924213769",
+      "mode": "100644"
+    },
+    "tasks/CF-project-index-flags-v1-visible-baseline.md": {
+      "blob": "dbf7da87bb943e98316a6670ae27cbe186f121e8",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-index-flags-v1-visible-source.md": {
+      "blob": "90502cc8e3f5bee5839667cef2912c400a2d18d6",
+      "mode": "100644"
+    },
+    "tasks/CF-model-key-literal-v1-awk-lookup.md": {
+      "blob": "77f8380294f87194a4903cdeb333db4059891d9a",
+      "mode": "100644"
+    }
+  }
+}

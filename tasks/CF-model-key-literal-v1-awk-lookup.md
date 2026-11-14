@@ -1,6 +1,6 @@
 ---
 id: CF-model-key-literal-v1
-status: in-progress
+status: completed
 owner: Codex model-key maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -33,3 +33,11 @@ resolver and model-map regression suites, full installer regressions,
 repository validation, whitespace and committed Project Memory validation.
 Use only invented scratch profiles/maps and isolated test homes. Commit, push
 and open a PR for independent coordinator review and hosted checks; no merge.
+
+## Integration result
+
+The coordinating agent confirmed independent review of
+`cee42b380ddd87785cf1ccc3faefd9940c9b20c2`; all ten hosted workflows passed on that exact head.
+[PR #158](https://github.com/spik3r/clanker-foundry/pull/158) merged on 14 November 2026 as
+`44db6e4fc01e0c542070c0c27102465cdba650ba`. Git confirms the reviewed head is the merge's second parent.
+This bounded implementation claim is complete and reserves no further work.

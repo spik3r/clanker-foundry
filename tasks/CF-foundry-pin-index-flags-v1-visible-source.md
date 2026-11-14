@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-pin-index-flags-v1
-status: in-progress
+status: completed
 owner: Codex pinned-source maintenance coordinator
 repositories: [spik3r/clanker-foundry]
 ---
@@ -41,3 +41,11 @@ exercise outside-modeling and ordinary-checkout controls; test complete and
 capture-limit metadata. Run gofmt, vet, full foundrygen race tests, repository
 validation, whitespace and committed Project Memory checks. Independently review
 the final commit and await all hosted checks before merging.
+
+## Integration result
+
+The coordinating agent confirmed independent review of
+`b0304677de1d2a85b5b8eaad392af9a8c50409fe`; all ten hosted workflows passed on that exact head.
+[PR #157](https://github.com/spik3r/clanker-foundry/pull/157) merged on 14 November 2026 as
+`3037fb82e7b0533d43977a1c1479de10487dca8f`. Git confirms the reviewed head is the merge's second parent.
+This bounded implementation claim is complete and reserves no further work.
