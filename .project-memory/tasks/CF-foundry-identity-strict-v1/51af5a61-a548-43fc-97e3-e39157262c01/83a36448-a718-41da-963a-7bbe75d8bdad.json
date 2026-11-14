@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "83a36448-a718-41da-963a-7bbe75d8bdad",
+  "runId": "51af5a61-a548-43fc-97e3-e39157262c01",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-identity-strict-v1",
+    "path": "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+    "revision": "ccfdb8a5bb85424ad88643efedeac2ee4b81d1e1",
+    "blob": "cd706ea77f9b3b5e02e6a376718a76d7b476f753",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6900744fbb2c70cce1fd471b5d135c5b996a0428e841381e8d3abd55558d1db5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-identity-strict-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:10:30.354Z",
+  "summary": "Enforce the generator identity line wire contract",
+  "next": "Add regressions, reproduce acceptance, fix parser and validate",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/run_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md"
+  ]
+}
