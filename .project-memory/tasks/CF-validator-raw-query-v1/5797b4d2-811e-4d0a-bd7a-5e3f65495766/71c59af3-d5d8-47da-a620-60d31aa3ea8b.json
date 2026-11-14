@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "71c59af3-d5d8-47da-a620-60d31aa3ea8b",
+  "runId": "5797b4d2-811e-4d0a-bd7a-5e3f65495766",
+  "kind": "complete",
+  "parents": [
+    "a723f260-b364-4094-bd53-086b519e0860"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-raw-query-v1",
+    "path": "tasks/CF-validator-raw-query-v1-relative-links.md",
+    "revision": "3ac04edfd4907af865292b1155e8a6c3c98ece01",
+    "blob": "241c942ff42c2fe7dedc6bdfaf27cab7f6b08a2b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b607568fedca99ac79033849fca9690224b57488cb49ef672e9d6cca8bc756ad"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-raw-query-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:32:18.075Z",
+  "summary": "Resolve relative URL path before raw query while preserving encoded question marks",
+  "next": "Independent exact-head review and hosted checks; coordinator owns merge",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-raw-query-v1-relative-links.md"
+  ],
+  "validation": "Red full installer:7newquerycasesfailed; final bash tests/test-install.sh passes installer/wiring/resolver; bash tests/test-validate.sh passes47model-mapcases92validatorpathchecks; Bash3.2.57 syntax passes; bash scripts/validate.sh passes; whitespace passes; scratch homes/targets only.",
+  "snapshot": {
+    "scripts/validate.sh": {
+      "blob": "dfcddcb4eb9b83850ee860706bfa67636c96efb5",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "0b33015133cc8b572989ed554e3d64c5f031e7e7",
+      "mode": "100755"
+    },
+    "docs/getting-started.md": {
+      "blob": "8b7b66193999d5a6fcd1b83a523b0cd3bbdf8a98",
+      "mode": "100644"
+    },
+    "tasks/CF-validator-raw-query-v1-relative-links.md": {
+      "blob": "b58451ba02a3fc399f1562875731f84033238b33",
+      "mode": "100644"
+    }
+  }
+}

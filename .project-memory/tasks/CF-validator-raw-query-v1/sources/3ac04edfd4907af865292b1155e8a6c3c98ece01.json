@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "3ac04edfd4907af865292b1155e8a6c3c98ece01",
+  "id": "CF-validator-raw-query-v1",
+  "path": "tasks/CF-validator-raw-query-v1-relative-links.md",
+  "blob": "241c942ff42c2fe7dedc6bdfaf27cab7f6b08a2b",
+  "record": "---\nid: CF-validator-raw-query-v1\nstatus: in-progress\nowner: Codex validator contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Resolve relative link paths before URL queries\n\n## Implementation claim\n\nOwner: Codex validator contributor. Branch `codex/validator-raw-query-v1`, reviewed\nmain `0f63234`, with no open PRs or competing claim at start. Scope:\n`scripts/validate.sh`, `tests/test-install.sh`, `docs/getting-started.md`, this task\nand new immutable Project Memory evidence.\n\nRelative Markdown link queries currently become filesystem filename bytes. Strip\nthe raw query before percent-decoding the path, retaining encoded question marks\nas filename data. Preserve the merged percent decoder and its malformed-escape\npolicy. Test present and missing destinations, a literal-question-mark decoy,\nquery plus fragment, encoded-question-mark filename plus query, query-only self\nlinks, and ignored-query NUL escapes/malformed escapes. No generic Markdown parser\nor other URL-policy changes.\n\nProve failures before repair, then run Bash 3.2 syntax, full installer and\nmodel-map regressions, repository validation, whitespace and committed memory\ncoverage. Record local completion after validation; publication does not assert\nfuture merge. Publish for independent review; the coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-validator-raw-query-v1-relative-links.md",
+        "id": "CF-validator-raw-query-v1",
+        "blob": "241c942ff42c2fe7dedc6bdfaf27cab7f6b08a2b",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
