@@ -9,6 +9,25 @@ claude_dir="$HOME/.claude"
 opencode_dir="${XDG_CONFIG_HOME:-$HOME/.config}/opencode"
 gemini_dir="$HOME/.gemini"
 
+# Missing directories may be created later, but a non-directory at any existing
+# component would make mkdir fail. Directory symlinks remain supported.
+check_directory_path() {
+  local dir="$1" parent
+  while :; do
+    # Keep all-slash roots intact; otherwise expose a blocker hidden by a final /.
+    case "$dir" in
+      *[!/]*) while [ "${dir%/}" != "$dir" ]; do dir="${dir%/}"; done ;;
+    esac
+    if { [ -e "$dir" ] || [ -L "$dir" ]; } && [ ! -d "$dir" ]; then
+      printf 'Cannot wire %s: directory component is not a directory.\n' "$dir" >&2
+      return 1
+    fi
+    parent="$(dirname "$dir")"
+    [ "$parent" != "$dir" ] || return 0
+    dir="$parent"
+  done
+}
+
 check_link_target() {
   local target="$1"
   local kind="$2"
@@ -24,6 +43,10 @@ check_link_target() {
 }
 
 check_conflicts() {
+  local dir
+  for dir in "$(dirname "$CANON")" "$codex_dir" "$claude_dir" "$opencode_dir" "$gemini_dir"; do
+    check_directory_path "$dir"
+  done
   check_link_target "$codex_dir/AGENTS.md" "file"
   check_link_target "$opencode_dir/AGENTS.md" "file"
   check_link_target "$gemini_dir/GEMINI.md" "file"
@@ -40,9 +63,9 @@ if [ "${1:-}" = "--check" ]; then
   exit 0
 fi
 
+check_conflicts
 mkdir -p "$(dirname "$CANON")"
 [ -f "$CANON" ] || { echo "Create $CANON first (copy the example from this directory)." >&2; exit 1; }
-check_conflicts
 
 # Codex — reads ~/.codex/AGENTS.md natively
 mkdir -p "$codex_dir"
