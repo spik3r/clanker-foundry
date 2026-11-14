@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "026d7e962cd82442cdd168a7e07b8a2d6b5a8380",
+  "id": "CF-validator-scheme-case-v1",
+  "path": "tasks/CF-validator-scheme-case-v1-relative-links.md",
+  "blob": "52501ddadf9c38c041e96dc02e69c87bffd99602",
+  "record": "---\nid: CF-validator-scheme-case-v1\nstatus: in-progress\nowner: Codex validator contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Recognize existing external URI schemes regardless of case\n\n## Implementation claim\n\nOwner: Codex validator contributor. Branch `codex/validator-scheme-case-v1`,\nreviewed main `75a01c8` after PR168 merged; no open PR or competing validator\nclaim at start. Scope: scripts/validate.sh, tests/test-install.sh,\ndocs/getting-started.md, this task and new immutable Project Memory evidence.\n\nThe validator currently rejects uppercase and mixed-case HTTP, HTTPS and MAILTO\nlinks as missing local paths. RFC3986 section3.1 defines schemes as\ncase-insensitive. Match only those already-skipped raw schemes using explicit\nASCII character pairs compatible with Bash3.2. Preserve angle unwrap ordering,\nraw classification before percent-decoding, local path case and diagnostics.\nAdd no protocols, dependencies, general parser or broader URI policy.\n\nProve bare/wrapped upper/mixed-case cases red before repair. Cover ordinary\nlowercase schemes, encoded-colon relative paths present/missing/raw-spelling\ndecoys, and filesystem-aware local path case. Use only isolated fixtures; make\nno requests to link destinations. Run Bash syntax, full installer/wiring/model\nresolver and validator/model-map regressions, repository validation, whitespace\nand committed memory coverage. Complete the local record only after checks,\nwithout claiming a future PR merge. Publish for independent review; no merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-validator-scheme-case-v1-relative-links.md",
+        "id": "CF-validator-scheme-case-v1",
+        "blob": "52501ddadf9c38c041e96dc02e69c87bffd99602",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

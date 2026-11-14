@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "bda1e6f8-1234-4dcd-b300-dd1a3c85650b",
+  "runId": "ba800798-3547-4052-a2b0-9c3d73d0019c",
+  "kind": "complete",
+  "parents": [
+    "87d9b979-e858-4c16-8d86-238c97cf1175"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-scheme-case-v1",
+    "path": "tasks/CF-validator-scheme-case-v1-relative-links.md",
+    "revision": "026d7e962cd82442cdd168a7e07b8a2d6b5a8380",
+    "blob": "52501ddadf9c38c041e96dc02e69c87bffd99602",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c4223555b5be6689e0d8598192bfed60863ef5e8d313ff07c1accf6c2b779dfa"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-scheme-case-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T06:48:37.382Z",
+  "summary": "Recognize only existing HTTP HTTPS and MAILTO prefixes regardless of ASCII case",
+  "next": "Independent immutable head review and hosted checks; coordinator owns merge",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-scheme-case-v1-relative-links.md"
+  ],
+  "validation": "Red full installer observed nine new failures. Final bash tests/test-install.sh passed installer wiring and resolver regressions; bash tests/test-validate.sh passed 47 model-map cases and 92 path checks; Bash 3.2 syntax, repository validator and whitespace passed. Encoded-colon controls passed; local filesystem aliases case, so wrong-case missing assertion was not claimed as exercised. No link requests.",
+  "snapshot": {
+    "scripts/validate.sh": {
+      "blob": "8036e11d8f7091e8569331b2f29a035a858178d4",
+      "mode": "100755"
+    },
+    "tests/test-install.sh": {
+      "blob": "fc8406f021a787eb66172f2b411a3a3739cb3dcb",
+      "mode": "100755"
+    },
+    "docs/getting-started.md": {
+      "blob": "fbbcfb7921eb34ea8933aeb111a468739987426c",
+      "mode": "100644"
+    },
+    "tasks/CF-validator-scheme-case-v1-relative-links.md": {
+      "blob": "35d18fb31e980a5e473fc33640410ee8919424f1",
+      "mode": "100644"
+    }
+  }
+}

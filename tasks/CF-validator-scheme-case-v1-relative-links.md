@@ -1,6 +1,6 @@
 ---
 id: CF-validator-scheme-case-v1
-status: in-progress
+status: completed
 owner: Codex validator contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -28,3 +28,16 @@ no requests to link destinations. Run Bash syntax, full installer/wiring/model
 resolver and validator/model-map regressions, repository validation, whitespace
 and committed memory coverage. Complete the local record only after checks,
 without claiming a future PR merge. Publish for independent review; no merge.
+
+## Local result
+
+The local repair and validation are complete; this status does not claim its
+future PR has merged. The original validator failed nine new uppercase/mixed-case
+cases, including wrapped destinations. After repair, full installer/wiring/model
+resolver regressions, 47 model-map cases and 92 validator path checks passed.
+Bash 3.2 syntax, repository validation and whitespace passed. Encoded-colon
+present/missing/decoy controls passed. This host aliases local filename case;
+the wrong-case missing-path assertion is retained for case-sensitive filesystems
+and was not falsely claimed as exercised here. No link destinations were
+contacted. Independent working-diff review found no issues. Next: immutable head
+review and hosted checks before the coordinator decides whether to merge.

@@ -202,7 +202,9 @@ while IFS= read -r -d '' md; do
     case "$destination" in
       \<*\>) destination="${destination#<}"; destination="${destination%>}" ;;
     esac
-    case "$destination" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
+    case "$destination" in
+      [hH][tT][tT][pP]://*|[hH][tT][tT][pP][sS]://*|[mM][aA][iI][lL][tT][oO]:*|\#*|"") continue ;;
+    esac
     path="${destination%%#*}"
     path="${path%%\?*}"
     [ -z "$path" ] && continue
