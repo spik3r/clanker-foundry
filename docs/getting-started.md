@@ -94,7 +94,9 @@ the pack instead. `unlink` will not remove a directory.
 
 The canonical path is `${XDG_CONFIG_HOME:-$HOME/.config}/agents/AGENTS.md`;
 Codex's user path respects `CODEX_HOME`. Existing regular instruction files or
-symlinks pointing elsewhere for Codex, opencode or Gemini stop wiring. An existing
+symlinks pointing elsewhere for Codex, opencode or Gemini stop wiring. A
+non-directory in a required canonical or client directory path stops preflight
+before Stow runs. Symlinks to real directories remain supported. An existing
 regular Claude `CLAUDE.md` is preserved and receives an import, but a Claude
 symlink or directory is refused. Review [the wiring script](../global-agents/wire-global-agents.sh)
 and the [global agent guide](../global-agents/README.md) before resolving conflicts.

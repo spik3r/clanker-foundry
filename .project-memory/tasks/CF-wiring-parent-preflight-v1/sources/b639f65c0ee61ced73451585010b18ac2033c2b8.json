@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "b639f65c0ee61ced73451585010b18ac2033c2b8",
+  "id": "CF-wiring-parent-preflight-v1",
+  "path": "tasks/CF-wiring-parent-preflight-v1-directories.md",
+  "blob": "c43ead15b2cf4938b5d5f93f275b28a9c8d78c7c",
+  "record": "---\nid: CF-wiring-parent-preflight-v1\nstatus: in-progress\nowner: Codex wiring maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reject blocked wiring directories before Stow runs\n\n## Implementation claim\n\nOwner: Codex wiring maintenance contributor, delegated by the coordinator during\nthe owner's continued maintenance window. Base: origin/main at `ccad85b`.\nThe coordinator checked active tasks and assigned these paths exclusively.\n\nThe wiring helper's `--check` examines final instruction files but accepts a\nregular file at a required client directory. In an isolated scratch setup with\na file at CODEX_HOME, preflight returned zero and the installer created 188\nshared symlinks before failing at mkdir. All four client-directory blockers\npassed the old preflight. This defeats the declared ordering for known wiring\nconflicts; it is not a claim of transactional installation.\n\nCheck required canonical and client directory components before any writes.\nReject existing non-directories and dangling directory symlinks, including\nblocked ancestors of a missing directory. Preserve directory symlinks that\nresolve to real directories. Do not add an ancestor-symlink ban or promise to\npreflight permissions, concurrent changes or other filesystem failures.\n\nScope: `global-agents/wire-global-agents.sh`,\n`tests/test-wire-preflight.sh`, `tests/test-stow-preflight.sh`,\n`docs/getting-started.md`, this task and new immutable Project Memory files.\nTest four client parents, nested and canonical parent blockers, read-only\npreflight, zero Stow calls on refusal, blocker preservation and valid directory\nsymlinks. Every installation test uses invented scratch HOME, CODEX_HOME and\nXDG_CONFIG_HOME; never install into the real home.\n\nChecks: prove regressions fail before the fix; Bash syntax, focused wiring and\ninstaller preflight tests, full installer regression tests, repository validator,\nwhitespace and committed Project Memory validation. Commit, push and open a PR;\nindependent review and merge belong to the coordinator.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-wiring-parent-preflight-v1-directories.md",
+        "id": "CF-wiring-parent-preflight-v1",
+        "blob": "c43ead15b2cf4938b5d5f93f275b28a9c8d78c7c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -127,4 +127,74 @@ for kind in absent empty unterminated terminated imported; do
   grep -qxF 'synthetic canonical instructions' "$canon"
 done
 
-printf '%s\n' 'PASS  9 wiring target cases (8 rejection checks and 15 regular-target checks)'
+# A missing child below an existing non-directory is not a creatable path.
+for parent in codex claude opencode gemini nested trailing dot canonical; do
+  for kind in file dangling; do
+    new_case "$parent-$kind-parent"
+    case "$parent" in
+      codex) blocker="$CODEX_HOME" ;;
+      claude) blocker="$HOME/.claude"; rmdir "$blocker" ;;
+      opencode) blocker="$XDG_CONFIG_HOME/opencode" ;;
+      gemini) blocker="$HOME/.gemini" ;;
+      nested) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/child" ;;
+      trailing) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/" ;;
+      dot) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/." ;;
+      canonical)
+        blocker="$XDG_CONFIG_HOME/agents"
+        rm "$canon"; rmdir "$blocker" ;;
+    esac
+    case "$kind" in
+      file) printf 'retained parent bytes\n' > "$blocker" ;;
+      dangling) ln -s "$case_root/missing" "$blocker" ;;
+    esac
+    before_dirs="$(find "$case_root" -type d | LC_ALL=C sort)"
+    for mode in --check wire; do
+      if [ "$mode" = --check ]; then run_helper 1 --check; else run_helper 1; fi
+      grep -qF 'directory component is not a directory' "$case_root/stderr"
+      test "$(find "$case_root" -type d | LC_ALL=C sort)" = "$before_dirs"
+      test ! -s "$CONTENT_TRACE"
+      for target in "$CODEX_HOME/AGENTS.md" "$HOME/.claude/CLAUDE.md" \
+        "$XDG_CONFIG_HOME/opencode/AGENTS.md" "$HOME/.gemini/GEMINI.md"; do
+        test ! -e "$target" && test ! -L "$target"
+      done
+      case "$kind" in
+        file) test -f "$blocker"; grep -qxF 'retained parent bytes' "$blocker" ;;
+        dangling) test "$(readlink "$blocker")" = "$case_root/missing" ;;
+      esac
+    done
+  done
+done
+
+# Existing aliases to real directories remain supported, including the canonical
+# parent. All aliases and their targets are owned by this isolated fixture.
+new_case directory-symlink-parents
+mkdir -p "$case_root/real/codex" "$case_root/real/claude" \
+  "$case_root/real/opencode" "$case_root/real/gemini"
+mv "$XDG_CONFIG_HOME/agents" "$case_root/real/agents"
+ln -s "$case_root/real/agents" "$XDG_CONFIG_HOME/agents"
+ln -s "$case_root/real/codex" "$CODEX_HOME"
+rmdir "$HOME/.claude"
+ln -s "$case_root/real/claude" "$HOME/.claude"
+ln -s "$case_root/real/opencode" "$XDG_CONFIG_HOME/opencode"
+ln -s "$case_root/real/gemini" "$HOME/.gemini"
+before_dirs="$(find "$case_root" -type d | LC_ALL=C sort)"
+run_helper 0 --check
+test "$(find "$case_root" -type d | LC_ALL=C sort)" = "$before_dirs"
+for target in "$CODEX_HOME/AGENTS.md" "$HOME/.claude/CLAUDE.md" \
+  "$XDG_CONFIG_HOME/opencode/AGENTS.md" "$HOME/.gemini/GEMINI.md"; do
+  test ! -e "$target" && test ! -L "$target"
+done
+run_helper 0
+run_helper 0
+test "$(readlink "$CODEX_HOME/AGENTS.md")" = "$canon"
+test "$(readlink "$XDG_CONFIG_HOME/opencode/AGENTS.md")" = "$canon"
+test "$(readlink "$HOME/.gemini/GEMINI.md")" = "$canon"
+grep -qxF "@$canon" "$HOME/.claude/CLAUDE.md"
+grep -qxF 'synthetic canonical instructions' "$canon"
+test -L "$XDG_CONFIG_HOME/agents"
+test -L "$CODEX_HOME"
+test -L "$HOME/.claude"
+test -L "$XDG_CONFIG_HOME/opencode"
+test -L "$HOME/.gemini"
+
+printf '%s\n' 'PASS  wiring target and directory preflight cases'

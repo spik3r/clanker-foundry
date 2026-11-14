@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "7321c21d-ce08-484c-886c-b936ac9b2817",
+  "runId": "9aa3dc13-980e-486a-ae41-dd9e4415a5a1",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-wiring-parent-preflight-v1",
+    "path": "tasks/CF-wiring-parent-preflight-v1-directories.md",
+    "revision": "b639f65c0ee61ced73451585010b18ac2033c2b8",
+    "blob": "c43ead15b2cf4938b5d5f93f275b28a9c8d78c7c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6a2959a7a323dcb1bc611a43492a56c797c8ec4fa7fa72a2aedddf4926d833dc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/wiring-parent-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:53:06.082Z",
+  "summary": "Refuse blocked canonical/client directory components before installer writes",
+  "next": "Add failing regressions, implement bounded directory preflight and validate",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "docs/getting-started.md",
+    "tasks/CF-wiring-parent-preflight-v1-directories.md"
+  ]
+}

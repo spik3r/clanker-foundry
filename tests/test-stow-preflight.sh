@@ -231,4 +231,42 @@ assert_no_backup
 test -p "$STOW_CANON"
 test ! -s "$CMP_TRACE"
 
-printf '%s\n' 'PASS  16 installer ordering cases (recording seam, not GNU Stow acceptance)'
+# Known wiring-directory blockers stop before the first package call.
+for parent in codex claude opencode gemini nested trailing dot canonical; do
+  for kind in file dangling; do
+    new_case "blocked-$parent-$kind-parent"
+    case "$parent" in
+      codex) blocker="$CODEX_HOME" ;;
+      claude) blocker="$HOME/.claude" ;;
+      opencode) blocker="$XDG_CONFIG_HOME/opencode" ;;
+      gemini) blocker="$HOME/.gemini" ;;
+      nested) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/child" ;;
+      trailing) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/" ;;
+      dot) blocker="$case_root/blocked"; export CODEX_HOME="$blocker/." ;;
+      canonical)
+        blocker="$XDG_CONFIG_HOME/agents"
+        rm "$STOW_CANON"; rmdir "$blocker" ;;
+    esac
+    case "$kind" in
+      file) printf 'retained parent bytes\n' > "$blocker" ;;
+      dangling) ln -s "$case_root/missing" "$blocker" ;;
+    esac
+    before_dirs="$(find "$case_root" -type d | LC_ALL=C sort)"
+    run_installer 1
+    grep -qF 'directory component is not a directory' "$case_root/stderr"
+    assert_calls 0
+    test ! -e "$HOME/.agents"
+    test "$(find "$case_root" -type d | LC_ALL=C sort)" = "$before_dirs"
+    assert_no_backup
+    test ! -s "$CMP_TRACE"
+    case "$kind" in
+      file) test -f "$blocker"; grep -qxF 'retained parent bytes' "$blocker" ;;
+      dangling) test "$(readlink "$blocker")" = "$case_root/missing" ;;
+    esac
+    if [ "$parent" != canonical ]; then
+      cmp "$repo_dir/global-agents/AGENTS.md" "$STOW_CANON"
+    fi
+  done
+done
+
+printf '%s\n' 'PASS  installer ordering cases (recording seam, not GNU Stow acceptance)'

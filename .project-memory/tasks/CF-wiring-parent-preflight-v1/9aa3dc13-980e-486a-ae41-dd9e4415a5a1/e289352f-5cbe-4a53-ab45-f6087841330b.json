@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "e289352f-5cbe-4a53-ab45-f6087841330b",
+  "runId": "9aa3dc13-980e-486a-ae41-dd9e4415a5a1",
+  "kind": "complete",
+  "parents": [
+    "7321c21d-ce08-484c-886c-b936ac9b2817"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-wiring-parent-preflight-v1",
+    "path": "tasks/CF-wiring-parent-preflight-v1-directories.md",
+    "revision": "b639f65c0ee61ced73451585010b18ac2033c2b8",
+    "blob": "c43ead15b2cf4938b5d5f93f275b28a9c8d78c7c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6a2959a7a323dcb1bc611a43492a56c797c8ec4fa7fa72a2aedddf4926d833dc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/wiring-parent-preflight-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:59:00.605Z",
+  "summary": "Known non-directory wiring parents refuse before Stow or mkdir; real directory symlinks remain supported",
+  "next": "Commit and validate immutable evidence, publish PR for independent review and hosted checks; coordinator owns merge",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "docs/getting-started.md",
+    "tasks/CF-wiring-parent-preflight-v1-directories.md"
+  ],
+  "validation": "New wire regression failed before fix: --check returned 0 instead of 1. New installer regression failed before fix: reached recording Stow seam exit 73 instead of refusing. After fix, all 16 parent-blocker fixtures pass in both wire modes; all 16 corresponding installer fixtures record zero Stow calls and preserve blockers/directories. Valid directory symlinks wire successfully and remain linked. Bash syntax for helper/tests, focused wiring and Stow preflight suites, full bash tests/test-install.sh (including scratch GNU Stow and agent-model tests), bash scripts/validate.sh, and staged/unstaged whitespace checks passed. All installation targets were invented scratch HOME/CODEX_HOME/XDG paths; no real-home installation. Optional skills-ref was unavailable.",
+  "snapshot": {
+    "global-agents/wire-global-agents.sh": {
+      "blob": "96dec2fdbb94e51677b23ca933d6325485c6ecdc",
+      "mode": "100755"
+    },
+    "tests/test-wire-preflight.sh": {
+      "blob": "3440e729026f51fc7e6c1c4cdc0c5eab15b46b28",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "89e0c09f64ba112684e144b7982d6e1510522666",
+      "mode": "100755"
+    },
+    "docs/getting-started.md": {
+      "blob": "bf98d67e054e3791d3cb5bed53951461b6f3e0d2",
+      "mode": "100644"
+    },
+    "tasks/CF-wiring-parent-preflight-v1-directories.md": {
+      "blob": "c43ead15b2cf4938b5d5f93f275b28a9c8d78c7c",
+      "mode": "100644"
+    }
+  }
+}
