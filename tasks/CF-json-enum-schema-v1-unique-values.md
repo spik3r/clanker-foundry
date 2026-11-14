@@ -1,6 +1,6 @@
 ---
 id: CF-json-enum-schema-v1
-status: in-progress
+status: completed
 owner: Codex authoring maintenance coordinator
 repositories: [spik3r/clanker-foundry]
 ---
@@ -37,3 +37,18 @@ fix; run the full JSON schema agreement suite against the actual generator,
 its Go model refusal tests, repository validation, whitespace and committed
 Project Memory checks. Independently review the final commit and await all
 hosted checks before merging.
+
+## Integration result
+
+The coordinating agent reviewed `750227d7d10907250453891dfd686feb742e69fc`;
+all ten hosted workflows passed on that head. [PR #146](https://github.com/spik3r/clanker-foundry/pull/146)
+merged on 14 November 2026 as `ccad85b279546414e9e03ad6250472b234108dd1`.
+This bounded implementation claim is complete and reserves no further work.
+
+### Local toolchain clarification
+
+The JSON validator module requires and auto-selects Go 1.27.3. Earlier local
+validation notes that name Go 1.27.0 report the shell launcher, not the module
+toolchain. Module-local version checks confirm Go 1.27.3; the historical
+`go.mod` has the same requirement. The passed checks stand, and the immutable
+events remain unchanged.

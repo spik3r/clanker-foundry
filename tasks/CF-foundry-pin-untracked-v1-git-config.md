@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-pin-untracked-v1
-status: in-progress
+status: completed
 owner: Codex pin maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -30,3 +30,10 @@ Checks: demonstrate the regression fails before the fix; gofmt, go vet and
 `go test -race -count=1 ./...` in modeling/foundrygen; repository validator;
 whitespace and committed Project Memory validation. Publication is authorized;
 merge and deployment are outside this claim.
+
+## Integration result
+
+The coordinating agent reviewed `ca02d73d52ef8c9e00d6c203f246f2f134563cff`;
+all ten hosted workflows passed on that head. [PR #140](https://github.com/spik3r/clanker-foundry/pull/140)
+merged on 14 November 2026 as `365caf35e4bca0aa1ee759ebe2b7104f8e42aa8a`.
+This bounded implementation claim is complete and reserves no further work.

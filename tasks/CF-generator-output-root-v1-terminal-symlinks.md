@@ -1,6 +1,6 @@
 ---
 id: CF-generator-output-root-v1
-status: in-progress
+status: completed
 owner: Codex output-root maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -47,3 +47,18 @@ failures before the fix, then run vet and race tests for affected modules, all
 registered-generator conformance, repository validation, whitespace checks and
 committed Project Memory validation. Publish for independent coordinator review;
 this contributor must not merge.
+
+## Integration result
+
+The coordinating agent reviewed `10961ea8e70709915fc166ca0d98b1687db2373a`;
+all ten hosted workflows passed on that head. [PR #147](https://github.com/spik3r/clanker-foundry/pull/147)
+merged on 14 November 2026 as `bac9b3cb0ef89120f6c6803e767da8b1023ae37f`.
+This bounded implementation claim is complete and reserves no further work.
+
+### Local toolchain clarification
+
+The JSON validator and lifecycle modules require and auto-select Go 1.27.3;
+the other tested modules use Go 1.27.0 locally. Earlier notes naming only Go
+1.27.0 did not distinguish the module-selected toolchains. Module-local
+version checks and the historical `go.mod` files confirm this distinction.
+The passed checks stand, and the immutable events remain unchanged.
