@@ -1,6 +1,6 @@
 ---
 id: CF-tui-filter-ctrl-c-v1
-status: in-progress
+status: completed
 owner: Codex TUI maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -33,3 +33,12 @@ and q/text controls. Run generated acceptance, full TUI vet/race, authoring,
 generator contract and Foundry entrypoint checks, repository validator,
 whitespace and fresh committed Project Memory coverage. Publish for independent
 exact-head review and hosted checks; the coordinator owns merge.
+
+## Integration result
+
+Independent review found no actionable issue at
+`074650f65df2e2dd89282dd917fe8eb9977ec196`; all ten hosted workflows passed
+on that exact head. [PR #164](https://github.com/spik3r/clanker-foundry/pull/164)
+merged on 14 November 2026 as `9976f8e77d7adfce3b8d426c142b5cc167f60de0`.
+Git confirms the reviewed head is the merge's second parent. The bounded claim
+is complete and reserves no further work.

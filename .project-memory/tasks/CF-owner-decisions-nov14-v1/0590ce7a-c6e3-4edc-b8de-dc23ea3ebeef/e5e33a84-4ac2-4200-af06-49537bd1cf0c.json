@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "e5e33a84-4ac2-4200-af06-49537bd1cf0c",
+  "runId": "0590ce7a-c6e3-4edc-b8de-dc23ea3ebeef",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-owner-decisions-nov14-v1",
+    "path": "tasks/CF-owner-decisions-nov14-v1-public-update.md",
+    "revision": "616b37c179086d87238a23fdd1818f606d79272e",
+    "blob": "32379b0cc5e4aef8cf5774352f05692a633dc109",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5016f13f03d3451bcecd30e3b4f91000d46282764172560465e10f18f25e834f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/owner-decisions-nov14",
+  "pullRequest": null,
+  "at": "2026-11-14T05:47:03.689Z",
+  "summary": "Record approved Ctrl+C and bounded consumer selection decisions without claiming consumer completion",
+  "next": "Append dated public decision facts and verified Ctrl+C integration result",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "docs/current-direction.md",
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+    "tasks/CF-owner-decisions-nov14-v1-public-update.md"
+  ]
+}

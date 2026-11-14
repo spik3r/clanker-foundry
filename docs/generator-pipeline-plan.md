@@ -469,3 +469,17 @@ Recorded on 12 November 2026.
 4. This plan answers the route question in the current direction, which now
    carries a dated note saying so.
 5. Diagram and dashboard generation is the next consumer; see step 4b.
+
+## Owner update, 14 November 2026
+
+The owner approved immediate Ctrl+C quitting in a standalone browser's open
+filter input. This is implemented on main as `tuic` 1.5.2 in
+[PR #164](https://github.com/spik3r/clanker-foundry/pull/164). Hosted browsers
+still leave quitting to the host, and help remains captive.
+
+The owner delegated the bounded consumer choice. The existing saved MCP
+inventory screen in Monstera was selected as the native `6: MCP` page. This
+records authorization and selection; consumer implementation and integration
+belong in the consumer's own source and acceptance records. It establishes no
+consumer acceptance or measured value. The existing human, repeatability,
+value and runtime activation gates remain unchanged.

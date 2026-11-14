@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "a81a0023-db70-4de2-a328-f1515cfe1a20",
+  "runId": "0590ce7a-c6e3-4edc-b8de-dc23ea3ebeef",
+  "kind": "complete",
+  "parents": [
+    "e5e33a84-4ac2-4200-af06-49537bd1cf0c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-owner-decisions-nov14-v1",
+    "path": "tasks/CF-owner-decisions-nov14-v1-public-update.md",
+    "revision": "616b37c179086d87238a23fdd1818f606d79272e",
+    "blob": "32379b0cc5e4aef8cf5774352f05692a633dc109",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5016f13f03d3451bcecd30e3b4f91000d46282764172560465e10f18f25e834f"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/owner-decisions-nov14",
+  "pullRequest": null,
+  "at": "2026-11-14T05:47:33.380Z",
+  "summary": "Recorded dated owner decisions and verified Ctrl+C integration without claiming consumer completion",
+  "next": "Independent exact-head review and hosted checks; no claim of this update PR merge",
+  "files": [
+    "docs/generator-pipeline-plan.md",
+    "docs/current-direction.md",
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md",
+    "tasks/CF-owner-decisions-nov14-v1-public-update.md"
+  ],
+  "validation": "PR164 merged metadata and secondparent verified;10successful exact-head hosted workflows and observed independent review; old task prose preserved except status and dated historical docs retained; repository/link validator and whitespace passed",
+  "snapshot": {
+    "docs/generator-pipeline-plan.md": {
+      "blob": "d25558d664939396c9d11a40d295587679b59151",
+      "mode": "100644"
+    },
+    "docs/current-direction.md": {
+      "blob": "e0c32c5e7caa3a1d9841c34fa2247ad03133046e",
+      "mode": "100644"
+    },
+    "tasks/CF-tui-filter-ctrl-c-v1-standalone-quit.md": {
+      "blob": "c8a6b733effc666faabd416e11856e687a8af7a2",
+      "mode": "100644"
+    },
+    "tasks/CF-owner-decisions-nov14-v1-public-update.md": {
+      "blob": "7ef800022f994c4b7ae9c037645eeee007980078",
+      "mode": "100644"
+    }
+  }
+}
