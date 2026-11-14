@@ -34,6 +34,10 @@ a string.
   fraction, exponent, sign or leading zero). If both are present, `minLength`
   must not exceed `maxLength`. They may be used together.
 
+The authoring schema sees parsed numeric values, so it accepts spellings such
+as `1.0`, `1e0` and `-0` that the compiler refuses. Run generator validation
+on the original model text to check the plain unsigned integer rule.
+
 `const` and `enum` cannot be used together or with a length bound. Every `const`
 and `enum` string is at most 256 bytes of UTF-8, contains no control character
 (C0, DEL or C1) and does not contain U+FFFD. U+FFFD is refused because an
