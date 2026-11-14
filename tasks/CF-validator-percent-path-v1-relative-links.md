@@ -1,6 +1,6 @@
 ---
 id: CF-validator-percent-path-v1
-status: in-progress
+status: completed
 owner: Codex validator maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -30,3 +30,13 @@ hex, plus, backslash, trailing newline, NUL and malformed-escape controls.
 Run Bash 3.2 syntax, full installer and model-map regressions, repository
 validator, whitespace and committed Project Memory coverage. Publish for
 independent review; the coordinator owns merge.
+
+## Integration result
+
+The independent reviewer found no actionable issue at
+`664700822d52c47a39933bc12b0d2e5656631ce5`; all ten hosted workflows passed
+on that exact head. [PR #161](https://github.com/spik3r/clanker-foundry/pull/161)
+merged on 14 November 2026 as `0f63234b1e687cff2dc91d40d41780e0751e0237`.
+Git confirms the reviewed head is the merge's second parent. Project Memory has
+one nonconflicting completed frontier. This bounded claim is complete and
+reserves no further work.

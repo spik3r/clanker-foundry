@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "7d1b77c6-6bcf-430c-b818-ce15789a8dda",
+  "runId": "9370f234-197c-4413-9f9d-f106b3daa023",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v3",
+    "path": "tasks/CF-maintenance-claims-close-v3-two-records.md",
+    "revision": "10e77d58ebfea7466d58f49fe22012eef8b402cd",
+    "blob": "d84f11c59c7e49eab2d0a094f78de3c6d4a04b01",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "d3372c36b5d4a32f67715cbaff661b69f73c21393c494efe3781d317b784ca27"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/maintenance-claims-close-v3",
+  "pullRequest": null,
+  "at": "2026-11-14T04:39:41.948Z",
+  "summary": "Close two verified merged implementation records without rewriting historical claims",
+  "next": "Append precise integration evidence and validate record-only changes",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v3-two-records.md",
+    "tasks/CF-runtime-cli-input-file-refusal-v1-special-files.md",
+    "tasks/CF-validator-percent-path-v1-relative-links.md"
+  ]
+}

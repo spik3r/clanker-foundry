@@ -1,6 +1,6 @@
 ---
 id: CF-runtime-cli-input-file-refusal-v1
-status: proposed
+status: completed
 owner: Codex runtime CLI maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -41,3 +41,20 @@ pinned runtime dependencies. Run bounded focused CLI tests, the runtime suite an
 `scripts/validate.sh`, then whitespace and full committed Project Memory checks.
 If any test or process restriction remains, record it as unrun rather than
 claiming a pass. Publish a PR for independent review only after observed checks.
+
+## Integration result
+
+[PR #110](https://github.com/spik3r/clanker-foundry/pull/110) merged on
+12 November 2026 as `64abe4cccd1590b715c184a6e790598c9c865755`, with
+`2e0a7f8794da3adf322b7070719e4dea72f00ad5` as its second parent.
+All seven hosted workflows at that exact historical head passed.
+
+The current independent audit found the CLI source and tests unchanged from
+that head. It confirmed the nonblocking descriptor open, regular-file checks,
+symlink refusal, bounded reads, strict UTF-8 and descriptor cleanup. Focused
+Node 24.15.0 tests for regular files, FIFO, directory, symlink, exact size and
+UTF-8 refusal passed: two tests, zero skips. Project Memory has one nonconflicting
+completed frontier, event `bd22d1fa-7ec7-4ffa-b198-cf779546c372`.
+This records current independent verification; it does not infer a historical
+independent-review observation. The bounded claim is complete and reserves no
+further work.
