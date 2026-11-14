@@ -192,6 +192,35 @@ func TestDecodeCasesRefusals(t *testing.T) {
 	}
 }
 
+func TestKeyHintIDPresence(t *testing.T) {
+	for _, entry := range []string{
+		`{"id":""}`,
+		`{"id":"","key":"?"}`,
+		`{"id":"","action":"help"}`,
+		`{"id":"","key":"?","action":"help"}`,
+		`{"key":"?","action":"help","id":""}`,
+	} {
+		t.Run(entry, func(t *testing.T) {
+			text := strings.Replace(baseCases, `"selected": "b"`, `"keyHints": [`+entry+`]`, 1)
+			if _, err := DecodeCases([]byte(text)); err == nil {
+				t.Fatal("explicit empty hint ID accepted")
+			}
+		})
+	}
+	for _, entry := range []string{
+		`{"key":"?","action":"help"}`,
+		`{"action":"help","key":"?"}`,
+		`{"id":"help.open","key":"?","action":"help"}`,
+	} {
+		t.Run(entry, func(t *testing.T) {
+			text := strings.Replace(baseCases, `"selected": "b"`, `"keyHints": [`+entry+`]`, 1)
+			if _, err := DecodeCases([]byte(text)); err != nil {
+				t.Fatalf("valid hint refused: %v", err)
+			}
+		})
+	}
+}
+
 func TestHostedExpectationsDecode(t *testing.T) {
 	good := strings.Replace(baseCases, `"selected": "b"`, `"capturesKeys": false, "keyHints": [{"key":"j/k","action":"select"},{"key":"?","action":"help"}]`, 1)
 	c, err := DecodeCases([]byte(good))

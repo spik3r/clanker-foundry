@@ -169,6 +169,7 @@ var memberContext = map[string]map[string]string{
 	"case":       {"size": "size", "steps": "steps", "expect": "expect"},
 	"step":       {"resize": "resize", "replace": "replace"},
 	"expect":     {"keyHints": "keyhints"},
+	"keyhint":    {"id": "hintid"},
 }
 
 // elementContext names the context of an array's elements.
@@ -184,6 +185,11 @@ func checkCasesValue(d *json.Decoder, depth int, context string) error {
 	}
 	if t == nil {
 		return fmt.Errorf("null is not supported")
+	}
+	// The decoded string field cannot distinguish an absent ID from an empty
+	// one. Check the token while its presence is still known.
+	if context == "hintid" && t == "" {
+		return fmt.Errorf("expect.keyHints id must not be empty")
 	}
 	delim, ok := t.(json.Delim)
 	if !ok {

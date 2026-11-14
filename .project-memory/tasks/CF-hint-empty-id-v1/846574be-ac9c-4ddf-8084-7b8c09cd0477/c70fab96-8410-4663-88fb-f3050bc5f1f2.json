@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "c70fab96-8410-4663-88fb-f3050bc5f1f2",
+  "runId": "846574be-ac9c-4ddf-8084-7b8c09cd0477",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-hint-empty-id-v1",
+    "path": "tasks/CF-hint-empty-id-v1-cases-parity.md",
+    "revision": "02a971b6992af36a7ad1eaed5a12a477604159e0",
+    "blob": "c16def5d25f781a3e1be13684a0b8a0381371c69",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c57a1d83896c0ece9ea24d52133a203fda914d7a975c106d702ce8cf07004f82"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/hint-empty-id-fix",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/139",
+  "at": "2026-11-14T02:09:55.317Z",
+  "summary": "Reject explicit empty hint IDs without changing legacy absent-ID pairs",
+  "next": "Add failing regressions, fix token validation, run checks",
+  "files": [
+    "modeling/tui/cases.go",
+    "modeling/tui/cases_test.go",
+    "modeling/tui/authoring/cases.schema.test.cjs",
+    "tasks/CF-hint-empty-id-v1-cases-parity.md"
+  ]
+}
