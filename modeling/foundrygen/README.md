@@ -54,6 +54,11 @@ All three commands load the project file and the checkout's registry, check the 
 and build each needed generator once into a private temporary directory with
 `go build`. Generators run with an empty environment and a 60 second limit.
 
+Successful generator responses must use the exact compact identity line from
+the contract: four string members in order and one final newline. Trailing
+data, duplicate or missing members, wrong types and extra whitespace fail with
+exit 1.
+
 `check` runs the generator's `check` for every output and reports all of them.
 Drift lines are printed to stderr with the output path in front:
 

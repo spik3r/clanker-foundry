@@ -88,6 +88,16 @@ func parseIdentity(stdout string) (Identity, error) {
 	if err := dec.Decode(&id); err != nil {
 		return id, fmt.Errorf("identity line: %v", err)
 	}
+	// Match the compact wire format checked by the generator conformance suite.
+	var canonical bytes.Buffer
+	enc := json.NewEncoder(&canonical)
+	enc.SetEscapeHTML(false)
+	if err := enc.Encode(id); err != nil {
+		return id, fmt.Errorf("identity line: %v", err)
+	}
+	if stdout != canonical.String() {
+		return id, errors.New("identity line: expected exactly four string members in order, no extra whitespace, and a newline")
+	}
 	if id.Contract != contractID {
 		return id, fmt.Errorf("identity line: contract %q, want %q", id.Contract, contractID)
 	}

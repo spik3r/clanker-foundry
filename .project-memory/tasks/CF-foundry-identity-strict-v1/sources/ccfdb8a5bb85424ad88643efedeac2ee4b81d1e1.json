@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "ccfdb8a5bb85424ad88643efedeac2ee4b81d1e1",
+  "id": "CF-foundry-identity-strict-v1",
+  "path": "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+  "blob": "cd706ea77f9b3b5e02e6a376718a76d7b476f753",
+  "record": "---\nid: CF-foundry-identity-strict-v1\nstatus: in-progress\nowner: Codex identity parser contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Enforce the generator identity line contract\n\n## Implementation claim\n\nOwner: Codex identity parser contributor, delegated by the coordinating session.\nThe owner authorized continued bounded tasks, subagent work, publication and\nreviewed merges. This contributor will publish a PR for coordinator review.\nBase: main at `365caf3`, after PR #140. Open PR #139 changes TUI hint IDs and\ndoes not overlap this claim.\n\nThe generator contract requires exactly four string members, in a fixed order,\nwith no extra whitespace and one final newline. `foundrygen` currently decodes\nonly the first JSON value, accepts duplicate members, and accepts a missing or\nnull profile. Enforce the existing identity wire contract before accepting a\nsuccessful generator response. Add regression cases for trailing data, duplicate\nmembers, missing/null/wrong-type members, whitespace and member order, while\nkeeping valid responses accepted.\n\nScope: `modeling/foundrygen/exec.go`, `modeling/foundrygen/run_test.go`,\n`modeling/foundrygen/README.md`, this task and new immutable Project Memory\nsource/events. No contract changes, generator changes, profile semantics,\nconsumer changes or runtime work.\n\nChecks: observe new regressions fail before the fix; gofmt, go vet and full\nrace-enabled tests in modeling/foundrygen; repository validator; whitespace\nchecks and committed Project Memory validation. The coordinator owns final\nreview and merge; this contributor must not merge the PR.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+        "id": "CF-foundry-identity-strict-v1",
+        "blob": "cd706ea77f9b3b5e02e6a376718a76d7b476f753",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "ae5c21b7-debe-4ac2-ad7f-e6fde041bd34",
+  "runId": "51af5a61-a548-43fc-97e3-e39157262c01",
+  "kind": "complete",
+  "parents": [
+    "83a36448-a718-41da-963a-7bbe75d8bdad"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-identity-strict-v1",
+    "path": "tasks/CF-foundry-identity-strict-v1-wire-contract.md",
+    "revision": "ccfdb8a5bb85424ad88643efedeac2ee4b81d1e1",
+    "blob": "cd706ea77f9b3b5e02e6a376718a76d7b476f753",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6900744fbb2c70cce1fd471b5d135c5b996a0428e841381e8d3abd55558d1db5"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-identity-strict-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T02:11:53.099Z",
+  "summary": "Enforced exact generator identity line bytes using the conformance encoding",
+  "next": "Commit and validate immutable evidence, publish PR for coordinator independent review",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/run_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md"
+  ],
+  "validation": "New TestParseIdentity regressions exposed 13 accepted malformed responses before the fix. Go 1.27.0 go vet ./... and go test -race -count=1 ./... passed in modeling/foundrygen (26.748s). bash scripts/validate.sh passed; optional skills-ref unavailable. git diff --check and git diff --cached --check passed.",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "0c473fb8d4311e1c775e2d6e20e5ad48d25acef2",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/run_test.go": {
+      "blob": "183b3245cb459b7232dc08bcc7d7c232c7f27122",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "3de8caee0e25f2d7fbc5c330cd51bd78c6325355",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-identity-strict-v1-wire-contract.md": {
+      "blob": "cd706ea77f9b3b5e02e6a376718a76d7b476f753",
+      "mode": "100644"
+    }
+  }
+}

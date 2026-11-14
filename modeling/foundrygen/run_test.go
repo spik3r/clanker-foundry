@@ -449,18 +449,48 @@ func TestRunPinMismatchOnFixture(t *testing.T) {
 func TestParseIdentity(t *testing.T) {
 	h := strings.Repeat("a", 64)
 	good := fmt.Sprintf(`{"contract":"foundry-generator/v1","profile":"p/v1","sourceSHA256":"%s","canonicalSHA256":"%s"}`+"\n", h, h)
-	if _, err := parseIdentity(good); err != nil {
-		t.Fatal(err)
-	}
-	for name, s := range map[string]string{
-		"no newline": strings.TrimSuffix(good, "\n"),
-		"two lines":  good + good,
-		"bad hash":   strings.Replace(good, h, "zz", 1),
-		"contract":   strings.Replace(good, "foundry-generator/v1", "x", 1),
-		"extra key":  strings.Replace(good, `"profile"`, `"extra":"1","profile"`, 1),
-	} {
-		if _, err := parseIdentity(s); err == nil {
-			t.Errorf("%s: accepted", name)
+	for _, line := range []string{good, strings.Replace(good, "p/v1", "p<&>/v1", 1), strings.Replace(good, "p/v1", `p\"/v1`, 1)} {
+		if _, err := parseIdentity(line); err != nil {
+			t.Fatalf("valid identity %q: %v", line, err)
 		}
+	}
+	bad := map[string]string{
+		"no newline":                  strings.TrimSuffix(good, "\n"),
+		"two lines":                   good + good,
+		"bad hash":                    strings.Replace(good, h, "zz", 1),
+		"contract":                    strings.Replace(good, "foundry-generator/v1", "x", 1),
+		"extra key":                   strings.Replace(good, `"profile"`, `"extra":"1","profile"`, 1),
+		"trailing object":             strings.TrimSuffix(good, "\n") + "{}\n",
+		"trailing garbage":            strings.TrimSuffix(good, "\n") + "garbage\n",
+		"duplicate profile":           strings.Replace(good, `"profile":"p/v1"`, `"profile":"p/v1","profile":"p/v1"`, 1),
+		"different duplicate profile": strings.Replace(good, `"profile":"p/v1"`, `"profile":"other/v1","profile":"p/v1"`, 1),
+		"case variant duplicate":      strings.Replace(good, `"profile":"p/v1"`, `"Profile":"p/v1","profile":"p/v1"`, 1),
+		"case variant key":            strings.Replace(good, `"contract"`, `"Contract"`, 1),
+		"reordered members":           strings.Replace(good, `"contract":"foundry-generator/v1","profile":"p/v1"`, `"profile":"p/v1","contract":"foundry-generator/v1"`, 1),
+		"leading space":               " " + good,
+		"inner space":                 strings.Replace(good, `,"profile"`, `, "profile"`, 1),
+		"trailing space":              strings.TrimSuffix(good, "\n") + " \n",
+		"CRLF":                        strings.TrimSuffix(good, "\n") + "\r\n",
+	}
+	for _, member := range []struct{ key, value string }{
+		{"contract", "foundry-generator/v1"}, {"profile", "p/v1"},
+		{"sourceSHA256", h}, {"canonicalSHA256", h},
+	} {
+		pair := fmt.Sprintf(`"%s":"%s"`, member.key, member.value)
+		missing := strings.Replace(good, pair+",", "", 1)
+		if missing == good {
+			missing = strings.Replace(good, ","+pair, "", 1)
+		}
+		bad["missing "+member.key] = missing
+		for _, value := range []string{"null", "123", "true", "[]", "{}"} {
+			bad[member.key+" "+value] = strings.Replace(good, pair, fmt.Sprintf(`"%s":%s`, member.key, value), 1)
+		}
+	}
+	for name, line := range bad {
+		t.Run(name, func(t *testing.T) {
+			if _, err := parseIdentity(line); err == nil {
+				t.Fatal("accepted malformed identity")
+			}
+		})
 	}
 }
