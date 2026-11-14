@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "4e4d80fc-cd24-4629-8b25-a1dd7ef6aa67",
+  "runId": "4c5e11a0-4196-4686-b995-5991b58f6677",
+  "kind": "checkpoint",
+  "parents": [
+    "6f27d412-627b-48ea-b5f2-47f3400cd2bc"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-index-flags-v1",
+    "path": "tasks/CF-project-index-flags-v1-visible-baseline.md",
+    "revision": "6aa31d1340433a32d72ae36df80ba94e373cc252",
+    "blob": "120eafdcce1c1b2e88b86ebd53b6dc9f922fdc74",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ba8757bef82733f31ae5b8b2fe6eeec8854be749dbf9844ff415a2969dad71f9"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-index-flags-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:37:48.068Z",
+  "summary": "Coordinator included adjacent baseline status-query failure propagation within the existing script/test scope: a failed empty Git status must not certify a clean pinned checkout",
+  "next": "Prove the status-query false pass with a finite Git seam, explicitly capture status errors, then rerun final setup and installer validation",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "docs/project-shared-base.md",
+    "tasks/CF-project-index-flags-v1-visible-baseline.md"
+  ]
+}
