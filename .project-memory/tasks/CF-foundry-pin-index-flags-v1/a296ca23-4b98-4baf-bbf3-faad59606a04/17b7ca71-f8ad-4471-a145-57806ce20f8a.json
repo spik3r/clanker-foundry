@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "17b7ca71-f8ad-4471-a145-57806ce20f8a",
+  "runId": "a296ca23-4b98-4baf-bbf3-faad59606a04",
+  "kind": "complete",
+  "parents": [
+    "59f5be5e-38ea-4470-b412-d1be7d6bb9b3"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-index-flags-v1",
+    "path": "tasks/CF-foundry-pin-index-flags-v1-visible-source.md",
+    "revision": "f30fea2ef623c91fa3eac418a46defe2aa8bc49e",
+    "blob": "e701af8be2b6b4d899da38ce5af741babc88230a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "13a0b003495b6ec6595ca1a13df087d683eaf63bf7a4a84456bed594068b8fcf"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-pin-index-flags",
+  "pullRequest": null,
+  "at": "2026-11-14T03:45:41.768Z",
+  "summary": "Pinned source verification refuses hidden tracked modeling files without changing index state",
+  "next": "Commit immutable evidence, independently review final SHA, publish PR and await hosted checks",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/pin_flags_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-index-flags-v1-visible-source.md"
+  ],
+  "validation": "All four clean/modified flag regressions failed before the fix; outside-modeling controls passed. Final Go 1.27.0 go vet ./... and full go test -race -count=1 ./... passed in foundrygen (37.318s). Metadata tests cover NUL framing, unknown tags and the exact capture boundary. Flags, index bytes and source bytes remain unchanged on refusal. Repository validator and whitespace passed; optional skills-ref unavailable. Preliminary independent review and focused race tests found no issues.",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "6fef8ffcc5427d3169c09f935ad55b40e08c2ce5",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/pin_flags_test.go": {
+      "blob": "ea15ddc20a7d3e642d8dcba3a65446cfc783d49d",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "bef3fe2d62111d61ad4281e5815abdcb10c2977e",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-index-flags-v1-visible-source.md": {
+      "blob": "e701af8be2b6b4d899da38ce5af741babc88230a",
+      "mode": "100644"
+    }
+  }
+}

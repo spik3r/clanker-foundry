@@ -157,6 +157,13 @@ func (s *session) pin() error {
 	if got := strings.TrimSpace(head); got != s.proj.Revision {
 		return refuse("Foundry checkout is at %s but %s pins %s", got, ProjectFile, s.proj.Revision)
 	}
+	tracked, err := s.git("ls-files", "-v", "-z", "--", "modeling")
+	if err != nil {
+		return err
+	}
+	if err := checkTrackedVisibility(tracked); err != nil {
+		return err
+	}
 	status, err := s.git("status", "--porcelain", "--untracked-files=all", "--", "modeling")
 	if err != nil {
 		return err
@@ -164,6 +171,33 @@ func (s *session) pin() error {
 	if strings.TrimSpace(status) != "" {
 		first := strings.SplitN(strings.TrimSpace(status), "\n", 2)[0]
 		return refuse("Foundry checkout has uncommitted changes under modeling/ (%s)", first)
+	}
+	return nil
+}
+
+// Status deliberately skips files carrying these index flags. Refuse them
+// without changing the caller's index, rather than certifying hidden source.
+func checkTrackedVisibility(list string) error {
+	if len(list) >= maxCapture {
+		return fail("tracked modeling metadata reached the %d-byte capture limit; cannot verify the complete listing", maxCapture)
+	}
+	if list == "" {
+		return nil
+	}
+	if !strings.HasSuffix(list, "\x00") {
+		return fail("tracked modeling metadata is incomplete")
+	}
+	for _, entry := range strings.Split(strings.TrimSuffix(list, "\x00"), "\x00") {
+		if len(entry) < 3 || entry[1] != ' ' {
+			return fail("tracked modeling metadata is malformed")
+		}
+		tag := entry[0]
+		if tag == 'S' || (tag >= 'a' && tag <= 'z') {
+			return refuse("Foundry checkout has an index flag hiding changes under modeling/ (%q); review and remove assume-unchanged or skip-worktree flags", entry[2:])
+		}
+		if !strings.ContainsRune("HMRCK?", rune(tag)) {
+			return fail("tracked modeling metadata has an unknown status")
+		}
 	}
 	return nil
 }
