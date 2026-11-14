@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "89bc7754ded435eb5a19c9bbf9f0730b68c25dba",
+  "id": "CF-model-key-literal-v1",
+  "path": "tasks/CF-model-key-literal-v1-awk-lookup.md",
+  "blob": "736b7636e7d8495e6f3eb5f17814bec17042c91c",
+  "record": "---\nid: CF-model-key-literal-v1\nstatus: in-progress\nowner: Codex model-key maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Compare model lookup keys as literal data\n\n## Implementation claim\n\nOwner: Codex model-key maintenance contributor, delegated by the coordinating\nagent under the owner's continued maintenance request. Main at `3037fb8`,\ncurrent direction, prior resolver claims and active work were reviewed. Earlier\nresolver fixes are complete; other current work does not own these paths.\n\nAn invented profile with tier text backslash-146-ast selects the fast mapping,\nand ba-backslash-154-anced selects balanced, though neither literal key exists.\nAWK interprets backslash escapes in the lookup key passed through -v. A normal\nunknown tier correctly refuses. Model-map names and values are documented data;\nlookup must not reinterpret an absent key into a different configured key.\n\nScope: `scripts/agent-model.sh`, `tests/test-agent-model.sh`, this task and new\nimmutable Project Memory files. Pass the requested key through a command-scoped\nenvironment variable and read it with AWK ENVIRON, preserving literal bytes.\nAdd octal-alias refusal regressions and literal backslash-bearing model-value\ncontrols. Keep existing tier grammar, defaults, map validation, local override\nprecedence, basename selection and CRLF behavior unchanged. Do not edit shared\nmodel names or real local/user configuration, launch agents or contact providers.\n\nChecks: prove the new alias regressions fail before repair; Bash syntax, full\nresolver and model-map regression suites, full installer regressions,\nrepository validation, whitespace and committed Project Memory validation.\nUse only invented scratch profiles/maps and isolated test homes. Commit, push\nand open a PR for independent coordinator review and hosted checks; no merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-model-key-literal-v1-awk-lookup.md",
+        "id": "CF-model-key-literal-v1",
+        "blob": "736b7636e7d8495e6f3eb5f17814bec17042c91c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

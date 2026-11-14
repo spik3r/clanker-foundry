@@ -210,6 +210,29 @@ printf 'claude.fast=invented-a\ntouch %s\n' "$marker" > "$shared"
 expect_error 'shell line rejected' 1 'agents/model-map.conf:2: expected' claude fixture-fast
 [[ ! -e "$marker" ]] || fail 'mapping content was executed'
 
+# Lookup keys are literal data too. AWK -v must not reinterpret an unsupported
+# tier's octal escapes as the spelling of a different, configured tier.
+for location in shared local; do
+  reset_maps
+  printf 'claude.fast=invented-shared-fast\nclaude.balanced=invented-shared-balanced\n' > "$shared"
+  if [[ "$location" == local ]]; then
+    printf 'claude.fast=invented-local-fast\nclaude.balanced=invented-local-balanced\n' > "$local_map"
+  fi
+  for tier in '\146ast' 'ba\154anced' missing; do
+    # shellcheck disable=SC2016
+    printf 'Suggested model tier: `%s`\n' "$tier" > "$fixture/agents/fixture-escaped.md"
+    expect_error "$location literal tier $tier" 1 "No model mapping for claude.$tier" claude fixture-escaped
+  done
+done
+
+# Model values retain their literal backslashes in both files.
+reset_maps
+printf '%s\n' 'claude.fast=invented-\146model' > "$shared"
+expect_model 'shared backslash-bearing value' 'invented-\146model' claude fixture-fast
+printf '%s\n' 'claude.fast=invented-local-\154model' > "$local_map"
+expect_model 'local backslash-bearing override' 'invented-local-\154model' claude fixture-fast
+rm -f "$local_map"
+
 # Unknown or missing selections.
 printf 'claude.fast=invented-a\n' > "$shared"
 expect_error 'missing tier mapping' 1 'No model mapping for codex.fast' codex fixture-fast

@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "5452b9ab-21fa-48a6-92d5-5b93f308b3c4",
+  "runId": "c3b1808d-d011-4982-98df-0b7307fe839d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-model-key-literal-v1",
+    "path": "tasks/CF-model-key-literal-v1-awk-lookup.md",
+    "revision": "89bc7754ded435eb5a19c9bbf9f0730b68c25dba",
+    "blob": "736b7636e7d8495e6f3eb5f17814bec17042c91c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "7c8dcc19f7cda0a152bac940900412b75d795d32f303084e4de0720c6b0d0c1e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/model-key-literal-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T04:01:32.344Z",
+  "summary": "Keep requested model lookup keys literal across AWK invocation",
+  "next": "Add failing octal-alias regressions, fix data transport, run resolver and installer checks",
+  "files": [
+    "scripts/agent-model.sh",
+    "tests/test-agent-model.sh",
+    "tasks/CF-model-key-literal-v1-awk-lookup.md"
+  ]
+}
