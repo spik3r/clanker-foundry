@@ -1,0 +1,237 @@
+{
+  "formatVersion": 2,
+  "eventId": "6f79e45c-b193-4ddb-823e-006542d301bf",
+  "runId": "3f63d976-fc92-4e6a-9194-f86574cc95b9",
+  "kind": "complete",
+  "parents": [
+    "56f076a5-3e88-4eff-a64f-4ae0b7702346"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-bpmn-pool-layout-v1",
+    "path": "tasks/CF-bpmn-pool-layout-v1-lanes-and-channels.md",
+    "revision": "60efe96f83c569d4b2939baf9248d7538540c248",
+    "blob": "48f454cb370c972793a1bce11ce79a832bc67ef2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a5174de6bec565da74eb8303c1dbbc745c1ee9f502a3fc2c1f34b35d2ac3dadc"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-14T06:19:51.878Z",
+  "summary": "Lanes inset for the pool label band, channels inside the pool, and no shared runs between flows into different targets, in both SVG and BPMN; diagramgen 1.2.2 with regenerated examples",
+  "next": "Open PR, watch CI, merge",
+  "files": [
+    "modeling/diagram/CLASS.md",
+    "modeling/diagram/DASHBOARD.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/SEQUENCE.md",
+    "modeling/diagram/class/model_test.go",
+    "modeling/diagram/class/output_test.go",
+    "modeling/diagram/dashboard/model_test.go",
+    "modeling/diagram/dashboard/output_test.go",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/diagram_test.go",
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/order/diagram.bpmn",
+    "modeling/diagram/examples/generated/order/diagram.svg",
+    "modeling/diagram/examples/generated/order/foundry-manifest.json",
+    "modeling/diagram/examples/generated/orders-class/diagram.svg",
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn",
+    "modeling/diagram/examples/generated/parallel/diagram.svg",
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json",
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg",
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/rework/diagram.bpmn",
+    "modeling/diagram/examples/generated/rework/diagram.svg",
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json",
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json",
+    "modeling/diagram/process/bpmn.go",
+    "modeling/diagram/process/helpers_test.go",
+    "modeling/diagram/process/layout.go",
+    "modeling/diagram/process/output_test.go",
+    "modeling/diagram/process/svg.go",
+    "modeling/diagram/sequence/model_test.go",
+    "modeling/diagram/sequence/output_test.go",
+    "tasks/CF-bpmn-pool-layout-v1-lanes-and-channels.md"
+  ],
+  "validation": "Go 1.27.4: modeling/diagram gofmt -l . empty, go vet clean, go test -race -count=1 ./... ok including BPMN geometry checks on examples and 600 random models; modeling/gencontract go test -race ok; node --test modeling/diagram/authoring/*.test.cjs 16 pass; bpmn-moddle check ok on the three process examples. Coordinator looked at the bpmn-js render of rework after the change. scripts/validate.sh PASS (skills-ref skipped). Hosted CI not yet observed",
+  "snapshot": {
+    "modeling/diagram/CLASS.md": {
+      "blob": "da71d4a7676ce4637d38e7812e270159e1885a20",
+      "mode": "100644"
+    },
+    "modeling/diagram/DASHBOARD.md": {
+      "blob": "67073ae1e23e0e842b0781ca9570f10c3de5ccfa",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "934438789bb41f2fca82eb5974141e184f3c40aa",
+      "mode": "100644"
+    },
+    "modeling/diagram/SEQUENCE.md": {
+      "blob": "2251dc10ec3c40a0aef7cd1799545fe831a2452a",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/model_test.go": {
+      "blob": "dc32e9e107cd87b22b7af568571246a67543748e",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/output_test.go": {
+      "blob": "15fc08e38834a38825b8780129b0d6efdb1fb18d",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model_test.go": {
+      "blob": "781cefdc812b29813c0cd1a179abe3313749bbd8",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/output_test.go": {
+      "blob": "206ab23113748cd647e62cb2f739188a9355772e",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "7c4a90d468e1b3ed21a830370b79e2c468b2b2b3",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "d03c96181128a301c8da74c8d2ac35fb114406f3",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg": {
+      "blob": "07563c6cb0ab13262e132c7277948888fea2d0a2",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json": {
+      "blob": "91deb0f2c44405c55f5c2605bf2eef53cb91f532",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html": {
+      "blob": "b640e68c3b96a3138bff2bb328ba6f1af6c88f58",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json": {
+      "blob": "d35895bc8c5ce61a8f058f0bfffa30b7595dec35",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html": {
+      "blob": "0d546f5546d702f3dfc59a142df697bd29289323",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json": {
+      "blob": "f394d06d235df94a374ddb7cdbde651026d0c670",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.bpmn": {
+      "blob": "7cb6c75eb44cb283b7666cce6c626c3f85ccc651",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.svg": {
+      "blob": "e0333c12585abee73715e264d4997a169d2ccbc9",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/foundry-manifest.json": {
+      "blob": "85237c9a549adca7306a2960fdfa0e844935a619",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/diagram.svg": {
+      "blob": "141341f73b7867096c06de244985cfff9ec530e0",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json": {
+      "blob": "53f3ca50c36b4a98ddfd22edfd9213fecc8b22e9",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn": {
+      "blob": "7d9aae55b6b8c2df8a2339005ad726ff48d43dae",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.svg": {
+      "blob": "81002520804a7c30db977531e2cd50d5bf6cc069",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json": {
+      "blob": "241e0211566b9aa865b7db1bd7ece415ddfef26b",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg": {
+      "blob": "fcc832d6103a872c53bd52e34b5044ab10995b1d",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json": {
+      "blob": "bdda3bb94cb7d483af58bae9dba2cac980186cf8",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg": {
+      "blob": "08c89c3cac55cee8103031973aa53f69d4732b8c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json": {
+      "blob": "34c48ee522175e905f8e8ad8bae4c8d372c3333c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.bpmn": {
+      "blob": "d99eedeb9651694c3e4cca57a3d5efbe3fa78acc",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.svg": {
+      "blob": "8a672d51a026884968652b8462e45efaff0b20dd",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json": {
+      "blob": "f6abbeae8eedea4e2a53ab24dfb6cf69bf5025ad",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html": {
+      "blob": "bb9eb56569b53cbce8cdc7e46ceaa872e6f08dff",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json": {
+      "blob": "ed9538cc54fbc36301733833fa925c6d23d62a8f",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/bpmn.go": {
+      "blob": "4e10950228b6fe7317a6050b5dc065adeaa1ddc2",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/helpers_test.go": {
+      "blob": "437bddbb7951304336c3e7572bbce8b067cdd556",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/layout.go": {
+      "blob": "bd623068610a021c303045ea896d933f4a5776fa",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/output_test.go": {
+      "blob": "6543e64e5b8fdaa3840e63ade70d8f20616a362d",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/svg.go": {
+      "blob": "e779387568df6a9448849f222e7f9b79daa667a6",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/model_test.go": {
+      "blob": "3d573480bbb025761287a766bf863c84ad11d0ae",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/output_test.go": {
+      "blob": "a75aef548c6fe68ea52b27e05cfe8446f8d26796",
+      "mode": "100644"
+    },
+    "tasks/CF-bpmn-pool-layout-v1-lanes-and-channels.md": {
+      "blob": "1bbecfa0862729ebc763c9df6fca7a5bbdaadbb1",
+      "mode": "100644"
+    }
+  }
+}

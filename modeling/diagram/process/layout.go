@@ -7,6 +7,7 @@ import "unicode/utf8"
 const (
 	margin     = 20  // outer margin
 	titleH     = 28  // height of the visible title line
+	poolStripW = 30  // width of the pool label band; lanes start this far inside the pool
 	laneStripW = 140 // width of the lane label strip
 	cellW      = 160 // width of a column cell
 	rowH       = 176 // height of one node row inside a lane
@@ -50,7 +51,8 @@ type Point struct{ X, Y int }
 // Box is an axis-aligned rectangle.
 type Box struct{ X, Y, W, H int }
 
-// LaneBox is a lane band. Box covers the label strip and the drawing area.
+// LaneBox is a lane band. Box covers the label strip and the drawing area and
+// starts poolStripW right of the pool's left edge.
 type LaneBox struct {
 	Lane Lane
 	Box  Box
@@ -85,6 +87,7 @@ type FlowPath struct {
 type Layout struct {
 	Width, Height int
 	Title         Point
+	Pool          Box // the whole diagram: the lanes, their label band and the channels
 	Lanes         []LaneBox
 	Nodes         []NodeBox
 	Flows         []FlowPath
@@ -116,6 +119,66 @@ func isGateway(kind string) bool { return kind == KindExclusive || kind == KindP
 //     label zone next to its source. That run is cut at the end of the label
 //     zone so that the labelled piece is a segment no other flow shares.
 func LayoutOf(m Model) Layout {
+	forced := make([]bool, len(m.Flows))
+	for {
+		l := layoutWith(m, forced)
+		pick := -1
+		if a, b := sharedRun(m, l); a >= 0 {
+			// Send the flow with the longer path, which is the one that
+			// runs furthest along another's row, through a channel.
+			pick = a
+			if pathLen(l.Flows[b].Points) > pathLen(l.Flows[a].Points) {
+				pick = b
+			}
+			if forced[pick] {
+				pick = a + b - pick
+			}
+		}
+		if pick < 0 || forced[pick] {
+			return l
+		}
+		forced[pick] = true
+	}
+}
+
+func pathLen(p []Point) int {
+	n := 0
+	for i := 1; i < len(p); i++ {
+		n += max(p[i].X-p[i-1].X, p[i-1].X-p[i].X) + max(p[i].Y-p[i-1].Y, p[i-1].Y-p[i].Y)
+	}
+	return n
+}
+
+// sharedRun finds two flows into different targets with collinear segments
+// that overlap. Flows that must share an exit of an over-full gateway are
+// exempt. It returns -1, -1 when there is none.
+func sharedRun(m Model, l Layout) (int, int) {
+	out := map[string]int{}
+	for _, f := range m.Flows {
+		out[f.From]++
+	}
+	for a := range l.Flows {
+		for b := a + 1; b < len(l.Flows); b++ {
+			fa, fb := l.Flows[a].Flow, l.Flows[b].Flow
+			if fa.To == fb.To || fa.From == fb.From && out[fa.From] > maxExits {
+				continue
+			}
+			for i := 1; i < len(l.Flows[a].Points); i++ {
+				p, q := l.Flows[a].Points[i-1], l.Flows[a].Points[i]
+				for j := 1; j < len(l.Flows[b].Points); j++ {
+					r, u := l.Flows[b].Points[j-1], l.Flows[b].Points[j]
+					if p.Y == q.Y && r.Y == u.Y && p.Y == r.Y && min(max(p.X, q.X), max(r.X, u.X)) > max(min(p.X, q.X), min(r.X, u.X)) ||
+						p.X == q.X && r.X == u.X && p.X == r.X && min(max(p.Y, q.Y), max(r.Y, u.Y)) > max(min(p.Y, q.Y), min(r.Y, u.Y)) {
+						return a, b
+					}
+				}
+			}
+		}
+	}
+	return -1, -1
+}
+
+func layoutWith(m Model, forceChannel []bool) Layout {
 	nodes := m.Nodes
 	idx := map[string]int{}
 	for i, n := range nodes {
@@ -216,25 +279,138 @@ func LayoutOf(m Model) Layout {
 		f := m.Flows[fi]
 		return col[idx[f.From]] + 1, col[idx[f.To]]
 	}
-	slots := make([]int, numCols+1) // width of the slots handed out so far
+	slots := make([]int, numCols+1) // width of the slots handed out
 	padW := make([]int, numCols+1)  // width of the label zone
 	offA := make([]int, len(m.Flows))
 	offB := make([]int, len(m.Flows))
 	for fi := range m.Flows {
-		ga, gb := gutterOf(fi)
-		offA[fi] = slots[ga]
-		slots[ga] += slotStep
-		switch {
-		case labelW[fi] > 0 && overflow[fi]:
-			slots[ga] += labelW[fi] + labelGap
-		case labelW[fi] > 0:
+		if labelW[fi] > 0 && !overflow[fi] {
+			ga, _ := gutterOf(fi)
 			padW[ga] = max(padW[ga], labelW[fi]+labelGap+2)
 		}
-		if gb != ga {
-			offB[fi] = slots[gb]
-			slots[gb] += slotStep
-		} else {
-			offB[fi] = offA[fi]
+	}
+	// Slot order. A flow's horizontal run at its source row may reach its
+	// slot, and its run into the target may start at its slot (the run into
+	// the target is long when the vertical sits in the source's gutter). A run into a
+	// target must not lie on another target's flow leaving a node in the same
+	// row, so in a gutter a slot whose flow runs into row y comes after every
+	// slot of a flow with a different target that leaves row y. Ties and
+	// cycles keep flow-id order.
+	rowOf := make([]int, len(nodes))
+	for i, n := range nodes {
+		rowOf[i] = laneTop[laneIdx[n.Lane]] + sub[i]*rowH
+	}
+	type entry struct {
+		flow   int
+		isB    bool // the slot in the target's gutter
+		fromY  int
+		toY    int
+		hasA   bool // a run at fromY may reach this slot
+		hasB   bool // the run at toY may start at this slot
+		target string
+	}
+	// A flow through a channel (a back edge, or one forced there) has a slot
+	// for each of its two verticals, and none of them is both. Any other flow
+	// shares one slot role between its two ends.
+	forced := append([]bool(nil), forceChannel...)
+	pure := func(fi int) bool { return back[fi] || forced[fi] }
+	before := func(a, b entry) bool { // a must come before b
+		return a.flow != b.flow && a.target != b.target && a.hasA && b.hasB && a.fromY == b.toY
+	}
+	var perGutter [][]entry
+	for {
+		perGutter = make([][]entry, numCols+1)
+		for fi, f := range m.Flows {
+			ga, gb := gutterOf(fi)
+			e := entry{flow: fi, fromY: rowOf[idx[f.From]], toY: rowOf[idx[f.To]], hasA: true, hasB: true, target: f.To}
+			switch {
+			case pure(fi):
+				e.hasB = false
+				perGutter[ga] = append(perGutter[ga], e)
+				e.isB, e.hasA, e.hasB = true, false, true
+				perGutter[gb] = append(perGutter[gb], e)
+			case ga == gb:
+				perGutter[ga] = append(perGutter[ga], e)
+			default:
+				perGutter[ga] = append(perGutter[ga], e)
+				e.isB = true
+				perGutter[gb] = append(perGutter[gb], e)
+			}
+		}
+		// A cycle among shared-role slots cannot be ordered. Send the
+		// lowest-numbered flow in one to a channel and try again.
+		stuck := -1
+		for _, es := range perGutter {
+			placed := make([]bool, len(es))
+			for n := 0; n < len(es); n++ {
+				pick := -1
+				for i := range es {
+					if placed[i] {
+						continue
+					}
+					ok := true
+					for j := range es {
+						if !placed[j] && j != i && before(es[j], es[i]) {
+							ok = false
+							break
+						}
+					}
+					if ok {
+						pick = i
+						break
+					}
+				}
+				if pick < 0 {
+					for i := range es {
+						if !placed[i] && !pure(es[i].flow) && (stuck < 0 || es[i].flow < stuck) {
+							stuck = es[i].flow
+						}
+					}
+					break
+				}
+				placed[pick] = true
+			}
+		}
+		if stuck < 0 {
+			break
+		}
+		forced[stuck] = true
+	}
+	for g, es := range perGutter {
+		placed := make([]bool, len(es))
+		for range es {
+			pick := -1
+			for i := range es {
+				if placed[i] {
+					continue
+				}
+				ok := true
+				for j := range es {
+					if !placed[j] && j != i && before(es[j], es[i]) {
+						ok = false
+						break
+					}
+				}
+				if ok {
+					pick = i
+					break
+				}
+			}
+			placed[pick] = true
+			e := es[pick]
+			off := slots[g]
+			slots[g] += slotStep
+			if e.isB {
+				offB[e.flow] = off
+				continue
+			}
+			offA[e.flow] = off
+			if labelW[e.flow] > 0 && overflow[e.flow] {
+				slots[g] += labelW[e.flow] + labelGap
+			}
+			if ga, gb := gutterOf(e.flow); ga == gb && !pure(e.flow) {
+				offB[e.flow] = off
+			}
 		}
 	}
 	colX := make([]int, numCols)
@@ -293,7 +469,7 @@ func LayoutOf(m Model) Layout {
 		turn := pre[len(pre)-1]
 
 		var pts []Point
-		if !back[fi] {
+		if !back[fi] && !forced[fi] {
 			tries := []int{xa}
 			if side == sideRight && !overflow[fi] {
 				tries = append(tries, xb)
@@ -350,14 +526,15 @@ func LayoutOf(m Model) Layout {
 	if nBottom > 0 {
 		bottomZone = slotPad + slotStep*nBottom
 	}
-	ox := margin + laneStripW
+	ox := margin + poolStripW + laneStripW
 	oy := margin + titleH + topZone
 	var l Layout
 	l.Width = ox + bandW + margin
 	l.Height = oy + areaH + bottomZone + margin
 	l.Title = Point{margin, margin + 16}
+	l.Pool = Box{margin, margin + titleH, poolStripW + laneStripW + bandW, topZone + areaH + bottomZone}
 	for i, ln := range m.Lanes {
-		l.Lanes = append(l.Lanes, LaneBox{ln, Box{margin, oy + laneTop[i], laneStripW + bandW, laneTop[i+1] - laneTop[i]}})
+		l.Lanes = append(l.Lanes, LaneBox{ln, Box{margin + poolStripW, oy + laneTop[i], laneStripW + bandW, laneTop[i+1] - laneTop[i]}})
 	}
 	for _, b := range boxes {
 		b.Box.X += ox

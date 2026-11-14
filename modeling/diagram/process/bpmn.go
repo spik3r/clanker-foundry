@@ -72,10 +72,7 @@ func BPMN(m Model, l Layout, g contract.Generator) []byte {
 
 	fmt.Fprintf(&b, `  <bpmndi:BPMNDiagram id="Diagram.%s">`+"\n", m.ID)
 	fmt.Fprintf(&b, `    <bpmndi:BPMNPlane id="Plane.%s" bpmnElement="Collaboration.%s">`+"\n", m.ID, m.ID)
-	pool := l.Lanes[0].Box
-	for _, ln := range l.Lanes[1:] {
-		pool.H += ln.Box.H
-	}
+	pool := l.Pool
 	shape := func(id, ref string, bx Box, extra string) {
 		fmt.Fprintf(&b, `      <bpmndi:BPMNShape id="%s" bpmnElement="%s"%s>`+"\n", id, ref, extra)
 		fmt.Fprintf(&b, `        <dc:Bounds x="%d" y="%d" width="%d" height="%d"/>`+"\n", bx.X, bx.Y, bx.W, bx.H)

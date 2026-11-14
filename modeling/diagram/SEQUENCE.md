@@ -87,7 +87,7 @@ does.
 | --- | --- |
 | `diagram.svg` | the picture |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.1, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.2, toolchain constant `go1.27.4` |
 
 `diagram.svg` is inert: no script, no event attribute, no external reference, no
 `foreignObject`, no embedded font or image. Every drawn element group carries

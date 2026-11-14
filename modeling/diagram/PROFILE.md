@@ -94,7 +94,7 @@ bytes, file names or paths.
 | `diagram.svg` | the picture |
 | `diagram.bpmn` | BPMN 2.0 XML with diagram interchange |
 | `model.json` | the canonical model, two-space indented, trailing newline |
-| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.1, toolchain constant `go1.27.4` |
+| `foundry-manifest.json` | integrity record: generator `diagramgen` 1.2.2, toolchain constant `go1.27.4` |
 
 No emitted file is `.go` or `.ts`, so the generated-file header rule has
 nothing to apply to. The manifest is an integrity record, not an approval.
@@ -129,7 +129,12 @@ and the diagram interchange elements `BPMNDiagram`, `BPMNPlane`, `BPMNShape`,
 `BPMNEdge`, `Bounds` and `waypoint`. The `participant` is the whole diagram and
 gets its own `BPMNShape`, as importers expect for a pool; every lane and node
 has one shape and every flow one edge, all taken from the same layout as the
-SVG.
+SVG. The participant shape spans the whole drawing, including the channel zones
+above the first lane and below the last. It keeps a 30-unit label band on its
+left: every lane shape starts exactly 30 units right of the participant's left
+edge and ends at its right edge, so the pool name and the lane names do not
+overlap. Every node shape lies inside its lane shape and every waypoint inside
+the participant shape. The SVG draws the same pool rectangle and band.
 
 Model ids become element ids unchanged. Derived ids contain a dot, which model
 ids cannot, so they never collide. `targetNamespace` is the fixed
@@ -167,12 +172,17 @@ order. Positions are not part of the model and cannot be set.
    A flow leaving the top or bottom runs to its own corridor line above or
    below the gateway and turns right there.
 5. Every flow enters the middle of its target's left side. Flows into one
-   target share the last stretch.
+   target share the last stretch. Flows into different targets never share a
+   stretch: slots in a gutter are ordered so that a run into a target does
+   not lie on a run leaving another node in the same row, and a flow that
+   cannot be ordered that way, or whose run would still lie on another's, goes
+   through a channel instead, with its own slot at each end.
 6. A forward flow first tries a route with one vertical segment next to the
    source and, when it leaves rightwards, one next to the target. If a route
    would cross a node, and for every back edge, the flow goes through a channel
    above the first lane or below the last lane, chosen by shorter total travel,
-   with one distinct line per flow.
+   with one distinct line per flow. Channels lie inside the pool, in a zone
+   above or below the lanes.
 7. A flow label sits just above the flow's first horizontal run, in the label
    zone right after the source. That run is cut at the end of the label zone,
    so the labelled piece is a segment of its own that no other flow shares.
@@ -185,7 +195,10 @@ lies inside its lane band; flow segments are axis-aligned; a flow starts on its
 source and ends on its target; no flow segment passes through the interior of
 any node (a gateway exit beside a corner starts on the diamond, inside the
 gateway's own bounding box); vertical segments and channel lines of different
-flows never coincide; every labelled flow has exactly one label, anchored to a
+flows never coincide; flows into different targets share no collinear stretch
+(except flows sharing an exit of a gateway with more than nine outgoing flows);
+every lane starts 30 units inside the pool and every waypoint lies inside the
+pool; every labelled flow has exactly one label, anchored to a
 segment no other flow shares; and no label box overlaps a node box, another
 label box or any flow segment.
 
