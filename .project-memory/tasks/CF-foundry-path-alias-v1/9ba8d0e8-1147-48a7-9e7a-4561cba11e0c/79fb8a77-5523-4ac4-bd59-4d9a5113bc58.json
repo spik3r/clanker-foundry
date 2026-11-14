@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "79fb8a77-5523-4ac4-bd59-4d9a5113bc58",
+  "runId": "9ba8d0e8-1147-48a7-9e7a-4561cba11e0c",
+  "kind": "complete",
+  "parents": [
+    "6762de6b-9093-4ee6-8de0-cd2b8c26f577"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-path-alias-v1",
+    "path": "tasks/CF-foundry-path-alias-v1-filesystem-containment.md",
+    "revision": "d7fe84e94809959e7a76b37b46d14a73b59f3660",
+    "blob": "1f6a586ad81d25e6c9eae784ce94b5fbdfedabc2",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ce9fd6356e899df2c581d088a290c69f8a27fa2c5be95259ce59cdc77c65273a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-path-alias-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T03:04:47.853Z",
+  "summary": "Filesystem identity preflight protects declared inputs and outputs from existing aliases; per-write refresh refuses aliases revealed by earlier installations",
+  "next": "Commit evidence, validate committed diff and publish PR for independent final review and hosted CI",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/path_alias.go",
+    "modeling/foundrygen/path_alias_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md"
+  ],
+  "validation": "APFS red regressions showed plan/generate exiting0 while replacing the model ancestor, plus two absent nested alias outputs falsely reporting success. Full Go1.27.0 foundrygen go vet and go test -race -count=1 -v ./... passed (29.615s). Actual case and Unicode-normalization directory alias fixtures, all-verb hardlinked input protection, missing-model ancestry and per-write nested-alias result passed; valid case-distinct fixture skipped because host filesystem aliases those names. Linux hardlink/ordinary-ancestry cases are present; Linux execution remains hostedCI. Repository validator passed (optional skills-ref unavailable). Staged and unstaged whitespace checks passed.",
+  "snapshot": {
+    "modeling/foundrygen/run.go": {
+      "blob": "52f11e23305a10cfd26616731f907e883f04cadc",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/path_alias.go": {
+      "blob": "e633d7c470600738d3ffc09b2408b2964823b1ec",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/path_alias_test.go": {
+      "blob": "2d879b965ef01941934ee087f5bda6bd6c37c33a",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "984e7c780d03d4f63d231d529dc6325e7eab37fb",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-path-alias-v1-filesystem-containment.md": {
+      "blob": "1f6a586ad81d25e6c9eae784ce94b5fbdfedabc2",
+      "mode": "100644"
+    }
+  }
+}

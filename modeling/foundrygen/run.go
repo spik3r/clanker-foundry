@@ -64,6 +64,9 @@ func (s *session) main(args []string, out *bytes.Buffer) int {
 	if s.proj, err = LoadProject(s.root, s.reg); err != nil {
 		return s.report(err)
 	}
+	if err := s.checkPathAliases(); err != nil {
+		return s.report(err)
+	}
 	if *unpinned {
 		s.say("foundrygen", "warning: --unpinned: Foundry revision and modeling/ state not verified")
 	} else if err := s.pin(); err != nil {
@@ -301,6 +304,10 @@ func ownedDir(path string, fi os.FileInfo) error {
 
 // write generates into a new sibling directory, verifies it, then swaps it in.
 func (s *session) write(st *step) (Identity, error) {
+	// Earlier writes may have given formerly absent names a shared identity.
+	if err := s.checkPathAliases(); err != nil {
+		return Identity{}, err
+	}
 	parent := filepath.Dir(st.out)
 	if err := os.MkdirAll(parent, 0o755); err != nil {
 		return Identity{}, fail("create %s: %v", parent, err)
