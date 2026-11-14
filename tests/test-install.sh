@@ -151,6 +151,32 @@ expect_link 0 'question%3Fname.md?plain=1'
 expect_link 0 '?plain=1'
 expect_link 0 'README.md?ignored=%00%2G%'
 expect_link 0 '?ignored=%00%2G%'
+# One literal angle pair is destination syntax; encoded angles are filenames.
+printf '# Target\n' > "$fixture_repo/<angle.md>"
+printf '# Target\n' > "$fixture_repo/<<nested.md>>"
+printf '# Decoy\n' > "$fixture_repo/<angle-missing.md>"
+printf '# Target\n' > "$fixture_repo/ enclosed name "
+expect_link 0 '<README.md>'
+expect_link 0 '<file name.md>'
+expect_link 1 '<angle-missing.md>'
+grep -qF -- '<angle-missing.md>' "$test_root/link-check.log"
+expect_link 1 '<angle-absent.md>'
+expect_link 0 '<https://example.invalid/absent>'
+expect_link 0 '<http://example.invalid/absent>'
+expect_link 0 '<mailto:nobody@example.invalid>'
+expect_link 0 '<#anchor>'
+expect_link 0 '<>'
+expect_link 0 '<?plain=1>'
+expect_link 0 '<README.md?plain=1#fragment>'
+expect_link 0 '<file%20name.md>'
+expect_link 0 '<hash%23name.md#fragment>'
+expect_link 0 '<question%3Fname.md?plain=1>'
+expect_link 0 '%3Cangle.md%3E'
+expect_link 0 '<%3Cangle.md%3E>'
+expect_link 0 '<%3C%3Cnested.md%3E%3E>'
+expect_link 0 '< enclosed name >'
+expect_link 0 '<ending%0A>'
+expect_link 1 '<README.md%00>'
 [ "$link_failures" -eq 0 ] || exit 1
 rm "$untracked_doc"
 

@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "13522fd249db4ef0691b0a490c62121c31ef6ad1",
+  "id": "CF-validator-angle-wrapper-v1",
+  "path": "tasks/CF-validator-angle-wrapper-v1-relative-links.md",
+  "blob": "cb8df7464b6a752ad3253027370550e9de068d49",
+  "record": "---\nid: CF-validator-angle-wrapper-v1\nstatus: in-progress\nowner: Codex validator maintenance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Resolve angle-wrapped inline link destinations\n\n## Implementation claim\n\nThe coordinator approved this bounded repair after isolated current-main\nfixtures proved false rejection of existing angle-wrapped link destinations and\nfalse acceptance of a literal angle-name decoy. Reviewed main at `66c596c`,\ncurrent task frontiers and open PRs; no PR is open. The newer diagram changes do\nnot overlap the reviewed validator scope.\n\nLimit changes to scripts/validate.sh, existing link fixtures in\ntests/test-install.sh, docs/getting-started.md, this record and new immutable\nProject Memory evidence. Unwrap exactly one matched literal outer angle pair\nbefore existing external/anchor skips, raw query/fragment splitting and percent\ndecoding. Preserve the original extracted target in diagnostics and enclosed\nbytes through direct assignment. Never unwrap after percent decoding.\nKeep encoded angle filenames and encoded nested wrappers literal. Add no title,\nnested-parenthesis or general Markdown parser, dependency or new syntax policy.\n\nProve cases red before repair: existing space/plain targets, missing targets\nwith angle-name decoys, wrapped external/mail/anchor/empty/self destinations,\nand percent/query/fragment interactions. Cover encoded angle filenames and\nnested wrappers, whitespace and decoded newline preservation, NUL refusal and\noriginal diagnostics. Run Bash 3.2 syntax, full installer/link/resolver and\nmodel-map regressions, repository validation, whitespace and fresh committed\nProject Memory coverage. This task may be locally completed after checks without\nclaiming its future PR has merged. Publish for independent exact-head review;\nthe coordinator owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-validator-angle-wrapper-v1-relative-links.md",
+        "id": "CF-validator-angle-wrapper-v1",
+        "blob": "cb8df7464b6a752ad3253027370550e9de068d49",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

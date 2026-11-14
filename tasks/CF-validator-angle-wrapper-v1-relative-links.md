@@ -1,6 +1,6 @@
 ---
 id: CF-validator-angle-wrapper-v1
-status: in-progress
+status: completed
 owner: Codex validator maintenance contributor
 repositories: [spik3r/clanker-foundry]
 ---

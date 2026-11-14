@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "a23e5a54-7a13-48e9-8943-09d9f61089d1",
+  "runId": "8ff738e9-9cb7-4e89-96a7-e9105adaf2eb",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-validator-angle-wrapper-v1",
+    "path": "tasks/CF-validator-angle-wrapper-v1-relative-links.md",
+    "revision": "13522fd249db4ef0691b0a490c62121c31ef6ad1",
+    "blob": "cb8df7464b6a752ad3253027370550e9de068d49",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "dabd8472f68118019295fb2d5069277d76cb573316e472f552789694d842b438"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/validator-angle-wrapper-v1",
+  "pullRequest": null,
+  "at": "2026-11-14T06:34:11.631Z",
+  "summary": "Unwrap one literal angle pair before existing link resolution while preserving original diagnostics",
+  "next": "Prove bounded fixtures red before minimal repair and validation",
+  "files": [
+    "scripts/validate.sh",
+    "tests/test-install.sh",
+    "docs/getting-started.md",
+    "tasks/CF-validator-angle-wrapper-v1-relative-links.md"
+  ]
+}

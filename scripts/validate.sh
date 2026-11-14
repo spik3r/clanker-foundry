@@ -197,8 +197,13 @@ while IFS= read -r -d '' md; do
   # Command substitution would strip trailing newlines from a parent directory.
   case "$md" in */*) dir="${md%/*}" ;; *) dir=. ;; esac
   grep -oE '\]\([^)]+\)' -- "$md" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | while IFS= read -r target; do
-    case "$target" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
-    path="${target%%#*}"
+    # Keep the extracted spelling for diagnostics; unwrap only before decoding.
+    destination="$target"
+    case "$destination" in
+      \<*\>) destination="${destination#<}"; destination="${destination%>}" ;;
+    esac
+    case "$destination" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
+    path="${destination%%#*}"
     path="${path%%\?*}"
     [ -z "$path" ] && continue
     if ! decode_link_path "$path"; then
