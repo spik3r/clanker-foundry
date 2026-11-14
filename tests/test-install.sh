@@ -99,6 +99,47 @@ if (cd "$fixture_repo" && bash scripts/validate.sh) >/dev/null 2>&1; then
 fi
 printf '%s\n' '[valid](README.md)' > "$untracked_doc"
 (cd "$fixture_repo" && bash scripts/validate.sh) >/dev/null
+# URL path escapes name filesystem bytes, not a literal percent spelling.
+link_failures=0
+expect_link() {
+  local expected="$1" target="$2" status=0
+  printf '[guide](%s)\n' "$target" > "$untracked_doc"
+  (cd "$fixture_repo" && bash scripts/validate.sh) > "$test_root/link-check.log" 2>&1 || status=$?
+  if [ "$status" -ne "$expected" ]; then
+    printf 'link %s: expected %s, got %s\n' "$target" "$expected" "$status" >&2
+    link_failures=$((link_failures + 1))
+  fi
+}
+printf '# Target\n' > "$fixture_repo/file name.md"
+printf '# Target\n' > "$fixture_repo/hash#name.md"
+printf '# Target\n' > "$fixture_repo/percent%name.md"
+printf '# Target\n' > "$fixture_repo/double%20name.md"
+printf '# Target\n' > "$fixture_repo/café.md"
+printf '# Target\n' > "$fixture_repo/plus+name.md"
+printf '# Target\n' > "$fixture_repo/back\name.md"
+printf '# Target\n' > "$fixture_repo/"$'ending\n'
+printf '# Target\n' > "$fixture_repo/bad%2G.md"
+printf '# Target\n' > "$fixture_repo/bad%.md"
+printf '# Decoy\n' > "$fixture_repo/missing%20name.md"
+expect_link 0 'file%20name.md'
+expect_link 1 'missing%20name.md'
+expect_link 1 'absent%20name.md'
+expect_link 0 'hash%23name.md#fragment'
+expect_link 0 'percent%25name.md'
+expect_link 0 'double%2520name.md'
+expect_link 0 'caf%C3%A9.md'
+expect_link 0 'caf%c3%a9.md'
+expect_link 0 'plus+name.md'
+expect_link 0 'back\name.md'
+expect_link 0 'ending%0A'
+expect_link 1 'README.md%00suffix'
+expect_link 1 'README.md%00'
+expect_link 0 'bad%2G.md'
+expect_link 0 'bad%.md'
+expect_link 0 'README.md#ordinary-fragment'
+expect_link 0 'https://example.invalid/absent%20name.md'
+expect_link 0 '#anchor'
+[ "$link_failures" -eq 0 ] || exit 1
 rm "$untracked_doc"
 
 bash "$repo_dir/tests/test-agent-model.sh"

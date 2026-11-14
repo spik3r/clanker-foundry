@@ -164,6 +164,29 @@ done
 info "== Relative links =="
 # Extract Markdown links, skip external/anchor/mail, resolve the rest on disk.
 # Inline-code paths and reference-style links are outside this check's scope.
+# Set decoded_path directly: command substitution would strip filename newlines.
+# Decode valid triplets once; malformed escapes remain literal filesystem bytes.
+decode_link_path() {
+  local raw="$1" hex byte LC_ALL=C
+  decoded_path=''
+  while [ -n "$raw" ]; do
+    if [[ "$raw" == %??* ]]; then
+      hex="${raw:1:2}"
+      case "$hex" in
+        [0-9a-fA-F][0-9a-fA-F])
+          [ "$hex" != 00 ] || return 1
+          printf -v byte '\\%03o' "$((16#$hex))"
+          printf -v byte '%b' "$byte"
+          decoded_path+="$byte"
+          raw="${raw:3}"
+          continue ;;
+      esac
+    fi
+    decoded_path+="${raw:0:1}"
+    raw="${raw:1}"
+  done
+}
+
 list_md() {
   # NUL records preserve literal paths instead of Git's quoted display names.
   git ls-files -z --cached --others --exclude-standard -- '*.md' 2>/dev/null \
@@ -177,6 +200,11 @@ while IFS= read -r -d '' md; do
     case "$target" in http://*|https://*|mailto:*|\#*|"") continue ;; esac
     path="${target%%#*}"
     [ -z "$path" ] && continue
+    if ! decode_link_path "$path"; then
+      err "$md: NUL byte in link path -> $target"
+      continue
+    fi
+    path="$decoded_path"
     case "$path" in
       /*) resolved="$repo_dir$path" ;;
       *)  resolved="$dir/$path" ;;
