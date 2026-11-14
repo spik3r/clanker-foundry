@@ -313,7 +313,9 @@ func keyHints(s state, d data) []KeyHint {
 		}
 	}
 	if s.filterOpen {
-		return []KeyHint{{"filter.keep", "enter", "keep"}, {"filter.cancel", "esc", "clear"}}
+		hints := []KeyHint{{"filter.keep", "enter", "keep"}, {"filter.cancel", "esc", "clear"}}
+[[[if not .Hosted]]]		hints = append(hints, KeyHint{"quit", "ctrl+c", "quit"})
+[[[end]]]		return hints
 	}
 	if s.selectedIndex(d) >= 0 {
 		navigation, movement := KeyHint{"open", keyFor(openAction), "open"}, KeyHint{"select", keyFor(downAction) + "/" + keyFor(upAction), "select"}

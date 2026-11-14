@@ -118,7 +118,8 @@ func (m Model) Update(msg tea.Msg)(tea.Model,tea.Cmd){
   m.browser=m.browser.resize(plan(m.width,m.height))
  case tea.KeyPressMsg:
   if m.browser.state.filterOpen {
-   m.browser=m.browser.filterKey(msg.String(),msg.Text,plan(m.width,m.height))
+[[[if not .Hosted]]]   if msg.String()=="ctrl+c" { return m,tea.Quit }
+[[[end]]]   m.browser=m.browser.filterKey(msg.String(),msg.Text,plan(m.width,m.height))
    return m,nil
   }
   return m.handle(actionFor(msg.String()))

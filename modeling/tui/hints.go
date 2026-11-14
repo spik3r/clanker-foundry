@@ -30,7 +30,7 @@ var KeyHintVocabulary = []HintSpec{
 	{"filter.keep", "filter input open", "enter", "keep"},
 	{"filter.cancel", "filter input open", "esc", "clear"},
 	{"filter.clear", "filter kept (text not empty), list focused", "esc", "clear"},
-	{"quit", "standalone browser only; help and filter input closed", "q", "quit"},
+	{"quit", "standalone browser only; help closed (ctrl+c while filter input open)", "q", "quit"},
 }
 
 // KeyHintIDs returns the vocabulary's IDs in documented order.
