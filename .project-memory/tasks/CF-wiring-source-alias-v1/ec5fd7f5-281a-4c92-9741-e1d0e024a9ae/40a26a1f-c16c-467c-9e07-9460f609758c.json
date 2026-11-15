@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "40a26a1f-c16c-467c-9e07-9460f609758c",
+  "runId": "ec5fd7f5-281a-4c92-9741-e1d0e024a9ae",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-wiring-source-alias-v1",
+    "path": "tasks/CF-wiring-source-alias-v1-instruction-files.md",
+    "revision": "dcabddf11c3a9c4c5e89132b9c72bda46ffac1eb",
+    "blob": "61b9f1ee7632721d8da9a36a1fabeaea3091faa6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "de623bd0d2a8ea2173ba6793df35f24c7c572dafab201d0d564b67f534ff0a73"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/wiring-source-alias-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T04:01:41.525Z",
+  "summary": "Refuse Claude memory aliases to existing canonical and planned Stow instruction sources before mutation.",
+  "next": "Freeze owned-copy regressions, prove old-script failures, add narrow identity checks and validate installer compatibility.",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "global-agents/README.md",
+    "tasks/CF-wiring-source-alias-v1-instruction-files.md"
+  ]
+}

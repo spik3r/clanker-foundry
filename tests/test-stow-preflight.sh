@@ -90,6 +90,53 @@ assert_no_backup() {
   test ! -L "$backup"
 }
 
+# The installer knows its future source even when the canonical link is absent.
+# Every source hardlinked below is an OWNED COPY, never the tracked AGENTS.md.
+for state in absent distinct-copy; do
+  new_case "planned-source-alias-$state"
+  fixture_repo="$case_root/owned repo"
+  mkdir -p "$fixture_repo/scripts" "$fixture_repo/global-agents" "$HOME/.claude"
+  cp "$repo_dir/scripts/stow.sh" "$fixture_repo/scripts/stow.sh"
+  cp "$repo_dir/global-agents/wire-global-agents.sh" "$fixture_repo/global-agents/wire-global-agents.sh"
+  cp -p "$repo_dir/global-agents/AGENTS.md" "$fixture_repo/global-agents/AGENTS.md"
+  source="$fixture_repo/global-agents/AGENTS.md"
+  chmod 600 "$source"
+  touch -t 200001010000 "$source"
+  ln "$source" "$HOME/.claude/CLAUDE.md"
+  cp -p "$source" "$case_root/source-before"
+  metadata_before="$(LC_ALL=C ls -ld "$source")"
+  if [ "$state" = absent ]; then rm "$STOW_CANON"; fi
+  before_dirs="$(find "$case_root" -type d | LC_ALL=C sort)"
+  actual=0
+  bash "$fixture_repo/scripts/stow.sh" > "$case_root/stdout" 2> "$case_root/stderr" || actual=$?
+  if [ "$actual" -ne 1 ]; then
+    cat "$case_root/stderr" >&2
+    printf 'Expected planned-source refusal exit 1, got %s.\n' "$actual" >&2
+    exit 1
+  fi
+  grep -qF 'same file as planned instruction source' "$case_root/stderr"
+  assert_calls 0
+  assert_no_backup
+  test ! -e "$HOME/.agents"
+  test ! -e "$HOME/.claude/skills"
+  test ! -e "$HOME/.claude/agents"
+  test ! -e "$CODEX_HOME"
+  test ! -e "$XDG_CONFIG_HOME/opencode"
+  test ! -e "$HOME/.gemini"
+  test "$(find "$case_root" -type d | LC_ALL=C sort)" = "$before_dirs"
+  cmp "$case_root/source-before" "$source"
+  test "$(LC_ALL=C ls -ld "$source")" = "$metadata_before"
+  test ! "$source" -nt "$case_root/source-before"
+  test ! "$source" -ot "$case_root/source-before"
+  test "$HOME/.claude/CLAUDE.md" -ef "$source"
+  if [ "$state" = absent ]; then
+    test ! -e "$STOW_CANON" && test ! -L "$STOW_CANON"
+  else
+    test ! -L "$STOW_CANON"
+    cmp "$repo_dir/global-agents/AGENTS.md" "$STOW_CANON"
+  fi
+done
+
 new_case edited-copy
 printf 'synthetic local edit\n' >> "$STOW_CANON"
 cp "$STOW_CANON" "$case_root/expected"

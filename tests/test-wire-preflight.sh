@@ -94,6 +94,65 @@ for kind in fifo directory symlink dangling; do
   esac
 done
 
+# Copy before linking: a negative control must never alter the tracked source.
+for kind in regular-canonical linked-canonical already-imported; do
+  new_case "$kind-hardlink"
+  source="$canon"
+  if [ "$kind" = linked-canonical ]; then
+    source="$case_root/owned-repo/global-agents/AGENTS.md"
+    mkdir -p "${source%/*}"
+    mv "$canon" "$source"
+    ln -s "$source" "$canon"
+  elif [ "$kind" = already-imported ]; then
+    printf '@%s\n' "$canon" >> "$source"
+  fi
+  chmod 600 "$source"
+  touch -t 200001010000 "$source"
+  ln "$source" "$claude"
+  cp -p "$source" "$case_root/source-before"
+  metadata_before="$(LC_ALL=C ls -ld "$source")"
+  before_dirs="$(find "$case_root" -type d | LC_ALL=C sort)"
+  export FORBIDDEN_TARGET="$claude"
+  for mode in --check wire; do
+    if [ "$mode" = --check ]; then run_helper 1 --check; else run_helper 1; fi
+    grep -qF 'same file as canonical instructions' "$case_root/stderr"
+    assert_no_links
+    test ! -s "$CONTENT_TRACE"
+    cmp "$case_root/source-before" "$source"
+    test "$(LC_ALL=C ls -ld "$source")" = "$metadata_before"
+    test ! "$source" -nt "$case_root/source-before"
+    test ! "$source" -ot "$case_root/source-before"
+    test "$claude" -ef "$source"
+    test "$(find "$case_root" -type d | LC_ALL=C sort)" = "$before_dirs"
+    if [ "$kind" = linked-canonical ]; then
+      test "$(readlink "$canon")" = "$source"
+    fi
+  done
+done
+
+# Identity, not equal content or a generic link-count rule, drives refusal.
+for kind in equal-distinct unrelated-hardlink; do
+  new_case "$kind-memory"
+  cp -p "$canon" "$case_root/canonical-before"
+  if [ "$kind" = equal-distinct ]; then
+    cp "$canon" "$claude"
+    test ! "$claude" -ef "$canon"
+  else
+    printf 'shared Claude-only memory\n' > "$case_root/other-memory"
+    ln "$case_root/other-memory" "$claude"
+  fi
+  run_helper 0 --check
+  assert_no_links
+  run_helper 0
+  run_helper 0
+  cmp "$case_root/canonical-before" "$canon"
+  grep -qxF "@$canon" "$claude"
+  if [ "$kind" = unrelated-hardlink ]; then
+    test "$claude" -ef "$case_root/other-memory"
+    cmp "$claude" "$case_root/other-memory"
+  fi
+done
+
 for kind in absent empty unterminated terminated imported; do
   new_case "$kind-regular-target"
   case "$kind" in

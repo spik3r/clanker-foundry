@@ -56,6 +56,10 @@ check_conflicts() {
     printf 'Cannot wire %s: existing target must be a regular file, not a symlink.\n' "$claude" >&2
     return 1
   fi
+  if [ "$claude" -ef "$CANON" ]; then
+    printf 'Cannot wire %s: same file as canonical instructions.\n' "$claude" >&2
+    return 1
+  fi
 }
 
 if [ "${1:-}" = "--check" ]; then
