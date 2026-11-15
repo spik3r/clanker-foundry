@@ -125,6 +125,125 @@ if grep -q 'Managed orchestration scope' AGENTS.md; then
   exit 1
 fi
 
+# Git subsection names are not whitespace-delimited fields. Values retain LF.
+(
+  export HOME="$test_root/metadata-home" GIT_CONFIG_NOSYSTEM=1
+  mkdir "$HOME"
+  metadata_project="$test_root/metadata-project"
+  git init -q "$metadata_project"
+  git -C "$metadata_project" -c protocol.file.allow=always submodule add -q "$baseline" .agent-baseline
+  cd "$metadata_project"
+  metadata_setup() { bash .agent-baseline/scripts/project-setup.sh "$@"; }
+  metadata_stage() { git add .gitmodules; }
+  metadata_check() {
+    snapshot > "$test_root/metadata-before"
+    metadata_setup --check
+    snapshot > "$test_root/metadata-after"
+    cmp "$test_root/metadata-before" "$test_root/metadata-after"
+    test -z "$(ls -A "$HOME")"
+  }
+  metadata_reject() {
+    metadata_stage
+    for action in engineer --check; do
+      snapshot > "$test_root/metadata-before"
+      if metadata_setup "$action" > "$test_root/metadata-output" 2>&1; then
+        printf 'FAIL  accepted invalid metadata (%s)\n' "$action" >&2
+        exit 1
+      fi
+      snapshot > "$test_root/metadata-after"
+      cmp "$test_root/metadata-before" "$test_root/metadata-after"
+      test -z "$(ls -A "$HOME")"
+    done
+  }
+  metadata_reset() { cp "$test_root/metadata-modules" .gitmodules; }
+  cp .gitmodules "$test_root/metadata-modules"
+  for section in '.agent-baseline' 'shared baseline' $'shared\tbaseline' 'shared\baseline'; do
+    metadata_reset
+    if [ "$section" != .agent-baseline ]; then
+      git config --file .gitmodules --rename-section submodule..agent-baseline "submodule.$section"
+    fi
+    git config --file .gitmodules --add submodule.unrelated.path 'other path'
+    git config --file .gitmodules --add submodule.unrelated.path 'other path'
+    metadata_stage
+    cp .gitmodules "$test_root/metadata-exact"
+    pin_before="$(git ls-files --stage -- .agent-baseline .gitmodules)"
+    metadata_setup engineer
+    metadata_setup engineer
+    metadata_check
+    cmp "$test_root/metadata-exact" .gitmodules
+    test "$(git ls-files --stage -- .agent-baseline .gitmodules)" = "$pin_before"
+  done
+  # URL shape, not authenticity: spaces and tabs are preserved, never fetched.
+  for url in ' local source ' $'local\tsource' '   '; do
+    metadata_reset
+    git config --file .gitmodules submodule..agent-baseline.url "$url"
+    metadata_stage
+    cp .gitmodules "$test_root/metadata-exact"
+    metadata_setup engineer
+    metadata_check
+    cmp "$test_root/metadata-exact" .gitmodules
+  done
+  for path in '' ' .agent-baseline' '.agent-baseline ' $'.agent-baseline\n' $'.agent-\nbaseline'; do
+    metadata_reset
+    git config --file .gitmodules submodule..agent-baseline.path "$path"
+    metadata_reject
+  done
+  for url in '' $'source\n' $'source\nother'; do
+    metadata_reset
+    git config --file .gitmodules submodule..agent-baseline.url "$url"
+    metadata_reject
+  done
+  for extra in '.agent-baseline' 'other path' ''; do
+    metadata_reset
+    git config --file .gitmodules --add submodule..agent-baseline.path "$extra"
+    metadata_reject
+  done
+  for extra in 'source' ''; do
+    metadata_reset
+    git config --file .gitmodules --add submodule..agent-baseline.url "$extra"
+    metadata_reject
+  done
+  metadata_reset
+  git config --file .gitmodules --add submodule.second.path .agent-baseline
+  metadata_reject
+  for key in path url; do
+    metadata_reset
+    git config --file .gitmodules --unset-all "submodule..agent-baseline.$key"
+    metadata_reject
+  done
+  metadata_reset
+  printf '\n[invalid\n' >> .gitmodules
+  metadata_reject
+
+  # A valid prefix cannot conceal a failed Git producer in any changed query.
+  metadata_reset
+  metadata_stage
+  real_git="$(command -v git)"
+  shim="$test_root/metadata-bin"
+  mkdir "$shim"
+  cat > "$shim/git" <<'SHIM'
+#!/usr/bin/env bash
+set -euo pipefail
+kind=''
+for arg in "$@"; do
+  case "$arg" in
+    --get-regexp) kind=names ;;
+    submodule.*.path) [ "$kind" = names ] || kind=paths ;;
+    submodule.*.url) kind=url ;;
+  esac
+done
+"$METADATA_REAL_GIT" "$@"
+if [ "$kind" = "$METADATA_FAIL_QUERY" ]; then exit 37; fi
+SHIM
+  chmod +x "$shim/git"
+  export METADATA_REAL_GIT="$real_git"
+  for METADATA_FAIL_QUERY in names paths url; do
+    export METADATA_FAIL_QUERY
+    PATH="$shim:$PATH" metadata_reject
+  done
+  printf '%s\n' 'PASS  exact submodule metadata names, values, failures and read-only checks'
+)
+
 # Project customizations survive reruns; verification also preserves Git metadata.
 printf '\nLocal project rule.\n' >> AGENTS.md
 printf '\nLocal client rule.\n' >> CLAUDE.md

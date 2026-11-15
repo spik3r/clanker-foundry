@@ -80,19 +80,39 @@ head="$(git_local -C "$baseline" rev-parse --verify HEAD)"
   || fail 'Baseline HEAD must match the staged gitlink. Review the pin, then git add .agent-baseline.'
 [ -f .gitmodules ] && [ ! -L .gitmodules ] || fail 'Missing regular .gitmodules.'
 matches_staged_modules || fail '.gitmodules must match its staged regular file. Review and stage it first.'
-module_key=''
-while IFS=' ' read -r key value; do
-  if [ "$value" = .agent-baseline ]; then
-    [ -z "$module_key" ] || fail 'Duplicate .agent-baseline submodule mappings.'
-    module_key="${key%.path}"
-  fi
-done < <(git_local config --no-includes --file .gitmodules --get-regexp '^submodule\..*\.path$' || true)
-[ -n "$module_key" ] || fail 'Missing .agent-baseline path in .gitmodules.'
-[ "$(git_local config --no-includes --file .gitmodules --get-all "$module_key.path")" = .agent-baseline ] \
-  || fail 'Expected exactly one path for the baseline submodule.'
-module_url="$(git_local config --no-includes --file .gitmodules --get-all "$module_key.url")" \
-  || fail 'Missing baseline URL in .gitmodules.'
-[ -n "$module_url" ] && [[ "$module_url" != *$'\n'* ]] || fail 'Expected one nonempty baseline URL.'
+# Keep key and value records separate: subsection names can contain whitespace.
+# Only keys or fixed match flags cross command substitution, never raw values.
+module_key="$(git_local config --no-includes --file .gitmodules --null --name-only --get-regexp '^submodule\..*\.path$' | {
+  selected='' key=''
+  while IFS= read -r -d '' key; do
+    matches="$(git_local config --no-includes --file .gitmodules --null --get-all "$key" | {
+      count=0 found=false value=''
+      while IFS= read -r -d '' value; do
+        count=$((count + 1))
+        if [ "$value" = .agent-baseline ]; then found=true; fi
+      done
+      [ -z "$value" ] || exit 1
+      if "$found"; then
+        [ "$count" -eq 1 ] || exit 1
+        printf '%s' match
+      fi
+    })" || exit 1
+    if [ "$matches" = match ]; then
+      [ -z "$selected" ] || exit 1
+      selected="$key"
+    fi
+  done
+  [ -z "$key" ] && [ -n "$selected" ] || exit 1
+  printf '%s' "$selected"
+})" || fail 'Expected one exact .agent-baseline path mapping in .gitmodules.'
+git_local config --no-includes --file .gitmodules --null --get-all "${module_key%.path}.url" | {
+  count=0 valid=true value=''
+  while IFS= read -r -d '' value; do
+    count=$((count + 1))
+    if [ -z "$value" ] || [[ "$value" = *$'\n'* ]]; then valid=false; fi
+  done
+  [ -z "$value" ] && [ "$count" -eq 1 ] && "$valid"
+} || fail 'Expected one nonempty baseline URL with no LF in .gitmodules.'
 baseline_index_visible || fail 'Baseline index must be readable with no assume-unchanged or skip-worktree entries. Use a full checkout.'
 baseline_status="$(git_local -C "$baseline" status --porcelain --untracked-files=all --ignore-submodules=none)" \
   || fail 'Cannot read baseline status.'

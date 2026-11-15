@@ -148,6 +148,15 @@ cloning, changing the selection or reviewing a baseline update. Its Git queries
 disable FSMonitor for that invocation, so an existing local `core.fsmonitor`
 command is not run. Local and global Git settings are unchanged.
 
+The subsection name in `.gitmodules` need not equal `.agent-baseline`; Git-valid
+names containing spaces, tabs or backslashes work. The helper requires exactly
+one mapping to the literal `.agent-baseline`, with one path value on that key
+and one nonempty URL value without LF. It preserves other value bytes instead
+of trimming whitespace. Unrelated mappings, including repeated unrelated paths,
+do not select the baseline. Duplicate baseline mappings, malformed metadata and
+failed Git queries are refused before wiring. This checks metadata shape, not
+URL authenticity or reachability; the helper does not fetch the URL.
+
 ## Updates and customizations
 
 Review upstream changes, including changes to instructions and selected skills.
