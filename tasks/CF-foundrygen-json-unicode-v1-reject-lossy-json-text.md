@@ -1,6 +1,6 @@
 ---
 id: CF-foundrygen-json-unicode-v1
-status: in-progress
+status: done
 owner: Codex coordinator with delegated builder
 repositories: [spik3r/clanker-foundry]
 ---
@@ -78,3 +78,46 @@ explicit code/source repository identities. Do not rewrite old memory files.
 Two independent reviews bind the frozen files and final commit/tree. The
 coordinator owns staging, completion, commit, push, PR and normal merge after
 current hosted gates pass. Stop for scope review if another path must change.
+
+## Implementation checkpoint
+
+The Unicode-only preflight now checks original project and registry bytes before
+string decoding. Size limits run first; valid JSON syntax guards the escape
+look-ahead. Invalid syntax still reaches the existing decoder diagnostics. No
+registry schema, path normalization or generator behavior changed.
+
+Maintained public-API tests reproduced the old path loss before the helper was
+added. The final test file was also replayed against unchanged old code after
+a POSIX-only build-trap guard was added. Valid U+FFFD and supplementary filename
+controls already passed; malformed project and registry strings reached later
+work on the old code. They now refuse with exit2 and empty stdout before the
+armed build trap, preserving owned source/output bytes and metadata.
+
+Observed local checks on macOS with Go 1.27.4:
+
+- Focused Unicode race regressions passed, including real plan/generate/check
+  for literal and escaped U+FFFD and emoji filenames.
+- Full foundrygen race tests, vet and build passed.
+- gofmt reported no files; working and staged whitespace checks passed.
+- Pack validation and full installer regressions passed. Optional skills-ref
+  was unavailable.
+
+The executable build-trap test requires a POSIX host and is skipped on Windows;
+other Unicode intake and valid-filename tests have no such guard. Local checks
+do not establish hosted or cross-platform results. The coordinator retains task
+closure, staging, genuine run completion, commit, publication and normal merge.
+No immutable event, prior record, generated artifact, dependency, version,
+registry data, runtime or consumer file changed.
+
+## Local completion
+
+The coordinator independently ran Go 1.27.4 full foundrygen race tests, vet and
+build, plus generator-contract race tests and vet. Pack validation, validator,
+installer and project-setup regressions and ShellCheck passed. The code, tests,
+docs and original source/start evidence stayed unchanged during these checks.
+
+The task is locally complete. The coordinator will fingerprint the staged files,
+commit the new immutable completion and validate the full committed diff using
+Node 24 with explicit code/source identities. Final exact-head review and all
+hosted PR gates remain required before a normal merge. No release, consumer pin
+or runtime activation is part of this result.
