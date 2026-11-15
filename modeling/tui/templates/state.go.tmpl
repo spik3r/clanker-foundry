@@ -44,28 +44,25 @@ func (r item) matches(folded string) bool {
 	return false
 }
 
-// cleanFilterText keeps the printable code points of s: no control characters,
-// no line or paragraph separators, no invalid UTF-8.
-func cleanFilterText(s string) string {
-	return strings.Map(func(r rune) rune {
-		if unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
-			return -1
-		}
-		return r
-	}, strings.ToValidUTF8(s, ""))
-}
-
-// appendFilter adds the clean code points of text to cur, up to maxFilter.
+// appendFilter scans until clean code points fill the remaining query space.
+// A rejected prefix is scanned without copying the input.
 func appendFilter(cur, text string) string {
 	room := maxFilter - utf8.RuneCountInString(cur)
 	if room <= 0 {
 		return cur
 	}
-	add := []rune(cleanFilterText(text))
-	if len(add) > room {
-		add = add[:room]
+	var add [maxFilter]rune
+	n := 0
+	for len(text) > 0 && n < room {
+		r, width := utf8.DecodeRuneInString(text)
+		text = text[width:]
+		if r == utf8.RuneError && width == 1 || unicode.IsControl(r) || r == '\u2028' || r == '\u2029' {
+			continue
+		}
+		add[n] = r
+		n++
 	}
-	return cur + string(add)
+	return cur + string(add[:n])
 }
 
 type data struct {

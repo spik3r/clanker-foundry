@@ -540,3 +540,88 @@ func TestFilterKeyHintIDs(t *testing.T) {
 		t.Fatalf("observed ids %v, want the documented vocabulary %v", got, want)
 	}
 }
+
+// Test the real generated event path. Input and expected text are allocated
+// before measurement. The fixed budget measures allocation, never elapsed time.
+func TestFilterLargeInputAllocation(t *testing.T) {
+	want := strings.Repeat("x", 64)
+	base := fkeys(fnew(t, 80, 12, []Record{{ID: "owned", Name: want}}), "/")
+	for _, fixture := range []struct {
+		name, text string
+		key        bool
+	}{
+		{"paste", strings.Repeat("x", 1<<20), false},
+		{"key text", strings.Repeat("x", 1<<20), true},
+		{"rejected prefix", strings.Repeat("\x00", 1<<20) + want, false},
+	} {
+		t.Run(fixture.name, func(t *testing.T) {
+			var msg tea.Msg = tea.PasteMsg{Content: fixture.text}
+			if fixture.key {
+				msg = tea.KeyPressMsg{Code: 'x', Text: fixture.text}
+			}
+			probe, cmd := base.Update(msg)
+			if cmd != nil || probe.(Model).FilterText() != want || probe.(Model).Shown() != 1 {
+				t.Fatal("large input changed filter semantics or returned a command")
+			}
+			benchmarkFailed := false
+			result := testing.Benchmark(func(b *testing.B) {
+				b.ReportAllocs()
+				for i := 0; i < b.N; i++ {
+					next, cmd := base.Update(msg)
+					if cmd != nil || next.(Model).FilterText() != want || next.(Model).Shown() != 1 {
+						benchmarkFailed = true
+						b.Fatal("large input changed filter semantics or returned a command")
+					}
+				}
+			})
+			// Benchmark failures do not propagate to its parent testing.T.
+			if benchmarkFailed || result.N <= 0 {
+				t.Fatal("benchmark did not complete valid measured Updates")
+			}
+			t.Logf("input=%d, retained=64 code points, bytes/Update=%d", len(fixture.text), result.AllocedBytesPerOp())
+			if result.AllocedBytesPerOp() >= 64*1024 {
+				t.Fatalf("filter append allocated %d bytes/Update; want less than 64 KiB", result.AllocedBytesPerOp())
+			}
+		})
+	}
+}
+
+func TestFilterAppendCompatibility(t *testing.T) {
+	for _, fixture := range []struct{ name, cur, input, want string }{
+		{"empty", "", "", ""},
+		{"replacement versus invalid", "", "\xff\xef\xbf\xbd\xfe", "\ufffd"},
+		{"mixed malformed sequences", "", "a\xe2\x82b\xf0\x9fc\xffd", "abcd"},
+		{"controls and separators", "", "\x00\t\r\n\x7f\u0080\u009f\u2028\u2029x", "x"},
+		{"format characters unchanged", "", "a\u200d\u202eb", "a\u200d\u202eb"},
+		{"astral boundary", strings.Repeat("a", 63), "🙂z", strings.Repeat("a", 63) + "🙂"},
+		{"combining boundary", strings.Repeat("a", 63), "e\u0301", strings.Repeat("a", 63) + "e"},
+		{"late printable", "", strings.Repeat("\x00\xff\u2028", 10000) + "late", "late"},
+		{"full fast path", strings.Repeat("a", 64), strings.Repeat("\xff", 1<<20), strings.Repeat("a", 64)},
+		{"one slot", strings.Repeat("a", 63), "\xff\ufffdz", strings.Repeat("a", 63) + "\ufffd"},
+	} {
+		t.Run(fixture.name, func(t *testing.T) {
+			for _, keyText := range []bool{false, true} {
+				m := fkeys(fnew(t, 80, 12, frecs()), "/")
+				if fixture.cur != "" {
+					m, _ = fsend(m, tea.PasteMsg{Content: fixture.cur})
+				}
+				var msg tea.Msg = tea.PasteMsg{Content: fixture.input}
+				if keyText {
+					msg = tea.KeyPressMsg{Code: 'x', Text: fixture.input}
+				}
+				next, cmd := fsend(m, msg)
+				if cmd != nil || next.FilterText() != fixture.want {
+					t.Fatalf("keyText=%t: got %q, want %q", keyText, next.FilterText(), fixture.want)
+				}
+			}
+		})
+	}
+	// A retained supplementary character counts as one backspace and one slot.
+	m := fkeys(fnew(t, 80, 12, frecs()), "/")
+	m, _ = fsend(m, tea.PasteMsg{Content: strings.Repeat("a", 63) + "🙂ignored"})
+	m, _ = fkey(m, "backspace")
+	m, _ = fsend(m, tea.PasteMsg{Content: "\xff\ufffdlater"})
+	if m.FilterText() != strings.Repeat("a", 63)+"\ufffd" {
+		t.Fatalf("repeated events/backspace: %q", m.FilterText())
+	}
+}

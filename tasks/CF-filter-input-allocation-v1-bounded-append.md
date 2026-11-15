@@ -1,6 +1,6 @@
 ---
 id: CF-filter-input-allocation-v1
-status: in-progress
+status: completed
 owner: Codex filter-input allocation contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -17,7 +17,7 @@ completed implementation runs; leave their records unchanged.
 
 Owned, freshly generated standalone and hosted browsers retain the documented
 64-code-point query limit, but a 1 MiB printable paste or key-text message
-allocates about 4.2 MiB before keeping that prefix. A control prefix followed
+allocates about 4 MiB before keeping that prefix. A control prefix followed
 by printable text also causes input-sized allocation. An independent generated
 browser measurement confirmed the scaling. This is a measured resource issue,
 not a violation of the retained-query limit or a consumer-value result.
@@ -61,3 +61,43 @@ vet, repository validation, whitespace checks and fresh committed Project Memory
 validation. Verify canonical digests, deterministic output and updated manifests.
 Publish for independent exact-head review and hosted checks; the coordinator
 alone owns merge.
+
+## Observed implementation result
+
+The append step now decodes into a fixed 64-rune buffer, skips exactly the prior
+invalid-byte/control/separator set, and stops when the remaining query space is
+filled. The obsolete whole-string cleaning helper is removed. Tuic is 1.5.3;
+model digests, profile identity, dependencies and consumer pins are unchanged.
+
+Before the repair, the original acceptance bytes failed all three allocation
+conditions in both generated embed modes. Printable 1 MiB inputs allocated about
+4,195,800 bytes per Update; a rejected prefix allocated about 1,058,600 bytes.
+The compatibility literals passed. Original acceptance SHA-256:
+`20a0192055a2e5a8f8d276dd195499d855b4d21320b77e022a497f79633247cf`.
+
+Review then found that a detached benchmark failure alone would not fail its
+parent test. The test now checks semantics through the parent before measurement,
+propagates a callback failure flag, and requires a positive measured iteration
+count. The budget and expected strings did not change. Final acceptance SHA-256:
+`eccfafb3d546543b97c8a32d2833cf7d6460cc0f5821e7a8e25935a0d79bd9d8`.
+This is stronger observation, not a new sanitizer policy or unchanged-test-hash
+claim.
+
+Observed with cached offline Go 1.27.4:
+
+- Full TUI module race tests passed (40.909s for the main package).
+- Generator-contract and foundrygen module race tests passed (13.657s and 54.079s).
+- All three modules' `go vet ./...` checks passed.
+- After the final test-only observation changes, generated standalone and hosted
+  filter acceptance passed again with race checks (14.345s).
+- Node 24.15.0 TUI authoring tests passed: 8 tests, no skips, cached AJV 8.20.0.
+
+The full module passes preceded the final test-only observation changes; the
+last generated filter run checks those final bytes. Repository validation and
+whitespace results are recorded separately before completion evidence.
+
+Pinned source registration and the genuine start used Node 24.15.0 before the
+new tests or implementation. This bounded implementation claim is complete;
+independent final review, committed evidence validation and PR publication remain
+next. No merge, human usability result, private consumer trial or runtime
+activation is claimed.

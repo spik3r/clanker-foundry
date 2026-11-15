@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "1b474bc6-5226-4f96-8dd5-d76b42702a6f",
+  "runId": "53ea4974-8125-4c85-8b06-766cc6ad69df",
+  "kind": "complete",
+  "parents": [
+    "17e40b37-7ebe-40a3-b28e-420f8c7aea7d"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-filter-input-allocation-v1",
+    "path": "tasks/CF-filter-input-allocation-v1-bounded-append.md",
+    "revision": "419d096f92bbd49ebe5dd3cd20a7a068e76683ce",
+    "blob": "b81f6f6c9a2ec589c5c5519ef9a66e4ad6c4805c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "71599977af5016bb13ac7b1a268a4c58d06229d754bb00ae3ddf9b910414ea81"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/filter-input-allocation-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T03:40:22.352Z",
+  "summary": "Bound transient filter append allocation with unchanged Unicode and query-limit behavior; qualify tuic 1.5.3.",
+  "next": "Commit reviewed implementation and evidence, validate the full committed diff, and publish for exact-head review and hosted checks.",
+  "files": [
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-filter-input-allocation-v1-bounded-append.md"
+  ],
+  "validation": "Node 24.15.0 and Go 1.27.4. bash scripts/validate.sh in .: passed; bash tests/test-validate.sh in .: passed; bash tests/test-install.sh in .: passed; bash tests/test-project-setup.sh in .: passed; gofmt -l . in modeling/tui: passed; go test -race -count=1 -p=1 ./... in modeling/tui: passed; go vet ./... in modeling/tui: passed; go test -race -count=1 ./... in modeling/gencontract: passed; go vet ./... in modeling/gencontract: passed; go test -race -count=1 ./... in modeling/foundrygen: passed; go vet ./... in modeling/foundrygen: passed; npm ci --prefix runtime --ignore-scripts --no-fund --no-audit, offline cache and disabled user config in .: passed; node --test modeling/lifecycle/authoring/schema.test.cjs modeling/tui/authoring/schema.test.cjs modeling/tui/authoring/cases.schema.test.cjs modeling/jsonvalidator/authoring/schema.test.cjs modeling/diagram/authoring/schema.test.cjs modeling/diagram/authoring/dashboard.schema.test.cjs modeling/diagram/authoring/sequence.schema.test.cjs modeling/diagram/authoring/class.schema.test.cjs in .: passed. Govulncheck 1.9.0: compiler and freshly generated module source scans passed for linux/amd64, darwin/arm64 and windows/amd64; no vulnerabilities found in all six. Two independent reviews passed, including byte-pair sanitizer parity and a private wrong-benchmark-result mutation that fails the outer test. Optional skills-ref unavailable.",
+  "snapshot": {
+    "modeling/tui/templates/state.go.tmpl": {
+      "blob": "7117d1b18eabcfdd0ca62ecafb7f3b92b18ee221",
+      "mode": "100644"
+    },
+    "modeling/tui/acceptance/filter_test.go.txt": {
+      "blob": "f75ca231327130561c912cfced516deaf10276d9",
+      "mode": "100644"
+    },
+    "modeling/tui/generated_test.go": {
+      "blob": "d7ff70d5e0603a598f8a52945208732afd0768f4",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "7b30a5e2ff532d535ab543640a0957745e750899",
+      "mode": "100644"
+    },
+    "modeling/tui/contract_test.go": {
+      "blob": "1bee0e46e34423eb9bff71f5ae9f65240f60bd3f",
+      "mode": "100644"
+    },
+    "modeling/tui/hosted_test.go": {
+      "blob": "0f9632cf1cd5ae63579a632b175b45b740748554",
+      "mode": "100644"
+    },
+    "modeling/tui/options_test.go": {
+      "blob": "e310251a08bbbb8d70eb2f4d09255d4393afb769",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "c688d19a4429dad06f1bdbde9dbe6210a762345e",
+      "mode": "100644"
+    },
+    "modeling/tui/PROFILE.md": {
+      "blob": "b9441da4115721ae1d82ea71ad4ec11da9c69086",
+      "mode": "100644"
+    },
+    "tasks/CF-filter-input-allocation-v1-bounded-append.md": {
+      "blob": "dda22e5b599bc39bffadb5e33194397ea3b39026",
+      "mode": "100644"
+    }
+  }
+}
