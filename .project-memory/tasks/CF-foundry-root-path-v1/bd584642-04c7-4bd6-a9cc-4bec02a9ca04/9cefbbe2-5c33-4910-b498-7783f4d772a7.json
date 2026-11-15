@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "9cefbbe2-5c33-4910-b498-7783f4d772a7",
+  "runId": "bd584642-04c7-4bd6-a9cc-4bec02a9ca04",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-root-path-v1",
+    "path": "tasks/CF-foundry-root-path-v1-physical-selection.md",
+    "revision": "f8600a87400bd1d771d8be907bf60c5154f80bd6",
+    "blob": "50354dcfd192f6bbe1cedd0784eb4e5b37cd2dcd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6b8607e1441246f0d92cd1911f51b28e0dc33757b85db77024914e64fcb4d441"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-root-path-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T02:54:53.556Z",
+  "summary": "Resolve original project and Foundry root paths before lexical cleanup while preserving allowed root aliases.",
+  "next": "Implement the bounded root-selection repair and validate physical identity, CLI selection and generator integration.",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/root_path_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-root-path-v1-physical-selection.md"
+  ]
+}

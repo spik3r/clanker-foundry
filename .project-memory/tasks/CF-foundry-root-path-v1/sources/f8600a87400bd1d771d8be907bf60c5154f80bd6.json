@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "f8600a87400bd1d771d8be907bf60c5154f80bd6",
+  "id": "CF-foundry-root-path-v1",
+  "path": "tasks/CF-foundry-root-path-v1-physical-selection.md",
+  "blob": "50354dcfd192f6bbe1cedd0784eb4e5b37cd2dcd",
+  "record": "---\nid: CF-foundry-root-path-v1\nstatus: in-progress\nowner: Codex Foundry root-path contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Preserve the filesystem meaning of CLI root paths\n\n## Implementation claim\n\nOwner: Codex Foundry root-path contributor, delegated by the coordinator under\nthe repository owner's request for reviewed, tested and merged Foundry work.\nBase: main at `5a476742e61e5a4980d3e4cefa36ee59aa421ff1`.\n\nAn owned fixture reproduced `foundrygen` selecting a different directory when\na CLI root contains a symlink followed by `..`. The root helper cleans the path\nbefore consulting the filesystem. A separate CLI fixture confirmed that `plan`\nloaded the lexical decoy's project document instead of the physically named one.\nThis establishes wrong-root selection, not demonstrated output corruption.\n\nResolve the original `--project` and `--foundry` root spellings before lexical\ncleanup. Keep accepted terminal and ancestor root aliases, current-directory and\nempty project-root behavior. Refuse missing intermediate components and\nnon-directory components instead of cleaning them into a different valid root.\nKeep the existing restrictions on model and output paths within the selected\nroot. Resolution is an ordinary observation, not a lock or a hostile-race guard.\n\nScope: `modeling/foundrygen/run.go`, new\n`modeling/foundrygen/root_path_test.go`, `modeling/foundrygen/README.md`, this\ntask record and new immutable Project Memory source/event files. No generator,\ntemplate, profile, version, runtime, installer or existing task-history changes.\nNo consumer changes or runtime activation.\n\nThe coordinator checked current PRs and Project Memory frontiers: no competing\nwork is active. The earlier generation-plan and path-alias changes are merged;\ntheir records remain unchanged. This claim covers root selection only.\n\n## Validation\n\nCheck actual directory identity for absolute and relative interior-alias paths,\nordinary aliases, spaced and Unicode paths, and current-directory spellings.\nExercise all three CLI verbs with distinct invalid project and registry markers\nto prove which roots are read before any generator executes. Check refusal,\nempty stdout and preserved fixture bytes. Include missing and file-component\ncontrols with valid lexical decoys. Use an existing public generator fixture for\na successful direct-versus-aliased integration check.\n\nRun full foundrygen race tests and vet, the repository validator, whitespace\nchecks and committed Project Memory validation. Record observed commands and\nresults, including any platform-dependent test skips. Publish a PR for independent\nreview; only the coordinating agent may merge after checking the final head.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-root-path-v1-physical-selection.md",
+        "id": "CF-foundry-root-path-v1",
+        "blob": "50354dcfd192f6bbe1cedd0784eb4e5b37cd2dcd",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
