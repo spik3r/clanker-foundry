@@ -3,7 +3,7 @@
   "profile": "class-diagram/v1",
   "generator": {
     "id": "diagramgen",
-    "version": "1.2.2",
+    "version": "1.3.0",
     "toolchain": "go1.27.4"
   },
   "model": {
@@ -12,7 +12,7 @@
   "files": [
     {
       "path": "diagram.svg",
-      "sha256": "b1c5311b46847cf7c3c20ea4948130ab9859b26e72b675a7ba10fbffe309579c",
+      "sha256": "6ce0d5305eb934d7727b18ae62348d7ffa97adc056616348993a7fe5a9eec391",
       "bytes": 9279
     },
     {

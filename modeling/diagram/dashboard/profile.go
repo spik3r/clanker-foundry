@@ -29,11 +29,12 @@ func (Profiler) Generate(raw []byte, g contract.Generator) (contract.Generated, 
 	if err != nil {
 		return contract.Generated{}, err
 	}
-	return contract.Generated{
-		Canonical: canonical,
-		Files: map[string][]byte{
-			FileHTML:  Render(m, g),
-			FileModel: pretty,
-		},
-	}, nil
+	files := map[string][]byte{FileModel: pretty}
+	if m.Target == TargetSolid {
+		files[FileJSX] = RenderSolid(m, g, contract.HexSum(canonical))
+		files[FileCSS] = []byte(solidCSS)
+	} else {
+		files[FileHTML] = Render(m, g)
+	}
+	return contract.Generated{Canonical: canonical, Files: files}, nil
 }

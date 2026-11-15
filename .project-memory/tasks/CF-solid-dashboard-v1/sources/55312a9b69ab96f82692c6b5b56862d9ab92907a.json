@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "55312a9b69ab96f82692c6b5b56862d9ab92907a",
+  "id": "CF-solid-dashboard-v1",
+  "path": "tasks/CF-solid-dashboard-v1-jsx-target.md",
+  "blob": "21bad962292d8658a5b158a03eace48c2c9aa636",
+  "record": "---\nid: CF-solid-dashboard-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add a Solid component target to the dashboard profile\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff. This is the first\nstep of the second-consumer trial in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md). The repository\nowner approved the trial on 15 November 2026: generated SolidJS components\nfor the heisentick research pages.\n\nScope: an optional `target` member (`html` default, or `solid`) of\n`dashboard/v1` in `modeling/diagram/`. With `solid`, `diagramgen` emits\n`Dashboard.jsx` and `dashboard.css`, reading host CSS custom properties, with\nchart geometry shared with the HTML output. Models without the member keep\ntheir digest and bytes. Also: `diagramgen` 1.3.0 with regenerated examples,\none new example, the schema, docs, the registry, this task record and new\nimmutable Project Memory files.\n\nExclusions: the heisentick application itself, other profiles' layouts, the\nharness code and the contract text.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-solid-dashboard-v1-jsx-target.md",
+        "id": "CF-solid-dashboard-v1",
+        "blob": "21bad962292d8658a5b158a03eace48c2c9aa636",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
