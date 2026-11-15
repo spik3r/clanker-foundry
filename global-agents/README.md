@@ -80,6 +80,21 @@ lean on the global base for everything generic. See
 The installer wires all supported clients; it has no single-client flag. For a
 project-local choice without global changes, use the shared-base setup below.
 
+## Claude memory source conflicts
+
+Claude's memory file must be separate from the canonical instructions. Wiring
+refuses a regular `~/.claude/CLAUDE.md` that is a hardlink to the canonical file,
+including when the canonical path is a symlink. Otherwise adding the import
+would change the instructions themselves. The installer's preflight also checks
+this repository's `global-agents/AGENTS.md` before Stow runs, even when the
+canonical link has not been created yet.
+
+The scripts refuse the conflict without unlinking, copying or repairing either
+file. Inspect the files and preserve any Claude-only memory, then make that
+memory file independent before rerunning. Equal content in two separate files
+is allowed. These checks protect the known instruction sources, not every other
+hardlink or a concurrent filesystem change; installation is not a transaction.
+
 ## Verifying it loaded
 
 **Codex** — start a new session in the project after installation. Check the global

@@ -1,6 +1,6 @@
 ---
 id: CF-wiring-source-alias-v1
-status: in-progress
+status: completed
 owner: Codex wiring source-alias contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -59,3 +59,37 @@ ShellCheck if installed, whitespace and fresh committed Project Memory validatio
 Use real GNU Stow acceptance only when already available, always against scratch
 homes. Report optional or platform-dependent skips. Publish for independent
 exact-head review and hosted checks; the coordinator alone owns merge.
+
+## Observed implementation result
+
+The helper now compares Claude memory with the actual canonical instructions
+after its existing leaf checks. The installer separately compares that memory
+with its planned repository source before any Stow call. Both use file identity,
+not equal contents or a generic link-count restriction. No automatic repair or
+instruction-source edit was added.
+
+The focused regression scripts were frozen before production edits. On the old
+scripts, canonical hardlink preflight returned 0 instead of 1, and the planned
+source fixture reached the recording Stow seam instead of refusing. The same
+regressions now pass; their SHA-256 values remain:
+
+- Wiring tests: `b69c6d27ca4bc804c3653ac14e451bdd2ecac74c10d19cfdb96a9fef76767e98`.
+- Stow tests: `d75c516471ea14984720b255423e01d4de947cafac20226db2abc9a36ac9b8ba`.
+
+Observed local checks:
+
+- Both focused suites passed with Bash 3.2.57.
+- Separate Bash syntax checks passed for all four changed shell scripts.
+- ShellCheck passed for those four scripts.
+- Full `tests/test-install.sh` passed, including real GNU Stow installation and
+  rerun controls against scratch homes, plus existing resolver tests.
+- A real GNU Stow replay in an owned copied pack refused the planned-source
+  alias before creating canonical or shared targets. Source bytes, inode, mode
+  and mtime remained unchanged.
+- `scripts/validate.sh` passed; optional `skills-ref` was not installed.
+- Whitespace checks passed. The tracked instruction source still matches HEAD.
+
+Pinned registration and the genuine start used Node 24.15.0 before the new tests
+or code edits. This bounded implementation claim is complete; independent final
+review, completion evidence, committed validation and PR publication remain next.
+No real-home installation, merge or runtime activation is claimed.

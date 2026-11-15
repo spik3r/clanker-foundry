@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "05421eef-7981-4a73-9d92-6915917306fb",
+  "runId": "ec5fd7f5-281a-4c92-9741-e1d0e024a9ae",
+  "kind": "complete",
+  "parents": [
+    "40a26a1f-c16c-467c-9e07-9460f609758c"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-wiring-source-alias-v1",
+    "path": "tasks/CF-wiring-source-alias-v1-instruction-files.md",
+    "revision": "dcabddf11c3a9c4c5e89132b9c72bda46ffac1eb",
+    "blob": "61b9f1ee7632721d8da9a36a1fabeaea3091faa6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "de623bd0d2a8ea2173ba6793df35f24c7c572dafab201d0d564b67f534ff0a73"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/wiring-source-alias-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T04:14:58.429Z",
+  "summary": "Refused Claude memory aliases to existing canonical and planned Stow instruction sources before mutation; independent equal-content files remain supported.",
+  "next": "Commit the reviewed files and new immutable evidence, validate the full committed diff, then publish for exact-head hosted checks and coordinator review.",
+  "files": [
+    "global-agents/wire-global-agents.sh",
+    "scripts/stow.sh",
+    "tests/test-wire-preflight.sh",
+    "tests/test-stow-preflight.sh",
+    "global-agents/README.md",
+    "tasks/CF-wiring-source-alias-v1-instruction-files.md"
+  ],
+  "validation": "Coordinator Bash syntax loop, pack validator, validator regressions, full installer regressions with GNU Stow, project shared-base regressions and all-script ShellCheck passed. Tracked canonical instruction bytes stayed unchanged. Frozen regressions failed on old scripts before production edits and passed unchanged after both identity gates. Two independent frozen reviews found no issues; copied-pack real GNU Stow probes refused both aliases and accepted equal-but-distinct memory install and rerun. Optional skills-ref unavailable. Staged whitespace and exact eight-file frozen hashes verified.",
+  "snapshot": {
+    "global-agents/wire-global-agents.sh": {
+      "blob": "ca246b96b528054461d59e0066377880764419c7",
+      "mode": "100755"
+    },
+    "scripts/stow.sh": {
+      "blob": "2eb5d31a8298b3b92881c2c3beba1244b6914b27",
+      "mode": "100755"
+    },
+    "tests/test-wire-preflight.sh": {
+      "blob": "c2562b4491ca6d66d90931d12926b31c3fad3ae6",
+      "mode": "100755"
+    },
+    "tests/test-stow-preflight.sh": {
+      "blob": "4b5c7f07530b60a17eecea404442c2eb7a3421f1",
+      "mode": "100755"
+    },
+    "global-agents/README.md": {
+      "blob": "13182658b9a25ab59a0e32ebb4f9ecb69efba3ea",
+      "mode": "100644"
+    },
+    "tasks/CF-wiring-source-alias-v1-instruction-files.md": {
+      "blob": "2e7dc980a5f1300644365706ba16a51558b19a47",
+      "mode": "100644"
+    }
+  }
+}

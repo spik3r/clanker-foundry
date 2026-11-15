@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "dcabddf11c3a9c4c5e89132b9c72bda46ffac1eb",
+  "id": "CF-wiring-source-alias-v1",
+  "path": "tasks/CF-wiring-source-alias-v1-instruction-files.md",
+  "blob": "61b9f1ee7632721d8da9a36a1fabeaea3091faa6",
+  "record": "---\nid: CF-wiring-source-alias-v1\nstatus: in-progress\nowner: Codex wiring source-alias contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse instruction-source aliases before wiring\n\n## Implementation claim\n\nOwner: Codex wiring source-alias contributor, delegated by the coordinator\nunder the repository owner's continued reviewed-maintenance request. Reviewed\nmain: `667fe7d8ebef15ae7a4a7b3371b004e0c7cff370`. No PR or active Project Memory\nfrontier competes with this scope. Earlier installer and parent-preflight runs\nare complete and merged in PRs 103 and 150; do not reopen or edit those records.\n\nOwned fixtures reproduced the wiring helper accepting a regular Claude memory\nfile that is a hardlink to canonical instructions. Wiring then appends the\ncanonical import into that same file and exits successfully. With a Stow-style\ncanonical symlink, this changes the owned repository source. A real GNU Stow\nfixture also reproduced the problem when the canonical path was initially\nabsent: the planned source became canonical only after Stow ran.\n\nAdd two narrow identity checks. The shared wiring preflight must refuse Claude\nmemory that is the same file as the existing canonical instructions, before\nmkdir, content tools or client links. Stow must also refuse Claude memory that\nis the same file as its planned repository instruction source, before any Stow\ncall. Follow canonical aliases for this identity check without banning unrelated\nhardlinks, directory aliases or supported canonical symlinks.\n\nRefuse without automatic unlinking, copying or repair. Preserve independent\nregular memory, equal-but-distinct files, append/newline/rerun behavior, existing\ntarget and parent refusals, migration and backup rules. These are ordinary\npreflight observations, not a transaction or a concurrent-replacement guard.\n\nScope: `global-agents/wire-global-agents.sh`, `scripts/stow.sh`,\n`tests/test-wire-preflight.sh`, `tests/test-stow-preflight.sh`,\n`global-agents/README.md`, this task and new immutable Project Memory files.\nNo instruction-source edits, real-home installation, generator, dependency,\nworkflow, consumer, runtime or historical evidence changes. Add no CLI flag.\n\n## Validation\n\nFreeze regressions and show failures on unchanged scripts before repairing\nthem. Use only owned scratch homes and copied fixture repositories. Never\nhardlink a test target to the real tracked `global-agents/AGENTS.md`.\n\nTest both direct check and execution with regular canonical files and canonical\nsymlinks, including already-present imports. Require refusal, unchanged source\nbytes/mode/mtime and original links, no content-tool calls and no client links.\nFor Stow, cover an absent canonical path and a distinct existing canonical copy\nwhen Claude aliases the owned planned source. Require zero Stow calls and no\nnew shared targets, canonical link or backup. Keep equal-but-distinct files and\nordinary installation controls successful.\n\nRun Bash syntax, both focused suites, full installer regressions, pack validation,\nShellCheck if installed, whitespace and fresh committed Project Memory validation.\nUse real GNU Stow acceptance only when already available, always against scratch\nhomes. Report optional or platform-dependent skips. Publish for independent\nexact-head review and hosted checks; the coordinator alone owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-wiring-source-alias-v1-instruction-files.md",
+        "id": "CF-wiring-source-alias-v1",
+        "blob": "61b9f1ee7632721d8da9a36a1fabeaea3091faa6",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

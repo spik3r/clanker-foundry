@@ -8,6 +8,12 @@ repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # wiring conflict from leaving a partially installed pack.
 "$repo_dir/global-agents/wire-global-agents.sh" --check
 
+# The canonical path may not exist yet, but this source will become its target.
+if [ "$HOME/.claude/CLAUDE.md" -ef "$repo_dir/global-agents/AGENTS.md" ]; then
+  printf 'Cannot stow %s: same file as planned instruction source.\n' "$HOME/.claude/CLAUDE.md" >&2
+  exit 1
+fi
+
 if ! command -v stow >/dev/null 2>&1; then
   printf '%s\n' 'GNU Stow is required. Install it, then run scripts/stow.sh.' >&2
   exit 1
