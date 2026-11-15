@@ -1,6 +1,6 @@
 ---
 id: CF-workspace-tree-names-v1
-status: in-progress
+status: done
 owner: Codex coordinator with delegated builder
 repositories: [spik3r/clanker-foundry]
 ---
@@ -78,3 +78,47 @@ Two independent reviewers bind frozen files and final commit/tree. The coordinat
 alone commits, pushes, creates the PR and merges normally after all current hosted
 gates pass, including orchestration Node 24 and its live isolation CI fixture.
 Local fake-host checks do not establish a live-host result or runtime activation.
+
+## Observed implementation and checks
+
+The candidate reader now decodes the bounded whole tree capture with fatal UTF-8
+and preserves BOM characters. A malformed capture returns fixed
+`WORKSPACE_GIT_ERROR` before records, blob lookup, candidate directory creation or
+host verification. Valid names retain the existing framing and path rules.
+
+The maintained public-API tests first ran against unchanged production code.
+An initial positive fixture put composed and decomposed names in one candidate;
+this host filesystem aliases those spellings, so it refused the second file.
+The final fixture tests each valid spelling separately. The frozen tests also
+cover malformed names before and after a real U+FFFD entry in Git's byte order.
+After the test indentation review, the final test file was replayed against the
+old production source: 17 tests, eight valid-name passes and nine refusal failures.
+Its SHA-256 is
+`2d6e28f837b3e71ceb9070f56895cbf6702cdb470a9ffcb13b6492e56440e3df`.
+
+Actual Node 24.15.0 passed all 17 focused tests and all 350 runtime tests with no
+skips. The first full run passed 349 tests and failed the offline consumer test
+because npm could not write to the ambient user cache. A task-owned npm cache,
+seeded with the lockfile-pinned dependencies, allowed the full rerun to pass;
+no user cache permissions or contents were changed. Pinned npm installation used
+`--ignore-scripts`. Repository pack validation and installer regressions passed;
+optional skills-ref was unavailable. Whitespace checks passed.
+
+These checks use owned Git objects, a command recorder and invented host callbacks.
+They do not run a provider, container, authority database or dispatch and do not
+establish a live-host isolation result. Independent final review, committed
+Project Memory completion and hosted checks remain pending with the coordinator.
+
+## Coordinator local completion
+
+An independent coordinator run on Node 24.15.0 installed the locked dependencies
+with scripts disabled and an owned npm cache. The full runtime suite passed
+350 tests with zero failures, skips or cancellations. Pack validation, validator,
+installer and project-setup regressions and ShellCheck passed. Runtime source,
+regressions, README and original source/start evidence stayed unchanged.
+
+Local implementation is complete. The coordinator will complete the genuine run
+from actual staged blobs and validate the committed diff. Exact-head independent
+review and all hosted gates, including the live isolation fixture, remain required
+before normal merge. No live host, provider, authority database or dispatch was
+used for local qualification.

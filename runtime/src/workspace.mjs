@@ -72,8 +72,14 @@ async function gitOutput(root, args, maxBuffer = 16 * 1024 * 1024) {
 }
 
 function parseTree(treeBytes) {
+  let text;
+  try {
+    text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(treeBytes);
+  } catch {
+    fail('WORKSPACE_GIT_ERROR', 'Pinned repository tree is not valid UTF-8');
+  }
   const records = new Map();
-  for (const record of treeBytes.toString('utf8').split('\0')) {
+  for (const record of text.split('\0')) {
     if (!record) continue;
     const tab = record.indexOf('\t');
     if (tab < 0) fail('WORKSPACE_GIT_ERROR', 'Pinned repository tree is malformed');
