@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "75b28715-bf01-46eb-9bd2-b57415bc9357",
+  "runId": "ce7d8f13-e906-4e93-b9f4-c3cccd4310b8",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-workspace-tree-names-v1",
+    "path": "tasks/CF-workspace-tree-names-v1-lossless-git-metadata.md",
+    "revision": "c6fa9a8251761464a6b7a354248874dbdac76f56",
+    "blob": "7530f1ade423356d1eb99127c127fc75569b9d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a472472cd42a589088582232f39e34c467efc4e55a0685175dcb53e13f986b18"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/workspace-tree-names",
+  "pullRequest": null,
+  "at": "2026-11-15T09:59:11.373Z",
+  "summary": "Reject malformed UTF-8 Git tree metadata before exact workspace path selection",
+  "next": "Freeze literal Git-object regressions and observe old-code failures before production edits",
+  "files": [
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-tree-names.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-workspace-tree-names-v1-lossless-git-metadata.md"
+  ]
+}

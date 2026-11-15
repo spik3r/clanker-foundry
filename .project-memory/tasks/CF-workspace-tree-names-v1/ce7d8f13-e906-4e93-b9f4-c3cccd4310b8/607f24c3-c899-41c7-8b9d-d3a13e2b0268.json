@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "607f24c3-c899-41c7-8b9d-d3a13e2b0268",
+  "runId": "ce7d8f13-e906-4e93-b9f4-c3cccd4310b8",
+  "kind": "complete",
+  "parents": [
+    "75b28715-bf01-46eb-9bd2-b57415bc9357"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-workspace-tree-names-v1",
+    "path": "tasks/CF-workspace-tree-names-v1-lossless-git-metadata.md",
+    "revision": "c6fa9a8251761464a6b7a354248874dbdac76f56",
+    "blob": "7530f1ade423356d1eb99127c127fc75569b9d91",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a472472cd42a589088582232f39e34c467efc4e55a0685175dcb53e13f986b18"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/workspace-tree-names",
+  "pullRequest": null,
+  "at": "2026-11-15T10:12:16.259Z",
+  "summary": "Reject malformed UTF-8 Git tree metadata before exact workspace path selection while preserving valid names and existing runtime policy",
+  "next": "Commit the inspected staged files and immutable completion, validate the committed diff with explicit identities, obtain exact-head reviews and hosted gates, then merge normally",
+  "files": [
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-tree-names.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-workspace-tree-names-v1-lossless-git-metadata.md"
+  ],
+  "validation": "Observed Node 24.15.0: final frozen Git-object tests fail nine refusals on old code while eight valid controls pass; candidate focused17/17 and full runtime350/350 pass with zero skips or cancellations using pinned dependencies and an owned npm cache. Independent15-case metadata matrix and original wrong-blob probe pass. Pack validation, validator regressions, installer regressions, project-setup regressions, ShellCheck and post-closure pack validation pass. Original runtime/test/README/source/start hashes are unchanged and prior history is preserved. Local tests use fake hosts only; committed lifecycle validation and all hosted gates including live isolation remain pending.",
+  "snapshot": {
+    "runtime/src/workspace.mjs": {
+      "blob": "45894c7c083dc3f68855ec135937a547049ca223",
+      "mode": "100644"
+    },
+    "runtime/test/workspace-tree-names.test.mjs": {
+      "blob": "be71cad977e6c943aa089922dc77cbeeb68a4690",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "bc783a5b5792d99e1fa0cdcf8d4e296c635d410c",
+      "mode": "100644"
+    },
+    "tasks/CF-workspace-tree-names-v1-lossless-git-metadata.md": {
+      "blob": "927872ce5ab39f7b05fd96fb5f13a1be5c305ba4",
+      "mode": "100644"
+    }
+  }
+}

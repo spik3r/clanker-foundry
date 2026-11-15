@@ -251,6 +251,11 @@ include the BOM. Malformed UTF-8 remains rejected without replacement or text
 normalization. Tests use invented callbacks and a fake candidate host; they do
 not establish provider execution or host isolation.
 
+Candidate workspaces reject a pinned Git tree capture containing malformed UTF-8
+names, including entries outside the allowlist, before reading blobs or verifying
+a host. Valid Unicode names retain their exact spelling, including literal U+FFFD,
+BOM characters, tabs and newlines; names are not normalized.
+
 The workspace reader allowlists exact paths, rejects symlinks, bounds total bytes
 and checks the pinned local Git revision. A larger configured `maxBytes` also
 applies to pinned Git blob comparison. Smaller reader limits retain the existing
