@@ -254,10 +254,13 @@ not establish provider execution or host isolation.
 Candidate workspaces reject a pinned Git tree capture containing malformed UTF-8
 names, including entries outside the allowlist, before reading blobs or verifying
 a host. Valid Unicode names retain their exact spelling, including literal U+FFFD,
-BOM characters, tabs and newlines; names are not normalized.
+BOM characters, tabs and newlines; names are not normalized. Candidate `maxBytes`
+limits each captured blob and their selected aggregate, excluding tree metadata.
+Tree metadata capture retains the 32 MiB default floor and increases with larger
+configured content budgets; it remains bounded.
 
-The workspace reader allowlists exact paths, rejects symlinks, bounds total bytes
-and checks the pinned local Git revision. A larger configured `maxBytes` also
+The read-only workspace reader allowlists exact paths, rejects symlinks, bounds
+total bytes and checks the pinned local Git revision. A larger configured `maxBytes` also
 applies to pinned Git blob comparison. Smaller reader limits retain the existing
 2 MiB Git capture cap, as do metadata queries. It is not a sandbox for arbitrary code
 or a guarantee against an untrusted concurrent filesystem writer. Use immutable

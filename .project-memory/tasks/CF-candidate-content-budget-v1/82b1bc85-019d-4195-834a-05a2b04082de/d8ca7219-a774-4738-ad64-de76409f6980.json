@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "d8ca7219-a774-4738-ad64-de76409f6980",
+  "runId": "82b1bc85-019d-4195-834a-05a2b04082de",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-candidate-content-budget-v1",
+    "path": "tasks/CF-candidate-content-budget-v1-separate-tree-metadata.md",
+    "revision": "90dc94c68682a9d9b4d6d334520771183120b2c8",
+    "blob": "06182efcf26d4c2a5d3f8384773c3811e91f837e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0d69ec912ca055f1a66ea720173e82a27f619557d67d71666f9fd16179703c1c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/candidate-content-budget",
+  "pullRequest": null,
+  "at": "2026-11-15T10:29:40.142Z",
+  "summary": "Honor supported small candidate content budgets without charging unrelated Git tree metadata",
+  "next": "Freeze public API budget regressions and observe old-code failures before the scoped capture-limit fix",
+  "files": [
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-budget.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-candidate-content-budget-v1-separate-tree-metadata.md"
+  ]
+}
