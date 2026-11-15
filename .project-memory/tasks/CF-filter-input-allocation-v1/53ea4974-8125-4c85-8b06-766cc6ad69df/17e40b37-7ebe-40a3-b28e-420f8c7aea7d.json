@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "17e40b37-7ebe-40a3-b28e-420f8c7aea7d",
+  "runId": "53ea4974-8125-4c85-8b06-766cc6ad69df",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-filter-input-allocation-v1",
+    "path": "tasks/CF-filter-input-allocation-v1-bounded-append.md",
+    "revision": "419d096f92bbd49ebe5dd3cd20a7a068e76683ce",
+    "blob": "b81f6f6c9a2ec589c5c5519ef9a66e4ad6c4805c",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "71599977af5016bb13ac7b1a268a4c58d06229d754bb00ae3ddf9b910414ea81"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/filter-input-allocation-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T03:19:53.313Z",
+  "summary": "Bound generated filter append allocation while preserving its existing Unicode and 64-code-point behavior.",
+  "next": "Freeze generated allocation regressions, prove old-code failure, repair streaming append and validate tuic 1.5.3.",
+  "files": [
+    "modeling/tui/templates/state.go.tmpl",
+    "modeling/tui/acceptance/filter_test.go.txt",
+    "modeling/tui/generated_test.go",
+    "modeling/tui/contract.go",
+    "modeling/tui/contract_test.go",
+    "modeling/tui/hosted_test.go",
+    "modeling/tui/options_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/PROFILE.md",
+    "tasks/CF-filter-input-allocation-v1-bounded-append.md"
+  ]
+}

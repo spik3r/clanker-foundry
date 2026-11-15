@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "419d096f92bbd49ebe5dd3cd20a7a068e76683ce",
+  "id": "CF-filter-input-allocation-v1",
+  "path": "tasks/CF-filter-input-allocation-v1-bounded-append.md",
+  "blob": "b81f6f6c9a2ec589c5c5519ef9a66e4ad6c4805c",
+  "record": "---\nid: CF-filter-input-allocation-v1\nstatus: in-progress\nowner: Codex filter-input allocation contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Bound transient allocation while appending filter input\n\n## Implementation claim\n\nOwner: Codex filter-input allocation contributor, delegated by the coordinator\nunder the repository owner's continued Foundry maintenance request. Reviewed\nmain: `85be773db2f3530425b767dca710a4cd40872d8f`. Current PRs and active Project\nMemory frontiers are empty. Earlier filter, Unicode and offset claims are\ncompleted implementation runs; leave their records unchanged.\n\nOwned, freshly generated standalone and hosted browsers retain the documented\n64-code-point query limit, but a 1 MiB printable paste or key-text message\nallocates about 4.2 MiB before keeping that prefix. A control prefix followed\nby printable text also causes input-sized allocation. An independent generated\nbrowser measurement confirmed the scaling. This is a measured resource issue,\nnot a violation of the retained-query limit or a consumer-value result.\n\nStream the incoming UTF-8 through the existing sanitizer into the remaining\nquery space. Preserve valid U+FFFD, invalid-byte removal, the existing control\nand separator rules, code-point counting and the already-full fast path. Keep\nother format characters' current behavior. A rejected prefix must still be\nscanned to find later valid text; stop after the available slots fill. Add no\npaste-size policy, model member, schema, profile or cases-language extension.\nRemove the obsolete whole-string helper if it has no remaining caller.\n\nPublish tuic 1.5.3 because emitted bytes change. Canonical model digests and\nprofile identity stay unchanged. No generated consumer code or pin is edited.\n\nScope: `modeling/tui/templates/state.go.tmpl`,\n`modeling/tui/acceptance/filter_test.go.txt`, `modeling/tui/generated_test.go`,\n`modeling/tui/contract.go`, `modeling/tui/contract_test.go`,\n`modeling/tui/hosted_test.go`, `modeling/tui/options_test.go`,\n`modeling/tui/README.md`, `modeling/tui/PROFILE.md`, this task and new immutable\nProject Memory source/event files. No other generator, runtime, installer,\nworkflow, dependency or historical evidence changes.\n\n## Validation\n\nFreeze the resource expectations and demonstrate their failure on unchanged\ngenerated code before the repair. For an already-open, single-record filter\nat 80 by 12, allocate each input outside measurement and require less than\n64 KiB allocated per Update for a 1 MiB printable paste, a 1 MiB key-text\nmessage and a 1 MiB control prefix followed by 64 printable code points. Check\nboth embed modes, exact query text and nil commands. Do not gate elapsed time.\nThis bounds the tested sanitizer work, not input-string allocation, record\nmatching, global memory or the scan time of a rejected prefix.\n\nTest empty, full and partly filled queries; mixed valid/invalid UTF-8; valid\nreplacement characters beside invalid bytes; controls and line separators;\nsupplementary and combining characters; backspace and repeated events. Preserve\nmatching, selection, help, quit and hosted behavior. Run full TUI race tests and\nvet, Node 24 authoring tests, generator-contract and foundrygen race tests and\nvet, repository validation, whitespace checks and fresh committed Project Memory\nvalidation. Verify canonical digests, deterministic output and updated manifests.\nPublish for independent exact-head review and hosted checks; the coordinator\nalone owns merge.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-filter-input-allocation-v1-bounded-append.md",
+        "id": "CF-filter-input-allocation-v1",
+        "blob": "b81f6f6c9a2ec589c5c5519ef9a66e4ad6c4805c",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
