@@ -41,3 +41,51 @@ th{color:var(--muted);font-weight:600}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:720px){.row.cols-2,.row.cols-3,.row.cols-4{grid-template-columns:minmax(0,1fr)}}
 `
+
+// solidCSS is dashboard.css of the solid target. Every selector starts with
+// the class prefix, so the sheet cannot restyle the host page. Colours, space,
+// type size and radius come from the host app's custom properties, each with a
+// fallback; the sheet defines none of them, so the component takes on the
+// app's theme. The series colours 3 and 4 have no host property: --fd-c3 and
+// --fd-c4 may be set by the app, otherwise the fallbacks apply. No url(), no
+// import.
+const solidCSS = `.fd-dashboard{box-sizing:border-box;display:grid;gap:var(--space-lg,24px);color:var(--text,#1b1f24);line-height:1.4}
+.fd-dashboard *,.fd-dashboard *::before,.fd-dashboard *::after{box-sizing:inherit}
+.fd-header{margin:0}
+.fd-title{margin:0;font-size:1.5rem;line-height:1.25;overflow-wrap:anywhere}
+.fd-subtitle{margin:var(--space-xs,4px) 0 0;color:var(--muted,#59636e)}
+.fd-main{display:grid;gap:var(--space-md,16px)}
+.fd-row{display:grid;gap:var(--space-md,16px)}
+.fd-cols-1{grid-template-columns:minmax(0,1fr)}
+.fd-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fd-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fd-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.fd-widget{min-width:0;padding:var(--space-md,16px);background:var(--panel,#ffffff);border:1px solid var(--border,#d0d7de);border-radius:var(--radius-md,8px)}
+.fd-heading{margin:0 0 var(--space-sm,8px);font-size:var(--font-sm,.875rem);overflow-wrap:anywhere}
+.fd-stat-label{margin:0;font-size:var(--font-xs,.75rem);color:var(--muted,#59636e);overflow-wrap:anywhere}
+.fd-stat-value{margin:var(--space-xs,4px) 0 0;font-size:2rem;font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.fd-note{margin:var(--space-xs,4px) 0 0;font-size:var(--font-xs,.75rem);color:var(--muted,#59636e);overflow-wrap:anywhere}
+.fd-legend{display:flex;flex-wrap:wrap;gap:var(--space-xs,4px) var(--space-md,16px);margin:0 0 var(--space-sm,8px);padding:0;list-style:none;font-size:var(--font-xs,.75rem);color:var(--muted,#59636e)}
+.fd-legend li{display:flex;align-items:center;gap:var(--space-xs,4px)}
+.fd-sw{flex:none}
+.fd-chart{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+.fd-chart text{fill:var(--muted,#59636e);font-size:13px;font-family:inherit}
+.fd-plot{fill:none}
+.fd-grid{stroke:var(--border,#d0d7de);stroke-width:1}
+.fd-zero{stroke:var(--faint,#8c959f);stroke-width:1}
+.fd-b1,.fd-m1{fill:var(--accent,#1f6feb)}
+.fd-b2,.fd-m2{fill:var(--warn,#c2570c)}
+.fd-b3,.fd-m3{fill:var(--fd-c3,#1a7f4b)}
+.fd-b4,.fd-m4{fill:var(--fd-c4,#8250df)}
+path.fd-l1,path.fd-l2,path.fd-l3,path.fd-l4{fill:none;stroke-width:2;stroke-linejoin:round}
+.fd-l1{stroke:var(--accent,#1f6feb)}
+.fd-l2{stroke:var(--warn,#c2570c);stroke-dasharray:7 4}
+.fd-l3{stroke:var(--fd-c3,#1a7f4b);stroke-dasharray:2 3}
+.fd-l4{stroke:var(--fd-c4,#8250df);stroke-dasharray:9 3 2 3}
+.fd-scroll{overflow-x:auto}
+.fd-table{border-collapse:collapse;width:100%;font-size:var(--font-sm,.875rem)}
+.fd-table th,.fd-table td{padding:var(--space-xs,4px) var(--space-md,16px);border-bottom:1px solid var(--border,#d0d7de);text-align:left;white-space:nowrap}
+.fd-table th{color:var(--muted,#59636e);font-weight:600}
+.fd-table .fd-num{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:720px){.fd-row.fd-cols-2,.fd-row.fd-cols-3,.fd-row.fd-cols-4{grid-template-columns:minmax(0,1fr)}}
+`

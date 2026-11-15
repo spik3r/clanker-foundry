@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:foundry:diagramgen:dashboard:v1:schema",
   "title": "dashboard/v1 model",
-  "description": "Authoring aid for diagram-json/v1 models with profile dashboard/v1. Go validation in diagramgen is authoritative. This schema cannot express: unique ids among datasets, widgets and a dataset's columns; that every row has one cell per column and each cell matches its column type; that dataset, category, series, columns and layout entries name things that exist and have the right type; that every widget appears once in the layout; the 60-row limit for chart datasets; number spelling (no exponent, at most 6 fractional digits, at most 15 significant digits); byte lengths of text; duplicate JSON keys; trailing data; and the 512 KiB size limit.",
+  "description": "Authoring aid for diagram-json/v1 models with profile dashboard/v1. Go validation in diagramgen is authoritative. This schema cannot express: that, for target solid, the id is a name a component can have; unique ids among datasets, widgets and a dataset's columns; that every row has one cell per column and each cell matches its column type; that dataset, category, series, columns and layout entries name things that exist and have the right type; that every widget appears once in the layout; the 60-row limit for chart datasets; number spelling (no exponent, at most 6 fractional digits, at most 15 significant digits); byte lengths of text; duplicate JSON keys; trailing data; and the 512 KiB size limit.",
   "type": "object",
   "additionalProperties": false,
   "required": ["formatVersion", "profileVersion", "id", "title", "widgets", "layout"],
@@ -12,6 +12,7 @@
     "id": {"$ref": "#/$defs/identifier"},
     "title": {"$ref": "#/$defs/label"},
     "subtitle": {"$ref": "#/$defs/label"},
+    "target": {"description": "Output target. Absent means html, one HTML file. solid emits a Solid component, Dashboard.jsx, and dashboard.css. With solid, the id also names the exported component, so it cannot be a JavaScript reserved word or For, Show, DATASETS or Object (Go-only rule).", "enum": ["html", "solid"]},
     "datasets": {
       "type": "array",
       "maxItems": 8,

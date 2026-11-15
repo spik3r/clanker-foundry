@@ -1,0 +1,29 @@
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "dashboard/v1",
+  "generator": {
+    "id": "diagramgen",
+    "version": "1.3.0",
+    "toolchain": "go1.27.4"
+  },
+  "model": {
+    "canonicalSHA256": "c1ead8d7ca84800ea5711f9ebd59d097e12214f77d5c3f6afdac7ef44eead0f0"
+  },
+  "files": [
+    {
+      "path": "Dashboard.jsx",
+      "sha256": "acbd854c65e228c6498450feb2a11db4bdeb9cf1c6df2ee55a867f25426af584",
+      "bytes": 11058
+    },
+    {
+      "path": "dashboard.css",
+      "sha256": "1ce0c302972abe7b7a378de7a69f8b556bebc83b6d26719ae72e701821b634ce",
+      "bytes": 2841
+    },
+    {
+      "path": "model.json",
+      "sha256": "4eb6d13e0d78328ba522667931bede83f69779de900163dcff903bdca1f32c10",
+      "bytes": 1913
+    }
+  ]
+}

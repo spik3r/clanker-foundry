@@ -13,16 +13,17 @@ import (
 
 // exampleFiles maps each example to the files it generates, manifest included.
 var exampleFiles = map[string][]string{
-	"order":             {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
-	"parallel":          {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
-	"rework":            {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
-	"ops-dashboard":     {"dashboard.html", "model.json", "foundry-manifest.json"},
-	"sales-dashboard":   {"dashboard.html", "model.json", "foundry-manifest.json"},
-	"minimal-dashboard": {"dashboard.html", "model.json", "foundry-manifest.json"},
-	"checkout-sequence": {"diagram.svg", "model.json", "foundry-manifest.json"},
-	"retry-sequence":    {"diagram.svg", "model.json", "foundry-manifest.json"},
-	"orders-class":      {"diagram.svg", "model.json", "foundry-manifest.json"},
-	"plugins-class":     {"diagram.svg", "model.json", "foundry-manifest.json"},
+	"order":               {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"parallel":            {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"rework":              {"diagram.svg", "diagram.bpmn", "model.json", "foundry-manifest.json"},
+	"ops-dashboard":       {"dashboard.html", "model.json", "foundry-manifest.json"},
+	"ops-dashboard-solid": {"Dashboard.jsx", "dashboard.css", "model.json", "foundry-manifest.json"},
+	"sales-dashboard":     {"dashboard.html", "model.json", "foundry-manifest.json"},
+	"minimal-dashboard":   {"dashboard.html", "model.json", "foundry-manifest.json"},
+	"checkout-sequence":   {"diagram.svg", "model.json", "foundry-manifest.json"},
+	"retry-sequence":      {"diagram.svg", "model.json", "foundry-manifest.json"},
+	"orders-class":        {"diagram.svg", "model.json", "foundry-manifest.json"},
+	"plugins-class":       {"diagram.svg", "model.json", "foundry-manifest.json"},
 }
 
 // TestExamplesMatchGenerated regenerates every example and compares bytes with
@@ -86,7 +87,7 @@ func TestManifestAndIdentity(t *testing.T) {
 	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 		t.Fatal(err)
 	}
-	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.2.2" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
+	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.3.0" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
 		t.Errorf("manifest %+v", m)
 	}
 	if m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
@@ -185,7 +186,7 @@ func TestDashboardIdentityAndManifest(t *testing.T) {
 	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 		t.Fatal(err)
 	}
-	if m.Profile != "dashboard/v1" || m.Generator.Version != "1.2.2" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+	if m.Profile != "dashboard/v1" || m.Generator.Version != "1.3.0" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
 		t.Errorf("manifest %+v", m)
 	}
 	if len(m.Files) != 2 || m.Files[0].Path != "dashboard.html" || m.Files[1].Path != "model.json" {
@@ -254,7 +255,7 @@ func TestUMLIdentityAndManifest(t *testing.T) {
 		if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 			t.Fatal(err)
 		}
-		if m.Profile != profile || m.Generator.ID != "diagramgen" || m.Generator.Version != "1.2.2" || m.Generator.Toolchain != "go1.27.4" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+		if m.Profile != profile || m.Generator.ID != "diagramgen" || m.Generator.Version != "1.3.0" || m.Generator.Toolchain != "go1.27.4" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
 			t.Errorf("%s: manifest %+v", name, m)
 		}
 		if len(m.Files) != 2 || m.Files[0].Path != "diagram.svg" || m.Files[1].Path != "model.json" {

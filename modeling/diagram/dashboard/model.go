@@ -23,6 +23,12 @@ const (
 	Profile = "dashboard/v1"
 )
 
+// Output targets. An absent target means TargetHTML.
+const (
+	TargetHTML  = "html"
+	TargetSolid = "solid"
+)
+
 // Widget kinds.
 const (
 	KindStat  = "stat"
@@ -57,6 +63,7 @@ type Model struct {
 	ID             string     `json:"id"`
 	Title          string     `json:"title"`
 	Subtitle       string     `json:"subtitle,omitempty"`
+	Target         string     `json:"target,omitempty"`
 	Datasets       []Dataset  `json:"datasets"`
 	Widgets        []Widget   `json:"widgets"`
 	Layout         [][]string `json:"layout"`
@@ -130,7 +137,7 @@ var identifier = regexp.MustCompile(`^[A-Za-z][A-Za-z0-9_]{0,47}$`)
 // schema is the strict member set; see contract.StrictScan.
 var schema = contract.Schema{
 	"model": {Fields: map[string]string{
-		"formatVersion": "", "profileVersion": "", "id": "", "title": "", "subtitle": "",
+		"formatVersion": "", "profileVersion": "", "id": "", "title": "", "subtitle": "", "target": "",
 		"datasets": "datasets", "widgets": "widgets", "layout": "layout",
 	}},
 	"datasets":  {Array: true, Elem: "dataset"},
@@ -169,6 +176,7 @@ func Decode(raw []byte) (Model, error) {
 		ID             string  `json:"id"`
 		Title          string  `json:"title"`
 		Subtitle       *string `json:"subtitle"`
+		Target         *string `json:"target"`
 		Datasets       []struct {
 			ID      string              `json:"id"`
 			Columns []Column            `json:"columns"`
@@ -192,6 +200,17 @@ func Decode(raw []byte) (Model, error) {
 			return Model{}, fmt.Errorf("subtitle must not be empty when present")
 		}
 		m.Subtitle = *in.Subtitle
+	}
+	if in.Target != nil {
+		// An explicit "html" is the default; it is dropped so that it gives
+		// the same canonical model, digest and output as an absent member.
+		switch *in.Target {
+		case TargetSolid:
+			m.Target = TargetSolid
+		case TargetHTML:
+		default:
+			return Model{}, fmt.Errorf("target must be %q or %q", TargetHTML, TargetSolid)
+		}
 	}
 	for _, ds := range in.Datasets {
 		out := Dataset{ID: ds.ID, Columns: ds.Columns, Rows: [][]Cell{}}
@@ -364,6 +383,9 @@ func FormatMicro(v int64) string {
 // row, series, table-column and layout order are significant and kept.
 func (m Model) Normalize() Model {
 	n := m
+	if n.Target == TargetHTML {
+		n.Target = ""
+	}
 	n.Datasets = append([]Dataset{}, m.Datasets...)
 	n.Widgets = append([]Widget{}, m.Widgets...)
 	sort.Slice(n.Datasets, func(i, j int) bool { return n.Datasets[i].ID < n.Datasets[j].ID })
@@ -437,6 +459,15 @@ func (m Model) Validate() error {
 		if err := plain(m.Subtitle, "subtitle"); err != nil {
 			return err
 		}
+	}
+	switch m.Target {
+	case "", TargetHTML:
+	case TargetSolid:
+		if jsReserved[m.ID] {
+			return fmt.Errorf("id %q cannot name a component: it is a JavaScript reserved word or a name the component uses", m.ID)
+		}
+	default:
+		return fmt.Errorf("target must be %q or %q", TargetHTML, TargetSolid)
 	}
 	if len(m.Datasets) > MaxDatasets {
 		return fmt.Errorf("datasets must contain 0..%d datasets", MaxDatasets)

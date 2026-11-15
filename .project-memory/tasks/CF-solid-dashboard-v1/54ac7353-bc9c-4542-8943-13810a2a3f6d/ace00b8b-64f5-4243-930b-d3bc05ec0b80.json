@@ -1,0 +1,297 @@
+{
+  "formatVersion": 2,
+  "eventId": "ace00b8b-64f5-4243-930b-d3bc05ec0b80",
+  "runId": "54ac7353-bc9c-4542-8943-13810a2a3f6d",
+  "kind": "complete",
+  "parents": [
+    "7a158306-1780-4406-a266-c6d1a5166b45"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-solid-dashboard-v1",
+    "path": "tasks/CF-solid-dashboard-v1-jsx-target.md",
+    "revision": "55312a9b69ab96f82692c6b5b56862d9ab92907a",
+    "blob": "21bad962292d8658a5b158a03eace48c2c9aa636",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c0c101692930f62ee06880eee7cb4977cad5088f7ef63fb8aa420a98aeb03910"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-15T21:38:55.087Z",
+  "summary": "dashboard/v1 gains target solid: Dashboard.jsx plus dashboard.css on host CSS variables, shared chart geometry; diagramgen 1.3.0",
+  "next": "Trial: rebuild StatisticalResearchPage in heisentick-app from a model",
+  "files": [
+    "modeling/diagram/CLASS.md",
+    "modeling/diagram/DASHBOARD.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/SEQUENCE.md",
+    "modeling/diagram/authoring/dashboard-v1.schema.json",
+    "modeling/diagram/authoring/dashboard.schema.test.cjs",
+    "modeling/diagram/class/model_test.go",
+    "modeling/diagram/class/output_test.go",
+    "modeling/diagram/dashboard/chart.go",
+    "modeling/diagram/dashboard/css.go",
+    "modeling/diagram/dashboard/model.go",
+    "modeling/diagram/dashboard/model_test.go",
+    "modeling/diagram/dashboard/output_test.go",
+    "modeling/diagram/dashboard/profile.go",
+    "modeling/diagram/dashboard/render.go",
+    "modeling/diagram/dashboard/solid.go",
+    "modeling/diagram/dashboard/solid_test.go",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/diagram_test.go",
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/Dashboard.jsx",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/dashboard.css",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/model.json",
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/order/diagram.bpmn",
+    "modeling/diagram/examples/generated/order/diagram.svg",
+    "modeling/diagram/examples/generated/order/foundry-manifest.json",
+    "modeling/diagram/examples/generated/orders-class/diagram.svg",
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn",
+    "modeling/diagram/examples/generated/parallel/diagram.svg",
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json",
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg",
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/rework/diagram.bpmn",
+    "modeling/diagram/examples/generated/rework/diagram.svg",
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json",
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/ops-dashboard-solid.json",
+    "modeling/diagram/process/helpers_test.go",
+    "modeling/diagram/sequence/model_test.go",
+    "modeling/diagram/sequence/output_test.go",
+    "modeling/profiles.json",
+    "tasks/CF-solid-dashboard-v1-jsx-target.md"
+  ],
+  "validation": "go vet and go test -race in modeling/diagram and gencontract pass; node authoring tests 16 pass; JSX parsed with TypeScript parser by subagent",
+  "snapshot": {
+    "modeling/diagram/CLASS.md": {
+      "blob": "e9f1eb0d8ffcd67ab501db20124f756e408535eb",
+      "mode": "100644"
+    },
+    "modeling/diagram/DASHBOARD.md": {
+      "blob": "3c2642f3b1af436c18ba491019e9258c26a9b931",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "1ffe765c035c29e6d78542a4415952c26fabdc26",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "9e93266c39c610590af5b2b4a8ab1a91182251bd",
+      "mode": "100644"
+    },
+    "modeling/diagram/SEQUENCE.md": {
+      "blob": "4763ef81b9b9c715dcf764d5fa56e8b88174913d",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/dashboard-v1.schema.json": {
+      "blob": "a64b438e33f957a9e75fd07ac87b261f44b50263",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/dashboard.schema.test.cjs": {
+      "blob": "520e97d82432be0b9685d057c7a5757af7af368c",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/model_test.go": {
+      "blob": "db9ab28b4938583b26ae8d180078fdeacabe031f",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/output_test.go": {
+      "blob": "e13cacda2ac115ed47091a7779599d04e85f5a63",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/chart.go": {
+      "blob": "904b4850d6ab44bd6369a6c84cfab3b9d7731c04",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/css.go": {
+      "blob": "247e3f1cbac25afc8ee7cd1646c034786b49fede",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model.go": {
+      "blob": "3f97c538f06a5dbdf5bea8d24c89126697dc8f24",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model_test.go": {
+      "blob": "1c187cb7b4e42f28f713a77e7b7db4ece08878f2",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/output_test.go": {
+      "blob": "0368662c215f3708bba46534ae8505a84558ef86",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/profile.go": {
+      "blob": "4095f7a71b0fa4253129a892eef6645341509473",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/render.go": {
+      "blob": "693cb951052cb837f9e72c7229671b96247545b4",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/solid.go": {
+      "blob": "3c4c794d0a92b4f03aba61d1bea28d740d448a98",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/solid_test.go": {
+      "blob": "50e6468abcc5a8f97731e33c944ca288a676d9f0",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "4f5b05f28346af9337417dc9e300e598a4367c1c",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "ea3f1fd4a88ce09169770bfbe9f1d327b4d18db6",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg": {
+      "blob": "8be40c5e0916ac3aaf2d023ad558c538951d003a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json": {
+      "blob": "969796731b08da3b74dc22f64572abccf030df74",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html": {
+      "blob": "a23d6ac2f94bce00a97f7c9a1231c6f0180812e0",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json": {
+      "blob": "8964b55285453fc8c8bb947beead8bd1bd4ba985",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/Dashboard.jsx": {
+      "blob": "1cdb6fdaa76bc6c9f4aa820b4d03366618230fa1",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/dashboard.css": {
+      "blob": "4cc1ea42e32e60c774fc38e5036b2c5f072da3d3",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/foundry-manifest.json": {
+      "blob": "3d1d4b5f1ac099b937259ffcddad27f610ac7d62",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/model.json": {
+      "blob": "3baf73a5eca5e8b60504ecfde1c7a147ba3b97ce",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html": {
+      "blob": "b6ef41d57990e125146f67ee62597bb961782a94",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json": {
+      "blob": "76015b0411042818ae8889a0db6fc59a95b5185b",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.bpmn": {
+      "blob": "e9c457ed7ad3bded7fea798b6d87045a93a9ad11",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.svg": {
+      "blob": "f5883289ca42a92f863e965891c0e7f0c02934d2",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/foundry-manifest.json": {
+      "blob": "f3fefddf9821b979b1bb1f49d7262ff3ec4b1193",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/diagram.svg": {
+      "blob": "0d1d879f6871db292e5a1ca2ce2e1661943bcc8c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json": {
+      "blob": "7dccf0a6116ef6899beb5f4cfb484c59e2a93e8f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn": {
+      "blob": "e591c87094a817db2a7d6d4a4f46d1c4b6b95e24",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.svg": {
+      "blob": "a1bff8d3d953e0deb176f86d41b20023c042c899",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json": {
+      "blob": "a227e90f39613423a01752e83327570627e24f68",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg": {
+      "blob": "1506be5ea4687090cf15477b9ad643c9483d848a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json": {
+      "blob": "008c0201dd8d0e2895ed958daf29f79bba0efad4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg": {
+      "blob": "e91b4cc1e93d71de01946ea93ff36b149d792b3f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json": {
+      "blob": "08e3f8e5a24905ee9901e51de77565962dff1f4c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.bpmn": {
+      "blob": "49e8226e426fc1aeaf632203288a96efd4a987e1",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.svg": {
+      "blob": "0ed415e8f4d890507ea57bdcdd03cf70175b5f42",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json": {
+      "blob": "dbb0a1e86692cf129be6904114987468dbed7552",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html": {
+      "blob": "83eadead5da2994539451a59c9952a3117e15241",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json": {
+      "blob": "7fba55c10974eba0bb5151c242258543aa529c5a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/ops-dashboard-solid.json": {
+      "blob": "00fa2ac936d0f226e0bc571426048343b7401db9",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/helpers_test.go": {
+      "blob": "bca963737bad1830bf1f12f9b38760af5ce81a25",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/model_test.go": {
+      "blob": "30728c17a1d4c002a9b42c09def983467aff792d",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/output_test.go": {
+      "blob": "a6542c5323a191771cfb4fd6afe4f8c736ee395a",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "2a4b9e171f54dfbb3514fa3448b5c08e4e08e4a8",
+      "mode": "100644"
+    },
+    "tasks/CF-solid-dashboard-v1-jsx-target.md": {
+      "blob": "c46d3bb560b6e79855b4c4ce02c20b62f67f470d",
+      "mode": "100644"
+    }
+  }
+}

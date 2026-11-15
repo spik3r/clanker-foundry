@@ -45,14 +45,16 @@ changes nothing. Exit codes are 0 success, 1 failure, 2 refused, 3 drift.
 - `foundry-manifest.json`: file hashes and the generator identity.
 
 For a `dashboard/v1` model the files are `dashboard.html`, `model.json` and the
-manifest; see the dashboard section below.
+manifest, or `Dashboard.jsx`, `dashboard.css`, `model.json` and the manifest
+when the model says `"target": "solid"`; see the dashboard section below.
 
 Generated examples sit under [examples/generated](examples/generated), one
 directory per model: [order](examples/order.json), [parallel](examples/parallel.json)
 and [rework](examples/rework.json) (a loop back to an earlier step), plus the
 dashboard models [ops-dashboard](examples/ops-dashboard.json),
 [sales-dashboard](examples/sales-dashboard.json) and
-[minimal-dashboard](examples/minimal-dashboard.json). A test regenerates them
+[minimal-dashboard](examples/minimal-dashboard.json), and the Solid target
+[ops-dashboard-solid](examples/ops-dashboard-solid.json). A test regenerates them
 and compares bytes.
 
 To check the BPMN files with bpmn-moddle (opt-in, not in CI), see [verify](verify/README.md).
@@ -62,7 +64,9 @@ To check the BPMN files with bpmn-moddle (opt-in, not in CI), see [verify](verif
 `dashboard/v1` models hold datasets and widgets: `stat`, `bar`, `line` and
 `table`, arranged in rows of up to four. The output is `dashboard.html`: inline
 CSS, inline SVG charts, no script, no external reference, light and dark themes,
-one column on narrow screens. Chart axes and coordinates are computed with
+one column on narrow screens. With `"target": "solid"` the output is instead a
+SolidJS component, `Dashboard.jsx`, and a `dashboard.css` that takes its colours
+and spacing from the host app's custom properties. Chart axes and coordinates are computed with
 integer arithmetic, so output is byte-stable. Try it:
 
 ```sh
@@ -98,7 +102,7 @@ decides.
 ## Change a diagram
 
 Edit the model, then regenerate into a new directory and replace the old output.
-Never edit `diagram.svg`, `diagram.bpmn`, `dashboard.html` or `model.json` by hand; `check` reports
+Never edit `diagram.svg`, `diagram.bpmn`, `dashboard.html`, `Dashboard.jsx`, `dashboard.css` or `model.json` by hand; `check` reports
 the edit as drift. The [schema](authoring/process-diagram-v1.schema.json) helps
 an editor, but the Go validation decides.
 
