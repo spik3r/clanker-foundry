@@ -1,6 +1,6 @@
 ---
 id: CF-project-metadata-records-v1
-status: in-progress
+status: completed
 owner: Codex project metadata contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -72,3 +72,26 @@ whitespace and committed Project Memory validation. State optional-tool skips.
 Freeze for two independent reviews; the coordinator owns completion staging,
 commit, publication and merge after exact-head review and hosted checks.
 No real-home installation, runtime activation or consumer trial belongs here.
+
+## Observed result
+
+The bounded implementation is complete. The helper reads NUL-delimited key
+names and exact value records through checked pipelines. It accepts Git-valid
+subsection whitespace, preserves nonempty URL spaces and tabs, ignores repeated
+unrelated paths, and refuses ambiguous baseline mappings, LF-bearing selected
+values and failed queries without changing wiring or pin selection.
+
+Frozen regressions failed against the old helper at the spaced subsection. A
+separate owned actual-helper check showed trailing-LF path and URL values were
+accepted after command substitution removed LF. The repaired helper passes the
+new real-Git cases and all existing project-setup regressions on native Bash
+3.2 with Git 2.54. Partial valid output followed by failure is refused for key,
+path-value and URL queries; refusal and checking snapshots remain unchanged.
+
+Full installer regressions, separate syntax checks for both changed shell
+scripts, ShellCheck, pack validation and whitespace checks passed. The optional
+skills-ref tool was unavailable. Fixtures used local owned repositories and
+private homes; no real-home setup or client loading was performed.
+
+This records implementation and observed local checks, not publication or merge.
+The coordinator retains staging, lifecycle completion, commit and PR authority.

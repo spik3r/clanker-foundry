@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "c8242aba-20a7-4f7a-980a-84eefa522d76",
+  "runId": "f8aaf0de-8a47-4ef0-824e-6161a6b97fce",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-metadata-records-v1",
+    "path": "tasks/CF-project-metadata-records-v1-submodule-values.md",
+    "revision": "46bf6ed4d637d9622cece039499b6d6ac0b06d5b",
+    "blob": "c9097b592d2a1216d9c7b3eaec8e4d4d071c8b3d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5bb43daa9028cc7e7140743f9d44cedf6e9ed6786d95175b3864b182ba9799f0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-metadata-records-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T05:10:24.299Z",
+  "summary": "Preserve exact Git submodule metadata records and fail closed on query errors",
+  "next": "Freeze regressions, observe old failures, repair lookup and validate",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "docs/project-shared-base.md",
+    "tasks/CF-project-metadata-records-v1-submodule-values.md"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "925e50b0-395a-4a99-aad5-e61c66311dd3",
+  "runId": "f8aaf0de-8a47-4ef0-824e-6161a6b97fce",
+  "kind": "complete",
+  "parents": [
+    "c8242aba-20a7-4f7a-980a-84eefa522d76"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-project-metadata-records-v1",
+    "path": "tasks/CF-project-metadata-records-v1-submodule-values.md",
+    "revision": "46bf6ed4d637d9622cece039499b6d6ac0b06d5b",
+    "blob": "c9097b592d2a1216d9c7b3eaec8e4d4d071c8b3d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "5bb43daa9028cc7e7140743f9d44cedf6e9ed6786d95175b3864b182ba9799f0"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/project-metadata-records-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T05:23:13.691Z",
+  "summary": "Project setup reads exact NUL-delimited submodule keys and values, accepts valid subsection whitespace and refuses ambiguous values or failed queries before wiring.",
+  "next": "Commit the reviewed files and new immutable evidence, validate full committed coverage, then publish for exact-head hosted checks and coordinator merge review.",
+  "files": [
+    "scripts/project-setup.sh",
+    "tests/test-project-setup.sh",
+    "docs/project-shared-base.md",
+    "tasks/CF-project-metadata-records-v1-submodule-values.md"
+  ],
+  "validation": "Coordinator native Bash 3.2 syntax, pack validator, validator regressions, full installer suite, full project-setup suite, all-script ShellCheck and instruction-source invariants passed. Frozen regressions failed on the old spaced-section parser; independent actual old-helper controls showed trailing-LF path and URL values were accepted before repair. Two independent frozen reviews passed: full setup regressions and real-Git names/value/index snapshots, plus all three partial-output-then-error query controls. Six frozen hashes and staged scope/whitespace verified; metadata, pin and private HOME remained unchanged on refusals and checking. Optional skills-ref unavailable. No global setup, generator or runtime changes.",
+  "snapshot": {
+    "scripts/project-setup.sh": {
+      "blob": "5f1477a685213bca9af2a824d2e5fc07ccf84bc3",
+      "mode": "100755"
+    },
+    "tests/test-project-setup.sh": {
+      "blob": "01f38782eb49b1c4848c81677f7b5cda851bff00",
+      "mode": "100755"
+    },
+    "docs/project-shared-base.md": {
+      "blob": "3381ff5d09dfd0dcb96d00e5e20cc5cba486811b",
+      "mode": "100644"
+    },
+    "tasks/CF-project-metadata-records-v1-submodule-values.md": {
+      "blob": "77c42361a64f282f2eda1288f12a2f1345201835",
+      "mode": "100644"
+    }
+  }
+}
