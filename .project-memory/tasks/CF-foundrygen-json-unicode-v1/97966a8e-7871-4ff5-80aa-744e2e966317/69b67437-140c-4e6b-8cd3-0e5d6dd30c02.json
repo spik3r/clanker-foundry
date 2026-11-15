@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "69b67437-140c-4e6b-8cd3-0e5d6dd30c02",
+  "runId": "97966a8e-7871-4ff5-80aa-744e2e966317",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundrygen-json-unicode-v1",
+    "path": "tasks/CF-foundrygen-json-unicode-v1-reject-lossy-json-text.md",
+    "revision": "06ec4bf1eace0844fb43719c5244e14e502cc024",
+    "blob": "62207736a7240f51e6c3f51b776aa2ed40075630",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ebb4d77d77d3489ad50fa9fa2fd1bb1f2d74bb2eea2940f77ffd22660fdda729"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundrygen-json-unicode",
+  "pullRequest": null,
+  "at": "2026-11-15T08:28:05.749Z",
+  "summary": "Refuse malformed Unicode before project and registry string decoding while preserving valid text and existing schema rules",
+  "next": "Freeze literal regressions and reproduce old-code failures before implementing the bounded Unicode preflight",
+  "files": [
+    "modeling/foundrygen/project.go",
+    "modeling/foundrygen/unicode_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundrygen-json-unicode-v1-reject-lossy-json-text.md"
+  ]
+}

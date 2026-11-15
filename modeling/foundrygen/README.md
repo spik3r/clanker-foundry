@@ -47,6 +47,13 @@ no generator logic of its own and uses only the Go standard library.
 - The file is decoded strictly: unknown keys, duplicate keys, wrong types,
   trailing data and sizes over 64 KiB are refused.
 
+Both the project file and registry must be valid UTF-8. Any surrogate escapes
+in JSON strings must form valid pairs. Malformed Unicode is refused before
+decoding can replace it with U+FFFD and select a different path. Literal or escaped U+FFFD,
+valid surrogate pairs and ordinary Unicode paths remain allowed. Path spelling
+is not normalized. The registry keeps its existing field-handling rules; this
+shared check concerns Unicode only.
+
 ## Commands
 
 ```sh

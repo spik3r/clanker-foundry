@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "a180be55-7a44-485d-a770-272a1a27c517",
+  "runId": "97966a8e-7871-4ff5-80aa-744e2e966317",
+  "kind": "complete",
+  "parents": [
+    "69b67437-140c-4e6b-8cd3-0e5d6dd30c02"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundrygen-json-unicode-v1",
+    "path": "tasks/CF-foundrygen-json-unicode-v1-reject-lossy-json-text.md",
+    "revision": "06ec4bf1eace0844fb43719c5244e14e502cc024",
+    "blob": "62207736a7240f51e6c3f51b776aa2ed40075630",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ebb4d77d77d3489ad50fa9fa2fd1bb1f2d74bb2eea2940f77ffd22660fdda729"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundrygen-json-unicode",
+  "pullRequest": null,
+  "at": "2026-11-15T08:52:15.108Z",
+  "summary": "Refuse malformed UTF-8 and unpaired surrogate escapes before project or registry decoding; preserve valid Unicode and existing field policies",
+  "next": "Commit the inspected staged files and immutable completion, validate the full committed diff with explicit repository identities, then publish for exact-head hosted gates and normal merge",
+  "files": [
+    "modeling/foundrygen/project.go",
+    "modeling/foundrygen/unicode_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundrygen-json-unicode-v1-reject-lossy-json-text.md"
+  ],
+  "validation": "Observed on Go 1.27.4: frozen final regressions fail on old code and pass on the candidate; full foundrygen race tests, vet, build and clean gofmt pass; generator-contract race tests and vet pass. Pack validation, validator regressions, installer regressions, project-setup regressions and ShellCheck pass. Independent CLI probes confirm all malformed command paths refuse before build with empty stdout and unchanged owned state; valid replacement-character and surrogate-pair filenames remain usable. Post-closure pack validation and both whitespace checks pass. Original source/start hashes and prior memory history remain unchanged. Hosted checks and committed lifecycle validation are pending.",
+  "snapshot": {
+    "modeling/foundrygen/project.go": {
+      "blob": "bc362bd6f4685456604b642a795432540b5ccf59",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/unicode_test.go": {
+      "blob": "25bcd5b08049c6c27938cd9eb4ccb2718ecc404f",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "e6034a7de0c9f8c2da7b1dd46f6ea9667bd8c69d",
+      "mode": "100644"
+    },
+    "tasks/CF-foundrygen-json-unicode-v1-reject-lossy-json-text.md": {
+      "blob": "04f5235bfca2b31a8cf048c740c61ebad783343f",
+      "mode": "100644"
+    }
+  }
+}
