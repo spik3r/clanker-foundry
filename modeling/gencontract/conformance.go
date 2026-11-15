@@ -134,6 +134,7 @@ func Check(g Generator, scratch string) ([]Finding, error) {
 	}
 	if tree != nil {
 		steps := []func() error{
+			func() error { return c.stepGeneratePathResolution(tree, id, idOK) },
 			func() error { return c.stepManifestAndHeader(tree, id, idOK) },
 			func() error { return c.stepCheckClean(out, tree, id, idOK) },
 			func() error { return c.stepDrift(tree) },
@@ -602,6 +603,76 @@ func (c *checker) stepGenerate(alt string, base identity, baseOK bool) (string, 
 		}
 	}
 	return outs[0], trees[0], nil
+}
+
+// Generation must populate the directory created through the original spelling,
+// not a lexical decoy reached by joining children before resolving the root.
+func (c *checker) stepGeneratePathResolution(tree map[string]entry, baseline identity, baseOK bool) error {
+	for _, scenario := range []string{"existing decoy", "absent lexical parent"} {
+		base, err := c.dir("generate-root-" + scenario)
+		if err != nil {
+			return err
+		}
+		physicalParent := filepath.Join(base, "physical space 用户")
+		if err := os.MkdirAll(filepath.Join(physicalParent, "child"), 0o755); err != nil {
+			return err
+		}
+		alias := filepath.Join(base, "alias")
+		if err := os.Symlink(filepath.Join(physicalParent, "child"), alias); err != nil {
+			continue
+		}
+		sep := string(os.PathSeparator)
+		rawOut := alias + sep + ".." + sep + "out"
+		physicalOut := filepath.Join(physicalParent, "out")
+		decoy := filepath.Join(base, "out")
+		var before string
+		lexicalParent := filepath.Join(base, "nested")
+		if scenario == "existing decoy" {
+			if err := writeTree(decoy, tree); err != nil {
+				return err
+			}
+			for _, name := range sortedPaths(tree) {
+				if tree[name].kind == 'f' {
+					if err := os.WriteFile(filepath.Join(decoy, filepath.FromSlash(name)), []byte("retained decoy: "+name+"\n"), 0o644); err != nil {
+						return err
+					}
+				}
+			}
+			before = fingerprint(decoy)
+		} else {
+			if err := os.Mkdir(filepath.Join(physicalParent, "nested"), 0o755); err != nil {
+				return err
+			}
+			rawOut = alias + sep + ".." + sep + "nested" + sep + "out"
+			physicalOut = filepath.Join(physicalParent, "nested", "out")
+		}
+		r, err := c.runRO(c.g.Model, "generate", c.g.Model, rawOut)
+		if err != nil {
+			return err
+		}
+		if r.code != 0 {
+			c.add("generate.path-resolution", "%s: exit %d, want 0 (stderr %s)", scenario, r.code, snippet(r.stderr))
+		} else {
+			got, ok := c.checkIdentity("generate.identity", r.stdout, c.model)
+			if ok && baseOK && got.CanonicalSHA256 != baseline.CanonicalSHA256 {
+				c.add("generate.identity", "%s: canonicalSHA256 differs from validate", scenario)
+			}
+		}
+		actual, err := readTree(physicalOut)
+		if err != nil {
+			c.add("generate.path-resolution", "%s: cannot read physical output: %v", scenario, err)
+		} else if diff := treeDiff(tree, actual); len(diff) > 0 {
+			c.add("generate.path-resolution", "%s: physical output differs: %s", scenario, strings.Join(diff, ", "))
+		}
+		if scenario == "existing decoy" {
+			if fingerprint(decoy) != before {
+				c.add("generate.path-resolution", "generation changed the lexical decoy")
+			}
+		} else if _, err := os.Lstat(lexicalParent); !os.IsNotExist(err) {
+			c.add("generate.path-resolution", "generation created or changed the absent lexical parent")
+		}
+	}
+	return nil
 }
 
 func validPath(p string) bool {

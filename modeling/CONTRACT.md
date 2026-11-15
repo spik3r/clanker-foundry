@@ -63,6 +63,13 @@ directory.
 The generator creates `OUT`, writes every emitted file, and writes the manifest
 last. An invalid model is refused before `OUT` is created.
 
+Generation follows the filesystem meaning of the original `OUT` path, including
+an interior parent symlink followed by `..`. After creating `OUT`, the generator
+resolves that directory before joining emitted file names. It must not write to
+a different directory selected by lexical path cleaning. If resolution fails
+after creation, generation exits 1 and the output may be partial. This does not
+add rollback or protection against concurrent filesystem changes.
+
 ### check
 
 `check` computes in memory exactly what `generate` would write and compares it

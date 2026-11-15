@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "ef66dc60-a944-48ef-b222-2c3918a2af4e",
+  "runId": "3b951795-dd55-477d-bddc-d133a4247066",
+  "kind": "complete",
+  "parents": [
+    "bddf9569-0545-4d40-92be-a5bb5e92c923"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-write-root-v1",
+    "path": "tasks/CF-generator-write-root-v1-physical-output.md",
+    "revision": "458832e2524a6bb73dcec47ace86e716a96d48af",
+    "blob": "35a336dc4d2cf565d610dca8d8b58a879bc32035",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a1bf3d72ee58c0298cee19d9219f6f6cb271ede6114880ddb2f399fe7b7b9d50"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-write-root-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T04:55:49.239Z",
+  "summary": "All five generators now write through the physical directory created from raw OUT; lifecycle checks the original parent spelling. Emitted bytes and versions stay unchanged.",
+  "next": "Commit the reviewed change and immutable evidence, validate committed coverage, then publish for exact-head hosted checks and coordinator merge review.",
+  "files": [
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/tui/contract.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/diagram/contract/contract.go",
+    "modeling/gencontract/README.md",
+    "modeling/CONTRACT.md",
+    "tasks/CF-generator-write-root-v1-physical-output.md"
+  ],
+  "validation": "Coordinator full race tests and vet passed in gencontract, tui, jsonvalidator, lifecycle, diagram and foundrygen: Go 1.27.3 for lifecycle and jsonvalidator, Go 1.27.4 elsewhere, supported Homebrew Git. The full lifecycle suite passed after initial wrong-toolchain and Apple-Git stderr environment failures; no code workaround. Gofmt across all six modules and pack validation passed, including pack validation after the final task report. Shared expectations failed all five old writers before repairs; strengthened replay also failed all five, and repaired producers plus tagged clean-generate-root fault detection passed. Two independent frozen reviews found no issues; actual CLI probes preserved decoys and lifecycle refusal behavior. Final twelve frozen hashes, exact staged scope and whitespace verified. Optional skills-ref unavailable.",
+  "snapshot": {
+    "modeling/gencontract/conformance.go": {
+      "blob": "c3ac46cf735f0f8a1adca261dcfe1eb81f74c099",
+      "mode": "100644"
+    },
+    "modeling/gencontract/conformance_test.go": {
+      "blob": "e25e90eac02dce9cfc4e223fd3c08ad0bf4d0423",
+      "mode": "100644"
+    },
+    "modeling/gencontract/cmd/refgen/main.go": {
+      "blob": "3f3d9fdc58700ef1f255a2daa74d52667074341c",
+      "mode": "100644"
+    },
+    "modeling/tui/contract.go": {
+      "blob": "0cbca5c817c871e46614ed31b2f6219289344ad4",
+      "mode": "100644"
+    },
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go": {
+      "blob": "fac864f455ef95cc75b1bd2703a2bcf593b6ea35",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/lifecyclegen/main.go": {
+      "blob": "2daac602e70ee724f9f6fad5f219f49288d445a1",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/contract.go": {
+      "blob": "1f766983b91c63fab683b2607d1e9fe51659cf73",
+      "mode": "100644"
+    },
+    "modeling/gencontract/README.md": {
+      "blob": "11e2cfb819edfa4aee76d9f99ff134ceb64f4ee9",
+      "mode": "100644"
+    },
+    "modeling/CONTRACT.md": {
+      "blob": "c558e07b8390d02f9cdb468d3806a7b57cbe3bc2",
+      "mode": "100644"
+    },
+    "tasks/CF-generator-write-root-v1-physical-output.md": {
+      "blob": "151553c54edef3079e2e57a24edc683468dac3d7",
+      "mode": "100644"
+    }
+  }
+}

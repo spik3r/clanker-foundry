@@ -232,7 +232,11 @@ func contractGenerate(modelPath, out string) ([]byte, error) {
 	} else if !os.IsNotExist(err) {
 		return nil, refuse("output path: %v", err)
 	}
-	ps, err := os.Stat(filepath.Dir(out))
+	parent, _ := filepath.Split(out)
+	if parent == "" {
+		parent = "."
+	}
+	ps, err := os.Stat(parent)
 	if err != nil || !ps.IsDir() {
 		return nil, refuse("parent of output path is not an existing directory")
 	}
@@ -242,6 +246,11 @@ func contractGenerate(modelPath, out string) ([]byte, error) {
 		}
 		return nil, ioFail("create output: %v", err)
 	}
+	physicalOut, err := filepath.EvalSymlinks(out)
+	if err != nil {
+		return nil, ioFail("output may be partial: resolve created root: %v", err)
+	}
+	out = physicalOut
 	for _, f := range files {
 		if err := writeNew(filepath.Join(out, f.path), f.data); err != nil {
 			return nil, ioFail("output may be partial: %v", err)
