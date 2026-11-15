@@ -36,6 +36,7 @@ appear. Normal builds of `refgen` contain no fault code.
 | `validate.identity` | stdout is exactly one identity line: four members in order, byte-exact encoding, contract value, profile, `sourceSHA256` of the model bytes, 64 lowercase hex `canonicalSHA256` | Identity line |
 | `validate.whitespace` | a whitespace-only reformatted copy has the same `canonicalSHA256` and a different `sourceSHA256` | Model identity |
 | `generate.exit` | `generate` exits 0 into a new `OUT` | generate |
+| `generate.path-resolution` | generation writes into the directory created through the original `OUT` path, not a lexical decoy across a parent symlink and `..` | generate |
 | `generate.identity` | the identity line is valid and agrees with `validate` | Identity line |
 | `generate.deterministic` | two runs with other output paths, model paths, file names and whitespace give byte-identical trees | Model identity |
 | `generate.tree` | output holds only regular files and non-empty directories | check |

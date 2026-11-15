@@ -184,6 +184,11 @@ func Write(out string, files map[string][]byte) error {
 		}
 		return err
 	}
+	physicalOut, err := filepath.EvalSymlinks(out)
+	if err != nil {
+		return fmt.Errorf("output %s is partial: resolve created root: %w", out, err)
+	}
+	out = physicalOut
 	names := make([]string, 0, len(files))
 	for name := range files {
 		if name != ManifestName {

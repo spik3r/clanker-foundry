@@ -673,6 +673,11 @@ func write(l loaded, out string) error {
 		}
 		return err
 	}
+	physicalOut, err := filepath.EvalSymlinks(out)
+	if err != nil {
+		return fmt.Errorf("output %s is partial: resolve created root: %w", out, err)
+	}
+	out = physicalOut
 	for _, f := range files {
 		if err := os.WriteFile(filepath.Join(out, f.path), f.data, 0o644); err != nil {
 			return fmt.Errorf("output %s is partial: %w", out, err)

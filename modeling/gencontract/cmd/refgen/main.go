@@ -407,6 +407,13 @@ func generate(l loaded, out string) error {
 			return err
 		}
 	}
+	if fault() != "clean-generate-root" {
+		physicalOut, err := filepath.EvalSymlinks(out)
+		if err != nil {
+			return fmt.Errorf("output %s is partial: resolve created root: %w", out, err)
+		}
+		out = physicalOut
+	}
 	for _, f := range files {
 		if err := writeFile(out, f); err != nil {
 			return fmt.Errorf("output %s is partial: %w", out, err)

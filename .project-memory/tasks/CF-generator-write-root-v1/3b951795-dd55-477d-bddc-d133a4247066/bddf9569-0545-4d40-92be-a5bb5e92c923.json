@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "bddf9569-0545-4d40-92be-a5bb5e92c923",
+  "runId": "3b951795-dd55-477d-bddc-d133a4247066",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-generator-write-root-v1",
+    "path": "tasks/CF-generator-write-root-v1-physical-output.md",
+    "revision": "458832e2524a6bb73dcec47ace86e716a96d48af",
+    "blob": "35a336dc4d2cf565d610dca8d8b58a879bc32035",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "a1bf3d72ee58c0298cee19d9219f6f6cb271ede6114880ddb2f399fe7b7b9d50"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/generator-write-root-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T04:30:50.679Z",
+  "summary": "Keep generated writes in the physical directory created from the original output spelling.",
+  "next": "Freeze shared path-resolution expectations, prove failures across old generators, repair writers and validate output/refusal parity.",
+  "files": [
+    "modeling/gencontract/conformance.go",
+    "modeling/gencontract/conformance_test.go",
+    "modeling/gencontract/cmd/refgen/main.go",
+    "modeling/tui/contract.go",
+    "modeling/jsonvalidator/cmd/jsonvalidator/main.go",
+    "modeling/lifecycle/cmd/lifecyclegen/main.go",
+    "modeling/diagram/contract/contract.go",
+    "modeling/gencontract/README.md",
+    "modeling/CONTRACT.md",
+    "tasks/CF-generator-write-root-v1-physical-output.md"
+  ]
+}
