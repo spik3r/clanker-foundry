@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "22191f94-72e5-4ac7-a36a-74caab4822fa",
+  "runId": "bd584642-04c7-4bd6-a9cc-4bec02a9ca04",
+  "kind": "complete",
+  "parents": [
+    "9cefbbe2-5c33-4910-b498-7783f4d772a7"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-root-path-v1",
+    "path": "tasks/CF-foundry-root-path-v1-physical-selection.md",
+    "revision": "f8600a87400bd1d771d8be907bf60c5154f80bd6",
+    "blob": "50354dcfd192f6bbe1cedd0784eb4e5b37cd2dcd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6b8607e1441246f0d92cd1911f51b28e0dc33757b85db77024914e64fcb4d441"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-root-path-v1",
+  "pullRequest": null,
+  "at": "2026-11-15T03:05:43.424Z",
+  "summary": "Resolve original CLI root paths before lexical cleanup; preserve allowed aliases and reject invalid intermediate components.",
+  "next": "Commit reviewed files and immutable evidence, validate the committed diff, and publish for final-head review and hosted checks.",
+  "files": [
+    "modeling/foundrygen/run.go",
+    "modeling/foundrygen/root_path_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-root-path-v1-physical-selection.md"
+  ],
+  "validation": "Node 24.15.0 Project Memory lifecycle/workflow regressions: 219 passed, zero skipped. bash scripts/validate.sh in .: exit 0; bash tests/test-validate.sh in .: exit 0; bash tests/test-install.sh in .: exit 0; bash tests/test-project-setup.sh in .: exit 0; go test -race -count=1 ./... in modeling/foundrygen: exit 0; go vet ./... in modeling/foundrygen: exit 0; go test -race -count=1 ./... in modeling/gencontract: exit 0; go vet ./... in modeling/gencontract: exit 0. Optional skills-ref was unavailable. Independent source and integration reviews reported no findings.",
+  "snapshot": {
+    "modeling/foundrygen/run.go": {
+      "blob": "621fb1f5d9e075a262dfd7287bc9c6a157c89577",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/root_path_test.go": {
+      "blob": "ab474210f5b89d2fb09ee103c2c009a80cc6395e",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "976d640852355befa76d5ea235689f678ed1a42f",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-root-path-v1-physical-selection.md": {
+      "blob": "5000f27bb81ae8cf7c75ef90c433214bbe7e391d",
+      "mode": "100644"
+    }
+  }
+}

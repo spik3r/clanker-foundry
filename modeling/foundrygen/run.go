@@ -107,7 +107,15 @@ func (s *session) report(err error) int {
 }
 
 func absDir(p string) (string, error) {
-	abs, err := filepath.Abs(p)
+	if p == "" {
+		p = "."
+	}
+	// Resolve before Abs cleans: alias/../root must keep its filesystem meaning.
+	resolved, err := filepath.EvalSymlinks(p)
+	if err != nil {
+		return "", err
+	}
+	abs, err := filepath.Abs(resolved)
 	if err != nil {
 		return "", err
 	}

@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-root-path-v1
-status: in-progress
+status: completed
 owner: Codex Foundry root-path contributor
 repositories: [spik3r/clanker-foundry]
 ---
@@ -50,3 +50,26 @@ Run full foundrygen race tests and vet, the repository validator, whitespace
 checks and committed Project Memory validation. Record observed commands and
 results, including any platform-dependent test skips. Publish a PR for independent
 review; only the coordinating agent may merge after checking the final head.
+
+## Observed implementation result
+
+The helper now resolves the original root through the filesystem before making
+it absolute. Empty project-root input retains current-directory behavior. New
+fixtures first failed on the unchanged helper for physical identity, unresolved
+components and actual project/registry selection. With the repair, the focused
+race suite passed, including a real public JSON validator fixture. Direct and
+aliased project/checkout spellings give the same plan, check and unchanged
+generation results; internal model symlinks still refuse.
+
+Observed locally with Go 1.27.4 and cached offline modules:
+
+- `go test -race -count=1 ./...` in `modeling/foundrygen`: passed (51.479s).
+- `go vet ./...` in that module: passed.
+- `scripts/validate.sh`: passed; optional `skills-ref` was not installed.
+- Whitespace checks: passed.
+
+Project Memory registration and the genuine start used Node 24.15.0 and pinned
+source `f8600a87400bd1d771d8be907bf60c5154f80bd6` before implementation edits.
+The bounded implementation claim is complete. Independent final review,
+completion evidence, committed-diff validation and PR publication remain next;
+this record does not claim a merge or runtime activation.

@@ -42,7 +42,8 @@ no generator logic of its own and uses only the Go standard library.
   Generation repeats the check before each output write, so an alias revealed
   by an earlier write refuses the later one. Earlier outputs may already have
   been written when this happens; a plan remains an observation.
-- Existing path components must not be symlinks.
+- Existing model and output path components within the selected project must not
+  be symlinks.
 - The file is decoded strictly: unknown keys, duplicate keys, wrong types,
   trailing data and sizes over 64 KiB are refused.
 
@@ -53,6 +54,16 @@ foundrygen plan     --project DIR --foundry CHECKOUT [--unpinned]
 foundrygen check    --project DIR --foundry CHECKOUT [--unpinned]
 foundrygen generate --project DIR --foundry CHECKOUT [--unpinned]
 ```
+
+CLI root paths are resolved through the filesystem before lexical cleanup. For
+example, if `alias` points to `physical/child`, `alias/../chosen` selects
+`physical/chosen`, not the lexical sibling `chosen`. Terminal and ancestor root
+aliases remain allowed. Relative roots use the current directory; an empty
+`--project` value keeps the current-directory behavior. Missing intermediate
+components and a regular-file component followed by `..` are refused rather than
+cleaned into a different directory. This applies to both root options for all
+three commands. It does not relax the model/output path rules above. Resolution
+is an ordinary observation, not a lock or a guard against concurrent replacement.
 
 `--project` defaults to `.`. `--foundry` is required. There are no other
 arguments.
