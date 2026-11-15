@@ -200,7 +200,7 @@ export async function createCandidateWorkspace({
   const sourceRoot = await realpath(repositoryRoot);
   const actualRevision = (await gitOutput(sourceRoot, ['rev-parse', '--verify', 'HEAD^{commit}'])).toString('utf8').trim();
   if (actualRevision !== repositoryRevision) fail('BASE_REVISION_MISMATCH', 'Repository HEAD does not match the pinned revision');
-  const tree = parseTree(await gitOutput(sourceRoot, ['ls-tree', '-r', '-z', '--full-tree', repositoryRevision], maxBytes));
+  const tree = parseTree(await gitOutput(sourceRoot, ['ls-tree', '-r', '-z', '--full-tree', repositoryRevision], Math.max(DEFAULT_TOTAL_BYTES, maxBytes)));
   const all = [...new Set([...reads, ...scope])].sort();
   for (let left = 0; left < all.length; left += 1) {
     for (let right = left + 1; right < all.length; right += 1) {

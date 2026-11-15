@@ -1,6 +1,6 @@
 ---
 id: CF-candidate-content-budget-v1
-status: in-progress
+status: done
 owner: Codex coordinator with delegated builder
 repositories: [spik3r/clanker-foundry]
 ---
@@ -71,3 +71,34 @@ completion from actual staged blobs, commits new evidence and validates the full
 committed diff with explicit code/source identities. Two reviewers bind final
 files and commit/tree. All hosted gates, including orchestration live isolation,
 must pass before normal merge. No live-host claim follows from local fake tests.
+
+## Observed implementation and checks
+
+The only production change raises candidate tree capture to
+`Math.max(DEFAULT_TOTAL_BYTES, maxBytes)`. Blob capture and aggregate charging
+remain at the configured content budget. The default metadata floor remains
+32 MiB, and larger admitted content budgets retain their previous metadata cap.
+The README now distinguishes this candidate behavior from the read-only adapter.
+
+The frozen public-API tests ran before production changed: ten tests produced
+nine failures and one pass on the old code. The passing negative was the existing
+single oversized-blob refusal. The test file SHA-256 is
+`fbe561d9a94e95bd684c0aa8414252be7e851add47676ab7c5068f04556847b7`.
+The unchanged tests passed after the one-line fix: ten passes, no skips, on actual
+Node 24.15.0. The full runtime suite passed all 360 tests with no skips. Pinned
+npm installation used ignored scripts, offline dependencies, an owned HOME and
+an owned cache; no ambient user npm cache was needed. Pack validation passed;
+optional skills-ref was unavailable. Installer regressions and both whitespace
+checks passed.
+
+The tests use owned Git repositories and invented host callbacks. They do not
+run a provider, container, candidate process, authority database or dispatch.
+Independent final review, staged Project Memory completion and hosted checks
+remain with the coordinator; these local results do not establish live isolation.
+
+The coordinator independently passed all eight local checks on Node 24.15.0,
+including 360 runtime tests with no skips, pack, validator, installer, project
+setup and ShellCheck regressions. Frozen source files stayed unchanged. Both
+independent reviewers approved the frozen implementation and their extra
+public-API controls passed. Staged lifecycle completion and committed validation
+follow these checks; final commit review and hosted gates remain pending.

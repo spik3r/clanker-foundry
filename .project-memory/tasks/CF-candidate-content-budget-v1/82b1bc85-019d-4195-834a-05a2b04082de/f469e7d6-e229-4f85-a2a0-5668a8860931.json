@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "f469e7d6-e229-4f85-a2a0-5668a8860931",
+  "runId": "82b1bc85-019d-4195-834a-05a2b04082de",
+  "kind": "complete",
+  "parents": [
+    "d8ca7219-a774-4738-ad64-de76409f6980"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-candidate-content-budget-v1",
+    "path": "tasks/CF-candidate-content-budget-v1-separate-tree-metadata.md",
+    "revision": "90dc94c68682a9d9b4d6d334520771183120b2c8",
+    "blob": "06182efcf26d4c2a5d3f8384773c3811e91f837e",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "0d69ec912ca055f1a66ea720173e82a27f619557d67d71666f9fd16179703c1c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/candidate-content-budget",
+  "pullRequest": null,
+  "at": "2026-11-15T10:39:54.851Z",
+  "summary": "Separate candidate tree capture from selected content budget",
+  "next": "Commit and validate full diff, obtain exact-head reviews and all hosted gates, then normal merge",
+  "files": [
+    "runtime/src/workspace.mjs",
+    "runtime/test/workspace-budget.test.mjs",
+    "runtime/README.md",
+    "tasks/CF-candidate-content-budget-v1-separate-tree-metadata.md"
+  ],
+  "validation": "Node 24.15.0: 360 runtime tests passed, no skips; pack validator, validator regressions, installer regressions, project setup regressions and ShellCheck passed. Frozen source unchanged. Two independent frozen reviews approved; task closure pack validation passed.",
+  "snapshot": {
+    "runtime/src/workspace.mjs": {
+      "blob": "e19ef0b4943460ed418aa7fb20ec4c90df71f294",
+      "mode": "100644"
+    },
+    "runtime/test/workspace-budget.test.mjs": {
+      "blob": "7c6019c8af662f3f90fc4196cc57f7b56bf5f1ed",
+      "mode": "100644"
+    },
+    "runtime/README.md": {
+      "blob": "7de87d06f7eac2797efa148234312cf477da159c",
+      "mode": "100644"
+    },
+    "tasks/CF-candidate-content-budget-v1-separate-tree-metadata.md": {
+      "blob": "b3c146763b481e13885180c39130f975bdf89edc",
+      "mode": "100644"
+    }
+  }
+}
