@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "91aa7eed-a25b-48dc-a94c-ce28a28cc705",
+  "runId": "e1d6e549-995e-44e7-b1c6-3a318a5ed40d",
+  "kind": "complete",
+  "parents": [
+    "b9fe2762-1662-4a45-b085-4a1fd93a88e0"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-second-consumer-protocol-refresh",
+    "path": "tasks/CF-second-consumer-protocol-refresh-correction.md",
+    "revision": "c09d592ea88de88ac746c20a39c50acb4891eed2",
+    "blob": "607cd85301732902640282837796578f5bee9db8",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c405332e0dca2254c1ae2117b6007e7ded363b187bc00d863050ef5f69b2774e"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/second-consumer-protocol-refresh",
+  "pullRequest": null,
+  "at": "2026-11-16T12:46:16.369Z",
+  "summary": "Corrected stale task prerequisite and historical fix status; trial remains unrun",
+  "next": "Publish normal PR after committed validation; no trial or deployment",
+  "files": [
+    "docs/trials/second-consumer-change/README.md",
+    "tasks/CF-second-consumer-protocol-refresh-correction.md"
+  ],
+  "validation": "scripts/validate.sh passed; independent reviewer reran validator successfully; optional skills-ref absent and skipped; git diff --check passed; factual evidence and exact maintained diff independently approved",
+  "snapshot": {
+    "docs/trials/second-consumer-change/README.md": {
+      "blob": "16ba2dd1c5a4d465f71bd714f1c2d341b188d4a4",
+      "mode": "100644"
+    },
+    "tasks/CF-second-consumer-protocol-refresh-correction.md": {
+      "blob": "878fb1facf5d1e71116496e0f04fd6c40c2715eb",
+      "mode": "100644"
+    }
+  }
+}

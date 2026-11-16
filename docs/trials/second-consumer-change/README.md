@@ -37,13 +37,18 @@ that task.
 
 ## Tasks
 
-Do task A first. Each task is one pull request in the consumer.
+Do task A first, once it names an unmet requirement. Each task is one pull
+request in the consumer. Do not start the trial with an already-satisfied task.
 
 ### Task A: model-only change
 
 On the correlated leads screen (`design/correlated-leads-browser.json`):
-show the next step first in the detail pane, and stop matching the filter on
-the evidence text.
+the original proposed change was to show the next step first in the detail
+pane and stop matching the filter on the evidence text.
+
+**Status, 16 November 2026:** the current consumer model already does both.
+Task A needs a real unmet model-only requirement before an operator starts.
+No replacement is chosen here, and this observation is not a completed trial.
 
 Expected: only the model and the regenerated output change. If the operator
 finds they must change hand-written code, that is a finding, not a failure.
@@ -93,8 +98,16 @@ terminal: it checks layout, keys and colours as text.
   was the application's own colour and the generator's default did not
   appear.
 - Found: at 60x20 the footer cut off the filter and quit hints; at 20x5 the
-  page showed only clipped chrome with no resize message. A fix is in
-  progress in the consumer.
+  page showed only clipped chrome with no resize message. At the time of
+  that observation, a fix was in progress in the consumer.
 - Note: a terminal reads `esc` followed within a few milliseconds by another
   key as one alt-key press. A scripted run must pause after `esc`; a person
   typing does not hit this.
+
+## Status update, 16 November 2026
+
+The consumer footer and small-terminal fix merged on 14 November in
+Monstera PR #139, commit `6bb97acb1be5cf3e440e8036af5b44a434dc1f13`.
+The observations above describe the earlier screen and remain historical
+evidence. This update does not record a new terminal run, human acceptance
+or an independent operator trial. The trial remains unrun.

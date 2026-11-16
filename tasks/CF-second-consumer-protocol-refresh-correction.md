@@ -1,6 +1,6 @@
 ---
 id: CF-second-consumer-protocol-refresh
-status: in-progress
+status: completed
 owner: Dot Foundry coordinator
 repositories: [spik3r/clanker-foundry]
 ---

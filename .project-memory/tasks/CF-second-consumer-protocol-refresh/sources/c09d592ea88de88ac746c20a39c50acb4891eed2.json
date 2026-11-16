@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "c09d592ea88de88ac746c20a39c50acb4891eed2",
+  "id": "CF-second-consumer-protocol-refresh",
+  "path": "tasks/CF-second-consumer-protocol-refresh-correction.md",
+  "blob": "607cd85301732902640282837796578f5bee9db8",
+  "record": "---\nid: CF-second-consumer-protocol-refresh\nstatus: in-progress\nowner: Dot Foundry coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Correct stale second-consumer trial prerequisites\n\n## Implementation claim\n\nOwner: Dot Foundry coordinator. The repository owner asked to resume Foundry\nwork and review useful changes. This is a bounded factual correction to the\ncompleted CF-second-consumer-trial-v1 protocol, not a new trial or a transfer\nof an active implementation reservation. Its existing history stays intact.\n\nScope: docs/trials/second-consumer-change/README.md, this task record, and new\nimmutable Project Memory source and events. Mark the proposed model-only\nTask A as already satisfied in the consumer and requiring a real unmet\nrequirement before the trial starts. Update the dated terminal-fix status to\nrecord that the consumer fix merged. Preserve the original observations.\n\nExclusions: choosing a replacement task or operator, running the trial,\nchanging consumer or generator source, claiming human terminal acceptance or\nmeasured benefit, changing historical metadata, deployment or activation.\nPublish only minimal factual status, not private source, task records or logs.\n\nChecks: independent factual and scope review, scripts/validate.sh,\ngit diff --check, and full committed Project Memory validation. Confirm the\ntrial remains explicitly unrun and no replacement requirement is invented.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-second-consumer-protocol-refresh-correction.md",
+        "id": "CF-second-consumer-protocol-refresh",
+        "blob": "607cd85301732902640282837796578f5bee9db8",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
