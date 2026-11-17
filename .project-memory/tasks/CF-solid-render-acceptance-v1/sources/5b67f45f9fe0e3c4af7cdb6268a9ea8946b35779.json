@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "5b67f45f9fe0e3c4af7cdb6268a9ea8946b35779",
+  "id": "CF-solid-render-acceptance-v1",
+  "path": "tasks/CF-solid-render-acceptance-v1-ci.md",
+  "blob": "0c000c17d4ad8a4e7e7979475528408223796ad7",
+  "record": "---\nid: CF-solid-render-acceptance-v1\nstatus: in-progress\nowner: Codex Solid render acceptance contributor\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Compile and render generated Solid dashboards in CI\n\n## Implementation claim\n\nThe repository owner approved a Foundry-only qualification check for the\ngenerated `dashboard/v1` Solid target. The existing JSX parser test is optional\nand skipped when esbuild is absent; no CI job currently compiles or renders the\ngenerated component with Solid.\n\nScope: add a self-contained verification package under\n`modeling/diagram/verify/solid/` with a pinned npm lockfile and Node 24 test\nrunner; generate fresh Solid dashboard output from repository-owned models,\ncompile it with the Solid JSX compiler, and render it through Solid's server\nrenderer. Check literal expected stat, table, chart and hostile-text behavior,\nincluding a negative control showing the acceptance assertions fail when the\nexpected output is wrong. Wire the required check into the diagram generator CI\nworkflow and update `modeling/diagram/DASHBOARD.md` to state what this check\ndoes and does not establish. Also add this task and its immutable Project Memory\nsource/events.\n\nKeep generated model behavior and emitted files unchanged. Do not read or copy\nconsumer application code or data. Do not claim browser, visual, human or\nconsumer acceptance from server-rendered output.\n\nChecks: the Solid verification package tests; `go test -race -count=1 ./...`\nand `go vet ./...` in `modeling/diagram`; `scripts/validate.sh`; whitespace\nchecks; and committed Project Memory validation.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-solid-render-acceptance-v1-ci.md",
+        "id": "CF-solid-render-acceptance-v1",
+        "blob": "0c000c17d4ad8a4e7e7979475528408223796ad7",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

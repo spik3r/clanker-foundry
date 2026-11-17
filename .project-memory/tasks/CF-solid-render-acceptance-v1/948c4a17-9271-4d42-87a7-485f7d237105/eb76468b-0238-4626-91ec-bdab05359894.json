@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "eb76468b-0238-4626-91ec-bdab05359894",
+  "runId": "948c4a17-9271-4d42-87a7-485f7d237105",
+  "kind": "complete",
+  "parents": [
+    "455ee7ca-50f9-48ea-8ec9-25d3ff056635"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-solid-render-acceptance-v1",
+    "path": "tasks/CF-solid-render-acceptance-v1-ci.md",
+    "revision": "5b67f45f9fe0e3c4af7cdb6268a9ea8946b35779",
+    "blob": "0c000c17d4ad8a4e7e7979475528408223796ad7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bd37b277bf143088174ca87954870f756d0ec4064994a0fb8bff857f47a86a5c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/solid-render-acceptance",
+  "pullRequest": null,
+  "at": "2026-11-17T02:33:54.402Z",
+  "summary": "Added fail-on-error Solid compiler and SSR content checks in diagram CI; independent reviewer found no remaining blocker",
+  "next": "Publish PR, inspect hosted checks and review exact head before merge",
+  "files": [
+    "tasks/CF-solid-render-acceptance-v1-ci.md",
+    "modeling/diagram/verify/solid/.gitignore",
+    "modeling/diagram/verify/solid/package.json",
+    "modeling/diagram/verify/solid/package-lock.json",
+    "modeling/diagram/verify/solid/README.md",
+    "modeling/diagram/verify/solid/solid.test.mjs",
+    ".github/workflows/diagram-model-go.yml",
+    "modeling/diagram/DASHBOARD.md"
+  ],
+  "validation": "npm test --prefix modeling/diagram/verify/solid passed 4/4 with zero skips, independently rerun; diagram go test -race -count=1 ./... and go vet ./... passed; scripts/validate.sh passed (optional skills-ref absent); git diff --check and git diff --cached --check passed. Local Node26; workflow selects Node24. No browser/hydration/visual acceptance claimed.",
+  "snapshot": {
+    "tasks/CF-solid-render-acceptance-v1-ci.md": {
+      "blob": "d307fb48a04636cee2a072cf5c94e1b2824e9390",
+      "mode": "100644"
+    },
+    "modeling/diagram/verify/solid/.gitignore": {
+      "blob": "480c7b126b720baf024fb01299fcc0d52969f747",
+      "mode": "100644"
+    },
+    "modeling/diagram/verify/solid/package.json": {
+      "blob": "711f6ab197a2b314aa68d5c6e7c8ec2fcfd9eb24",
+      "mode": "100644"
+    },
+    "modeling/diagram/verify/solid/package-lock.json": {
+      "blob": "9f8203d45efdbc0dc1c684ec608ddb0fd78df52b",
+      "mode": "100644"
+    },
+    "modeling/diagram/verify/solid/README.md": {
+      "blob": "1e6bb52bd68f50c60d75205ec1e6e4ecd24907cb",
+      "mode": "100644"
+    },
+    "modeling/diagram/verify/solid/solid.test.mjs": {
+      "blob": "e01b0bd28d50aefd97221530ebe72299b530d93a",
+      "mode": "100644"
+    },
+    ".github/workflows/diagram-model-go.yml": {
+      "blob": "6ff44824d1b46b271589becdf840fe361586f564",
+      "mode": "100644"
+    },
+    "modeling/diagram/DASHBOARD.md": {
+      "blob": "0d98616401a367cbbee16576bfc7159236480d45",
+      "mode": "100644"
+    }
+  }
+}
