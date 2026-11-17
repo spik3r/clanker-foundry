@@ -335,7 +335,11 @@ check chart geometry against the data and compare generated examples byte for
 byte. For the solid target they also check that every model string stays inside
 a string literal and that the component has the same widgets and the same chart
 coordinates as the HTML. A parse of the component as JSX runs only where Node
-and esbuild are installed; elsewhere that test is skipped. Nothing renders the
-component in a browser or a Solid build. They do not show that a dashboard reads well. A person should open the
+and esbuild are installed; elsewhere that test is skipped. The separate
+[Solid compiler and render check](verify/solid/README.md) runs in diagram CI
+without an optional skip: it generates fresh components, compiles them with
+the pinned Solid compiler, server-renders them and checks parsed content,
+chart marks and hostile text against literal expectations. It does not run a
+browser, hydration or CSS layout. These checks do not show that a dashboard reads well. A person should open the
 page, in light and dark themes and at phone width, before relying on it. On
 narrow screens the chart text scales down with the chart.

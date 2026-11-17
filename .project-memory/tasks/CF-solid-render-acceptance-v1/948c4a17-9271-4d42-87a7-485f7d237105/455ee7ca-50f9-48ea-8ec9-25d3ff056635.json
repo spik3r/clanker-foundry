@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "455ee7ca-50f9-48ea-8ec9-25d3ff056635",
+  "runId": "948c4a17-9271-4d42-87a7-485f7d237105",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-solid-render-acceptance-v1",
+    "path": "tasks/CF-solid-render-acceptance-v1-ci.md",
+    "revision": "5b67f45f9fe0e3c4af7cdb6268a9ea8946b35779",
+    "blob": "0c000c17d4ad8a4e7e7979475528408223796ad7",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "bd37b277bf143088174ca87954870f756d0ec4064994a0fb8bff857f47a86a5c"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/solid-render-acceptance",
+  "pullRequest": null,
+  "at": "2026-11-17T02:17:52.119Z",
+  "summary": "Add pinned Solid compiler and server-render acceptance checks",
+  "next": "Implement fresh generation and validate rendered literal expectations",
+  "files": [
+    "tasks/CF-solid-render-acceptance-v1-ci.md",
+    "modeling/diagram/verify/solid/.gitignore",
+    "modeling/diagram/verify/solid/package.json",
+    "modeling/diagram/verify/solid/package-lock.json",
+    "modeling/diagram/verify/solid/README.md",
+    "modeling/diagram/verify/solid/solid.test.mjs",
+    ".github/workflows/diagram-model-go.yml",
+    "modeling/diagram/DASHBOARD.md"
+  ]
+}

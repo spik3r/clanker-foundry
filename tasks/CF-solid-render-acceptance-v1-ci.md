@@ -1,6 +1,6 @@
 ---
 id: CF-solid-render-acceptance-v1
-status: in-progress
+status: completed
 owner: Codex Solid render acceptance contributor
 repositories: [spik3r/clanker-foundry]
 ---

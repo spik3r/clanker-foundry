@@ -1,0 +1,13 @@
+{
+  "name": "foundry-solid-verification",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test solid.test.mjs" },
+  "engines": { "node": ">=24" },
+  "devDependencies": {
+    "@babel/core": "7.29.7",
+    "babel-preset-solid": "1.9.12",
+    "parse5": "8.0.0",
+    "solid-js": "1.9.14"
+  }
+}
