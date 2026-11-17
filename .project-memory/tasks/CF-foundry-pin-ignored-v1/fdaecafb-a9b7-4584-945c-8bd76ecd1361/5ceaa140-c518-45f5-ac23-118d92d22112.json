@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "5ceaa140-c518-45f5-ac23-118d92d22112",
+  "runId": "fdaecafb-a9b7-4584-945c-8bd76ecd1361",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-ignored-v1",
+    "path": "tasks/CF-foundry-pin-ignored-v1-source-inputs.md",
+    "revision": "940c6d7540743afda0fbed02bc8f35efbf82e148",
+    "blob": "51649892db1f2f31ee25a81f0bac28a8668e2052",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "46a5351db09149fed0b2d3a1c5ac09c8aa7599a7eadb99d7d73633daa4863775"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/pin-ignored-inputs",
+  "pullRequest": null,
+  "at": "2026-11-17T07:50:01.962Z",
+  "summary": "Reproduce and refuse ignored local generator build inputs in pinned mode",
+  "next": "Add failing regression then repair and verify source preservation",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/pin_ignored_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-ignored-v1-source-inputs.md"
+  ]
+}

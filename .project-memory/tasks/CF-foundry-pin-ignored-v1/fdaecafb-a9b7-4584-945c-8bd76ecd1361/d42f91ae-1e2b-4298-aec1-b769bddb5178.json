@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "d42f91ae-1e2b-4298-aec1-b769bddb5178",
+  "runId": "fdaecafb-a9b7-4584-945c-8bd76ecd1361",
+  "kind": "complete",
+  "parents": [
+    "5ceaa140-c518-45f5-ac23-118d92d22112"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-ignored-v1",
+    "path": "tasks/CF-foundry-pin-ignored-v1-source-inputs.md",
+    "revision": "940c6d7540743afda0fbed02bc8f35efbf82e148",
+    "blob": "51649892db1f2f31ee25a81f0bac28a8668e2052",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "46a5351db09149fed0b2d3a1c5ac09c8aa7599a7eadb99d7d73633daa4863775"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/pin-ignored-inputs",
+  "pullRequest": null,
+  "at": "2026-11-17T09:07:01.771Z",
+  "summary": "Pinned mode refuses ignored local modeling inputs; compiled Go and embed witnesses reproduce the prior clean-status bypass",
+  "next": "Publish PR and wait for hosted checks at exact reviewed head before merge",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/pin_ignored_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-ignored-v1-source-inputs.md"
+  ],
+  "validation": "Before repair targeted regression failed all six cases because ignored build input was accepted; witness binaries printed ignored with clean ordinary status. After repair full foundrygen go test -race -count=1 ./... passed (51s), go vet ./... passed; final focused tests passed after fixture label correction; scripts/validate.sh passed (optional skills-ref unavailable); whitespace and staged whitespace checks passed. Independent read-only review found no blocker. Refusal preserved index, source and ignore bytes; outside-modeling ignored content allowed.",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "7d4ae1dd0ce0b4dc6a6e56f4a77d013eb47b034e",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/pin_ignored_test.go": {
+      "blob": "d0da77cd43be9ff1406e1a100d98ea353477f29b",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "ddbccf13907e45158c667cb512f0b2b90ed72708",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-ignored-v1-source-inputs.md": {
+      "blob": "5741d8b64ce26defca9ba3fd7a71c5be165bc2e4",
+      "mode": "100644"
+    }
+  }
+}
