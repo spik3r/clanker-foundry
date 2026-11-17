@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "940c6d7540743afda0fbed02bc8f35efbf82e148",
+  "id": "CF-foundry-pin-ignored-v1",
+  "path": "tasks/CF-foundry-pin-ignored-v1-source-inputs.md",
+  "blob": "51649892db1f2f31ee25a81f0bac28a8668e2052",
+  "record": "---\nid: CF-foundry-pin-ignored-v1\nstatus: in-progress\nowner: Codex pinned-source coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Refuse ignored local inputs in a pinned modeling checkout\n\n## Implementation claim\n\nThe owner requested another supervised round of task selection, implementation,\nreview, publication and merging after checks. Main at `5c37473` and live open\nPRs were checked; no open PR or active claim overlaps this change. Earlier pin\nmaintenance tasks are completed and retained their previous ignored-file policy.\n\nInvestigate the clean-source check's exclusion of ignored files under modeling.\nAn ignored Go source or embedded data file can affect a generator build even\nwhen ordinary Git status is empty. Reproduce this in disposable local fixtures\nbefore changing behavior. If confirmed, deliberately tighten the pinned mode\nto refuse ignored modeling content as well as other local changes. Do not\ndelete files, change ignore rules or waive checks for dependency directories.\nDocument the trade-off: installed verification dependencies require a separate\nclean Foundry source checkout for pinned consumer generation. Keep ignored\ncontent outside modeling and the explicit development-only --unpinned mode\nunchanged. This remains a trusted-host check, not a filesystem sandbox.\n\nScope: modeling/foundrygen/exec.go, a new\nmodeling/foundrygen/pin_ignored_test.go, modeling/foundrygen/README.md,\nthis task and new immutable Project Memory source/events. No generator behavior,\nconsumer code, project manifest format or runtime changes.\n\nChecks: demonstrate the ignored-input regression before repair; prove clean\nsource still works and ignored content outside modeling remains allowed;\ncheck that refusals preserve local files and source state. Run gofmt, the full\nfoundrygen race suite and vet, scripts/validate.sh, whitespace checks and full\ncommitted Project Memory validation. Independently review the change and wait\nfor hosted checks at the exact PR head before merging.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-foundry-pin-ignored-v1-source-inputs.md",
+        "id": "CF-foundry-pin-ignored-v1",
+        "blob": "51649892db1f2f31ee25a81f0bac28a8668e2052",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

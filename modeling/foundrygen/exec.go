@@ -164,13 +164,13 @@ func (s *session) pin() error {
 	if err := checkTrackedVisibility(tracked); err != nil {
 		return err
 	}
-	status, err := s.git("status", "--porcelain", "--untracked-files=all", "--", "modeling")
+	status, err := s.git("status", "--porcelain", "--untracked-files=all", "--ignored=matching", "--", "modeling")
 	if err != nil {
 		return err
 	}
 	if strings.TrimSpace(status) != "" {
 		first := strings.SplitN(strings.TrimSpace(status), "\n", 2)[0]
-		return refuse("Foundry checkout has uncommitted changes under modeling/ (%s)", first)
+		return refuse("Foundry checkout has uncommitted or ignored local content under modeling/ (%s)", first)
 	}
 	return nil
 }

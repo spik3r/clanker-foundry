@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-pin-ignored-v1
-status: in-progress
+status: completed
 owner: Codex pinned-source coordinator
 repositories: [spik3r/clanker-foundry]
 ---
