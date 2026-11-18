@@ -328,7 +328,7 @@ fits the shell, and that colours apply.
 ### Colours
 
 Colours are application presentation, not design meaning, so they are not in the
-model. Both embed modes emit `type Colors struct { Text, Muted, Accent, Border,
+model. Both embed modes emit `type Colors struct { Background, Text, Muted, Accent, Border,
 SelectionText, SelectionBackground string }` and `func (m Model) WithColors(c
 Colors) (Model, error)`. Each nonempty value must be `#RRGGBB` (hex digits of either
 case); otherwise the error is returned and the model is unchanged. An empty value

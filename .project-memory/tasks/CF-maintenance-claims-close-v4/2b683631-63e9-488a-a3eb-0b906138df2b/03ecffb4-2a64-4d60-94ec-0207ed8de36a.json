@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "03ecffb4-2a64-4d60-94ec-0207ed8de36a",
+  "runId": "2b683631-63e9-488a-a3eb-0b906138df2b",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v4",
+    "path": "tasks/CF-maintenance-claims-close-v4-unicode-records.md",
+    "revision": "f72033675547b6e8b0a707d9978cda070832d710",
+    "blob": "81f9438bd89c72566c83c0019b8d743ff5fdf856",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c2b141f44348299039c594506a21555e5f7935a0a24978473815f70233d96098"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/unicode-claims-closeout",
+  "pullRequest": null,
+  "at": "2026-11-18T07:56:35.861Z",
+  "summary": "Close two verified merged Unicode claims and correct the Colors sketch",
+  "next": "Make the four scoped documentation edits and verify preserved history and integration evidence",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v4-unicode-records.md",
+    "tasks/CF-tui-json-unicode-v1-lossless-input.md",
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md",
+    "modeling/tui/README.md"
+  ]
+}

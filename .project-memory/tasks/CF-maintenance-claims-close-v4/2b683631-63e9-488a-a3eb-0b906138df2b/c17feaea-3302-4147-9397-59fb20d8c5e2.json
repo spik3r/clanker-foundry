@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "c17feaea-3302-4147-9397-59fb20d8c5e2",
+  "runId": "2b683631-63e9-488a-a3eb-0b906138df2b",
+  "kind": "complete",
+  "parents": [
+    "03ecffb4-2a64-4d60-94ec-0207ed8de36a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-maintenance-claims-close-v4",
+    "path": "tasks/CF-maintenance-claims-close-v4-unicode-records.md",
+    "revision": "f72033675547b6e8b0a707d9978cda070832d710",
+    "blob": "81f9438bd89c72566c83c0019b8d743ff5fdf856",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c2b141f44348299039c594506a21555e5f7935a0a24978473815f70233d96098"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/unicode-claims-closeout",
+  "pullRequest": null,
+  "at": "2026-11-18T08:00:26.078Z",
+  "summary": "Closed two verified merged Unicode claims and corrected the Colors type sketch",
+  "next": "Review the immutable commit, validate full committed coverage, and await hosted CI before normal merge",
+  "files": [
+    "tasks/CF-maintenance-claims-close-v4-unicode-records.md",
+    "tasks/CF-tui-json-unicode-v1-lossless-input.md",
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md",
+    "modeling/tui/README.md"
+  ],
+  "validation": "Node24.15.0 scripts/validate.sh passed; optional skills-ref unavailable. Both whitespace checks passed. Independent preservation checks confirmed prior prose except status and all existing metadata bytes unchanged. Exact heads, merge second parents, equal trees, completed frontiers and ten successful workflows/twelve successful jobs each verified. Native suites not rerun for documentation-only changes.",
+  "snapshot": {
+    "tasks/CF-maintenance-claims-close-v4-unicode-records.md": {
+      "blob": "c6eb68b44f18bb72117575242d9ac4c1fcc1eabd",
+      "mode": "100644"
+    },
+    "tasks/CF-tui-json-unicode-v1-lossless-input.md": {
+      "blob": "64489760bb335593c0e30b085099c24446afbece",
+      "mode": "100644"
+    },
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md": {
+      "blob": "9e0bd7f6b382b269037835e7fd5ce5bb2c256d82",
+      "mode": "100644"
+    },
+    "modeling/tui/README.md": {
+      "blob": "644cb22f0c0725094bb28ae8e9832218d08ff85d",
+      "mode": "100644"
+    }
+  }
+}

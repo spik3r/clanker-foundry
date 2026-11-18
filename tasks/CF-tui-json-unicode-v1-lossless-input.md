@@ -1,6 +1,6 @@
 ---
 id: CF-tui-json-unicode-v1
-status: in-progress
+status: completed
 owner: Codex coordinator with delegated builder
 repositories: [spik3r/clanker-foundry]
 ---
@@ -83,3 +83,23 @@ existing output paths, empty success output and unchanged existing files.
 Repository checks, independent review, Project Memory completion and normal PR
 integration remain with the coordinator. This task remains in progress until
 those steps and the merge are observed.
+
+## Integration observed 2026-11-18
+
+[PR #183](https://github.com/spik3r/clanker-foundry/pull/183) merged the
+reviewed head `4e231e9bf9d8c36baf05aa9f5ef936c1a3f6ba26` as
+`fbfd2b1b38af1340bba5c01cbb3cf95c21061022`. The merge's second parent is that
+reviewed head; both have tree
+`30e1da0337ab9304c162a8a70a896bb4aca65232`. The coordinator and independent
+read-only agents verified the parents and exact trees. Independent agents
+reviewed the final source; these were agent reviews, not submitted GitHub reviews.
+
+The exact reviewed head had ten successful hosted workflows and twelve
+successful jobs, including the three jobs in the validate workflow. The sole completed
+Project Memory frontier is
+`7d7a53b9-d8d7-4ea7-b56a-ad476368846f`. The implementation and its
+bounded claim are complete and reserve no further implementation work.
+
+This closes the historical handoff above. Consumer, human acceptance, measured
+value and runtime activation gates remain unchanged; this closure grants no
+release or activation authority.
