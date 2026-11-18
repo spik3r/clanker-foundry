@@ -1,6 +1,6 @@
 ---
 id: CF-maintenance-claims-close-v4
-status: in-progress
+status: completed
 owner: Codex maintenance coordinator
 repositories: [spik3r/clanker-foundry]
 ---
@@ -42,3 +42,25 @@ Memory validation. Native suites are unnecessary for these documentation edits.
 A separate reviewer and the coordinator review frozen and committed source;
 hosted CI must pass before normal merge. No other implementation starts before
 that merge.
+
+## Observed documentation result 2026-11-18
+
+Marked the two merged Unicode records completed and appended their actual PRs,
+reviewed heads, merge commits, matching trees, agent-review context, hosted check
+counts and sole completed lifecycle frontiers. Their prior prose is byte-for-byte
+preserved except the status field. Both merge second parents and trees match
+the reviewed heads. Independent read-only GitHub snapshots confirm ten successful
+workflows and twelve successful jobs for each exact head, including the
+three jobs in the validate workflow. Agent reviews are not submitted GitHub reviews.
+
+The Colors sketch now includes Background. The README differs only by that
+field insertion, and the sketch matches the existing emitted type's field order
+and the role table. All pre-existing Project Memory source, event and legacy
+ledger bytes were preserved. Repository validation passed with Node 24.15.0;
+optional skills-ref was unavailable. Both whitespace checks passed. Native
+compiler suites were not rerun for these documentation-only changes.
+
+This documentation task is complete locally. Independent review, fresh committed
+Project Memory validation, hosted CI and normal PR integration remain with the
+coordinator; this result does not claim that this task's PR has merged. Consumer,
+human acceptance, measured value and runtime activation gates remain unchanged.
