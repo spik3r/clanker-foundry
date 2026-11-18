@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "735a548b-6ece-4ff9-855d-cc2c59be8750",
+  "runId": "ffbf29f6-684f-409c-9fbe-479702696b5e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tui-json-unicode-v1",
+    "path": "tasks/CF-tui-json-unicode-v1-lossless-input.md",
+    "revision": "256d8c1f9443a149f6cf7418394f39cbb4ae37a3",
+    "blob": "7f7bd4bae75fb361e2a7d47415fca1612501a8c0",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2a1929a1770e48556e3df323db91a5989e460c5d1a6a19f84b18ac073118df92"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tui-json-unicode",
+  "pullRequest": null,
+  "at": "2026-11-18T06:26:15.233Z",
+  "summary": "Refuse malformed surrogate escapes before TUI JSON decoding while preserving valid generation",
+  "next": "Implement frozen refusal regressions and local Unicode guard, then review and validate",
+  "files": [
+    "modeling/tui/model.go",
+    "modeling/tui/cases.go",
+    "modeling/tui/json_unicode.go",
+    "modeling/tui/json_unicode_test.go",
+    "modeling/tui/cmd/tuic/unicode_test.go",
+    "modeling/tui/README.md",
+    "modeling/tui/CASES.md",
+    "tasks/CF-tui-json-unicode-v1-lossless-input.md"
+  ]
+}

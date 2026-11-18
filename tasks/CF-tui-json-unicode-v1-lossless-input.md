@@ -59,3 +59,27 @@ committed Project Memory validation. Record observed outcomes, not intentions.
 A separate reviewer and the coordinator review the immutable final change.
 The coordinator checks hosted gates and merges normally only after validation.
 No runtime activation, releases/tags, private data import or unrelated fixes.
+
+## Observed implementation result
+
+The shared private guard checks original JSON string bytes before either TUI
+model or case decoding. It refuses unpaired surrogate escapes in keys and
+values with fixed error text. Syntax-invalid JSON keeps the existing decoder
+error path. No generator version, templates, manifests or dependencies changed.
+
+New regressions failed on unchanged production: malformed model and case text
+was accepted, and CLI intake emitted success identities and generated output.
+The final tests also failed only the refusal suites against a separate copy of
+the pinned unchanged production; valid text and syntax-error tests passed.
+After the fix, focused tests passed. Full TUI `go test -race ./... -count=1`,
+`go vet ./...` and `go build ./...` passed with Go 1.27.4.
+
+Baseline and fixed CLI binaries produced identical identities and every output
+byte for the supplied browser model and seven valid Unicode/escape inputs,
+including surrogate pairs, U+FFFD and a literal backslash followed by `ud800`.
+CLI regression tests cover validate, generate and check refusals, absent and
+existing output paths, empty success output and unchanged existing files.
+
+Repository checks, independent review, Project Memory completion and normal PR
+integration remain with the coordinator. This task remains in progress until
+those steps and the merge are observed.
