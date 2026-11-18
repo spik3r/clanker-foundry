@@ -1,0 +1,29 @@
+{
+  "formatVersion": 2,
+  "eventId": "4ae98050-65a3-4fb4-8746-2e3fa8f5f790",
+  "runId": "c5ecece8-f525-4e3a-9ce5-2aabeca39dcf",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-registry-intake-docs-v1",
+    "path": "tasks/CF-registry-intake-docs-v1-existing-contract.md",
+    "revision": "1bfcf4f293e0e35c5842d259770006e2be8e3f38",
+    "blob": "3e6d6e146a9a6351fefde0300f1fae0d1c6f1a8d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9fa748239895e7fd39c609c2151e08f207c24cf63a8415257cd377097c217bd8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/registry-intake-docs",
+  "pullRequest": null,
+  "at": "2026-11-18T23:17:00.480Z",
+  "summary": "Explain existing registry intake semantics with reviewed string/null and Unicode precision",
+  "next": "Apply documentation only, inspect source semantics and run permitted documentation checks",
+  "files": [
+    "modeling/foundrygen/README.md",
+    "tasks/CF-registry-intake-docs-v1-existing-contract.md"
+  ]
+}

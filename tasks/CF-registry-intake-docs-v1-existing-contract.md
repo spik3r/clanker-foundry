@@ -60,3 +60,29 @@ before test setup completed. Do not retry Go/cache access, process listing or
 an alternate route. Documentation qualification uses direct source/regression
 inspection, repository documentation validation, whitespace and lifecycle
 validation. Unrun tests remain disclosed. No new dependency or runtime suite.
+
+## Local candidate result
+
+The README now states the registry location and 1 MiB bound, Unicode preflight
+for unknown fields, later-string replacement for repeated known string fields,
+null's lack of effect on strings, possible invalid-type refusal, and unique
+generator IDs across entries. No decoder or test behavior changed.
+
+Source inspection checked LoadRegistry, its preflight/read bound and duplicate
+ID checks, TestUnicodeRegistryIntake's intentional repeated-field behavior and
+unknown-field Unicode refusals, and the installed Go encoding/json source
+comments on duplicate members, type errors and null semantics.
+
+The repository documentation validator passed; optional skills-ref was not
+installed and was skipped. Whitespace checks passed. The previously attempted
+focused Go regression did not execute because the sandbox denied build-cache
+access during setup. It was not retried, and no alternate cache, process lookup,
+dependency install or runtime test was used. Other Go tests and hosted CI were
+not run for this documentation-only candidate. Fresh committed Project Memory
+validation is recorded separately after the implementation commit.
+
+The local claim was coordinator-accepted and pinned before a genuine v2 start;
+the README was unchanged at that start. Proposal and accepted-source commits
+remain in ancestry. All earlier lifecycle files and unrelated claims remain
+unchanged. Candidate implementation is ready for independent exact-commit
+review, with source publication, PR creation and integration still pending.
