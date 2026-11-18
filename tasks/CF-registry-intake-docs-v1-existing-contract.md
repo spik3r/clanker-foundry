@@ -38,3 +38,25 @@ Mac execution, repository validation, whitespace and committed Project Memory
 validation. Report actual results and unavailable optional tools. Return the
 exact candidate commit/tree and patch for independent coordinator review before
 publication. Preserve all old lifecycle bytes and the primary checkout.
+
+## Accepted local implementation scope
+
+Independent coordinator review accepted this bounded documentation task and the
+original proposal commit `cf764ce0b38fa1e6c105f4315d4393dc4471d1d3`.
+The accepted precision requirement is: for repeated known string fields, a later
+string value replaces an earlier value; null does not overwrite strings and
+invalid types may refuse. Unknown fields undergo Unicode preflight before they
+are ignored. This accepts an explanation of current semantics, not a decoder
+policy change. Preserve the proposal text above as provenance.
+
+A fresh ordinary fetch confirmed main remains
+`1d019d5f31c9af0cfe5c66fd966ffb935037f7eb`, and a live PR query returned none.
+The coordinator authorized this local claim, pinning and genuine start before
+applying the README clarification. Public source reservation and integration
+remain pending final independent review and ordinary publication.
+
+The focused Go regression did not execute: sandbox cache access was denied
+before test setup completed. Do not retry Go/cache access, process listing or
+an alternate route. Documentation qualification uses direct source/regression
+inspection, repository documentation validation, whitespace and lifecycle
+validation. Unrun tests remain disclosed. No new dependency or runtime suite.
