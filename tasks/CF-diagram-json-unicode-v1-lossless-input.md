@@ -64,3 +64,31 @@ HTML/Solid acceptance checks from the existing workflow; whitespace and full
 committed Project Memory validation. Record observed checks and limitations.
 A separate reviewer and the coordinator review the exact final commit. Wait for
 hosted gates before normal merge; do not tag, release or activate runtime.
+
+## Observed implementation result
+
+StrictScan now checks original JSON string bytes before any profile or binding
+payload decoding. The module-local guard refuses unpaired surrogate escapes in
+keys and values with fixed error text. Syntax-invalid JSON keeps its existing
+scanner path; profile selection keeps its existing header refusals. Generator
+versions, templates, manifests, dependencies and consumer pins did not change.
+
+Frozen regressions failed on unchanged production in scanner, four-profile,
+binding, Tesserae and CLI refusal suites. Valid Unicode, syntax/shape/depth/size
+refusals and profile-header behavior passed before the repair. After the repair,
+focused tests and full diagram `go test -race ./... -count=1`, `go vet ./...`
+and `go build ./...` passed with Go 1.27.4. Gofmt reported no changed files and
+`git diff --check` passed.
+
+Baseline and fixed CLI binaries matched in 67 comparisons: all 11 supplied
+models; seven valid Unicode/escape spellings across four profiles and Solid
+output; seven binding payloads and their generated outputs; and seven Tesserae
+exports. Compared source/canonical identities and every generated file byte,
+including manifests, were unchanged. The fixtures cover valid pairs, U+FFFD,
+literal backslashes and ordinary escaped punctuation. CLI regressions cover
+validate, generate, check, bind and tesserae refusals with empty stdout and no
+creation or mutation of output or input files.
+
+Repository checks, HTML/Solid acceptance, independent review, Project Memory
+completion and normal PR integration remain with the coordinator. This task
+remains in progress until those steps and merge are observed.

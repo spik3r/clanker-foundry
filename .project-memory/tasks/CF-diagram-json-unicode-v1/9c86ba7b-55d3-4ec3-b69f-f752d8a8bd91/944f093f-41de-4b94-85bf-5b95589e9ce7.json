@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "944f093f-41de-4b94-85bf-5b95589e9ce7",
+  "runId": "9c86ba7b-55d3-4ec3-b69f-f752d8a8bd91",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-diagram-json-unicode-v1",
+    "path": "tasks/CF-diagram-json-unicode-v1-lossless-input.md",
+    "revision": "73ff924fa7d94b53418b2c2b9dc0809a91e79f19",
+    "blob": "1259bffb5a44e9f6f459cb1ac819b7c0e76b9a34",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "58f3f151d860ef6d5cae3c82822b8d5ecda95698be2ce907fe71876660ed10bb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/diagram-json-unicode",
+  "pullRequest": null,
+  "at": "2026-11-18T06:57:58.443Z",
+  "summary": "Reject malformed surrogate escapes at diagram and binding strict JSON intake while preserving valid output",
+  "next": "Implement frozen scanner, profile and CLI regressions; independently review and qualify the bounded fix",
+  "files": [
+    "modeling/diagram/contract/strict.go",
+    "modeling/diagram/contract/unicode.go",
+    "modeling/diagram/contract/unicode_test.go",
+    "modeling/diagram/unicode_test.go",
+    "modeling/diagram/cmd/diagramgen/unicode_test.go",
+    "modeling/diagram/README.md",
+    "modeling/diagram/REPORT-BINDING.md",
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md"
+  ]
+}

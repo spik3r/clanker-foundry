@@ -64,7 +64,11 @@ aggregates. Stat text is supplied, not recalculated from rows, so the author mus
 check its consistency with the data.
 
 Input uses the dashboard's existing strict JSON scanner: no duplicate or unknown
-keys, nulls, trailing data, invalid UTF-8 or deep structures. Each input and the
+keys, nulls, trailing data, invalid UTF-8 or deep structures. Unicode surrogate
+escapes must form a valid high/low pair in every key and value, including row
+cells and stat notes. Lone or broken pairs are refused before decoding; valid
+pairs, explicit U+FFFD and escaped literal backslashes keep their text.
+Each input and the
 materialized model are bounded by 512 KiB, including output indentation and its
 final newline. A compact payload within the input limit may still be refused if
 its formatted materialized model exceeds that limit. The complete materialized model must

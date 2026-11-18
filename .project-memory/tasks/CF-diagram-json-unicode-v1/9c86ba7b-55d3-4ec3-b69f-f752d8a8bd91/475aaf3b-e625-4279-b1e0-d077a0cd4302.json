@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "475aaf3b-e625-4279-b1e0-d077a0cd4302",
+  "runId": "9c86ba7b-55d3-4ec3-b69f-f752d8a8bd91",
+  "kind": "complete",
+  "parents": [
+    "944f093f-41de-4b94-85bf-5b95589e9ce7"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-diagram-json-unicode-v1",
+    "path": "tasks/CF-diagram-json-unicode-v1-lossless-input.md",
+    "revision": "73ff924fa7d94b53418b2c2b9dc0809a91e79f19",
+    "blob": "1259bffb5a44e9f6f459cb1ac819b7c0e76b9a34",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "58f3f151d860ef6d5cae3c82822b8d5ecda95698be2ce907fe71876660ed10bb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/diagram-json-unicode",
+  "pullRequest": null,
+  "at": "2026-11-18T07:06:59.434Z",
+  "summary": "Refuse malformed Unicode escapes in strict diagram and binding inputs without changing valid generated output",
+  "next": "Commit immutable evidence, validate complete committed diff, obtain exact-head review and hosted checks, then normal coordinator merge",
+  "files": [
+    "modeling/diagram/contract/strict.go",
+    "modeling/diagram/contract/unicode.go",
+    "modeling/diagram/contract/unicode_test.go",
+    "modeling/diagram/unicode_test.go",
+    "modeling/diagram/cmd/diagramgen/unicode_test.go",
+    "modeling/diagram/README.md",
+    "modeling/diagram/REPORT-BINDING.md",
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md"
+  ],
+  "validation": "Frozen refusal regressions red on unchanged production then green; full diagram race suite, vet/build/gofmt and 67 baseline/fixed identity and complete output comparisons passed on Go1.27.4. Independent full-race and exhaustive surrogate/boundary corpus passed. Repository validator/regressions, installer, project setup and Project Memory regressions passed; optional skills-ref unavailable. Pinned Solid compile/server-render acceptance passed on Node24.15 in an exact source copy; source stayed dependency-clean. No browser/human acceptance or runtime activation claimed.",
+  "snapshot": {
+    "modeling/diagram/contract/strict.go": {
+      "blob": "d2a04bf19c61a3f363e94659f6eb9c01acfa6154",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/unicode.go": {
+      "blob": "18f70cf40987d5f5c2694af998bb76046a78d1f7",
+      "mode": "100644"
+    },
+    "modeling/diagram/contract/unicode_test.go": {
+      "blob": "92f5bffea050a63f32b0b556d22ff66aed18668c",
+      "mode": "100644"
+    },
+    "modeling/diagram/unicode_test.go": {
+      "blob": "b6eee37bc4fcc259c83001af9e8e52cc4793d210",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/unicode_test.go": {
+      "blob": "f035105c283f5fe5f5373b299d64e8c81ded8357",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "7ee02795567f0f7180516e19b611c04d3bbc0206",
+      "mode": "100644"
+    },
+    "modeling/diagram/REPORT-BINDING.md": {
+      "blob": "22f6e413987f37cb73ad27dbaf2b3a6f53aab1f9",
+      "mode": "100644"
+    },
+    "tasks/CF-diagram-json-unicode-v1-lossless-input.md": {
+      "blob": "23fb49fbfc51823f4958c0548c4a51335a5a76bb",
+      "mode": "100644"
+    }
+  }
+}
