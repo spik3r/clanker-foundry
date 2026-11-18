@@ -130,6 +130,9 @@ func DecodeCases(raw []byte) (Cases, error) {
 	if len(raw) == 0 || len(raw) > MaxCasesBytes || !utf8.Valid(raw) {
 		return c, fmt.Errorf("cases must be UTF-8 JSON of 1..%d bytes", MaxCasesBytes)
 	}
+	if err := checkJSONUnicode(raw); err != nil {
+		return c, err
+	}
 	scan := json.NewDecoder(bytes.NewReader(raw))
 	if err := checkCasesValue(scan, 0, "root"); err != nil {
 		return c, err

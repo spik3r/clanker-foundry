@@ -21,7 +21,10 @@ expectation to make a failing run pass.
 A strict JSON document of at most 256 KiB, UTF-8. Duplicate keys, unknown keys,
 keys that differ only in case, `null`, trailing data, invalid UTF-8 and numbers
 written as non-integers are refused. Every member below is required unless it
-says optional.
+says optional. Unicode surrogate escapes must form a valid high/low pair in
+every key and value, including records, typed text and expectations. Lone or
+broken pairs are refused before decoding; valid pairs, explicit U+FFFD and
+escaped literal backslashes keep their text.
 
 | Member | Meaning |
 | --- | --- |

@@ -9,6 +9,10 @@ fields, labels and explicit wide/narrow breakpoints. The compiler supplies one
 fixed read-only interaction contract. It does not generate an arbitrary app,
 network client, database, editable form or general widget tree.
 
+Model JSON must contain valid UTF-8 and paired Unicode surrogate escapes in
+keys and values. Lone or broken surrogate escapes are refused before decoding.
+Valid pairs, explicit U+FFFD and escaped literal backslashes keep their text.
+
 ## Try the supplied model
 
 Running the generator needs Go 1.27.0 or later (`go 1.27.0` in this module's

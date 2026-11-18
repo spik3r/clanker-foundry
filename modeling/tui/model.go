@@ -162,6 +162,9 @@ func Decode(raw []byte) (Model, error) {
 	if len(raw) == 0 || len(raw) > MaxModelBytes || !utf8.Valid(raw) {
 		return m, fmt.Errorf("model must be UTF-8 JSON of 1..%d bytes", MaxModelBytes)
 	}
+	if err := checkJSONUnicode(raw); err != nil {
+		return m, err
+	}
 	scan := json.NewDecoder(bytes.NewReader(raw))
 	if err := checkValue(scan, 0, "model"); err != nil {
 		return m, err
