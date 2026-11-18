@@ -26,16 +26,19 @@ type Node struct {
 type Schema map[string]Node
 
 // StrictScan refuses what encoding/json would accept silently: invalid UTF-8,
-// input over max bytes, nesting over MaxDepth, null, duplicate or unknown
-// object members (case variants included), objects or arrays where the schema
-// expects a scalar, and trailing data. It checks structure only; the caller
-// still decodes and validates values.
+// unpaired surrogate escapes, input over max bytes, nesting over MaxDepth, null,
+// duplicate or unknown object members (case variants included), objects or arrays
+// where the schema expects a scalar, and trailing data. It checks structure only;
+// the caller still decodes and validates values.
 func StrictScan(raw []byte, max int, s Schema) error {
 	if len(raw) == 0 || len(raw) > max {
 		return fmt.Errorf("model must be 1..%d bytes", max)
 	}
 	if !utf8.Valid(raw) {
 		return fmt.Errorf("model is not valid UTF-8")
+	}
+	if err := checkJSONUnicode(raw); err != nil {
+		return err
 	}
 	d := json.NewDecoder(bytes.NewReader(raw))
 	if err := scan(d, 0, "model", s); err != nil {

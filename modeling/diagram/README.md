@@ -22,6 +22,11 @@ Other profiles can be added as sibling packages that implement
 For recurring reports, [reuse a reviewed dashboard with fresh data](REPORT-BINDING.md)
 using `diagramgen bind TEMPLATE DATA` before generation.
 
+Model JSON requires valid UTF-8 and paired Unicode surrogate escapes in keys
+and values. The shared scanner refuses lone or broken surrogate escapes before
+profile decoding. Valid pairs, explicit U+FFFD and escaped literal backslashes
+keep their text. The binding and Tesserae export paths use the same check.
+
 ## Run it
 
 Go 1.27.4 is required.
