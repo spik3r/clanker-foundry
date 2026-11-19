@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "17d6dd8d-3217-4b81-b4ef-394f20a9c464",
+  "runId": "6ea31f33-2c3d-4445-bb7c-9db2b0edadbf",
+  "kind": "complete",
+  "parents": [
+    "7ab5fb99-aa02-4ced-bfeb-753ad5ea0838"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-registry-intake-docs-v1",
+    "path": "tasks/CF-registry-intake-docs-v1-existing-contract.md",
+    "revision": "1bfcf4f293e0e35c5842d259770006e2be8e3f38",
+    "blob": "3e6d6e146a9a6351fefde0300f1fae0d1c6f1a8d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9fa748239895e7fd39c609c2151e08f207c24cf63a8415257cd377097c217bd8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/registry-intake-closeout",
+  "pullRequest": null,
+  "at": "2026-11-19T07:38:17.289Z",
+  "summary": "Marked merged registry documentation task completed and appended dated verified integration receipt",
+  "next": "Review exact committed closeout and open one draft PR; no merge or deployment",
+  "files": [
+    "tasks/CF-registry-intake-docs-v1-existing-contract.md"
+  ],
+  "validation": "PASS: bash scripts/validate.sh (optional skills-ref unavailable); git diff --check; git diff --cached --check; byte comparison of preserved prior prose except status; exact merge second-parent/tree verification; ten successful exact-merge post-merge push workflows; sole prior completed frontier verified. No native tests rerun and no denied operation retried.",
+  "snapshot": {
+    "tasks/CF-registry-intake-docs-v1-existing-contract.md": {
+      "blob": "3871c6117ae544012862f0055592a95ea823531d",
+      "mode": "100644"
+    }
+  }
+}
