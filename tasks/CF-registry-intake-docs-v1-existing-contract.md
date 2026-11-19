@@ -1,6 +1,6 @@
 ---
 id: CF-registry-intake-docs-v1
-status: in-progress
+status: completed
 owner: Foundry implementation lane, 2026-11-19
 repositories: [spik3r/clanker-foundry]
 ---
@@ -86,3 +86,34 @@ the README was unchanged at that start. Proposal and accepted-source commits
 remain in ancestry. All earlier lifecycle files and unrelated claims remain
 unchanged. Candidate implementation is ready for independent exact-commit
 review, with source publication, PR creation and integration still pending.
+
+## Integration receipt 2026-11-19
+
+[PR #186](https://github.com/spik3r/clanker-foundry/pull/186) merged on
+2026-11-19 at 02:48:25 UTC as
+`12a401845cb8b139f893b736319815eac692a1db`. Its second parent is the
+independently reviewed candidate
+`11842abf4a03024be293dd51e81227ad667c3e06`. Both commits have tree
+`6009dcee6e2540e147d1e3cf1f7c67ea9d3220c3`; the merged content matches the
+reviewed documentation exactly. Independent agent review is distinct from a
+submitted GitHub review.
+
+A live check on 2026-11-19 verified all ten post-merge push workflows completed
+successfully for that exact merge commit: diagram-model-go, generator-contract,
+generator-pipeline, json-validator-go, model-authoring-contract,
+model-lifecycle-go, orchestration, project-memory-conformance, tui-model-go and
+validate. These are workflow counts, not individual check/job counts.
+
+Before this bookkeeping change, the task's sole lifecycle frontier was the
+completed event `92ea76ab-72e7-4db8-bfc8-328d787142af`, retained in main.
+This bounded implementation claim is complete and reserves no further work.
+The prior proposal, handoffs and local-validation limitations above remain
+historical records. In particular, the denied local Go test was not retried;
+hosted workflow success does not turn that local attempt into an executed test.
+
+This receipt changes only the canonical status and appends integration evidence;
+all prior prose apart from the status field, immutable events, source snapshots
+and legacy ledger bytes are preserved. The closeout itself has a new genuine
+lifecycle run and will be submitted separately as a draft PR. It does not claim
+that the closeout PR has merged, or change paused work, the second-consumer trial,
+consumer acceptance, measured value or runtime activation gates.
