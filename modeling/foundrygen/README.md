@@ -51,8 +51,15 @@ Both the project file and registry must be valid UTF-8. Any surrogate escapes
 in JSON strings must form valid pairs. Malformed Unicode is refused before
 decoding can replace it with U+FFFD and select a different path. Literal or escaped U+FFFD,
 valid surrogate pairs and ordinary Unicode paths remain allowed. Path spelling
-is not normalized. The registry keeps its existing field-handling rules; this
-shared check concerns Unicode only.
+is not normalized.
+
+The registry is `modeling/gencontract/generators.json` in the selected Foundry
+checkout and is limited to 1 MiB. Its field handling differs from the strict
+project file: unknown fields undergo the Unicode check above before being
+ignored. For repeated known string fields, a later string value replaces an
+earlier value; null does not overwrite strings, and invalid types may be
+refused. Generator IDs must still be valid and unique across registry entries;
+repeating an ID in two entries is refused.
 
 ## Commands
 

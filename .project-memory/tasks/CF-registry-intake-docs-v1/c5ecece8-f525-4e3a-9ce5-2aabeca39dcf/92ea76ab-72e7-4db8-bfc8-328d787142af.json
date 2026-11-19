@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "92ea76ab-72e7-4db8-bfc8-328d787142af",
+  "runId": "c5ecece8-f525-4e3a-9ce5-2aabeca39dcf",
+  "kind": "complete",
+  "parents": [
+    "4ae98050-65a3-4fb4-8746-2e3fa8f5f790"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-registry-intake-docs-v1",
+    "path": "tasks/CF-registry-intake-docs-v1-existing-contract.md",
+    "revision": "1bfcf4f293e0e35c5842d259770006e2be8e3f38",
+    "blob": "3e6d6e146a9a6351fefde0300f1fae0d1c6f1a8d",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "9fa748239895e7fd39c609c2151e08f207c24cf63a8415257cd377097c217bd8"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/registry-intake-docs",
+  "pullRequest": null,
+  "at": "2026-11-18T23:17:52.609Z",
+  "summary": "Documented existing registry intake with reviewed string/null and unknown-field Unicode precision; behavior unchanged",
+  "next": "Independent exact-commit review before any source push or PR; coordinator owns publication and integration",
+  "files": [
+    "modeling/foundrygen/README.md",
+    "tasks/CF-registry-intake-docs-v1-existing-contract.md"
+  ],
+  "validation": "PASS: bash scripts/validate.sh (skills-ref absent and skipped); git diff --check; git diff --cached --check; direct LoadRegistry, Unicode regression and local encoding/json source inspection. NOT EXECUTED: focused Go test, setup denied build-cache access; no retry or alternate route. Other Go/runtime tests and hosted CI unrun for docs-only scope.",
+  "snapshot": {
+    "modeling/foundrygen/README.md": {
+      "blob": "94c136480b9d798f993bce216d842cc653b91338",
+      "mode": "100644"
+    },
+    "tasks/CF-registry-intake-docs-v1-existing-contract.md": {
+      "blob": "b5c0d5d0fefde81739cf40cd842150a3c88d7897",
+      "mode": "100644"
+    }
+  }
+}

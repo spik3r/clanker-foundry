@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "1bfcf4f293e0e35c5842d259770006e2be8e3f38",
+  "id": "CF-registry-intake-docs-v1",
+  "path": "tasks/CF-registry-intake-docs-v1-existing-contract.md",
+  "blob": "3e6d6e146a9a6351fefde0300f1fae0d1c6f1a8d",
+  "record": "---\nid: CF-registry-intake-docs-v1\nstatus: in-progress\nowner: Foundry implementation lane, 2026-11-19\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Explain the registry's existing intake rules\n\n## Implementation claim\n\nPrepare a bounded documentation clarification from main\n`1d019d5f31c9af0cfe5c66fd966ffb935037f7eb`. The continuing-work request\npermits useful independent Foundry maintenance. Live PR lookup found no open\nFoundry PRs. Existing unfinished tasks retain their owners; this change does\nnot reopen or release them. A source inspection found that the registry's\nintentional permissive field handling is covered by TestUnicodeRegistryIntake,\nbut the guide only refers to unspecified existing rules.\n\nOwner: Foundry implementation lane, 2026-11-19. Scope: only\n`modeling/foundrygen/README.md`, this task and new immutable Project Memory\nsource/events. Explain the registry path, its 1 MiB limit, ignored unknown\nfields, last-value handling for repeated string fields, and refusal of repeated\ngenerator IDs across entries. Keep strict project-file rules distinct. Do not\nchange the decoder, tests, generated output, dependencies, prior evidence,\nother claims, runtime or held work. No merge or deployment.\n\nThis local claim is a proposal until the coordinator accepts it through the\nshared source. Prepare the exact candidate for independent coordinator review;\nsource publication waits for that review. Do not claim integration or public\nreservation from a local source snapshot.\n\n## Validation and handoff\n\nCheck the wording directly against LoadRegistry and the existing\nTestUnicodeRegistryIntake regression, run that focused regression with bounded\nMac execution, repository validation, whitespace and committed Project Memory\nvalidation. Report actual results and unavailable optional tools. Return the\nexact candidate commit/tree and patch for independent coordinator review before\npublication. Preserve all old lifecycle bytes and the primary checkout.\n\n## Accepted local implementation scope\n\nIndependent coordinator review accepted this bounded documentation task and the\noriginal proposal commit `cf764ce0b38fa1e6c105f4315d4393dc4471d1d3`.\nThe accepted precision requirement is: for repeated known string fields, a later\nstring value replaces an earlier value; null does not overwrite strings and\ninvalid types may refuse. Unknown fields undergo Unicode preflight before they\nare ignored. This accepts an explanation of current semantics, not a decoder\npolicy change. Preserve the proposal text above as provenance.\n\nA fresh ordinary fetch confirmed main remains\n`1d019d5f31c9af0cfe5c66fd966ffb935037f7eb`, and a live PR query returned none.\nThe coordinator authorized this local claim, pinning and genuine start before\napplying the README clarification. Public source reservation and integration\nremain pending final independent review and ordinary publication.\n\nThe focused Go regression did not execute: sandbox cache access was denied\nbefore test setup completed. Do not retry Go/cache access, process listing or\nan alternate route. Documentation qualification uses direct source/regression\ninspection, repository documentation validation, whitespace and lifecycle\nvalidation. Unrun tests remain disclosed. No new dependency or runtime suite.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-registry-intake-docs-v1-existing-contract.md",
+        "id": "CF-registry-intake-docs-v1",
+        "blob": "3e6d6e146a9a6351fefde0300f1fae0d1c6f1a8d",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
