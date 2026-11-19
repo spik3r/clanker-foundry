@@ -1,6 +1,6 @@
 ---
 id: CF-tuicases-output-v1
-status: in-progress
+status: completed
 owner: Codex coordinator with delegated builder
 repositories: [spik3r/clanker-foundry]
 ---
@@ -72,3 +72,28 @@ establish native test results. The earlier cache-access cancellation remains
 in effect. Native command tests and fresh completed lifecycle coverage remain
 required before marking the repair ready or merging it. Preserve the earlier
 checkpoint as historical evidence.
+
+## Validation completed, 20 November 2026
+
+The owner authorized local tests, completed validation and conditional merge of
+[PR #188](https://github.com/spik3r/clanker-foundry/pull/188). This supersedes the
+earlier cache-access cancellation for this validation run. Earlier checkpoints
+remain unchanged as historical evidence.
+
+With Go 1.27.4, the full TUI `go test -race -count=1 -p=1 ./...`, `go vet ./...`
+and `go build ./...` passed. Native command tests exercised normal output,
+failed/short/partial/full-count-with-error writers for validate and check, and
+the compiled command with closed stdout. Gofmt reported no paths. Source and
+generated-example govulncheck v1.9.0 scans passed for linux/amd64, darwin/arm64
+and windows/amd64. No model, generated-code or dependency edits were needed.
+
+Repository validation, validator/installer/project-setup regressions and both
+Project Memory test suites passed on Node 24.15.0. Optional skills-ref was not
+installed. Whitespace checks passed. The coordinator reviewed the unchanged
+implementation and tests and found no issues; earlier independent static review
+still applies. This is agent review, not a submitted GitHub review.
+
+The bounded implementation and local validation are complete. Fresh staged
+lifecycle completion and committed coverage, final CI checks and normal PR
+integration remain coordinator steps; this result does not claim a future merge.
+No further implementation is reserved by this claim.

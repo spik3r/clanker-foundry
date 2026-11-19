@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "00c16aff-8dbb-4438-b280-b1f611f5ff4d",
+  "runId": "f9fbf1e9-00b5-4b25-bfc7-c81ad8ca6597",
+  "kind": "checkpoint",
+  "parents": [
+    "7fd1843e-5b58-435c-bfae-6987e619d130"
+  ],
+  "sequence": 3,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tuicases-output-v1",
+    "path": "tasks/CF-tuicases-output-v1-delivery-errors.md",
+    "revision": "a288a2b5987afefa7411b0a0f01ee348bc05d930",
+    "blob": "338f26281c01f337ab4743ba18c7d0139202ce38",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2eee66533362c85cee02c0ae8ca1c4d470c4c35d09a19fab35dec78823479b53"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tuicases-output-delivery",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/188",
+  "at": "2026-11-19T21:45:08.591Z",
+  "summary": "Owner authorized native tests, validation completion and conditional merge of PR188",
+  "next": "Run local regressions and review final changes before completing staged evidence",
+  "files": [
+    "modeling/tui/cmd/tuicases/main.go",
+    "modeling/tui/cmd/tuicases/stdout_test.go",
+    "modeling/tui/CASES.md",
+    "tasks/CF-tuicases-output-v1-delivery-errors.md"
+  ]
+}
