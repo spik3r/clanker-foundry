@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "7fd1843e-5b58-435c-bfae-6987e619d130",
+  "runId": "f9fbf1e9-00b5-4b25-bfc7-c81ad8ca6597",
+  "kind": "checkpoint",
+  "parents": [
+    "cc6232a7-5ec8-4fe1-8e14-c60a8029d637"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tuicases-output-v1",
+    "path": "tasks/CF-tuicases-output-v1-delivery-errors.md",
+    "revision": "a288a2b5987afefa7411b0a0f01ee348bc05d930",
+    "blob": "338f26281c01f337ab4743ba18c7d0139202ce38",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2eee66533362c85cee02c0ae8ca1c4d470c4c35d09a19fab35dec78823479b53"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tuicases-output-delivery",
+  "pullRequest": null,
+  "at": "2026-11-19T20:02:28.344Z",
+  "summary": "Prepare the owner-requested draft PR while retaining incomplete native validation",
+  "next": "Publish draft for review; native tests and lifecycle completion remain required before merge",
+  "files": [
+    "modeling/tui/cmd/tuicases/main.go",
+    "modeling/tui/cmd/tuicases/stdout_test.go",
+    "modeling/tui/CASES.md",
+    "tasks/CF-tuicases-output-v1-delivery-errors.md"
+  ]
+}

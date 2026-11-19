@@ -5,9 +5,10 @@
 //	tuicases validate MODEL CASES
 //	tuicases check MODEL CASES
 //
-// Exit codes: 0 all pass, 1 build/run/internal failure, 2 refused (usage, bad
+// Exit codes: 0 all pass, 1 build/run/output/internal failure, 2 refused (usage, bad
 // model, bad cases, stale digest, records that do not match the model), 3 at
-// least one expectation failed. Stdout is empty on a nonzero exit.
+// least one expectation failed. Stdout is empty on a nonzero exit except when
+// delivery fails after writing a prefix.
 package main
 
 import (
@@ -21,8 +22,10 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"text/template"
 	"time"
 
@@ -55,7 +58,11 @@ type loaded struct {
 	raw    []byte
 }
 
-func main() { os.Exit(run(os.Args[1:], os.Stdout, os.Stderr)) }
+func main() {
+	// A closed stdout pipe must reach the output failure path.
+	signal.Ignore(syscall.SIGPIPE)
+	os.Exit(run(os.Args[1:], os.Stdout, os.Stderr))
+}
 
 type result struct {
 	ID       string   `json:"id"`
@@ -73,8 +80,7 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitRefused
 	}
 	if args[0] == "validate" {
-		fmt.Fprintf(stdout, "ok %d cases for model %s\n", len(l.cases.Cases), l.digest)
-		return 0
+		return deliver(fmt.Sprintf("ok %d cases for model %s\n", len(l.cases.Cases), l.digest), stdout, stderr)
 	}
 	results, err := execute(l)
 	if err != nil {
@@ -88,10 +94,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 	}
 	if !failed {
+		var output strings.Builder
 		for _, r := range results {
-			fmt.Fprintf(stdout, "pass %s\n", r.ID)
+			fmt.Fprintf(&output, "pass %s\n", r.ID)
 		}
-		return 0
+		return deliver(output.String(), stdout, stderr)
 	}
 	// Every case is reported, on stderr, in case order.
 	for _, r := range results {
@@ -103,6 +110,15 @@ func run(args []string, stdout, stderr io.Writer) int {
 		}
 	}
 	return exitFailed
+}
+
+func deliver(output string, stdout, stderr io.Writer) int {
+	n, err := io.WriteString(stdout, output)
+	if err != nil || n != len(output) {
+		fmt.Fprintln(stderr, "tuicases: output write failed")
+		return exitFailure
+	}
+	return 0
 }
 
 func readLimited(path string, limit int, what string) ([]byte, error) {

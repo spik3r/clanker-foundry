@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "a288a2b5987afefa7411b0a0f01ee348bc05d930",
+  "id": "CF-tuicases-output-v1",
+  "path": "tasks/CF-tuicases-output-v1-delivery-errors.md",
+  "blob": "338f26281c01f337ab4743ba18c7d0139202ce38",
+  "record": "---\nid: CF-tuicases-output-v1\nstatus: in-progress\nowner: Codex coordinator with delegated builder\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Report tuicases output delivery failures\n\n## Implementation claim\n\nThe owner requested latest main and continued implementation using cheaper\nsubagents. The coordinator reviewed main at `86c9c76`, the current direction,\nexisting claims and a live empty open-PR list on 19 November 2026. Existing\nunfinished claims retain their owners. This is a bounded correctness repair,\nnot a new profile or consumer feature.\n\nSource inspection found that tuicases discards stdout write results for both\nvalidate and successful check. It can return zero after failed or short delivery.\nThe coordinator accepts this public-safe source and assigns the bounded repair\nto the delegated builder, with independent review before delivery.\n\nScope: modeling/tui/cmd/tuicases/main.go,\nmodeling/tui/cmd/tuicases/stdout_test.go, modeling/tui/CASES.md, this task and\nnew immutable Project Memory source/events. Require complete success output\ndelivery before exit zero. Failed, short and full-count-with-error writes return\nexit 1 with a fixed diagnostic. Handle real closed stdout pipes through the same\nfailure path. Preserve normal output, refusal and expectation-failure behavior.\nDocument that delivery failure may leave a prefix. Do not change model semantics,\ngenerated code, dependencies, other claims, runtime or consumer acceptance gates.\n\nCommit this source, register and verify the pin, and record a genuine start before\nimplementation. Verify a failing regression against the original code, then\nwriter error/short-write cases for validate and check, successful output, and a\ncompiled command with preclosed stdout. Run the relevant command tests, repository\nvalidation, whitespace checks and committed lifecycle validation. Stage only named\npaths and complete the lifecycle with observed results. No publication or merge\nis included in this claim.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-tuicases-output-v1-delivery-errors.md",
+        "id": "CF-tuicases-output-v1",
+        "blob": "338f26281c01f337ab4743ba18c7d0139202ce38",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

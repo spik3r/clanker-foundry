@@ -36,3 +36,39 @@ compiled command with preclosed stdout. Run the relevant command tests, reposito
 validation, whitespace checks and committed lifecycle validation. Stage only named
 paths and complete the lifecycle with observed results. No publication or merge
 is included in this claim.
+
+## Implementation checkpoint, 19 November 2026
+
+The delegated builder added checked success output delivery, buffered check
+results and SIGPIPE handling. New regressions cover validate and check writer
+failures, partial writes and full-count writes with errors, plus a compiled
+command with preclosed stdout. Documentation names the output failure exit and
+the possible delivered prefix. Independent static review found no issues;
+this was agent review, not a submitted GitHub review.
+
+Before implementation, temporary-copy probes observed failed and short writers
+returning zero and a compiled closed-pipe command terminating through SIGPIPE.
+The later repository test attempt failed during setup because default Go cache
+access was denied. The escalation request was aborted by the user. No cache
+retry, alternate cache or Go test run followed that decision. Post-change Go
+tests remain unrun, and static review does not qualify the changed behavior.
+
+The builder ran gofmt and whitespace checks. The coordinator ran repository
+validation successfully; optional skills-ref was unavailable. Keep this run
+checkpointed until the native tests can run with authorized cache access.
+Do not publish, merge or mark the repair complete on this evidence.
+
+A separate scout identified inherited GIT_DIR/GIT_WORK_TREE redirecting
+foundrygen pin checks away from its selected source checkout. Read-only Git
+predicate probes reproduced the discrepancy, but no end-to-end generation was
+attempted. That finding is queued for its own reviewed claim after this repair;
+it grants no new ownership or implementation scope here.
+
+## Draft publication, 20 November 2026
+
+The owner subsequently requested a PR. Publish this checkpointed repair as a
+draft for review; this new instruction authorizes publication but does not
+establish native test results. The earlier cache-access cancellation remains
+in effect. Native command tests and fresh completed lifecycle coverage remain
+required before marking the repair ready or merging it. Preserve the earlier
+checkpoint as historical evidence.
