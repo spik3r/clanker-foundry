@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "a6ce7584-4d4f-41bc-9521-42f8122e00b4",
+  "runId": "f9fbf1e9-00b5-4b25-bfc7-c81ad8ca6597",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-tuicases-output-v1",
+    "path": "tasks/CF-tuicases-output-v1-delivery-errors.md",
+    "revision": "a288a2b5987afefa7411b0a0f01ee348bc05d930",
+    "blob": "338f26281c01f337ab4743ba18c7d0139202ce38",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2eee66533362c85cee02c0ae8ca1c4d470c4c35d09a19fab35dec78823479b53"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/tuicases-output-delivery",
+  "pullRequest": null,
+  "at": "2026-11-19T11:24:22.641Z",
+  "summary": "Repair success output delivery after verified failing writer probes",
+  "next": "Delegate implementation and regression checks, then independently review",
+  "files": [
+    "modeling/tui/cmd/tuicases/main.go",
+    "modeling/tui/cmd/tuicases/stdout_test.go",
+    "modeling/tui/CASES.md",
+    "tasks/CF-tuicases-output-v1-delivery-errors.md"
+  ]
+}

@@ -164,12 +164,17 @@ On success `check` prints `pass ID` for each case on stdout. When an
 expectation fails it prints, for every case in order and on stderr,
 `pass ID` or one `fail ID: EXPECTATION: want ... got ...` line per failed
 expectation; for `visible` and `absent` the line names the string. Stdout is
-empty on any nonzero exit.
+empty on any nonzero exit except when stdout delivery fails after writing bytes.
+
+Success requires complete stdout delivery. A failed or short write returns exit 1
+and attempts the fixed diagnostic `tuicases: output write failed` on stderr.
+Bytes already delivered may remain on stdout after this failure. A broken stderr
+may also prevent delivery of the diagnostic.
 
 | Exit | Meaning |
 | --- | --- |
 | 0 | Every case passed. |
-| 1 | Build, run or internal failure. |
+| 1 | Build, run, output delivery or internal failure. |
 | 2 | Refused: usage, bad model, bad cases, digest mismatch, records that do not match the model's fields. |
 | 3 | At least one expectation failed. |
 
