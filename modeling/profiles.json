@@ -105,7 +105,7 @@
       "examples": [
         "modeling/diagram/examples/evidence-atlas-page.json"
       ],
-      "emits": ["Solid component (ResearchPage.jsx) that imports one host adapter module, ./researchPageParts", "slots.json listing the slot ids the host must supply"],
+      "emits": ["Solid component (ResearchPage.jsx) that imports one host adapter module, ../researchPageParts (beside the output directory)", "slots.json listing the slot ids the host must supply"],
       "cannotExpress": [
         "a page outline other than the host's summary, explore, method and sources tabs",
         "filters, matrices, tables, charts or any content computed from data",

@@ -132,7 +132,7 @@ func TestMinimalModel(t *testing.T) {
 	if strings.Contains(jsx, "renderSlot") || strings.Contains(jsx, "Panel") || strings.Contains(jsx, "SectionHeader") {
 		t.Errorf("unused helper or import emitted:\n%s", jsx)
 	}
-	if !strings.Contains(jsx, "import { ResearchBottomLine, ResearchPageShell } from \"./researchPageParts\";") || !strings.Contains(jsx, "class={props.class}") {
+	if !strings.Contains(jsx, "import { ResearchBottomLine, ResearchPageShell } from \"../researchPageParts\";") || !strings.Contains(jsx, "class={props.class}") {
 		t.Errorf("unexpected module:\n%s", jsx)
 	}
 }

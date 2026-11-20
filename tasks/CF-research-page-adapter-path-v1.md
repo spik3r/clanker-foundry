@@ -1,6 +1,6 @@
 ---
 id: CF-research-page-adapter-path
-status: in-progress
+status: completed
 owner: Claude pipeline coordinator
 repositories: [spik3r/clanker-foundry]
 ---

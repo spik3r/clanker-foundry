@@ -230,7 +230,7 @@ func TestForbiddenConstructsAbsent(t *testing.T) {
 
 var (
 	importLine = regexp.MustCompile(`(?m)^\s*(?:import|export)\b.*$`)
-	adapterRE  = regexp.MustCompile(`^import \{ ([A-Za-z, ]+) \} from "\./researchPageParts";$`)
+	adapterRE  = regexp.MustCompile(`^import \{ ([A-Za-z, ]+) \} from "\.\./researchPageParts";$`)
 	fromRE     = regexp.MustCompile(`\bfrom\s+"([^"]*)"`)
 )
 

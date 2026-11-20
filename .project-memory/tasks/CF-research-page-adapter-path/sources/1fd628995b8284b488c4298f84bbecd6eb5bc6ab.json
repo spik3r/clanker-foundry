@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "1fd628995b8284b488c4298f84bbecd6eb5bc6ab",
+  "id": "CF-research-page-adapter-path",
+  "path": "tasks/CF-research-page-adapter-path-v1.md",
+  "blob": "430cf27fa49e9120233d8e5f9bfebb03e7f479dd",
+  "record": "---\nid: CF-research-page-adapter-path\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Move the research-page adapter import beside the output directory\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator. This corrects CF-research-page-v1,\nfound during the heisentick trial: the generated component imported\n`./researchPageParts`, so the host adapter had to sit inside the generated\ndirectory, where `diagramgen check` reports it as drift.\n\nScope: the import becomes `../researchPageParts` in\n`modeling/diagram/researchpage/`, with its tests, the regenerated\n`evidence-atlas-page` example, `RESEARCHPAGE.md`, the `emits` text in\n`modeling/profiles.json`, this task record and new immutable Project Memory\nfiles.\n\nExclusions: other profiles and the heisentick application.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-research-page-adapter-path-v1.md",
+        "id": "CF-research-page-adapter-path",
+        "blob": "430cf27fa49e9120233d8e5f9bfebb03e7f479dd",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

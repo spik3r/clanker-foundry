@@ -16,7 +16,7 @@ const (
 
 // Adapter is the one module the component imports from besides solid-js. The
 // host supplies it; it must export the names in AdapterExports.
-const Adapter = "./researchPageParts"
+const Adapter = "../researchPageParts"
 
 // AdapterExports lists the names the adapter module must export, sorted. The
 // component imports only those it uses.
