@@ -1,0 +1,52 @@
+{
+  "formatVersion": 2,
+  "eventId": "4a6e7fd7-e434-40d7-8dc5-c831e7e00cdc",
+  "runId": "9b38f10c-5f94-4eaf-a132-888abeed9eaf",
+  "kind": "complete",
+  "parents": [
+    "8f281535-8286-4e23-a356-6e8f4fbfd57f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-foundry-pin-git-env-v1",
+    "path": "tasks/CF-foundry-pin-git-env-v1-inherited-location.md",
+    "revision": "8d127dc0dcd0406c0a0260eebb2a0bedac301e6b",
+    "blob": "dacdd27aff0d3ff2cc3015557c88ae3e087322e6",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ce9f54e8d67272cbd38ea17d93e0b43bd918022e4691055fab4c94471bfc9c56"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "codex/foundry-pin-git-env-v1",
+  "pullRequest": null,
+  "at": "2026-11-20T22:09:19.160Z",
+  "summary": "Pin Git commands ignore inherited repository-location variables",
+  "next": "Publish the branch and open a pull request",
+  "files": [
+    "modeling/foundrygen/exec.go",
+    "modeling/foundrygen/pin_env_test.go",
+    "modeling/foundrygen/README.md",
+    "tasks/CF-foundry-pin-git-env-v1-inherited-location.md"
+  ],
+  "validation": "Regression failed before the fix and passed after it; go vet, go test -race -count=1 ./..., gofmt, scripts/validate.sh and git diff --check passed",
+  "snapshot": {
+    "modeling/foundrygen/exec.go": {
+      "blob": "e668797ec2ff846a4721fe8b0a28fe1fb65ed19e",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/pin_env_test.go": {
+      "blob": "8fe363e74015f4b38c838b0a728fad04af248341",
+      "mode": "100644"
+    },
+    "modeling/foundrygen/README.md": {
+      "blob": "84e73f298a86f0babf744077cabd0bbf342d5d3f",
+      "mode": "100644"
+    },
+    "tasks/CF-foundry-pin-git-env-v1-inherited-location.md": {
+      "blob": "f832bbc46df46ac87832d3272d3ceeb200ace662",
+      "mode": "100644"
+    }
+  }
+}

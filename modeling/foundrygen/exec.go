@@ -130,8 +130,37 @@ func (s *session) say(prefix, text string) {
 	}
 }
 
+// gitLocationEnv names variables that make Git use a repository, worktree,
+// index or object store other than the one selected by -C. Git applies them
+// before -C, so a pin that inherited them could inspect another checkout.
+var gitLocationEnv = map[string]struct{}{
+	"GIT_DIR":                          {},
+	"GIT_WORK_TREE":                    {},
+	"GIT_INDEX_FILE":                   {},
+	"GIT_OBJECT_DIRECTORY":             {},
+	"GIT_ALTERNATE_OBJECT_DIRECTORIES": {},
+	"GIT_COMMON_DIR":                   {},
+	"GIT_NAMESPACE":                    {},
+	"GIT_PREFIX":                       {},
+	"GIT_SUPER_PREFIX":                 {},
+}
+
+// gitEnv removes repository-location variables from env. Environment names are
+// case-insensitive on Windows, so compare them without case.
+func gitEnv(env []string) []string {
+	out := make([]string, 0, len(env))
+	for _, entry := range env {
+		name, _, _ := strings.Cut(entry, "=")
+		if _, drop := gitLocationEnv[strings.ToUpper(name)]; drop {
+			continue
+		}
+		out = append(out, entry)
+	}
+	return out
+}
+
 func (s *session) git(args ...string) (string, error) {
-	res, err := runCmd(gitTimeout, "", os.Environ(), "git", append([]string{"-C", s.foundry}, args...)...)
+	res, err := runCmd(gitTimeout, "", gitEnv(os.Environ()), "git", append([]string{"-C", s.foundry}, args...)...)
 	if err != nil {
 		return "", fail("git %s: %v", strings.Join(args, " "), err)
 	}

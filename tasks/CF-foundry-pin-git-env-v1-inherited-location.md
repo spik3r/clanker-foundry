@@ -1,6 +1,6 @@
 ---
 id: CF-foundry-pin-git-env-v1
-status: in-progress
+status: completed
 owner: opencode coordinator
 repositories: [spik3r/clanker-foundry]
 ---
@@ -38,3 +38,23 @@ and index-flag refusals are unchanged; run gofmt, `go vet` and
 `go test -race -count=1 ./...` in `modeling/foundrygen`; run
 `scripts/validate.sh`, whitespace checks and Project Memory validation.
 Publication is authorized; merge is outside this claim.
+
+## Implementation result, 21 November 2026
+
+The new regression points `GIT_DIR` and `GIT_WORK_TREE` at a clean clone of
+the selected fixture and leaves an untracked modeling file in the selected
+checkout. Against the original code the pin returned success. After the fix it
+refuses the uncommitted content.
+
+The pin's Git commands now run without `GIT_DIR`, `GIT_WORK_TREE`,
+`GIT_INDEX_FILE`, `GIT_OBJECT_DIRECTORY`,
+`GIT_ALTERNATE_OBJECT_DIRECTORIES`, `GIT_COMMON_DIR`, `GIT_NAMESPACE`,
+`GIT_PREFIX` and `GIT_SUPER_PREFIX`. Name matching ignores case because
+Windows environment names do. Other inherited Git settings are unchanged. The
+README pin section states the behavior.
+
+Validation: the regression failed before the fix with
+`pin followed inherited Git location: <nil>` and passed after it. `go vet ./...`
+passed. `go test -race -count=1 ./...` passed. Gofmt reported no paths.
+`scripts/validate.sh` passed; optional skills-ref was not installed.
+`git diff --check` passed.
