@@ -1,0 +1,29 @@
+{
+  "manifestVersion": "foundry-generator-manifest/v1",
+  "profile": "research-page/v1",
+  "generator": {
+    "id": "diagramgen",
+    "version": "1.4.0",
+    "toolchain": "go1.27.4"
+  },
+  "model": {
+    "canonicalSHA256": "22a73e902da8870afb7d1888647b298fcd90c0f980f36df2a28db25c9de3543b"
+  },
+  "files": [
+    {
+      "path": "ResearchPage.jsx",
+      "sha256": "2989cee4c9d53480374bfc805882bfb2e6c472777dcbedbce1da92b11e14aa5e",
+      "bytes": 3509
+    },
+    {
+      "path": "model.json",
+      "sha256": "099f87c1498852c2f68f09b4832b60cd2e3718225e91cb9e0a294bd5d1fdf535",
+      "bytes": 3199
+    },
+    {
+      "path": "slots.json",
+      "sha256": "3423d7bda321e374e786058f400eae36a65ad5305b00ea7a312da168ecf753c9",
+      "bytes": 71
+    }
+  ]
+}

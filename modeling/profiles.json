@@ -97,6 +97,24 @@
       ]
     },
     {
+      "profile": "research-page/v1",
+      "generator": "diagramgen",
+      "summary": "Fixed text of a research page (title, purpose, status, bottom line, section headings, method list) as a Solid component that renders one host's page shell, with named slots for the hand-written interactive parts.",
+      "profileDoc": "modeling/diagram/RESEARCHPAGE.md",
+      "schema": "modeling/diagram/authoring/research-page-v1.schema.json",
+      "examples": [
+        "modeling/diagram/examples/evidence-atlas-page.json"
+      ],
+      "emits": ["Solid component (ResearchPage.jsx) that imports one host adapter module, ../researchPageParts (beside the output directory)", "slots.json listing the slot ids the host must supply"],
+      "cannotExpress": [
+        "a page outline other than the host's summary, explore, method and sources tabs",
+        "filters, matrices, tables, charts or any content computed from data",
+        "freshness, metrics or provenance values: the host passes them in at run time",
+        "CSS classes beyond one shell class, links, images or markup inside text",
+        "more than one section per tab, or tabs other than explore, method and sources"
+      ]
+    },
+    {
       "profile": "process-diagram/v1",
       "generator": "diagramgen",
       "summary": "Business-process diagram of lanes, events, tasks, gateways and flows, as SVG and BPMN-style XML.",

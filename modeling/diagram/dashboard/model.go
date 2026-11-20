@@ -11,10 +11,9 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/internal/modeltext"
 )
 
 // Format and Profile identify the input format and the profile.
@@ -417,31 +416,10 @@ func encode(v any, indent bool) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func plainRunes(s, name string) error {
-	if len(s) > MaxTextBytes || !utf8.ValidString(s) {
-		return fmt.Errorf("%s must be at most %d UTF-8 bytes", name, MaxTextBytes)
-	}
-	for _, r := range s {
-		if unicode.IsControl(r) || r == ' ' || r == ' ' || r == '￾' || r == '￿' {
-			return fmt.Errorf("%s contains a control or non-XML character", name)
-		}
-	}
-	return nil
-}
+func plainRunes(s, name string) error { return modeltext.Runes(s, name, MaxTextBytes) }
 
 // plain checks a label or title: 1..120 bytes, not blank.
-func plain(s, name string) error {
-	if len(s) == 0 || len(s) > MaxTextBytes {
-		return fmt.Errorf("%s must be 1..%d UTF-8 bytes", name, MaxTextBytes)
-	}
-	if err := plainRunes(s, name); err != nil {
-		return err
-	}
-	if strings.TrimSpace(s) == "" {
-		return fmt.Errorf("%s must not be blank", name)
-	}
-	return nil
-}
+func plain(s, name string) error { return modeltext.Plain(s, name, MaxTextBytes) }
 
 // Validate applies every profile rule. It is also applied to programmatically
 // constructed models. Go validation is authoritative.

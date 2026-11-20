@@ -37,3 +37,4 @@ jobs:
           modeling/diagram/authoring/dashboard.schema.test.cjs
           modeling/diagram/authoring/sequence.schema.test.cjs
           modeling/diagram/authoring/class.schema.test.cjs
+          modeling/diagram/authoring/research-page.schema.test.cjs

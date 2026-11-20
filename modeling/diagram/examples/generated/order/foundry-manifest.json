@@ -3,7 +3,7 @@
   "profile": "process-diagram/v1",
   "generator": {
     "id": "diagramgen",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "toolchain": "go1.27.4"
   },
   "model": {
@@ -12,12 +12,12 @@
   "files": [
     {
       "path": "diagram.bpmn",
-      "sha256": "5a8abe439dc8634065007fd18a463156428940f9a6b6c8f81b502457428b69e2",
+      "sha256": "15a4a5680c83c6ac24866118bc2f1bce1cc43e1f40724fff12ea500c176f39f1",
       "bytes": 5211
     },
     {
       "path": "diagram.svg",
-      "sha256": "84c5ed8f945c72f642ed1be558ef6a0a497ebe3185d5abdd01f14f1dc1d313d6",
+      "sha256": "9a1efa7081fd6e845ecc377358786136e805dfaac3ec385a7f7523cf78b93d4c",
       "bytes": 4037
     },
     {

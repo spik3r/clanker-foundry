@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "bd49375d-7f0e-4230-8a1a-a51d48258cc8",
+  "runId": "a0f03db9-9cb9-4734-8ef9-e5544a8cba3d",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-research-page-adapter-path",
+    "path": "tasks/CF-research-page-adapter-path-v1.md",
+    "revision": "1fd628995b8284b488c4298f84bbecd6eb5bc6ab",
+    "blob": "430cf27fa49e9120233d8e5f9bfebb03e7f479dd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "45b1c640a8f8e2daae4b889df522c3d0d48333cb4a2035ec810446e25f6dbef1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-20T12:00:20.643Z",
+  "summary": "Move adapter import beside output dir",
+  "next": "Apply reviewed subagent diff, validate",
+  "files": [
+    "modeling/diagram/RESEARCHPAGE.md",
+    "modeling/diagram/examples/generated/evidence-atlas-page/ResearchPage.jsx",
+    "modeling/diagram/examples/generated/evidence-atlas-page/foundry-manifest.json",
+    "modeling/diagram/researchpage/model_test.go",
+    "modeling/diagram/researchpage/output_test.go",
+    "modeling/diagram/researchpage/render.go",
+    "modeling/profiles.json",
+    "tasks/CF-research-page-adapter-path-v1.md"
+  ]
+}

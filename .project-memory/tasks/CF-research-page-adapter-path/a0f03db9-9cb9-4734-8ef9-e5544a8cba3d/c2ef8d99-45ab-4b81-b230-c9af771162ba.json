@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "c2ef8d99-45ab-4b81-b230-c9af771162ba",
+  "runId": "a0f03db9-9cb9-4734-8ef9-e5544a8cba3d",
+  "kind": "complete",
+  "parents": [
+    "bd49375d-7f0e-4230-8a1a-a51d48258cc8"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-research-page-adapter-path",
+    "path": "tasks/CF-research-page-adapter-path-v1.md",
+    "revision": "1fd628995b8284b488c4298f84bbecd6eb5bc6ab",
+    "blob": "430cf27fa49e9120233d8e5f9bfebb03e7f479dd",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "45b1c640a8f8e2daae4b889df522c3d0d48333cb4a2035ec810446e25f6dbef1"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-20T12:00:26.167Z",
+  "summary": "research-page output imports ../researchPageParts so the host adapter sits beside the generated directory",
+  "next": "Heisentick trial: place adapter beside the generated directory",
+  "files": [
+    "modeling/diagram/RESEARCHPAGE.md",
+    "modeling/diagram/examples/generated/evidence-atlas-page/ResearchPage.jsx",
+    "modeling/diagram/examples/generated/evidence-atlas-page/foundry-manifest.json",
+    "modeling/diagram/researchpage/model_test.go",
+    "modeling/diagram/researchpage/output_test.go",
+    "modeling/diagram/researchpage/render.go",
+    "modeling/profiles.json",
+    "tasks/CF-research-page-adapter-path-v1.md"
+  ],
+  "validation": "go test -race in modeling/diagram passes; example regenerated",
+  "snapshot": {
+    "modeling/diagram/RESEARCHPAGE.md": {
+      "blob": "821667cbeb531581d350b9504a32cc69a0edf90e",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/ResearchPage.jsx": {
+      "blob": "cace1bf791a712c13821954f3e48d362f834330a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/foundry-manifest.json": {
+      "blob": "000e4753ad1764cef518d73acdb3a0656594bf05",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/model_test.go": {
+      "blob": "04b95a887fbf1c874c552971b6f2b39eb61f886f",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/output_test.go": {
+      "blob": "f0cfc42c78e8ab9030fe96298b03cba7dd789e29",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/render.go": {
+      "blob": "a0d8d104a11508ad2e8df1d51174cb7a7b101e83",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "d42ddb9ab09f6f41b90194a6d0dd9b72e3768ee0",
+      "mode": "100644"
+    },
+    "tasks/CF-research-page-adapter-path-v1.md": {
+      "blob": "7f356b5f62b913672567595b1e3ca9e0d70ba04e",
+      "mode": "100644"
+    }
+  }
+}
