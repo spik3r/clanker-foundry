@@ -5,7 +5,7 @@ the model; the generator draws it the same way every time. It follows the
 [Foundry generator contract](../CONTRACT.md) and is listed in the
 [conformance registry](../gencontract/generators.json).
 
-Four profiles exist. The generator picks one by the model's `profileVersion`:
+Five profiles exist. The generator picks one by the model's `profileVersion`:
 
 - [`process-diagram/v1`](PROFILE.md): a BPMN-style process diagram with lanes,
   tasks, events and gateways, as SVG and BPMN XML.
@@ -15,6 +15,9 @@ Four profiles exist. The generator picks one by the model's `profileVersion`:
   participants, messages, notes and alt, opt and loop frames, as SVG.
 - [`class-diagram/v1`](CLASS.md): a UML-style class diagram of classes,
   interfaces, enums and seven kinds of relation, as SVG.
+- [`research-page/v1`](RESEARCHPAGE.md): the fixed text of a research page as a
+  Solid component with named slots for the hand-written parts. Shaped around one
+  host's page outline.
 
 Other profiles can be added as sibling packages that implement
 `contract.Profile`.
@@ -51,7 +54,9 @@ changes nothing. Exit codes are 0 success, 1 failure, 2 refused, 3 drift.
 
 For a `dashboard/v1` model the files are `dashboard.html`, `model.json` and the
 manifest, or `Dashboard.jsx`, `dashboard.css`, `model.json` and the manifest
-when the model says `"target": "solid"`; see the dashboard section below.
+when the model says `"target": "solid"`; see the dashboard section below. For a
+`research-page/v1` model they are `ResearchPage.jsx`, `slots.json`, `model.json`
+and the manifest.
 
 Generated examples sit under [examples/generated](examples/generated), one
 directory per model: [order](examples/order.json), [parallel](examples/parallel.json)
@@ -59,7 +64,8 @@ and [rework](examples/rework.json) (a loop back to an earlier step), plus the
 dashboard models [ops-dashboard](examples/ops-dashboard.json),
 [sales-dashboard](examples/sales-dashboard.json) and
 [minimal-dashboard](examples/minimal-dashboard.json), and the Solid target
-[ops-dashboard-solid](examples/ops-dashboard-solid.json). A test regenerates them
+[ops-dashboard-solid](examples/ops-dashboard-solid.json), and the research page
+[evidence-atlas-page](examples/evidence-atlas-page.json). A test regenerates them
 and compares bytes.
 
 To check the BPMN files with bpmn-moddle (opt-in, not in CI), see [verify](verify/README.md).
@@ -104,10 +110,30 @@ The schemas ([sequence](authoring/sequence-diagram-v1.schema.json),
 [class](authoring/class-diagram-v1.schema.json)) help an editor; Go validation
 decides.
 
+## Research pages
+
+`research-page/v1` models hold the text that the research pages of one SolidJS
+app repeat in the same outline: title, purpose, status, bottom line, section
+headings and the method list. The output is `ResearchPage.jsx`, which renders the
+host's page shell with that text as string literals and leaves each interactive
+or computed part to a named slot the host fills, plus `slots.json` listing the
+slots. It imports only from one host adapter module and `solid-js`. The profile
+is shaped around that one outline and is not a general page generator. Try it:
+
+```sh
+go run ./cmd/diagramgen validate examples/evidence-atlas-page.json
+go run ./cmd/diagramgen generate examples/evidence-atlas-page.json /tmp/evidence-atlas-page
+```
+
+Input, validation, canonical encoding, the adapter contract and what it cannot
+express are in [RESEARCHPAGE.md](RESEARCHPAGE.md). The
+[schema](authoring/research-page-v1.schema.json) helps an editor; Go validation
+decides. The example is [evidence-atlas-page](examples/evidence-atlas-page.json).
+
 ## Change a diagram
 
 Edit the model, then regenerate into a new directory and replace the old output.
-Never edit `diagram.svg`, `diagram.bpmn`, `dashboard.html`, `Dashboard.jsx`, `dashboard.css` or `model.json` by hand; `check` reports
+Never edit `diagram.svg`, `diagram.bpmn`, `dashboard.html`, `Dashboard.jsx`, `dashboard.css`, `ResearchPage.jsx`, `slots.json` or `model.json` by hand; `check` reports
 the edit as drift. The [schema](authoring/process-diagram-v1.schema.json) helps
 an editor, but the Go validation decides.
 

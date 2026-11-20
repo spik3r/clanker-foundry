@@ -27,6 +27,7 @@ only a first check.
 | `dashboard/v1` | `diagramgen` | Dashboard of stat tiles, bar and line charts and tables over small embedded datasets, as one self-contained HTML file. | [DASHBOARD.md](diagram/DASHBOARD.md) | [schema](diagram/authoring/dashboard-v1.schema.json) |
 | `sequence-diagram/v1` | `diagramgen` | UML-style sequence diagram of participants, messages, notes and alt, opt and loop frames, as SVG. | [SEQUENCE.md](diagram/SEQUENCE.md) | [schema](diagram/authoring/sequence-diagram-v1.schema.json) |
 | `class-diagram/v1` | `diagramgen` | UML-style class diagram of classes, interfaces, enums and seven kinds of relation, as SVG. | [CLASS.md](diagram/CLASS.md) | [schema](diagram/authoring/class-diagram-v1.schema.json) |
+| `research-page/v1` | `diagramgen` | Fixed text of a research page (bottom line, headings, method list) as a Solid component with named slots for hand-written parts; shaped around one host's page outline. | [RESEARCHPAGE.md](diagram/RESEARCHPAGE.md) | [schema](diagram/authoring/research-page-v1.schema.json) |
 
 A profile entry may also have a `cases` member: the format of its expectation
 literals, a document, a schema, a runner command and examples. Today only

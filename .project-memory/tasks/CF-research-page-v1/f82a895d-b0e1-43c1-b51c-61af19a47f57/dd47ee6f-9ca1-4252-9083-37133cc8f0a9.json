@@ -1,0 +1,352 @@
+{
+  "formatVersion": 2,
+  "eventId": "dd47ee6f-9ca1-4252-9083-37133cc8f0a9",
+  "runId": "f82a895d-b0e1-43c1-b51c-61af19a47f57",
+  "kind": "complete",
+  "parents": [
+    "a8be99d7-bffd-45b4-9f12-f08405bc373e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-research-page-v1",
+    "path": "tasks/CF-research-page-v1-solid-outline.md",
+    "revision": "af3fa91b3278ca2c88d096fa7385b51c12771566",
+    "blob": "10122c5a1d1f3fbebf0b50c8f14677d9ffe3bc42",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "ea819cd1ed9a494f8eb0c55455900a3184f5c374549e8517336afca3b08d1a16"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "claude/nice-mccarthy-k6gbb9",
+  "pullRequest": null,
+  "at": "2026-11-20T11:55:17.337Z",
+  "summary": "research-page/v1: model holds page outline and fixed text with named slots; diagramgen emits a Solid component via one adapter module; diagramgen 1.4.0",
+  "next": "Heisentick: adapter module and StatisticalResearchPage rebuilt from the model",
+  "files": [
+    ".github/workflows/model-authoring-contract.yml",
+    "modeling/README.md",
+    "modeling/diagram/CLASS.md",
+    "modeling/diagram/DASHBOARD.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/RESEARCHPAGE.md",
+    "modeling/diagram/SEQUENCE.md",
+    "modeling/diagram/authoring/research-page-v1.schema.json",
+    "modeling/diagram/authoring/research-page.schema.test.cjs",
+    "modeling/diagram/class/model_test.go",
+    "modeling/diagram/class/output_test.go",
+    "modeling/diagram/cmd/diagramgen/research_test.go",
+    "modeling/diagram/dashboard/model.go",
+    "modeling/diagram/dashboard/model_test.go",
+    "modeling/diagram/dashboard/output_test.go",
+    "modeling/diagram/dashboard/solid.go",
+    "modeling/diagram/dashboard/solid_test.go",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/diagram_test.go",
+    "modeling/diagram/examples/evidence-atlas-page.json",
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/evidence-atlas-page/ResearchPage.jsx",
+    "modeling/diagram/examples/generated/evidence-atlas-page/foundry-manifest.json",
+    "modeling/diagram/examples/generated/evidence-atlas-page/model.json",
+    "modeling/diagram/examples/generated/evidence-atlas-page/slots.json",
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/Dashboard.jsx",
+    "modeling/diagram/examples/generated/ops-dashboard-solid/foundry-manifest.json",
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json",
+    "modeling/diagram/examples/generated/order/diagram.bpmn",
+    "modeling/diagram/examples/generated/order/diagram.svg",
+    "modeling/diagram/examples/generated/order/foundry-manifest.json",
+    "modeling/diagram/examples/generated/orders-class/diagram.svg",
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn",
+    "modeling/diagram/examples/generated/parallel/diagram.svg",
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json",
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg",
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json",
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg",
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json",
+    "modeling/diagram/examples/generated/rework/diagram.bpmn",
+    "modeling/diagram/examples/generated/rework/diagram.svg",
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json",
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html",
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json",
+    "modeling/diagram/internal/jsxemit/jsxemit.go",
+    "modeling/diagram/internal/jsxemit/jsxemit_test.go",
+    "modeling/diagram/internal/modeltext/modeltext.go",
+    "modeling/diagram/internal/modeltext/modeltext_test.go",
+    "modeling/diagram/process/helpers_test.go",
+    "modeling/diagram/researchpage/model.go",
+    "modeling/diagram/researchpage/model_test.go",
+    "modeling/diagram/researchpage/output_test.go",
+    "modeling/diagram/researchpage/profile.go",
+    "modeling/diagram/researchpage/render.go",
+    "modeling/diagram/sequence/model_test.go",
+    "modeling/diagram/sequence/output_test.go",
+    "modeling/profiles.json",
+    "tasks/CF-research-page-v1-solid-outline.md"
+  ],
+  "validation": "go test -race in modeling/diagram and gencontract pass; node authoring tests 20 pass; tsc parsed the example JSX",
+  "snapshot": {
+    ".github/workflows/model-authoring-contract.yml": {
+      "blob": "82bb000ab9662f722deddcde26cf3c162c7d700c",
+      "mode": "100644"
+    },
+    "modeling/README.md": {
+      "blob": "af87e24c0205dddd09fc8a928a73c59f628efaaa",
+      "mode": "100644"
+    },
+    "modeling/diagram/CLASS.md": {
+      "blob": "af0e0f274d556157bd2d59ce271e410b2242d82c",
+      "mode": "100644"
+    },
+    "modeling/diagram/DASHBOARD.md": {
+      "blob": "5a8badb5027ba479693ca3803c53cdb89fe67d70",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "deb93722e6d824ddda10682fbd9e279d64998833",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "26944a1aeb6b1c9dcf5ecc1119a394f810b879e0",
+      "mode": "100644"
+    },
+    "modeling/diagram/RESEARCHPAGE.md": {
+      "blob": "c5b2f002700ea18a2895630540f7dc34dc4a7b90",
+      "mode": "100644"
+    },
+    "modeling/diagram/SEQUENCE.md": {
+      "blob": "a5f5872f933961cc88ad125ceb240be2279ef97a",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/research-page-v1.schema.json": {
+      "blob": "27149fd065bff20678d974c087d93f7494df7867",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/research-page.schema.test.cjs": {
+      "blob": "e585c0a54a290f134ebc22177ff53ef390827975",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/model_test.go": {
+      "blob": "6a2fc9e919a36dd97f5ef313bcd2bf541d43fced",
+      "mode": "100644"
+    },
+    "modeling/diagram/class/output_test.go": {
+      "blob": "edc01f3c391ffc791ea00a9a507e3d976b0a4f74",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/research_test.go": {
+      "blob": "e910b85c51695d2ec9de1c4a80fa8a3e27e4047b",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model.go": {
+      "blob": "b2f2a6cc346117ed7c55b0d83622c0e7d95cc2cf",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/model_test.go": {
+      "blob": "9d758cf306a6ad51378972b50d1073734e5c7861",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/output_test.go": {
+      "blob": "93fb2291e77a6134d3d886ff12b70dfc90caf2eb",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/solid.go": {
+      "blob": "5dfe081b716f593f5750d1e787aefcc792d0452e",
+      "mode": "100644"
+    },
+    "modeling/diagram/dashboard/solid_test.go": {
+      "blob": "ab67466adbe1e9b0fab0f38b5d2507af2197609b",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "1e3dd59dbd91315a4da53e44095a6642cdbc89a2",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "f9745b68fea044b3f2e745e8796ffa7ae1a8b741",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/evidence-atlas-page.json": {
+      "blob": "d16d0463c608ab765c27cc21cffecbf6124ef018",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/diagram.svg": {
+      "blob": "b4f71453597eba265e9803cfef62f0daeeb5ede3",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/checkout-sequence/foundry-manifest.json": {
+      "blob": "b5c32357608c0ce0e35ff2104b38a4f6d8f4ce30",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/ResearchPage.jsx": {
+      "blob": "360cb965583dacb0429d1e3b3e4b59ab7bcfcdf4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/foundry-manifest.json": {
+      "blob": "a54458562795b57ca21d8b78cb7885989b9d36ef",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/model.json": {
+      "blob": "974df25e8d2ad694776aa9a6e1aad2df423da09d",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/evidence-atlas-page/slots.json": {
+      "blob": "d8ade82f1be02201e3eaba3add2b9de81a33225f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/dashboard.html": {
+      "blob": "824e0112e2811510f2ce65f387f69e98cf0ed810",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/minimal-dashboard/foundry-manifest.json": {
+      "blob": "9cc848519a9fde719a21117fec39ffa45ca5fb15",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/Dashboard.jsx": {
+      "blob": "8b1c0598aba0f81e4f6696ec28a6e08d75ff2688",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard-solid/foundry-manifest.json": {
+      "blob": "de74d708ec24f049b5d3e8fd8756780480369cde",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/dashboard.html": {
+      "blob": "0b8d9d65dde1693f577fb39becb1549cd839879c",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/ops-dashboard/foundry-manifest.json": {
+      "blob": "739ef4e0f211a6bdc9e200e64dcaaaa2b24e682a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.bpmn": {
+      "blob": "0b25f518f3f5cd29fbdc30e4bd1205fc5e66cc02",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/diagram.svg": {
+      "blob": "75f395fc9affe8bbb73170863b2577fee246bcd9",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/order/foundry-manifest.json": {
+      "blob": "f6be072e9a0017bca2c1f633dbb0d6f50db566ce",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/diagram.svg": {
+      "blob": "d964215c7c6523469271070bf206322e26ab404f",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/orders-class/foundry-manifest.json": {
+      "blob": "3acb53b80cf1575dfa9f2fb590b79a5fe51fef98",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.bpmn": {
+      "blob": "d3436bd077c37c5e26f6a31e0be54485d0d8bf04",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/diagram.svg": {
+      "blob": "4c37d182c6b0718fb93591c9778ccf919f9b86a2",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/parallel/foundry-manifest.json": {
+      "blob": "d6f1d6d61a63aa06b82ae4b3ffd839192d6c4edb",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/diagram.svg": {
+      "blob": "1ac3bc5abfc96c4c63a2af623b0d54c0df0aade5",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/plugins-class/foundry-manifest.json": {
+      "blob": "b0bee4b144b4b0ede0b80040c84ef3b3c37e6905",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/diagram.svg": {
+      "blob": "8089fcb1108bea016556df9055cc8db1345700d4",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/retry-sequence/foundry-manifest.json": {
+      "blob": "ff8c1e0344cdecffe71aa664ed31beef491fc788",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.bpmn": {
+      "blob": "84276df1ad64548b124232fda960ea89e25e4319",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/diagram.svg": {
+      "blob": "4281b1046b829d68dae0418e9bb5ce471ebe33af",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/rework/foundry-manifest.json": {
+      "blob": "45c0399cc8ab97c51f2ec5fd563fef027a7b392e",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/dashboard.html": {
+      "blob": "f532c22f29a7cb537d5aa826e8ec93707ef7cd6a",
+      "mode": "100644"
+    },
+    "modeling/diagram/examples/generated/sales-dashboard/foundry-manifest.json": {
+      "blob": "76924131a724e6451bb0a0775c2a61e9a5f97c02",
+      "mode": "100644"
+    },
+    "modeling/diagram/internal/jsxemit/jsxemit.go": {
+      "blob": "9aa37ad9b8cefa44d0f5e78027cb9c31c81423c9",
+      "mode": "100644"
+    },
+    "modeling/diagram/internal/jsxemit/jsxemit_test.go": {
+      "blob": "6fa8534abb861fa7421f54b078fffbda403e741e",
+      "mode": "100644"
+    },
+    "modeling/diagram/internal/modeltext/modeltext.go": {
+      "blob": "d35ef5200f7b1536ad672ae845e104b70b8197c7",
+      "mode": "100644"
+    },
+    "modeling/diagram/internal/modeltext/modeltext_test.go": {
+      "blob": "6ec845cb8f9962959ea86ea18d01f32b89fa72f0",
+      "mode": "100644"
+    },
+    "modeling/diagram/process/helpers_test.go": {
+      "blob": "bb49800a7d5c91f39aeb9c3167f9d8d3ca2a2146",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/model.go": {
+      "blob": "83f3b602009937529d55b31944a872e655c30ae3",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/model_test.go": {
+      "blob": "5bcc9b57c4346e069305719b9ec9c34a9df8895e",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/output_test.go": {
+      "blob": "08135029914ee49ce794c3574261f703338eea03",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/profile.go": {
+      "blob": "8fae34a78409c8f2b8699f816b66b23f12171d52",
+      "mode": "100644"
+    },
+    "modeling/diagram/researchpage/render.go": {
+      "blob": "b374b7e1db0900f5c31111effd709f3987a43559",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/model_test.go": {
+      "blob": "ab539e303fbe680eca90fac258bafb2151c80b00",
+      "mode": "100644"
+    },
+    "modeling/diagram/sequence/output_test.go": {
+      "blob": "c00aeba09602a12ef71f2f941db1bac5d60d52a7",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "f3fc05c1479629cd8a42e4e58c6f8d9fee147210",
+      "mode": "100644"
+    },
+    "tasks/CF-research-page-v1-solid-outline.md": {
+      "blob": "0ceeaaf3a130d3b43a6af5620b801b9a115eda65",
+      "mode": "100644"
+    }
+  }
+}

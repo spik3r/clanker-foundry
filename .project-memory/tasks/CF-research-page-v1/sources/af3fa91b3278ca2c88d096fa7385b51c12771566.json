@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "af3fa91b3278ca2c88d096fa7385b51c12771566",
+  "id": "CF-research-page-v1",
+  "path": "tasks/CF-research-page-v1-solid-outline.md",
+  "blob": "10122c5a1d1f3fbebf0b50c8f14677d9ffe3bc42",
+  "record": "---\nid: CF-research-page-v1\nstatus: in-progress\nowner: Claude pipeline coordinator\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Add a research-page profile to diagramgen\n\n## Implementation claim\n\nOwner: Claude pipeline coordinator, with delegated implementation by a\nsupervised subagent and coordinator review of the diff and output. This is\nthe second step of the heisentick second-consumer trial in the\n[generator pipeline plan](../docs/generator-pipeline-plan.md). The repository\nowner chose this design on 20 November 2026. It replaces a static dashboard\nbecause the target pages are interactive.\n\nScope: profile `research-page/v1` in `modeling/diagram/`. The model holds a\nresearch page's outline and fixed text and names hand-written slots.\n`diagramgen` emits a Solid component that reaches host components through\none adapter module, plus `slots.json`. Shared JSX and text helpers move to\ninternal packages without changing dashboard bytes. Also: diagramgen 1.4.0\nwith regenerated examples, one example, the schema with its agreement test,\ndocs, the registry, this task record and new immutable Project Memory files.\n\nExclusions: the heisentick application itself, interactive page logic, the\nharness code and the contract text.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-research-page-v1-solid-outline.md",
+        "id": "CF-research-page-v1",
+        "blob": "10122c5a1d1f3fbebf0b50c8f14677d9ffe3bc42",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

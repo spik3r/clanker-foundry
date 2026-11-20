@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:foundry:diagramgen:research-page:v1:schema",
+  "title": "research-page/v1 model",
+  "description": "Authoring aid for diagram-json/v1 models with profile research-page/v1. Go validation in diagramgen is authoritative. This profile is shaped around one host's research-page outline. This schema cannot express: unique tabs among sections; unique slot ids across slot and panel items; byte lengths of text (maxLength counts characters); duplicate JSON keys; trailing data; and the 512 KiB size limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["formatVersion", "profileVersion", "id", "title", "purpose", "status", "bottomLine", "sections"],
+  "properties": {
+    "formatVersion": {"const": "diagram-json/v1"},
+    "profileVersion": {"const": "research-page/v1"},
+    "id": {
+      "description": "ASCII identifier starting with an upper-case letter. The component is exported as <id>Content.",
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]{0,47}$"
+    },
+    "title": {"$ref": "#/$defs/title"},
+    "purpose": {"$ref": "#/$defs/text"},
+    "status": {
+      "description": "A status the host's ResearchBottomLine accepts.",
+      "enum": ["supported", "mixed", "inconclusive", "experimental", "unavailable", "not-yet-run", "unknown"]
+    },
+    "class": {
+      "description": "One CSS class token for the shell.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,63}$"
+    },
+    "bottomLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding", "confidence", "limitation"],
+      "properties": {
+        "finding": {"$ref": "#/$defs/text"},
+        "confidence": {"$ref": "#/$defs/title"},
+        "limitation": {"$ref": "#/$defs/text"},
+        "context": {
+          "description": "Paragraphs shown inside the bottom-line card.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/text"}
+        }
+      }
+    },
+    "sections": {
+      "description": "At most one section per tab (Go-only rule). Output order is explore, method, sources whatever the order here.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tab", "items"],
+        "properties": {
+          "tab": {"enum": ["explore", "method", "sources"]},
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 24,
+            "items": {
+              "oneOf": [
+                {
+                  "description": "Hand-written content inserted bare. Slot ids are unique across slot and panel items (Go-only rule).",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "id"],
+                  "properties": {
+                    "kind": {"const": "slot"},
+                    "id": {"$ref": "#/$defs/slotId"}
+                  }
+                },
+                {
+                  "description": "Hand-written content wrapped in Panel.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "slot"],
+                  "properties": {
+                    "kind": {"const": "panel"},
+                    "slot": {"$ref": "#/$defs/slotId"}
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "title"],
+                  "properties": {
+                    "kind": {"const": "heading"},
+                    "title": {"$ref": "#/$defs/title"},
+                    "description": {"$ref": "#/$defs/text"}
+                  }
+                },
+                {
+                  "description": "A Panel holding a SectionHeader and a bulleted list.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "title", "points"],
+                  "properties": {
+                    "kind": {"const": "methodPanel"},
+                    "title": {"$ref": "#/$defs/title"},
+                    "description": {"$ref": "#/$defs/text"},
+                    "points": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 12,
+                      "items": {"$ref": "#/$defs/text"}
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["kind", "paragraphs"],
+                  "properties": {
+                    "kind": {"const": "prose"},
+                    "paragraphs": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 6,
+                      "items": {"$ref": "#/$defs/text"}
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "slotId": {
+      "description": "A name the host supplies content under: props.slots.<id>. Not an inherited object property name.",
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]{0,31}$",
+      "not": {"enum": ["constructor", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "toLocaleString", "toString", "valueOf"]}
+    },
+    "title": {
+      "description": "Plain text, 1 to 120 UTF-8 bytes, not blank (no Unicode white space only), no control characters, U+2028, U+2029, U+FFFE or U+FFFF. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    },
+    "text": {
+      "description": "Plain text, 1 to 600 UTF-8 bytes, with the same character rules as title. maxLength here counts characters, so the byte limit is checked only by Go.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 600,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*[^\\u0000-\\u0020\\u007f-\\u00a0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000\\ufffe\\uffff][^\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029\\ufffe\\uffff]*$"
+    }
+  }
+}

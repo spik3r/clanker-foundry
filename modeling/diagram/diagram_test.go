@@ -24,6 +24,7 @@ var exampleFiles = map[string][]string{
 	"retry-sequence":      {"diagram.svg", "model.json", "foundry-manifest.json"},
 	"orders-class":        {"diagram.svg", "model.json", "foundry-manifest.json"},
 	"plugins-class":       {"diagram.svg", "model.json", "foundry-manifest.json"},
+	"evidence-atlas-page": {"ResearchPage.jsx", "slots.json", "model.json", "foundry-manifest.json"},
 }
 
 // TestExamplesMatchGenerated regenerates every example and compares bytes with
@@ -87,7 +88,7 @@ func TestManifestAndIdentity(t *testing.T) {
 	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 		t.Fatal(err)
 	}
-	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.3.0" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
+	if m.Generator.ID != "diagramgen" || m.Generator.Version != "1.4.0" || m.Generator.Toolchain != "go1.27.4" || m.Profile != id.Profile {
 		t.Errorf("manifest %+v", m)
 	}
 	if m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
@@ -136,7 +137,7 @@ func TestSourceFormattingDoesNotChangeOutput(t *testing.T) {
 }
 
 func TestSelect(t *testing.T) {
-	want := []string{"class-diagram/v1", "dashboard/v1", "process-diagram/v1", "sequence-diagram/v1"}
+	want := []string{"class-diagram/v1", "dashboard/v1", "process-diagram/v1", "research-page/v1", "sequence-diagram/v1"}
 	if got := Supported(); strings.Join(got, ",") != strings.Join(want, ",") {
 		t.Errorf("supported profiles %v", got)
 	}
@@ -186,7 +187,7 @@ func TestDashboardIdentityAndManifest(t *testing.T) {
 	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 		t.Fatal(err)
 	}
-	if m.Profile != "dashboard/v1" || m.Generator.Version != "1.3.0" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+	if m.Profile != "dashboard/v1" || m.Generator.Version != "1.4.0" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
 		t.Errorf("manifest %+v", m)
 	}
 	if len(m.Files) != 2 || m.Files[0].Path != "dashboard.html" || m.Files[1].Path != "model.json" {
@@ -255,7 +256,7 @@ func TestUMLIdentityAndManifest(t *testing.T) {
 		if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
 			t.Fatal(err)
 		}
-		if m.Profile != profile || m.Generator.ID != "diagramgen" || m.Generator.Version != "1.3.0" || m.Generator.Toolchain != "go1.27.4" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+		if m.Profile != profile || m.Generator.ID != "diagramgen" || m.Generator.Version != "1.4.0" || m.Generator.Toolchain != "go1.27.4" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
 			t.Errorf("%s: manifest %+v", name, m)
 		}
 		if len(m.Files) != 2 || m.Files[0].Path != "diagram.svg" || m.Files[1].Path != "model.json" {
@@ -269,10 +270,56 @@ func TestUMLIdentityAndManifest(t *testing.T) {
 	}
 }
 
+// TestResearchPageIdentityAndManifest checks the identity line and manifest of
+// the research-page example.
+func TestResearchPageIdentityAndManifest(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join("examples", "evidence-atlas-page.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	res, err := Build(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var id struct{ Contract, Profile, SourceSHA256, CanonicalSHA256 string }
+	if err := json.Unmarshal([]byte(res.Identity), &id); err != nil {
+		t.Fatal(err)
+	}
+	if id.Contract != "foundry-generator/v1" || id.Profile != "research-page/v1" || id.SourceSHA256 != contract.HexSum(raw) {
+		t.Errorf("identity %+v", id)
+	}
+	var m struct {
+		Profile   string
+		Generator struct{ ID, Version, Toolchain string }
+		Model     struct{ CanonicalSHA256 string }
+		Files     []struct {
+			Path   string
+			SHA256 string
+			Bytes  int
+		}
+	}
+	if err := json.Unmarshal(res.Files[contract.ManifestName], &m); err != nil {
+		t.Fatal(err)
+	}
+	if m.Profile != "research-page/v1" || m.Generator.ID != "diagramgen" || m.Generator.Version != "1.4.0" || m.Generator.Toolchain != "go1.27.4" || m.Model.CanonicalSHA256 != id.CanonicalSHA256 {
+		t.Errorf("manifest %+v", m)
+	}
+	var paths []string
+	for _, f := range m.Files {
+		paths = append(paths, f.Path)
+		if f.SHA256 != contract.HexSum(res.Files[f.Path]) || f.Bytes != len(res.Files[f.Path]) {
+			t.Errorf("manifest entry %+v", f)
+		}
+	}
+	if got := strings.Join(paths, ","); got != "ResearchPage.jsx,model.json,slots.json" {
+		t.Errorf("manifest files %s", got)
+	}
+}
+
 // TestUMLSourceFormattingDoesNotChangeOutput reformats and reorders the
 // members of one model of each profile and expects identical output.
 func TestUMLSourceFormattingDoesNotChangeOutput(t *testing.T) {
-	for _, name := range []string{"checkout-sequence", "retry-sequence", "orders-class", "plugins-class"} {
+	for _, name := range []string{"checkout-sequence", "retry-sequence", "orders-class", "plugins-class", "evidence-atlas-page"} {
 		raw, err := os.ReadFile(filepath.Join("examples", name+".json"))
 		if err != nil {
 			t.Fatal(err)
