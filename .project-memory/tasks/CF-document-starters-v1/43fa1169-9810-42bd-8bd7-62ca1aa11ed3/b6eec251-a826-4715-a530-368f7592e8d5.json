@@ -1,0 +1,43 @@
+{
+  "formatVersion": 2,
+  "eventId": "b6eec251-a826-4715-a530-368f7592e8d5",
+  "runId": "43fa1169-9810-42bd-8bd7-62ca1aa11ed3",
+  "kind": "start",
+  "parents": [
+    "bbfd6a01-4252-496b-a06f-61a1fc7b77ac"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-document-starters-v1",
+    "path": "tasks/CF-document-starters-v1-template-pack.md",
+    "revision": "1b59efd809324dd244e31dd77952b7ae9275fd41",
+    "blob": "c0d8e4faa86272555a0166aeb7fb108b85bf2b6a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2aaf55f83ae189e273a19b5f5b9fd678d57e59abb433f23868c564fef3fc8737"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/document-starters-v1",
+  "pullRequest": null,
+  "at": "2026-11-27T14:38:53.976Z",
+  "summary": "Correct the lifecycle invocation to record each exact path separately after the validator rejected the comma-delimited input.",
+  "next": "Rerun checks on the unchanged template content and record exact staged fingerprints.",
+  "files": [
+    "README.md",
+    "tasks/CF-document-starters-v1-template-pack.md",
+    "templates/README.md",
+    "templates/bug-bounty/disclosure-report.md",
+    "templates/bug-bounty/triage-follow-up.md",
+    "templates/docs/README.md",
+    "templates/docs/quickstart.md",
+    "templates/docs/readme-blocks.md",
+    "templates/docs/release-note.md",
+    "templates/docs/requirements.md",
+    "templates/docs/troubleshooting.md",
+    "templates/progress-report/README.md",
+    "templates/progress-report/progress-report.docx",
+    "templates/progress-report/progress-report.md"
+  ]
+}

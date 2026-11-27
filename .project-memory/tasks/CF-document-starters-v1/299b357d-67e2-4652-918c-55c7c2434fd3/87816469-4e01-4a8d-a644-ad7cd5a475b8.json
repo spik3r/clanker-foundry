@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "87816469-4e01-4a8d-a644-ad7cd5a475b8",
+  "runId": "299b357d-67e2-4652-918c-55c7c2434fd3",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-document-starters-v1",
+    "path": "tasks/CF-document-starters-v1-template-pack.md",
+    "revision": "1b59efd809324dd244e31dd77952b7ae9275fd41",
+    "blob": "c0d8e4faa86272555a0166aeb7fb108b85bf2b6a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2aaf55f83ae189e273a19b5f5b9fd678d57e59abb433f23868c564fef3fc8737"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/document-starters-v1",
+  "pullRequest": null,
+  "at": "2026-11-27T14:36:24.144Z",
+  "summary": "Add reusable documentation, progress and private disclosure starters alongside the existing templates.",
+  "next": "Validate Markdown links, template content and the rendered Word document.",
+  "files": [
+    "README.md,templates/README.md,templates/bug-bounty/disclosure-report.md,templates/bug-bounty/triage-follow-up.md,templates/progress-report/README.md,templates/progress-report/progress-report.md,templates/progress-report/progress-report.docx,templates/docs/README.md,templates/docs/readme-blocks.md,templates/docs/quickstart.md,templates/docs/requirements.md,templates/docs/troubleshooting.md,templates/docs/release-note.md,tasks/CF-document-starters-v1-template-pack.md"
+  ]
+}
