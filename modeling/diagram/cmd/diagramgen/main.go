@@ -4,9 +4,11 @@
 //	diagramgen validate MODEL
 //	diagramgen generate MODEL OUT
 //	diagramgen check MODEL OUT
+//	diagramgen diff BEFORE AFTER
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -15,6 +17,7 @@ import (
 	"syscall"
 
 	"github.com/spik3r/clanker-foundry/modeling/diagram"
+	"github.com/spik3r/clanker-foundry/modeling/diagram/architecture"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/dashboardbind"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/tesserae"
@@ -26,7 +29,7 @@ const (
 	exitDrift   = 3
 )
 
-const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT | bind TEMPLATE DATA | tesserae MODEL"
+const usage = "usage: diagramgen validate MODEL | generate MODEL OUT | check MODEL OUT | diff BEFORE AFTER | bind TEMPLATE DATA | tesserae MODEL"
 
 type usageError string
 
@@ -68,6 +71,24 @@ func run(args []string, stdout, stderr io.Writer) int {
 
 func dispatch(args []string) (line string, drift []string, err error) {
 	switch {
+	case len(args) == 3 && args[0] == "diff":
+		before, err := contract.ReadModel(args[1])
+		if err != nil {
+			return "", nil, fmt.Errorf("before: %w", err)
+		}
+		after, err := contract.ReadModel(args[2])
+		if err != nil {
+			return "", nil, fmt.Errorf("after: %w", err)
+		}
+		result, err := architecture.Diff(before, after)
+		if err != nil {
+			return "", nil, contract.ModelError{Err: err}
+		}
+		out, err := json.Marshal(result)
+		if err != nil {
+			return "", nil, err
+		}
+		return string(out) + "\n", nil, nil
 	case len(args) == 2 && args[0] == "tesserae":
 		raw, err := contract.ReadModel(args[1])
 		if err != nil {

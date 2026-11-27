@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "736abe61c7a596159cb4472af1dfe2b09cebcd28",
+  "id": "CF-architecture-semantic-diff-v1",
+  "path": "tasks/CF-architecture-semantic-diff-v1-review.md",
+  "blob": "f8e7ddc5d77f2801b4a0b4efedbed07f51b797f3",
+  "record": "---\nid: CF-architecture-semantic-diff-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Review changes to a logical architecture model\n\n## Implementation claim\n\nByte owns a read-only semantic comparison for two validated versions of the\nsame architecture-diagram/v1 model. Report changes by stable node and link ID\nand distinguish relative order of existing nodes from semantic edits. Scope is\nthe architecture comparator, diagramgen CLI, tests, and its documentation.\nDo not modify generator output, add dependencies, or expand other profiles.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-architecture-semantic-diff-v1-review.md",
+        "id": "CF-architecture-semantic-diff-v1",
+        "blob": "f8e7ddc5d77f2801b4a0b4efedbed07f51b797f3",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
