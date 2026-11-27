@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "1b59efd809324dd244e31dd77952b7ae9275fd41",
+  "id": "CF-document-starters-v1",
+  "path": "tasks/CF-document-starters-v1-template-pack.md",
+  "blob": "c0d8e4faa86272555a0166aeb7fb108b85bf2b6a",
+  "record": "---\nid: CF-document-starters-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Reusable document starters\n\n## Implementation claim\n\nByte owns an additive, copy-first document starter pack: responsible disclosure\nand triage templates in Markdown, a progress report in Markdown and Word that\ncan be copied in Google Docs, and reusable Markdown blocks for READMEs,\nquickstarts, requirements, troubleshooting and release notes. Link the pack\nfrom the main README and retain the existing project, ADR and diagram templates.\nNo report submission, real finding data, deployment, or generator changes.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-document-starters-v1-template-pack.md",
+        "id": "CF-document-starters-v1",
+        "blob": "c0d8e4faa86272555a0166aeb7fb108b85bf2b6a",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
