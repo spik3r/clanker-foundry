@@ -1,0 +1,30 @@
+{
+  "formatVersion": 2,
+  "eventId": "1a30a6c1-4b74-4ace-8b1f-079ffdd27d06",
+  "runId": "6bb9e503-64fc-473a-b31b-82707a53ee85",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-consumer-pipeline-gates-v1",
+    "path": "tasks/CF-consumer-pipeline-gates-v1-guide.md",
+    "revision": "b8679ac5b3c56eb6aa49ba8a4b53fd602a2bddf2",
+    "blob": "24232a74e4aedc494d5632a1c3ada30e5a4b6726",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "62e5f5e63d15f89344b6ca34d94b280bc8e3c579f7c05a6441d0e02eb0d93d97"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/consumer-pipeline-gates",
+  "pullRequest": null,
+  "at": "2026-11-27T21:54:04.331Z",
+  "summary": "Document three independently reviewable consumer gates",
+  "next": "Write and verify the guide",
+  "files": [
+    "tasks/CF-consumer-pipeline-gates-v1-guide.md",
+    "docs/model-driven-current-workflow.md",
+    "docs/consumer-pipeline-gates.md"
+  ]
+}
