@@ -1,0 +1,122 @@
+{
+  "formatVersion": 2,
+  "eventId": "c3c94ad4-63b8-46ac-a7b6-c0141fb885ed",
+  "runId": "551dfde0-a0a6-4563-99de-e5e66c5660a2",
+  "kind": "complete",
+  "parents": [
+    "4b3b02ba-19dd-4604-8423-835ff94b2534"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-diagram-starters-v1",
+    "path": "tasks/CF-diagram-starters-v1-template-pack.md",
+    "revision": "1d68e7ebe59ebf2167a2258d5edec71d418ec191",
+    "blob": "11d09452679803e5d0a3b4c7ff09d7176d42496a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "093d275c7c6c6d6d86627265144db80b73a78d9cfc1f0d758b34eccf735fbafb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/diagram-starters-v1",
+  "pullRequest": null,
+  "at": "2026-11-27T10:58:32.437Z",
+  "summary": "Added four reusable diagram starters and registered an inert logical architecture SVG profile. Existing committed outputs replay unchanged.",
+  "next": "Publish exact tree to a normal PR and verify hosted checks",
+  "files": [
+    "tasks/CF-diagram-starters-v1-template-pack.md",
+    "templates/diagrams/README.md",
+    "templates/diagrams/uml-class.json",
+    "templates/diagrams/uml-sequence.json",
+    "templates/diagrams/bpmn-process.json",
+    "templates/diagrams/architecture.json",
+    "modeling/diagram/ARCHITECTURE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/starters_test.go",
+    "modeling/diagram/architecture/profile.go",
+    "modeling/diagram/architecture/render.go",
+    "modeling/diagram/architecture/profile_test.go",
+    "modeling/diagram/authoring/architecture-diagram-v1.schema.json",
+    "modeling/profiles.json",
+    "README.md",
+    "modeling/diagram/diagram_test.go"
+  ],
+  "validation": "Go 1.27.4: gofmt check, diagram go test -race -count=1 ./..., go vet ./..., four CLI validate/generate/check and byte replay/deliberate exit-3 drift checks; repository scripts/validate.sh and git diff --cached --check passed. Architecture starter validated against JSON Schema draft 2020-12; all four sample SVGs visually checked.",
+  "snapshot": {
+    "tasks/CF-diagram-starters-v1-template-pack.md": {
+      "blob": "11d09452679803e5d0a3b4c7ff09d7176d42496a",
+      "mode": "100644"
+    },
+    "templates/diagrams/README.md": {
+      "blob": "3cdaa9d43e042164e1e0f708e8ae9a128b3597d5",
+      "mode": "100644"
+    },
+    "templates/diagrams/uml-class.json": {
+      "blob": "351246882d5b8b03fe41d6033ea2adea19eba29c",
+      "mode": "100644"
+    },
+    "templates/diagrams/uml-sequence.json": {
+      "blob": "4a0ac675aaadc9b2b0edde0f2fccbe0e7e140834",
+      "mode": "100644"
+    },
+    "templates/diagrams/bpmn-process.json": {
+      "blob": "67c68293eb69b2601cddd1816dd91e71d2373d56",
+      "mode": "100644"
+    },
+    "templates/diagrams/architecture.json": {
+      "blob": "d8ca9e3b981a9d0b0b547ba4fea156b7935d58c4",
+      "mode": "100644"
+    },
+    "modeling/diagram/ARCHITECTURE.md": {
+      "blob": "8b6f4066ad85744eb0f3d1b09e4188b074fc00d2",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "b81b5c361ddfd2bd728dbb3d29ea9146302a794a",
+      "mode": "100644"
+    },
+    "modeling/diagram/PROFILE.md": {
+      "blob": "1981521499f4b81b0254e5541f7a8f2525aa015d",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram.go": {
+      "blob": "c1d841ae9efb9e11f9067eefe3fc8ef19d4fef60",
+      "mode": "100644"
+    },
+    "modeling/diagram/starters_test.go": {
+      "blob": "2fbe88736a0f26fd7ff4529b1c9f737efc226b7d",
+      "mode": "100644"
+    },
+    "modeling/diagram/architecture/profile.go": {
+      "blob": "1aa62cb99d51d6f3a930eb90688f67d16b0d4078",
+      "mode": "100644"
+    },
+    "modeling/diagram/architecture/render.go": {
+      "blob": "77fcc503faefae0556784b99af556c97662f808d",
+      "mode": "100644"
+    },
+    "modeling/diagram/architecture/profile_test.go": {
+      "blob": "c47fe4e2641321b80bdbd004d2c33ce23c48b889",
+      "mode": "100644"
+    },
+    "modeling/diagram/authoring/architecture-diagram-v1.schema.json": {
+      "blob": "e1842c763654b0385d63de2bdb09149bcb310c7b",
+      "mode": "100644"
+    },
+    "modeling/profiles.json": {
+      "blob": "ae1ab1b1d0b363578fe9671846c17ce311385f8e",
+      "mode": "100644"
+    },
+    "README.md": {
+      "blob": "85797a0742b5b6653d98d9e3264ba4a8a1194735",
+      "mode": "100644"
+    },
+    "modeling/diagram/diagram_test.go": {
+      "blob": "1d1b924fd2851e5be59c4feb95f7a0a9cc80ffcd",
+      "mode": "100644"
+    }
+  }
+}

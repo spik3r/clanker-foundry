@@ -3,7 +3,7 @@
 This profile describes one business-process diagram: lanes, events, tasks,
 gateways and sequence flows. Its input format is `diagram-json/v1`, with profile
 `process-diagram/v1`. The generator `diagramgen` selects a profile by the
-model's `profileVersion`; this is the only profile it supports today.
+model's `profileVersion`.
 
 It is a BPMN-style subset. It claims no BPMN conformance beyond emitting the
 elements listed under [BPMN output](#bpmn-output). It does not read BPMN.

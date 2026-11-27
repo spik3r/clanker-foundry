@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/spik3r/clanker-foundry/modeling/diagram/architecture"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/class"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/contract"
 	"github.com/spik3r/clanker-foundry/modeling/diagram/dashboard"
@@ -19,7 +20,8 @@ import (
 
 // Generator identity. Toolchain is the Go release this generator was
 // qualified with; it is a constant, not detected at run time. Any change that
-// alters emitted bytes for any model needs a new Version.
+// alters emitted bytes for an existing model needs a new Version. Adding a
+// profile does not rewrite existing artifacts.
 const (
 	GeneratorID      = "diagramgen"
 	GeneratorVersion = "1.4.0"
@@ -31,6 +33,7 @@ var Self = contract.Generator{ID: GeneratorID, Version: GeneratorVersion, Toolch
 
 // profiles lists the supported profiles by profileVersion.
 var profiles = map[string]contract.Profile{
+	architecture.Profile: architecture.Profiler{},
 	process.Profile:      process.Profiler{},
 	dashboard.Profile:    dashboard.Profiler{},
 	sequence.Profile:     sequence.Profiler{},
