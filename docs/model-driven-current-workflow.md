@@ -14,6 +14,10 @@ The [pipeline introduction](model-driven-pipeline.md) retains its earlier dated
 snapshot. The [pilot testing guide](model-driven-pilot-testing.md) provides longer
 fixed-example and custom-proposal exercises.
 
+For an existing application adopting generators, use the separate
+[consumer pipeline gates](consumer-pipeline-gates.md) for source validation,
+artefact drift and independent behaviour checks.
+
 The supported design language is the finite `lifecycle/v1` profile: states,
 transitions, typed guards and ordered effects over fixed task/command data.
 Use the [model-driven-design handoff](../skills/model-driven-design/references/foundry-handoff.md)

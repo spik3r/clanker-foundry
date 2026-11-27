@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "b8679ac5b3c56eb6aa49ba8a4b53fd602a2bddf2",
+  "id": "CF-consumer-pipeline-gates-v1",
+  "path": "tasks/CF-consumer-pipeline-gates-v1-guide.md",
+  "blob": "24232a74e4aedc494d5632a1c3ada30e5a4b6726",
+  "record": "---\nid: CF-consumer-pipeline-gates-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Document the gates for a model-driven consumer\n\n## Implementation claim\n\nByte owns a small adoption guide describing the independent evidence expected\nfrom model validation, pinned artifact generation and acceptance of a running\nconsumer. Use the model-driven site pilot and its negative control as a proved\nexample, without claiming generated app code or changing execution authority.\nNo new generator, runtime entry point, hosted workflow or deployment.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-consumer-pipeline-gates-v1-guide.md",
+        "id": "CF-consumer-pipeline-gates-v1",
+        "blob": "24232a74e4aedc494d5632a1c3ada30e5a4b6726",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
