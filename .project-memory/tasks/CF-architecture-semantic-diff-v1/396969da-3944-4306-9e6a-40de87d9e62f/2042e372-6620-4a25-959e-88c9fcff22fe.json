@@ -1,0 +1,33 @@
+{
+  "formatVersion": 2,
+  "eventId": "2042e372-6620-4a25-959e-88c9fcff22fe",
+  "runId": "396969da-3944-4306-9e6a-40de87d9e62f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-architecture-semantic-diff-v1",
+    "path": "tasks/CF-architecture-semantic-diff-v1-review.md",
+    "revision": "736abe61c7a596159cb4472af1dfe2b09cebcd28",
+    "blob": "f8e7ddc5d77f2801b4a0b4efedbed07f51b797f3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b6bcddf99a5e5ddc5bac08452cadd7a8c5485950ae4067eefecf1e6680a2c62a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/architecture-semantic-diff",
+  "pullRequest": null,
+  "at": "2026-11-27T17:30:48.380Z",
+  "summary": "Compare reviewed architecture versions by stable IDs",
+  "next": "Implement, test and independently review",
+  "files": [
+    "tasks/CF-architecture-semantic-diff-v1-review.md",
+    "modeling/diagram/architecture/diff.go",
+    "modeling/diagram/architecture/diff_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/diff_test.go",
+    "modeling/diagram/README.md"
+  ]
+}

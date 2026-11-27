@@ -49,6 +49,25 @@ go test -race -count=1 ./...
 `generate` needs an `OUT` that does not exist yet. `check` reports drift and
 changes nothing. Exit codes are 0 success, 1 failure, 2 refused, 3 drift.
 
+## Compare architecture versions
+
+```sh
+go run ./cmd/diagramgen diff before.json after.json
+```
+
+Both inputs must be valid `architecture-diagram/v1` models with the same root
+ID. The command writes one JSON line to stdout without generating or modifying
+any files. For example, an unchanged model reports
+`{"changes":[],"nodeOrderChanged":false}`. A change is a successful comparison,
+not a drift error.
+
+`changes` lists title edits and node or directed link additions, removals and
+field edits. Entries are grouped by entity type, then sorted by stable ID. A
+changed ID is a removal and an addition, not an inferred rename. JSON formatting,
+object key order and link array order are ignored. `nodeOrderChanged` reports only
+a change in the relative order of nodes present in both versions. An insertion
+or removal alone does not count as a reorder.
+
 ## What it writes
 
 - `diagram.svg`: the picture. Inert: no script, no external reference.

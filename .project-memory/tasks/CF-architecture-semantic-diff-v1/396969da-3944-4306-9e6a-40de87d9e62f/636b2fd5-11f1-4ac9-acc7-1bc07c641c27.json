@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "636b2fd5-11f1-4ac9-acc7-1bc07c641c27",
+  "runId": "396969da-3944-4306-9e6a-40de87d9e62f",
+  "kind": "complete",
+  "parents": [
+    "2042e372-6620-4a25-959e-88c9fcff22fe"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-architecture-semantic-diff-v1",
+    "path": "tasks/CF-architecture-semantic-diff-v1-review.md",
+    "revision": "736abe61c7a596159cb4472af1dfe2b09cebcd28",
+    "blob": "f8e7ddc5d77f2801b4a0b4efedbed07f51b797f3",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "b6bcddf99a5e5ddc5bac08452cadd7a8c5485950ae4067eefecf1e6680a2c62a"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/architecture-semantic-diff",
+  "pullRequest": null,
+  "at": "2026-11-27T17:32:41.864Z",
+  "summary": "Added a read-only architecture comparison with stable graph changes and a separate layout-order flag",
+  "next": "Publish and review hosted CI",
+  "files": [
+    "tasks/CF-architecture-semantic-diff-v1-review.md",
+    "modeling/diagram/architecture/diff.go",
+    "modeling/diagram/architecture/diff_test.go",
+    "modeling/diagram/cmd/diagramgen/main.go",
+    "modeling/diagram/cmd/diagramgen/diff_test.go",
+    "modeling/diagram/README.md"
+  ],
+  "validation": "Go 1.27.4: go test -race -count=1 ./... and go vet ./... passed in modeling/diagram; scripts/validate.sh passed; real Mement0rq architecture inputs at merged PRs 1 and 2 gave exactly zero changes through go run; independent review found no blockers",
+  "snapshot": {
+    "tasks/CF-architecture-semantic-diff-v1-review.md": {
+      "blob": "f8e7ddc5d77f2801b4a0b4efedbed07f51b797f3",
+      "mode": "100644"
+    },
+    "modeling/diagram/architecture/diff.go": {
+      "blob": "ff5f068f1ad54e4e8cd98352c58e9efaacfee390",
+      "mode": "100644"
+    },
+    "modeling/diagram/architecture/diff_test.go": {
+      "blob": "10c8b8336fb3a126eedee23567917241d1801932",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/main.go": {
+      "blob": "70151985a26087b3e6ca2ff5fa352bc24fd23900",
+      "mode": "100644"
+    },
+    "modeling/diagram/cmd/diagramgen/diff_test.go": {
+      "blob": "97d4bf89b8edd3b854e6d4df7c7f2f227432cf9c",
+      "mode": "100644"
+    },
+    "modeling/diagram/README.md": {
+      "blob": "e9c90d3b9fb6402256b56e074917aafee7518f00",
+      "mode": "100644"
+    }
+  }
+}
