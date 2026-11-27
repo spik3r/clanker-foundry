@@ -5,7 +5,7 @@ the model; the generator draws it the same way every time. It follows the
 [Foundry generator contract](../CONTRACT.md) and is listed in the
 [conformance registry](../gencontract/generators.json).
 
-Five profiles exist. The generator picks one by the model's `profileVersion`:
+Six profiles exist. The generator picks one by the model's `profileVersion`:
 
 - [`process-diagram/v1`](PROFILE.md): a BPMN-style process diagram with lanes,
   tasks, events and gateways, as SVG and BPMN XML.
@@ -15,12 +15,16 @@ Five profiles exist. The generator picks one by the model's `profileVersion`:
   participants, messages, notes and alt, opt and loop frames, as SVG.
 - [`class-diagram/v1`](CLASS.md): a UML-style class diagram of classes,
   interfaces, enums and seven kinds of relation, as SVG.
+- [`architecture-diagram/v1`](ARCHITECTURE.md): a logical map of actors,
+  services, stores and dependencies, as SVG.
 - [`research-page/v1`](RESEARCHPAGE.md): the fixed text of a research page as a
   Solid component with named slots for the hand-written parts. Shaped around one
   host's page outline.
 
 Other profiles can be added as sibling packages that implement
 `contract.Profile`.
+
+For a new diagram, copy a [reviewed starter](../../templates/diagrams/README.md).
 
 For recurring reports, [reuse a reviewed dashboard with fresh data](REPORT-BINDING.md)
 using `diagramgen bind TEMPLATE DATA` before generation.

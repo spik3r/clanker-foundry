@@ -1,0 +1,20 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "sequence-diagram/v1",
+  "id": "OrderSequence",
+  "title": "Order intake: successful request",
+  "participants": [
+    {"id": "Buyer", "label": "Buyer", "kind": "actor"},
+    {"id": "OrderAPI", "label": "Order API", "kind": "participant"},
+    {"id": "Inventory", "label": "Inventory service", "kind": "participant"},
+    {"id": "OrderStore", "label": "Order store", "kind": "participant"}
+  ],
+  "steps": [
+    {"id": "Request", "kind": "message", "from": "Buyer", "to": "OrderAPI", "label": "Place order", "style": "sync"},
+    {"id": "Reserve", "kind": "message", "from": "OrderAPI", "to": "Inventory", "label": "Reserve stock", "style": "sync"},
+    {"id": "Reserved", "kind": "message", "from": "Inventory", "to": "OrderAPI", "label": "Reserved", "style": "reply"},
+    {"id": "Save", "kind": "message", "from": "OrderAPI", "to": "OrderStore", "label": "Save order", "style": "sync"},
+    {"id": "Saved", "kind": "message", "from": "OrderStore", "to": "OrderAPI", "label": "Saved", "style": "reply"},
+    {"id": "Respond", "kind": "message", "from": "OrderAPI", "to": "Buyer", "label": "Confirmed", "style": "reply"}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "architecture-diagram/v1",
+  "id": "OrderSystem",
+  "title": "Order intake: logical architecture",
+  "nodes": [
+    {"id": "Buyer", "kind": "actor", "label": "Buyer"},
+    {"id": "OrderAPI", "kind": "service", "label": "Order API"},
+    {"id": "Inventory", "kind": "external", "label": "Inventory service"},
+    {"id": "OrderStore", "kind": "store", "label": "Order store"}
+  ],
+  "links": [
+    {"id": "Place", "from": "Buyer", "to": "OrderAPI", "label": "Place order via HTTPS"},
+    {"id": "Reserve", "from": "OrderAPI", "to": "Inventory", "label": "Reserve stock via the inventory API"},
+    {"id": "Persist", "from": "OrderAPI", "to": "OrderStore", "label": "Write confirmed order"}
+  ]
+}

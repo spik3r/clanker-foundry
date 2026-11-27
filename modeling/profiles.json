@@ -156,6 +156,20 @@
       ]
     },
     {
+      "profile": "architecture-diagram/v1",
+      "generator": "diagramgen",
+      "summary": "Logical system map of actors, services, data stores and external dependencies, as SVG.",
+      "profileDoc": "modeling/diagram/ARCHITECTURE.md",
+      "schema": "modeling/diagram/authoring/architecture-diagram-v1.schema.json",
+      "examples": ["templates/diagrams/architecture.json"],
+      "emits": ["SVG picture"],
+      "cannotExpress": [
+        "nested system boundaries or physical deployment",
+        "more than 12 nodes or 24 directed links",
+        "manual routing or C4 conformance"
+      ]
+    },
+    {
       "profile": "class-diagram/v1",
       "generator": "diagramgen",
       "summary": "UML-style class diagram of classes, interfaces, enums and seven kinds of relation, as SVG.",

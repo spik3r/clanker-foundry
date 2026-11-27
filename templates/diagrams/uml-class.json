@@ -1,0 +1,18 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "class-diagram/v1",
+  "id": "OrderTypes",
+  "title": "Order intake: types",
+  "classes": [
+    {"id": "Order", "name": "Order", "kind": "class",
+     "attributes": [{"name": "id", "type": "OrderId", "visibility": "public"}]},
+    {"id": "OrderService", "name": "OrderService", "kind": "class",
+     "operations": [{"name": "place", "returns": "Order", "visibility": "public"}]},
+    {"id": "OrderStore", "name": "OrderStore", "kind": "interface",
+     "operations": [{"name": "save", "parameters": [{"name": "order", "type": "Order"}], "visibility": "public"}]}
+  ],
+  "relations": [
+    {"id": "Builds", "kind": "dependency", "from": "OrderService", "to": "Order", "label": "creates"},
+    {"id": "Persists", "kind": "dependency", "from": "OrderService", "to": "OrderStore", "label": "uses"}
+  ]
+}

@@ -10,7 +10,7 @@ investigating a change to building it and reviewing the evidence.
 Turn a reviewed design into supported code and diagrams, then check the result
 against independent expectations.
 
-[Explore the pipeline →](docs/model-driven-pipeline.md)
+[Explore the pipeline →](docs/model-driven-pipeline.md) · [Diagram starters](templates/diagrams/README.md)
 
 ### ⚙️ Orchestration
 

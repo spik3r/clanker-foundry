@@ -1,0 +1,26 @@
+{
+  "formatVersion": "diagram-json/v1",
+  "profileVersion": "process-diagram/v1",
+  "id": "OrderIntake",
+  "title": "Order intake: accept or decline",
+  "lanes": [
+    {"id": "Orders", "label": "Order team"},
+    {"id": "Stock", "label": "Inventory"}
+  ],
+  "nodes": [
+    {"id": "Received", "kind": "start", "label": "Order received", "lane": "Orders"},
+    {"id": "Reserve", "kind": "task", "label": "Try to reserve stock", "lane": "Stock"},
+    {"id": "Available", "kind": "exclusive", "label": "Reserved?", "lane": "Stock"},
+    {"id": "Accept", "kind": "task", "label": "Save and confirm order", "lane": "Orders"},
+    {"id": "Decline", "kind": "task", "label": "Decline order", "lane": "Orders"},
+    {"id": "Closed", "kind": "end", "label": "Order handled", "lane": "Orders"}
+  ],
+  "flows": [
+    {"id": "F1", "from": "Received", "to": "Reserve"},
+    {"id": "F2", "from": "Reserve", "to": "Available"},
+    {"id": "F3", "from": "Available", "to": "Accept", "label": "yes"},
+    {"id": "F4", "from": "Available", "to": "Decline", "label": "no"},
+    {"id": "F5", "from": "Accept", "to": "Closed"},
+    {"id": "F6", "from": "Decline", "to": "Closed"}
+  ]
+}

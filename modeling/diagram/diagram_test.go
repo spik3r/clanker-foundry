@@ -137,7 +137,7 @@ func TestSourceFormattingDoesNotChangeOutput(t *testing.T) {
 }
 
 func TestSelect(t *testing.T) {
-	want := []string{"class-diagram/v1", "dashboard/v1", "process-diagram/v1", "research-page/v1", "sequence-diagram/v1"}
+	want := []string{"architecture-diagram/v1", "class-diagram/v1", "dashboard/v1", "process-diagram/v1", "research-page/v1", "sequence-diagram/v1"}
 	if got := Supported(); strings.Join(got, ",") != strings.Join(want, ",") {
 		t.Errorf("supported profiles %v", got)
 	}

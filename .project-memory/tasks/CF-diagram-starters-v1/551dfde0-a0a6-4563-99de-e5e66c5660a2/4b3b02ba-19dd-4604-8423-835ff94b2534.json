@@ -1,0 +1,45 @@
+{
+  "formatVersion": 2,
+  "eventId": "4b3b02ba-19dd-4604-8423-835ff94b2534",
+  "runId": "551dfde0-a0a6-4563-99de-e5e66c5660a2",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-diagram-starters-v1",
+    "path": "tasks/CF-diagram-starters-v1-template-pack.md",
+    "revision": "1d68e7ebe59ebf2167a2258d5edec71d418ec191",
+    "blob": "11d09452679803e5d0a3b4c7ff09d7176d42496a",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "093d275c7c6c6d6d86627265144db80b73a78d9cfc1f0d758b34eccf735fbafb"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/diagram-starters-v1",
+  "pullRequest": null,
+  "at": "2026-11-27T10:57:30.515Z",
+  "summary": "Integrate locally prototyped diagram starters against the published exact claim",
+  "next": "Apply candidate patch and repeat final tests",
+  "files": [
+    "tasks/CF-diagram-starters-v1-template-pack.md",
+    "templates/diagrams/README.md",
+    "templates/diagrams/uml-class.json",
+    "templates/diagrams/uml-sequence.json",
+    "templates/diagrams/bpmn-process.json",
+    "templates/diagrams/architecture.json",
+    "modeling/diagram/ARCHITECTURE.md",
+    "modeling/diagram/README.md",
+    "modeling/diagram/PROFILE.md",
+    "modeling/diagram/diagram.go",
+    "modeling/diagram/starters_test.go",
+    "modeling/diagram/architecture/profile.go",
+    "modeling/diagram/architecture/render.go",
+    "modeling/diagram/architecture/profile_test.go",
+    "modeling/diagram/authoring/architecture-diagram-v1.schema.json",
+    "modeling/profiles.json",
+    "README.md",
+    "modeling/diagram/diagram_test.go"
+  ]
+}
