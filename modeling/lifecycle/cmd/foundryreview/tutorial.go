@@ -304,10 +304,16 @@ func tutorial(args []string, a appearance) ([]byte, error) {
 		if e != nil {
 			return nil, e
 		}
+		// Both sides come from the same successful Build: consume its existing
+		// versioned projection without a second schema or a new model parser.
+		var details map[string]any
+		if e = json.Unmarshal(view.JSON, &details); e != nil || details["formatVersion"] != processview.FormatVersion {
+			return nil, fmt.Errorf("invalid process view projection")
+		}
 		if i == 0 {
-			p.BeforeSVG = svg(view.SVG)
+			p.BeforeSVG, p.BeforeProcess = svg(view.SVG), details
 		} else {
-			p.AfterSVG = svg(view.SVG)
+			p.AfterSVG, p.AfterProcess = svg(view.SVG), details
 		}
 		var s literal
 		if e = json.Unmarshal([]byte(d.Suite), &s); e != nil {

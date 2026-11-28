@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "3d78e10e-cf68-4063-b254-30e329b30c92",
+  "runId": "7be52dc3-9602-4781-ba91-cadb134c8f6f",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-process-text-v1",
+    "path": "tasks/CF-review-process-text-v1-offline.md",
+    "revision": "debca86b8952e9ec55e5a1ef2f5d19b86ead88ff",
+    "blob": "55adfda1c344636b68c1e259486ecdd0f4b72141",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6f7c028e8d6b74f96aa0002a0496992307066634d66fa9bee3f43ae63aad8624"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-review-process-text",
+  "pullRequest": null,
+  "at": "2026-11-28T13:39:57.062Z",
+  "summary": "Derive text process review from the shared semantic projection",
+  "next": "Implement and verify deterministic offline output",
+  "files": [
+    "tasks/CF-review-process-text-v1-offline.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/processview/process.go",
+    "modeling/lifecycle/processview/svg.go",
+    "modeling/lifecycle/processview/process_external_test.go",
+    "modeling/lifecycle/revisionreview/README.md"
+  ]
+}

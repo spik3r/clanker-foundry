@@ -59,9 +59,10 @@ type evidence struct {
 }
 type page struct {
 	evidence
-	BeforeSVG, AfterSVG template.URL
-	Native              []native
-	Appearance          appearance
+	BeforeSVG, AfterSVG         template.URL
+	BeforeProcess, AfterProcess map[string]any
+	Native                      []native
+	Appearance                  appearance
 }
 type native struct{ Title, SHA256, Body string }
 
@@ -160,8 +161,8 @@ body{font:1rem system-ui;max-width:78rem;margin:2rem auto;padding:0 1rem;color:v
 </style></head><body><main><h1>{{.Title}}</h1>
 <p>Review evidence only. Validation and matching behaviour do not approve the intended design.</p>
 <section><h2>Revisions</h2><div class="grid">
-<div><h3>Baseline: {{.Baseline.Label}}</h3><code>{{.Baseline.SHA256}}</code>{{if .BeforeSVG}}<figure><img src="{{.BeforeSVG}}" alt="Baseline process projection"></figure>{{end}}</div>
-<div><h3>Candidate: {{.Candidate.Label}}</h3><code>{{.Candidate.SHA256}}</code>{{if .AfterSVG}}<figure><img src="{{.AfterSVG}}" alt="Candidate process projection"></figure>{{end}}</div></div>{{if not .BeforeSVG}}<p>No diagram supplied for this review.</p>{{end}}</section>
+<div><h3>Baseline: {{.Baseline.Label}}</h3><code>{{.Baseline.SHA256}}</code>{{if .BeforeSVG}}<figure><img src="{{.BeforeSVG}}" alt="Baseline process projection"></figure>{{end}}{{with .BeforeProcess}}{{template "processText" .}}{{end}}</div>
+<div><h3>Candidate: {{.Candidate.Label}}</h3><code>{{.Candidate.SHA256}}</code>{{if .AfterSVG}}<figure><img src="{{.AfterSVG}}" alt="Candidate process projection"></figure>{{end}}{{with .AfterProcess}}{{template "processText" .}}{{end}}</div></div>{{if not .BeforeSVG}}<p>No diagram supplied for this review.</p>{{end}}</section>
 <section><h2>What changed</h2>{{range .Changes}}<p id="change-{{.ID}}"><strong>{{.ID}}:</strong> {{.Statement}} <br><code>{{.Source}}</code></p>{{else}}<p>No change was supplied in this packet.</p>{{end}}</section>
 <section><h2>Requirement trace</h2>{{range .Requirements}}<p id="req-{{.ID}}"><strong>{{.ID}} · {{.Status}}</strong>: {{.Statement}}<br><code>{{.Source}}</code></p>{{else}}<p>No requirement trace was supplied.</p>{{end}}</section>
 <section><h2>Acceptance: Given / When / Then</h2>{{if .ScenarioSuite}}<p>Independent suite: <code>{{.ScenarioSuite.Source}} · {{.ScenarioSuite.SHA256}}</code></p>{{end}}{{if .ObservationRevision}}<p>Reported observation revision: <code>{{.ObservationRevision.Label}} · {{.ObservationRevision.SHA256}}</code>. Producer not authenticated.</p>{{end}}{{range .Scenarios}}<article><h3>{{.Title}} · {{.Status}}</h3><p><code>{{.ID}} · {{.Source}}</code></p>
@@ -169,7 +170,20 @@ body{font:1rem system-ui;max-width:78rem;margin:2rem auto;padding:0 1rem;color:v
 <dl><dt>Given</dt><dd>{{.Given}}</dd><dt>When</dt><dd>{{.When}}</dd><dt>Then</dt><dd>{{.Then}}</dd></dl>
 <div class="grid"><div><details><summary>Expected (literal)</summary><pre>{{.Expected}}</pre></details></div><div>{{if .Observed}}<details><summary>Observed · {{.Status}}</summary><pre>{{.Observed}}</pre></details>{{else}}<h4>Observed</h4><p>No bound observation: {{.Status}}.</p>{{end}}</div></div></article>{{else}}<p>No acceptance scenarios were supplied.</p>{{end}}</section>
 {{if .Native}}<section><h2>Native evidence</h2>{{range .Native}}<details><summary>{{.Title}}</summary><p>SHA-256: <code>{{.SHA256}}</code></p><pre>{{.Body}}</pre></details>{{end}}</section>{{end}}
-</main></body></html>`))
+</main></body></html>
+{{define "processText"}}{{$view := .}}<details class="process-text"><summary>Process details as text</summary>
+<p>Model: <code>{{.modelId}}</code>. Initial state: <code>{{.initial}}</code>.</p>
+<p>Canonical model SHA-256: <code>{{.modelDigest}}</code></p>
+<ul>{{range .states}}<li><code>{{.id}}</code>: {{.label}}{{if .terminal}} (terminal){{end}}</li>{{end}}</ul>
+<p>{{.semantics.guards}} {{.semantics.revisionLimit}} {{.semantics.effects}}</p>
+{{range .transitions}}<section><h4><code>{{.id}}</code></h4>
+<dl><dt>From</dt><dd><code>{{.from}}</code></dd>
+<dt>Trigger</dt><dd><code>{{.trigger}}</code></dd>
+<dt>To</dt><dd><code>{{.to}}</code></dd></dl>
+<p>Guards</p>{{if .guards}}<ul>{{range $id := .guards}}{{range $view.guards}}{{if eq .id $id}}<li><code>{{.id}}: {{.expression}}</code>{{if .requirement}} (requirement: <code>{{.requirement}}</code>){{end}}</li>{{end}}{{end}}{{end}}</ul>{{else}}<p>None declared.</p>{{end}}
+<p>Effects, in order</p>{{if .effects}}<ol>{{range .effects}}<li><code>{{.}}</code></li>{{end}}</ol>{{else}}<p>None declared.</p>{{end}}
+</section>{{else}}<p>No transitions declared.</p>{{end}}
+<p>{{.semantics.scope}} {{.semantics.unsupported}}</p></details>{{end}}`))
 
 func svg(data []byte) template.URL {
 	// SVG runs only in the browser's inert image context, not as document markup.
