@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "8558b2b1-e530-4d17-802d-343949fc11fb",
+  "runId": "64542b0c-ece7-4837-9d2a-f6c49879bb1a",
+  "kind": "start",
+  "parents": [
+    "0b247b3d-ab94-4c84-be95-a3796720d360"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-acceptance-review",
+    "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "revision": "d21fc17a2a588c1e20ea4b6fda4bb91d8b07eb8e",
+    "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c903c70d4b7aa675f363499996cdb6ffd9a7f9b63222d1f906e184acae36d629"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/lifecycle-acceptance-review",
+  "pullRequest": null,
+  "at": "2026-11-28T04:30:52.780Z",
+  "summary": "Verify final unchanged integration tree with correctly tokenized exact coverage paths; prior pre-edit start took comma-delimited paths as one value",
+  "next": "Recheck frozen committed paths and full validation evidence without editing implementation",
+  "files": [
+    "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/revisionreview/README.md",
+    "modeling/lifecycle/revisionreview/acceptance-html.sh"
+  ]
+}
