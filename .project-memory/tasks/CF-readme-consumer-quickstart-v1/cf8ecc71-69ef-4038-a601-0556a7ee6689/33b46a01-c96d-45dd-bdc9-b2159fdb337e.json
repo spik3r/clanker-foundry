@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "33b46a01-c96d-45dd-bdc9-b2159fdb337e",
+  "runId": "cf8ecc71-69ef-4038-a601-0556a7ee6689",
+  "kind": "complete",
+  "parents": [
+    "0215de44-f50a-492f-8ef8-d7f4b0f7dce0"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-consumer-quickstart-v1",
+    "path": "tasks/CF-readme-consumer-quickstart-v1-guide.md",
+    "revision": "33ba493907d9088b482d10d6c0760747896edcef",
+    "blob": "0734925a7fc5391afddd92076c32a330aea1e079",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2a7c2d3666171bde1365aad361b4a13d9f72f38e35808d8579b90abe74b13ad2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-readme-quickstart",
+  "pullRequest": null,
+  "at": "2026-11-28T09:06:46.143Z",
+  "summary": "Documented a runnable Foundry review and the next repeatable website acceptance step",
+  "next": "Review and run hosted PR checks; exercise exact website receipt as a separate prototype",
+  "files": [
+    "README.md,docs/current-direction.md,tasks/CF-readme-consumer-quickstart-v1-guide.md"
+  ],
+  "validation": "Exact README lifecycle Bash example on Go 1.27.3 produced not-run and matching HTML, retained the unlinked requirement and checked five generated outputs. Focused foundryreview and revisionreview Go tests pass. Repository validator and diff whitespace pass; optional skills-ref absent. Agent verified GNU Stow setup in a disposable HOME.",
+  "snapshot": {
+    "README.md,docs/current-direction.md,tasks/CF-readme-consumer-quickstart-v1-guide.md": {
+      "blob": null,
+      "mode": null
+    }
+  }
+}
