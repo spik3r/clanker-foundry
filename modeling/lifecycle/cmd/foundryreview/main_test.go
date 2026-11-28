@@ -189,3 +189,41 @@ func TestAppearanceFlags(t *testing.T) {
 		}
 	}
 }
+
+func TestProcessDetailsReflectEachRevision(t *testing.T) {
+	t.Chdir("../..")
+	report, err := run([]string{"--tutorial"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	details := strings.Split(string(report), `<details class="process-text">`)
+	if len(details) != 3 {
+		t.Fatalf("expected baseline and candidate text, got %d", len(details)-1)
+	}
+	for i, section := range details[1:] {
+		process, _, _ := strings.Cut(section, "</details>")
+		_, prepare, ok := strings.Cut(process, "<h4><code>T_prepare</code></h4>")
+		if !ok {
+			t.Fatal("prepare transition missing")
+		}
+		prepare, _, _ = strings.Cut(prepare, "</section>")
+		for _, fragment := range []string{
+			"<dt>From</dt><dd><code>Draft</code></dd>",
+			"<dt>Trigger</dt><dd><code>prepare</code></dd>",
+			"<dt>To</dt><dd><code>Ready</code></dd>",
+			"<ol><li><code>set_state</code></li><li><code>increment_revision</code></li></ol>",
+		} {
+			if !strings.Contains(prepare, fragment) {
+				t.Errorf("revision %d lacks %q", i, fragment)
+			}
+		}
+		hasActor := strings.Contains(prepare, "<code>G_actor: nonempty(command.actor)</code> (requirement: <code>R_actor</code>)")
+		if hasActor != (i == 1) {
+			t.Errorf("revision %d prepare guard: observed G_actor=%v", i, hasActor)
+		}
+	}
+	again, err := run([]string{"--tutorial"})
+	if err != nil || !bytes.Equal(report, again) {
+		t.Fatal("repeated tutorial is not byte-identical", err)
+	}
+}

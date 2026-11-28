@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "debca86b8952e9ec55e5a1ef2f5d19b86ead88ff",
+  "id": "CF-review-process-text-v1",
+  "path": "tasks/CF-review-process-text-v1-offline.md",
+  "blob": "55adfda1c344636b68c1e259486ecdd0f4b72141",
+  "record": "---\nid: CF-review-process-text-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Read process changes without relying on an SVG\n\n## Implementation claim\n\nPresent accessible native, collapsible process details in the existing\noffline lifecycle review for each model revision. Reuse the exact accepted\nprocess-view projection that supplies its SVG and JSON. Include stable\ntransition IDs, states, trigger, guards and their conditions, and ordered\neffects. Do not change evidence intake, execution, approval, semantics or\nother renderers. Preserve existing process-view JSON/SVG bytes.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-review-process-text-v1-offline.md",
+        "id": "CF-review-process-text-v1",
+        "blob": "55adfda1c344636b68c1e259486ecdd0f4b72141",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

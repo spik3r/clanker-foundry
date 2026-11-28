@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "daf9a477-c28b-441b-bdfc-34485aa8dd4a",
+  "runId": "7be52dc3-9602-4781-ba91-cadb134c8f6f",
+  "kind": "complete",
+  "parents": [
+    "bc7e7aad-d9b1-4d66-80a4-55856007e352"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-process-text-v1",
+    "path": "tasks/CF-review-process-text-v1-offline.md",
+    "revision": "debca86b8952e9ec55e5a1ef2f5d19b86ead88ff",
+    "blob": "55adfda1c344636b68c1e259486ecdd0f4b72141",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6f7c028e8d6b74f96aa0002a0496992307066634d66fa9bee3f43ae63aad8624"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-review-process-text",
+  "pullRequest": null,
+  "at": "2026-11-28T13:43:10.114Z",
+  "summary": "Show process details from the same versioned JSON projection as the diagrams",
+  "next": "Review exact candidate and integrate without deployment",
+  "files": [
+    "tasks/CF-review-process-text-v1-offline.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/revisionreview/README.md"
+  ],
+  "validation": "Focused offline Go packages and repository validator passed. Actual replay HTML byte-identical; modelprocess JSON and SVG byte-identical to base. Chromium keyboard and offline checks passed at 390 and 1440 pixels.",
+  "snapshot": {
+    "tasks/CF-review-process-text-v1-offline.md": {
+      "blob": "3046159de548f809493dc454168523cf7c60970c",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main.go": {
+      "blob": "2ded0bf89fce1c621fde643a7b2b9a7a6fd4afc2",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main_test.go": {
+      "blob": "744960f13806a87166a449e01f54ebbc93e0e0d9",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go": {
+      "blob": "616bcaa5727cad83091b2483525f07959b60818f",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/README.md": {
+      "blob": "4cf00b034d6e506afd79fbdd44fed6712f64aeb8",
+      "mode": "100644"
+    }
+  }
+}

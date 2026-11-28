@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "bc7e7aad-d9b1-4d66-80a4-55856007e352",
+  "runId": "7be52dc3-9602-4781-ba91-cadb134c8f6f",
+  "kind": "checkpoint",
+  "parents": [
+    "3d78e10e-cf68-4063-b254-30e329b30c92"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-process-text-v1",
+    "path": "tasks/CF-review-process-text-v1-offline.md",
+    "revision": "debca86b8952e9ec55e5a1ef2f5d19b86ead88ff",
+    "blob": "55adfda1c344636b68c1e259486ecdd0f4b72141",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "6f7c028e8d6b74f96aa0002a0496992307066634d66fa9bee3f43ae63aad8624"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-review-process-text",
+  "pullRequest": null,
+  "at": "2026-11-28T13:42:11.629Z",
+  "summary": "Keep the operator CLI source pin unchanged by consuming the existing process-view JSON",
+  "next": "Regenerate review and rerun native conformance",
+  "files": [
+    "tasks/CF-review-process-text-v1-offline.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/revisionreview/README.md"
+  ]
+}

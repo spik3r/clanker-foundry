@@ -1,6 +1,6 @@
 ---
 id: CF-review-process-text-v1
-status: in-progress
+status: completed
 owner: Byte
 repositories: [spik3r/clanker-foundry]
 ---

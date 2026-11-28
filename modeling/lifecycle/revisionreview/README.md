@@ -167,3 +167,10 @@ go run ./cmd/foundryreview --theme slate --mode dark /tmp/evidence.json > /tmp/e
 `slate` and `auto` are the defaults. Sand uses its warmer palette in light mode
 and Tesserae’s shared dark palette in dark mode. Appearance does not change
 any result or evidence binding.
+
+Below each process diagram, expand **Process details as text** with Enter or
+Space. Each revision lists the starting state, its states, and each transition’s
+trigger, required conditions and ordered effects. For example, compare
+`T_prepare`: the candidate adds the requirement that the actor is nonempty.
+This text comes from the same validated, canonical projection as the diagram;
+it is neither a second model nor evidence that a transition ran.
