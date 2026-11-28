@@ -123,3 +123,28 @@ prove intent, coverage, authentication or correctness. To actually build and run
 the candidate-specific example, follow the separate tutorial after appropriate
 review; this walkthrough neither bypasses that review nor supplies an execution
 record. No deployment or worker activation follows.
+
+## Offline acceptance review
+
+From `modeling/lifecycle`, run:
+
+```sh
+go run ./cmd/foundryreview --tutorial > /tmp/lifecycle-unrun.html
+./revisionreview/acceptance-html.sh > /tmp/lifecycle-review.html
+```
+
+The first command makes the check-only distinction visible; the second replays
+the original independent literals with revision-bound native reducers in a
+disposable directory. Neither changes the checked-in model, suites or manifests.
+Open the resulting HTML directly. The report contains the two process
+projections, the native v3 change/trace/suite evidence with digests, and
+baseline/candidate acceptance examples. UR-101 stays **unlinked** even when
+both replays match. Matching describes consistency with the supplied fixture,
+not correctness of the requirement, an authenticated execution, or approval.
+
+For another consumer, `foundryreview EVIDENCE_JSON` renders the same view for
+`foundry-review-evidence/v1`. It presents caller-supplied observations without
+authenticating them; consumer adapters must verify revision/fixture binding
+before they claim matching or divergent execution. The lifecycle fixture displays revision-bound SVG projections as inert images. Text, including source refs
+and embedded native reports, is HTML-escaped. The view runs no JavaScript and
+loads no remote resources.

@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "d21fc17a2a588c1e20ea4b6fda4bb91d8b07eb8e",
+  "id": "CF-lifecycle-acceptance-review",
+  "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+  "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+  "record": "---\nid: CF-lifecycle-acceptance-review\nstatus: in-progress\nowner: Byte Foundry integration\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Integrate offline acceptance evidence into lifecycle review\n\n## Implementation claim\n\nByte owns a bounded repository integration for an offline HTML reviewer:\n`modeling/lifecycle/cmd/foundryreview/main.go`, `tutorial.go` and\n`main_test.go` in that command directory, plus\n`modeling/lifecycle/revisionreview/acceptance-html.sh` and `README.md`.\n\nReview and integrate an existing disposable prototype as a candidate input.\nThe prototype predates this claim. Its edits are not retrospectively covered.\nThe new run covers integration after this claim, including exact native receipt\nbindings, user-path verification and independent negative controls. Preserve\nthe existing models, manifests, independent literals and native report bytes.\nDisplay process projections and Given/When/Then alongside the literal\nexpectation and bound observation. An unlinked requirement remains unlinked\nafter replay. Neither HTML nor native execution claims approval.\n\nNo new model language, runner, mutable diagram, hosted reviewer or release.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+        "id": "CF-lifecycle-acceptance-review",
+        "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "formatVersion": 2,
+  "eventId": "df310a18-7947-4bb3-9512-346d6dee32f3",
+  "runId": "64b85323-ec28-4c81-bb44-0443a729c324",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-acceptance-review",
+    "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "revision": "d21fc17a2a588c1e20ea4b6fda4bb91d8b07eb8e",
+    "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c903c70d4b7aa675f363499996cdb6ffd9a7f9b63222d1f906e184acae36d629"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/lifecycle-acceptance-review",
+  "pullRequest": null,
+  "at": "2026-11-28T04:26:11.510Z",
+  "summary": "Integrate reviewed external offline-review prototype after this new task start",
+  "next": "Apply reviewed candidate input, implement exact native bindings and verify user entrypoints",
+  "files": [
+    "tasks/CF-lifecycle-acceptance-review-offline-packet.md,modeling/lifecycle/cmd/foundryreview/main.go,modeling/lifecycle/cmd/foundryreview/main_test.go,modeling/lifecycle/cmd/foundryreview/tutorial.go,modeling/lifecycle/revisionreview/README.md,modeling/lifecycle/revisionreview/acceptance-html.sh"
+  ]
+}
