@@ -251,7 +251,7 @@ func narrative(input, command, expected json.RawMessage) (string, string, string
 	}
 	return given, when, then, nil
 }
-func tutorial(args []string) ([]byte, error) {
+func tutorial(args []string, a appearance) ([]byte, error) {
 	if len(args) != 0 && len(args) != 2 {
 		return nil, fmt.Errorf("usage: foundryreview --tutorial [BASELINE_ACCEPTANCE CANDIDATE_ACCEPTANCE]")
 	}
@@ -343,5 +343,6 @@ func tutorial(args []string) ([]byte, error) {
 			}
 		}
 	}
+	p.Appearance = a
 	return render(p)
 }

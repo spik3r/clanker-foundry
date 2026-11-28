@@ -148,3 +148,22 @@ authenticating them; consumer adapters must verify revision/fixture binding
 before they claim matching or divergent execution. The lifecycle fixture displays revision-bound SVG projections as inert images. Text, including source refs
 and embedded native reports, is HTML-escaped. The view runs no JavaScript and
 loads no remote resources.
+
+The HTML uses [Tesserae Slate](https://github.com/spik3r/tesserae/blob/7e1ede50508427d9d01f45ce42c3028423787443/themes/tokens.css)
+for light and dark colours. The report follows the viewer’s system or browser
+colour preference and uses light colours for printing. The renderer embeds the
+pinned token stylesheet and includes its MIT notice in both the source distribution and the standalone HTML.
+There is no script, external asset or runtime dependency. Embedded diagram
+artwork retains a light canvas so its own labels remain legible in dark mode.
+
+To freeze appearance rather than follow the viewer’s preference, set the
+allowlisted flags before either the tutorial or evidence-packet argument:
+
+```bash
+go run ./cmd/foundryreview --theme sand --mode light --tutorial > /tmp/lifecycle-sand.html
+go run ./cmd/foundryreview --theme slate --mode dark /tmp/evidence.json > /tmp/evidence-dark.html
+```
+
+`slate` and `auto` are the defaults. Sand uses its warmer palette in light mode
+and Tesserae’s shared dark palette in dark mode. Appearance does not change
+any result or evidence binding.

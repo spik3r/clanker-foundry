@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "7d66d016-05f5-4503-b19f-e6e4d19c56e8",
+  "runId": "d3c657e5-a8f2-406d-b430-7e8a830f67d9",
+  "kind": "checkpoint",
+  "parents": [
+    "550ce58b-13d0-42cd-ba02-5309514a31eb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-tesserae-theme-v1",
+    "path": "tasks/CF-review-tesserae-theme-v1-offline.md",
+    "revision": "3e06f46784e090db9e006436f7e7e600b020cff8",
+    "blob": "6ca8dce8a368f49c0575b4c1d69b620f66af180b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e40e3c3a2f47a53ad81e7ea9632225d7880236b3af6aa1db6ce50b32a5e54218"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-review-tesserae-theme",
+  "pullRequest": null,
+  "at": "2026-11-28T10:20:51.902Z",
+  "summary": "Add explicit Tesserae appearance flags while preserving existing calls and evidence inputs",
+  "next": "Verify default and allowlisted overrides",
+  "files": [
+    "tasks/CF-review-tesserae-theme-v1-offline.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/cmd/foundryreview/tesserae-tokens.css",
+    "modeling/lifecycle/cmd/foundryreview/tesserae-LICENSE",
+    "modeling/lifecycle/revisionreview/README.md"
+  ]
+}

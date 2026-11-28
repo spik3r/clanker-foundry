@@ -1,0 +1,7 @@
+/* Semantic tokens: components depend on meaning, not a client palette. */
+:root{color-scheme:light;--ts-bg:#edf2f4;--ts-surface:#fff;--ts-text:#182b38;--ts-muted:#405765;--ts-border:#80949e;--ts-accent:#076b73;--ts-soft:#e0f0ef;--ts-positive:#146240;--ts-warning:#784600;--ts-negative:#a22b36;--ts-space:1.5rem;--ts-radius:.65rem}
+[data-theme=sand]{--ts-bg:#f4f0e8;--ts-text:#322c25;--ts-muted:#655745;--ts-border:#a0927d;--ts-accent:#6a4c25;--ts-soft:#eee5d2}
+[data-density=compact]{--ts-space:.85rem}
+[data-mode=dark]{color-scheme:dark;--ts-bg:#111d25;--ts-surface:#1c2d39;--ts-text:#f1f5f7;--ts-muted:#bdcdd5;--ts-border:#748b98;--ts-accent:#84ded7;--ts-soft:#294747;--ts-positive:#9cddbc;--ts-warning:#f4ce8c;--ts-negative:#ffb0b7}
+@media(prefers-color-scheme:dark){[data-mode=auto]{color-scheme:dark;--ts-bg:#111d25;--ts-surface:#1c2d39;--ts-text:#f1f5f7;--ts-muted:#bdcdd5;--ts-border:#748b98;--ts-accent:#84ded7;--ts-soft:#294747;--ts-positive:#9cddbc;--ts-warning:#f4ce8c;--ts-negative:#ffb0b7}}
+@media print{:root,[data-theme],[data-mode]{color-scheme:light;--ts-bg:#fff;--ts-surface:#fff;--ts-text:#182b38;--ts-muted:#405765;--ts-border:#80949e;--ts-accent:#076b73;--ts-soft:#edf2f4;--ts-positive:#146240;--ts-warning:#784600;--ts-negative:#a22b36}}

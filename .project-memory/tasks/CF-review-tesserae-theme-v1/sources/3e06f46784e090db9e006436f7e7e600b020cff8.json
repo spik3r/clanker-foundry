@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "3e06f46784e090db9e006436f7e7e600b020cff8",
+  "id": "CF-review-tesserae-theme-v1",
+  "path": "tasks/CF-review-tesserae-theme-v1-offline.md",
+  "blob": "6ca8dce8a368f49c0575b4c1d69b620f66af180b",
+  "record": "---\nid: CF-review-tesserae-theme-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Use Tesserae colour tokens in offline Foundry review reports\n\n## Implementation claim\n\nApply the existing Tesserae Slate light/dark tokens to the single\n`foundryreview` HTML renderer. Embed a revision-pinned, attributed copy;\npreserve offline viewing, evidence semantics, CLI inputs, and inert diagrams.\nDefault to the viewer's colour scheme and retain light print mode. No new\nrenderer, dependency, service, external asset, or deployment.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-review-tesserae-theme-v1-offline.md",
+        "id": "CF-review-tesserae-theme-v1",
+        "blob": "6ca8dce8a368f49c0575b4c1d69b620f66af180b",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}
