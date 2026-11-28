@@ -1,0 +1,62 @@
+{
+  "formatVersion": 2,
+  "eventId": "6eb70ca0-120e-4a89-b239-e169a1e093c9",
+  "runId": "69cdf456-5e8f-4b7a-962c-0a0f759317ee",
+  "kind": "complete",
+  "parents": [
+    "6cb6d854-53e4-4337-b946-6be93a23fb7e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-acceptance-review",
+    "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "revision": "d21fc17a2a588c1e20ea4b6fda4bb91d8b07eb8e",
+    "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c903c70d4b7aa675f363499996cdb6ffd9a7f9b63222d1f906e184acae36d629"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/lifecycle-acceptance-review",
+  "pullRequest": "https://github.com/spik3r/clanker-foundry/pull/195",
+  "at": "2026-11-28T04:43:24.337Z",
+  "summary": "Reject duplicate requirement IDs without conflating presence and link state",
+  "next": "Independently verify amended pull request head",
+  "files": [
+    "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/revisionreview/README.md",
+    "modeling/lifecycle/revisionreview/acceptance-html.sh"
+  ],
+  "validation": "Pinned Go 1.27.3 on macOS: new regression fails on original code for unlinked-to-linked and unlinked-to-unlinked; corrected full foundryreview test package passes all four duplicate permutations. Lifecycle with and without observations and the three site generic reviews remain byte-identical to independently reviewed outputs. Repository validator, Go formatting, whitespace and staged fingerprint checks pass.",
+  "snapshot": {
+    "tasks/CF-lifecycle-acceptance-review-offline-packet.md": {
+      "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main.go": {
+      "blob": "4fc8fa0fe30f80808db69e706b55fdfaa24abbac",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main_test.go": {
+      "blob": "1ffde8fc65baa2a01b918826071f00884a8bea2b",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go": {
+      "blob": "14de58275ad7330cc73fc2415545ef01ee17f825",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/README.md": {
+      "blob": "311b818ae2c15132dbb8283aaf4d6ff5076aa790",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/acceptance-html.sh": {
+      "blob": "8ba5754bb3197420c1498590c380a68332c9c600",
+      "mode": "100755"
+    }
+  }
+}

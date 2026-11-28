@@ -74,7 +74,7 @@ func validate(e evidence) error {
 	}
 	changes, requirements, cases := map[string]bool{}, map[string]bool{}, map[string]bool{}
 	register := func(m map[string]bool, id string) bool {
-		if !idPattern.MatchString(id) || m[id] {
+		if _, exists := m[id]; !idPattern.MatchString(id) || exists {
 			return false
 		}
 		m[id] = true

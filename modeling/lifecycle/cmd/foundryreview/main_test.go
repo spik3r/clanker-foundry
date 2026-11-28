@@ -100,3 +100,34 @@ func TestTutorialRenders(t *testing.T) {
 		}
 	}
 }
+
+func TestRejectsDuplicateRequirementIDs(t *testing.T) {
+	h := strings.Repeat("a", 64)
+	for _, tc := range []struct{ first, second string }{
+		{"unlinked", "linked"},
+		{"unlinked", "unlinked"},
+		{"linked", "unlinked"},
+		{"linked", "linked"},
+	} {
+		t.Run(tc.first+"-"+tc.second, func(t *testing.T) {
+			p := page{evidence: evidence{
+				FormatVersion: "foundry-review-evidence/v1", Title: "Duplicate requirements",
+				Baseline: revision{"base", h}, Candidate: revision{"head", h},
+				Requirements: []requirement{
+					{"UR-101", "First", "trace.json", tc.first},
+					{"UR-101", "Second", "trace.json", tc.second},
+				},
+			}}
+			if tc.second == "linked" {
+				p.Scenarios = []scenario{{
+					ID: "case", Title: "Case", Given: "Draft", When: "Prepare", Then: "Refuse",
+					Expected: "refused", Status: "not-run", Source: "suite.json",
+					RequirementIDs: []string{"UR-101"},
+				}}
+			}
+			if _, err := render(p); err == nil || err.Error() != `invalid requirement "UR-101"` {
+				t.Fatalf("expected duplicate requirement rejection, got %v", err)
+			}
+		})
+	}
+}
