@@ -1,0 +1,35 @@
+{
+  "formatVersion": 2,
+  "eventId": "6cb6d854-53e4-4337-b946-6be93a23fb7e",
+  "runId": "69cdf456-5e8f-4b7a-962c-0a0f759317ee",
+  "kind": "start",
+  "parents": [
+    "cb76cb7e-6d0a-46ac-b89f-4f5c8240af4b"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-lifecycle-acceptance-review",
+    "path": "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "revision": "d21fc17a2a588c1e20ea4b6fda4bb91d8b07eb8e",
+    "blob": "51808c361b79714fa864f37d20c17bdd017c5993",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "c903c70d4b7aa675f363499996cdb6ffd9a7f9b63222d1f906e184acae36d629"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/lifecycle-acceptance-review",
+  "pullRequest": null,
+  "at": "2026-11-28T04:41:47.115Z",
+  "summary": "Correct independent review findings on PR 195 while preserving the exact offline-review scope",
+  "next": "Reject duplicate requirement IDs with tests and validate exact resulting branch",
+  "files": [
+    "tasks/CF-lifecycle-acceptance-review-offline-packet.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/revisionreview/README.md",
+    "modeling/lifecycle/revisionreview/acceptance-html.sh"
+  ]
+}
