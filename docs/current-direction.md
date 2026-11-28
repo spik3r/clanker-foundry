@@ -1,5 +1,38 @@
 # Current direction and consumer gates
 
+## Consumer update, 28 November 2026
+
+The [personal homepage and blog case study](https://blog.kaitait.com/dev/thoughts/2026/11/28/i-only-wanted-to-add-a-link.html)
+adds a real consumer to the dated plan below. The homepage model owns selected
+content, not the full UI. An independent browser check caught a hidden Blog link
+even though generation still matched. The [consumer gate guide](consumer-pipeline-gates.md)
+separates that kind of check from model validation and generated-output drift.
+The [offline review renderer](../modeling/lifecycle/revisionreview/README.md)
+shows expected and observed behaviour together. These examples show that the
+checks can catch different failures; they do not measure adoption costs or
+establish general correctness.
+
+**Next: make an outside contributor's review repeatable.** Start with the public
+homepage's Blog link. Extend the consumer's existing browser check to bind its
+review packet to the actual source and generated output. Do not add a generator
+profile or a second test runner.
+
+1. Freeze the expected destination, visibility with the menu closed and keyboard
+   navigation independently of the homepage model. Record the exact consumer revision and the model,
+   scenario fixture and built output identities used at execution.
+2. Run the browser against the built site. In a disposable checkout, break only
+   the rendered link. Expect the model, generated-output and build checks to
+   stay green while the relevant browser case diverges. An unavailable browser
+   must leave cases not run, never matching.
+3. Give a second operator the pinned revision and documented commands. They
+   should reproduce both the passing and failing reports without the author's
+   help. Record setup time, missing steps and any intervention before deciding
+   whether the adapter belongs in another consumer.
+
+This is a proposed consumer follow-up, not a claim that the adapter has shipped,
+that rollout is authorised, or that deployment is part of acceptance.
+
+
 Reviewed against main `51e84dd` on 5 November 2026. This is the current priority
 plan, not a replacement for dated evidence or canonical task claims. Task records
 hold actual ownership and completion. Proposed work below needs its own reviewed

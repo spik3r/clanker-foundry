@@ -1,0 +1,20 @@
+{
+  "sourceVersion": 1,
+  "repository": "spik3r/clanker-foundry",
+  "revision": "33ba493907d9088b482d10d6c0760747896edcef",
+  "id": "CF-readme-consumer-quickstart-v1",
+  "path": "tasks/CF-readme-consumer-quickstart-v1-guide.md",
+  "blob": "0734925a7fc5391afddd92076c32a330aea1e079",
+  "record": "---\nid: CF-readme-consumer-quickstart-v1\nstatus: in-progress\nowner: Byte\nrepositories: [spik3r/clanker-foundry]\n---\n\n# Make the model-review path runnable from the README\n\n## Implementation claim\n\nByte owns the README quickstart and the dated next-consumer step in\n`docs/current-direction.md`. Use the existing lifecycle replay, reviewed\nconsumer gates and public homepage/blog example. Preserve the historical\ndirection below the new update. Validate copyable commands and distinguish\nmodel checks, generated output and actual acceptance. No generator/profile,\nruntime, external consumer source, CI, deployment or older claim changes.\n",
+  "identityEvidence": {
+    "canonicals": [
+      {
+        "path": "tasks/CF-readme-consumer-quickstart-v1-guide.md",
+        "id": "CF-readme-consumer-quickstart-v1",
+        "blob": "0734925a7fc5391afddd92076c32a330aea1e079",
+        "status": "in-progress"
+      }
+    ],
+    "redirects": []
+  }
+}

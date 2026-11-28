@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "ac177c3c-0cf2-4a23-bd03-45bf074d4b09",
+  "runId": "8a42718e-9200-4b2a-b2e5-6cf84f74ca4a",
+  "kind": "complete",
+  "parents": [
+    "52784cbd-e8ed-4f78-af41-520a36e230f7"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-readme-consumer-quickstart-v1",
+    "path": "tasks/CF-readme-consumer-quickstart-v1-guide.md",
+    "revision": "33ba493907d9088b482d10d6c0760747896edcef",
+    "blob": "0734925a7fc5391afddd92076c32a330aea1e079",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "2a7c2d3666171bde1365aad361b4a13d9f72f38e35808d8579b90abe74b13ad2"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-readme-quickstart",
+  "pullRequest": null,
+  "at": "2026-11-28T09:07:49.248Z",
+  "summary": "Validated final README and direction with three exact file fingerprints",
+  "next": "Open PR and run hosted checks",
+  "files": [
+    "README.md",
+    "docs/current-direction.md",
+    "tasks/CF-readme-consumer-quickstart-v1-guide.md"
+  ],
+  "validation": "Exact Go 1.27.3 README replay, five generated outputs, not-run and matching HTML with unlinked requirement, both focused Go packages, scripts/validate.sh and diff whitespace passed. Agent also verified GNU Stow install in a disposable HOME; optional skills-ref absent.",
+  "snapshot": {
+    "README.md": {
+      "blob": "349a11c610c7e746a33eae332f54e380aae0a9dc",
+      "mode": "100644"
+    },
+    "docs/current-direction.md": {
+      "blob": "571c06e795901ad59f3c572cde4e43889b11c21c",
+      "mode": "100644"
+    },
+    "tasks/CF-readme-consumer-quickstart-v1-guide.md": {
+      "blob": "0734925a7fc5391afddd92076c32a330aea1e079",
+      "mode": "100644"
+    }
+  }
+}
