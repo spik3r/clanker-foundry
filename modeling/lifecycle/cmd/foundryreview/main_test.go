@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -90,7 +92,7 @@ func TestNativeReceiptBinding(t *testing.T) {
 
 func TestTutorialRenders(t *testing.T) {
 	t.Chdir("../..")
-	html, err := tutorial(nil)
+	html, err := tutorial(nil, appearance{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -129,5 +131,61 @@ func TestRejectsDuplicateRequirementIDs(t *testing.T) {
 				t.Fatalf("expected duplicate requirement rejection, got %v", err)
 			}
 		})
+	}
+}
+
+func TestReportEmbedsPinnedTheme(t *testing.T) {
+	const expected = "2265fdbee433afa1a46f4bb205ee11bf16780083e58fdf2a15a02de96f458e91"
+	if got := fmt.Sprintf("%x", sha256.Sum256([]byte(tesseraeTokens))); got != expected {
+		t.Fatalf("Tesserae token pin differs: %s", got)
+	}
+	// Use the renderer directly: the tutorial CLI runs from the module root.
+	h := strings.Repeat("a", 64)
+	b, err := render(page{evidence: evidence{
+		FormatVersion: "foundry-review-evidence/v1", Title: "Theme check",
+		Baseline: revision{"base", h}, Candidate: revision{"head", h},
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, fragment := range []string{`data-theme="slate" data-mode="auto"`, tesseraeTokens, "/*\n" + tesseraeLicense + "*/", "Copyright (c) 2026 Kai", "Permission is hereby granted", "color:var(--ts-text)", "default-src 'none'"} {
+		if !bytes.Contains(b, []byte(fragment)) {
+			t.Errorf("theme fragment missing: %q", fragment)
+		}
+	}
+	if bytes.Contains(b, []byte("<script")) || bytes.Contains(b, []byte("<link")) {
+		t.Fatal("report now contains a script or external stylesheet element")
+	}
+}
+
+func TestAppearanceFlags(t *testing.T) {
+	t.Chdir("../..")
+	h := strings.Repeat("a", 64)
+	packet := evidence{FormatVersion: "foundry-review-evidence/v1", Title: "Theme check",
+		Baseline: revision{"base", h}, Candidate: revision{"head", h},
+		Changes: []change{}, Requirements: []requirement{}, Scenarios: []scenario{}}
+	path := filepath.Join(t.TempDir(), "evidence.json")
+	b, err := json.Marshal(packet)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, b, 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, input := range []string{"--tutorial", path} {
+		for _, choice := range []appearance{{"slate", "auto"}, {"sand", "light"}, {"slate", "dark"}} {
+			args := []string{"--theme", choice.Theme, "--mode", choice.Mode, input}
+			html, err := run(args)
+			want := fmt.Sprintf(`data-theme="%s" data-mode="%s"`, choice.Theme, choice.Mode)
+			if err != nil || !bytes.Contains(html, []byte(want)) {
+				t.Errorf("appearance %v via %q: expected %q, err=%v", choice, input, want, err)
+			}
+		}
+	}
+	for _, args := range [][]string{{"--theme"}, {"--theme", "example", path}, {"--mode", "x", path},
+		{"--mode", "dark", "--mode", "light", path}, {"--theme", "sand", "--theme", "slate", path}} {
+		if html, err := run(args); err == nil || len(html) != 0 {
+			t.Errorf("invalid appearance %q: expected refusal with no report", args)
+		}
 	}
 }

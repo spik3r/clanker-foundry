@@ -1,0 +1,67 @@
+{
+  "formatVersion": 2,
+  "eventId": "ae4b6a22-6655-4510-bce6-af40eca540e9",
+  "runId": "d3c657e5-a8f2-406d-b430-7e8a830f67d9",
+  "kind": "complete",
+  "parents": [
+    "7d66d016-05f5-4503-b19f-e6e4d19c56e8"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/clanker-foundry",
+    "id": "CF-review-tesserae-theme-v1",
+    "path": "tasks/CF-review-tesserae-theme-v1-offline.md",
+    "revision": "3e06f46784e090db9e006436f7e7e600b020cff8",
+    "blob": "6ca8dce8a368f49c0575b4c1d69b620f66af180b",
+    "claim": {
+      "heading": "Implementation claim",
+      "digest": "e40e3c3a2f47a53ad81e7ea9632225d7880236b3af6aa1db6ce50b32a5e54218"
+    }
+  },
+  "repository": "spik3r/clanker-foundry",
+  "branch": "byte/foundry-review-tesserae-theme",
+  "pullRequest": null,
+  "at": "2026-11-28T10:22:38.386Z",
+  "summary": "Reuse pinned Tesserae tokens in the offline renderer with optional appearance flags",
+  "next": "Independently verify and integrate without deployment",
+  "files": [
+    "tasks/CF-review-tesserae-theme-v1-offline.md",
+    "modeling/lifecycle/cmd/foundryreview/main.go",
+    "modeling/lifecycle/cmd/foundryreview/main_test.go",
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go",
+    "modeling/lifecycle/cmd/foundryreview/tesserae-tokens.css",
+    "modeling/lifecycle/cmd/foundryreview/tesserae-LICENSE",
+    "modeling/lifecycle/revisionreview/README.md"
+  ],
+  "validation": "Go 1.27.3 focused foundryreview and revisionreview tests passed; actual tutorial review replay repeated byte-identically; repository validator and whitespace checks passed",
+  "snapshot": {
+    "tasks/CF-review-tesserae-theme-v1-offline.md": {
+      "blob": "0938920074cf56a2c2828f28e1342385e2283e96",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main.go": {
+      "blob": "6d6674612a093717888442cb0bff19ee701f4eca",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/main_test.go": {
+      "blob": "4b339d9eb6c7776eb724c01b0202c93e4d4615cb",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/tutorial.go": {
+      "blob": "d97d589dbf144290871bcf335112a81ac419084a",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/tesserae-tokens.css": {
+      "blob": "34967815e59e36d10f6412b5738ba95a05812803",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/cmd/foundryreview/tesserae-LICENSE": {
+      "blob": "1b50aa32469e474766b81806e120e5ff0ba29892",
+      "mode": "100644"
+    },
+    "modeling/lifecycle/revisionreview/README.md": {
+      "blob": "c6cb5b097f9e3046deab2cb22ce9e4e225c1f9b6",
+      "mode": "100644"
+    }
+  }
+}
